@@ -4,6 +4,8 @@ export default function Home() {
   return (
     <main>
       <a href="/details">Redirect to details page</a>
+      <br />
+      <a href="/brokers">Redirect to brokers page</a>
       <Typography variant="h1">Typography test</Typography>
       <Typography variant="h2">Typography test</Typography>
       <Typography variant="h3">Typography test</Typography>

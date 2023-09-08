@@ -160,12 +160,14 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="fixed"
-        sx={{ p: 0, borderRadius: 0, backgroundColor: "slategray" }}
+        sx={{ p: 0, borderRadius: 0, backgroundColor: "black" }}
       >
         <Toolbar>
-          <Typography variant="h6" sx={{ color: "white", fontSize: "1rem" }}>
-            Real Estate
-          </Typography>
+          <a href="/">
+            <Typography variant="h6" sx={{ color: "white", fontSize: "1rem" }}>
+              99radius
+            </Typography>
+          </a>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
