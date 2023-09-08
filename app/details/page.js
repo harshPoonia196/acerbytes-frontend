@@ -14,7 +14,7 @@ import {
 import DetailsTable from "Components/DetailsPage/DetailsTable";
 import React from "react";
 
-const propertyDetailsPage = () => {
+const PropertyDetailsPage = () => {
   // Sample property data (replace this with your actual data)
   const propertyData = {
     id: "propertyId",
@@ -204,4 +204,4 @@ const propertyDetailsPage = () => {
   );
 };
 
-export default propertyDetailsPage;
+export default PropertyDetailsPage;
