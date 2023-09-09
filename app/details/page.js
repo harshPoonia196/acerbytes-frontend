@@ -134,7 +134,7 @@ const PropertyDetailsPage = () => {
 
   const [brokersList, setBrokersList] = React.useState([
     { name: "Anand Gupta", type: "Consultant", stars: 4, clients: 432 },
-    { name: "Anand Gupta", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav PAtel", type: "Consultant", stars: 5, clients: 45 },
   ]);
 
   return (
@@ -517,8 +517,8 @@ const PropertyDetailsPage = () => {
               </Grid>
 
               {brokersList.map((broker) => (
-                <Grid item xs={6}>
-                  <BrokerCard key={broker?.name} broker={broker} />
+                <Grid item xs={6} key={broker?.name}>
+                  <BrokerCard broker={broker} />
                 </Grid>
               ))}
 
