@@ -255,6 +255,7 @@ const PropertyDetailsPage = () => {
                   <CustomTabPanel value={currentTab} index={1}>
                     <img
                       height="350"
+                      alt=""
                       src="https://www.godrejproperties.com/backoffice/data_content/projects/godrej_golf_links_noida/microsite/plan_img/Master-plan.jpg"
                     />
                   </CustomTabPanel>
@@ -267,6 +268,7 @@ const PropertyDetailsPage = () => {
                         <Typography variant="subtitle1">3 BHK</Typography>
                         <img
                           width="100%"
+                          alt=""
                           src="https://projectcdn.99acres.com/project_data/8d33f2/block1_1927/3D/5309_B1_1F1_3D.jpg"
                         />
 
@@ -282,6 +284,7 @@ const PropertyDetailsPage = () => {
                         <Typography variant="subtitle1">4 BHK</Typography>
                         <img
                           width="100%"
+                          alt=""
                           src="https://projectcdn.99acres.com/project_data/8d33f2/block1_1927/3D/5309_B1_1F1_3D.jpg"
                         />
                         <Typography variant="h5">22 Sq ft</Typography>
@@ -296,6 +299,7 @@ const PropertyDetailsPage = () => {
                         <Typography variant="subtitle1">5 BHK</Typography>
                         <img
                           width="100%"
+                          alt=""
                           src="https://projectcdn.99acres.com/project_data/8d33f2/block1_1927/3D/5309_B1_1F1_3D.jpg"
                         />
                         <Typography variant="h5">22 Sq ft</Typography>
@@ -310,6 +314,7 @@ const PropertyDetailsPage = () => {
                         <Typography variant="subtitle1">5 BHK</Typography>
                         <img
                           width="100%"
+                          alt=""
                           src="https://projectcdn.99acres.com/project_data/8d33f2/block1_1927/3D/5309_B1_1F1_3D.jpg"
                         />
                         <Typography variant="h5">22 Sq ft</Typography>
