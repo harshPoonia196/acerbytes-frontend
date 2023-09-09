@@ -1,15 +1,11 @@
 import React from "react";
-import { Container, Card, Avatar, Typography, Box } from "@mui/material";
+import { Container } from "@mui/material";
+import BrokerCard from "@/Components/BrokersPage/BrokerCard";
 
 function Brokers() {
   return (
     <Container>
-      <Card sx={{ p: 2 }}>
-        <Avatar alt="Remy Sharp" src="" />
-        <Box>
-          <Typography variant="body1">First Last</Typography>
-        </Box>
-      </Card>
+      <BrokerCard />
     </Container>
   );
 }
