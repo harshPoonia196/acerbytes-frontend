@@ -458,7 +458,7 @@ const PropertyDetailsPage = () => {
                       height="100%"
                       width="100%"
                       loading="lazy"
-                    ></iframe>
+                    />
                   </CustomTabPanel>
                   <CustomTabPanel value={currentTab} index={5}>
                     <Box sx={{ p: 2, textAlign: "center" }}>
@@ -513,7 +513,7 @@ const PropertyDetailsPage = () => {
 
               {brokersList.map((broker) => (
                 <Grid item xs={6}>
-                  <BrokerCard broker={broker} />
+                  <BrokerCard key={broker?.name} broker={broker} />
                 </Grid>
               ))}
 
