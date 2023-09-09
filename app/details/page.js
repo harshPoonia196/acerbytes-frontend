@@ -19,8 +19,11 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import PeopleIcon from "@mui/icons-material/People";
 import StarIcon from "@mui/icons-material/Star";
+import Fab from "@mui/material/Fab";
+import NavigationIcon from "@mui/icons-material/Navigation";
 import React from "react";
 import BrokerCard from "@/Components/BrokersPage/BrokerCard";
+import ShareIcon from "@mui/icons-material/Share";
 
 const PropertyDetailsPage = () => {
   // Sample property data (replace this with your actual data)
@@ -627,6 +630,28 @@ const PropertyDetailsPage = () => {
           </GridItem>
         </Grid>
       </Card> */}
+      <Box
+        sx={{
+          position: "fixed",
+          right: 16,
+          bottom: 16,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Fab variant="extended" sx={{ mb: 2, justifyContent: "flex-start" }}>
+          <WhatsAppIcon sx={{ mr: 1 }} />
+          Share
+        </Fab>
+        <Fab variant="extended" sx={{ mb: 2, justifyContent: "flex-start" }}>
+          <WhatsAppIcon sx={{ mr: 1 }} />
+          Contact
+        </Fab>
+        <Fab variant="extended" sx={{ justifyContent: "flex-start" }}>
+          <AssignmentIcon sx={{ mr: 1 }} />
+          Enquire
+        </Fab>
+      </Box>
     </Container>
   );
 };
