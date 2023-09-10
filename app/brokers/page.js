@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button, Card, Container, Grid, Typography } from "@mui/material";
-import BrokerCard from "@/Components/BrokersPage/BrokerCard";
+import BrokerCard from "Components/BrokersPage/BrokerCard";
 
 function Brokers() {
   const [brokersList, setBrokersList] = React.useState([

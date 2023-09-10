@@ -14,18 +14,17 @@ import {
   Chip,
   Rating,
 } from "@mui/material";
-import DetailsTable from "Components/DetailsPage/DetailsTable";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import PeopleIcon from "@mui/icons-material/People";
 import StarIcon from "@mui/icons-material/Star";
 import Fab from "@mui/material/Fab";
-import NavigationIcon from "@mui/icons-material/Navigation";
 import React, { useState } from "react";
-import BrokerCard from "@/Components/BrokersPage/BrokerCard";
-import ShareIcon from "@mui/icons-material/Share";
-
-import ModalLayout from "Components/CommonLayouts/ModalLayout";
+import BrokerCard from "Components/BrokersPage/BrokerCard";
+import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
+import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
+import Slider from "react-slick";
+import ImageCarousel from "Components/DetailsPage/ImageCarousel";
 
 const PropertyDetailsPage = () => {
   // Sample property data (replace this with your actual data)
@@ -144,19 +143,66 @@ const PropertyDetailsPage = () => {
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
 
+  const handleOpenEnquiryForm = () => {
+    setOpenEnquiryForm(true);
+  };
+
+  const handleCloseEnquiryForm = () => {
+    setOpenEnquiryForm(false);
+  };
+
+  const [openOtpPopup, setOpenOtpPopup] = useState();
+
+  const handleOpenVerifyPopup = () => {
+    setOpenOtpPopup(true);
+  };
+
+  const handleCloseVerifyPopup = () => {
+    setOpenOtpPopup(false);
+  };
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    // autoplay: true,
+    // autoplaySpeed: 3000,
+  };
+
+  const imagesList = [
+    "https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg",
+    "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?cs=srgb&dl=pexels-binyamin-mellish-106399.jpg&fm=jpg",
+    "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?cs=srgb&dl=pexels-binyamin-mellish-186077.jpg&fm=jpg",
+    "https://media.istockphoto.com/id/1319269543/photo/new-homes-on-a-quiet-street-in-raleigh-nc.jpg?s=612x612&w=0&k=20&c=qaRMP-xgYqFAXR9aTpiG0dtkyqPhJiTAovvxyG1AxvM=",
+  ];
+
   return (
     <Container maxWidth="md">
-      <ModalLayout />
+      <EnquireNow
+        open={openEnquiryForm}
+        handleClose={handleCloseEnquiryForm}
+        handleAction={handleOpenVerifyPopup}
+      />
+      <OtpVerify open={openOtpPopup} handleClose={handleCloseVerifyPopup} />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Card>
             {/* Add a slider here */}
-            <CardMedia
+
+            {/* <Slider {...settings}>
+              {imagesList.map((link) => (
+                <img height="350px" key={link} src={link} />
+              ))}
+            </Slider> */}
+            <ImageCarousel />
+            {/* <CardMedia
               component="img"
               height="300"
               image={propertyData.imageUrl}
               alt={propertyData.title}
-            />
+            /> */}
             <CardContent sx={{ p: "0 !important" }}>
               <Grid container>
                 <Grid item xs={12}>
@@ -655,7 +701,7 @@ const PropertyDetailsPage = () => {
         <Fab
           variant="extended"
           sx={{ justifyContent: "flex-start" }}
-          onClick={() => {}}
+          onClick={handleOpenEnquiryForm}
         >
           <AssignmentIcon sx={{ mr: 1 }} />
           Enquire

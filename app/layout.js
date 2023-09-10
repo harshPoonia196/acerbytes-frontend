@@ -1,7 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import NavBar from "Components/NavBar";
-import ThemeRegistry from "@/styles/theme/ThemeRegistry";
+import ThemeRegistry from "styles/theme/ThemeRegistry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +13,19 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          charSet="UTF-8"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+        />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+        />
+      </head>
       <body className={inter.className}>
         <ThemeRegistry options={{ key: "css" }}>
           <NavBar />
