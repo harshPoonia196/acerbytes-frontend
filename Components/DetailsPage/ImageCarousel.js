@@ -59,7 +59,7 @@ function ImageCarousel() {
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
-        autoplay={false}
+        autoplay={true}
       >
         {images.map((step, index) => (
           <div key={step.label}>
