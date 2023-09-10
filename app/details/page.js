@@ -21,9 +21,11 @@ import PeopleIcon from "@mui/icons-material/People";
 import StarIcon from "@mui/icons-material/Star";
 import Fab from "@mui/material/Fab";
 import NavigationIcon from "@mui/icons-material/Navigation";
-import React from "react";
+import React, { useState } from "react";
 import BrokerCard from "@/Components/BrokersPage/BrokerCard";
 import ShareIcon from "@mui/icons-material/Share";
+
+import ModalLayout from "Components/CommonLayouts/ModalLayout";
 
 const PropertyDetailsPage = () => {
   // Sample property data (replace this with your actual data)
@@ -140,8 +142,11 @@ const PropertyDetailsPage = () => {
     { name: "Raghav PAtel", type: "Consultant", stars: 5, clients: 45 },
   ]);
 
+  const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
+
   return (
     <Container maxWidth="md">
+      <ModalLayout />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Card>
@@ -647,7 +652,11 @@ const PropertyDetailsPage = () => {
           <WhatsAppIcon sx={{ mr: 1 }} />
           Contact
         </Fab>
-        <Fab variant="extended" sx={{ justifyContent: "flex-start" }}>
+        <Fab
+          variant="extended"
+          sx={{ justifyContent: "flex-start" }}
+          onClick={() => {}}
+        >
           <AssignmentIcon sx={{ mr: 1 }} />
           Enquire
         </Fab>
