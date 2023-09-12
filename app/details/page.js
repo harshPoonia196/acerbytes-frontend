@@ -24,6 +24,9 @@ import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ImageCarousel from "Components/DetailsPage/ImageCarousel";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import PriceChart from "Components/DetailsPage/PriceChart";
 
 const PropertyDetailsPage = () => {
   // Sample property data (replace this with your actual data)
@@ -178,19 +181,19 @@ const PropertyDetailsPage = () => {
                   <Card sx={{ p: 2, display: "flex" }}>
                     <Box sx={{ flex: 1 }}>
                       <Typography
-                        variant="h3"
+                        variant="h4"
                         sx={{ fontWeight: "700 !important" }}
                       >
                         Godrej woods
                       </Typography>
-                      <Typography variant="h4" sx={{ alignSelf: "center" }}>
+                      <Typography variant="h5" sx={{ alignSelf: "center" }}>
                         ₹ 2.5 Cr – ₹ 5.6 Cr
                       </Typography>
                     </Box>
                     <Box sx={{ alignSelf: "center" }}>
                       <Card sx={{ p: 2, background: "black" }}>
                         <Typography
-                          variant="h4"
+                          variant="h6"
                           sx={{ fontWeight: 600, color: "white" }}
                         >
                           99
@@ -200,9 +203,14 @@ const PropertyDetailsPage = () => {
                   </Card>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Card sx={{ p: 2, height: "100%" }}>
-                    <Typography variant="h5">Sector 43, Noida, UP</Typography>
-                    <Typography variant="subtitle1">
+                  <Card sx={{ p: 2, height: "100%", cursor: "pointer" }}>
+                    <Box sx={{ display: "flex" }}>
+                      <Typography variant="h5" sx={{ flex: 1 }}>
+                        Sector 43, Noida, UP
+                      </Typography>
+                      <KeyboardArrowRightIcon />
+                    </Box>
+                    <Typography variant="caption">
                       Block A, Sector 43, Noida, Uttar Pradesh 201303
                     </Typography>
                   </Card>
@@ -210,7 +218,7 @@ const PropertyDetailsPage = () => {
                 <Grid item xs={12} sm={6}>
                   <Card sx={{ p: 2, height: "100%" }}>
                     <Typography variant="h5">Under construction</Typography>
-                    <Typography variant="subtitle1">
+                    <Typography variant="caption">
                       Possession by Dec 2026
                     </Typography>
                   </Card>
@@ -232,7 +240,7 @@ const PropertyDetailsPage = () => {
                       }}
                     >
                       <PeopleIcon sx={{ mr: 1 }} />
-                      <Typography variant="body1" sx={{}}>
+                      <Typography variant="body1" sx={{ alignSelf: "center" }}>
                         88 people enquired for this so far
                       </Typography>
                     </Box>
@@ -250,6 +258,55 @@ const PropertyDetailsPage = () => {
                   </Card>
                 </Grid>
                 <Grid item xs={12}>
+                  <Card
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        ml: -2,
+                        mt: -2,
+                      }}
+                    >
+                      <Chip
+                        icon={<CurrencyRupeeIcon fontSize="1rem" />}
+                        label="1.2 Cr · 2.5 BHK · 1582 sqft"
+                        sx={{
+                          ml: 2,
+                          mt: 2,
+                          "& .MuiChip-label": {
+                            pl: "4px",
+                          },
+                        }}
+                        onClick={() => {}}
+                      />
+                      <Chip
+                        icon={<CurrencyRupeeIcon fontSize="1rem" />}
+                        label="1.2 Cr · 2.5 BHK · 1582 sqft"
+                        sx={{
+                          ml: 2,
+                          mt: 2,
+                          "& .MuiChip-label": {
+                            pl: "4px",
+                          },
+                        }}
+                        onClick={() => {}}
+                      />
+                    </Box>
+                  </Card>
+                </Grid>
+                <Grid item xs={12}>
+                  <Card>
+                    <Box sx={{ mx: -6 }}>
+                      <PriceChart />
+                    </Box>
+                  </Card>
+                </Grid>
+                <Grid item xs={12}>
                   <Tabs
                     value={currentTab}
                     onChange={handleTabChange}
@@ -258,43 +315,89 @@ const PropertyDetailsPage = () => {
                     aria-label="scrollable auto tabs example"
                   >
                     <Tab label="Detail" />
-                    <Tab label="Master plan" />
+                    <Tab label="More" />
                     <Tab label="Layout·Price" />
                     <Tab label="Amenities" />
                     <Tab label="Location" />
-                    <Tab label="Score" />
+                    <Tab label="Assesment" />
                   </Tabs>
                   <CustomTabPanel value={currentTab} index={0}>
                     <Grid container sx={{ p: 1 }}>
-                      <GridItem xs={6} sm={3}>
-                        <Typography variant="subtitle1">
-                          Project area
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">Project area</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          14 acre
                         </Typography>
-                        <Typography variant="h6">14 acre</Typography>
                       </GridItem>
-                      <GridItem xs={6} sm={3}>
-                        <Typography variant="subtitle1">Type</Typography>
-                        <Typography variant="h6">Booking</Typography>
-                      </GridItem>
-                      <GridItem xs={6} sm={3}>
-                        <Typography variant="subtitle1">
-                          No of towers
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">Type</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Booking
                         </Typography>
-                        <Typography variant="h6">5</Typography>
                       </GridItem>
-                      <GridItem xs={6} sm={3}>
-                        <Typography variant="subtitle1">Furnished</Typography>
-                        <Typography variant="h6">Yes</Typography>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">No of towers</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          5
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">Furnished</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Yes
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">No of towers</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          5
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">Furnished</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Yes
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">Project area</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          14 acre
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">Type</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Booking
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">No of towers</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          5
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">Furnished</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Yes
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">No of towers</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          5
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={6} sm={2}>
+                        <Typography variant="caption">Furnished</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Yes
+                        </Typography>
                       </GridItem>
                     </Grid>
                   </CustomTabPanel>
-                  <CustomTabPanel value={currentTab} index={1}>
-                    <img
-                      height="350"
-                      alt=""
-                      src="https://www.godrejproperties.com/backoffice/data_content/projects/godrej_golf_links_noida/microsite/plan_img/Master-plan.jpg"
-                    />
-                  </CustomTabPanel>
+                  <CustomTabPanel value={currentTab} index={1}></CustomTabPanel>
                   <CustomTabPanel value={currentTab} index={2}>
                     <Grid container sx={{ p: 1 }}>
                       <GridItemWithCard
@@ -362,6 +465,13 @@ const PropertyDetailsPage = () => {
                           ₹ 2.3 Cr
                         </Typography>
                       </GridItemWithCard>
+                      <Grid item xs={12}>
+                        <img
+                          height="350"
+                          alt=""
+                          src="https://www.godrejproperties.com/backoffice/data_content/projects/godrej_golf_links_noida/microsite/plan_img/Master-plan.jpg"
+                        />
+                      </Grid>
                     </Grid>
                   </CustomTabPanel>
                   <CustomTabPanel value={currentTab} index={3}>

@@ -6,6 +6,21 @@ export default {
   // fontFamily:
   //   "'Roboto','Titillium Web','Inter','Almarai', 'Arial', 'sans-serif', 'Roboto Mono'",
   // fontSize: baseFontSize,
+  subtitle1: {
+    lineHeight: "normal",
+  },
+  caption: {
+    lineHeight: "normal",
+  },
+  body1: {
+    lineHeight: "normal",
+  },
+  body2: {
+    lineHeight: "normal",
+  },
+  h6: {
+    // lineHeight: "1.25",
+  },
 };
 
 // h1: {
