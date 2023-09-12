@@ -1,5 +1,7 @@
 export default {
   styleOverrides: {
-    root: {},
+    root: {
+      color: "black",
+    },
   },
 };

@@ -8,6 +8,15 @@ import typography from "./typography";
 import components from "./components";
 
 const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 780,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
   palette,
   typography,
   components,

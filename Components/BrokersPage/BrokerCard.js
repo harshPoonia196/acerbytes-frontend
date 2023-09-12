@@ -28,8 +28,8 @@ function BrokerCard({ broker }) {
         <Typography variant="body1">{broker?.type}</Typography>
         <Box
           sx={{
-            width: 200,
             display: "flex",
+            flexDirection: { xs: "row", sm: "column", md: "row" },
             alignItems: "center",
           }}
         >
@@ -38,14 +38,14 @@ function BrokerCard({ broker }) {
             value={broker?.stars}
             readOnly
             precision={0.5}
-            emptyIcon={
-              <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-            }
+            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="small" />}
           />
-          <Box sx={{ ml: 2 }}>{labels[broker?.stars]}</Box>
+          <Box sx={{ ml: { xs: 2, sm: 0, md: 2 } }}>
+            {labels[broker?.stars]}
+          </Box>
         </Box>
-        <Typography variant="body1">
-          {broker?.clients} clients served
+        <Typography variant="caption">
+          <i>{broker?.clients} clients served</i>
         </Typography>
       </Box>
     </Card>

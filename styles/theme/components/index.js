@@ -10,6 +10,9 @@ import MuiTextField from "./MuiTextField";
 import MuiContainer from "./MuiContainer";
 import MuiDivider from "./MuiDivider";
 import MuiTableCell from "./MuiTableCell";
+import MuiDialogActions from "./MuiDialogActions";
+import MuiDialog from "./MuiDialog";
+import MuiRating from "./MuiRating";
 
 export default {
   MuiButton,
@@ -24,4 +27,7 @@ export default {
   MuiContainer,
   MuiDivider,
   MuiTableCell,
+  MuiDialogActions,
+  MuiDialog,
+  MuiRating,
 };
