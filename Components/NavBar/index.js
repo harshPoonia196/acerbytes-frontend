@@ -160,9 +160,19 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="fixed"
-        sx={{ p: 0, borderRadius: 0, backgroundColor: "#000" }}
+        sx={{
+          p: 0,
+          borderRadius: 0,
+          backgroundColor: "#000",
+        }}
       >
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "relative",
+          }}
+        >
           <Box>
             <IconButton
               size="large"
@@ -175,7 +185,9 @@ export default function PrimarySearchAppBar() {
               <MenuIcon />
             </IconButton>
           </Box>
-          <Box>
+          <Box
+            sx={{ position: "absolute", textAlign: "center", width: "100%" }}
+          >
             <a href="/" style={{ textDecoration: "none", lineHeight: 1 }}>
               <Typography
                 variant="h6"

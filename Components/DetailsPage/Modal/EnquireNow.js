@@ -9,7 +9,6 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { useState } from "react";
 
 function EnquireNow({ open, handleClose, handleAction }) {
   return (

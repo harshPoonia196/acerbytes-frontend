@@ -23,7 +23,6 @@ import React, { useState } from "react";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
-import Slider from "react-slick";
 import ImageCarousel from "Components/DetailsPage/ImageCarousel";
 
 const PropertyDetailsPage = () => {
@@ -138,7 +137,7 @@ const PropertyDetailsPage = () => {
 
   const [brokersList, setBrokersList] = React.useState([
     { name: "Anand Gupta", type: "Consultant", stars: 4, clients: 432 },
-    { name: "Raghav PAtel", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", type: "Consultant", stars: 5, clients: 45 },
   ]);
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
@@ -161,23 +160,6 @@ const PropertyDetailsPage = () => {
     setOpenOtpPopup(false);
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    // autoplay: true,
-    // autoplaySpeed: 3000,
-  };
-
-  const imagesList = [
-    "https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg",
-    "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?cs=srgb&dl=pexels-binyamin-mellish-106399.jpg&fm=jpg",
-    "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?cs=srgb&dl=pexels-binyamin-mellish-186077.jpg&fm=jpg",
-    "https://media.istockphoto.com/id/1319269543/photo/new-homes-on-a-quiet-street-in-raleigh-nc.jpg?s=612x612&w=0&k=20&c=qaRMP-xgYqFAXR9aTpiG0dtkyqPhJiTAovvxyG1AxvM=",
-  ];
-
   return (
     <Container maxWidth="md">
       <EnquireNow
@@ -189,20 +171,7 @@ const PropertyDetailsPage = () => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Card>
-            {/* Add a slider here */}
-
-            {/* <Slider {...settings}>
-              {imagesList.map((link) => (
-                <img height="350px" key={link} src={link} />
-              ))}
-            </Slider> */}
             <ImageCarousel />
-            {/* <CardMedia
-              component="img"
-              height="300"
-              image={propertyData.imageUrl}
-              alt={propertyData.title}
-            /> */}
             <CardContent sx={{ p: "0 !important" }}>
               <Grid container>
                 <Grid item xs={12}>
@@ -230,7 +199,7 @@ const PropertyDetailsPage = () => {
                     </Box>
                   </Card>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Card sx={{ p: 2, height: "100%" }}>
                     <Typography variant="h5">Sector 43, Noida, UP</Typography>
                     <Typography variant="subtitle1">
@@ -238,8 +207,8 @@ const PropertyDetailsPage = () => {
                     </Typography>
                   </Card>
                 </Grid>
-                <Grid item xs={6}>
-                  <Card sx={{ p: 2 }}>
+                <Grid item xs={12} sm={6}>
+                  <Card sx={{ p: 2, height: "100%" }}>
                     <Typography variant="h5">Under construction</Typography>
                     <Typography variant="subtitle1">
                       Possession by Dec 2026
@@ -247,8 +216,21 @@ const PropertyDetailsPage = () => {
                   </Card>
                 </Grid>
                 <Grid item xs={12}>
-                  <Card sx={{ p: 2, display: "flex" }}>
-                    <Box sx={{ display: "flex", flex: 1, alignSelf: "center" }}>
+                  <Card
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flex: 1,
+                        alignSelf: "center",
+                        mb: { xs: 2, sm: 0 },
+                      }}
+                    >
                       <PeopleIcon sx={{ mr: 1 }} />
                       <Typography variant="body1" sx={{}}>
                         88 people enquired for this so far
@@ -257,7 +239,7 @@ const PropertyDetailsPage = () => {
                     <Chip
                       icon={<WhatsAppIcon />}
                       label="Share on whatsapp"
-                      sx={{ mr: 2 }}
+                      sx={{ mr: { xs: 0, sm: 2 }, mb: { xs: 2, sm: 0 } }}
                       onClick={() => {}}
                     />
                     <Chip
@@ -284,23 +266,23 @@ const PropertyDetailsPage = () => {
                   </Tabs>
                   <CustomTabPanel value={currentTab} index={0}>
                     <Grid container sx={{ p: 1 }}>
-                      <GridItem xs={3}>
+                      <GridItem xs={6} sm={3}>
                         <Typography variant="subtitle1">
                           Project area
                         </Typography>
                         <Typography variant="h6">14 acre</Typography>
                       </GridItem>
-                      <GridItem xs={3}>
+                      <GridItem xs={6} sm={3}>
                         <Typography variant="subtitle1">Type</Typography>
                         <Typography variant="h6">Booking</Typography>
                       </GridItem>
-                      <GridItem xs={3}>
+                      <GridItem xs={6} sm={3}>
                         <Typography variant="subtitle1">
                           No of towers
                         </Typography>
                         <Typography variant="h6">5</Typography>
                       </GridItem>
-                      <GridItem xs={3}>
+                      <GridItem xs={6} sm={3}>
                         <Typography variant="subtitle1">Furnished</Typography>
                         <Typography variant="h6">Yes</Typography>
                       </GridItem>
@@ -316,7 +298,8 @@ const PropertyDetailsPage = () => {
                   <CustomTabPanel value={currentTab} index={2}>
                     <Grid container sx={{ p: 1 }}>
                       <GridItemWithCard
-                        xs={3}
+                        xs={6}
+                        sm={3}
                         boxStyles={{ backgroundColor: "none" }}
                       >
                         <Typography variant="subtitle1">3 BHK</Typography>
@@ -332,7 +315,8 @@ const PropertyDetailsPage = () => {
                         </Typography>
                       </GridItemWithCard>
                       <GridItemWithCard
-                        xs={3}
+                        xs={6}
+                        sm={3}
                         boxStyles={{ backgroundColor: "none" }}
                       >
                         <Typography variant="subtitle1">4 BHK</Typography>
@@ -347,7 +331,8 @@ const PropertyDetailsPage = () => {
                         </Typography>
                       </GridItemWithCard>
                       <GridItemWithCard
-                        xs={3}
+                        xs={6}
+                        sm={3}
                         boxStyles={{ backgroundColor: "none" }}
                       >
                         <Typography variant="subtitle1">5 BHK</Typography>
@@ -362,7 +347,8 @@ const PropertyDetailsPage = () => {
                         </Typography>
                       </GridItemWithCard>
                       <GridItemWithCard
-                        xs={3}
+                        xs={6}
+                        sm={3}
                         boxStyles={{ backgroundColor: "none" }}
                       >
                         <Typography variant="subtitle1">5 BHK</Typography>
@@ -391,19 +377,31 @@ const PropertyDetailsPage = () => {
                       <Tab label="Wants" />
                       <Tab label="Beyond" />
                     </Tabs>
-                    <Grid container sx={{ p: 2 }}>
-                      <Grid item xs={4}>
-                        Maintenance Staff
+                    <Grid container spacing={1} sx={{ p: 2 }}>
+                      <Grid item xs={6} sm={4}>
+                        <Typography variant="body1">
+                          Maintenance Staff
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{ display: { xs: "flex", sm: "none" } }}
+                        >
+                          (Need)
+                        </Typography>
                       </Grid>
-                      <Grid item xs={4}>
-                        Need
+                      <Grid
+                        item
+                        sx={{ display: { xs: "none", sm: "flex" } }}
+                        sm={2}
+                      >
+                        <Typography variant="body1">Need</Typography>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={6}>
                         <Box
                           sx={{
-                            width: 200,
                             display: "flex",
                             alignItems: "center",
+                            flexDirection: { xs: "column", sm: "row" },
                           }}
                         >
                           <Rating
@@ -421,18 +419,28 @@ const PropertyDetailsPage = () => {
                           <Box sx={{ ml: 2 }}>{labels[5]}</Box>
                         </Box>
                       </Grid>
-                      <Grid item xs={4}>
-                        Garden
+                      <Grid item xs={6} sm={4}>
+                        <Typography variant="body1">Garden</Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{ display: { xs: "flex", sm: "none" } }}
+                        >
+                          (Want)
+                        </Typography>
                       </Grid>
-                      <Grid item xs={4}>
-                        Want
+                      <Grid
+                        item
+                        sx={{ display: { xs: "none", sm: "flex" } }}
+                        sm={2}
+                      >
+                        <Typography variant="body1">Want</Typography>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={6}>
                         <Box
                           sx={{
-                            width: 200,
                             display: "flex",
                             alignItems: "center",
+                            flexDirection: { xs: "column", sm: "row" },
                           }}
                         >
                           <Rating
@@ -450,18 +458,28 @@ const PropertyDetailsPage = () => {
                           <Box sx={{ ml: 2 }}>{labels[5]}</Box>
                         </Box>
                       </Grid>
-                      <Grid item xs={4}>
-                        Club House
+                      <Grid item xs={6} sm={4}>
+                        <Typography variant="body1">Club House</Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{ display: { xs: "flex", sm: "none" } }}
+                        >
+                          (Beyond)
+                        </Typography>
                       </Grid>
-                      <Grid item xs={4}>
-                        Beyond
+                      <Grid
+                        item
+                        sx={{ display: { xs: "none", sm: "flex" } }}
+                        sm={2}
+                      >
+                        <Typography variant="body1">Beyond</Typography>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={6}>
                         <Box
                           sx={{
-                            width: 200,
                             display: "flex",
                             alignItems: "center",
+                            flexDirection: { xs: "column", sm: "row" },
                           }}
                         >
                           <Rating
@@ -479,18 +497,28 @@ const PropertyDetailsPage = () => {
                           <Box sx={{ ml: 2 }}>{labels[5]}</Box>
                         </Box>
                       </Grid>
-                      <Grid item xs={4}>
-                        Library
+                      <Grid item xs={6} sm={4}>
+                        <Typography variant="body1">Library</Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{ display: { xs: "flex", sm: "none" } }}
+                        >
+                          (Need)
+                        </Typography>
                       </Grid>
-                      <Grid item xs={4}>
-                        Need
+                      <Grid
+                        item
+                        sx={{ display: { xs: "none", sm: "flex" } }}
+                        sm={2}
+                      >
+                        <Typography variant="body1">Need</Typography>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={6}>
                         <Box
                           sx={{
-                            width: 200,
                             display: "flex",
                             alignItems: "center",
+                            flexDirection: { xs: "column", sm: "row" },
                           }}
                         >
                           <Rating
@@ -571,7 +599,7 @@ const PropertyDetailsPage = () => {
               </Grid>
 
               {brokersList.map((broker) => (
-                <Grid item xs={6} key={broker?.name}>
+                <Grid item xs={12} sm={6} key={broker?.name}>
                   <BrokerCard broker={broker} />
                 </Grid>
               ))}

@@ -12,6 +12,7 @@ import MuiDivider from "./MuiDivider";
 import MuiTableCell from "./MuiTableCell";
 import MuiDialogActions from "./MuiDialogActions";
 import MuiDialog from "./MuiDialog";
+import MuiRating from "./MuiRating";
 
 export default {
   MuiButton,
@@ -28,4 +29,5 @@ export default {
   MuiTableCell,
   MuiDialogActions,
   MuiDialog,
+  MuiRating,
 };

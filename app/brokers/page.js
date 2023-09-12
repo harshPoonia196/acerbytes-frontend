@@ -7,7 +7,7 @@ import BrokerCard from "Components/BrokersPage/BrokerCard";
 function Brokers() {
   const [brokersList, setBrokersList] = React.useState([
     { name: "Anand Gupta", type: "Consultant", stars: 4, clients: 432 },
-    { name: "Raghav PAtel", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", type: "Consultant", stars: 5, clients: 45 },
   ]);
 
   return (
@@ -22,7 +22,7 @@ function Brokers() {
           </Card>
         </Grid>
         {brokersList?.map((broker) => (
-          <Grid item xs={6} key={broker.name}>
+          <Grid item xs={12} sm={6} key={broker.name}>
             <BrokerCard broker={broker} />
           </Grid>
         ))}
