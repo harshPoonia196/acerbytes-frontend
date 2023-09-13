@@ -1,33 +1,23 @@
-import {
-  Container,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Button,
-  CardActions,
-  Box,
-} from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import PropertyCard from "Components/PropertyList/PropertyCard";
 
 function PropertyList() {
   return (
     <Container maxWidth="md">
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12}>
           <PropertyCard />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12}>
           <PropertyCard />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12}>
           <PropertyCard />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12}>
           <PropertyCard />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12}>
           <PropertyCard />
         </Grid>
       </Grid>
