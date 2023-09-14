@@ -19,7 +19,7 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import PeopleIcon from "@mui/icons-material/People";
 import StarIcon from "@mui/icons-material/Star";
 import Fab from "@mui/material/Fab";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
@@ -178,7 +178,12 @@ const PropertyDetailsPage = () => {
             <CardContent sx={{ p: "0 !important" }}>
               <Grid container>
                 <Grid item xs={12}>
-                  <Card sx={{ p: 2, display: "flex" }}>
+                  <Card
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                    }}
+                  >
                     <Box sx={{ flex: 1 }}>
                       <Typography
                         variant="h4"
@@ -737,88 +742,7 @@ const PropertyDetailsPage = () => {
           </Card>
         </Grid>
       </Grid>
-      {/* <Card>
-        <Grid container>
-          <Grid item xs={12} sx={{ p: 2 }}>
-            <Typography variant="h2">{propertyData.title}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={12} sx={{ p: 2 }}>
-            <Typography variant="body1">{propertyData.description}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Fresh sale</Typography>
-            <Typography variant="h2">22</Typography>
-            <Typography variant="h5">₹ 10 Cr - ₹ 20 Cr</Typography>
-          </GridItem>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Resale</Typography>
-            <Typography variant="h2">22</Typography>
-            <Typography variant="h5">₹ 10 L - ₹ 20 L</Typography>
-          </GridItem>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Rent</Typography>
-            <Typography variant="h2">22</Typography>
-            <Typography variant="h5">₹ 10 K - ₹ 20 K</Typography>
-          </GridItem>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={12}>
-            <DetailsTable />
-          </Grid>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Lumex</Typography>
-            <Typography variant="h2">1545</Typography>
-            <Typography variant="h5">Sqft</Typography>
-          </GridItem>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Caspia</Typography>
-            <Typography variant="h2">22</Typography>
-            <Typography variant="h5">sqft</Typography>
-          </GridItem>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Gardenia</Typography>
-            <Typography variant="h2">22</Typography>
-            <Typography variant="h5">sqft</Typography>
-          </GridItem>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Status</Typography>
-            <Typography variant="h6">Ats Green</Typography>
-          </GridItem>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Status</Typography>
-            <Typography variant="h6">Ats Green</Typography>
-          </GridItem>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Status</Typography>
-            <Typography variant="h6">Ats Green</Typography>
-          </GridItem>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Status</Typography>
-            <Typography variant="h6">Ats Green</Typography>
-          </GridItem>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Status</Typography>
-            <Typography variant="h6">Ats Green</Typography>
-          </GridItem>
-          <GridItem xs={4}>
-            <Typography variant="subtitle1">Status</Typography>
-            <Typography variant="h6">Ats Green</Typography>
-          </GridItem>
-        </Grid>
-      </Card> */}
+
       <Box
         sx={{
           position: "fixed",
