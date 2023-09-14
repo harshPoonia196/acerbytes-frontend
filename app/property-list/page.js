@@ -34,12 +34,25 @@ function PropertyList() {
         <Container maxWidth="lg">
           <Grid container>
             <Grid item xs={6}>
-              <Card sx={{ p: 2, height: "100%" }}>
+              <Card
+                sx={{
+                  p: 2,
+                  height: "100%",
+                  backgroundColor: "whitesmoke",
+                  boxShadow: "none",
+                }}
+              >
                 <Typography variant="h3">Noida</Typography>
+                <Typography variant="caption">
+                  Noida's strategic location, robust infrastructure, and
+                  flourishing business environment have contributed to its
+                  status as a vibrant and attractive real estate destination in
+                  the NCR region.
+                </Typography>
               </Card>
             </Grid>
             <Grid item xs={6}>
-              <Card>
+              <Card sx={{ boxShadow: "none" }}>
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
                   style={{ border: 0 }}
