@@ -163,47 +163,46 @@ export default function PrimarySearchAppBar() {
         sx={{
           p: 0,
           borderRadius: 0,
-          backgroundColor: "#000",
+          backgroundColor: "whitesmoke",
         }}
       >
         <Toolbar
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            position: "relative",
           }}
         >
-          <Box>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-          </Box>
-          <Box
-            sx={{ position: "absolute", textAlign: "center", width: "100%" }}
-          >
-            <a href="/" style={{ textDecoration: "none", lineHeight: 1 }}>
-              <Typography
-                variant="h6"
-                sx={{
-                  color: "white",
-                  fontSize: "1rem",
-                  fontWeight: 700,
-                  lineHeight: 1,
-                }}
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ alignSelf: "center", mr: 2 }}>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                color="#000"
               >
-                99 radius
+                <MenuIcon />
+              </IconButton>
+            </Box>
+            <Box sx={{ alignSelf: "center", height: "fit-content" }}>
+              <a href="/" style={{ textDecoration: "none", lineHeight: 1 }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "#000",
+                    fontSize: "1rem",
+                    fontWeight: 700,
+                    lineHeight: 1,
+                  }}
+                >
+                  99 radius
+                </Typography>
+              </a>
+              <Typography variant="caption" sx={{ color: "#000" }}>
+                for better decision in real estate
               </Typography>
-            </a>
-            <Typography variant="caption">
-              for better decision in real estate
-            </Typography>
+            </Box>
           </Box>
           {/* <Search>
             <SearchIconWrapper>
@@ -214,8 +213,8 @@ export default function PrimarySearchAppBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </Search> */}
-          <Box>
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ mr: "12px" }}>
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
               <IconButton
                 size="large"
                 edge="end"
@@ -223,19 +222,19 @@ export default function PrimarySearchAppBar() {
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
-                color="inherit"
+                color="#000"
               >
                 <AccountCircle />
               </IconButton>
             </Box>
-            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <Box sx={{ display: { xs: "block", md: "none" } }}>
               <IconButton
                 size="large"
                 aria-label="show more"
                 aria-controls={mobileMenuId}
                 aria-haspopup="true"
                 onClick={handleMobileMenuOpen}
-                color="inherit"
+                color="#000"
               >
                 <MoreIcon />
               </IconButton>
