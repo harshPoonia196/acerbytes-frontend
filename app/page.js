@@ -8,6 +8,8 @@ export default function Home() {
       <a href="/brokers">Redirect to brokers page</a>
       <br />
       <a href="/property-list">Redirect to property list page</a>
+      <br />
+      <a href="/enquiries">Redirect to Enquiries page</a>
       <Typography variant="h1">h1</Typography>
       <Typography variant="h2">h2</Typography>
       <Typography variant="h3">h3</Typography>
