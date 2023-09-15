@@ -26,7 +26,9 @@ function PropertyList() {
   };
   return (
     <>
-      <Box sx={{ p: 2, backgroundColor: "whitesmoke", textAlign: "center" }}>
+      <Box
+        sx={{ p: 2, py: 6, backgroundColor: "whitesmoke", textAlign: "center" }}
+      >
         <Typography variant="h3">Research.Consult.Decide</Typography>
         <Typography variant="h6">Research. Consult. Decide</Typography>
       </Box>
@@ -67,7 +69,7 @@ function PropertyList() {
       </Card>
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          <Grid item xs={3}>
+          <Grid item xs={6} sm={3}>
             <Card>
               <Box
                 sx={{
@@ -89,13 +91,13 @@ function PropertyList() {
               </Box>
             </Card>
           </Grid>
-          <Grid item xs={6}>
-            <Grid container spacing={2}>
-              <SelectTextFields label="Sort by" />
-              <SelectTextFields label="Filter by" />
-            </Grid>
+          <Grid item xs={6} sm={3}>
+            <SelectTextFields label="Sort by" />
           </Grid>
-          <Grid item xs={3} sx={{ alignSelf: "center" }}>
+          <Grid item xs={6} sm={3}>
+            <SelectTextFields label="Filter by" />
+          </Grid>
+          <Grid item xs={6} sm={3} sx={{ alignSelf: "center" }}>
             <ToggleButtonGroup
               color="primary"
               value={alignment}

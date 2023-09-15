@@ -15,11 +15,11 @@ function PropertyCard() {
       <CardActionArea
         sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}
       >
-        <Box sx={{ padding: 2, pr: 0 }}>
+        <Box sx={{ padding: 2, pr: { xs: 2, sm: 0 } }}>
           <CardMedia
             component="img"
             alt="green iguana"
-            sx={{ width: { xs: "100%", sm: 120 }, borderRadius: "8px" }}
+            sx={{ width: { xs: "100%", sm: 80 }, borderRadius: "8px" }}
             image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
           />
         </Box>
@@ -77,7 +77,11 @@ function PropertyCard() {
               </Grid>
               <Grid item xs={6} md={1}>
                 <Card
-                  sx={{ width: "fit-content", backgroundColor: colors?.BLUE }}
+                  sx={{
+                    width: "fit-content",
+                    backgroundColor: colors?.BLUE,
+                    borderRadius: "8px !important",
+                  }}
                 >
                   <Typography
                     variant="h6"
@@ -85,7 +89,8 @@ function PropertyCard() {
                       fontWeight: 600,
                       width: "fit-content",
                       color: "white",
-                      p: 1,
+                      p: 0.5,
+                      px: 1,
                     }}
                   >
                     99
