@@ -13,6 +13,8 @@ import MuiTableCell from "./MuiTableCell";
 import MuiDialogActions from "./MuiDialogActions";
 import MuiDialog from "./MuiDialog";
 import MuiRating from "./MuiRating";
+import MuiAccordion from "./MuiAccordion";
+import MuiAccordionSummary from "./MuiAccordionSummary";
 
 export default {
   MuiButton,
@@ -30,4 +32,6 @@ export default {
   MuiDialogActions,
   MuiDialog,
   MuiRating,
+  MuiAccordion,
+  MuiAccordionSummary,
 };
