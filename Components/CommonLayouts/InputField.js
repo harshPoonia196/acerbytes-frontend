@@ -8,14 +8,16 @@ const InputField = ({
   type,
   value,
   sx,
+  variant,
+  halfSm,
   ...props
 }) => (
-  <Grid item xs={12}>
+  <Grid item xs={12} sm={halfSm ? 6 : 12}>
     <TextField
       name={name}
       onChange={handleChange}
       label={label}
-      variant="standard"
+      variant={variant ? variant : "standard"}
       fullWidth
       size="small"
       sx={sx}

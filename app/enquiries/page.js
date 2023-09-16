@@ -16,6 +16,10 @@ import {
   Container,
   Grid,
   TableSortLabel,
+  Chip,
+  Menu,
+  MenuItem,
+  Button,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -25,6 +29,15 @@ import { visuallyHidden } from "@mui/utils";
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+
+  const [anchorElCurrent, setAnchorElCurrent] = React.useState(null);
+  const openCurrent = Boolean(anchorElCurrent);
+  const handleClickCurrent = (event) => {
+    setAnchorElCurrent(event.currentTarget);
+  };
+  const handleCloseCurrent = () => {
+    setAnchorElCurrent(null);
+  };
 
   return (
     <React.Fragment>
@@ -44,17 +57,64 @@ function Row(props) {
         <TableCell>{row.phone}</TableCell>
         <TableCell>{row.urgency}</TableCell>
         <TableCell>{row.status}</TableCell>
-        <TableCell>{row.current}</TableCell>
-        <TableCell>{row.next}</TableCell>
+        <TableCell>
+          <Chip label="Clickable" size="small" onClick={handleClickCurrent} />
+
+          <Menu
+            id="demo-positioned-menu"
+            aria-labelledby="demo-positioned-button"
+            anchorEl={anchorElCurrent}
+            open={openCurrent}
+            onClose={handleCloseCurrent}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            <MenuItem
+              sx={{ fontSize: "0.875rem" }}
+              onClick={handleCloseCurrent}
+            >
+              Profile
+            </MenuItem>
+            <MenuItem
+              sx={{ fontSize: "0.875rem" }}
+              onClick={handleCloseCurrent}
+            >
+              My account
+            </MenuItem>
+            <MenuItem
+              sx={{ fontSize: "0.875rem" }}
+              onClick={handleCloseCurrent}
+            >
+              Logout
+            </MenuItem>
+          </Menu>
+        </TableCell>
+        <TableCell>
+          <Chip label="Clickable" size="small" onClick={() => {}} />
+        </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box>
-              <Container maxWidth="md">
+              <Container maxWidth="lg">
                 <Grid container spacing={2}>
+                  <Grid item xs={12} sx={{ display: "flex" }}>
+                    <Typography variant="caption" sx={{ flex: 1 }}>
+                      Notes
+                    </Typography>
+                    <Button variant="contained" size="small">
+                      Save
+                    </Button>
+                  </Grid>
                   <Grid item xs={12}>
-                    <Typography variant="body1">Remark</Typography>
+                    <Typography variant="body1">Tjdnud</Typography>
                   </Grid>
                   <InputField />
                 </Grid>
@@ -149,13 +209,13 @@ const headCells = [
     id: "current",
     numeric: true,
     disablePadding: false,
-    label: "Current Action",
+    label: "Current action",
   },
   {
     id: "next",
     numeric: true,
     disablePadding: false,
-    label: "Next Action",
+    label: "Next action",
   },
 ];
 
@@ -179,7 +239,8 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+              <Typography variant="caption">{headCell.label}</Typography>
+
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -204,7 +265,7 @@ export default function Enquiries() {
   };
 
   return (
-    <Container maxWidth="dmd">
+    <Container maxWidth="lg">
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table" size="small">
           <EnhancedTableHead
