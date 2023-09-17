@@ -54,7 +54,7 @@ function EnquireNow({ open, handleClose, handleAction }) {
               Submit
             </Button>
           </Box>
-          <Typography variant="caption" sx={{ flex: 1 }}>
+          <Typography variant="caption" sx={{ flex: 1, mt: 1 }}>
             Your information is safe, we don't spam you
           </Typography>
         </Box>

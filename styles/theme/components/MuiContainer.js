@@ -1,5 +1,11 @@
 export default {
   styleOverrides: {
+    maxWidthXs: {
+      padding: "1rem !important",
+    },
+    maxWidthSm: {
+      padding: "1rem !important",
+    },
     maxWidthMd: {
       padding: "1rem !important",
     },

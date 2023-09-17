@@ -61,7 +61,7 @@ function PropertyCard() {
                   sx={{
                     width: "fit-content",
                     backgroundColor: colors?.BLUE,
-                    borderRadius: "8px !important",
+                    borderRadius: "4px !important",
                     m: 0,
                     ml: "auto !important",
                   }}

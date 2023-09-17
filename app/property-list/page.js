@@ -26,10 +26,10 @@ function PropertyList() {
   };
   return (
     <>
-      <Box
-        sx={{ p: 2, py: 6, backgroundColor: "whitesmoke", textAlign: "center" }}
-      >
-        <Typography variant="h3">Research.Consult.Decide</Typography>
+      <Box sx={{ p: 2, py: 6, backgroundColor: "white", textAlign: "center" }}>
+        <Typography variant="h3" sx={{ fontWeight: 700 }}>
+          Research.Consult.Decide
+        </Typography>
         <Typography variant="h6">Research. Consult. Decide</Typography>
       </Box>
       <Card>
@@ -40,7 +40,6 @@ function PropertyList() {
                 sx={{
                   p: 2,
                   height: "100%",
-                  backgroundColor: "whitesmoke",
                   boxShadow: "none",
                 }}
               >

@@ -38,11 +38,12 @@ function BrokerCard({ broker }) {
             value={broker?.stars}
             readOnly
             precision={0.5}
-            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="small" />}
+            size="small"
+            emptyIcon={<StarIcon style={{ opacity: 0.55 }} />}
           />
-          <Box sx={{ ml: { xs: 2, sm: 0, md: 2 } }}>
+          <Typography variant="body2" sx={{ ml: { xs: 1, sm: 0, md: 1 } }}>
             {labels[broker?.stars]}
-          </Box>
+          </Typography>
         </Box>
         <Typography variant="caption">
           <i>{broker?.clients} clients served</i>
