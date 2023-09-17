@@ -36,16 +36,15 @@ function PhoneInputField({
   error,
   error1,
   disabled,
-  full,
-  fixedGrid,
   isMobile,
   autoFocus,
+  halfSm,
 }) {
   const [countryCode, setCountryCode] = useState([]);
   const classes = useStyles();
-
+  // #ptwon# remove line from label
   return (
-    <Grid item xs={fixedGrid ? fixedGrid : 12} sm={full ? 12 : 6}>
+    <Grid item xs={12} sm={halfSm ? 6 : 12}>
       <ModifiedTextField
         type="number"
         label={label}
@@ -60,8 +59,9 @@ function PhoneInputField({
         required={isMobile && isMobile}
         error={error && error}
         inputProps={{
-          maxlength: 2,
+          maxLength: 2,
         }}
+        onWheel={(e) => e.target.blur()}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -72,7 +72,7 @@ function PhoneInputField({
                 label={"Code"}
                 displayEmpty
                 disabled={disabled && disabled}
-                defaultValue={dValue1 && dValue1}
+                defaultValue={dValue1 ? dValue1 : ""}
                 // value={value1}
                 sx={{
                   border: "none",

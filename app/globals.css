@@ -68,6 +68,18 @@ body {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .react-swipeable-view-container {
   height: auto;
   max-height: 300px;

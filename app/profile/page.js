@@ -55,12 +55,12 @@ function Profile() {
     setExpandProperty((prev) => !prev);
   };
 
-  const [expandExploring, setExpandExploring] = React.useState(true);
+  const [expandExploring, setExpandExploring] = React.useState(false);
   const toggleAcordionExploring = () => {
     setExpandExploring((prev) => !prev);
   };
 
-  const [expandPurpose, setExpandPurpose] = React.useState(true);
+  const [expandPurpose, setExpandPurpose] = React.useState(false);
   const toggleAcordionPurpose = () => {
     setExpandPurpose((prev) => !prev);
   };
@@ -105,7 +105,7 @@ function Profile() {
             <AccordionDetails>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <SelectTextFields label="Service type" />
+                  <SelectTextFields label="Service type" value="No data" />
                 </Grid>
                 <InputField label="Company" variant="outlined" halfSm />
                 <InputField label="Salary" variant="outlined" halfSm />
@@ -133,15 +133,40 @@ function Profile() {
                 <Grid item xs={12} sm={6}>
                   <SelectTextFields label="Select City" />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  sx={{ textAlign: { xs: "end", sm: "start" } }}
+                >
                   <Button variant="contained">Add</Button>
                 </Grid>
                 <Grid item xs={12}>
                   <Box>
-                    <Chip label="Mumbai" sx={{ mr: 2 }} onDelete={() => {}} />
-                    <Chip label="Mumbai" sx={{ mr: 2 }} onDelete={() => {}} />
-                    <Chip label="Mumbai" sx={{ mr: 2 }} onDelete={() => {}} />
-                    <Chip label="Mumbai" sx={{ mr: 2 }} onDelete={() => {}} />
+                    <Chip
+                      label="Mumbai"
+                      size="small"
+                      sx={{ mr: 1 }}
+                      onDelete={() => {}}
+                    />
+                    <Chip
+                      label="Mumbai"
+                      size="small"
+                      sx={{ mr: 1 }}
+                      onDelete={() => {}}
+                    />
+                    <Chip
+                      label="Mumbai"
+                      size="small"
+                      sx={{ mr: 1 }}
+                      onDelete={() => {}}
+                    />
+                    <Chip
+                      label="Mumbai"
+                      size="small"
+                      sx={{ mr: 1 }}
+                      onDelete={() => {}}
+                    />
                   </Box>
                 </Grid>
               </Grid>
@@ -242,6 +267,9 @@ function Profile() {
                     <ToggleButton fullWidth size="small" value="rented">
                       Urgent
                     </ToggleButton>
+                    <ToggleButton fullWidth size="small" value="rented">
+                      NA
+                    </ToggleButton>
                   </ToggleButtonGroup>
                 </Grid>
               </Grid>
@@ -275,10 +303,10 @@ function Profile() {
                       Buyer
                     </ToggleButton>
                     <ToggleButton fullWidth size="small" value="rented">
-                      Investment
+                      Investor
                     </ToggleButton>
                     <ToggleButton fullWidth size="small" value="rented">
-                      End user
+                      Both
                     </ToggleButton>
                   </ToggleButtonGroup>
                 </Grid>

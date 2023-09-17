@@ -18,6 +18,7 @@ function SelectTextFields({
       value={value && value}
       onChange={handleChange}
       error={error && error}
+      defaultValue=""
       fullWidth
       size="small"
       sx={{
