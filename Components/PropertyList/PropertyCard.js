@@ -13,13 +13,16 @@ function PropertyCard() {
   return (
     <Card>
       <CardActionArea
-        sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}
+        sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
       >
-        <Box sx={{ padding: 2, pr: { xs: 2, sm: 0 } }}>
+        <Box sx={{ padding: 2, pr: { xs: 2, md: 0 } }}>
           <CardMedia
             component="img"
             alt="green iguana"
-            sx={{ width: { xs: "100%", sm: 80 }, borderRadius: "8px" }}
+            sx={{
+              width: { xs: "100%", md: 80 },
+              borderRadius: "8px",
+            }}
             image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
           />
         </Box>
