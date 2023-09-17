@@ -39,7 +39,7 @@ function BrokerCard({ broker }) {
             readOnly
             precision={0.5}
             size="small"
-            emptyIcon={<StarIcon style={{ opacity: 0.55 }} />}
+            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="small" />}
           />
           <Typography variant="body2" sx={{ ml: { xs: 1, sm: 0, md: 1 } }}>
             {labels[broker?.stars]}

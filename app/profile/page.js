@@ -84,7 +84,7 @@ function Profile() {
               <Grid container spacing={2}>
                 <InputField label="First name" variant="outlined" halfSm />
                 <InputField label="Last name" variant="outlined" halfSm />
-                <PhoneInputField />
+                <PhoneInputField halfSm />
                 <InputField label="Email 1" variant="outlined" halfSm />
               </Grid>
             </AccordionDetails>

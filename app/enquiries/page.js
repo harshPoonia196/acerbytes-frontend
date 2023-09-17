@@ -114,7 +114,7 @@ function Row(props) {
                     </Button>
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography variant="body1">Tjdnud</Typography>
+                    <Typography variant="body1">Old notes</Typography>
                   </Grid>
                   <InputField />
                 </Grid>
