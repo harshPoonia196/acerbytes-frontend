@@ -8,6 +8,7 @@ import {
   Container,
   Card,
   Rating,
+  Box,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import colors from "styles/theme/colors";
@@ -28,28 +29,30 @@ function Research() {
           >
             Godrej woods, Sector 13, Noida
           </Typography>
-          <Card
-            sx={{
-              width: "fit-content",
-              backgroundColor: colors?.BLUE,
-              borderRadius: "4px !important",
-              m: 0,
-              ml: "auto !important",
-            }}
-          >
-            <Typography
-              variant="body1"
+          <Box sx={{ alignSelf: "center" }}>
+            <Card
               sx={{
-                fontWeight: 700,
                 width: "fit-content",
-                color: "white",
-                p: 0.5,
-                px: 1,
+                backgroundColor: colors?.BLUE,
+                borderRadius: "4px !important",
+                m: 0,
+                ml: "auto !important",
               }}
             >
-              43
-            </Typography>
-          </Card>
+              <Typography
+                variant="body1"
+                sx={{
+                  fontWeight: 700,
+                  width: "fit-content",
+                  color: "white",
+                  p: 0.5,
+                  px: 1,
+                }}
+              >
+                43
+              </Typography>
+            </Card>
+          </Box>
         </AccordionSummary>
         <AccordionDetails
           sx={{

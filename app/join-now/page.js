@@ -47,7 +47,10 @@ function JoinNow() {
               item
               xs={12}
               sm={6}
-              sx={{ borderRight: "1px solid gainsboro" }}
+              sx={{
+                borderRight: { xs: "none", sm: "1px solid gainsboro" },
+                pt: "0 !important",
+              }}
             >
               <Grid container spacing={1}>
                 <Grid item xs={12}>
@@ -85,9 +88,17 @@ function JoinNow() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sx={{ display: { xs: "block", sm: "none" } }}>
+              <Divider />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              sx={{ pt: { xs: "16px !important", sm: "0 !important" } }}
+            >
               <Grid container spacing={2}>
-                <Grid item xs={12} sx={{ pt: "0 !important" }}>
+                <Grid item xs={12}>
                   <Typography variant="h6" sx={{ fontWeight: 700 }}>
                     Enter your details
                   </Typography>
@@ -128,7 +139,10 @@ function JoinNow() {
               item
               xs={12}
               sm={6}
-              sx={{ borderRight: "1px solid gainsboro" }}
+              sx={{
+                borderRight: { xs: "none", sm: "1px solid gainsboro" },
+                pt: "0 !important",
+              }}
             >
               <Grid container spacing={1}>
                 <Grid item xs={12}>
@@ -166,9 +180,17 @@ function JoinNow() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sx={{ display: { xs: "block", sm: "none" } }}>
+              <Divider />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              sx={{ pt: { xs: "16px !important", sm: "0 !important" } }}
+            >
               <Grid container spacing={2}>
-                <Grid item xs={12} sx={{ pt: "0 !important" }}>
+                <Grid item xs={12}>
                   <Typography variant="h6" sx={{ fontWeight: 700 }}>
                     Details submitted successfully
                   </Typography>
