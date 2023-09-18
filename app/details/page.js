@@ -267,6 +267,7 @@ const PropertyDetailsPage = () => {
                     sx={{
                       p: 2,
                       display: "flex",
+                      overflowX: "auto",
                     }}
                   >
                     <Box
@@ -316,7 +317,8 @@ const PropertyDetailsPage = () => {
                     value={currentTab}
                     onChange={handleTabChange}
                     variant="scrollable"
-                    scrollButtons="auto"
+                    scrollButtons
+                    allowScrollButtonsMobile
                     aria-label="scrollable auto tabs example"
                   >
                     <Tab label="Detail" />
@@ -484,7 +486,8 @@ const PropertyDetailsPage = () => {
                       value={amenitiesTabs}
                       onChange={handleAmenitiesTabChange}
                       variant="scrollable"
-                      scrollButtons="auto"
+                      scrollButtons
+                      allowScrollButtonsMobile
                       aria-label="scrollable auto tabs example"
                     >
                       <Tab label="All" />
