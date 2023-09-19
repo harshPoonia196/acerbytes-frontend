@@ -11,12 +11,21 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import InputField from "Components/CommonLayouts/InputField";
 import PhoneInputField from "Components/CommonLayouts/PhoneInputField";
+import React from "react";
 
 function JoinNow() {
+  const [brokerType, setBrokerType] = React.useState("individual");
+
+  const handleChangeBrokerType = (event, newAlignment) => {
+    setBrokerType(newAlignment);
+  };
+
   return (
     <>
       <Box sx={{ backgroundColor: "white" }}>
@@ -103,8 +112,25 @@ function JoinNow() {
                     Enter your details
                   </Typography>
                 </Grid>
+                <Grid item xs={12}>
+                  <ToggleButtonGroup
+                    color="primary"
+                    value={brokerType}
+                    exclusive
+                    onChange={handleChangeBrokerType}
+                    aria-label="Platform"
+                    size="small"
+                    fullWidth
+                  >
+                    <ToggleButton value="individual">Individual</ToggleButton>
+                    <ToggleButton value="company">Company</ToggleButton>
+                  </ToggleButtonGroup>
+                </Grid>
                 <InputField label="First name" variant="outlined" halfSm />
                 <InputField label="Last name" variant="outlined" halfSm />
+                {brokerType === "company" && (
+                  <InputField label="Company name" variant="outlined" />
+                )}
                 <InputField label="Email" variant="outlined" />
                 {/* #ptwon# add a verify button */}
                 <PhoneInputField label="Phone number" variant="outlined" />

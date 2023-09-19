@@ -163,6 +163,24 @@ const PropertyDetailsPage = () => {
     setOpenOtpPopup(false);
   };
 
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0 && !isSticky) {
+        setIsSticky(true);
+      } else if (window.scrollY === 0 && isSticky) {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isSticky]);
+
   return (
     <Container maxWidth="md">
       <EnquireNow
@@ -183,6 +201,7 @@ const PropertyDetailsPage = () => {
                       p: 2,
                       display: "flex",
                     }}
+                    className={`sticky-header ${isSticky ? "sticky" : ""}`}
                   >
                     <Box sx={{ flex: 1 }}>
                       <Typography
