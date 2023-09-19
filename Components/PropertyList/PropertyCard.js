@@ -8,14 +8,20 @@ import {
   CardActionArea,
 } from "@mui/material";
 import colors from "styles/theme/colors";
+import { useRouter } from "next/navigation";
 
 function PropertyCard() {
+  const router = useRouter();
+
   return (
     <Card>
       <CardActionArea
         sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
       >
-        <Box sx={{ padding: 2, pr: { xs: 2, md: 0 } }}>
+        <Box
+          sx={{ padding: 2, pr: { xs: 2, md: 0 } }}
+          onClick={() => router.push("/details")}
+        >
           <CardMedia
             component="img"
             alt="green iguana"
@@ -31,31 +37,51 @@ function PropertyCard() {
         >
           <CardContent sx={{ flex: "1 0 auto" }}>
             <Grid container spacing={1} columns={16}>
-              <Grid item xs={8} md={2}>
+              <Grid item xs={8} md={2} onClick={() => router.push("/details")}>
                 <Typography variant="caption">SKA</Typography>
                 <Typography variant="subtitle2">SKA ORION</Typography>
               </Grid>
-              <Grid item xs={8} md={2.5}>
+              <Grid
+                item
+                xs={8}
+                md={2.5}
+                onClick={() => router.push("/details")}
+              >
                 <Typography variant="caption">Noida Expressway</Typography>
                 <Typography variant="subtitle2">Sector 143</Typography>
               </Grid>
-              <Grid item xs={8} md={2.5}>
+              <Grid
+                item
+                xs={8}
+                md={2.5}
+                onClick={() => router.push("/details")}
+              >
                 <Typography variant="caption">14,500/sqft</Typography>
                 <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography>
               </Grid>
-              <Grid item xs={8} md={2}>
+              <Grid item xs={8} md={2} onClick={() => router.push("/details")}>
                 <Typography variant="caption">345 Units</Typography>
                 <Typography variant="subtitle2">2.5 acres</Typography>
               </Grid>
-              <Grid item xs={8} md={2}>
+              <Grid item xs={8} md={2} onClick={() => router.push("/details")}>
                 <Typography variant="caption">5 layouts</Typography>
                 <Typography variant="subtitle2">2, 2.5, 3 BHK</Typography>
               </Grid>
-              <Grid item xs={8} md={2.5}>
+              <Grid
+                item
+                xs={8}
+                md={2.5}
+                onClick={() => router.push("/details")}
+              >
                 <Typography variant="caption">Under construction</Typography>
                 <Typography variant="subtitle2">2022 - 2025</Typography>
               </Grid>
-              <Grid item xs={8} md={1.5}>
+              <Grid
+                item
+                xs={8}
+                md={1.5}
+                onClick={() => router.push("/details")}
+              >
                 <Typography variant="caption">Enquiries</Typography>
                 <Typography variant="subtitle2">345</Typography>
               </Grid>
@@ -68,6 +94,7 @@ function PropertyCard() {
                     m: 0,
                     ml: "auto !important",
                   }}
+                  onClick={() => router.push("/research")}
                 >
                   <Typography
                     variant="h6"

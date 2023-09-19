@@ -75,7 +75,11 @@ function Profile() {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography variant="body1" sx={{ flex: 1, alignSelf: "center" }}>
+              <Typography
+                variant="body1"
+                sx={{ flex: 1, alignSelf: "center" }}
+                onClick={toggleAcordionProfile}
+              >
                 Profile
               </Typography>
               <Button>Edit</Button>
@@ -97,7 +101,11 @@ function Profile() {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography variant="body1" sx={{ flex: 1, alignSelf: "center" }}>
+              <Typography
+                variant="body1"
+                sx={{ flex: 1, alignSelf: "center" }}
+                onClick={toggleAcordionOther}
+              >
                 Other details
               </Typography>
               <Button>Edit</Button>
@@ -123,7 +131,11 @@ function Profile() {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography variant="body1" sx={{ flex: 1, alignSelf: "center" }}>
+              <Typography
+                variant="body1"
+                sx={{ flex: 1, alignSelf: "center" }}
+                onClick={toggleAcordionInterested}
+              >
                 Interested cities
               </Typography>
               <Button>Edit</Button>
@@ -180,7 +192,11 @@ function Profile() {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography variant="body1" sx={{ flex: 1, alignSelf: "center" }}>
+              <Typography
+                variant="body1"
+                sx={{ flex: 1, alignSelf: "center" }}
+                onClick={toggleAcordionAddress}
+              >
                 Current address
               </Typography>
               <Button>Edit</Button>
@@ -221,7 +237,11 @@ function Profile() {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography variant="body1" sx={{ flex: 1, alignSelf: "center" }}>
+              <Typography
+                variant="body1"
+                sx={{ flex: 1, alignSelf: "center" }}
+                onClick={toggleAcordionProperty}
+              >
                 Enquiried for
               </Typography>
               <Button>Edit</Button>
@@ -242,7 +262,11 @@ function Profile() {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography variant="body1" sx={{ flex: 1, alignSelf: "center" }}>
+              <Typography
+                variant="body1"
+                sx={{ flex: 1, alignSelf: "center" }}
+                onClick={toggleAcordionExploring}
+              >
                 Exploring as
               </Typography>
               <Button>Edit</Button>
@@ -283,7 +307,11 @@ function Profile() {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography variant="body1" sx={{ flex: 1, alignSelf: "center" }}>
+              <Typography
+                variant="body1"
+                sx={{ flex: 1, alignSelf: "center" }}
+                onClick={toggleAcordionPurpose}
+              >
                 Purpose
               </Typography>
               <Button>Edit</Button>
