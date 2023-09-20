@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Typography,
   Box,
+  InputAdornment,
 } from "@mui/material";
 
 function EnquireNow({ open, handleClose, handleAction }) {
@@ -29,7 +30,14 @@ function EnquireNow({ open, handleClose, handleAction }) {
         <Grid container spacing={2}>
           <InputField label="Full name" />
           <InputField label="Email" />
-          <InputField label="Phone number" />
+          <InputField
+            label="Phone number"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">+91 </InputAdornment>
+              ),
+            }}
+          />
         </Grid>
       </DialogContent>
       <DialogActions>

@@ -102,6 +102,7 @@ input[type="number"] {
   left: 0;
   right: 0;
   z-index: 100;
+  max-width: calc(780px - 32px) !important;
 }
 
 @media only screen and (max-width: 600px) {
@@ -111,5 +112,12 @@ input[type="number"] {
     left: 0;
     right: 0;
     z-index: 100;
+    max-width: calc(100% - 32px) !important;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .sticky {
+    max-width: calc(100% - 32px) !important;
   }
 }
