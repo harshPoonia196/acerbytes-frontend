@@ -196,7 +196,10 @@ export default function PrimarySearchAppBar() {
               </IconButton>
             </Box>
             <Box sx={{ alignSelf: "center", height: "fit-content" }}>
-              <a href="/" style={{ textDecoration: "none", lineHeight: 1 }}>
+              <a
+                href="/"
+                style={{ textDecoration: "none", lineHeight: "normal" }}
+              >
                 <Typography
                   variant="h6"
                   sx={{
@@ -206,7 +209,7 @@ export default function PrimarySearchAppBar() {
                     lineHeight: 1,
                   }}
                 >
-                  99 radius
+                  therealtybytes
                 </Typography>
               </a>
               <Typography variant="caption" sx={{ color: "#000" }}>
