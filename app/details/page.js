@@ -28,21 +28,11 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import PriceChart from "Components/DetailsPage/PriceChart";
 import Link from "next/link";
+import colors from "styles/theme/colors";
+import { useRouter } from "next/navigation";
 
 const PropertyDetailsPage = () => {
-  // Sample property data (replace this with your actual data)
-  const propertyData = {
-    id: "propertyId",
-    title: "Stunning Oceanfront Villa",
-    description: "A luxurious villa with breathtaking ocean views.",
-    imageUrl:
-      "https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg",
-    price: "2.5 Cr",
-    area: "2500 sqft",
-    bedrooms: 4,
-    bathrooms: 3,
-    location: "Beachside Avenue, Coastal City",
-  };
+  const router = useRouter();
 
   const GridItem = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
@@ -184,15 +174,17 @@ const PropertyDetailsPage = () => {
 
   const boxtothetop = () => {
     const windowTop = window.scrollY;
-    const boxHere = document.getElementById("boxHere");
-    const top = boxHere.offsetTop;
+    const boxHere = document?.getElementById("boxHere");
+    const top = boxHere?.offsetTop;
 
     if (windowTop > top) {
       setIsSticky(true);
       boxHere.style.height = `${
-        document.getElementById("stick").offsetHeight
+        document?.getElementById("stick")?.offsetHeight
       }px`;
-      boxHere.style.width = `${document.getElementById("stick").offsetWidth}px`;
+      boxHere.style.width = `${
+        document?.getElementById("stick")?.offsetWidth
+      }px`;
     } else {
       setIsSticky(false);
       boxHere.style.height = "0";
@@ -243,10 +235,25 @@ const PropertyDetailsPage = () => {
                       </Typography>
                     </Box>
                     <Box sx={{ alignSelf: "center" }}>
-                      <Card sx={{ p: 1, background: "black" }}>
+                      <Card
+                        sx={{
+                          width: "fit-content",
+                          backgroundColor: colors?.BLUE,
+                          borderRadius: "4px !important",
+                          m: 0,
+                          ml: "auto !important",
+                        }}
+                        onClick={() => router.push("/research")}
+                      >
                         <Typography
                           variant="h6"
-                          sx={{ fontWeight: 600, color: "white" }}
+                          sx={{
+                            fontWeight: 600,
+                            width: "fit-content",
+                            color: "white",
+                            p: 0.5,
+                            px: 1,
+                          }}
                         >
                           99
                         </Typography>
@@ -580,6 +587,7 @@ const PropertyDetailsPage = () => {
                             value={5}
                             readOnly
                             precision={0.5}
+                            size="small"
                             emptyIcon={
                               <StarIcon
                                 style={{ opacity: 0.55 }}
@@ -587,7 +595,7 @@ const PropertyDetailsPage = () => {
                               />
                             }
                           />
-                          <Box sx={{ ml: 2 }}>{labels[5]}</Box>
+                          <Box sx={{ ml: { xs: 0, sm: 2 } }}>{labels[5]}</Box>
                         </Box>
                       </Grid>
                       <Grid item xs={6} sm={4}>
@@ -619,6 +627,7 @@ const PropertyDetailsPage = () => {
                             value={5}
                             readOnly
                             precision={0.5}
+                            size="small"
                             emptyIcon={
                               <StarIcon
                                 style={{ opacity: 0.55 }}
@@ -626,7 +635,7 @@ const PropertyDetailsPage = () => {
                               />
                             }
                           />
-                          <Box sx={{ ml: 2 }}>{labels[5]}</Box>
+                          <Box sx={{ ml: { xs: 0, sm: 2 } }}>{labels[5]}</Box>
                         </Box>
                       </Grid>
                       <Grid item xs={6} sm={4}>
@@ -658,6 +667,7 @@ const PropertyDetailsPage = () => {
                             value={5}
                             readOnly
                             precision={0.5}
+                            size="small"
                             emptyIcon={
                               <StarIcon
                                 style={{ opacity: 0.55 }}
@@ -665,7 +675,7 @@ const PropertyDetailsPage = () => {
                               />
                             }
                           />
-                          <Box sx={{ ml: 2 }}>{labels[5]}</Box>
+                          <Box sx={{ ml: { xs: 0, sm: 2 } }}>{labels[5]}</Box>
                         </Box>
                       </Grid>
                       <Grid item xs={6} sm={4}>
@@ -697,6 +707,7 @@ const PropertyDetailsPage = () => {
                             value={5}
                             readOnly
                             precision={0.5}
+                            size="small"
                             emptyIcon={
                               <StarIcon
                                 style={{ opacity: 0.55 }}
@@ -704,7 +715,7 @@ const PropertyDetailsPage = () => {
                               />
                             }
                           />
-                          <Box sx={{ ml: 2 }}>{labels[5]}</Box>
+                          <Box sx={{ ml: { xs: 0, sm: 2 } }}>{labels[5]}</Box>
                         </Box>
                       </Grid>
                     </Grid>

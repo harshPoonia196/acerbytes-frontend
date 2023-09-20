@@ -118,6 +118,11 @@ input[type="number"] {
 
 @media screen and (max-width: 780px) {
   .sticky {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    z-index: 100;
     max-width: calc(100% - 32px) !important;
   }
 }

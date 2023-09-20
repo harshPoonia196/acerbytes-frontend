@@ -1,9 +1,13 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Inter, IBM_Plex_Sans } from "next/font/google";
 import NavBar from "Components/NavBar";
 import ThemeRegistry from "styles/theme/ThemeRegistry";
 
 const inter = Inter({ subsets: ["latin"] });
+const ibm_plex_sans = IBM_Plex_Sans({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -26,7 +30,7 @@ export default function RootLayout({ children }) {
           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
         />
       </head>
-      <body className={inter.className}>
+      <body className={ibm_plex_sans.className}>
         <ThemeRegistry options={{ key: "css" }}>
           <NavBar />
           {children}
