@@ -27,6 +27,7 @@ import ImageCarousel from "Components/DetailsPage/ImageCarousel";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import PriceChart from "Components/DetailsPage/PriceChart";
+import Link from "next/link";
 
 const PropertyDetailsPage = () => {
   // Sample property data (replace this with your actual data)
@@ -165,21 +166,45 @@ const PropertyDetailsPage = () => {
 
   const [isSticky, setIsSticky] = useState(false);
 
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (window.scrollY > 0 && !isSticky) {
+  //       setIsSticky(true);
+  //     } else if (window.scrollY === 0 && isSticky) {
+  //       setIsSticky(false);
+  //     }
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [isSticky]);
+
+  const boxtothetop = () => {
+    const windowTop = window.scrollY;
+    const boxHere = document.getElementById("boxHere");
+    const top = boxHere.offsetTop;
+
+    if (windowTop > top) {
+      setIsSticky(true);
+      boxHere.style.height = `${
+        document.getElementById("stick").offsetHeight
+      }px`;
+      boxHere.style.width = `${document.getElementById("stick").offsetWidth}px`;
+    } else {
+      setIsSticky(false);
+      boxHere.style.height = "0";
+    }
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 0 && !isSticky) {
-        setIsSticky(true);
-      } else if (window.scrollY === 0 && isSticky) {
-        setIsSticky(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
+    window.addEventListener("scroll", boxtothetop);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", boxtothetop);
     };
-  }, [isSticky]);
+  }, []);
 
   return (
     <Container maxWidth="md">
@@ -189,6 +214,7 @@ const PropertyDetailsPage = () => {
         handleAction={handleOpenVerifyPopup}
       />
       <OtpVerify open={openOtpPopup} handleClose={handleCloseVerifyPopup} />
+
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Card>
@@ -196,12 +222,14 @@ const PropertyDetailsPage = () => {
             <CardContent sx={{ p: "0 !important" }}>
               <Grid container>
                 <Grid item xs={12}>
+                  <div id="boxHere"></div>
                   <Card
                     sx={{
                       p: 2,
                       display: "flex",
                     }}
-                    className={`sticky-header ${isSticky ? "sticky" : ""}`}
+                    id="stick"
+                    className={isSticky ? "sticky" : ""}
                   >
                     <Box sx={{ flex: 1 }}>
                       <Typography
@@ -215,7 +243,7 @@ const PropertyDetailsPage = () => {
                       </Typography>
                     </Box>
                     <Box sx={{ alignSelf: "center" }}>
-                      <Card sx={{ p: 2, background: "black" }}>
+                      <Card sx={{ p: 1, background: "black" }}>
                         <Typography
                           variant="h6"
                           sx={{ fontWeight: 600, color: "white" }}
@@ -227,17 +255,23 @@ const PropertyDetailsPage = () => {
                   </Card>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Card sx={{ p: 2, height: "100%", cursor: "pointer" }}>
-                    <Box sx={{ display: "flex" }}>
-                      <Typography variant="h5" sx={{ flex: 1 }}>
-                        Sector 43, Noida, UP
+                  <Link
+                    href="https://maps.app.goo.gl/rjVABonJgjjRjfdT9"
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Card sx={{ p: 2, height: "100%" }}>
+                      <Box sx={{ display: "flex" }}>
+                        <Typography variant="h5" sx={{ flex: 1 }}>
+                          Sector 43, Noida, UP
+                        </Typography>
+                        <KeyboardArrowRightIcon />
+                      </Box>
+                      <Typography variant="caption">
+                        Block A, Sector 43, Noida, Uttar Pradesh 201303
                       </Typography>
-                      <KeyboardArrowRightIcon />
-                    </Box>
-                    <Typography variant="caption">
-                      Block A, Sector 43, Noida, Uttar Pradesh 201303
-                    </Typography>
-                  </Card>
+                    </Card>
+                  </Link>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Card sx={{ p: 2, height: "100%" }}>
