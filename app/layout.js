@@ -32,8 +32,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={ibm_plex_sans.className}>
         <ThemeRegistry options={{ key: "css" }}>
-          <NavBar />
-          {children}
+          <NavBar>{children}</NavBar>
         </ThemeRegistry>
       </body>
     </html>
