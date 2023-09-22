@@ -2,6 +2,8 @@ import "./globals.css";
 import { Inter, IBM_Plex_Sans } from "next/font/google";
 import NavBar from "Components/NavBar";
 import ThemeRegistry from "styles/theme/ThemeRegistry";
+import React from "react";
+import { Providers } from "state/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 const ibm_plex_sans = IBM_Plex_Sans({
@@ -31,9 +33,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={ibm_plex_sans.className}>
-        <ThemeRegistry options={{ key: "css" }}>
-          <NavBar>{children}</NavBar>
-        </ThemeRegistry>
+        <Providers>
+          <ThemeRegistry options={{ key: "css" }}>
+            <NavBar>{children}</NavBar>
+          </ThemeRegistry>
+        </Providers>
       </body>
     </html>
   );

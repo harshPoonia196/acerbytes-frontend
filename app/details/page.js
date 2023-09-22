@@ -30,9 +30,12 @@ import PriceChart from "Components/DetailsPage/PriceChart";
 import Link from "next/link";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
+
+  const { isDrawerOpen } = useSelector((state) => state);
 
   const GridItem = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
@@ -161,28 +164,43 @@ const PropertyDetailsPage = () => {
     const stickyCard = document?.getElementById("stick");
     const stickyCssWidth = document?.getElementById("stick")?.offsetWidth;
     const boxHere = document?.getElementById("boxHere");
-    const top = boxHere?.offsetTop;
 
-    // const pageContainer = document?.getElementById("boxHere");
-    // const pageContainerPosition =
-    //   pageContainer?.offsetRight - pageContainer?.offsetLeft;
-    // console.log(pageContainerPosition);
+    const top = boxHere?.offsetTop;
 
     if (windowTop > top) {
       setIsSticky(true);
-      // boxHere.style.height = `${
-      //   document?.getElementById("stick")?.offsetHeight
-      // }px`;
-      // boxHere.style.width = `${
-      //   document?.getElementById("stick")?.offsetWidth
-      // }px`;
       stickyCard.style.width = `${stickyCssWidth}px`;
     } else {
       setIsSticky(false);
-      // boxHere.style.height = "0";
       stickyCard.style.width = `100%`;
     }
   };
+
+  const setBoxWidth = () => {
+    const windowTop = window.scrollY;
+    const boxHere = document?.getElementById("boxHere");
+
+    const top = boxHere?.offsetTop;
+
+    if (windowTop > top) {
+      const blankBox = document?.getElementById("div-container");
+      const blankBoxWidth = blankBox?.getBoundingClientRect().width;
+
+      const stickyCard = document?.getElementById("stick");
+      stickyCard.style.width = `${blankBoxWidth}px`;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", setBoxWidth);
+    return () => {
+      window.removeEventListener("resize", setBoxWidth);
+    };
+  }, []);
+
+  useEffect(() => {
+    setBoxWidth();
+  }, [isDrawerOpen]);
 
   useEffect(() => {
     window.addEventListener("scroll", boxtothetop);
@@ -208,53 +226,53 @@ const PropertyDetailsPage = () => {
               <Grid container>
                 <Grid item xs={12}>
                   <div id="boxHere" style={{ width: "100%" }}></div>
-                  <Box>
-                    <Card
-                      sx={{
-                        p: 2,
-                        display: "flex",
-                      }}
-                      id="stick"
-                      className={isSticky ? "sticky" : ""}
-                    >
-                      <Box sx={{ flex: 1 }}>
+
+                  <Card
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      maxWidth: "calc(780px - 32px) !important",
+                    }}
+                    id="stick"
+                    className={isSticky ? "sticky" : ""}
+                  >
+                    <Box sx={{ flex: 1 }}>
+                      <Typography
+                        variant="h4"
+                        sx={{ fontWeight: "700 !important" }}
+                      >
+                        Godrej woods
+                      </Typography>
+                      <Typography variant="h5" sx={{ alignSelf: "center" }}>
+                        ₹ 2.5 Cr – ₹ 5.6 Cr
+                      </Typography>
+                    </Box>
+                    <Box sx={{ alignSelf: "center" }}>
+                      <Card
+                        sx={{
+                          width: "fit-content",
+                          backgroundColor: colors?.BLUE,
+                          borderRadius: "4px !important",
+                          m: 0,
+                          ml: "auto !important",
+                        }}
+                        onClick={() => router.push("/research")}
+                      >
                         <Typography
-                          variant="h4"
-                          sx={{ fontWeight: "700 !important" }}
-                        >
-                          Godrej woods
-                        </Typography>
-                        <Typography variant="h5" sx={{ alignSelf: "center" }}>
-                          ₹ 2.5 Cr – ₹ 5.6 Cr
-                        </Typography>
-                      </Box>
-                      <Box sx={{ alignSelf: "center" }}>
-                        <Card
+                          variant="h6"
                           sx={{
+                            fontWeight: 600,
                             width: "fit-content",
-                            backgroundColor: colors?.BLUE,
-                            borderRadius: "4px !important",
-                            m: 0,
-                            ml: "auto !important",
+                            color: "white",
+                            p: 0.5,
+                            px: 1,
                           }}
-                          onClick={() => router.push("/research")}
                         >
-                          <Typography
-                            variant="h6"
-                            sx={{
-                              fontWeight: 600,
-                              width: "fit-content",
-                              color: "white",
-                              p: 0.5,
-                              px: 1,
-                            }}
-                          >
-                            99
-                          </Typography>
-                        </Card>
-                      </Box>
-                    </Card>
-                  </Box>
+                          99
+                        </Typography>
+                      </Card>
+                    </Box>
+                  </Card>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Link

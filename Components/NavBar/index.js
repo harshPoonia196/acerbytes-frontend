@@ -20,12 +20,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/navigation";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { ListOfPageLink, SecondListOfPageLink } from "./Links";
+import { useDispatch, useSelector } from "react-redux";
+import { setDrawerState } from "state/DrawerStore/action";
 
 const drawerWidth = 240;
 
 export default function ClippedDrawer({ children }) {
+  const { isDrawerOpen } = useSelector((state) => state);
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const dispatch = useDispatch();
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,10 +40,8 @@ export default function ClippedDrawer({ children }) {
     setAnchorEl(null);
   };
 
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState(true);
-
   const handleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
+    dispatch(setDrawerState({ isDrawerOpen: !isDrawerOpen }));
   };
 
   const isMenuOpen = Boolean(anchorEl);
@@ -101,7 +104,7 @@ export default function ClippedDrawer({ children }) {
             width: drawerWidth,
             boxSizing: "border-box",
           },
-          display: { xs: "none", md: "flex" },
+          display: { xs: "none", dmd: "flex" },
         }}
       >
         <Toolbar />
@@ -135,7 +138,7 @@ export default function ClippedDrawer({ children }) {
             width: drawerWidth,
             boxSizing: "border-box",
           },
-          display: { xs: "flex", md: "none" },
+          display: { xs: "flex", dmd: "none" },
         }}
       >
         <Toolbar />
