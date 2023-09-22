@@ -185,10 +185,6 @@ const PropertyDetailsPage = () => {
   };
 
   useEffect(() => {
-    boxtothetop();
-  }, [document?.getElementById("stick")?.offsetWidth]);
-
-  useEffect(() => {
     window.addEventListener("scroll", boxtothetop);
     return () => {
       window.removeEventListener("scroll", boxtothetop);
