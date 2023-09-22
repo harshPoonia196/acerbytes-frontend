@@ -156,22 +156,6 @@ const PropertyDetailsPage = () => {
 
   const [isSticky, setIsSticky] = useState(false);
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (window.scrollY > 0 && !isSticky) {
-  //       setIsSticky(true);
-  //     } else if (window.scrollY === 0 && isSticky) {
-  //       setIsSticky(false);
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [isSticky]);
-
   const boxtothetop = () => {
     const windowTop = window.scrollY;
     const boxHere = document?.getElementById("boxHere");

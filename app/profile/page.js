@@ -76,8 +76,8 @@ function Profile() {
               id="panel1a-header"
             >
               <Typography
-                variant="body1"
-                sx={{ flex: 1, alignSelf: "center" }}
+                variant="subtitle2"
+                sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                 onClick={toggleAcordionProfile}
               >
                 Profile
@@ -102,8 +102,8 @@ function Profile() {
               id="panel1a-header"
             >
               <Typography
-                variant="body1"
-                sx={{ flex: 1, alignSelf: "center" }}
+                variant="subtitle2"
+                sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                 onClick={toggleAcordionOther}
               >
                 Other details
@@ -132,8 +132,8 @@ function Profile() {
               id="panel1a-header"
             >
               <Typography
-                variant="body1"
-                sx={{ flex: 1, alignSelf: "center" }}
+                variant="subtitle2"
+                sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                 onClick={toggleAcordionInterested}
               >
                 Interested cities
@@ -193,8 +193,8 @@ function Profile() {
               id="panel1a-header"
             >
               <Typography
-                variant="body1"
-                sx={{ flex: 1, alignSelf: "center" }}
+                variant="subtitle2"
+                sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                 onClick={toggleAcordionAddress}
               >
                 Current address
@@ -238,8 +238,8 @@ function Profile() {
               id="panel1a-header"
             >
               <Typography
-                variant="body1"
-                sx={{ flex: 1, alignSelf: "center" }}
+                variant="subtitle2"
+                sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                 onClick={toggleAcordionProperty}
               >
                 Enquiried for
@@ -263,8 +263,8 @@ function Profile() {
               id="panel1a-header"
             >
               <Typography
-                variant="body1"
-                sx={{ flex: 1, alignSelf: "center" }}
+                variant="subtitle2"
+                sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                 onClick={toggleAcordionExploring}
               >
                 Exploring as
@@ -308,8 +308,8 @@ function Profile() {
               id="panel1a-header"
             >
               <Typography
-                variant="body1"
-                sx={{ flex: 1, alignSelf: "center" }}
+                variant="subtitle2"
+                sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                 onClick={toggleAcordionPurpose}
               >
                 Purpose

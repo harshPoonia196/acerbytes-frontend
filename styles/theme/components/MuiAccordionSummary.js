@@ -7,7 +7,6 @@ export default {
     },
     content: {
       margin: "0 !important",
-      textTransform: "uppercase",
     },
   },
 };
