@@ -144,7 +144,7 @@ const PropertyDetailsPage = () => {
     setOpenEnquiryForm(false);
   };
 
-  const [openOtpPopup, setOpenOtpPopup] = useState();
+  const [openOtpPopup, setOpenOtpPopup] = useState(false);
 
   const handleOpenVerifyPopup = () => {
     setOpenOtpPopup(true);
@@ -158,22 +158,35 @@ const PropertyDetailsPage = () => {
 
   const boxtothetop = () => {
     const windowTop = window.scrollY;
+    const stickyCard = document?.getElementById("stick");
+    const stickyCssWidth = document?.getElementById("stick")?.offsetWidth;
     const boxHere = document?.getElementById("boxHere");
     const top = boxHere?.offsetTop;
 
+    // const pageContainer = document?.getElementById("boxHere");
+    // const pageContainerPosition =
+    //   pageContainer?.offsetRight - pageContainer?.offsetLeft;
+    // console.log(pageContainerPosition);
+
     if (windowTop > top) {
       setIsSticky(true);
-      boxHere.style.height = `${
-        document?.getElementById("stick")?.offsetHeight
-      }px`;
-      boxHere.style.width = `${
-        document?.getElementById("stick")?.offsetWidth
-      }px`;
+      // boxHere.style.height = `${
+      //   document?.getElementById("stick")?.offsetHeight
+      // }px`;
+      // boxHere.style.width = `${
+      //   document?.getElementById("stick")?.offsetWidth
+      // }px`;
+      stickyCard.style.width = `${stickyCssWidth}px`;
     } else {
       setIsSticky(false);
-      boxHere.style.height = "0";
+      // boxHere.style.height = "0";
+      stickyCard.style.width = `100%`;
     }
   };
+
+  useEffect(() => {
+    boxtothetop();
+  }, [document?.getElementById("stick")?.offsetWidth]);
 
   useEffect(() => {
     window.addEventListener("scroll", boxtothetop);
@@ -183,7 +196,7 @@ const PropertyDetailsPage = () => {
   }, []);
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" id="div-container">
       <EnquireNow
         open={openEnquiryForm}
         handleClose={handleCloseEnquiryForm}
@@ -198,52 +211,54 @@ const PropertyDetailsPage = () => {
             <CardContent sx={{ p: "0 !important" }}>
               <Grid container>
                 <Grid item xs={12}>
-                  <div id="boxHere"></div>
-                  <Card
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                    }}
-                    id="stick"
-                    className={isSticky ? "sticky" : ""}
-                  >
-                    <Box sx={{ flex: 1 }}>
-                      <Typography
-                        variant="h4"
-                        sx={{ fontWeight: "700 !important" }}
-                      >
-                        Godrej woods
-                      </Typography>
-                      <Typography variant="h5" sx={{ alignSelf: "center" }}>
-                        ₹ 2.5 Cr – ₹ 5.6 Cr
-                      </Typography>
-                    </Box>
-                    <Box sx={{ alignSelf: "center" }}>
-                      <Card
-                        sx={{
-                          width: "fit-content",
-                          backgroundColor: colors?.BLUE,
-                          borderRadius: "4px !important",
-                          m: 0,
-                          ml: "auto !important",
-                        }}
-                        onClick={() => router.push("/research")}
-                      >
+                  <div id="boxHere" style={{ width: "100%" }}></div>
+                  <Box>
+                    <Card
+                      sx={{
+                        p: 2,
+                        display: "flex",
+                      }}
+                      id="stick"
+                      className={isSticky ? "sticky" : ""}
+                    >
+                      <Box sx={{ flex: 1 }}>
                         <Typography
-                          variant="h6"
-                          sx={{
-                            fontWeight: 600,
-                            width: "fit-content",
-                            color: "white",
-                            p: 0.5,
-                            px: 1,
-                          }}
+                          variant="h4"
+                          sx={{ fontWeight: "700 !important" }}
                         >
-                          99
+                          Godrej woods
                         </Typography>
-                      </Card>
-                    </Box>
-                  </Card>
+                        <Typography variant="h5" sx={{ alignSelf: "center" }}>
+                          ₹ 2.5 Cr – ₹ 5.6 Cr
+                        </Typography>
+                      </Box>
+                      <Box sx={{ alignSelf: "center" }}>
+                        <Card
+                          sx={{
+                            width: "fit-content",
+                            backgroundColor: colors?.BLUE,
+                            borderRadius: "4px !important",
+                            m: 0,
+                            ml: "auto !important",
+                          }}
+                          onClick={() => router.push("/research")}
+                        >
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              fontWeight: 600,
+                              width: "fit-content",
+                              color: "white",
+                              p: 0.5,
+                              px: 1,
+                            }}
+                          >
+                            99
+                          </Typography>
+                        </Card>
+                      </Box>
+                    </Card>
+                  </Box>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Link

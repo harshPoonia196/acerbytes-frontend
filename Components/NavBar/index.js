@@ -108,13 +108,13 @@ export default function ClippedDrawer({ children }) {
         <Box sx={{ overflow: "auto" }}>
           <List>
             {ListOfPageLink.map((item) => (
-              <DrawerListItem item={item} />
+              <DrawerListItem key={item.label} item={item} />
             ))}
           </List>
           <Divider />
           <List>
             {SecondListOfPageLink.map((item, index) => (
-              <DrawerListItem item={item} />
+              <DrawerListItem key={item.label} item={item} />
             ))}
           </List>
         </Box>
@@ -142,12 +142,12 @@ export default function ClippedDrawer({ children }) {
         <Box sx={{ overflow: "auto" }}>
           <List>
             {ListOfPageLink.map((item, index) => (
-              <DrawerListItem item={item} />
+              <DrawerListItem key={item.label} item={item} />
             ))}
           </List>
           <List>
             {SecondListOfPageLink.map((item, index) => (
-              <DrawerListItem item={item} />
+              <DrawerListItem key={item.label} item={item} />
             ))}
           </List>
         </Box>
@@ -156,7 +156,7 @@ export default function ClippedDrawer({ children }) {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "-webkit-box" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
