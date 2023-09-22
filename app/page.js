@@ -1,8 +1,8 @@
-import { Typography } from "@mui/material";
+import { Typography, Container } from "@mui/material";
 
 export default function Home() {
   return (
-    <main>
+    <Container maxWidth="md">
       <a href="/property-list">Redirect to property list page</a>
       <br />
       <a href="/brokers">Redirect to brokers page</a>
@@ -27,6 +27,6 @@ export default function Home() {
       <Typography variant="overline" display="block">
         overline
       </Typography>
-    </main>
+    </Container>
   );
 }

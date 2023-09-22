@@ -19,7 +19,7 @@ import { IconButton, Button, MenuItem, Menu } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/navigation";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { ListOfPageLink } from "./Links";
+import { ListOfPageLink, SecondListOfPageLink } from "./Links";
 
 const drawerWidth = 240;
 
@@ -35,7 +35,7 @@ export default function ClippedDrawer({ children }) {
     setAnchorEl(null);
   };
 
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(true);
 
   const handleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -72,6 +72,24 @@ export default function ClippedDrawer({ children }) {
     </Menu>
   );
 
+  const DrawerListItem = ({ item }) => {
+    return (
+      <ListItem key={item.label} disablePadding>
+        <ListItemButton sx={{ pl: 3 }} onClick={() => router.push(item.route)}>
+          <ListItemIcon sx={{ minWidth: 40 }}>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText
+            sx={{
+              "& .MuiListItemText-secondary": { fontWeight: "bold !important" },
+            }}
+            secondary={item.label}
+          />
+        </ListItemButton>
+      </ListItem>
+    );
+  };
+
   const DesktopDrawer = () => {
     return (
       <Drawer
@@ -89,15 +107,14 @@ export default function ClippedDrawer({ children }) {
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            {ListOfPageLink.map((item, index) => (
-              <ListItem key={item.label} disablePadding>
-                <ListItemButton onClick={() => router.push(item.route)}>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={item.label} />
-                </ListItemButton>
-              </ListItem>
+            {ListOfPageLink.map((item) => (
+              <DrawerListItem key={item.label} item={item} />
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {SecondListOfPageLink.map((item, index) => (
+              <DrawerListItem key={item.label} item={item} />
             ))}
           </List>
         </Box>
@@ -125,14 +142,12 @@ export default function ClippedDrawer({ children }) {
         <Box sx={{ overflow: "auto" }}>
           <List>
             {ListOfPageLink.map((item, index) => (
-              <ListItem key={item.label} disablePadding>
-                <ListItemButton onClick={() => router.push(item.route)}>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={item.label} />
-                </ListItemButton>
-              </ListItem>
+              <DrawerListItem key={item.label} item={item} />
+            ))}
+          </List>
+          <List>
+            {SecondListOfPageLink.map((item, index) => (
+              <DrawerListItem key={item.label} item={item} />
             ))}
           </List>
         </Box>
@@ -141,7 +156,7 @@ export default function ClippedDrawer({ children }) {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "-webkit-box" }}>
       <CssBaseline />
       <AppBar
         position="fixed"

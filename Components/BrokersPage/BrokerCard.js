@@ -59,7 +59,7 @@ function BrokerCard({ broker }) {
       </Box>
       <Box sx={{ position: "absolute", top: 8, right: 8 }}>
         <IconButton>
-          <CallIcon />
+          <CallIcon fontSize="small" />
         </IconButton>
       </Box>
     </Card>
