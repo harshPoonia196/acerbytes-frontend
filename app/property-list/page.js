@@ -137,20 +137,3 @@ function PropertyList() {
 }
 
 export default PropertyList;
-
-{
-  /* <div>
-      <ol>
-        <li>project name</li>
-        <li>Group</li>
-        <li>location</li>
-        <li>city</li>
-        <li>sector</li>
-        <li>score</li>
-        <li>Price range</li>
-        <li>3bhk,4bhk</li>
-        <li>Possession time</li>
-        <li>Construction status</li>
-      </ol>
-    </div> */
-}

@@ -13,6 +13,7 @@ import {
   Box,
   Chip,
   Rating,
+  Toolbar,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -26,6 +27,9 @@ import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ImageCarousel from "Components/DetailsPage/ImageCarousel";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import ReplyIcon from "@mui/icons-material/Reply";
 import PriceChart from "Components/DetailsPage/PriceChart";
 import Link from "next/link";
 import colors from "styles/theme/colors";
@@ -822,18 +826,56 @@ const PropertyDetailsPage = () => {
           </Card>
         </Grid>
       </Grid>
+      <Toolbar sx={{ display: { xs: "flex", dmd: "none" } }} />
+
+      <Card
+        sx={{
+          p: 2,
+          position: "fixed",
+          left: 0,
+          bottom: 0,
+          width: "100%",
+          display: { xs: "flex", dmd: "none" },
+          justifyContent: "space-between",
+        }}
+      >
+        <Chip
+          icon={<ThumbUpOffAltIcon fontSize="small" />}
+          label="Like"
+          onClick={handleOpenEnquiryForm}
+        />
+        <Chip
+          icon={<ReplyIcon fontSize="small" sx={{ transform: "scaleX(-1)" }} />}
+          label="Share"
+          onClick={handleOpenEnquiryForm}
+        />
+        <Chip
+          icon={<AssignmentIcon fontSize="small" />}
+          label="Enquire"
+          onClick={handleOpenEnquiryForm}
+        />
+        <Chip
+          icon={<WhatsAppIcon fontSize="small" />}
+          label="Contact"
+          onClick={handleOpenEnquiryForm}
+        />
+      </Card>
 
       <Box
         sx={{
           position: "fixed",
           right: 16,
           bottom: 16,
-          display: "flex",
+          display: { xs: "none", dmd: "flex" },
           flexDirection: "column",
         }}
       >
         <Fab variant="extended" sx={{ mb: 2, justifyContent: "flex-start" }}>
-          <WhatsAppIcon sx={{ mr: 1 }} />
+          <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+          Like
+        </Fab>
+        <Fab variant="extended" sx={{ mb: 2, justifyContent: "flex-start" }}>
+          <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
           Share
         </Fab>
         <Fab variant="extended" sx={{ mb: 2, justifyContent: "flex-start" }}>

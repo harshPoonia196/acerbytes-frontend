@@ -6,11 +6,15 @@ import {
   Box,
   Grid,
   CardActionArea,
+  CardActions,
+  Chip,
+  Divider,
 } from "@mui/material";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
 
-function PropertyCard() {
+function PropertyCard({ isShortListPageCard }) {
   const router = useRouter();
 
   return (
@@ -114,10 +118,16 @@ function PropertyCard() {
           </CardContent>
         </Box>
       </CardActionArea>
-      {/* <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions> */}
+      {isShortListPageCard && <Divider />}
+      {isShortListPageCard && (
+        <CardActions sx={{ textAlign: "end" }}>
+          <Chip
+            icon={<ThumbUpOffAltIcon />}
+            label="Liked on 23-09-2023 at 09:30 AM"
+            onClick={() => {}}
+          />
+        </CardActions>
+      )}
     </Card>
   );
 }
