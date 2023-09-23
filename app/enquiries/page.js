@@ -20,6 +20,7 @@ import {
   Menu,
   MenuItem,
   Button,
+  Card,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -265,21 +266,36 @@ export default function Enquiries() {
   };
 
   return (
-    <Container maxWidth="lg">
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table" size="small">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {rows.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Container>
+    <>
+      <Box sx={{ backgroundColor: "white" }}>
+        <Container
+          maxWidth="lg"
+          sx={{ pb: "0 !important", textAlign: "center" }}
+        >
+          <Box sx={{ py: 4 }}>
+            <Typography variant="h4">
+              Connect with our professional real estate consultant
+            </Typography>
+            <Typography variant="h6">75 Active consultant</Typography>
+          </Box>
+        </Container>
+      </Box>
+      <Container maxWidth="lg">
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table" size="small">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {rows.map((row) => (
+                <Row key={row.name} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+    </>
   );
 }
