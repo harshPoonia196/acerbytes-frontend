@@ -13,15 +13,31 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { IconButton, Button, MenuItem, Menu } from "@mui/material";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import {
+  IconButton,
+  Button,
+  MenuItem,
+  Menu,
+  ListSubheader,
+  Card,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/navigation";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { ListOfPageLink, SecondListOfPageLink } from "./Links";
+import {
+  AdminMenuList,
+  ConsultantMenuList,
+  UserMenuList,
+  listOfPages,
+} from "./Links";
 import { useDispatch, useSelector } from "react-redux";
-import { setDrawerState } from "state/DrawerStore/action";
+import {
+  setDrawerStateOpen,
+  setDrawerStateClose,
+} from "state/DrawerStore/action";
+import CloseIcon from "@mui/icons-material/Close";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
@@ -40,8 +56,14 @@ export default function ClippedDrawer({ children }) {
     setAnchorEl(null);
   };
 
-  const handleDrawer = () => {
-    dispatch(setDrawerState({ isDrawerOpen: !isDrawerOpen }));
+  const handleDrawerOpen = () => {
+    if (isDrawerOpen === false) {
+      dispatch(setDrawerStateOpen({ isDrawerOpen: true }));
+    }
+  };
+
+  const handleDrawerClose = () => {
+    dispatch(setDrawerStateClose({ isDrawerOpen: false }));
   };
 
   const isMenuOpen = Boolean(anchorEl);
@@ -79,9 +101,7 @@ export default function ClippedDrawer({ children }) {
     return (
       <ListItem key={item.label} disablePadding>
         <ListItemButton sx={{ pl: 3 }} onClick={() => router.push(item.route)}>
-          <ListItemIcon sx={{ minWidth: 40 }}>
-            <InboxIcon />
-          </ListItemIcon>
+          <ListItemIcon sx={{ minWidth: 40 }}>{item?.icon}</ListItemIcon>
           <ListItemText
             sx={{
               "& .MuiListItemText-secondary": { fontWeight: "bold !important" },
@@ -90,6 +110,108 @@ export default function ClippedDrawer({ children }) {
           />
         </ListItemButton>
       </ListItem>
+    );
+  };
+
+  const DrawerContent = () => {
+    return (
+      <>
+        <Toolbar />
+        <Box sx={{ overflow: "auto" }}>
+          <List
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                User
+              </ListSubheader>
+            }
+          >
+            {UserMenuList.map((item) => (
+              <DrawerListItem key={item.label} item={item} />
+            ))}
+          </List>
+          <Divider />
+          <List
+            subheader={
+              <ListSubheader
+                component="div"
+                id="nested-list-subheader"
+                sx={{ display: "flex" }}
+              >
+                <p style={{ flex: 1 }}>Consultant</p>{" "}
+                <Box sx={{ alignSelf: "center" }}>
+                  <IconButton
+                    onClick={() => {
+                      router.push(listOfPages.consultantJoinNow);
+                    }}
+                  >
+                    <HowToRegIcon size="small" />
+                  </IconButton>
+                </Box>
+              </ListSubheader>
+            }
+          >
+            {ConsultantMenuList.map((item, index) => (
+              <DrawerListItem key={item.label} item={item} />
+            ))}
+          </List>
+          <Divider />
+          <List
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                Admin
+              </ListSubheader>
+            }
+          >
+            {AdminMenuList.map((item, index) => (
+              <DrawerListItem key={item.label} item={item} />
+            ))}
+          </List>
+        </Box>
+      </>
+    );
+  };
+
+  const DrawerBottomContent = () => {
+    return (
+      <>
+        <Toolbar />
+        <Card
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+          }}
+        >
+          <List>
+            <ListItem
+              disablePadding
+              secondaryAction={
+                <IconButton edge="end">
+                  <CloseIcon
+                    fontSize="small"
+                    onClick={() => handleDrawerClose()}
+                  />
+                </IconButton>
+              }
+            >
+              <ListItemButton sx={{ pl: 3 }} role={undefined}>
+                <ListItemIcon sx={{ minWidth: 40 }}>
+                  <LogoutIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  sx={{
+                    "& .MuiListItemText-secondary": {
+                      fontWeight: "bold !important",
+                    },
+                  }}
+                  secondary="Log out"
+                />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Card>
+      </>
     );
   };
 
@@ -105,22 +227,11 @@ export default function ClippedDrawer({ children }) {
             boxSizing: "border-box",
           },
           display: { xs: "none", dmd: "flex" },
+          position: "relative",
         }}
       >
-        <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List>
-            {ListOfPageLink.map((item) => (
-              <DrawerListItem key={item.label} item={item} />
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {SecondListOfPageLink.map((item, index) => (
-              <DrawerListItem key={item.label} item={item} />
-            ))}
-          </List>
-        </Box>
+        <DrawerContent />
+        <DrawerBottomContent />
       </Drawer>
     );
   };
@@ -130,7 +241,7 @@ export default function ClippedDrawer({ children }) {
       <Drawer
         anchor={"left"}
         open={isDrawerOpen}
-        onClose={handleDrawer}
+        onClose={handleDrawerClose}
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -139,21 +250,11 @@ export default function ClippedDrawer({ children }) {
             boxSizing: "border-box",
           },
           display: { xs: "flex", dmd: "none" },
+          position: "relative",
         }}
       >
-        <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List>
-            {ListOfPageLink.map((item, index) => (
-              <DrawerListItem key={item.label} item={item} />
-            ))}
-          </List>
-          <List>
-            {SecondListOfPageLink.map((item, index) => (
-              <DrawerListItem key={item.label} item={item} />
-            ))}
-          </List>
-        </Box>
+        <DrawerContent />
+        <DrawerBottomContent />
       </Drawer>
     );
   };
@@ -185,7 +286,7 @@ export default function ClippedDrawer({ children }) {
                 aria-controls={menuId}
                 aria-haspopup="true"
                 color="#000"
-                onClick={handleDrawer}
+                onClick={handleDrawerOpen}
               >
                 <MenuIcon />
               </IconButton>
