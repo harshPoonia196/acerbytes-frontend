@@ -60,6 +60,11 @@ export const AdminMenuList = [
     route: "/leads",
     icon: <PlaylistAddIcon fontSize="small" />,
   },
+  {
+    label: "Property list panel",
+    route: "/leads",
+    icon: <PlaylistAddIcon fontSize="small" />,
+  },
 ];
 
 export const listOfPages = {

@@ -33,12 +33,12 @@ function BrokerCard({ broker }) {
       />
       <Box>
         <Typography variant="h6">{broker?.name}</Typography>
-        <Typography variant="body1">{broker?.type}</Typography>
+        <Typography variant="body2">{broker?.type}</Typography>
         <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "row", sm: "column", md: "row" },
-            alignItems: "center",
+            alignItems: { xs: "center", sm: "normal", md: "center" },
           }}
         >
           <Rating
