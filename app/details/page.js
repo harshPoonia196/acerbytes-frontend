@@ -186,8 +186,6 @@ const PropertyDetailsPage = () => {
 
     const top = boxHere?.offsetTop;
 
-    console.log();
-
     if (windowTop > top) {
       const blankBox = document?.getElementById("div-container");
       const blankBoxWidth = blankBox?.getBoundingClientRect().width;
@@ -205,9 +203,7 @@ const PropertyDetailsPage = () => {
   }, []);
 
   useEffect(() => {
-    if (window.innerWidth > 900) {
-      setBoxWidth();
-    }
+    setBoxWidth();
   }, [isDrawerOpen]);
 
   useEffect(() => {
