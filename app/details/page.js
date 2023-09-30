@@ -190,8 +190,27 @@ const PropertyDetailsPage = () => {
       const blankBox = document?.getElementById("div-container");
       const blankBoxWidth = blankBox?.getBoundingClientRect().width;
 
-      const stickyCard = document?.getElementById("stick");
-      stickyCard.style.width = `${blankBoxWidth}px`;
+      if (blankBox?.getBoundingClientRect().width > window.innerWidth - 32) {
+        const stickyCard = document?.getElementById("stick");
+        stickyCard.style.width = `calc(${window.innerWidth}px - 32px)`;
+      } else {
+        if (
+          window.innerWidth >= 900 &&
+          window.innerWidth < 1050 &&
+          isDrawerOpen
+        ) {
+          console.log(
+            blankBox?.getBoundingClientRect().width,
+            window.innerWidth
+          );
+          const stickyCard = document?.getElementById("stick");
+          stickyCard.style.width = `calc(${window.innerWidth}px - 272px)`;
+          console.log(window.innerWidth - 272);
+        } else {
+          const stickyCard = document?.getElementById("stick");
+          stickyCard.style.width = `${blankBoxWidth}px`;
+        }
+      }
     }
   };
 
