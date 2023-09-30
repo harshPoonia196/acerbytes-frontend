@@ -26,16 +26,46 @@ function PropertyList() {
   };
   return (
     <>
-      <Box sx={{ p: 2, py: 6, backgroundColor: "white", textAlign: "center" }}>
-        <Typography variant="h3" sx={{ fontWeight: 700 }}>
+      <Box
+        sx={{
+          p: 2,
+          py: { xs: 4, sm: 6 },
+          backgroundColor: "white",
+          textAlign: "center",
+        }}
+      >
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: 700, display: { xs: "block", sm: "none" } }}
+        >
+          Research.Consult.Decide
+        </Typography>
+        <Typography
+          variant="h3"
+          sx={{ fontWeight: 700, display: { xs: "none", sm: "block" } }}
+        >
           Research.Consult.Decide
         </Typography>
         <Typography variant="h6">Research. Consult. Decide</Typography>
       </Box>
       <Card>
         <Container maxWidth="lg">
-          <Grid container>
-            <Grid item xs={6}>
+          <Grid
+            container
+            sx={{ display: "flex", flexDirection: "row-reverse" }}
+          >
+            <Grid item xs={12} sm={6}>
+              <Card sx={{ boxShadow: "none" }}>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
+                  style={{ border: 0 }}
+                  height="100%"
+                  width="100%"
+                  loading="lazy"
+                />
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <Card
                 sx={{
                   p: 2,
@@ -50,17 +80,6 @@ function PropertyList() {
                   status as a vibrant and attractive real estate destination in
                   the NCR region.
                 </Typography>
-              </Card>
-            </Grid>
-            <Grid item xs={6}>
-              <Card sx={{ boxShadow: "none" }}>
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
-                  style={{ border: 0 }}
-                  height="100%"
-                  width="100%"
-                  loading="lazy"
-                />
               </Card>
             </Grid>
           </Grid>
