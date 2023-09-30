@@ -195,7 +195,7 @@ const PropertyDetailsPage = () => {
         stickyCard.style.width = `calc(${window.innerWidth}px - 32px)`;
       } else {
         if (
-          window.innerWidth > 900 &&
+          window.innerWidth >= 900 &&
           window.innerWidth < 1050 &&
           isDrawerOpen
         ) {
