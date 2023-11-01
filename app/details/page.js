@@ -28,13 +28,14 @@ import ImageCarousel from "Components/DetailsPage/ImageCarousel";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+
 import ReplyIcon from "@mui/icons-material/Reply";
 import PriceChart from "Components/DetailsPage/PriceChart";
 import Link from "next/link";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
@@ -161,6 +162,16 @@ const PropertyDetailsPage = () => {
     setOpenOtpPopup(false);
   };
 
+  const [openAlternateSignIn, setOpenAlternateSignIn] = useState(false);
+
+  const handleOpenAlternateSignIn = () => {
+    setOpenAlternateSignIn(true);
+  };
+
+  const handleCloseAlternateSignIn = () => {
+    setOpenAlternateSignIn(false);
+  };
+
   const [isSticky, setIsSticky] = useState(false);
 
   const boxtothetop = () => {
@@ -238,8 +249,18 @@ const PropertyDetailsPage = () => {
         open={openEnquiryForm}
         handleClose={handleCloseEnquiryForm}
         handleAction={handleOpenVerifyPopup}
+        handleOpen={handleOpenEnquiryForm}
       />
-      <OtpVerify open={openOtpPopup} handleClose={handleCloseVerifyPopup} />
+      <OtpVerify
+        open={openOtpPopup}
+        handleClose={handleCloseVerifyPopup}
+        handleOpen={handleOpenEnquiryForm}
+        handleAlternateSignIn={handleOpenAlternateSignIn}
+      />
+      <AlternateSignIn
+        open={openAlternateSignIn}
+        handleClose={handleCloseAlternateSignIn}
+      />
 
       <Grid container spacing={2}>
         <Grid item xs={12}>

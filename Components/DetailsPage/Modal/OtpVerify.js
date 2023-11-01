@@ -10,8 +10,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import OtpInput from "react-otp-input";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import DoneIcon from "@mui/icons-material/Done";
 
-function OtpVerify({ open, handleClose }) {
+function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
   const [otp, setOtp] = useState("");
 
   const [isVerified, setIsVerified] = useState(false);
@@ -32,7 +34,7 @@ function OtpVerify({ open, handleClose }) {
         ) : (
           <>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              Last step <span style={{ color: "gray" }}>verification</span>
+              Mobile <span style={{ color: "gray" }}>verification</span>
             </Typography>
             <Typography variant="body1">
               This is to ensure we connect with intended Customer only
@@ -57,7 +59,7 @@ function OtpVerify({ open, handleClose }) {
                 value={otp}
                 onChange={setOtp}
                 numInputs={4}
-                renderSeparator={<span></span>}
+                renderSeparator={<span> - </span>}
                 renderInput={(props) => (
                   <input
                     {...props}
@@ -83,7 +85,7 @@ function OtpVerify({ open, handleClose }) {
                 value={otp}
                 onChange={setOtp}
                 numInputs={4}
-                renderSeparator={<span></span>}
+                renderSeparator={<span> - </span>}
                 renderInput={(props) => (
                   <input
                     {...props}
@@ -105,9 +107,20 @@ function OtpVerify({ open, handleClose }) {
       {!isVerified && (
         <DialogActions>
           <Button
+            startIcon={<ArrowBackIosIcon />}
+            onClick={() => {
+              handleClose();
+              handleOpen();
+            }}
+          >
+            Back
+          </Button>
+          <Button
+            startIcon={<DoneIcon />}
             variant="contained"
             onClick={() => {
-              setIsVerified(true);
+              handleAlternateSignIn();
+              handleClose();
             }}
           >
             Verify
