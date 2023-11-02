@@ -10,8 +10,13 @@ import {
   Box,
   InputAdornment,
 } from "@mui/material";
+import GoogleIcon from "@mui/icons-material/Google";
+import DoneIcon from "@mui/icons-material/Done";
+import { useRouter } from "next/navigation";
 
 function EnquireNow({ open, handleClose, handleAction }) {
+  const router = useRouter();
+
   return (
     <Dialog
       sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
@@ -49,10 +54,15 @@ function EnquireNow({ open, handleClose, handleAction }) {
           }}
         >
           <Box>
-            <Button sx={{ mr: 2 }} onClick={handleClose}>
-              Cancel
+            <Button
+              startIcon={<GoogleIcon />}
+              sx={{ mr: 2 }}
+              onClick={() => router.push("/login")}
+            >
+              Existing user, Sign In
             </Button>
             <Button
+              startIcon={<DoneIcon />}
               variant="contained"
               onClick={() => {
                 handleAction();

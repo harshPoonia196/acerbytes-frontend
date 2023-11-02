@@ -315,7 +315,13 @@ export default function ClippedDrawer({ children }) {
           </Box>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ alignSelf: "center" }}>
-              <Button>Sign in</Button>
+              <Button
+                onClick={() => {
+                  router.push("/login");
+                }}
+              >
+                Sign in
+              </Button>
             </Box>
             <Box>
               <IconButton
