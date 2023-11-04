@@ -52,12 +52,12 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{row.first}</TableCell>
-        <TableCell>{row.last}</TableCell>
-        <TableCell>{row.email}</TableCell>
+        <TableCell>{row.project}</TableCell>
         <TableCell>{row.phone}</TableCell>
+        <TableCell>{row.price}</TableCell>
+        <TableCell>{row.time}</TableCell>
         <TableCell>{row.urgency}</TableCell>
-        <TableCell>{row.status}</TableCell>
+        <TableCell>{row.view}</TableCell>
         <TableCell>
           <Chip label="Clickable" size="small" onClick={handleClickCurrent} />
 
@@ -132,13 +132,13 @@ function Row(props) {
 
 const rows = [
   {
-    first: "Anand",
-    last: "Gupta",
-    email: "anand@gmail.com",
-    phone: 97556655,
+    project: "Godrej forest",
+    pgone: "Gupta",
+    price: "anand@gmail.com",
+    time: 97556655,
     urgency: "yes",
-    status: "pending",
-    current: "yes",
+    view: "pending",
+    location: "yes",
     next: "yes",
   },
 ];
@@ -173,22 +173,10 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "first",
+    id: "project",
     numeric: false,
     disablePadding: true,
-    label: "First name",
-  },
-  {
-    id: "last",
-    numeric: true,
-    disablePadding: false,
-    label: "Last name",
-  },
-  {
-    id: "email",
-    numeric: true,
-    disablePadding: false,
-    label: "Email",
+    label: "Project name",
   },
   {
     id: "phone",
@@ -197,22 +185,34 @@ const headCells = [
     label: "Phone",
   },
   {
+    id: "price",
+    numeric: true,
+    disablePadding: false,
+    label: "Price",
+  },
+  {
+    id: "time",
+    numeric: true,
+    disablePadding: false,
+    label: "Time",
+  },
+  {
     id: "urgency",
     numeric: true,
     disablePadding: false,
     label: "Urgency",
   },
   {
-    id: "status",
+    id: "view",
     numeric: true,
     disablePadding: false,
-    label: "Status",
+    label: "View",
   },
   {
-    id: "current",
+    id: "location",
     numeric: true,
     disablePadding: false,
-    label: "Current action",
+    label: "Location",
   },
   {
     id: "next",

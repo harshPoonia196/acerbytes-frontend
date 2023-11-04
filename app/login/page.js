@@ -1,24 +1,15 @@
 "use client";
 
-import {
-  Container,
-  Card,
-  Grid,
-  Typography,
-  Box,
-  InputAdornment,
-  Button,
-  TextField,
-  MenuItem,
-} from "@mui/material";
+import { Container, Card, Grid, Typography, Box, Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import React, { useState } from "react";
 import InputField from "Components/CommonLayouts/InputField";
-import OtpInput from "react-otp-input";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import colors from "styles/theme/colors";
 import HomeIcon from "@mui/icons-material/Home";
 import { useRouter } from "next/navigation";
+import NewPhoneInputField from "Components/CommonLayouts/NewPhoneInputField";
+import OTPInputLayout from "Components/CommonLayouts/OTPInputLayout";
 
 function Login() {
   const router = useRouter();
@@ -30,25 +21,6 @@ function Login() {
   const [otpInput, setOtpInput] = useState();
 
   const [isVerified, setIsVerified] = useState(false);
-
-  const countries = [
-    {
-      value: "+91",
-      label: "+91",
-    },
-    {
-      value: "+92",
-      label: "+92",
-    },
-    {
-      value: "+9528",
-      label: "+9528",
-    },
-    {
-      value: "+1",
-      label: "+1",
-    },
-  ];
 
   return (
     <Container maxWidth="sm">
@@ -89,24 +61,9 @@ function Login() {
 
               <Grid item xs={12} sx={{ display: "flex" }}>
                 <Box sx={{ flex: 1 }}>
-                  <OtpInput
-                    value={otpInput}
-                    onChange={setOtpInput}
-                    numInputs={4}
-                    renderSeparator={<span>&nbsp;&nbsp;</span>}
-                    renderInput={(props) => (
-                      <input
-                        {...props}
-                        style={{
-                          width: "2.25rem",
-                          height: "2.25rem",
-                          textAlign: "center",
-                          fontSize: "1.25rem",
-                          padding: "0.5rem",
-                          outline: "none",
-                        }}
-                      />
-                    )}
+                  <OTPInputLayout
+                    otpInput={otpInput}
+                    setOtpInput={setOtpInput}
                   />
                 </Box>
                 <Box sx={{ alignSelf: "center" }}>
@@ -182,29 +139,7 @@ function Login() {
               </Grid>
               <InputField label="First name" halfSm />
               <InputField label="Last name" halfSm />
-              <InputField
-                label="Phone number"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <TextField
-                        select
-                        defaultValue="+91"
-                        variant="standard"
-                        InputProps={{
-                          disableUnderline: true,
-                        }}
-                      >
-                        {countries.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <NewPhoneInputField label="Phone number" />
               <Grid item xs={12} sx={{ textAlign: "end" }}>
                 <Button
                   variant="contained"

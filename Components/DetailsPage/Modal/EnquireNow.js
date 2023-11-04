@@ -13,6 +13,7 @@ import {
 import GoogleIcon from "@mui/icons-material/Google";
 import DoneIcon from "@mui/icons-material/Done";
 import { useRouter } from "next/navigation";
+import NewPhoneInputField from "Components/CommonLayouts/NewPhoneInputField";
 
 function EnquireNow({ open, handleClose, handleAction }) {
   const router = useRouter();
@@ -33,29 +34,22 @@ function EnquireNow({ open, handleClose, handleAction }) {
       </DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
-          <InputField label="Full name" />
-          <InputField label="Email" />
-          <InputField
-            label="Phone number"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">+91 </InputAdornment>
-              ),
-            }}
-          />
+          <InputField halfSm label="First name" />
+          <InputField halfSm label="Last name" />
+          <NewPhoneInputField label="Phone number" />
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            textAlign: "end",
-          }}
-        >
-          <Box>
+        <Box sx={{ flex: 1, textAlign: "end" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <Button
               startIcon={<GoogleIcon />}
+              variant="outlined"
               sx={{ mr: 2 }}
               onClick={() => router.push("/login")}
             >
@@ -72,6 +66,7 @@ function EnquireNow({ open, handleClose, handleAction }) {
               Submit
             </Button>
           </Box>
+
           <Typography variant="caption" sx={{ flex: 1, mt: 1 }}>
             Your information is safe, we don't spam you
           </Typography>

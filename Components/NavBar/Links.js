@@ -7,6 +7,7 @@ import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import GroupIcon from "@mui/icons-material/Group";
+import TableRowsIcon from "@mui/icons-material/TableRows";
 
 export const UserMenuList = [
   {
@@ -28,6 +29,11 @@ export const UserMenuList = [
     label: "Consultant list",
     route: "/brokers",
     icon: <GroupIcon fontSize="small" />,
+  },
+  {
+    label: "Leads panel",
+    route: "/enquiries",
+    icon: <TableRowsIcon fontSize="small" />,
   },
 ];
 
