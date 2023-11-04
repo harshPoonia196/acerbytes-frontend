@@ -24,20 +24,22 @@ function Login() {
 
   return (
     <Container maxWidth="sm">
-      <Card sx={{ p: 2 }}>
+      <Card sx={{ p: 3 }}>
         <Grid container spacing={2}>
           {googleUser === null && !sendOtp && !isVerified ? (
-            <Grid item xs={12}>
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                Welcome to, <span style={{ color: "gray" }}>Acresbyte</span>
-              </Typography>
-              <Typography variant="body1">
-                Create account using Google
-              </Typography>
+            <>
+              <Grid item xs={12}>
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  Welcome to, <span style={{ color: "gray" }}>Acresbyte</span>
+                </Typography>
+                <Typography variant="body1">
+                  Create account using Google
+                </Typography>
+              </Grid>
               <Grid item xs={12} sx={{ textAlign: "end" }}>
                 <Button
                   variant="contained"
-                  sx={{ mt: 2 }}
+                  sx={{ mt: 1 }}
                   startIcon={<GoogleIcon />}
                   onClick={() => {
                     setGoogleUser({ email: "" });
@@ -46,7 +48,7 @@ function Login() {
                   Sign in with Google
                 </Button>
               </Grid>
-            </Grid>
+            </>
           ) : sendOtp && !isVerified ? (
             <>
               <Grid item xs={12}>
@@ -59,7 +61,7 @@ function Login() {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sx={{ display: "flex" }}>
+              <Grid item xs={12} sx={{ display: "flex", mt: 1 }}>
                 <Box sx={{ flex: 1 }}>
                   <OTPInputLayout
                     otpInput={otpInput}
@@ -81,7 +83,11 @@ function Login() {
               <Grid
                 item
                 xs={12}
-                sx={{ display: "flex", justifyContent: "space-between" }}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  pt: "24px !important",
+                }}
               >
                 <Button
                   startIcon={<ArrowBackIosIcon />}
@@ -110,7 +116,7 @@ function Login() {
                   <span style={{ color: "gray" }}>welcome to Acresbyte</span>
                 </Typography>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ my: 1 }}>
                 <Typography variant="body1">
                   You have been successfully verified
                 </Typography>
@@ -129,7 +135,7 @@ function Login() {
             </>
           ) : (
             <>
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ mb: 1 }}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
                   Create your <span style={{ color: "gray" }}>account</span>
                 </Typography>
@@ -142,6 +148,7 @@ function Login() {
               <NewPhoneInputField label="Phone number" />
               <Grid item xs={12} sx={{ textAlign: "end" }}>
                 <Button
+                  sx={{ mt: 1 }}
                   variant="contained"
                   onClick={() => {
                     setSendOtp(true);
