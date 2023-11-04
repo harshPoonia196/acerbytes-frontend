@@ -93,8 +93,8 @@ function PropertyCard({ isShortListPageCard }) {
                 <Card
                   sx={{
                     width: "fit-content",
-                    backgroundColor: colors?.BLUE,
-                    borderRadius: "4px !important",
+                    backgroundColor: colors?.BLACK,
+                    // borderRadius: "4px !important",
                     m: 0,
                     ml: "auto !important",
                   }}

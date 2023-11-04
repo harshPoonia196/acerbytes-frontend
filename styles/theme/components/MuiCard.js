@@ -1,7 +1,7 @@
 export default {
   styleOverrides: {
     root: {
-      borderColor: "whitesmoke",
+      boxShadow: "1px 2px 6px -2px gainsboro !important",
     },
   },
 };

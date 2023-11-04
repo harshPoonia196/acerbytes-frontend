@@ -106,18 +106,20 @@ function Row(props) {
             <Box>
               <Container maxWidth="lg">
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sx={{ display: "flex" }}>
+                  {/* <Grid item xs={12}>
                     <Typography variant="caption" sx={{ flex: 1 }}>
                       Notes
                     </Typography>
+                  </Grid> */}
+                  <Grid item xs={12}>
+                    <Typography variant="body1">Old notes</Typography>
+                  </Grid>
+                  <InputField label="New note" />
+                  <Grid item xs={12}>
                     <Button variant="contained" size="small">
                       Save
                     </Button>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body1">Old notes</Typography>
-                  </Grid>
-                  <InputField />
                 </Grid>
               </Container>
             </Box>

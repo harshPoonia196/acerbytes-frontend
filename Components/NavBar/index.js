@@ -21,7 +21,9 @@ import {
   Menu,
   ListSubheader,
   Card,
+  Badge,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/navigation";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -97,17 +99,28 @@ export default function ClippedDrawer({ children }) {
     </Menu>
   );
 
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    "& .MuiBadge-badge": {
+      right: 16,
+      top: 12,
+      border: `2px solid ${theme.palette.background.paper}`,
+      padding: "0 4px",
+    },
+  }));
+
   const DrawerListItem = ({ item }) => {
     return (
       <ListItem key={item.label} disablePadding>
         <ListItemButton sx={{ pl: 3 }} onClick={() => router.push(item.route)}>
           <ListItemIcon sx={{ minWidth: 40 }}>{item?.icon}</ListItemIcon>
-          <ListItemText
-            sx={{
-              "& .MuiListItemText-secondary": { fontWeight: "bold !important" },
-            }}
-            secondary={item.label}
-          />
+          <StyledBadge
+            color="secondary"
+            badgeContent={99}
+            sx={{ flex: 1 }}
+            invisible={false}
+          >
+            <ListItemText secondary={item.label} />
+          </StyledBadge>
         </ListItemButton>
       </ListItem>
     );
@@ -199,14 +212,7 @@ export default function ClippedDrawer({ children }) {
                 <ListItemIcon sx={{ minWidth: 40 }}>
                   <LogoutIcon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText
-                  sx={{
-                    "& .MuiListItemText-secondary": {
-                      fontWeight: "bold !important",
-                    },
-                  }}
-                  secondary="Log out"
-                />
+                <ListItemText secondary="Log out" />
               </ListItemButton>
             </ListItem>
           </List>
@@ -225,6 +231,8 @@ export default function ClippedDrawer({ children }) {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: "border-box",
+            boxShadow: "1px 2px 6px -2px gainsboro",
+            borderRight: "none",
           },
           display: { xs: "none", dmd: "flex" },
           position: "relative",
@@ -268,7 +276,8 @@ export default function ClippedDrawer({ children }) {
           zIndex: (theme) => theme.zIndex.drawer + 1,
           p: 0,
           borderRadius: 0,
-          backgroundColor: "whitesmoke",
+          backgroundColor: "white",
+          boxShadow: "1px 2px 6px -2px gainsboro",
         }}
       >
         <Toolbar
@@ -301,16 +310,13 @@ export default function ClippedDrawer({ children }) {
                   sx={{
                     color: "#000",
                     fontSize: "1rem",
-                    fontWeight: 700,
+                    fontWeight: 900,
                     lineHeight: 1,
                   }}
                 >
-                  therealtybytes
+                  Acresbyte
                 </Typography>
               </a>
-              <Typography variant="caption" sx={{ color: "#000" }}>
-                for better decision in real estate
-              </Typography>
             </Box>
           </Box>
           <Box sx={{ display: "flex" }}>
