@@ -31,99 +31,18 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
 
-  const [anchorElCurrent, setAnchorElCurrent] = React.useState(null);
-  const openCurrent = Boolean(anchorElCurrent);
-  const handleClickCurrent = (event) => {
-    setAnchorElCurrent(event.currentTarget);
-  };
-  const handleCloseCurrent = () => {
-    setAnchorElCurrent(null);
-  };
-
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell>{row.first}</TableCell>
-        <TableCell>{row.last}</TableCell>
-        <TableCell>{row.email}</TableCell>
+        <TableCell>{row.project}</TableCell>
+        <TableCell>{row.location}</TableCell>
         <TableCell>{row.phone}</TableCell>
         <TableCell>{row.urgency}</TableCell>
-        <TableCell>{row.status}</TableCell>
-        <TableCell>
-          <Chip label="Clickable" size="small" onClick={handleClickCurrent} />
-
-          <Menu
-            id="demo-positioned-menu"
-            aria-labelledby="demo-positioned-button"
-            anchorEl={anchorElCurrent}
-            open={openCurrent}
-            onClose={handleCloseCurrent}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-          >
-            <MenuItem
-              sx={{ fontSize: "0.875rem" }}
-              onClick={handleCloseCurrent}
-            >
-              Profile
-            </MenuItem>
-            <MenuItem
-              sx={{ fontSize: "0.875rem" }}
-              onClick={handleCloseCurrent}
-            >
-              My account
-            </MenuItem>
-            <MenuItem
-              sx={{ fontSize: "0.875rem" }}
-              onClick={handleCloseCurrent}
-            >
-              Logout
-            </MenuItem>
-          </Menu>
-        </TableCell>
+        <TableCell>{row.price}</TableCell>
+        <TableCell>{row.time}</TableCell>
+        <TableCell>{row.view}</TableCell>
         <TableCell>
           <Chip label="Clickable" size="small" onClick={() => {}} />
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box>
-              <Container maxWidth="lg">
-                <Grid container spacing={2}>
-                  {/* <Grid item xs={12}>
-                    <Typography variant="caption" sx={{ flex: 1 }}>
-                      Notes
-                    </Typography>
-                  </Grid> */}
-                  <Grid item xs={12}>
-                    <Typography variant="body1">Old notes</Typography>
-                  </Grid>
-                  <InputField label="New note" />
-                  <Grid item xs={12}>
-                    <Button variant="contained" size="small">
-                      Save
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Container>
-            </Box>
-          </Collapse>
         </TableCell>
       </TableRow>
     </React.Fragment>
@@ -132,13 +51,13 @@ function Row(props) {
 
 const rows = [
   {
-    first: "Anand",
-    last: "Gupta",
-    email: "anand@gmail.com",
-    phone: 97556655,
+    project: "Godrej forest",
+    phone: "+91 97******97",
     urgency: "yes",
-    status: "pending",
-    current: "yes",
+    price: "₹ 120",
+    time: "2 days ago",
+    view: "View",
+    location: "Noida, Sector 150",
     next: "yes",
   },
 ];
@@ -173,22 +92,16 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "first",
+    id: "project",
     numeric: false,
     disablePadding: true,
-    label: "First name",
+    label: "Project name",
   },
   {
-    id: "last",
+    id: "location",
     numeric: true,
     disablePadding: false,
-    label: "Last name",
-  },
-  {
-    id: "email",
-    numeric: true,
-    disablePadding: false,
-    label: "Email",
+    label: "Location",
   },
   {
     id: "phone",
@@ -203,17 +116,24 @@ const headCells = [
     label: "Urgency",
   },
   {
-    id: "status",
+    id: "price",
     numeric: true,
     disablePadding: false,
-    label: "Status",
+    label: "Price",
   },
   {
-    id: "current",
+    id: "time",
     numeric: true,
     disablePadding: false,
-    label: "Current action",
+    label: "Time",
   },
+  {
+    id: "view",
+    numeric: true,
+    disablePadding: false,
+    label: "View",
+  },
+
   {
     id: "next",
     numeric: true,
@@ -231,7 +151,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}

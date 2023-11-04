@@ -1,8 +1,7 @@
 export default {
   styleOverrides: {
     root: {
-      padding: 24,
-      paddingTop: 0,
+      padding: "24px !important",
     },
   },
 };

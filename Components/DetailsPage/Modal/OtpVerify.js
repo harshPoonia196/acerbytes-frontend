@@ -12,6 +12,8 @@ import { useState } from "react";
 import OtpInput from "react-otp-input";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import DoneIcon from "@mui/icons-material/Done";
+import OTPInputLayout from "Components/CommonLayouts/OTPInputLayout";
+import colors from "styles/theme/colors";
 
 function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
   const [otp, setOtp] = useState("");
@@ -34,7 +36,8 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
         ) : (
           <>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              Mobile <span style={{ color: "gray" }}>verification</span>
+              Mobile verification,
+              <span style={{ color: "gray" }}> enter OTP</span>
             </Typography>
             <Typography variant="body1">
               This is to ensure we connect with intended Customer only
@@ -49,57 +52,21 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
           </Typography>
         ) : (
           <Grid container spacing={2}>
+            <Grid item xs={12} sx={{ display: "flex" }}>
+              <Box sx={{ flex: 1 }}>
+                <OTPInputLayout otpInput={otp} setOtpInput={setOtp} />
+              </Box>
+              <Box sx={{ alignSelf: "center" }}>
+                <Button disabled>Resend OTP</Button>
+              </Box>
+            </Grid>
             <Grid item xs={12}>
-              <Typography variant="body2">
-                Enter 4 digits OTP received on +99132435353
+              <Typography
+                variant="body2"
+                sx={{ textTransform: "uppercase", color: colors.DISABLED }}
+              >
+                Received at +99132435353
               </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <OtpInput
-                value={otp}
-                onChange={setOtp}
-                numInputs={4}
-                renderSeparator={<span> - </span>}
-                renderInput={(props) => (
-                  <input
-                    {...props}
-                    style={{
-                      width: "2rem",
-                      height: "2rem",
-                      textAlign: "center",
-                      fontSize: "1rem",
-
-                      outline: "none",
-                    }}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2">
-                Enter 4 digits OTP received on abc @ efmwolcom
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <OtpInput
-                value={otp}
-                onChange={setOtp}
-                numInputs={4}
-                renderSeparator={<span> - </span>}
-                renderInput={(props) => (
-                  <input
-                    {...props}
-                    style={{
-                      width: "2rem",
-                      height: "2rem",
-                      textAlign: "center",
-                      fontSize: "1rem",
-
-                      outline: "none",
-                    }}
-                  />
-                )}
-              />
             </Grid>
           </Grid>
         )}
