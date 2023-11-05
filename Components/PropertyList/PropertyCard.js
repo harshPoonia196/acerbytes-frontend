@@ -20,17 +20,17 @@ function PropertyCard({ isShortListPageCard }) {
   return (
     <Card>
       <CardActionArea
-        sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
+        sx={{ display: "flex", flexDirection: { xs: "column", dmd: "row" } }}
       >
         <Box
-          sx={{ padding: 2, pr: { xs: 2, md: 0 } }}
+          sx={{ padding: 2, pr: { xs: 2, dmd: 0 } }}
           onClick={() => router.push("/details")}
         >
           <CardMedia
             component="img"
             alt="green iguana"
             sx={{
-              width: { xs: "100%", md: 80 },
+              width: { xs: "100%", dmd: 80 },
               borderRadius: "8px",
             }}
             image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
@@ -41,14 +41,14 @@ function PropertyCard({ isShortListPageCard }) {
         >
           <CardContent sx={{ flex: "1 0 auto" }}>
             <Grid container spacing={1} columns={16}>
-              <Grid item xs={8} md={2} onClick={() => router.push("/details")}>
+              <Grid item xs={8} dmd={2} onClick={() => router.push("/details")}>
                 <Typography variant="caption">SKA</Typography>
                 <Typography variant="subtitle2">SKA ORION</Typography>
               </Grid>
               <Grid
                 item
                 xs={8}
-                md={2.5}
+                dmd={2.5}
                 onClick={() => router.push("/details")}
               >
                 <Typography variant="caption">Noida Expressway</Typography>
@@ -57,24 +57,24 @@ function PropertyCard({ isShortListPageCard }) {
               <Grid
                 item
                 xs={8}
-                md={2.5}
+                dmd={2.5}
                 onClick={() => router.push("/details")}
               >
                 <Typography variant="caption">14,500/sqft</Typography>
                 <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography>
               </Grid>
-              <Grid item xs={8} md={2} onClick={() => router.push("/details")}>
+              <Grid item xs={8} dmd={2} onClick={() => router.push("/details")}>
                 <Typography variant="caption">345 Units</Typography>
                 <Typography variant="subtitle2">2.5 acres</Typography>
               </Grid>
-              <Grid item xs={8} md={2} onClick={() => router.push("/details")}>
+              <Grid item xs={8} dmd={2} onClick={() => router.push("/details")}>
                 <Typography variant="caption">5 layouts</Typography>
                 <Typography variant="subtitle2">2, 2.5, 3 BHK</Typography>
               </Grid>
               <Grid
                 item
                 xs={8}
-                md={2.5}
+                dmd={2.5}
                 onClick={() => router.push("/details")}
               >
                 <Typography variant="caption">Under construction</Typography>
@@ -83,13 +83,13 @@ function PropertyCard({ isShortListPageCard }) {
               <Grid
                 item
                 xs={8}
-                md={1.5}
+                dmd={1.5}
                 onClick={() => router.push("/details")}
               >
                 <Typography variant="caption">Enquiries</Typography>
                 <Typography variant="subtitle2">345</Typography>
               </Grid>
-              <Grid item xs={8} md={1}>
+              <Grid item xs={8} dmd={1}>
                 <Card
                   sx={{
                     width: "fit-content",

@@ -295,7 +295,7 @@ export default function ClippedDrawer({ children }) {
                 aria-controls={menuId}
                 aria-haspopup="true"
                 color="#000"
-                onClick={handleDrawerOpen}
+                onClick={isDrawerOpen ? handleDrawerClose : handleDrawerOpen}
               >
                 <MenuIcon />
               </IconButton>
