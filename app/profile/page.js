@@ -21,6 +21,9 @@ import SelectTextFields from "Components/CommonLayouts/SelectTextFields";
 import PropertyTable from "Components/ProfilePage/PropertyTable";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React from "react";
+import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
+import NewPhoneInputFieldStructure from "../../Components/CommonLayouts/NewPhoneInputFieldStructure";
+import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
 function Profile() {
   const [propertyTypeToggleAlignment, setPropertyTypeToggleAlignment] =
@@ -35,17 +38,17 @@ function Profile() {
     setExpandProfile((prev) => !prev);
   };
 
-  const [expandOther, setExpandOther] = React.useState(false);
+  const [expandOther, setExpandOther] = React.useState(true);
   const toggleAcordionOther = () => {
     setExpandOther((prev) => !prev);
   };
 
-  const [expandInterested, setExpandInterested] = React.useState(false);
+  const [expandInterested, setExpandInterested] = React.useState(true);
   const toggleAcordionInterested = () => {
     setExpandInterested((prev) => !prev);
   };
 
-  const [expandAddress, setExpandAddress] = React.useState(false);
+  const [expandAddress, setExpandAddress] = React.useState(true);
   const toggleAcordionAddress = () => {
     setExpandAddress((prev) => !prev);
   };
@@ -55,12 +58,12 @@ function Profile() {
     setExpandProperty((prev) => !prev);
   };
 
-  const [expandExploring, setExpandExploring] = React.useState(false);
+  const [expandExploring, setExpandExploring] = React.useState(true);
   const toggleAcordionExploring = () => {
     setExpandExploring((prev) => !prev);
   };
 
-  const [expandPurpose, setExpandPurpose] = React.useState(false);
+  const [expandPurpose, setExpandPurpose] = React.useState(true);
   const toggleAcordionPurpose = () => {
     setExpandPurpose((prev) => !prev);
   };
@@ -68,8 +71,17 @@ function Profile() {
   return (
     <Container maxWidth="md">
       <Grid container>
+        <Grid item xs={12} sx={{ mb: 2 }}>
+          <Card sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Typography>Anand Gupta</Typography>
+              <Typography>Mumbai</Typography>
+            </Box>
+            <Typography>+91 8794561234</Typography>
+          </Card>
+        </Grid>
         <Grid item xs={12}>
-          <Accordion expanded={expandProfile}>
+          <Accordion sx={{ boxShadow: "none" }} expanded={expandProfile}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon onClick={toggleAcordionProfile} />}
               aria-controls="panel1a-content"
@@ -86,16 +98,24 @@ function Profile() {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>
-                <InputField label="First name" variant="outlined" halfSm />
-                <InputField label="Last name" variant="outlined" halfSm />
-                <PhoneInputField halfSm />
-                <InputField label="Email 1" variant="outlined" halfSm />
+                <NewInputFieldStructure label="First name" variant="outlined" />
+                <NewInputFieldStructure
+                  label="Last name"
+                  variant="outlined"
+                  halfSm
+                />
+                <NewPhoneInputFieldStructure variant="outlined" label="Phone" />
+                <NewInputFieldStructure
+                  label="Email 1"
+                  variant="outlined"
+                  halfSm
+                />
               </Grid>
             </AccordionDetails>
           </Accordion>
         </Grid>
         <Grid item xs={12}>
-          <Accordion expanded={expandOther}>
+          <Accordion sx={{ boxShadow: "none" }} expanded={expandOther}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon onClick={toggleAcordionOther} />}
               aria-controls="panel1a-content"
@@ -112,20 +132,17 @@ function Profile() {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <SelectTextFields label="Service type" value="No data" />
-                </Grid>
-                <InputField label="Company" variant="outlined" halfSm />
-                <InputField label="Salary" variant="outlined" halfSm />
-                <Grid item xs={12} sm={6}>
-                  <SelectTextFields label="Family" />
-                </Grid>
+                <NewSelectTextFieldStructure label="Service type" />
+                <NewInputFieldStructure label="Company" variant="outlined" />
+                <NewInputFieldStructure label="Salary" variant="outlined" />
+
+                <NewSelectTextFieldStructure label="Family" />
               </Grid>
             </AccordionDetails>
           </Accordion>
         </Grid>
         <Grid item xs={12}>
-          <Accordion expanded={expandInterested}>
+          <Accordion sx={{ boxShadow: "none" }} expanded={expandInterested}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon onClick={toggleAcordionInterested} />}
               aria-controls="panel1a-content"
@@ -142,9 +159,7 @@ function Profile() {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <SelectTextFields label="Select City" />
-                </Grid>
+                <NewSelectTextFieldStructure label="Select City" />
                 <Grid
                   item
                   xs={12}
@@ -186,7 +201,7 @@ function Profile() {
           </Accordion>
         </Grid>
         <Grid item xs={12}>
-          <Accordion expanded={expandAddress}>
+          <Accordion sx={{ boxShadow: "none" }} expanded={expandAddress}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon onClick={toggleAcordionAddress} />}
               aria-controls="panel1a-content"
@@ -203,7 +218,12 @@ function Profile() {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={6} sx={{ display: "flex" }}>
+                  <Typography variant="subtitle1" sx={{ alignSelf: "center" }}>
+                    Address type
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
                   <ToggleButtonGroup
                     color="primary"
                     value={propertyTypeToggleAlignment}
@@ -220,18 +240,24 @@ function Profile() {
                     </ToggleButton>
                   </ToggleButtonGroup>
                 </Grid>
-                <InputField label="Address line 1" variant="outlined" halfSm />
-                <InputField label="Address line 2" variant="outlined" halfSm />
-                <InputField label="City" variant="outlined" halfSm />
-                <InputField label="State" variant="outlined" halfSm />
-                <InputField label="Country" variant="outlined" halfSm />
-                <InputField label="Pincode" variant="outlined" halfSm />
+                <NewInputFieldStructure
+                  label="Address line 1"
+                  variant="outlined"
+                />
+                <NewInputFieldStructure
+                  label="Address line 2"
+                  variant="outlined"
+                />
+                <NewInputFieldStructure label="City" variant="outlined" />
+                <NewInputFieldStructure label="State" variant="outlined" />
+                <NewInputFieldStructure label="Country" variant="outlined" />
+                <NewInputFieldStructure label="Pincode" variant="outlined" />
               </Grid>
             </AccordionDetails>
           </Accordion>
         </Grid>
         <Grid item xs={12}>
-          <Accordion expanded={expandProperty}>
+          <Accordion sx={{ boxShadow: "none" }} expanded={expandProperty}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon onClick={toggleAcordionProperty} />}
               aria-controls="panel1a-content"
@@ -256,7 +282,7 @@ function Profile() {
           </Accordion>
         </Grid>
         <Grid item xs={12}>
-          <Accordion expanded={expandExploring}>
+          <Accordion sx={{ boxShadow: "none" }} expanded={expandExploring}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon onClick={toggleAcordionExploring} />}
               aria-controls="panel1a-content"
@@ -301,7 +327,7 @@ function Profile() {
           </Accordion>
         </Grid>
         <Grid item xs={12}>
-          <Accordion expanded={expandPurpose}>
+          <Accordion sx={{ boxShadow: "none" }} expanded={expandPurpose}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon onClick={toggleAcordionPurpose} />}
               aria-controls="panel1a-content"

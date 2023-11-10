@@ -40,7 +40,7 @@ export const UserMenuList = [
 export const ConsultantMenuList = [
   {
     label: "My leads",
-    route: "/leads",
+    route: "/my-leads",
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
@@ -53,7 +53,7 @@ export const ConsultantMenuList = [
 export const AdminMenuList = [
   {
     label: "Leads received",
-    route: "/enquiries",
+    route: "/admin/enquiries",
     icon: <RecentActorsIcon fontSize="small" />,
   },
   {
@@ -67,8 +67,8 @@ export const AdminMenuList = [
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
-    label: "Property list panel",
-    route: "/leads",
+    label: "Property list",
+    route: "/admin/property-list",
     icon: <PlaylistAddIcon fontSize="small" />,
   },
 ];
