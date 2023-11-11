@@ -1,5 +1,6 @@
 import React from "react";
-import { Typography, TextField, Grid } from "@mui/material";
+import { Typography, TextField, Grid, Box } from "@mui/material";
+import colors from "styles/theme/colors";
 
 const NewInputFieldStructure = ({
   name,
@@ -9,24 +10,32 @@ const NewInputFieldStructure = ({
   value,
   sx,
   variant,
+  isEdit,
   ...props
 }) => (
   <>
-    <Grid item xs={6} sx={{ display: "flex" }}>
-      <Typography variant="subtitle2" sx={{ alignSelf: "center" }}>
-        {label}
-      </Typography>
-    </Grid>
-    <Grid item xs={6}>
-      <TextField
-        name={name}
-        onChange={handleChange}
-        variant={variant ? variant : "standard"}
-        fullWidth
-        size="small"
-        sx={sx}
-        {...props}
-      />
+    <Grid item xs={12} sm={6}>
+      <Box>
+        <Typography
+          variant="subtitle2"
+          sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+        >
+          {label}
+        </Typography>
+      </Box>
+      {isEdit ? (
+        <TextField
+          name={name}
+          onChange={handleChange}
+          variant={variant ? variant : "standard"}
+          fullWidth
+          size="small"
+          sx={sx}
+          {...props}
+        />
+      ) : (
+        <Typography variant="subtitle1">Value</Typography>
+      )}
     </Grid>
   </>
 );
