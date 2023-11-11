@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, Typography, TextField, MenuItem } from "@mui/material";
+import { Grid, Typography, TextField, MenuItem, Box } from "@mui/material";
+import colors from "styles/theme/colors";
 
 function NewSelectTextFieldStructure({
   value,
@@ -8,16 +9,20 @@ function NewSelectTextFieldStructure({
   name,
   list,
   error,
+  isEdit,
   sx,
 }) {
   return (
-    <>
-      <Grid item xs={6} sx={{ display: "flex" }}>
-        <Typography variant="subtitle2" sx={{ alignSelf: "center" }}>
+    <Grid item xs={12} sm={6}>
+      <Box>
+        <Typography
+          variant="subtitle2"
+          sx={{ alignSelf: "center", color: colors.GRAY }}
+        >
           {label}
         </Typography>
-      </Grid>
-      <Grid item xs={6}>
+      </Box>
+      {isEdit ? (
         <TextField
           select
           name={name}
@@ -46,8 +51,10 @@ function NewSelectTextFieldStructure({
             </MenuItem>
           )}
         </TextField>
-      </Grid>
-    </>
+      ) : (
+        <Typography variant="subtitle1">Value</Typography>
+      )}
+    </Grid>
   );
 }
 
