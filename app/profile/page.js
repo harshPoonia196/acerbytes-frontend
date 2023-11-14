@@ -24,19 +24,68 @@ import CallIcon from "@mui/icons-material/Call";
 import PropertyTable from "Components/ProfilePage/PropertyTable";
 import React from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
-import NewPhoneInputFieldStructure from "../../Components/CommonLayouts/NewPhoneInputFieldStructure";
+import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import { useState } from "react";
 import colors from "styles/theme/colors";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import NewCurrencyInputField from "Components/CommonLayouts/NewCurrencyInputField";
+import { useRouter } from "next/navigation";
+import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 
 function Profile() {
+
+  const router = useRouter()
+
+  const [exploringAsToggle, setExploringAsToggle] = useState('')
+
+  const handleChangeExploringAsToggle = (event, newAlignment) => {
+    if (newAlignment != null)
+      setExploringAsToggle(newAlignment);
+  }
+
+  const [purposeToggle, setPurposeToggle] = useState('')
+
+  const handleChangePurposeToggle = (event, newAlignment) => {
+    if (newAlignment != null)
+      setPurposeToggle(newAlignment);
+  }
+
+  const [purchaseToggle, setPurchaseToggle] = useState('')
+
+  const handleChangePurchaseToggle = (event, newAlignment) => {
+    if (newAlignment != null)
+      setPurchaseToggle(newAlignment);
+  }
+
+  const [demographicToggle, setDemographicToggle] = useState('')
+
+  const handleChangeDemographicToggle = (event, newAlignment) => {
+    if (newAlignment != null)
+      setDemographicToggle(newAlignment);
+  }
+
+  const [interestedForLoanToggle, setInterestedForLoanToggle] = useState('')
+
+  const handleChangeInterestedForLoanToggle = (event, newAlignment) => {
+    if (newAlignment != null)
+      setInterestedForLoanToggle(newAlignment);
+  }
+
   const [propertyTypeToggleAlignment, setPropertyTypeToggleAlignment] =
-    React.useState("web");
+    React.useState("");
 
   const handleChangePropertyTypeToggle = (event, newAlignment) => {
     setPropertyTypeToggleAlignment(newAlignment);
+  };
+
+  const [profilePageToggleAlignment, setProfilePageToggleAlignment] = React.useState("userDetails");
+
+  const handleChangePropertyPageToggle = (event, newAlignment) => {
+    if (newAlignment != null) {
+      setProfilePageToggleAlignment(newAlignment);
+      router.push(`#${newAlignment}`)
+    }
   };
 
   const [isEdit, setIsEdit] = useState(true);
@@ -53,10 +102,10 @@ function Profile() {
         <Box sx={{ width: "240px", height: "100%", overflow: "hidden", p: 1 }}>
           <ToggleButtonGroup
             color="primary"
-            value={propertyTypeToggleAlignment}
+            value={profilePageToggleAlignment}
             exclusive
             fullWidth
-            onChange={handleChangePropertyTypeToggle}
+            onChange={handleChangePropertyPageToggle}
             aria-label="Platform"
             sx={{ display: "flex", flexDirection: "column" }}
           >
@@ -64,10 +113,11 @@ function Profile() {
               sx={{
                 border: "1px solid gainsboro !important",
                 borderRadius: "0 !important",
+                justifyContent: 'flex-start'
               }}
               fullWidth
               size="small"
-              value="owned"
+              value="userDetails"
             >
               User details
             </ToggleButton>
@@ -76,10 +126,11 @@ function Profile() {
               sx={{
                 border: "1px solid gainsboro !important",
                 borderRadius: "0 !important",
+                justifyContent: 'flex-start'
               }}
               fullWidth
               size="small"
-              value="rented"
+              value="interestedCities"
             >
               Interested cities
             </ToggleButton>
@@ -87,10 +138,11 @@ function Profile() {
               sx={{
                 border: "1px solid gainsboro !important",
                 borderRadius: "0 !important",
+                justifyContent: 'flex-start'
               }}
               fullWidth
               size="small"
-              value="rented"
+              value="budget"
             >
               Budget
             </ToggleButton>
@@ -98,10 +150,11 @@ function Profile() {
               sx={{
                 border: "1px solid gainsboro !important",
                 borderRadius: "0 !important",
+                justifyContent: 'flex-start'
               }}
               fullWidth
               size="small"
-              value="rented"
+              value="enquiries"
             >
               Enquiries
             </ToggleButton>
@@ -109,10 +162,11 @@ function Profile() {
               sx={{
                 border: "1px solid gainsboro !important",
                 borderRadius: "0 !important",
+                justifyContent: 'flex-start'
               }}
               fullWidth
               size="small"
-              value="rented"
+              value="propertyConsultants"
             >
               Property Consultants
             </ToggleButton>
@@ -120,17 +174,18 @@ function Profile() {
               sx={{
                 border: "1px solid gainsboro !important",
                 borderRadius: "0 !important",
+                justifyContent: 'flex-start'
               }}
               fullWidth
               size="small"
-              value="owned"
+              value="currentAddress"
             >
               Current address
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
         <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-          <Grid item xs={12}>
+          <Grid item xs={12} id="userDetails">
             <Card sx={{ p: 2 }}>
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ flex: 1 }}>
@@ -235,7 +290,7 @@ function Profile() {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} id="interestedCities">
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
@@ -272,25 +327,25 @@ function Profile() {
                       label="Mumbai"
                       size="small"
                       sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => {}}
+                      onDelete={() => { }}
                     />
                     <Chip
                       label="Mumbai"
                       size="small"
                       sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => {}}
+                      onDelete={() => { }}
                     />
                     <Chip
                       label="Mumbai"
                       size="small"
                       sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => {}}
+                      onDelete={() => { }}
                     />
                     <Chip
                       label="Mumbai"
                       size="small"
                       sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => {}}
+                      onDelete={() => { }}
                     />
                   </Box>
                   <Box>
@@ -300,7 +355,7 @@ function Profile() {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} id="budget">
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
@@ -327,17 +382,69 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                 />
+                <NewToggleButtonStructure label="Exploring as" isEdit={isEdit} value={exploringAsToggle} handleChange={handleChangeExploringAsToggle}>
+                  <ToggleButton fullWidth size="small" value="active">
+                    Active
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="passive">
+                    Passive
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="urgent">
+                    Urgent
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="na">
+                    NA
+                  </ToggleButton>
+                </NewToggleButtonStructure>
+                <NewToggleButtonStructure label="Purpose" isEdit={isEdit} value={purposeToggle} handleChange={handleChangePurposeToggle}>
+                  <ToggleButton fullWidth size="small" value="buyer">
+                    Buyer
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="investor">
+                    Investor
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="both">
+                    Both
+                  </ToggleButton>
+                </NewToggleButtonStructure>
+                <NewToggleButtonStructure label="Purchase" isEdit={isEdit} value={purchaseToggle} handleChange={handleChangePurchaseToggle}>
+                  <ToggleButton fullWidth size="small" value="first">
+                    First
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="second">
+                    Second
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="third">
+                    Third
+                  </ToggleButton>
+                </NewToggleButtonStructure>
+                <NewToggleButtonStructure label="Demographic" isEdit={isEdit} value={demographicToggle} handleChange={handleChangeDemographicToggle}>
+                  <ToggleButton fullWidth size="small" value="family">
+                    Family
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="single">
+                    Single
+                  </ToggleButton>
+                </NewToggleButtonStructure>
+                <NewToggleButtonStructure label="Interested for loan" isEdit={isEdit} value={interestedForLoanToggle} handleChange={handleChangeInterestedForLoanToggle}>
+                  <ToggleButton fullWidth size="small" value="yes">
+                    Yes
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="no">
+                    No
+                  </ToggleButton>
+                </NewToggleButtonStructure>
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} id="enquiries">
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
                   variant="subtitle1"
                   sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                 >
-                  Enquiried for
+                  User action
                 </Typography>
                 <Box>
                   <IconButton>
@@ -353,90 +460,7 @@ function Profile() {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12}>
-            <Card>
-              <Box sx={{ display: "flex", p: 2, py: 1 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-                >
-                  Exploring as
-                </Typography>
-                <Box>
-                  <IconButton>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </Box>
-              <Divider />
-              <Grid container spacing={2} sx={{ p: 2 }}>
-                <Grid item xs={12}>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={propertyTypeToggleAlignment}
-                    exclusive
-                    fullWidth
-                    onChange={handleChangePropertyTypeToggle}
-                    aria-label="Platform"
-                  >
-                    <ToggleButton fullWidth size="small" value="owned">
-                      Active
-                    </ToggleButton>
-                    <ToggleButton fullWidth size="small" value="rented">
-                      Passive
-                    </ToggleButton>
-                    <ToggleButton fullWidth size="small" value="rented">
-                      Urgent
-                    </ToggleButton>
-                    <ToggleButton fullWidth size="small" value="rented">
-                      NA
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </Grid>
-              </Grid>
-            </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <Card>
-              <Box sx={{ display: "flex", p: 2, py: 1 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-                >
-                  Purpose
-                </Typography>
-                <Box>
-                  <IconButton>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </Box>
-              <Divider />
-              <Grid container spacing={2} sx={{ p: 2 }}>
-                <Grid item xs={12}>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={propertyTypeToggleAlignment}
-                    exclusive
-                    fullWidth
-                    onChange={handleChangePropertyTypeToggle}
-                    aria-label="Platform"
-                  >
-                    <ToggleButton fullWidth size="small" value="owned">
-                      Buyer
-                    </ToggleButton>
-                    <ToggleButton fullWidth size="small" value="rented">
-                      Investor
-                    </ToggleButton>
-                    <ToggleButton fullWidth size="small" value="rented">
-                      Both
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </Grid>
-              </Grid>
-            </Card>
-          </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} id="currentAddress">
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
@@ -453,33 +477,14 @@ function Profile() {
               </Box>
               <Divider />
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <Grid item xs={12} sm={isEdit ? 12 : 6}>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ alignSelf: "center", color: colors.GRAY }}
-                  >
-                    Address type
-                  </Typography>
-                  {isEdit ? (
-                    <ToggleButtonGroup
-                      color="primary"
-                      value={propertyTypeToggleAlignment}
-                      exclusive
-                      fullWidth
-                      onChange={handleChangePropertyTypeToggle}
-                      aria-label="Platform"
-                    >
-                      <ToggleButton fullWidth size="small" value="owned">
-                        Owned
-                      </ToggleButton>
-                      <ToggleButton fullWidth size="small" value="rented">
-                        Rented
-                      </ToggleButton>
-                    </ToggleButtonGroup>
-                  ) : (
-                    <Typography variant="subtitle1">Value</Typography>
-                  )}
-                </Grid>
+                <NewToggleButtonStructure isEdit={isEdit} label="Address type" value={propertyTypeToggleAlignment} handleChange={handleChangePropertyTypeToggle}>
+                  <ToggleButton fullWidth size="small" value="owned">
+                    Owned
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="rented">
+                    Rented
+                  </ToggleButton>
+                </NewToggleButtonStructure>
                 <NewInputFieldStructure
                   label="Address line 1"
                   variant="outlined"
