@@ -20,19 +20,6 @@ function LeftSideLink({ value, handleChange }) {
                 }}
                 fullWidth
                 size="small"
-                value="location"
-            >
-                Location
-            </ToggleButton>
-
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
                 value="project"
             >
                 Project
@@ -45,9 +32,9 @@ function LeftSideLink({ value, handleChange }) {
                 }}
                 fullWidth
                 size="small"
-                value="unitType"
+                value="location"
             >
-                Unit type
+                Location
             </ToggleButton>
             <ToggleButton
                 sx={{
@@ -57,9 +44,81 @@ function LeftSideLink({ value, handleChange }) {
                 }}
                 fullWidth
                 size="small"
-                value="documentation"
+                value="landscape"
             >
-                Documentation
+                Landscape
+            </ToggleButton>
+            <ToggleButton
+                sx={{
+                    border: "1px solid gainsboro !important",
+                    borderRadius: "0 !important",
+                    justifyContent: 'flex-start'
+                }}
+                fullWidth
+                size="small"
+                value="floorplans"
+            >
+                Floor plans
+            </ToggleButton>
+            <ToggleButton
+                sx={{
+                    border: "1px solid gainsboro !important",
+                    borderRadius: "0 !important",
+                    justifyContent: 'flex-start'
+                }}
+                fullWidth
+                size="small"
+                value="regulatory"
+            >
+                Regulatory
+            </ToggleButton>
+            <ToggleButton
+                sx={{
+                    border: "1px solid gainsboro !important",
+                    borderRadius: "0 !important",
+                    justifyContent: 'flex-start'
+                }}
+                fullWidth
+                size="small"
+                value="construction"
+            >
+                Construction
+            </ToggleButton>
+            <ToggleButton
+                sx={{
+                    border: "1px solid gainsboro !important",
+                    borderRadius: "0 !important",
+                    justifyContent: 'flex-start'
+                }}
+                fullWidth
+                size="small"
+                value="builderPrice"
+            >
+                Builder price
+            </ToggleButton>
+            <ToggleButton
+                sx={{
+                    border: "1px solid gainsboro !important",
+                    borderRadius: "0 !important",
+                    justifyContent: 'flex-start'
+                }}
+                fullWidth
+                size="small"
+                value="resalePrice"
+            >
+                Resale price
+            </ToggleButton>
+            <ToggleButton
+                sx={{
+                    border: "1px solid gainsboro !important",
+                    borderRadius: "0 !important",
+                    justifyContent: 'flex-start'
+                }}
+                fullWidth
+                size="small"
+                value="investment"
+            >
+                Investment
             </ToggleButton>
             <ToggleButton
                 sx={{
@@ -81,9 +140,9 @@ function LeftSideLink({ value, handleChange }) {
                 }}
                 fullWidth
                 size="small"
-                value="status"
+                value="facilities"
             >
-                Status
+                Facilities
             </ToggleButton>
             <ToggleButton
                 sx={{
@@ -93,9 +152,9 @@ function LeftSideLink({ value, handleChange }) {
                 }}
                 fullWidth
                 size="small"
-                value="price"
+                value="nearby"
             >
-                Price
+                Near by
             </ToggleButton>
             <ToggleButton
                 sx={{
@@ -105,9 +164,9 @@ function LeftSideLink({ value, handleChange }) {
                 }}
                 fullWidth
                 size="small"
-                value="sports"
+                value="landmarks"
             >
-                Sports
+                Landmarks
             </ToggleButton>
             <ToggleButton
                 sx={{
@@ -117,21 +176,9 @@ function LeftSideLink({ value, handleChange }) {
                 }}
                 fullWidth
                 size="small"
-                value="Leisure"
+                value="marketing"
             >
-                leisure
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="Status"
-            >
-                status
+                marketing
             </ToggleButton>
         </ToggleButtonGroup>
     )

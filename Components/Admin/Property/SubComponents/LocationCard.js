@@ -14,16 +14,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
-function StatusCard({ isEdit }) {
+function LocationCard({ isEdit }) {
     return (
-        <Grid item xs={12} id="status">
+        <Grid item xs={12} id="location">
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Status
+                        Location
                     </Typography>
                     <Box>
                         <IconButton>
@@ -34,27 +34,41 @@ function StatusCard({ isEdit }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <NewSelectTextFieldStructure
-                        label="Construction Status"
+                        label="State"
+                        isEdit={isEdit}
+                    />
+                    <NewInputFieldStructure
+                        label="City"
                         variant="outlined"
                         isEdit={isEdit}
                     />
                     <NewInputFieldStructure
-                        label="Units"
+                        label="Area"
                         variant="outlined"
                         isEdit={isEdit}
                     />
                     <NewInputFieldStructure
-                        label="Total area"
+                        label="Sector"
                         variant="outlined"
                         isEdit={isEdit}
                     />
                     <NewInputFieldStructure
-                        label="Open area"
+                        label="Pincode"
                         variant="outlined"
                         isEdit={isEdit}
                     />
                     <NewInputFieldStructure
-                        label="Green area"
+                        label="Google map link"
+                        variant="outlined"
+                        isEdit={isEdit}
+                    />
+                    <NewInputFieldStructure
+                        label="Geo longitude"
+                        variant="outlined"
+                        isEdit={isEdit}
+                    />
+                    <NewInputFieldStructure
+                        label="Geo latitude"
                         variant="outlined"
                         isEdit={isEdit}
                     />
@@ -64,4 +78,4 @@ function StatusCard({ isEdit }) {
     )
 }
 
-export default StatusCard
+export default LocationCard

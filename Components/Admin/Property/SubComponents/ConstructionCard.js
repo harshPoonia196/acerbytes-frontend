@@ -13,18 +13,17 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
-import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
 
-function UnitTypeCard({ isEdit }) {
+function ConstructionCard({ isEdit }) {
     return (
-        <Grid item xs={12} id="unitType">
+        <Grid item xs={12} id="construction">
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Unit type
+                        Construction
                     </Typography>
                     <Box>
                         <IconButton>
@@ -33,33 +32,27 @@ function UnitTypeCard({ isEdit }) {
                     </Box>
                 </Box>
                 <Divider />
-                <Grid container rowSpacing={1} columnSpacing={2} columns={24} sx={{ p: 2 }}>
+                <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <NewSelectTextFieldStructure
-                        label="Unit type"
+                        label="Status"
                         isEdit={isEdit}
                     />
-                    <NewUnitAreaInputField
-                        label="Unit area"
-                        variant="outlined"
+                    <NewSelectTextFieldStructure
+                        label="Expected Delivery"
                         isEdit={isEdit}
                     />
-                    <NewInputFieldStructure
-                        label="Unit name"
-                        variant="outlined"
+                    <NewSelectTextFieldStructure
+                        label="Construction speed"
                         isEdit={isEdit}
                     />
-                    <NewInputFieldStructure
-                        label="No of units"
-                        variant="outlined"
+                    <NewSelectTextFieldStructure
+                        label="Structure"
                         isEdit={isEdit}
                     />
-                    <Grid item xs={24} sx={{ textAlign: 'end' }}>
-                        <Button variant="contained">Add</Button>
-                    </Grid>
                 </Grid>
             </Card>
         </Grid>
     )
 }
 
-export default UnitTypeCard
+export default ConstructionCard

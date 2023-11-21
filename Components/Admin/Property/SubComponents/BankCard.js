@@ -45,49 +45,57 @@ function BankCard({ isEdit }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
+                        <Switch defaultChecked />
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
                             SBI
                         </Typography>
-                        <Switch defaultChecked />
+
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
+                        <Switch defaultChecked />
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
                             HDFC
                         </Typography>
-                        <Switch defaultChecked />
+
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
+                        <Switch defaultChecked />
+
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
                             PNB housing
                         </Typography>
-                        <Switch defaultChecked />
+
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
+                        <Switch defaultChecked />
+
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
                             ICICI
                         </Typography>
-                        <Switch defaultChecked />
+
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
+                        <Switch defaultChecked />
+
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
                             LIC approved
                         </Typography>
-                        <Switch defaultChecked />
+
                     </Grid>
                 </Grid>
             </Card>

@@ -16,6 +16,13 @@ const unit = [
   },
 ];
 
+const price = [
+  {
+    value: "SQFT",
+    label: "Per Sq ft",
+  },
+];
+
 const NewUnitAreaInputField = ({
   name,
   handleChange,
@@ -25,6 +32,7 @@ const NewUnitAreaInputField = ({
   variant,
   isEdit,
   halfSm,
+  isPrice,
   ...props
 }) => (
   <Grid item xs={12} sm={6}>
@@ -55,7 +63,11 @@ const NewUnitAreaInputField = ({
                     disableUnderline: true,
                   }}
                 >
-                  {unit.map((option) => (
+                  {isPrice ? price.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  )) : unit.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>

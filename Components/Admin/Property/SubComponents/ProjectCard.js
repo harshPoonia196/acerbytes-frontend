@@ -13,18 +13,17 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
-import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
 
-function DocumentationCard({ isEdit }) {
+function ProjectCard({ isEdit }) {
     return (
-        <Grid item xs={12} id="documentation">
+        <Grid item xs={12} id="project">
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Documentation
+                        Project
                     </Typography>
                     <Box>
                         <IconButton>
@@ -33,30 +32,23 @@ function DocumentationCard({ isEdit }) {
                     </Box>
                 </Box>
                 <Divider />
-                <Grid container rowSpacing={1} columnSpacing={2} columns={12} sx={{ p: 2 }}>
+                <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <NewInputFieldStructure
-                        label="RERA"
+                        label="Builder"
+                        variant="outlined"
+                        isEdit={isEdit}
+                    />
+                    <NewInputFieldStructure
+                        label="Project name"
                         variant="outlined"
                         isEdit={isEdit}
                     />
                     <NewSelectTextFieldStructure
-                        label="Registration"
+                        label="Project type"
                         isEdit={isEdit}
                     />
                     <NewSelectTextFieldStructure
-                        label="OC"
-                        isEdit={isEdit}
-                    />
-                    <NewSelectTextFieldStructure
-                        label="CC"
-                        isEdit={isEdit}
-                    />
-                    <NewSelectTextFieldStructure
-                        label="Private bank loan available"
-                        isEdit={isEdit}
-                    />
-                    <NewSelectTextFieldStructure
-                        label="Government bank loan available"
+                        label="Project category"
                         isEdit={isEdit}
                     />
                 </Grid>
@@ -65,4 +57,4 @@ function DocumentationCard({ isEdit }) {
     )
 }
 
-export default DocumentationCard
+export default ProjectCard

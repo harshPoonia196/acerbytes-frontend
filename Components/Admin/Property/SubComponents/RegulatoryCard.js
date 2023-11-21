@@ -13,17 +13,18 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
+import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
 
-function LocationCard({ isEdit }) {
+function RegulatoryCard({ isEdit }) {
     return (
-        <Grid item xs={12} id="location">
+        <Grid item xs={12} id="regulatory">
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Location
+                        Regulatory
                     </Typography>
                     <Box>
                         <IconButton>
@@ -34,59 +35,32 @@ function LocationCard({ isEdit }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <NewInputFieldStructure
-                        label="Builder"
+                        label="RERA"
+                        variant="outlined"
+                        isEdit={isEdit}
+                    />
+                    <Grid item xs={6} sx={{ textAlign: 'end', display: 'flex' }}>
+                        <Box sx={{ alignSelf: 'end', flex: 1 }}>
+                            <Button variant='contained' >Add</Button>
+                        </Box>
+                    </Grid>
+                    <NewSelectTextFieldStructure
+                        label="CC available"
                         variant="outlined"
                         isEdit={isEdit}
                     />
                     <NewSelectTextFieldStructure
-                        label="Project type"
-                        isEdit={isEdit}
-                    />
-                    <NewSelectTextFieldStructure
-                        label="Project category"
-                        isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="Project name"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="Builder"
+                        label="OC available"
                         variant="outlined"
                         isEdit={isEdit}
                     />
                     <NewSelectTextFieldStructure
-                        label="State"
-                        isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="City"
+                        label="Registration"
                         variant="outlined"
                         isEdit={isEdit}
                     />
-                    <NewInputFieldStructure
-                        label="Area"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="Sector"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="Pincode"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="Location"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="Google map link"
+                    <NewSelectTextFieldStructure
+                        label="Resale"
                         variant="outlined"
                         isEdit={isEdit}
                     />
@@ -96,4 +70,4 @@ function LocationCard({ isEdit }) {
     )
 }
 
-export default LocationCard
+export default RegulatoryCard

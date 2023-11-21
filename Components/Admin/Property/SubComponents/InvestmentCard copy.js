@@ -14,16 +14,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
-function ProjectCard({ isEdit }) {
+function InvestmentCard({ isEdit }) {
     return (
-        <Grid item xs={12} id="project">
+        <Grid item xs={12} id="investment">
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Project
+                        Investment
                     </Typography>
                     <Box>
                         <IconButton>
@@ -34,28 +34,16 @@ function ProjectCard({ isEdit }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <NewInputFieldStructure
-                        label="Towers"
+                        label="Growth till now"
                         variant="outlined"
                         isEdit={isEdit}
                     />
-                    <NewInputFieldStructure
-                        label="Units"
-                        variant="outlined"
+                    <NewSelectTextFieldStructure
+                        label="Expected further growth"
                         isEdit={isEdit}
                     />
-                    <NewInputFieldStructure
-                        label="Total area"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="Open area"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="Green area"
-                        variant="outlined"
+                    <NewSelectTextFieldStructure
+                        label="Investment scope"
                         isEdit={isEdit}
                     />
                 </Grid>
@@ -64,4 +52,4 @@ function ProjectCard({ isEdit }) {
     )
 }
 
-export default ProjectCard
+export default InvestmentCard
