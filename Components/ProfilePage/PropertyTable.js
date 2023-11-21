@@ -8,7 +8,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-const rows = [{ name: "dsdsd", city: "mumsb", sector: 67, interested: "yes" }];
+const rows = [
+  { name: "dsdsd", city: "mumsb", sector: 67, action: "Enquired" },
+  { name: "dsdsd", city: "mumsb", sector: 67, action: "Liked" },
+  { name: "dsdsd", city: "mumsb", sector: 67, action: "Shared" },
+];
 
 export default function PropertyTable() {
   return (
@@ -23,10 +27,10 @@ export default function PropertyTable() {
               <Typography variant="caption">City</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="caption">Sector</Typography>
+              <Typography variant="caption">Area</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="caption">Interested</Typography>
+              <Typography variant="caption">Action</Typography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -41,7 +45,7 @@ export default function PropertyTable() {
               </TableCell>
               <TableCell>{row.city}</TableCell>
               <TableCell>{row.sector}</TableCell>
-              <TableCell>{row.interested}</TableCell>
+              <TableCell>{row.action}</TableCell>
             </TableRow>
           ))}
         </TableBody>

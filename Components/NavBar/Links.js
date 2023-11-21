@@ -63,7 +63,7 @@ export const AdminMenuList = [
   },
   {
     label: "Add Property",
-    route: "/leads",
+    route: "/admin/add-property",
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {

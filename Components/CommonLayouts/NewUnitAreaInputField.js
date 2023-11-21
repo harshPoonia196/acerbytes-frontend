@@ -9,18 +9,21 @@ import {
 } from "@mui/material";
 import colors from "styles/theme/colors";
 
-const countries = [
+const unit = [
   {
-    value: "₹INR",
-    label: "₹",
-  },
-  {
-    value: "USD",
-    label: "$",
+    value: "SQFT",
+    label: "Sq ft",
   },
 ];
 
-const NewCurrencyInputField = ({
+const price = [
+  {
+    value: "SQFT",
+    label: "Per Sq ft",
+  },
+];
+
+const NewUnitAreaInputField = ({
   name,
   handleChange,
   label,
@@ -29,6 +32,7 @@ const NewCurrencyInputField = ({
   variant,
   isEdit,
   halfSm,
+  isPrice,
   ...props
 }) => (
   <Grid item xs={12} sm={6}>
@@ -59,7 +63,11 @@ const NewCurrencyInputField = ({
                     disableUnderline: true,
                   }}
                 >
-                  {countries.map((option) => (
+                  {isPrice ? price.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  )) : unit.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
@@ -74,4 +82,4 @@ const NewCurrencyInputField = ({
   </Grid>
 );
 
-export default NewCurrencyInputField;
+export default NewUnitAreaInputField;
