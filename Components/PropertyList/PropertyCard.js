@@ -122,9 +122,11 @@ function PropertyCard({ isShortListPageCard }) {
       {isShortListPageCard && (
         <CardActions sx={{ textAlign: "end" }}>
           <Chip
-            icon={<ThumbUpOffAltIcon />}
+            icon={<ThumbUpOffAltIcon fontSize='small' />}
             label="Liked on 23-09-2023 at 09:30 AM"
-            onClick={() => {}}
+            onClick={() => { }}
+            size="small"
+            sx={{ fontSize: '0.75rem' }}
           />
         </CardActions>
       )}

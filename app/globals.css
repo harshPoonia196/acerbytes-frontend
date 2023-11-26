@@ -121,3 +121,7 @@ input[type="number"] {
     max-width: calc(100% - 32px) !important;
   }
 }
+
+.urlStyling:hover {
+  text-decoration-line: underline;
+}
