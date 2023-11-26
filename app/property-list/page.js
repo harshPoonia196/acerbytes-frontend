@@ -47,7 +47,7 @@ function PropertyList() {
                 boxShadow: "none",
               }}
             >
-              <Typography variant="h3">Noida</Typography>
+              <Typography variant="h2">Noida</Typography>
               <Typography variant="caption">
                 Noida's strategic location, robust infrastructure, and
                 flourishing business environment have contributed to its status
@@ -99,10 +99,10 @@ function PropertyList() {
             size="small"
           >
             <ToggleButton value="asc" sx={{ flex: 1 }}>
-              <ArrowUpwardIcon />
+              <ArrowUpwardIcon fontSize="small" />
             </ToggleButton>
             <ToggleButton value="dec" sx={{ flex: 1 }}>
-              <ArrowDownwardIcon />
+              <ArrowDownwardIcon fontSize="small" />
             </ToggleButton>
           </ToggleButtonGroup>
         </Grid>

@@ -20,15 +20,18 @@ import {
   Menu,
   MenuItem,
   Button,
-  Card,
+  Card, AvatarGroup, Avatar
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import InputField from "Components/CommonLayouts/InputField";
 import { visuallyHidden } from "@mui/utils";
+import { useRouter } from "next/navigation";
+import colors from "styles/theme/colors";
+import Footer from "Components/Footer";
 
 function Row(props) {
-  const { row } = props;
+  const { row, history } = props;
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -38,11 +41,12 @@ function Row(props) {
         <TableCell>{row.location}</TableCell>
         <TableCell>{row.phone}</TableCell>
         <TableCell>{row.urgency}</TableCell>
+        <TableCell>{row.buyingType}</TableCell>
         <TableCell>{row.price}</TableCell>
-        <TableCell>{row.time}</TableCell>
-        <TableCell>{row.view}</TableCell>
+        <TableCell>{row.enquired}</TableCell>
+        <TableCell>{row.consultedBy}</TableCell>
         <TableCell>
-          <Chip label="Clickable" size="small" onClick={() => {}} />
+          <Chip label="View contact" size="small" onClick={() => { history.push('/join-now') }} sx={{ fontSize: '0.75rem' }} />
         </TableCell>
       </TableRow>
     </React.Fragment>
@@ -53,10 +57,33 @@ const rows = [
   {
     project: "Godrej forest",
     phone: "+91 97******97",
-    urgency: "yes",
+    urgency: "High",
     price: "₹ 120",
-    time: "2 days ago",
-    view: "View",
+    enquired: "2 days ago",
+    buyingType: 'Investor',
+    consultedBy: 5,
+    location: "Noida, Sector 150",
+    next: "yes",
+  },
+  {
+    project: "Godrej forest",
+    phone: "+91 97******97",
+    urgency: "Low",
+    price: "₹ 120",
+    enquired: "2 days ago",
+    buyingType: 'Buyer',
+    consultedBy: 1,
+    location: "Noida, Sector 150",
+    next: "yes",
+  },
+  {
+    project: "Godrej forest",
+    phone: "+91 97******97",
+    urgency: "Medium",
+    price: "₹ 120",
+    enquired: "2 days ago",
+    buyingType: 'User',
+    consultedBy: 1,
     location: "Noida, Sector 150",
     next: "yes",
   },
@@ -116,29 +143,34 @@ const headCells = [
     label: "Urgency",
   },
   {
-    id: "price",
+    id: "buyingType",
     numeric: true,
     disablePadding: false,
-    label: "Price",
+    label: "Buying type",
   },
   {
-    id: "time",
+    id: "budget",
     numeric: true,
     disablePadding: false,
-    label: "Time",
+    label: "Max budget",
   },
   {
-    id: "view",
+    id: "enquired",
     numeric: true,
     disablePadding: false,
-    label: "View",
+    label: "Enquired",
   },
-
   {
-    id: "next",
+    id: "consultedBy",
     numeric: true,
     disablePadding: false,
-    label: "Next action",
+    label: "Consulted by",
+  },
+  {
+    id: "action",
+    numeric: true,
+    disablePadding: false,
+    label: "Action",
   },
 ];
 
@@ -186,22 +218,51 @@ export default function Enquiries() {
     setOrderBy(property);
   };
 
+  const history = useRouter()
+
   return (
     <>
       <Box sx={{ backgroundColor: "white" }}>
         <Container
           maxWidth="lg"
-          sx={{ pb: "0 !important", textAlign: "center" }}
+          sx={{ pb: "0 !important" }}
         >
           <Box sx={{ py: 4 }}>
-            <Typography variant="h4">
-              Connect with our professional real estate consultant
+            <Typography variant="h1"
+              sx={{ color: "#000", fontWeight: 700, fontSize: '1.5em' }}>
+              Explore a world of possibilities with{' '}
+              <span className="urlStyling" style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/join-now') }}>
+                5,433</span> open real estate queries. Your next customer is just a click away
             </Typography>
-            <Typography variant="h6">75 Active consultant</Typography>
+            <Box sx={{ mt: 1, textAlign: 'center' }}>
+              <Box sx={{ width: 'fit-content', margin: 'auto', }}>
+                <AvatarGroup
+                  total={5}
+                >
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                  <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+                  <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
+                </AvatarGroup>
+              </Box>
+              <Typography variant="h3" sx={{ flex: 1, alignSelf: 'center', my: 2 }}>
+                Be a part of approved consultants community
+              </Typography>
+              <Button variant="contained" sx={{ alignSelf: 'center' }} onClick={() => { history.push('/join-now') }}>Join as real estate consultant</Button>
+            </Box>
+
           </Box>
         </Container>
       </Box>
       <Container maxWidth="lg">
+        <Typography variant="h6"
+          sx={{
+            color: "#000",
+            fontSize: "1rem",
+            fontWeight: 900,
+            lineHeight: 1,
+            mb: 2
+          }}>Leads panel</Typography>
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table" size="small">
             <EnhancedTableHead
@@ -211,12 +272,13 @@ export default function Enquiries() {
             />
             <TableBody>
               {rows.map((row) => (
-                <Row key={row.name} row={row} />
+                <Row key={row.name} row={row} history={history} />
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </Container>
+      <Footer />
     </>
   );
 }
