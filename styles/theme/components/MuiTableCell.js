@@ -6,7 +6,9 @@ export default {
       textOverflow: "ellipsis",
     },
     head: {
-      fontSize: "1rem",
+      fontSize: "0.75rem",
+      fontWeight: 800,
+      textTransform: 'uppercase',
     },
   },
 };

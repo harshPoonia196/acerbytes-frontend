@@ -8,6 +8,10 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 function Footer({ paymentPage }) {
     const history = useRouter()
 
+    const handleWhatsappShare = () => {
+        window.open('whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients.')
+    }
+
     return (
         <Card sx={{ position: 'fixed', bottom: 0, p: 2, borderTop: '1px solid gainsboro', width: '100%', display: 'flex' }}>
             <Box sx={{ flex: 1, alignSelf: 'center' }}>
@@ -18,9 +22,12 @@ function Footer({ paymentPage }) {
                 </Typography>
             </Box>
             <Box sx={{ alignSelf: 'center', cursor: 'pointer' }}>
-                <Button startIcon={<WhatsAppIcon />} onClick={() => { history.push('/make-payment') }} size="small" sx={{ fontSize: '0.75rem' }}>
+                {/* <a href="whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients." data-action="share/whatsapp/share"
+                    target="_blank"> */}
+                <Button startIcon={<WhatsAppIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}>
                     Invite a consultant
                 </Button>
+                {/* </a> */}
             </Box>
             {
                 !paymentPage &&
