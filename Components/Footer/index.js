@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import { useSelector } from 'react-redux';
 
 function Footer({ paymentPage }) {
     const history = useRouter()
@@ -12,8 +13,10 @@ function Footer({ paymentPage }) {
         window.open('whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients.')
     }
 
+    const navState = useSelector(globalState => globalState.isDrawerOpen)
+
     return (
-        <Card sx={{ position: 'fixed', bottom: 0, p: 2, borderTop: '1px solid gainsboro', width: '100%', display: 'flex' }}>
+        <Card sx={{ position: 'fixed', bottom: 0, p: 2, borderTop: '1px solid gainsboro', width: navState ? 'calc(100% - 240px)' : '100%', display: 'flex' }}>
             <Box sx={{ flex: 1, alignSelf: 'center' }}>
                 <Typography variant="body2">
                     <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/') }}>Terms</span> ·{' '}
