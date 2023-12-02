@@ -1,5 +1,6 @@
 import React from 'react'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { listOfTabsInProperty } from 'Components/CommonLayouts/CommonUtils'
 
 function LeftSideLink({ value, handleChange }) {
     return (
@@ -12,162 +13,21 @@ function LeftSideLink({ value, handleChange }) {
             aria-label="Platform"
             sx={{ display: "flex", flexDirection: "column" }}
         >
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="project"
-            >
-                Project
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="location"
-            >
-                Location
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="landscape"
-            >
-                Landscape
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="floorplans"
-            >
-                Floor plans
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="regulatory"
-            >
-                Regulatory
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="construction"
-            >
-                Construction
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="builderPrice"
-            >
-                Builder price
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="resalePrice"
-            >
-                Resale price
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="investment"
-            >
-                Investment
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="bank"
-            >
-                Bank
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="facilities"
-            >
-                Facilities
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="nearby"
-            >
-                Near by
-            </ToggleButton>
-            <ToggleButton
-                sx={{
-                    border: "1px solid gainsboro !important",
-                    borderRadius: "0 !important",
-                    justifyContent: 'flex-start'
-                }}
-                fullWidth
-                size="small"
-                value="landmarks"
-            >
-                Landmarks
-            </ToggleButton>
+            {
+                listOfTabsInProperty.map((current) => (
+                    <ToggleButton
+                        sx={{
+                            border: "1px solid gainsboro !important",
+                            borderRadius: "0 !important",
+                            justifyContent: 'flex-start'
+                        }}
+                        fullWidth
+                        size="small"
+                        value={current.value}>
+                        {current.label}
+                    </ToggleButton>
+                ))
+            }
             <ToggleButton
                 sx={{
                     border: "1px solid gainsboro !important",
@@ -178,7 +38,7 @@ function LeftSideLink({ value, handleChange }) {
                 size="small"
                 value="marketing"
             >
-                marketing
+                Marketing
             </ToggleButton>
         </ToggleButtonGroup>
     )

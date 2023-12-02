@@ -36,9 +36,6 @@ import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
-import TopMenu from "Components/DetailsPage/TopMenu";
-import { useCallback } from "react";
-import { listOfTabsInProperty } from "Components/CommonLayouts/CommonUtils";
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
@@ -175,46 +172,84 @@ const PropertyDetailsPage = () => {
     setOpenAlternateSignIn(false);
   };
 
-  const sectionRef = useRef([])
+  const [isSticky, setIsSticky] = useState(false);
 
-  const [alignment, setAlignment] = React.useState(listOfTabsInProperty[0].value);
+  const boxtothetop = () => {
+    const windowTop = window.scrollY;
+    const stickyCard = document?.getElementById("stick");
+    const stickyCssWidth = document?.getElementById("stick")?.offsetWidth;
+    const boxHere = document?.getElementById("boxHere");
 
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+    const top = boxHere?.offsetTop;
+
+    if (windowTop > top) {
+      setIsSticky(true);
+      stickyCard.style.width = `${stickyCssWidth}px`;
+    } else {
+      setIsSticky(false);
+      stickyCard.style.width = `100%`;
+    }
+  };
+
+  const setBoxWidth = () => {
+    const windowTop = window.scrollY;
+    const boxHere = document?.getElementById("boxHere");
+
+    const top = boxHere?.offsetTop;
+
+    if (windowTop > top) {
+      const blankBox = document?.getElementById("div-container");
+      const blankBoxWidth = blankBox?.getBoundingClientRect().width;
+
+      if (blankBox?.getBoundingClientRect().width > window.innerWidth - 32) {
+        const stickyCard = document?.getElementById("stick");
+        stickyCard.style.width = `calc(${window.innerWidth}px - 32px)`;
+      } else {
+        if (
+          window.innerWidth >= 900 &&
+          window.innerWidth < 1050 &&
+          isDrawerOpen
+        ) {
+          console.log(
+            blankBox?.getBoundingClientRect().width,
+            window.innerWidth
+          );
+          const stickyCard = document?.getElementById("stick");
+          stickyCard.style.width = `calc(${window.innerWidth}px - 272px)`;
+          console.log(window.innerWidth - 272);
+        } else {
+          const stickyCard = document?.getElementById("stick");
+          stickyCard.style.width = `${blankBoxWidth}px`;
+        }
+      }
+    }
   };
 
   useEffect(() => {
+    window.addEventListener("resize", setBoxWidth);
+    return () => {
+      window.removeEventListener("resize", setBoxWidth);
+    };
+  }, []);
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setAlignment(entry.target.getAttribute('id'))
-          console.log(alignment)
-        }
-      })
+  useEffect(() => {
+    setBoxWidth();
+  }, [isDrawerOpen]);
 
-      console.log(entries)
-    },)
-
-    sectionRef.current.forEach(section => {
-      observer.observe(section)
-    })
-
-  }, [])
-
-  const refCallback = useCallback((element) => {
-    if (element) {
-      sectionRef.current.push(element)
-    }
-  })
-
+  useEffect(() => {
+    window.addEventListener("scroll", boxtothetop);
+    return () => {
+      window.removeEventListener("scroll", boxtothetop);
+    };
+  }, []);
 
   return (
     <>
-      <Card sx={{}}>
-        <TopMenu value={alignment} handleChange={handleChange} />
+      <Card sx={{ p: 2 }}>
+        Add menu here
+        All list from add property except marketing
       </Card>
-      <Container maxWidth="md">
+      <Container maxWidth="md" id="div-container">
         <EnquireNow
           open={openEnquiryForm}
           handleClose={handleCloseEnquiryForm}
@@ -231,25 +266,71 @@ const PropertyDetailsPage = () => {
           open={openAlternateSignIn}
           handleClose={handleCloseAlternateSignIn}
         />
-        {/* <div id='out-div'>
-          <div ref={refCallback} style={{ height: '100vh', border: '8px solid red' }} id='project'>Project part</div>
-          <div ref={refCallback} style={{ height: '100vh', border: '8px solid red' }} id='location'>Location part</div>
-          <div ref={refCallback} style={{ height: '100vh', border: '8px solid red' }} id='landscape'>Landscape</div>
-          <div ref={refCallback} style={{ height: '100vh', border: '8px solid red' }} id='floorplans'>Floor plans</div>
-        </div> */}
 
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Card
+              sx={{
+                p: 2,
+                display: "flex",
+              }}
+              id="stick"
+              className={isSticky ? "sticky" : ""}
+            >
+              <Box sx={{ flex: 1 }}>
+                <Typography
+                  variant="h4"
+                  sx={{ fontWeight: "700 !important" }}
+                >
+                  Godrej woods
+                </Typography>
+                <Typography variant="h5" sx={{ alignSelf: "center" }}>
+                  ₹ 2.5 Cr – ₹ 5.6 Cr
+                </Typography>
+              </Box>
+              <Box sx={{ alignSelf: "center" }}>
+                <Card
+                  sx={{
+                    width: "fit-content",
+                    backgroundColor: colors?.BLUE,
+                    borderRadius: "4px !important",
+                    m: 0,
+                    ml: "auto !important",
+                  }}
+                  onClick={() => router.push("/research")}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 600,
+                      width: "fit-content",
+                      color: "white",
+                      p: 0.5,
+                      px: 1,
+                    }}
+                  >
+                    99
+                  </Typography>
+                </Card>
+              </Box>
+            </Card>
+          </Grid>
           <Grid item xs={12}>
             <Card>
               <ImageCarousel />
               <CardContent sx={{ p: "0 !important" }}>
                 <Grid container>
                   <Grid item xs={12}>
+                    <div id="boxHere" style={{ width: "100%" }}></div>
+
                     <Card
                       sx={{
                         p: 2,
                         display: "flex",
+                        maxWidth: "calc(780px - 32px) !important",
                       }}
+                      id="stick"
+                      className={isSticky ? "sticky" : ""}
                     >
                       <Box sx={{ flex: 1 }}>
                         <Typography
@@ -838,7 +919,6 @@ const PropertyDetailsPage = () => {
           </Grid>
         </Grid>
 
-        {/* Dont Touch this */}
         <Toolbar sx={{ display: { xs: "flex", dmd: "none" } }} />
 
         <Card
