@@ -15,7 +15,7 @@ import colors from "styles/theme/colors";
 
 function Research() {
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="evmd">
       <Accordion>
         <AccordionSummary
           sx={{ minHeight: "48px !important" }}

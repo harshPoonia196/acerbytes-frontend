@@ -38,7 +38,8 @@ import { useSelector } from "react-redux";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
 import { useCallback } from "react";
-import { listOfTabsInProperty } from "Components/CommonLayouts/CommonUtils";
+import { listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
+import MarketingSection from "Components/DetailsPage/MarketingSection";
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
@@ -177,7 +178,7 @@ const PropertyDetailsPage = () => {
 
   const sectionRef = useRef([])
 
-  const [alignment, setAlignment] = React.useState(listOfTabsInProperty[0].value);
+  const [alignment, setAlignment] = React.useState(listOfTabsInAddProperty[0].value);
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -214,7 +215,10 @@ const PropertyDetailsPage = () => {
       <Card sx={{}}>
         <TopMenu value={alignment} handleChange={handleChange} />
       </Card>
-      <Container maxWidth="md">
+
+      <MarketingSection />
+
+      <Container maxWidth="evmd">
         <EnquireNow
           open={openEnquiryForm}
           handleClose={handleCloseEnquiryForm}
@@ -839,7 +843,7 @@ const PropertyDetailsPage = () => {
         </Grid>
 
         {/* Dont Touch this */}
-        <Toolbar sx={{ display: { xs: "flex", dmd: "none" } }} />
+        <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
 
         <Card
           sx={{
@@ -848,7 +852,7 @@ const PropertyDetailsPage = () => {
             left: 0,
             bottom: 0,
             width: "100%",
-            display: { xs: "flex", dmd: "none" },
+            display: { xs: "flex", evmd: "none" },
             justifyContent: "space-between",
           }}
         >
@@ -879,7 +883,7 @@ const PropertyDetailsPage = () => {
             position: "fixed",
             right: 16,
             bottom: 16,
-            display: { xs: "none", dmd: "flex" },
+            display: { xs: "none", evmd: "flex" },
             flexDirection: "column",
           }}
         >
