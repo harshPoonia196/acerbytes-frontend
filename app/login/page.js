@@ -30,7 +30,7 @@ function Login() {
             <>
               <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  Welcome to, <span style={{ color: "gray" }}>Acresbyte</span>
+                  Welcome to, <span style={{ color: "gray" }}>Acrebytes</span>
                 </Typography>
                 <Typography variant="body1">
                   Create account using Google
@@ -113,7 +113,7 @@ function Login() {
               <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
                   Hi Anand Gupta,{" "}
-                  <span style={{ color: "gray" }}>welcome to Acresbyte</span>
+                  <span style={{ color: "gray" }}>welcome to Acrebytes</span>
                 </Typography>
               </Grid>
               <Grid item xs={12} sx={{ my: 1 }}>

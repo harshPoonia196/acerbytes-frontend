@@ -314,7 +314,7 @@ export default function ClippedDrawer({ children }) {
                     lineHeight: 1,
                   }}
                 >
-                  Acresbyte
+                  Acrebytes
                 </Typography>
               </a>
             </Box>
