@@ -74,8 +74,8 @@ function BrokerCard({ broker, type }) {
         <Typography variant="caption">
           <i>{broker?.clients} clients served</i>
         </Typography>
-        <Box sx={{ position: {xs:'relative', md:'absolute'}, bottom: {xs:0, md:8}, right: 8 }} >
-          {type? 
+        <Box sx={{ position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: 8 }, right: 8 }} >
+          {type ?
             <Button onClick={() => handleViewReview(broker?.name)} size="small">View Reviews</Button>
             :
             <Button onClick={handleDialogOpen} size="small">Rate Your Experience</Button>}
@@ -87,10 +87,10 @@ function BrokerCard({ broker, type }) {
         </IconButton>
       </Box>
 
-     <RatingDialog 
-      openDialog={openDialog} 
-      setOpenDialog={setOpenDialog}
-      broker={broker}
+      <RatingDialog
+        openDialog={openDialog}
+        setOpenDialog={setOpenDialog}
+        broker={broker}
       />
     </Card>
   );
