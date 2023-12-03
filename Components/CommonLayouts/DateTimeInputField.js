@@ -31,7 +31,7 @@ const DateTimeInputField = ({
             {isEdit ? (
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DatePicker']} sx={{ p: 0 }}>
-                        <DatePicker slotProps={{ textField: { size: 'small' } }} views={['month', 'year']} />
+                        <DatePicker slotProps={{ textField: { size: 'small', fullWidth: true } }} views={['month', 'year']} />
                     </DemoContainer>
                 </LocalizationProvider>
             ) : (

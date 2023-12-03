@@ -6,19 +6,19 @@ function LocationSection() {
     return (
         <Grid item xs={12}>
             <Card sx={{ p: 2 }}>
-                <Grid container spacing={2}>
+                <Grid container spacing={1}>
                     <Grid item xs={12}>
                         <Typography variant='h4'>
                             Location
                         </Typography>
                     </Grid>
-                    <NewKeyValuePairStructure label="School" value="Anasjsmdj" middleValue={'Low'} />
-                    <NewKeyValuePairStructure label="App based rides" value="Anasjsmdj" middleValue={'Med'} />
-                    <NewKeyValuePairStructure label="Hospital" value="Anasjsmdj" />
-                    <NewKeyValuePairStructure label="Railway stop" value="Anasjsmdj" />
-                    <NewKeyValuePairStructure label="Metro" value="Anasjsmdj" />
-                    <NewKeyValuePairStructure label="Bus stand" value="Anasjsmdj" />
-                    <NewKeyValuePairStructure label="Food delivery" value="Anasjsmdj" />
+                    <NewKeyValuePairStructure label="School" value="value" middleValue={'Low'} />
+                    <NewKeyValuePairStructure label="App based rides" value="value" middleValue={'Med'} />
+                    <NewKeyValuePairStructure label="Hospital" value="value" />
+                    <NewKeyValuePairStructure label="Railway stop" value="value" />
+                    <NewKeyValuePairStructure label="Metro" value="value" />
+                    <NewKeyValuePairStructure label="Bus stand" value="value" />
+                    <NewKeyValuePairStructure label="Food delivery" value="value" />
                 </Grid>
             </Card>
         </Grid>
