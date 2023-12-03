@@ -1,6 +1,9 @@
 import React from 'react'
-import { ToggleButtonGroup, ToggleButton, Tabs, Tab } from '@mui/material'
+import { Tabs, Tab, Card, Box, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
+import colors from 'styles/theme/colors'
+import Link from "next/link";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 function TopMenu({ value, handleChange }) {
 
@@ -51,6 +54,50 @@ function TopMenu({ value, handleChange }) {
 
     return (
         <>
+            <Card
+                sx={{
+                    p: 2,
+                    display: "flex",
+                }}
+            >
+                <Box sx={{ flex: 1 }}>
+                    <Typography
+                        variant="h2"
+                        sx={{ fontWeight: "700 !important" }}
+                    >
+                        Prateek Canary
+                    </Typography>
+                    <Typography variant="h5" sx={{ alignSelf: "center" }}>
+                        ₹ 2.5 Cr – ₹ 5.6 Cr - Sector 43, Noida, UP
+                    </Typography>
+                </Box>
+                <Box sx={{ alignSelf: "center" }}>
+                    <Card
+                        sx={{
+                            width: "fit-content",
+                            backgroundColor: colors?.BLUE,
+                            borderRadius: "4px !important",
+                            m: 0,
+                            ml: "auto !important",
+                        }}
+                        onClick={() => router.push("/research")}
+                    >
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                fontWeight: 600,
+                                width: "fit-content",
+                                color: "white",
+                                p: 0.5,
+                                px: 1,
+                            }}
+                        >
+                            99
+                        </Typography>
+                    </Card>
+                </Box>
+            </Card>
+
             <Tabs
                 value={value}
                 onChange={handleChange}
