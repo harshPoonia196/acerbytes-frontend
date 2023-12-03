@@ -42,6 +42,10 @@ import { listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
 import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
 import LocationSection from "Components/DetailsPage/LocationSection";
+import LandscapeSection from "Components/DetailsPage/LandscapeSection";
+import FloorPlanSection from "Components/DetailsPage/FloorPlanSection";
+import RegulatorySection from "Components/DetailsPage/RegulatorySection";
+import ConstructionSection from "Components/DetailsPage/ConstructionSection";
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
@@ -249,6 +253,10 @@ const PropertyDetailsPage = () => {
 
         <Grid container spacing={2}>
           <LocationSection />
+          <LandscapeSection />
+          <FloorPlanSection />
+          <RegulatorySection />
+          <ConstructionSection />
           <Grid item xs={12}>
             <Card>
               <CardContent sx={{ p: "0 !important" }}>
