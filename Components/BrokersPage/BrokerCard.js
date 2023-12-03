@@ -1,5 +1,4 @@
 import React from "react";
-import { useRouter } from 'next/navigation'
 import {
   Card,
   Avatar,
@@ -7,12 +6,9 @@ import {
   Box,
   Rating,
   IconButton,
-  Button,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import CallIcon from "@mui/icons-material/Call";
-import { useState } from "react";
-import RatingDialog from "./Dialog/RatingDialog";
 
 const labels = {
   0.5: "Useless",
@@ -27,21 +23,7 @@ const labels = {
   5: "Excellent+",
 };
 
-function BrokerCard({ broker, type }) {
-
-  const [openDialog, setOpenDialog] = useState(false)
-
-  const router = useRouter();
-
-
-  const handleDialogOpen = () => {
-    setOpenDialog(true)
-  }
-
-  const handleViewReview = (name) => {
-    router.push(`/broker-review?name=${name}`)
-  }
-
+function BrokerCard({ broker }) {
   return (
     <Card sx={{ p: 2, display: "flex", position: "relative" }}>
       <Avatar
@@ -74,24 +56,12 @@ function BrokerCard({ broker, type }) {
         <Typography variant="caption">
           <i>{broker?.clients} clients served</i>
         </Typography>
-        <Box sx={{ position: {xs:'relative', md:'absolute'}, bottom: {xs:0, md:8}, right: 8 }} >
-          {type? 
-            <Button onClick={() => handleViewReview(broker?.name)} size="small">View Reviews</Button>
-            :
-            <Button onClick={handleDialogOpen} size="small">Rate Your Experience</Button>}
-        </Box>
       </Box>
       <Box sx={{ position: "absolute", top: 8, right: 8 }}>
         <IconButton>
           <CallIcon fontSize="small" />
         </IconButton>
       </Box>
-
-     <RatingDialog 
-      openDialog={openDialog} 
-      setOpenDialog={setOpenDialog}
-      broker={broker}
-      />
     </Card>
   );
 }
