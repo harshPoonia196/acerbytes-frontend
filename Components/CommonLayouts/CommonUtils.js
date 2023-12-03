@@ -1,4 +1,4 @@
-const listOfTabsInProperty = [{
+const listOfTabsInAddProperty = [{
     label: 'Project',
     value: 'project'
 }, {
@@ -40,4 +40,4 @@ const listOfTabsInProperty = [{
 }
 ]
 
-export { listOfTabsInProperty }
+export { listOfTabsInAddProperty }

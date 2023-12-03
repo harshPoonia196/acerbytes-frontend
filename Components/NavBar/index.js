@@ -234,7 +234,7 @@ export default function ClippedDrawer({ children }) {
             boxShadow: "1px 2px 6px -2px gainsboro",
             borderRight: "none",
           },
-          display: { xs: "none", dmd: "flex" },
+          display: { xs: "none", evmd: "flex" },
           position: "relative",
         }}
       >
@@ -257,7 +257,7 @@ export default function ClippedDrawer({ children }) {
             width: drawerWidth,
             boxSizing: "border-box",
           },
-          display: { xs: "flex", dmd: "none" },
+          display: { xs: "flex", evmd: "none" },
           position: "relative",
         }}
       >

@@ -38,7 +38,14 @@ import { useSelector } from "react-redux";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
 import { useCallback } from "react";
-import { listOfTabsInProperty } from "Components/CommonLayouts/CommonUtils";
+import { listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
+import MarketingSection from "Components/DetailsPage/MarketingSection";
+import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
+import LocationSection from "Components/DetailsPage/LocationSection";
+import LandscapeSection from "Components/DetailsPage/LandscapeSection";
+import FloorPlanSection from "Components/DetailsPage/FloorPlanSection";
+import RegulatorySection from "Components/DetailsPage/RegulatorySection";
+import ConstructionSection from "Components/DetailsPage/ConstructionSection";
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
@@ -177,7 +184,7 @@ const PropertyDetailsPage = () => {
 
   const sectionRef = useRef([])
 
-  const [alignment, setAlignment] = React.useState(listOfTabsInProperty[0].value);
+  const [alignment, setAlignment] = React.useState(listOfTabsInAddProperty[0].value);
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -212,9 +219,15 @@ const PropertyDetailsPage = () => {
   return (
     <>
       <Card sx={{}}>
+        <Typography variant='h1' sx={{ p: 2 }}>
+          Prateek Canary
+        </Typography>
         <TopMenu value={alignment} handleChange={handleChange} />
       </Card>
-      <Container maxWidth="md">
+
+      <MarketingSection />
+
+      <Container maxWidth="evmd">
         <EnquireNow
           open={openEnquiryForm}
           handleClose={handleCloseEnquiryForm}
@@ -239,9 +252,13 @@ const PropertyDetailsPage = () => {
         </div> */}
 
         <Grid container spacing={2}>
+          <LocationSection />
+          <LandscapeSection />
+          <FloorPlanSection />
+          <RegulatorySection />
+          <ConstructionSection />
           <Grid item xs={12}>
             <Card>
-              <ImageCarousel />
               <CardContent sx={{ p: "0 !important" }}>
                 <Grid container>
                   <Grid item xs={12}>
@@ -839,7 +856,7 @@ const PropertyDetailsPage = () => {
         </Grid>
 
         {/* Dont Touch this */}
-        <Toolbar sx={{ display: { xs: "flex", dmd: "none" } }} />
+        <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
 
         <Card
           sx={{
@@ -848,7 +865,7 @@ const PropertyDetailsPage = () => {
             left: 0,
             bottom: 0,
             width: "100%",
-            display: { xs: "flex", dmd: "none" },
+            display: { xs: "flex", evmd: "none" },
             justifyContent: "space-between",
           }}
         >
@@ -879,7 +896,7 @@ const PropertyDetailsPage = () => {
             position: "fixed",
             right: 16,
             bottom: 16,
-            display: { xs: "none", dmd: "flex" },
+            display: { xs: "none", evmd: "flex" },
             flexDirection: "column",
           }}
         >

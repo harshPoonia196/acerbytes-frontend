@@ -1,6 +1,6 @@
 import React from 'react'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { listOfTabsInProperty } from 'Components/CommonLayouts/CommonUtils'
+import { listOfTabsInAddProperty } from 'Components/CommonLayouts/CommonUtils'
 
 function LeftSideLink({ value, handleChange }) {
     return (
@@ -14,7 +14,7 @@ function LeftSideLink({ value, handleChange }) {
             sx={{ display: "flex", flexDirection: "column" }}
         >
             {
-                listOfTabsInProperty.map((current) => (
+                listOfTabsInAddProperty.map((current) => (
                     <ToggleButton
                         sx={{
                             border: "1px solid gainsboro !important",
