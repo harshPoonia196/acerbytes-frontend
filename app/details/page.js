@@ -218,10 +218,7 @@ const PropertyDetailsPage = () => {
 
   return (
     <>
-      <Card sx={{}}>
-        <Typography variant='h1' sx={{ p: 2 }}>
-          Prateek Canary
-        </Typography>
+      <Card>
         <TopMenu value={alignment} handleChange={handleChange} />
       </Card>
 
@@ -261,51 +258,6 @@ const PropertyDetailsPage = () => {
             <Card>
               <CardContent sx={{ p: "0 !important" }}>
                 <Grid container>
-                  <Grid item xs={12}>
-                    <Card
-                      sx={{
-                        p: 2,
-                        display: "flex",
-                      }}
-                    >
-                      <Box sx={{ flex: 1 }}>
-                        <Typography
-                          variant="h4"
-                          sx={{ fontWeight: "700 !important" }}
-                        >
-                          Godrej woods
-                        </Typography>
-                        <Typography variant="h5" sx={{ alignSelf: "center" }}>
-                          ₹ 2.5 Cr – ₹ 5.6 Cr
-                        </Typography>
-                      </Box>
-                      <Box sx={{ alignSelf: "center" }}>
-                        <Card
-                          sx={{
-                            width: "fit-content",
-                            backgroundColor: colors?.BLUE,
-                            borderRadius: "4px !important",
-                            m: 0,
-                            ml: "auto !important",
-                          }}
-                          onClick={() => router.push("/research")}
-                        >
-                          <Typography
-                            variant="h6"
-                            sx={{
-                              fontWeight: 600,
-                              width: "fit-content",
-                              color: "white",
-                              p: 0.5,
-                              px: 1,
-                            }}
-                          >
-                            99
-                          </Typography>
-                        </Card>
-                      </Box>
-                    </Card>
-                  </Grid>
                   <Grid item xs={12} sm={6}>
                     <Link
                       href="https://maps.app.goo.gl/rjVABonJgjjRjfdT9"
