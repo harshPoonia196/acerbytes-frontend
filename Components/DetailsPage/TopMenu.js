@@ -57,7 +57,6 @@ function TopMenu({ value, handleChange }) {
             <Card
                 sx={{
                     p: 2,
-                    pb: 0,
                     display: "flex",
                 }}
             >

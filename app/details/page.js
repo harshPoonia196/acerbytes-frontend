@@ -14,6 +14,7 @@ import {
   Chip,
   Rating,
   Toolbar,
+  Avatar, Button
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -46,6 +47,7 @@ import LandscapeSection from "Components/DetailsPage/LandscapeSection";
 import FloorPlanSection from "Components/DetailsPage/FloorPlanSection";
 import RegulatorySection from "Components/DetailsPage/RegulatorySection";
 import ConstructionSection from "Components/DetailsPage/ConstructionSection";
+import CallIcon from '@mui/icons-material/Call';
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
@@ -218,6 +220,26 @@ const PropertyDetailsPage = () => {
 
   return (
     <>
+      <Card sx={{ p: 2, display: 'flex', borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
+        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ mr: 2 }} />
+        <Box flex={1}>
+          <Typography variant='h6'>Anand Gupta &#183; Anand real estate</Typography>
+          <Typography variant='body2'>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
+        </Box>
+        <Box>
+          <a
+            href="tel:8794561234"
+            style={{
+              display: "flex",
+              alignSelf: "center",
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <Button startIcon={<CallIcon />} variant='outlined'>932333366</Button>
+          </a>
+        </Box>
+      </Card>
       <Card>
         <TopMenu value={alignment} handleChange={handleChange} />
       </Card>
