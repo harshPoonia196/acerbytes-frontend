@@ -40,6 +40,8 @@ import TopMenu from "Components/DetailsPage/TopMenu";
 import { useCallback } from "react";
 import { listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
+import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
+import LocationSection from "Components/DetailsPage/LocationSection";
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
@@ -213,6 +215,9 @@ const PropertyDetailsPage = () => {
   return (
     <>
       <Card sx={{}}>
+        <Typography variant='h1' sx={{ p: 2 }}>
+          Prateek Canary
+        </Typography>
         <TopMenu value={alignment} handleChange={handleChange} />
       </Card>
 
@@ -243,9 +248,9 @@ const PropertyDetailsPage = () => {
         </div> */}
 
         <Grid container spacing={2}>
+          <LocationSection />
           <Grid item xs={12}>
             <Card>
-              <ImageCarousel />
               <CardContent sx={{ p: "0 !important" }}>
                 <Grid container>
                   <Grid item xs={12}>
