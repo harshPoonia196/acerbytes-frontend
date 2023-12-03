@@ -41,7 +41,7 @@ function JoinNow() {
           </Box>
         </Container>
       </Box>
-      <Container maxWidth="md">
+      <Container maxWidth="evmd">
         <Card sx={{ p: 2 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -152,7 +152,7 @@ function JoinNow() {
           </Grid>
         </Card>
       </Container>
-      <Container maxWidth="md">
+      <Container maxWidth="evmd">
         <Card sx={{ p: 2 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>

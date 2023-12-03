@@ -9,7 +9,7 @@ export default {
     maxWidthMd: {
       padding: "1rem !important",
     },
-    maxWidthDmd: {
+    maxWidthEvmd: {
       padding: "1rem !important",
     },
     maxWidthLg: {

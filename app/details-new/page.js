@@ -249,7 +249,7 @@ const PropertyDetailsPage = () => {
         Add menu here
         All list from add property except marketing
       </Card>
-      <Container maxWidth="md" id="div-container">
+      <Container maxWidth="evmd" id="div-container">
         <EnquireNow
           open={openEnquiryForm}
           handleClose={handleCloseEnquiryForm}
@@ -919,7 +919,7 @@ const PropertyDetailsPage = () => {
           </Grid>
         </Grid>
 
-        <Toolbar sx={{ display: { xs: "flex", dmd: "none" } }} />
+        <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
 
         <Card
           sx={{
@@ -928,7 +928,7 @@ const PropertyDetailsPage = () => {
             left: 0,
             bottom: 0,
             width: "100%",
-            display: { xs: "flex", dmd: "none" },
+            display: { xs: "flex", evmd: "none" },
             justifyContent: "space-between",
           }}
         >
@@ -959,7 +959,7 @@ const PropertyDetailsPage = () => {
             position: "fixed",
             right: 16,
             bottom: 16,
-            display: { xs: "none", dmd: "flex" },
+            display: { xs: "none", evmd: "flex" },
             flexDirection: "column",
           }}
         >
