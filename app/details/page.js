@@ -203,7 +203,10 @@ const PropertyDetailsPage = () => {
       })
 
       console.log(entries)
-    },)
+    }, {
+      rootMargin: "50%",
+      threshold: 0.75,
+    })
 
     sectionRef.current.forEach(section => {
       observer.observe(section)
@@ -220,31 +223,57 @@ const PropertyDetailsPage = () => {
 
   return (
     <>
-      <Card sx={{ p: 2, display: 'flex', borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ mr: 2 }} />
-        <Box flex={1}>
-          <Typography variant='h6'>Anand Gupta &#183; Anand real estate</Typography>
-          <Typography variant='body2'>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
-        </Box>
-        <Box>
-          <a
-            href="tel:8794561234"
-            style={{
-              display: "flex",
-              alignSelf: "center",
-              textDecoration: "none",
-              color: "inherit",
-            }}
-          >
-            <Button startIcon={<CallIcon />} variant='outlined'>932333366</Button>
-          </a>
-        </Box>
-      </Card>
-      <Card>
-        <TopMenu value={alignment} handleChange={handleChange} />
-      </Card>
-
-      <MarketingSection />
+      <Box sx={{ position: 'fixed', top: 64, zIndex: 100, width: '100%' }}>
+        <Card sx={{ p: 2, display: 'flex', borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ mr: 2 }} />
+          <Box flex={1}>
+            <Typography variant='h6'>Anand Gupta &#183; Anand real estate</Typography>
+            <Typography variant='body2'>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
+          </Box>
+          <Box>
+            <a
+              href="tel:8794561234"
+              style={{
+                display: "flex",
+                alignSelf: "center",
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <Button startIcon={<CallIcon />} variant='outlined'>932333366</Button>
+            </a>
+          </Box>
+        </Card>
+        <Card>
+          <TopMenu value={alignment} handleChange={handleChange} />
+        </Card>
+      </Box>
+      <Box>
+        <Card sx={{ p: 2, display: 'flex', borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ mr: 2 }} />
+          <Box flex={1}>
+            <Typography variant='h6'>Anand Gupta &#183; Anand real estate</Typography>
+            <Typography variant='body2'>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
+          </Box>
+          <Box>
+            <a
+              href="tel:8794561234"
+              style={{
+                display: "flex",
+                alignSelf: "center",
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <Button startIcon={<CallIcon />} variant='outlined'>932333366</Button>
+            </a>
+          </Box>
+        </Card>
+        <Card>
+          <TopMenu value={alignment} handleChange={handleChange} />
+        </Card>
+      </Box>
+      <MarketingSection refCallback={refCallback} />
 
       <Container maxWidth="evmd">
         <EnquireNow
@@ -270,12 +299,12 @@ const PropertyDetailsPage = () => {
           <div ref={refCallback} style={{ height: '100vh', border: '8px solid red' }} id='floorplans'>Floor plans</div>
         </div> */}
 
-        <Grid container spacing={2}>
-          <LocationSection />
-          <LandscapeSection />
-          <FloorPlanSection />
-          <RegulatorySection />
-          <ConstructionSection />
+        <Grid container spacing={2} id='section-list'>
+          <LocationSection refCallback={refCallback} />
+          <LandscapeSection refCallback={refCallback} />
+          <FloorPlanSection refCallback={refCallback} />
+          <RegulatorySection refCallback={refCallback} />
+          <ConstructionSection refCallback={refCallback} />
           <Grid item xs={12}>
             <Card>
               <CardContent sx={{ p: "0 !important" }}>

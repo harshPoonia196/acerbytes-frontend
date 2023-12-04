@@ -125,3 +125,7 @@ input[type="number"] {
 .urlStyling:hover {
   text-decoration-line: underline;
 }
+
+html {
+  scroll-behavior: smooth;
+}

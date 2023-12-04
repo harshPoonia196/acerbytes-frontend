@@ -2,9 +2,9 @@ import React from 'react'
 import { Grid, Card, Typography } from '@mui/material'
 import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairStructure'
 
-function FloorPlanSection() {
+function FloorPlanSection({ refCallback }) {
     return (
-        <Grid item xs={12}>
+        <Grid item xs={12} ref={refCallback} id='floorplans'>
             <Card sx={{ p: 2 }}>
                 <Grid container spacing={1}>
                     <Grid item xs={12}>

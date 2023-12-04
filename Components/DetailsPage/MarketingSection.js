@@ -3,14 +3,14 @@ import React from 'react'
 import ImageCarousel from './ImageCarousel'
 import ImageCarouselNew from './ImageCarouselNew'
 
-function MarketingSection() {
+function MarketingSection({ refCallback }) {
     return (
         <Card sx={{
             background: 'whitesmoke',
             display: 'flex',
             height: '70vh',
             position: 'relative',
-        }}>
+        }} ref={refCallback} id='project'>
             <Box sx={{
                 flex: 1,
                 backgroundImage: 'URL(https://lh3.googleusercontent.com/p/AF1QipN7N4JlL5zR8A0bTIa1uYmWuu4RKhGVmxiv9lhB=s1360-w1360-h1020)',
