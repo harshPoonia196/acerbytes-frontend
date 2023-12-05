@@ -27,31 +27,11 @@ function Brokers() {
   return (
     <>
       <Box sx={{ backgroundColor: "white" }}>
-        <Container sx={{ pb: "0 !important", textAlign: "center" }}>
+        <Container sx={{ pb: "0 !important" }}>
           <Box sx={{ py: 4 }}>
-            <Typography variant="h4">
-              Connect with our professional real estate consultant
+            <Typography variant="h1">
+              75 consultant may be interested to work with you
             </Typography>
-            <Typography variant="h6">75 Active consultant</Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Box>
-                <Button
-                  variant="contained"
-                  sx={{ mt: 2 }}
-                  onClick={() => router.push("/join-now")}
-                >
-                  Join Now
-                </Button>
-              </Box>
-              <Box>
-                <Button startIcon={<WhatsAppIcon />}>Share</Button>
-              </Box>
-            </Box>
           </Box>
         </Container>
       </Box>
@@ -81,7 +61,7 @@ function Brokers() {
             </Card>
           </Grid>
           {brokersList?.map((broker) => (
-            <Grid item xs={12} sm={6} key={broker.name}>
+            <Grid item xs={12} key={broker.name}>
               <BrokerCard broker={broker} />
             </Grid>
           ))}

@@ -10,10 +10,11 @@ const NewInputFieldStructure = ({
   value,
   sx,
   variant,
-  isEdit, isFull,
+  isEdit,
+  isFull,
   ...props
 }) => (
-  <>
+  <>{console.log(isEdit)}
     <Grid item xs={12} sm={isFull ? 12 : 6}>
       <Box>
         <Typography
@@ -23,7 +24,15 @@ const NewInputFieldStructure = ({
           {label}
         </Typography>
       </Box>
-      {isEdit ? (
+      {isEdit === undefined ? <TextField
+        name={name}
+        onChange={handleChange}
+        variant={variant ? variant : "standard"}
+        fullWidth
+        size="small"
+        sx={sx}
+        {...props}
+      /> : isEdit === true ? (
         <TextField
           name={name}
           onChange={handleChange}

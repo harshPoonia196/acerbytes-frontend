@@ -68,7 +68,7 @@ function TopMenu({ value, handleChange }) {
                         Prateek Canary
                     </Typography>
                     <Typography variant="h5" sx={{ alignSelf: "center" }}>
-                        ₹ 2.5 Cr – ₹ 5.6 Cr - Sector 43, Noida, UP
+                        Under Construction &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183; Sector 43, Noida, UP
                     </Typography>
                 </Box>
                 <Box sx={{ alignSelf: "center" }}>
