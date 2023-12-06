@@ -32,8 +32,11 @@ const RatingDetails = (props) => {
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <Typography variant="h5" sx={{ fontWeight: 600 }}>{title}</Typography>
-        <Box sx={{ display: 'flex', gap: '0.5rem' }}>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>{title}</Typography>
+          <Typography variant='body2'>This includes Communication,</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', gap: '0.5rem', mb: 1 }}>
           <Rating size="small" name="hover-feedback" precision={0.5}
             value={value} getLabelText={getLabelText}
             onChange={(event, newValue) => {
@@ -47,6 +50,7 @@ const RatingDetails = (props) => {
             <Box sx={{}}>{labels[hover !== -1 ? hover : value]}</Box>
           )}
         </Box>
+
       </Box>
     </>
   )

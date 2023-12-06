@@ -229,12 +229,12 @@ export default function Enquiries() {
         >
           <Box sx={{ py: 4 }}>
             <Typography variant="h1"
-              sx={{ color: "#000", fontWeight: 700, fontSize: '1.5em' }}>
+              sx={{ color: "#000" }}>
               Explore a world of possibilities with{' '}
               <span className="urlStyling" style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/join-now') }}>
                 5,433</span> open real estate queries. Your next customer is just a click away
             </Typography>
-            <Box sx={{ mt: 1, textAlign: 'center' }}>
+            <Box sx={{ mt: 2, textAlign: 'center' }}>
               <Box sx={{ width: 'fit-content', margin: 'auto', }}>
                 <AvatarGroup
                   total={5}

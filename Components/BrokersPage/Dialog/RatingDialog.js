@@ -7,9 +7,12 @@ import {
   DialogTitle,
   DialogContent,
   TextField,
+  Grid,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import RatingDetails from './RatingDetails';
+import NewInputFieldStructure from 'Components/CommonLayouts/NewInputFieldStructure';
+import colors from 'styles/theme/colors';
 
 const RatingDialog = (props) => {
 
@@ -36,39 +39,36 @@ const RatingDialog = (props) => {
         <DialogTitle>
           {!submitReview ?
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              Review for {broker?.name}
-            </Typography> :
-
+              Rate and review for <span style={{ color: colors.BLUE }}>{broker?.name}</span>
+            </Typography>
+            :
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
-              Thank You, Your Review has been submitted
+              Thank you, your review has been submitted
             </Typography>
 
           }
         </DialogTitle>
-        <DialogContent>
-          {!submitReview &&
+        {!submitReview &&
+          <DialogContent>
+
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
 
               <RatingDetails key={'Professionalism'} title={'Professionalism'} />
               <RatingDetails key={'Communication '} title={'Communication'} />
               <RatingDetails key={'Real-estate'} title={'Real estate knowledge'} />
 
-              <Box sx={{}}>
-                <TextField
-                  fullWidth
-                  variant="standard"
-                  label="Comments"
-                  multiline
-                  maxRows={2} />
-              </Box>
+              <Grid container>
+                <NewInputFieldStructure label="Comment" multiline rows={2} variant='outlined' isFull />
+              </Grid>
 
-              <Box sx={{ alignSelf: 'end' }}>
+              <Box sx={{ alignSelf: 'end', mt: 1 }}>
                 <Button onClick={handelReviewSubmit} startIcon={<DoneIcon />}
                   variant="contained">Submit</Button>
               </Box>
 
-            </Box>}
-        </DialogContent>
+            </Box>
+          </DialogContent>
+        }
       </Dialog>
 
     </>

@@ -15,18 +15,18 @@ function createData(
   project,
   builder,
   city,
-  locality,
+  area,
+  sector,
   status,
-  isListed,
   lastModified
 ) {
   return {
     project,
     builder,
     city,
-    locality,
+    area,
+    sector,
     status,
-    isListed,
     lastModified,
   };
 }
@@ -36,9 +36,9 @@ const rows = [
     "Rizvi heights",
     "Rizvi builders",
     "Mumbai",
-    "Malad",
-    "Booked",
-    true,
+    "Noida",
+    'sector 26',
+    "Draft",
     "12th Nov 2018, 09:18 AM"
   ),
 ];
@@ -47,22 +47,21 @@ function PropertyList() {
   return (
     <Container>
       <Typography variant="h6" sx={{ mb: 2 }}>
-        List of Properties (Admin)
+        26 Properties listed
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell>Project</TableCell>
               <TableCell>Builder</TableCell>
+              <TableCell>Project</TableCell>
               <TableCell>City</TableCell>
-              <TableCell>Locality</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>View</TableCell>
-              <TableCell>Listed</TableCell>
+              <TableCell>Area</TableCell>
+              <TableCell>Sector</TableCell>
               <TableCell>Edit</TableCell>
               <TableCell>Delete</TableCell>
               <TableCell>Last modified</TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -71,20 +70,11 @@ function PropertyList() {
                 key={row.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell>{row.project}</TableCell>
                 <TableCell>{row.builder}</TableCell>
+                <TableCell>{row.project}</TableCell>
                 <TableCell>{row.city}</TableCell>
-                <TableCell>{row.locality}</TableCell>
-                <TableCell>{row.status}</TableCell>
-                <TableCell>
-                  <Link
-                    href="/details"
-                    sx={{ textDecoration: "underline", cursor: "pointer" }}
-                  >
-                    Preview
-                  </Link>
-                </TableCell>
-                <TableCell>{row.isListed ? "Yes" : "No"}</TableCell>
+                <TableCell>{row.area}</TableCell>
+                <TableCell>{row.sector}</TableCell>
                 <TableCell>
                   <IconButton>
                     <EditIcon fontSize="small" />
@@ -96,8 +86,9 @@ function PropertyList() {
                   </IconButton>
                 </TableCell>
                 <TableCell>
-                  <Chip label={row.lastModified} size="small" />
+                  {row.lastModified}
                 </TableCell>
+                <TableCell><Chip label={row.status} size="small" /></TableCell>
               </TableRow>
             ))}
           </TableBody>

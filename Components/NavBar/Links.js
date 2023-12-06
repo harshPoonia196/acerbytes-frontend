@@ -26,8 +26,13 @@ export const UserMenuList = [
     icon: <ThumbUpIcon fontSize="small" />,
   },
   {
-    label: "Consultant list",
-    route: "/brokers",
+    label: "My Consultants",
+    route: "/my-consultants",
+    icon: <GroupIcon fontSize="small" />,
+  },
+  {
+    label: "Consultants",
+    route: "/all-brokers",
     icon: <GroupIcon fontSize="small" />,
   },
   {
