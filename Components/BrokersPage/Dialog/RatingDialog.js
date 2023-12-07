@@ -8,6 +8,7 @@ import {
   DialogContent,
   TextField,
   Grid,
+  Switch,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import RatingDetails from './RatingDetails';
@@ -57,8 +58,14 @@ const RatingDialog = (props) => {
               <RatingDetails key={'Communication '} title={'Communication'} />
               <RatingDetails key={'Real-estate'} title={'Real estate knowledge'} />
 
-              <Grid container>
+              <Grid container spacing={2}>
                 <NewInputFieldStructure label="Comment" multiline rows={2} variant='outlined' isFull />
+                <Grid item xs={12} sx={{ display: 'flex' }}>
+                  <Typography variant='h5' sx={{ flex: 1, alignSelf: 'center' }}>
+                    Private
+                  </Typography>
+                  <Switch defaultChecked />
+                </Grid>
               </Grid>
 
               <Box sx={{ alignSelf: 'end', mt: 1 }}>

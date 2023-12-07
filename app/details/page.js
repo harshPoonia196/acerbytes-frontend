@@ -223,7 +223,7 @@ const PropertyDetailsPage = () => {
 
   return (
     <>
-      <Box sx={{ position: 'fixed', top: 64, zIndex: 100, width: '100%' }}>
+      <Box sx={{ position: 'sticky', top: 0, left: 0, zIndex: 100, width: '100%' }}>
         <Card sx={{ p: 2, display: 'flex', borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ mr: 2 }} />
           <Box flex={1}>
@@ -248,7 +248,7 @@ const PropertyDetailsPage = () => {
           <TopMenu value={alignment} handleChange={handleChange} />
         </Card>
       </Box>
-      <Box>
+      {/* <Box>
         <Card sx={{ p: 2, display: 'flex', borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ mr: 2 }} />
           <Box flex={1}>
@@ -272,7 +272,7 @@ const PropertyDetailsPage = () => {
         <Card>
           <TopMenu value={alignment} handleChange={handleChange} />
         </Card>
-      </Box>
+      </Box> */}
       <MarketingSection refCallback={refCallback} />
 
       <Container maxWidth="evmd">
@@ -292,12 +292,6 @@ const PropertyDetailsPage = () => {
           open={openAlternateSignIn}
           handleClose={handleCloseAlternateSignIn}
         />
-        {/* <div id='out-div'>
-          <div ref={refCallback} style={{ height: '100vh', border: '8px solid red' }} id='project'>Project part</div>
-          <div ref={refCallback} style={{ height: '100vh', border: '8px solid red' }} id='location'>Location part</div>
-          <div ref={refCallback} style={{ height: '100vh', border: '8px solid red' }} id='landscape'>Landscape</div>
-          <div ref={refCallback} style={{ height: '100vh', border: '8px solid red' }} id='floorplans'>Floor plans</div>
-        </div> */}
 
         <Grid container spacing={2} id='section-list'>
           <LocationSection refCallback={refCallback} />
