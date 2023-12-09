@@ -28,7 +28,7 @@ const labels = {
   5: "Excellent+",
 };
 
-function BrokerCard({ broker, type }) {
+function BrokerCard({ broker, type, noReview }) {
 
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -79,12 +79,15 @@ function BrokerCard({ broker, type }) {
                 <i>{broker?.clients} clients served</i>
               </Typography>
             </Box>
-            <Box sx={{ alignSelf: 'end' }} >
-              {type ?
-                <Button onClick={() => handleViewReview(broker?.name)} size="small" variant='outlined'>View Reviews</Button>
-                :
-                <Button onClick={handleDialogOpen} size="small" variant='outlined'>Rate your experience</Button>}
-            </Box>
+            {
+              !noReview && <Box sx={{ alignSelf: 'end' }} >
+                {type ?
+                  <Button onClick={() => handleViewReview(broker?.name)} size="small" variant='outlined'>View Reviews</Button>
+                  :
+                  <Button onClick={handleDialogOpen} size="small" variant='outlined'>Rate your experience</Button>}
+              </Box>
+            }
+
           </Box>
         </Box>
       </Box>
@@ -94,7 +97,7 @@ function BrokerCard({ broker, type }) {
         </IconButton>
       </Box>
       <Divider />
-      <Grid container spacing={1} sx={{ p: 2 }}>
+      {!noReview && <Grid container spacing={1} sx={{ p: 2 }}>
         <Grid item xs={4}>
           <Typography variant="h6">
             Professionalism
@@ -142,7 +145,7 @@ function BrokerCard({ broker, type }) {
             </Typography>
           </Box>
         </Grid>
-      </Grid>
+      </Grid>}
 
       <RatingDialog
         openDialog={openDialog}
