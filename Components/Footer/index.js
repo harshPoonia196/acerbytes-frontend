@@ -19,8 +19,8 @@ function Footer({ paymentPage }) {
         <Card sx={{ position: 'fixed', bottom: 0, p: 2, borderTop: '1px solid gainsboro', width: navState ? 'calc(100% - 240px)' : '100%', display: 'flex' }}>
             <Box sx={{ flex: 1, alignSelf: 'center' }}>
                 <Typography variant="body2">
-                    <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/') }}>Terms</span> ·{' '}
-                    <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/') }}>Privacy</span> ·
+                    <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/terms-and-condition') }}>Terms</span> ·{' '}
+                    <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/privacy') }}>Privacy</span> ·
                     Platform solution by Gravity44
                 </Typography>
             </Box>

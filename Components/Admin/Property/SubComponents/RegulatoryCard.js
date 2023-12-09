@@ -39,11 +39,7 @@ function RegulatoryCard({ isEdit }) {
                         variant="outlined"
                         isEdit={isEdit}
                     />
-                    <Grid item xs={6} sx={{ textAlign: 'end', display: 'flex' }}>
-                        <Box sx={{ alignSelf: 'end', flex: 1 }}>
-                            <Button variant='contained' >Add</Button>
-                        </Box>
-                    </Grid>
+                   
                     <NewSelectTextFieldStructure
                         label="CC available"
                         variant="outlined"
@@ -64,6 +60,11 @@ function RegulatoryCard({ isEdit }) {
                         variant="outlined"
                         isEdit={isEdit}
                     />
+                     <Grid item  sx={{  display: 'flex', ml:'auto' }}>
+                        <Box sx={{ alignSelf: 'end', flex: 1,  }}>
+                            <Button variant='contained' >Add</Button>
+                        </Box>
+                    </Grid>
                 </Grid>
             </Card>
         </Grid>
