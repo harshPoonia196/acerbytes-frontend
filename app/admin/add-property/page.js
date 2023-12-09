@@ -4,12 +4,14 @@ import {
     Container,
     Grid,
     Box,
+    Card,
 } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import LeftSideLink from "Components/Admin/Property/LeftSideLink";
 import RightSideMainSection from "Components/Admin/Property/RightSideMainSection";
+import NavTab from "Components/Admin/Property/NavTab";
 
 function AddProperty() {
 
@@ -27,16 +29,18 @@ function AddProperty() {
 
     return (
         <Container>
+
+         <NavTab/>
+
+
             <Box
                 sx={{
                     display: "flex",
                     gap: "16px",
                     height: `calc(100vh - 100px)`,
+                    mt:'1rem'
                 }}
             >
-                <Box sx={{ width: "240px", height: "100%", overflow: "hidden", p: 1 }}>
-                    <LeftSideLink value={pageLinkToggleAlignment} handleChange={handleChangePageLinkToggle} />
-                </Box>
                 <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
                     <RightSideMainSection />
                 </Grid>
