@@ -1,19 +1,19 @@
 import React from 'react'
-import { Grid, Card, Typography, Box, Divider } from '@mui/material'
+import { Grid, Card, Typography, Box, Divider, Rating } from '@mui/material'
 import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairStructure'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function LandscapeSection({ refCallback }) {
+function ClearanceSection({ refCallback }) {
 
     const router = useRouter()
 
     return (
-        <Grid item xs={12} ref={refCallback} id='landscape'>
+        <Grid item xs={12} ref={refCallback} id='location' >
             <Card>
                 <Box sx={{ p: 2, display: 'flex' }}>
                     <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
-                        Landscape
+                        Regulation & Clearance
                     </Typography>
                     <Box sx={{ alignSelf: "center" }}>
                         <Card
@@ -44,16 +44,15 @@ function LandscapeSection({ refCallback }) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <NewKeyValuePairStructure label="Towers" value="5" />
-                    <NewKeyValuePairStructure label="Units" value="5" />
-                    <NewKeyValuePairStructure label="Area" value="5 acres" />
-                    <NewKeyValuePairStructure label="Open area" value="1 acres" />
-                    <NewKeyValuePairStructure label="Green area" value="0.5 acres" />
-                    <NewKeyValuePairStructure label="Density" value="Low" />
+                    <NewKeyValuePairStructure label="Project status" value={'Yes'} />
+                    <NewKeyValuePairStructure label="RERA" value={'Yes'} />
+                    <NewKeyValuePairStructure label="CC received" value={'Yes'} />
+                    <NewKeyValuePairStructure label="OC received" value={'Yes'} />
+                    <NewKeyValuePairStructure label="Registration" value={'Yes'} />
                 </Grid>
             </Card>
         </Grid>
     )
 }
 
-export default LandscapeSection
+export default ClearanceSection

@@ -10,10 +10,12 @@ function NewKeyValuePairStructure({ label, value, middleValue }) {
                 </Typography>
             </Grid>
             {
-                !(middleValue === undefined) && <Grid item xs={3}><Typography variant="body2">{middleValue}</Typography></Grid>
+                !(middleValue === undefined) && <Grid item xs={3}>
+                    <Typography variant="body2">{middleValue}</Typography>
+                </Grid>
             }
-            <Grid item xs={3} sx={{ textAlign: "end" }}>
-                <Typography variant="body2">{value}</Typography>
+            <Grid item xs={3} sx={{ display: 'flex', textAlign: 'end' }}>
+                <Typography variant="body2" sx={{ alignSelf: 'center', flex: 1 }}>{value}</Typography>
             </Grid>
         </>
     )

@@ -45,40 +45,19 @@ import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairSt
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";
 import FloorPlanSection from "Components/DetailsPage/FloorPlanSection";
-import RegulatorySection from "Components/DetailsPage/RegulatorySection";
-import ConstructionSection from "Components/DetailsPage/ConstructionSection";
 import CallIcon from '@mui/icons-material/Call';
+import AmenitiesSection from "Components/DetailsPage/AmenitiesSection";
+import ClearanceSection from "Components/DetailsPage/ClearanceSection";
+import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
+import PricingSection from 'Components/DetailsPage/PricingSection'
+import ResaleSection from "Components/DetailsPage/ResaleSection";
+import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
+import LayoutSection from "Components/DetailsPage/LayoutSection";
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
 
   const { isDrawerOpen } = useSelector((state) => state);
-
-  const GridItem = (props) => {
-    const { children, styles, boxStyles, ...rest } = props;
-    return (
-      <Grid
-        item
-        {...rest}
-        sx={{
-          padding: 1,
-          textAlign: "center",
-          ...styles,
-        }}
-      >
-        <Box
-          sx={{
-            backgroundColor: "whitesmoke",
-            p: 2,
-            borderRadius: "8px",
-            ...boxStyles,
-          }}
-        >
-          {children}
-        </Box>
-      </Grid>
-    );
-  };
 
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
@@ -294,11 +273,15 @@ const PropertyDetailsPage = () => {
         />
 
         <Grid container spacing={2} id='section-list'>
-          <LocationSection refCallback={refCallback} />
           <LandscapeSection refCallback={refCallback} />
+          <AmenitiesSection refCallback={refCallback} />
+          <ClearanceSection refCallback={refCallback} />
+          <PricingSection refCallback={refCallback} />
+          <ValueForMoneySection refCallback={refCallback} />
+          <ResaleSection refCallback={refCallback} />
+          <LayoutSection refCallback={refCallback} />
           <FloorPlanSection refCallback={refCallback} />
-          <RegulatorySection refCallback={refCallback} />
-          <ConstructionSection refCallback={refCallback} />
+          <LocationSection refCallback={refCallback} />
           <Grid item xs={12}>
             <Card>
               <CardContent sx={{ p: "0 !important" }}>
@@ -430,83 +413,6 @@ const PropertyDetailsPage = () => {
                       <Tab label="Location" />
                       <Tab label="Assesment" />
                     </Tabs>
-                    <CustomTabPanel value={currentTab} index={0}>
-                      <Grid container sx={{ p: 1 }}>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">Project area</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            14 acre
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">Type</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            Booking
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">No of towers</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            5
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">Furnished</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            Yes
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">No of towers</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            5
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">Furnished</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            Yes
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">Project area</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            14 acre
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">Type</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            Booking
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">No of towers</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            5
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">Furnished</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            Yes
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">No of towers</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            5
-                          </Typography>
-                        </GridItem>
-                        <GridItem xs={6} sm={2}>
-                          <Typography variant="caption">Furnished</Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                            Yes
-                          </Typography>
-                        </GridItem>
-                      </Grid>
-                    </CustomTabPanel>
-                    <CustomTabPanel value={currentTab} index={1}></CustomTabPanel>
                     <CustomTabPanel value={currentTab} index={2}>
                       <Grid container sx={{ p: 1 }}>
                         <GridItemWithCard
@@ -771,40 +677,6 @@ const PropertyDetailsPage = () => {
                         loading="lazy"
                       />
                     </CustomTabPanel>
-                    <CustomTabPanel value={currentTab} index={5}>
-                      <Box sx={{ p: 2, textAlign: "center" }}>
-                        <Typography variant="body1">
-                          Godrej Woods project has scored
-                        </Typography>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            width: "fit-content",
-                            margin: "auto",
-                          }}
-                        >
-                          <Typography variant="h1">99</Typography>
-                          <Typography variant="h5" sx={{ alignSelf: "center" }}>
-                            /100
-                          </Typography>
-                        </Box>
-                        <Typography variant="body1" sx={{ mb: 2 }}>
-                          Our authorized professional consultants help you decide
-                          whether to buy as Investor / End user. Contact us now
-                        </Typography>
-                        <Chip
-                          icon={<WhatsAppIcon />}
-                          label="Contact us on whatsapp"
-                          sx={{ mr: 2 }}
-                          onClick={() => { }}
-                        />
-                        <Chip
-                          icon={<AssignmentIcon />}
-                          label="Enquire now"
-                          onClick={() => { }}
-                        />
-                      </Box>
-                    </CustomTabPanel>
                   </Grid>
                 </Grid>
               </CardContent>
@@ -813,36 +685,38 @@ const PropertyDetailsPage = () => {
           <Grid item xs={12}>
             <Card sx={{ p: 2 }}>
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Box sx={{ textAlign: "center" }}>
-                    <Typography variant="h4">Need help?</Typography>
-                    <Typography variant="body2">
-                      Contact our consultant
-                    </Typography>
+                <Grid item xs={12} sx={{ display: 'flex' }}>
+                  <Box sx={{ flex: 1, alignSelf: 'center' }}>
+                    <Typography variant="h4">Contact verified consultants</Typography>
+                  </Box>
+                  <Box>
+                    <Chip
+                      label="Register as a consultant"
+                      icon={<AssignmentIcon fontSize="small" />}
+                      size="small"
+                      onClick={() => { }}
+                      sx={{ fontSize: '0.875rem !important' }}
+                    />
                   </Box>
                 </Grid>
 
                 {brokersList.map((broker) => (
                   <Grid item xs={12} sm={6} key={broker?.name}>
-                    <BrokerCard broker={broker} />
+                    <BrokerCard broker={broker} noReview />
                   </Grid>
                 ))}
 
                 <Grid item xs={12}>
-                  <Box sx={{ textAlign: "center" }}>
-                    <Typography variant="body2" sx={{ mb: 1 }}>
+                  <Box sx={{ display: 'flex' }}>
+                    <Typography variant="body2" sx={{ flex: 1, alignSelf: 'center' }}>
                       Are you a professional real estate consultant, serve 544
                       Clients for Godrej Woods
                     </Typography>
                     <Chip
                       label="Yes"
-                      icon={<WhatsAppIcon />}
-                      sx={{ mr: 2 }}
-                      onClick={() => { }}
-                    />
-                    <Chip
-                      label="Register"
-                      icon={<AssignmentIcon />}
+                      icon={<WhatsAppIcon fontSize="small" />}
+                      size="small"
+                      sx={{ fontSize: "0.875rem" }}
                       onClick={() => { }}
                     />
                   </Box>
@@ -850,6 +724,7 @@ const PropertyDetailsPage = () => {
               </Grid>
             </Card>
           </Grid>
+          <OverallAssesmentSection />
         </Grid>
 
         {/* Dont Touch this */}
