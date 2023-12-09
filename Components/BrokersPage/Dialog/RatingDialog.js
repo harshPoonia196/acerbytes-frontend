@@ -62,7 +62,7 @@ const RatingDialog = (props) => {
                 <NewInputFieldStructure label="Comment" multiline rows={2} variant='outlined' isFull />
                 <Grid item xs={12} sx={{ display: 'flex' }}>
                   <Typography variant='h5' sx={{ flex: 1, alignSelf: 'center' }}>
-                    Private
+                    Public
                   </Typography>
                   <Switch defaultChecked />
                 </Grid>
