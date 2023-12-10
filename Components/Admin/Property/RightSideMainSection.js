@@ -32,7 +32,7 @@ import ResalePriceCard from './SubComponents/ResalePriceCard';
 import InvestmentCard from './SubComponents/InvestmentCard';
 import MarketingCard from './SubComponents/MarketingCard';
 
-function RightSideMainSection() {
+function RightSideMainSection({ refCallback }) {
     const [isEdit, setIsEdit] = useState(true);
 
     return (
@@ -59,18 +59,18 @@ function RightSideMainSection() {
                     </Box>
                 </Card>
             </Grid>
-            <ProjectCard isEdit={isEdit} />
-            <LocationCard isEdit={isEdit} />
-            <LandscapeCard isEdit={isEdit} />
-            <FloorPlanCard isEdit={isEdit} />
-            <RegulatoryCard isEdit={isEdit} />
-            <ConstructionCard isEdit={isEdit} />
-            <BuilderPriceCard isEdit={isEdit} />
-            <ResalePriceCard isEdit={isEdit} />
-            <InvestmentCard isEdit={isEdit} />
-            <BankCard isEdit={isEdit} />
-            <FacilitiesCard isEdit={isEdit} />
-            <MarketingCard isEdit={isEdit} />
+            <ProjectCard isEdit={isEdit} refCallback={refCallback} />
+            <LocationCard isEdit={isEdit} refCallback={refCallback} />
+            <LandscapeCard isEdit={isEdit} refCallback={refCallback} />
+            <FloorPlanCard isEdit={isEdit} refCallback={refCallback} />
+            <RegulatoryCard isEdit={isEdit} refCallback={refCallback} />
+            <ConstructionCard isEdit={isEdit} refCallback={refCallback} />
+            <BuilderPriceCard isEdit={isEdit} refCallback={refCallback} />
+            <ResalePriceCard isEdit={isEdit} refCallback={refCallback} />
+            <InvestmentCard isEdit={isEdit} refCallback={refCallback} />
+            <BankCard isEdit={isEdit} refCallback={refCallback} />
+            <FacilitiesCard isEdit={isEdit} refCallback={refCallback} />
+            <MarketingCard isEdit={isEdit} refCallback={refCallback} />
         </>
     )
 }

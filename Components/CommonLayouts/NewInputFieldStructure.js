@@ -14,7 +14,7 @@ const NewInputFieldStructure = ({
   isFull,
   ...props
 }) => (
-  <>{console.log(isEdit)}
+  <>
     <Grid item xs={12} sm={isFull ? 12 : 6}>
       <Box>
         <Typography

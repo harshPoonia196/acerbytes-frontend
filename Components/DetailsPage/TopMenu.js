@@ -2,8 +2,6 @@ import React from 'react'
 import { Tabs, Tab, Card, Box, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
-import Link from "next/link";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 function TopMenu({ value, handleChange }) {
 
@@ -14,41 +12,38 @@ function TopMenu({ value, handleChange }) {
             label: 'Project',
             value: 'project'
         }, {
-            label: 'Location',
-            value: 'location'
+            label: 'Builder',
+            value: 'builder'
         }, {
             label: 'Landscape',
             value: 'landscape'
         }, {
-            label: 'Floor plans',
-            value: 'floorplans'
+            label: 'Amenities',
+            value: 'amenities'
         }, {
-            label: 'Regulatory',
-            value: 'regulatory'
+            label: 'Clearance',
+            value: 'clearance'
         }, {
-            label: 'Construction',
-            value: 'construction'
+            label: 'Pricing',
+            value: 'pricing'
         }, {
-            label: 'Builder price',
-            value: 'builderPrice'
+            label: 'Value for money',
+            value: 'value'
         }, {
-            label: 'Resale price',
-            value: 'resalePrice'
+            label: 'Units',
+            value: 'units'
         }, {
-            label: 'Investment',
-            value: 'investment'
+            label: 'Floor design',
+            value: 'floordesign'
         }, {
-            label: 'Bank',
-            value: 'bank'
+            label: 'Floor area',
+            value: 'floorarea'
         }, {
-            label: 'Facilities',
-            value: 'facilities'
+            label: 'Location',
+            value: 'location'
         }, {
-            label: 'Near by',
-            value: 'nearby'
-        }, {
-            label: 'Landmarks',
-            value: 'landmarks'
+            label: 'Assesment',
+            value: 'assesment'
         }
     ]
 

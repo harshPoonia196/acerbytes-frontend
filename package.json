@@ -20,6 +20,7 @@
     "dayjs": "^1.11.10",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "lodash": "^4.17.21",
     "next": "13.4.19",
     "react": "18.2.0",
     "react-cropper": "^2.3.3",
