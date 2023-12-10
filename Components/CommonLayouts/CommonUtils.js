@@ -43,4 +43,6 @@ const listOfTabsInAddProperty = [{
 }
 ]
 
-export { listOfTabsInAddProperty }
+const disablePersonalizeAdsOption = ['For this page', 'For 1 week', 'For 1 month', 'Diable - will enable from settings']
+
+export { listOfTabsInAddProperty, disablePersonalizeAdsOption }
