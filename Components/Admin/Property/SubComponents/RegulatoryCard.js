@@ -15,9 +15,9 @@ import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStruct
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
 
-function RegulatoryCard({ isEdit }) {
+function RegulatoryCard({ isEdit, refCallback }) {
     return (
-        <Grid item xs={12} id="regulatory">
+        <Grid item xs={12} id="regulatory" ref={refCallback}>
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
@@ -39,7 +39,7 @@ function RegulatoryCard({ isEdit }) {
                         variant="outlined"
                         isEdit={isEdit}
                     />
-                   
+
                     <NewSelectTextFieldStructure
                         label="CC available"
                         variant="outlined"
@@ -60,8 +60,8 @@ function RegulatoryCard({ isEdit }) {
                         variant="outlined"
                         isEdit={isEdit}
                     />
-                     <Grid item  sx={{  display: 'flex', ml:'auto' }}>
-                        <Box sx={{ alignSelf: 'end', flex: 1,  }}>
+                    <Grid item sx={{ display: 'flex', ml: 'auto' }}>
+                        <Box sx={{ alignSelf: 'end', flex: 1, }}>
                             <Button variant='contained' >Add</Button>
                         </Box>
                     </Grid>

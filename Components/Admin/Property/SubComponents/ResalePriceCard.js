@@ -15,9 +15,9 @@ import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStruct
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
 
-function ResalePriceCard({ isEdit }) {
+function ResalePriceCard({ isEdit, refCallback }) {
     return (
-        <Grid item xs={12} id="resalePrice">
+        <Grid item xs={12} id="resalePrice" ref={refCallback}>
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography

@@ -9,7 +9,7 @@ function FloorPlanSection({ refCallback }) {
     const router = useRouter()
 
     return (
-        <Grid item xs={12} ref={refCallback} id='floorplans'>
+        <Grid item xs={12} ref={refCallback} id='floorarea'>
             <Card>
                 <Box sx={{ p: 2, display: 'flex' }}>
                     <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>

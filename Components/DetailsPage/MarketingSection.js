@@ -35,14 +35,14 @@ function MarketingSection({ refCallback }) {
     };
 
 
-    useEffect(() => {
-        if (myDivRef.current) {
-            const myDiv = myDivRef.current;
-            const widthCal = myDiv.offsetWidth;
-            setWidth(widthCal)
-            console.log('Width of the div:', width, 'pixels');
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (myDivRef.current) {
+    //         const myDiv = myDivRef.current;
+    //         const widthCal = myDiv.offsetWidth;
+    //         setWidth(widthCal)
+    //         console.log('Width of the div:', width, 'pixels');
+    //     }
+    // }, []);
 
     return (
         <>
@@ -129,7 +129,7 @@ function MarketingSection({ refCallback }) {
                 </Card>
             </Card>
             <Container maxWidth="evmd" sx={{ pb: '0 !important' }}>
-                <Card>
+                <Card id="builder" ref={refCallback}>
                     <Box sx={{ display: 'flex', p: 2 }}>
                         <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
                             Builder

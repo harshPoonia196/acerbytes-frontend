@@ -37,6 +37,9 @@ const listOfTabsInAddProperty = [{
 }, {
     label: 'Landmarks',
     value: 'landmarks'
+}, {
+    label: 'Marketing',
+    value: 'marketing'
 }
 ]
 

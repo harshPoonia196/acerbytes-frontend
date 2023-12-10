@@ -15,9 +15,9 @@ import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStruct
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewUnitAreaInputField from '../../../CommonLayouts/NewUnitAreaInputField';
 
-function LandscapeCard({ isEdit }) {
+function LandscapeCard({ isEdit, refCallback }) {
     return (
-        <Grid item xs={12} id="landscape">
+        <Grid item xs={12} id="landscape" ref={refCallback}>
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography

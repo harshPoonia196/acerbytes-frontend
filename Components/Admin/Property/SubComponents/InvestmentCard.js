@@ -14,9 +14,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
-function InvestmentCard({ isEdit }) {
+function InvestmentCard({ isEdit, refCallback }) {
     return (
-        <Grid item xs={12} id="investment">
+        <Grid item xs={12} id="investment" ref={refCallback}>
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography

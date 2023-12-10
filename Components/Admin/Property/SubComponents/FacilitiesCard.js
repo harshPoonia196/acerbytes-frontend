@@ -16,9 +16,9 @@ import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextF
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
 import colors from 'styles/theme/colors';
 
-function FacilitiesCard({ isEdit }) {
+function FacilitiesCard({ isEdit, refCallback }) {
     return (
-        <Grid item xs={12} id="facilities">
+        <Grid item xs={12} id="facilities" ref={refCallback}>
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
