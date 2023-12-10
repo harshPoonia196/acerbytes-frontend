@@ -11,7 +11,7 @@ const NewInputFieldStructure = ({
   sx,
   variant,
   isEdit,
-  isFull,
+  isFull, defaultValue,
   ...props
 }) => (
   <>
@@ -30,6 +30,7 @@ const NewInputFieldStructure = ({
         variant={variant ? variant : "standard"}
         fullWidth
         size="small"
+        defaultValue={defaultValue}
         sx={sx}
         {...props}
       /> : isEdit === true ? (
@@ -39,6 +40,7 @@ const NewInputFieldStructure = ({
           variant={variant ? variant : "standard"}
           fullWidth
           size="small"
+          defaultValue={defaultValue}
           sx={sx}
           {...props}
         />

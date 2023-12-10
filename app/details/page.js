@@ -14,7 +14,7 @@ import {
   Chip,
   Rating,
   Toolbar,
-  Avatar, Button
+  Avatar, Button, IconButton, Tooltip
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -53,6 +53,9 @@ import PricingSection from 'Components/DetailsPage/PricingSection'
 import ResaleSection from "Components/DetailsPage/ResaleSection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import LayoutSection from "Components/DetailsPage/LayoutSection";
+import { Close } from "@mui/icons-material";
+import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
+import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
@@ -214,34 +217,96 @@ const PropertyDetailsPage = () => {
     }
   }, []);
 
+  const [disablePersonalizeAds, setDisablePersonalizeAds] = useState(false)
+
+  const handleOpenPersonalizeAds = () => {
+    setDisablePersonalizeAds(true)
+  }
+
+  const handleClosePersonalizeAds = () => {
+    setDisablePersonalizeAds(false)
+  }
+
+  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false)
+
+  const handleOpenActivateAdsPopup = () => {
+    setActivateAdsPopupState(true)
+  }
+
+  const handleCloseActivateAdsPopup = () => {
+    setActivateAdsPopupState(false)
+  }
 
   return (
     <>
+      <ActivateAdsPopup open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
+      <DisableActivateAdsPopup open={disablePersonalizeAds} handleOpen={handleOpenPersonalizeAds} handleClose={handleClosePersonalizeAds} />
       <Box ref={myDivRef} >
-        <Card sx={{ p: 2, display: 'flex', borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ mr: 2 }} />
-          <Box flex={1}>
-            <Typography variant='h6'>Anand Gupta &#183; Anand real estate</Typography>
-            <Typography variant='body2'>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
+        <Card sx={{ m: 2, mx: 8, mb: 2, position: 'relative' }}>
+          <Box sx={{ borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
+            <Box sx={{ display: 'flex' }}>
+              <Box sx={{ display: 'flex', p: 2, py: 1, flex: 1 }}>
+                <Typography variant='h6' sx={{ mr: 1 }}>Contact Anand Gupta</Typography>
+                <Rating
+                  name="text-feedback"
+                  value={4}
+                  readOnly
+                  precision={0.5}
+                  sx={{ fontSize: '1rem', alignSelf: 'center' }}
+                  emptyIcon={
+                    <StarIcon
+                      style={{ opacity: 0.55 }}
+                      fontSize="inherit"
+                    />
+                  }
+                />
+                <Typography variant="h6" sx={{ alignSelf: 'center', ml: 1 }}>4.7 - for Godrej forest - Sector - 132 - Noida</Typography>
+              </Box>
+              <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
+                <Tooltip title="Don't show me again">
+                  {/* <IconButton> */}
+                  <Close fontSize="1rem" sx={{ cursor: 'pointer' }} onClick={handleOpenPersonalizeAds} />
+                  {/* </IconButton> */}
+                </Tooltip>
+              </Box>
+            </Box>
+
+            <Divider sx={{ borderColor: 'gainsboro' }} />
+            <Box sx={{ alignSelf: 'center', p: 2, py: 1, display: 'flex' }}>
+              <Typography variant='body2' sx={{ flex: 1 }}>https://abcd.com/aaad</Typography>
+              <Typography variant='body2' className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }}>Copy link</Typography>
+            </Box>
+            <Divider sx={{ borderColor: 'gainsboro' }} />
+            <Typography variant='body2' noWrap sx={{ p: 2, py: 1 }}>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
+            {/* <Divider sx={{ borderColor: 'gainsboro' }} /> */}
           </Box>
-          <Box>
+          <Box sx={{ p: 2, py: 1, display: 'flex' }}>
+            <Typography variant='body2' sx={{ alignSelf: 'center' }}>
+              <i>
+                Get your personalized URL to receive potential buyers queries directly in your leadsbox
+              </i>
+            </Typography>
+            <Box sx={{ flex: 1, textAlign: 'end' }}>
+              <Button variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} >Activate&nbsp;link</Button>
+            </Box>
+          </Box>
+        </Card>
+
+        {/* <Box sx={{ display: 'flex' }}>
             <a
               href="tel:8794561234"
               style={{
-                display: "flex",
-                alignSelf: "center",
                 textDecoration: "none",
                 color: "inherit",
               }}
             >
-              <Button startIcon={<CallIcon />} variant='outlined'>932333366</Button>
+              <Button startIcon={<CallIcon fontSize="small" />} variant='outlined' size="small">932333366</Button>
             </a>
-          </Box>
-        </Card>
-        <Card>
-          <TopMenu value={alignment} handleChange={handleChange} />
-        </Card>
-      </Box>
+
+          </Box> */}
+
+        <TopMenu value={alignment} handleChange={handleChange} />
+      </Box >
       <Box sx={{
         height: `calc(100vh - ${height}px - 64px )`,
         overflow: 'auto'
