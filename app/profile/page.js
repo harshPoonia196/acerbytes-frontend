@@ -18,11 +18,12 @@ import {
   Divider,
   ListItem,
   IconButton,
+  Tabs,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import CallIcon from "@mui/icons-material/Call";
 import PropertyTable from "Components/ProfilePage/PropertyTable";
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
@@ -32,6 +33,7 @@ import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompl
 import NewCurrencyInputField from "Components/CommonLayouts/NewCurrencyInputField";
 import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
+import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 
 function Profile() {
 
@@ -90,102 +92,58 @@ function Profile() {
 
   const [isEdit, setIsEdit] = useState(true);
 
+
+  const sectionRef = useRef([])
+
+  useEffect(() => {
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const newAlignment = entry.target.getAttribute('id');
+          setProfilePageToggleAlignment(newAlignment);
+        }
+      })
+
+      console.log(entries)
+    }, {
+      root: null, // Set root to null to use the viewport as the root
+      rootMargin: "0px", // Set rootMargin to "0px" to trigger when the top of the section approaches the top of the viewport
+      threshold: 1.0, // Set threshold to 1.0 to trigger when the section is fully visible
+    })
+
+    sectionRef.current.forEach(section => {
+      observer.observe(section)
+    })
+
+    return () => {
+      // Cleanup observer when component is unmounted
+      observer.disconnect();
+    };
+
+  }, [])
+
+  const refCallback = useCallback((element) => {
+    if (element) {
+      sectionRef.current.push(element)
+    }
+  })
+
   return (
-    <Container>
+    <Container maxWidth="md">
+      <NavTabProfilePage value={profilePageToggleAlignment}
+        handleChange={handleChangePropertyPageToggle}
+      />
       <Box
         sx={{
           display: "flex",
           gap: "16px",
-          height: `calc(100vh - 100px)`,
+          height: `calc(100vh - 160px)`,
+          mt: '1rem'
         }}
       >
-        <Box sx={{ width: "240px", height: "100%", overflow: "hidden", p: 1 }}>
-          <ToggleButtonGroup
-            color="primary"
-            value={profilePageToggleAlignment}
-            exclusive
-            fullWidth
-            onChange={handleChangePropertyPageToggle}
-            aria-label="Platform"
-            sx={{ display: "flex", flexDirection: "column" }}
-          >
-            <ToggleButton
-              sx={{
-                border: "1px solid gainsboro !important",
-                borderRadius: "0 !important",
-                justifyContent: 'flex-start'
-              }}
-              fullWidth
-              size="small"
-              value="userDetails"
-            >
-              User details
-            </ToggleButton>
-
-            <ToggleButton
-              sx={{
-                border: "1px solid gainsboro !important",
-                borderRadius: "0 !important",
-                justifyContent: 'flex-start'
-              }}
-              fullWidth
-              size="small"
-              value="interestedCities"
-            >
-              Interested cities
-            </ToggleButton>
-            <ToggleButton
-              sx={{
-                border: "1px solid gainsboro !important",
-                borderRadius: "0 !important",
-                justifyContent: 'flex-start'
-              }}
-              fullWidth
-              size="small"
-              value="budget"
-            >
-              Budget
-            </ToggleButton>
-            <ToggleButton
-              sx={{
-                border: "1px solid gainsboro !important",
-                borderRadius: "0 !important",
-                justifyContent: 'flex-start'
-              }}
-              fullWidth
-              size="small"
-              value="enquiries"
-            >
-              Enquiries
-            </ToggleButton>
-            <ToggleButton
-              sx={{
-                border: "1px solid gainsboro !important",
-                borderRadius: "0 !important",
-                justifyContent: 'flex-start'
-              }}
-              fullWidth
-              size="small"
-              value="propertyConsultants"
-            >
-              Property Consultants
-            </ToggleButton>
-            <ToggleButton
-              sx={{
-                border: "1px solid gainsboro !important",
-                borderRadius: "0 !important",
-                justifyContent: 'flex-start'
-              }}
-              fullWidth
-              size="small"
-              value="currentAddress"
-            >
-              Current address
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
         <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-          <Grid item xs={12} id="userDetails">
+          <Grid item xs={12} id="userDetails" ref={refCallback}>
             <Card sx={{ p: 2 }}>
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ flex: 1 }}>
@@ -203,7 +161,7 @@ function Profile() {
                       color: "inherit",
                     }}
                   >
-                    <CallIcon sx={{ alignSelf: "center" }} />
+                    <CallIcon fontSize="small" sx={{ alignSelf: "center" }} />
                     <Typography variant="h6" sx={{ alignSelf: "center" }}>
                       +91 8794561234
                     </Typography>
@@ -255,7 +213,7 @@ function Profile() {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} id="serviceDetails" ref={refCallback}>
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
@@ -290,7 +248,7 @@ function Profile() {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12} id="interestedCities">
+          <Grid item xs={12} id="interestedCities" ref={refCallback}>
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
@@ -355,7 +313,7 @@ function Profile() {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12} id="budget">
+          <Grid item xs={12} id="budget" ref={refCallback}>
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
@@ -437,7 +395,7 @@ function Profile() {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12} id="enquiries">
+          <Grid item xs={12} id="enquiries" ref={refCallback}>
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
@@ -460,7 +418,7 @@ function Profile() {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12} id="currentAddress">
+          <Grid item xs={12} id="currentAddress" ref={refCallback}>
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
