@@ -45,4 +45,14 @@ const listOfTabsInAddProperty = [{
 
 const disablePersonalizeAdsOption = ['For this page', 'For 1 week', 'For 1 month', 'Diable - will enable from settings']
 
-export { listOfTabsInAddProperty, disablePersonalizeAdsOption }
+const listOfProfileTab = [
+    { label: 'User details', value: 'userDetails' },
+    { label: 'Service details', value: 'serviceDetails' },
+    { label: 'Interested cities', value: 'interestedCities' },
+    { label: 'Budget', value: 'budget' },
+    { label: 'Enquiries', value: 'enquiries' },
+    { label: 'Property Consultants', value: 'propertyConsultants' },
+    { label: 'Current address', value: 'currentAddress' },
+]
+
+export { listOfTabsInAddProperty, listOfProfileTab, disablePersonalizeAdsOption }
