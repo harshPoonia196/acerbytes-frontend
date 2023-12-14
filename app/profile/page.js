@@ -3,6 +3,7 @@
 import {
   Container,
   Card,
+  Switch,
   Typography,
   Grid,
   ListItemButton,
@@ -36,43 +37,37 @@ import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonSt
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 
 function Profile() {
+  const router = useRouter();
 
-  const router = useRouter()
-
-  const [exploringAsToggle, setExploringAsToggle] = useState('')
+  const [exploringAsToggle, setExploringAsToggle] = useState("");
 
   const handleChangeExploringAsToggle = (event, newAlignment) => {
-    if (newAlignment != null)
-      setExploringAsToggle(newAlignment);
-  }
+    if (newAlignment != null) setExploringAsToggle(newAlignment);
+  };
 
-  const [purposeToggle, setPurposeToggle] = useState('')
+  const [purposeToggle, setPurposeToggle] = useState("");
 
   const handleChangePurposeToggle = (event, newAlignment) => {
-    if (newAlignment != null)
-      setPurposeToggle(newAlignment);
-  }
+    if (newAlignment != null) setPurposeToggle(newAlignment);
+  };
 
-  const [purchaseToggle, setPurchaseToggle] = useState('')
+  const [purchaseToggle, setPurchaseToggle] = useState("");
 
   const handleChangePurchaseToggle = (event, newAlignment) => {
-    if (newAlignment != null)
-      setPurchaseToggle(newAlignment);
-  }
+    if (newAlignment != null) setPurchaseToggle(newAlignment);
+  };
 
-  const [demographicToggle, setDemographicToggle] = useState('')
+  const [demographicToggle, setDemographicToggle] = useState("");
 
   const handleChangeDemographicToggle = (event, newAlignment) => {
-    if (newAlignment != null)
-      setDemographicToggle(newAlignment);
-  }
+    if (newAlignment != null) setDemographicToggle(newAlignment);
+  };
 
-  const [interestedForLoanToggle, setInterestedForLoanToggle] = useState('')
+  const [interestedForLoanToggle, setInterestedForLoanToggle] = useState("");
 
   const handleChangeInterestedForLoanToggle = (event, newAlignment) => {
-    if (newAlignment != null)
-      setInterestedForLoanToggle(newAlignment);
-  }
+    if (newAlignment != null) setInterestedForLoanToggle(newAlignment);
+  };
 
   const [propertyTypeToggleAlignment, setPropertyTypeToggleAlignment] =
     React.useState("");
@@ -81,57 +76,70 @@ function Profile() {
     setPropertyTypeToggleAlignment(newAlignment);
   };
 
-  const [profilePageToggleAlignment, setProfilePageToggleAlignment] = React.useState("userDetails");
+  const [profilePageToggleAlignment, setProfilePageToggleAlignment] =
+    React.useState("userDetails");
 
   const handleChangePropertyPageToggle = (event, newAlignment) => {
     if (newAlignment != null) {
       setProfilePageToggleAlignment(newAlignment);
-      router.push(`#${newAlignment}`)
+      router.push(`#${newAlignment}`);
     }
   };
 
   const [isEdit, setIsEdit] = useState(true);
 
+  const sectionRef = useRef([]);
 
-  const sectionRef = useRef([])
+  const [isDndEnabled, setIsDndEnabled] = useState(false);
+  const [isPromotionEnabled, setIsPromotionEnabled] = useState(true);
+
+  const handleDndToggle = () => {
+    setIsDndEnabled((prev) => !prev);
+  };
+
+  const handlePromotionToggle = () => {
+    setIsPromotionEnabled((prev) => !prev);
+  };
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const newAlignment = entry.target.getAttribute("id");
+            setProfilePageToggleAlignment(newAlignment);
+          }
+        });
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const newAlignment = entry.target.getAttribute('id');
-          setProfilePageToggleAlignment(newAlignment);
-        }
-      })
+        console.log(entries);
+      },
+      {
+        root: null, // Set root to null to use the viewport as the root
+        rootMargin: "0px", // Set rootMargin to "0px" to trigger when the top of the section approaches the top of the viewport
+        threshold: 1.0, // Set threshold to 1.0 to trigger when the section is fully visible
+      }
+    );
 
-      console.log(entries)
-    }, {
-      root: null, // Set root to null to use the viewport as the root
-      rootMargin: "0px", // Set rootMargin to "0px" to trigger when the top of the section approaches the top of the viewport
-      threshold: 1.0, // Set threshold to 1.0 to trigger when the section is fully visible
-    })
-
-    sectionRef.current.forEach(section => {
-      observer.observe(section)
-    })
+    sectionRef.current.forEach((section) => {
+      observer.observe(section);
+    });
 
     return () => {
       // Cleanup observer when component is unmounted
       observer.disconnect();
     };
-
-  }, [])
+  }, []);
 
   const refCallback = useCallback((element) => {
     if (element) {
-      sectionRef.current.push(element)
+      sectionRef.current.push(element);
     }
-  })
+  });
 
   return (
     <Container maxWidth="md">
-      <NavTabProfilePage value={profilePageToggleAlignment}
+      <NavTabProfilePage
+        value={profilePageToggleAlignment}
         handleChange={handleChangePropertyPageToggle}
       />
       <Box
@@ -139,7 +147,7 @@ function Profile() {
           display: "flex",
           gap: "16px",
           height: `calc(100vh - 160px)`,
-          mt: '1rem'
+          mt: "1rem",
         }}
       >
         <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
@@ -285,25 +293,25 @@ function Profile() {
                       label="Mumbai"
                       size="small"
                       sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => { }}
+                      onDelete={() => {}}
                     />
                     <Chip
                       label="Mumbai"
                       size="small"
                       sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => { }}
+                      onDelete={() => {}}
                     />
                     <Chip
                       label="Mumbai"
                       size="small"
                       sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => { }}
+                      onDelete={() => {}}
                     />
                     <Chip
                       label="Mumbai"
                       size="small"
                       sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => { }}
+                      onDelete={() => {}}
                     />
                   </Box>
                   <Box>
@@ -340,7 +348,12 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                 />
-                <NewToggleButtonStructure label="Exploring as" isEdit={isEdit} value={exploringAsToggle} handleChange={handleChangeExploringAsToggle}>
+                <NewToggleButtonStructure
+                  label="Exploring as"
+                  isEdit={isEdit}
+                  value={exploringAsToggle}
+                  handleChange={handleChangeExploringAsToggle}
+                >
                   <ToggleButton fullWidth size="small" value="active">
                     Active
                   </ToggleButton>
@@ -354,7 +367,12 @@ function Profile() {
                     NA
                   </ToggleButton>
                 </NewToggleButtonStructure>
-                <NewToggleButtonStructure label="Purpose" isEdit={isEdit} value={purposeToggle} handleChange={handleChangePurposeToggle}>
+                <NewToggleButtonStructure
+                  label="Purpose"
+                  isEdit={isEdit}
+                  value={purposeToggle}
+                  handleChange={handleChangePurposeToggle}
+                >
                   <ToggleButton fullWidth size="small" value="buyer">
                     Buyer
                   </ToggleButton>
@@ -365,7 +383,12 @@ function Profile() {
                     Both
                   </ToggleButton>
                 </NewToggleButtonStructure>
-                <NewToggleButtonStructure label="Purchase" isEdit={isEdit} value={purchaseToggle} handleChange={handleChangePurchaseToggle}>
+                <NewToggleButtonStructure
+                  label="Purchase"
+                  isEdit={isEdit}
+                  value={purchaseToggle}
+                  handleChange={handleChangePurchaseToggle}
+                >
                   <ToggleButton fullWidth size="small" value="first">
                     First
                   </ToggleButton>
@@ -376,7 +399,12 @@ function Profile() {
                     Third
                   </ToggleButton>
                 </NewToggleButtonStructure>
-                <NewToggleButtonStructure label="Demographic" isEdit={isEdit} value={demographicToggle} handleChange={handleChangeDemographicToggle}>
+                <NewToggleButtonStructure
+                  label="Demographic"
+                  isEdit={isEdit}
+                  value={demographicToggle}
+                  handleChange={handleChangeDemographicToggle}
+                >
                   <ToggleButton fullWidth size="small" value="family">
                     Family
                   </ToggleButton>
@@ -384,7 +412,12 @@ function Profile() {
                     Single
                   </ToggleButton>
                 </NewToggleButtonStructure>
-                <NewToggleButtonStructure label="Interested for loan" isEdit={isEdit} value={interestedForLoanToggle} handleChange={handleChangeInterestedForLoanToggle}>
+                <NewToggleButtonStructure
+                  label="Interested for loan"
+                  isEdit={isEdit}
+                  value={interestedForLoanToggle}
+                  handleChange={handleChangeInterestedForLoanToggle}
+                >
                   <ToggleButton fullWidth size="small" value="yes">
                     Yes
                   </ToggleButton>
@@ -435,7 +468,12 @@ function Profile() {
               </Box>
               <Divider />
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <NewToggleButtonStructure isEdit={isEdit} label="Address type" value={propertyTypeToggleAlignment} handleChange={handleChangePropertyTypeToggle}>
+                <NewToggleButtonStructure
+                  isEdit={isEdit}
+                  label="Address type"
+                  value={propertyTypeToggleAlignment}
+                  handleChange={handleChangePropertyTypeToggle}
+                >
                   <ToggleButton fullWidth size="small" value="owned">
                     Owned
                   </ToggleButton>
@@ -473,6 +511,78 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                 />
+              </Grid>
+            </Card>
+          </Grid>
+          <Grid item xs={12} id="setting" ref={refCallback}>
+            <Card>
+              <Box sx={{ display: "flex", p: 2, py: 1 }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
+                >
+                  Setting
+                </Typography>
+                <Box>
+                  <IconButton>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              </Box>
+              <Divider />
+              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
+                <NewToggleButtonStructure
+                  isEdit={isEdit}
+                  label="Switch Role Type"
+                  value={propertyTypeToggleAlignment}
+                  handleChange={handleChangePropertyTypeToggle}
+                >
+                  <ToggleButton fullWidth size="small" value="consultant">
+                    Consultant
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="buyer">
+                    Buyer
+                  </ToggleButton>
+                </NewToggleButtonStructure>
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="body1">
+                    Do Not Disturb (DND) Mode
+                  </Typography>
+                  <Switch
+                    checked={isDndEnabled}
+                    onChange={handleDndToggle}
+                    color="primary"
+                  />
+                </Grid>
+
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="body1">
+                    Receive WhatsApp Promotions
+                  </Typography>
+                  <Switch
+                    checked={isPromotionEnabled}
+                    onChange={handlePromotionToggle}
+                    color="primary"
+                  />
+                </Grid>
               </Grid>
             </Card>
           </Grid>
