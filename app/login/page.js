@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, Card, Grid, Typography, Box, Button } from "@mui/material";
+import { Container, Card, Grid, Typography, Box, Button , ToggleButton } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import React, { useState } from "react";
 import InputField from "Components/CommonLayouts/InputField";
@@ -10,6 +10,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useRouter } from "next/navigation";
 import NewPhoneInputField from "Components/CommonLayouts/NewPhoneInputField";
 import OTPInputLayout from "Components/CommonLayouts/OTPInputLayout";
+import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 
 function Login() {
   const router = useRouter();
@@ -21,6 +22,13 @@ function Login() {
   const [otpInput, setOtpInput] = useState();
 
   const [isVerified, setIsVerified] = useState(false);
+  const [isEdit, setIsEdit] = useState(true);
+  const [roleTypeToggleAlignment, setRoleTypeToggleAlignment] =
+  React.useState("");
+
+const handleChangeRoleTypeToggle = (event, newAlignment) => {
+  setRoleTypeToggleAlignment(newAlignment);
+};
 
   return (
     <Container maxWidth="sm">
@@ -116,20 +124,30 @@ function Login() {
                   <span style={{ color: "gray" }}>welcome to Acrebytes</span>
                 </Typography>
               </Grid>
+              
               <Grid item xs={12} sx={{ my: 1 }}>
                 <Typography variant="body1">
-                  You have been successfully verified
+                  Select your role
                 </Typography>
+                
+              
+                <NewToggleButtonStructure isEdit={isEdit} value={roleTypeToggleAlignment} handleChange={handleChangeRoleTypeToggle}>
+                  <ToggleButton fullWidth size="small" value="consultant">
+                    I am a Real estate consultant
+                  </ToggleButton>
+                  <ToggleButton fullWidth size="small" value="buyer">
+                    I am here to explore / buy a property
+                  </ToggleButton>
+                </NewToggleButtonStructure>
               </Grid>
               <Grid item xs={12} sx={{ textAlign: "end" }}>
                 <Button
                   variant="contained"
-                  startIcon={<HomeIcon />}
                   onClick={() => {
                     router.push("/");
                   }}
                 >
-                  Go to home
+                  Confirm
                 </Button>
               </Grid>
             </>
