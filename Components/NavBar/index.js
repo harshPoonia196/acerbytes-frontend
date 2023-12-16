@@ -111,7 +111,10 @@ export default function ClippedDrawer({ children }) {
   const DrawerListItem = ({ item }) => {
     return (
       <ListItem key={item.label} disablePadding>
-        <ListItemButton sx={{ pl: 3 }} onClick={() => router.push(item.route)}>
+        <ListItemButton sx={{ pl: 3 }} onClick={() => {
+          router.push(item.route)
+          handleDrawerClose()
+        }}>
           <ListItemIcon sx={{ minWidth: 40 }}>{item?.icon}</ListItemIcon>
           <StyledBadge
             color="secondary"

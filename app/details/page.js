@@ -39,7 +39,7 @@ import { useSelector } from "react-redux";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
 import { useCallback } from "react";
-import { listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
+import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
 import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
 import LocationSection from "Components/DetailsPage/LocationSection";
@@ -57,15 +57,48 @@ import { Close } from "@mui/icons-material";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
 import { useSearchParams } from 'next/navigation'
+import { makeStyles, withStyles } from "@mui/styles";
+import throttle from "lodash/throttle";
 
+const tabHeight = 200;
+
+const useStyles = makeStyles((theme) => ({
+  demo2: {
+    backgroundColor: "#fff",
+    position: "sticky",
+    top: 54,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    [theme.breakpoints.up('sm')]: {
+      top: 64,
+    },
+    marginBottom: '16px'
+  },
+}));
+
+const noop = () => { };
+
+function useThrottledOnScroll(callback, delay) {
+  const throttledCallback = React.useMemo(
+    () => (callback ? throttle(callback, delay) : noop),
+    [callback, delay]
+  );
+
+  React.useEffect(() => {
+    if (throttledCallback === noop) return undefined;
+
+    window.addEventListener("scroll", throttledCallback);
+    return () => {
+      window.removeEventListener("scroll", throttledCallback);
+      throttledCallback.cancel();
+    };
+  }, [throttledCallback]);
+}
 
 const PropertyDetailsPage = () => {
-  const router = useRouter();
-
   const searchParams = useSearchParams()
   const name = searchParams.get('name')
-
-  const { isDrawerOpen } = useSelector((state) => state);
 
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
@@ -171,57 +204,6 @@ const PropertyDetailsPage = () => {
     setOpenAlternateSignIn(false);
   };
 
-  const sectionRef = useRef([])
-
-  const [alignment, setAlignment] = React.useState(listOfTabsInAddProperty[0].value);
-
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
-
-  useEffect(() => {
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setAlignment(entry.target.getAttribute('id'))
-          console.log(alignment)
-        }
-      })
-
-      console.log(entries)
-    }, {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.75,
-    })
-
-    sectionRef.current.forEach(section => {
-      observer.observe(section)
-    })
-
-  }, [])
-
-  const refCallback = useCallback((element) => {
-    if (element) {
-      sectionRef.current.push(element)
-    }
-  })
-
-  const myDivRef = useRef(null)
-
-  const [height, setHeight] = useState()
-
-  useEffect(() => {
-    if (myDivRef.current) {
-      const myDiv = myDivRef.current;
-      const heightCalc = myDiv.offsetHeight;
-      setHeight(heightCalc)
-      console.log('Width of the div:', heightCalc, 'pixels');
-      console.log(myDiv)
-    }
-  }, []);
-
   const [disablePersonalizeAds, setDisablePersonalizeAds] = useState(false)
 
   const handleOpenPersonalizeAds = () => {
@@ -242,86 +224,162 @@ const PropertyDetailsPage = () => {
     setActivateAdsPopupState(false)
   }
 
+  const classes = useStyles();
+
+  //All codes about scrolling
+
+  const [alignment, setAlignment] = React.useState(listOfTabsInAddProperty[0].value);
+
+  const handleChange = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
+
+  const [activeState, setActiveState] = React.useState(null);
+
+  let itemsServer = listOfPropertyDetailsTab.map((tab) => {
+    const hash = tab.value;
+    return {
+      text: tab.label,
+      hash: hash,
+      node: document.getElementById(hash),
+    };
+  });
+
+  const itemsClientRef = React.useRef([]);
+  React.useEffect(() => {
+    itemsClientRef.current = itemsServer;
+  }, [itemsServer]);
+
+  const clickedRef = React.useRef(false);
+  const unsetClickedRef = React.useRef(null);
+
+  const findActiveIndex = React.useCallback(() => {
+    // set default if activeState is null
+    if (activeState === null) setActiveState(itemsServer[0].hash);
+
+    // Don't set the active index based on scroll if a link was just clicked
+    if (clickedRef.current) return;
+
+    let active;
+    for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
+      // No hash if we're near the top of the page
+      if (document.documentElement.scrollTop < 0) {
+        active = { hash: null };
+        break;
+      }
+
+      const item = itemsClientRef.current[i];
+
+      if (
+        item.node &&
+        item.node.offsetTop <
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
+      ) {
+        active = item;
+        break;
+      }
+    }
+
+    if (active && activeState !== active.hash) {
+      setActiveState(active.hash);
+    }
+  }, [activeState, itemsServer]);
+
+  // Corresponds to 10 frames at 60 Hz
+  useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
+
+  const handleClick = (hash) => () => {
+    // Used to disable findActiveIndex if the  scrolls due to a clickpage
+    clickedRef.current = true;
+    unsetClickedRef.current = setTimeout(() => {
+      clickedRef.current = false;
+    }, 1000);
+
+    if (activeState !== hash) {
+      setActiveState(hash);
+
+      if (window)
+        window.scrollTo({
+          top:
+            document.getElementById(hash)?.getBoundingClientRect().top +
+            window.pageYOffset -
+            tabHeight,
+          behavior: "smooth",
+        });
+    }
+  };
+
+  React.useEffect(
+    () => () => {
+      clearTimeout(unsetClickedRef.current);
+    },
+    []
+  );
+
   return (
     <>
       <ActivateAdsPopup open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
       <DisableActivateAdsPopup open={disablePersonalizeAds} handleOpen={handleOpenPersonalizeAds} handleClose={handleClosePersonalizeAds} />
-      <Box ref={myDivRef} >
-        <Card sx={{ m: 2, mx: 8, mb: 2, position: 'relative' }}>
-          <Box sx={{ borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
-            <Box sx={{ display: 'flex' }}>
-              <Box sx={{ display: 'flex', p: 2, py: 1, flex: 1 }}>
-                <Typography variant='h6' sx={{ mr: 1 }}>Contact Anand Gupta</Typography>
-                <Rating
-                  name="text-feedback"
-                  value={4}
-                  readOnly
-                  precision={0.5}
-                  sx={{ fontSize: '1rem', alignSelf: 'center' }}
-                  emptyIcon={
-                    <StarIcon
-                      style={{ opacity: 0.55 }}
-                      fontSize="inherit"
-                    />
-                  }
-                />
-                <Typography variant="h6" sx={{ alignSelf: 'center', ml: 1 }}>4.7 - for Godrej forest - Sector - 132 - Noida</Typography>
-              </Box>
-              <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
-                <Tooltip title="Don't show me again">
-                  {/* <IconButton> */}
-                  <Close fontSize="1rem" sx={{ cursor: 'pointer' }} onClick={handleOpenPersonalizeAds} />
-                  {/* </IconButton> */}
-                </Tooltip>
-              </Box>
-            </Box>
-
-            <Divider sx={{ borderColor: 'gainsboro' }} />
-            <Box sx={{ alignSelf: 'center', p: 2, py: 1, display: 'flex' }}>
-              <Typography variant='body2' sx={{ flex: 1 }}>https://abcd.com/aaad</Typography>
-              <Typography variant='body2' className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }}>Copy link</Typography>
-            </Box>
-            <Divider sx={{ borderColor: 'gainsboro' }} />
-            <Typography variant='body2' noWrap sx={{ p: 2, py: 1 }}>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
-            {/* <Divider sx={{ borderColor: 'gainsboro' }} /> */}
-          </Box>
-          <Box sx={{ p: 2, py: 1, display: 'flex' }}>
-            <Typography variant='body2' sx={{ alignSelf: 'center' }}>
-              <i>
-                {
-                  name?  'Your Link will expiry in 20 days' :
-                  'Get your personalized URL to receive potential buyers queries directly in your leadsbox' 
-                 
+      <Card sx={{ m: 2, mx: 8, position: 'relative' }}>
+        <Box sx={{ borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
+          <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', p: 2, py: 1, flex: 1 }}>
+              <Typography variant='h6' sx={{ mr: 1 }}>Contact Anand Gupta</Typography>
+              <Rating
+                name="text-feedback"
+                value={4}
+                readOnly
+                precision={0.5}
+                sx={{ fontSize: '1rem', alignSelf: 'center' }}
+                emptyIcon={
+                  <StarIcon
+                    style={{ opacity: 0.55 }}
+                    fontSize="inherit"
+                  />
                 }
-              </i>
-            </Typography>
-            <Box sx={{ flex: 1, textAlign: 'end' }}>
-              <Button variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} >{name? 'Extend' : `Activate link`}</Button>
+              />
+              <Typography variant="h6" sx={{ alignSelf: 'center', ml: 1 }}>4.7 - for Godrej forest - Sector - 132 - Noida</Typography>
+            </Box>
+            <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
+              <Tooltip title="Don't show me again">
+                {/* <IconButton> */}
+                <Close fontSize="1rem" sx={{ cursor: 'pointer' }} onClick={handleOpenPersonalizeAds} />
+                {/* </IconButton> */}
+              </Tooltip>
             </Box>
           </Box>
-        </Card>
 
-        {/* <Box sx={{ display: 'flex' }}>
-            <a
-              href="tel:8794561234"
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-              }}
-            >
-              <Button startIcon={<CallIcon fontSize="small" />} variant='outlined' size="small">932333366</Button>
-            </a>
+          <Divider sx={{ borderColor: 'gainsboro' }} />
+          <Box sx={{ alignSelf: 'center', p: 2, py: 1, display: 'flex' }}>
+            <Typography variant='body2' sx={{ flex: 1 }}>https://abcd.com/aaad</Typography>
+            <Typography variant='body2' className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }}>Copy link</Typography>
+          </Box>
+          <Divider sx={{ borderColor: 'gainsboro' }} />
+          <Typography variant='body2' noWrap sx={{ p: 2, py: 1 }}>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
+          {/* <Divider sx={{ borderColor: 'gainsboro' }} /> */}
+        </Box>
+        <Box sx={{ p: 2, py: 1, display: 'flex' }}>
+          <Typography variant='body2' sx={{ alignSelf: 'center' }}>
+            <i>
+              {
+                name ? 'Your Link will expiry in 20 days' :
+                  'Get your personalized URL to receive potential buyers queries directly in your leadsbox'
 
-          </Box> */}
-
-        <TopMenu value={alignment} handleChange={handleChange} />
-      </Box >
-      <Box sx={{
-        height: `calc(100vh - ${height}px - 64px )`,
-        overflow: 'auto'
-      }}>
-        <MarketingSection refCallback={refCallback} />
-
+              }
+            </i>
+          </Typography>
+          <Box sx={{ flex: 1, textAlign: 'end' }}>
+            <Button variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} >{name ? 'Extend' : `Activate link`}</Button>
+          </Box>
+        </Box>
+      </Card>
+      <nav className={classes.demo2}>
+        <TopMenu value={activeState} handleChange={handleClick} list={itemsServer} />
+      </nav>
+      <Box>
+        <MarketingSection />
         <Container maxWidth="evmd">
           <EnquireNow
             open={openEnquiryForm}
@@ -341,15 +399,15 @@ const PropertyDetailsPage = () => {
           />
 
           <Grid container spacing={2} id='section-list'>
-            <LandscapeSection refCallback={refCallback} />
-            <AmenitiesSection refCallback={refCallback} />
-            <ClearanceSection refCallback={refCallback} />
-            <PricingSection refCallback={refCallback} />
-            <ValueForMoneySection refCallback={refCallback} />
-            <ResaleSection refCallback={refCallback} />
-            <LayoutSection refCallback={refCallback} />
-            <FloorPlanSection refCallback={refCallback} />
-            <LocationSection refCallback={refCallback} />
+            <LandscapeSection />
+            <AmenitiesSection />
+            <ClearanceSection />
+            <PricingSection />
+            <ValueForMoneySection />
+            <ResaleSection />
+            <LayoutSection />
+            <FloorPlanSection />
+            <LocationSection />
             <Grid item xs={12}>
               <Card>
                 <CardContent sx={{ p: "0 !important" }}>
@@ -792,7 +850,7 @@ const PropertyDetailsPage = () => {
                 </Grid>
               </Card>
             </Grid>
-            <OverallAssesmentSection refCallback={refCallback} />
+            <OverallAssesmentSection />
           </Grid>
 
           {/* Dont Touch this */}

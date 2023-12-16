@@ -3,49 +3,9 @@ import { Tabs, Tab, Card, Box, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function TopMenu({ value, handleChange }) {
+function TopMenu({ value, handleChange, list }) {
 
     const router = useRouter()
-
-    const listOfTabs = [
-        {
-            label: 'Project',
-            value: 'project'
-        }, {
-            label: 'Builder',
-            value: 'builder'
-        }, {
-            label: 'Landscape',
-            value: 'landscape'
-        }, {
-            label: 'Amenities',
-            value: 'amenities'
-        }, {
-            label: 'Clearance',
-            value: 'clearance'
-        }, {
-            label: 'Pricing',
-            value: 'pricing'
-        }, {
-            label: 'Value for money',
-            value: 'value'
-        }, {
-            label: 'Units',
-            value: 'units'
-        }, {
-            label: 'Floor design',
-            value: 'floordesign'
-        }, {
-            label: 'Floor area',
-            value: 'floorarea'
-        }, {
-            label: 'Location',
-            value: 'location'
-        }, {
-            label: 'Assesment',
-            value: 'assesment'
-        }
-    ]
 
     return (
         <>
@@ -95,14 +55,14 @@ function TopMenu({ value, handleChange }) {
 
             <Tabs
                 value={value}
-                onChange={handleChange}
+                // onChange={handleChange}
                 variant="scrollable"
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
             >
                 {
-                    listOfTabs.map((current) => (
-                        <Tab label={current.label} value={current.value} onClick={() => router.push(`#${current.value}`)} />
+                    list.map((current) => (
+                        <Tab label={current.text} value={current.hash} onClick={handleChange(current.hash)} />
                     ))
                 }
             </Tabs>
