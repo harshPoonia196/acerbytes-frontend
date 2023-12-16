@@ -5,83 +5,224 @@ import {
     Grid,
     Box,
     Card,
+    Typography,
+    Tabs,
+    Tab,
+    tabsClasses
 } from "@mui/material";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import LeftSideLink from "Components/Admin/Property/LeftSideLink";
-import RightSideMainSection from "Components/Admin/Property/RightSideMainSection";
 import NavTab from "Components/Admin/Property/NavTab";
 import { listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
-import { throttle } from 'lodash';
+import throttle from "lodash/throttle";
+import { makeStyles, withStyles } from "@mui/styles";
+import LocationCard from 'Components/Admin/Property/SubComponents/LocationCard';
+import ProjectCard from 'Components/Admin/Property/SubComponents/ProjectCard';
+import BankCard from 'Components/Admin/Property/SubComponents/BankCard';
+import FacilitiesCard from 'Components/Admin/Property/SubComponents/FacilitiesCard';
+import LandscapeCard from 'Components/Admin/Property/SubComponents/LandscapeCard';
+import FloorPlanCard from 'Components/Admin/Property/SubComponents/FloorPlanCard';
+import RegulatoryCard from 'Components/Admin/Property/SubComponents/RegulatoryCard';
+import ConstructionCard from 'Components/Admin/Property/SubComponents/ConstructionCard';
+import BuilderPriceCard from 'Components/Admin/Property/SubComponents/BuilderPriceCard';
+import ResalePriceCard from 'Components/Admin/Property/SubComponents/ResalePriceCard';
+import InvestmentCard from 'Components/Admin/Property/SubComponents/InvestmentCard';
+import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard';
+
+const tabHeight = 116;
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    indicator: {
+        padding: 1,
+    },
+    demo2: {
+        backgroundColor: "#fff",
+        position: "sticky",
+        top: 54,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        [theme.breakpoints.up('sm')]: {
+            top: 64,
+        },
+        marginBottom: '16px'
+    },
+}));
+
+const noop = () => { };
+
+function useThrottledOnScroll(callback, delay) {
+    const throttledCallback = React.useMemo(
+        () => (callback ? throttle(callback, delay) : noop),
+        [callback, delay]
+    );
+
+    React.useEffect(() => {
+        if (throttledCallback === noop) return undefined;
+
+        window.addEventListener("scroll", throttledCallback);
+        return () => {
+            window.removeEventListener("scroll", throttledCallback);
+            throttledCallback.cancel();
+        };
+    }, [throttledCallback]);
+}
 
 function AddProperty() {
 
-    const router = useRouter()
+    const [activeState, setActiveState] = React.useState(null);
 
-    const [pageLinkToggleAlignment, setPageLinkToggleAlignment] = React.useState(listOfTabsInAddProperty[0].value);
+    let itemsServer = listOfTabsInAddProperty.map((tab) => {
+        const hash = tab.value;
+        return {
+            text: tab.label,
+            hash: hash,
+            node: document.getElementById(hash),
+        };
+    });
 
-    const handleChangePageLinkToggle = (event, newAlignment) => {
-        if (newAlignment != null) {
-            setPageLinkToggleAlignment(newAlignment);
-            router.push(`#${newAlignment}`)
+    const itemsClientRef = React.useRef([]);
+    React.useEffect(() => {
+        itemsClientRef.current = itemsServer;
+    }, [itemsServer]);
+
+    const clickedRef = React.useRef(false);
+    const unsetClickedRef = React.useRef(null);
+    const findActiveIndex = React.useCallback(() => {
+        // set default if activeState is null
+        if (activeState === null) setActiveState(itemsServer[0].hash);
+
+        // Don't set the active index based on scroll if a link was just clicked
+        if (clickedRef.current) return;
+
+        let active;
+        for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
+            // No hash if we're near the top of the page
+            if (document.documentElement.scrollTop < 0) {
+                active = { hash: null };
+                break;
+            }
+
+            const item = itemsClientRef.current[i];
+
+            if (
+                item.node &&
+                item.node.offsetTop <
+                document.documentElement.scrollTop +
+                document.documentElement.clientHeight / 8 +
+                tabHeight
+            ) {
+                active = item;
+                break;
+            }
+        }
+
+        if (active && activeState !== active.hash) {
+            setActiveState(active.hash);
+        }
+    }, [activeState, itemsServer]);
+
+    // Corresponds to 10 frames at 60 Hz
+    useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
+
+    const handleClick = (hash) => () => {
+        // Used to disable findActiveIndex if the  scrolls due to a clickpage
+        clickedRef.current = true;
+        unsetClickedRef.current = setTimeout(() => {
+            clickedRef.current = false;
+        }, 1000);
+
+        if (activeState !== hash) {
+            setActiveState(hash);
+
+            if (window)
+                window.scrollTo({
+                    top:
+                        document.getElementById(hash)?.getBoundingClientRect().top +
+                        window.pageYOffset -
+                        tabHeight,
+                    behavior: "smooth",
+                });
         }
     };
 
-    const sectionRef = useRef([])
+    React.useEffect(
+        () => () => {
+            clearTimeout(unsetClickedRef.current);
+        },
+        []
+    );
 
-    useEffect(() => {
+    const classes = useStyles();
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const newAlignment = entry.target.getAttribute('id');
-                    setPageLinkToggleAlignment(newAlignment);
-                }
-            })
-
-            console.log(entries)
-        }, {
-            root: null, // Set root to null to use the viewport as the root
-            rootMargin: "0px", // Set rootMargin to "0px" to trigger when the top of the section approaches the top of the viewport
-            threshold: 1.0, // Set threshold to 1.0 to trigger when the section is fully visible
-        })
-
-        sectionRef.current.forEach(section => {
-            observer.observe(section)
-        })
-
-        return () => {
-            // Cleanup observer when component is unmounted
-            observer.disconnect();
-        };
-
-    }, [])
-
-    const refCallback = useCallback((element) => {
-        if (element) {
-            sectionRef.current.push(element)
-        }
-    })
+    const [isEdit, setIsEdit] = useState(true);
 
     return (
         <Container>
-
-            <NavTab value={pageLinkToggleAlignment} handleChange={handleChangePageLinkToggle} />
-
-            <Box
-                sx={{
-                    display: "flex",
-                    gap: "16px",
-                    height: `calc(100vh - 160px)`,
-                    mt: '1rem'
-                }}
-            >
+            <nav className={classes.demo2}>
+                <Tabs
+                    value={activeState ? activeState : itemsServer[0].hash}
+                    // onChange={handleChange}
+                    variant="scrollable"
+                    scrollButtons
+                    allowScrollButtonsMobile
+                    aria-label="visible arrows tabs example"
+                    sx={{
+                        [`& .${tabsClasses.scrollButtons}`]: {
+                            '&.Mui-disabled': { opacity: 0.3 },
+                        },
+                    }}
+                >
+                    {
+                        itemsServer.map(data => <Tab key={data.hash} label={data.text} value={data.hash} onClick={handleClick(data.hash)} />)
+                    }
+                </Tabs>
+            </nav>
+            <div className="container">
                 <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-                    <RightSideMainSection refCallback={refCallback} />
+                    <Grid item xs={12}>
+                        <Card sx={{ p: 2 }}>
+                            <Box sx={{ display: "flex" }}>
+                                <Box sx={{ flex: 1 }}>
+                                    <Typography variant="h6" sx={{ fontWeight: 900 }}>
+                                        Property name
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ mt: 1 }}>
+                                        Mumbai
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ textAlign: 'end' }}>
+                                    <Typography variant="h6" sx={{ alignSelf: "center" }}>
+                                        Active
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ mt: 1 }}>
+                                        Publish 2 days ago
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Card>
+                    </Grid>
+                    <ProjectCard isEdit={isEdit} />
+                    <LocationCard isEdit={isEdit} />
+                    <LandscapeCard isEdit={isEdit} />
+                    <FloorPlanCard isEdit={isEdit} />
+                    <RegulatoryCard isEdit={isEdit} />
+                    <ConstructionCard isEdit={isEdit} />
+                    <BuilderPriceCard isEdit={isEdit} />
+                    <ResalePriceCard isEdit={isEdit} />
+                    <InvestmentCard isEdit={isEdit} />
+                    <BankCard isEdit={isEdit} />
+                    <FacilitiesCard isEdit={isEdit} />
+                    <MarketingCard isEdit={isEdit} />
                 </Grid>
-            </Box>
+            </div>
         </Container>
+
     );
 }
 
