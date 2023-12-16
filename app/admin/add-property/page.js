@@ -34,12 +34,6 @@ import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    indicator: {
-        padding: 1,
-    },
     demo2: {
         backgroundColor: "#fff",
         position: "sticky",
@@ -165,48 +159,10 @@ function AddProperty() {
     return (
         <Container>
             <nav className={classes.demo2}>
-                <Tabs
-                    value={activeState ? activeState : itemsServer[0].hash}
-                    // onChange={handleChange}
-                    variant="scrollable"
-                    scrollButtons
-                    allowScrollButtonsMobile
-                    aria-label="visible arrows tabs example"
-                    sx={{
-                        [`& .${tabsClasses.scrollButtons}`]: {
-                            '&.Mui-disabled': { opacity: 0.3 },
-                        },
-                    }}
-                >
-                    {
-                        itemsServer.map(data => <Tab key={data.hash} label={data.text} value={data.hash} onClick={handleClick(data.hash)} />)
-                    }
-                </Tabs>
+                <NavTab value={activeState} handleChange={handleClick} list={itemsServer} />
             </nav>
             <div className="container">
                 <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-                    <Grid item xs={12}>
-                        <Card sx={{ p: 2 }}>
-                            <Box sx={{ display: "flex" }}>
-                                <Box sx={{ flex: 1 }}>
-                                    <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                                        Property name
-                                    </Typography>
-                                    <Typography variant="body1" sx={{ mt: 1 }}>
-                                        Mumbai
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ textAlign: 'end' }}>
-                                    <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                                        Active
-                                    </Typography>
-                                    <Typography variant="body1" sx={{ mt: 1 }}>
-                                        Publish 2 days ago
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        </Card>
-                    </Grid>
                     <ProjectCard isEdit={isEdit} />
                     <LocationCard isEdit={isEdit} />
                     <LandscapeCard isEdit={isEdit} />

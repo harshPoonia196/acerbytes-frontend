@@ -16,9 +16,9 @@ import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextF
 import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
 import DateTimeInputField from '../../../CommonLayouts/DateTimeInputField';
 
-function BuilderPriceCard({ isEdit, refCallback }) {
+function BuilderPriceCard({ isEdit }) {
     return (
-        <Grid item xs={12} id="builderPrice" ref={refCallback}>
+        <Grid item xs={12} id="builderPrice" >
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
