@@ -44,7 +44,7 @@ function createData(
 }
 
 const rows = [
-  createData("Anand", "Gupta", "1234567558", "Active"),
+  createData("Anand", "Gupta", "1234567558", "Consultant","Active"),
 ];
 
 
@@ -112,8 +112,9 @@ function ManageUser() {
                 <TableCell>{row.lastName}</TableCell>
                 <TableCell>{row.phone}</TableCell>
                 <TableCell>
+                  
                 <IconButton size="small">
-                    <EditIcon fontSize="small" />
+                    <EditIcon label={row.role} fontSize="small" />
                   </IconButton>
                   </TableCell>
                 <TableCell>

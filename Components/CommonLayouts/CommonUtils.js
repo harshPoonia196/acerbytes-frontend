@@ -32,12 +32,6 @@ const listOfTabsInAddProperty = [{
     label: 'Facilities',
     value: 'facilities'
 }, {
-    label: 'Near by',
-    value: 'nearby'
-}, {
-    label: 'Landmarks',
-    value: 'landmarks'
-}, {
     label: 'Marketing',
     value: 'marketing'
 }
@@ -53,6 +47,7 @@ const listOfProfileTab = [
     { label: 'Enquiries', value: 'enquiries' },
     { label: 'Property Consultants', value: 'propertyConsultants' },
     { label: 'Current address', value: 'currentAddress' },
+    { label: 'Setting', value: 'setting' },
 ]
 
 export { listOfTabsInAddProperty, listOfProfileTab, disablePersonalizeAdsOption }

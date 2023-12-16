@@ -17,7 +17,7 @@ import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonSt
 import { useState } from 'react';
 import colors from 'styles/theme/colors';
 
-function BankCard({ isEdit, refCallback }) {
+function BankCard({ isEdit }) {
 
     const [sbiLoanToggle, setSbiLoanToggle] = useState('')
 
@@ -27,7 +27,7 @@ function BankCard({ isEdit, refCallback }) {
     }
 
     return (
-        <Grid item xs={12} id="bank" ref={refCallback}>
+        <Grid item xs={12} id="bank">
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography

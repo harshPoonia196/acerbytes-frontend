@@ -15,9 +15,9 @@ import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStruct
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
 
-function RegulatoryCard({ isEdit, refCallback }) {
+function RegulatoryCard({ isEdit }) {
     return (
-        <Grid item xs={12} id="regulatory" ref={refCallback}>
+        <Grid item xs={12} id="regulatory">
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography

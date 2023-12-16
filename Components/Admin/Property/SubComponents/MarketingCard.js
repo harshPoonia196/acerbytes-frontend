@@ -21,7 +21,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile'
 import UploadMarketingImage from 'Components/Admin/Property/Modal/UploadMarketingImage'
 
 
-function MarketingCard({ isEdit, refCallback }) {
+function MarketingCard({ isEdit }) {
 
     const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false)
 
@@ -60,7 +60,7 @@ function MarketingCard({ isEdit, refCallback }) {
     }
 
     return (
-        <Grid item xs={12} id="marketing" ref={refCallback}>
+        <Grid item xs={12} id="marketing">
             <UploadMarketingImage open={isUploadPopupOpen} image={image} setImage={setImage} onClose={handleCloseUploadPopup} changeImage={handleImageSelect} removeImage={handleImageRemove} />
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>

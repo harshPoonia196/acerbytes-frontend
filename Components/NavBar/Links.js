@@ -8,6 +8,7 @@ import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import GroupIcon from "@mui/icons-material/Group";
 import TableRowsIcon from "@mui/icons-material/TableRows";
+import LinkIcon from '@mui/icons-material/Link';
 
 export const UserMenuList = [
   {
@@ -53,6 +54,11 @@ export const ConsultantMenuList = [
     route: "/payment",
     icon: <PaymentIcon fontSize="small" />,
   },
+  {
+    label: "My links",
+    route: "/my-links",
+    icon: <LinkIcon fontSize="small" />,
+  },
 ];
 
 export const AdminMenuList = [
@@ -80,6 +86,11 @@ export const AdminMenuList = [
     label: "Manage User",
     route: "/admin/manage-user",
     icon: <PlaylistAddIcon fontSize="small" />,
+  },
+  {
+    label: "Consultant links",
+    route: "/admin/consultant-links",
+    icon: <LinkIcon fontSize="small" />,
   },
 ];
 

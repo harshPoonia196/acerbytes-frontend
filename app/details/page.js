@@ -56,9 +56,14 @@ import LayoutSection from "Components/DetailsPage/LayoutSection";
 import { Close } from "@mui/icons-material";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
+import { useSearchParams } from 'next/navigation'
+
 
 const PropertyDetailsPage = () => {
   const router = useRouter();
+
+  const searchParams = useSearchParams()
+  const name = searchParams.get('name')
 
   const { isDrawerOpen } = useSelector((state) => state);
 
@@ -283,11 +288,15 @@ const PropertyDetailsPage = () => {
           <Box sx={{ p: 2, py: 1, display: 'flex' }}>
             <Typography variant='body2' sx={{ alignSelf: 'center' }}>
               <i>
-                Get your personalized URL to receive potential buyers queries directly in your leadsbox
+                {
+                  name?  'Your Link will expiry in 20 days' :
+                  'Get your personalized URL to receive potential buyers queries directly in your leadsbox' 
+                 
+                }
               </i>
             </Typography>
             <Box sx={{ flex: 1, textAlign: 'end' }}>
-              <Button variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} >Activate&nbsp;link</Button>
+              <Button variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} >{name? 'Extend' : `Activate link`}</Button>
             </Box>
           </Box>
         </Card>
