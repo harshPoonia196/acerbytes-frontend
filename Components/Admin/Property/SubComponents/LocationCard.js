@@ -14,9 +14,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
-function LocationCard({ isEdit, refCallback }) {
+function LocationCard({ isEdit }) {
     return (
-        <Grid item xs={12} id="location" ref={refCallback}>
+        <Grid item xs={12} id="location" >
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography

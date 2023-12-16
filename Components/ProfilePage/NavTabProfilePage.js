@@ -1,15 +1,12 @@
 import { Tab, Tabs } from '@mui/material'
 import { tabsClasses } from '@mui/material/Tabs'
-import { listOfProfileTab } from 'Components/CommonLayouts/CommonUtils'
-import { useRouter } from 'next/navigation'
 import React from 'react'
 
-function NavTabProfilePage({ value, handleChange }) {
-    const router = useRouter()
+function NavTabProfilePage({ value, handleChange, list }) {
     return (
         <Tabs
-            value={value}
-            onChange={handleChange}
+            value={value ? value : list[0].value}
+            // onChange={handleChange}
             variant="scrollable"
             scrollButtons
             allowScrollButtonsMobile
@@ -20,7 +17,7 @@ function NavTabProfilePage({ value, handleChange }) {
                 },
             }}
         >
-            {listOfProfileTab.map(data => <Tab label={data.label} value={data.value} onClick={() => router.push(`#${data.value}`)} />)}
+            {list.map(data => <Tab key={data.hash} label={data.text} value={data.hash} onClick={handleChange(data.hash)} />)}
         </Tabs>
     )
 }
