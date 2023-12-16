@@ -83,6 +83,11 @@ export const AdminMenuList = [
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
+    label: "Manage User",
+    route: "/admin/manage-user",
+    icon: <PlaylistAddIcon fontSize="small" />,
+  },
+  {
     label: "Consultant links",
     route: "/admin/consultant-links",
     icon: <LinkIcon fontSize="small" />,
