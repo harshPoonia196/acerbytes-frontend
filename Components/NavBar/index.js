@@ -221,28 +221,28 @@ export default function ClippedDrawer({ children }) {
     );
   };
 
-  const DesktopDrawer = () => {
-    return (
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-            boxShadow: "1px 2px 6px -2px gainsboro",
-            borderRight: "none",
-          },
-          display: { xs: "none", evmd: "flex" },
-          position: "relative",
-        }}
-      >
-        <DrawerContent />
-        <DrawerBottomContent />
-      </Drawer>
-    );
-  };
+  // const DesktopDrawer = () => {
+  //   return (
+  //     <Drawer
+  //       variant="permanent"
+  //       sx={{
+  //         width: drawerWidth,
+  //         flexShrink: 0,
+  //         [`& .MuiDrawer-paper`]: {
+  //           width: drawerWidth,
+  //           boxSizing: "border-box",
+  //           boxShadow: "1px 2px 6px -2px gainsboro",
+  //           borderRight: "none",
+  //         },
+  //         display: { xs: "none", evmd: "flex" },
+  //         position: "relative",
+  //       }}
+  //     >
+  //       <DrawerContent />
+  //       <DrawerBottomContent />
+  //     </Drawer>
+  //   );
+  // };
 
   const MobileDrawer = () => {
     return (
@@ -257,7 +257,6 @@ export default function ClippedDrawer({ children }) {
             width: drawerWidth,
             boxSizing: "border-box",
           },
-          display: { xs: "flex", evmd: "none" },
           position: "relative",
         }}
       >
@@ -345,7 +344,6 @@ export default function ClippedDrawer({ children }) {
           </Box>
         </Toolbar>
       </AppBar>
-      {isDrawerOpen && <DesktopDrawer />}
       {isDrawerOpen && <MobileDrawer />}
       {renderMenu}
 

@@ -19,18 +19,7 @@ import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextF
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import NewCurrencyInputField from "Components/CommonLayouts/NewCurrencyInputField";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
-import LocationCard from './SubComponents/LocationCard';
-import ProjectCard from './SubComponents/ProjectCard';
-import BankCard from './SubComponents/BankCard';
-import FacilitiesCard from './SubComponents/FacilitiesCard';
-import LandscapeCard from './SubComponents/LandscapeCard';
-import FloorPlanCard from './SubComponents/FloorPlanCard';
-import RegulatoryCard from './SubComponents/RegulatoryCard';
-import ConstructionCard from './SubComponents/ConstructionCard';
-import BuilderPriceCard from './SubComponents/BuilderPriceCard';
-import ResalePriceCard from './SubComponents/ResalePriceCard';
-import InvestmentCard from './SubComponents/InvestmentCard';
-import MarketingCard from './SubComponents/MarketingCard';
+
 
 function RightSideMainSection({ refCallback }) {
     const [isEdit, setIsEdit] = useState(true);

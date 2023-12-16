@@ -4,15 +4,15 @@ import Tab from '@mui/material/Tab';
 import { listOfTabsInAddProperty } from 'Components/CommonLayouts/CommonUtils';
 import { useRouter } from 'next/navigation';
 
-const NavTab = ({ value, handleChange }) => {
+const NavTab = ({ value, handleChange, list }) => {
 
   const router = useRouter()
 
   return (
     <>
       <Tabs
-        value={value}
-        onChange={handleChange}
+        value={value ? value : listOfTabsInAddProperty[0].value}
+        // onChange={handleChange}
         variant="scrollable"
         scrollButtons
         allowScrollButtonsMobile
@@ -24,7 +24,7 @@ const NavTab = ({ value, handleChange }) => {
         }}
       >
         {
-          listOfTabsInAddProperty.map(data => <Tab label={data.label} value={data.value} onClick={() => router.push(`#${data.value}`)} />)
+          list.map(data => <Tab key={data.hash} label={data.text} value={data.hash} onClick={handleChange(data.hash)} />)
         }
       </Tabs>
     </>
