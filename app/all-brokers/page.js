@@ -42,7 +42,7 @@ const page = () => {
         <Grid container spacing={2}>
           {brokersList?.map((broker) => (
             <Grid item xs={12} key={broker.name}>
-              <BrokerCard type={'View Reviews'} broker={broker} />
+              <BrokerCard type={'View Reviews'} broker={broker} noReview />
             </Grid>
           ))}
         </Grid>
