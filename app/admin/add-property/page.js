@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         zIndex: 100,
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints?.up('sm')]: {
             top: 64,
         },
         marginBottom: '16px'

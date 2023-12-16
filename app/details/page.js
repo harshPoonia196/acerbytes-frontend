@@ -33,9 +33,6 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ReplyIcon from "@mui/icons-material/Reply";
 import PriceChart from "Components/DetailsPage/PriceChart";
 import Link from "next/link";
-import colors from "styles/theme/colors";
-import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
 import { useCallback } from "react";
@@ -59,6 +56,7 @@ import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
 import { useSearchParams } from 'next/navigation'
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
+import AdsSection from "Components/DetailsPage/AdsSection";
 
 const tabHeight = 200;
 
@@ -70,10 +68,9 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     zIndex: 100,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints?.up('sm')]: {
       top: 64,
     },
-    marginBottom: '16px'
   },
 }));
 
@@ -322,59 +319,11 @@ const PropertyDetailsPage = () => {
     <>
       <ActivateAdsPopup open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
       <DisableActivateAdsPopup open={disablePersonalizeAds} handleOpen={handleOpenPersonalizeAds} handleClose={handleClosePersonalizeAds} />
-      <Card sx={{ m: 2, mx: 8, position: 'relative' }}>
-        <Box sx={{ borderBottom: '1px solid whitesmoke', background: 'whitesmoke' }}>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ display: 'flex', p: 2, py: 1, flex: 1 }}>
-              <Typography variant='h6' sx={{ mr: 1 }}>Contact Anand Gupta</Typography>
-              <Rating
-                name="text-feedback"
-                value={4}
-                readOnly
-                precision={0.5}
-                sx={{ fontSize: '1rem', alignSelf: 'center' }}
-                emptyIcon={
-                  <StarIcon
-                    style={{ opacity: 0.55 }}
-                    fontSize="inherit"
-                  />
-                }
-              />
-              <Typography variant="h6" sx={{ alignSelf: 'center', ml: 1 }}>4.7 - for Godrej forest - Sector - 132 - Noida</Typography>
-            </Box>
-            <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
-              <Tooltip title="Don't show me again">
-                {/* <IconButton> */}
-                <Close fontSize="1rem" sx={{ cursor: 'pointer' }} onClick={handleOpenPersonalizeAds} />
-                {/* </IconButton> */}
-              </Tooltip>
-            </Box>
-          </Box>
 
-          <Divider sx={{ borderColor: 'gainsboro' }} />
-          <Box sx={{ alignSelf: 'center', p: 2, py: 1, display: 'flex' }}>
-            <Typography variant='body2' sx={{ flex: 1 }}>https://abcd.com/aaad</Typography>
-            <Typography variant='body2' className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }}>Copy link</Typography>
-          </Box>
-          <Divider sx={{ borderColor: 'gainsboro' }} />
-          <Typography variant='body2' noWrap sx={{ p: 2, py: 1 }}>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
-          {/* <Divider sx={{ borderColor: 'gainsboro' }} /> */}
-        </Box>
-        <Box sx={{ p: 2, py: 1, display: 'flex' }}>
-          <Typography variant='body2' sx={{ alignSelf: 'center' }}>
-            <i>
-              {
-                name ? 'Your Link will expiry in 20 days' :
-                  'Get your personalized URL to receive potential buyers queries directly in your leadsbox'
+      <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} isConsultant />
 
-              }
-            </i>
-          </Typography>
-          <Box sx={{ flex: 1, textAlign: 'end' }}>
-            <Button variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} >{name ? 'Extend' : `Activate link`}</Button>
-          </Box>
-        </Box>
-      </Card>
+      <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
+
       <nav className={classes.demo2}>
         <TopMenu value={activeState} handleChange={handleClick} list={itemsServer} />
       </nav>
@@ -863,7 +812,7 @@ const PropertyDetailsPage = () => {
               left: 0,
               bottom: 0,
               width: "100%",
-              display: { xs: "flex", evmd: "none" },
+              display: { xs: "block", evmd: "none" },
               justifyContent: "space-between",
             }}
           >
