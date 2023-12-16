@@ -50,4 +50,45 @@ const listOfProfileTab = [
     { label: 'Setting', value: 'setting' },
 ]
 
-export { listOfTabsInAddProperty, listOfProfileTab, disablePersonalizeAdsOption }
+
+const listOfPropertyDetailsTab = [
+    {
+        label: 'Project',
+        value: 'project'
+    }, {
+        label: 'Builder',
+        value: 'builder'
+    }, {
+        label: 'Landscape',
+        value: 'landscape'
+    }, {
+        label: 'Amenities',
+        value: 'amenities'
+    }, {
+        label: 'Clearance',
+        value: 'clearance'
+    }, {
+        label: 'Pricing',
+        value: 'pricing'
+    }, {
+        label: 'Value for money',
+        value: 'value'
+    }, {
+        label: 'Units',
+        value: 'units'
+    }, {
+        label: 'Floor design',
+        value: 'floordesign'
+    }, {
+        label: 'Floor area',
+        value: 'floorarea'
+    }, {
+        label: 'Location',
+        value: 'location'
+    }, {
+        label: 'Assesment',
+        value: 'assesment'
+    }
+]
+
+export { listOfTabsInAddProperty, listOfProfileTab, disablePersonalizeAdsOption, listOfPropertyDetailsTab }

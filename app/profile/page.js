@@ -138,6 +138,7 @@ function Profile() {
 
   const clickedRef = React.useRef(false);
   const unsetClickedRef = React.useRef(null);
+
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
@@ -214,7 +215,7 @@ function Profile() {
           list={itemsServer}
         />
       </nav>
-      <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+      <Grid container spacing={2}>
         <Grid item xs={12} id="userDetails" >
           <Card sx={{ p: 2 }}>
             <Box sx={{ display: "flex" }}>
