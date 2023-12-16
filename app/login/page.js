@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, Card, Grid, Typography, Box, Button , ToggleButton } from "@mui/material";
+import { Container, Card, Grid, Typography, Box, Button, ToggleButton } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import React, { useState } from "react";
 import InputField from "Components/CommonLayouts/InputField";
@@ -24,11 +24,11 @@ function Login() {
   const [isVerified, setIsVerified] = useState(false);
   const [isEdit, setIsEdit] = useState(true);
   const [roleTypeToggleAlignment, setRoleTypeToggleAlignment] =
-  React.useState("");
+    React.useState("");
 
-const handleChangeRoleTypeToggle = (event, newAlignment) => {
-  setRoleTypeToggleAlignment(newAlignment);
-};
+  const handleChangeRoleTypeToggle = (event, newAlignment) => {
+    setRoleTypeToggleAlignment(newAlignment);
+  };
 
   return (
     <Container maxWidth="sm">
@@ -124,18 +124,17 @@ const handleChangeRoleTypeToggle = (event, newAlignment) => {
                   <span style={{ color: "gray" }}>welcome to Acrebytes</span>
                 </Typography>
               </Grid>
-              
+
               <Grid item xs={12} sx={{ my: 1 }}>
-                <Typography variant="body1">
-                  Select your role
-                </Typography>
-                
-              
-                <NewToggleButtonStructure isEdit={isEdit} value={roleTypeToggleAlignment} handleChange={handleChangeRoleTypeToggle}>
-                  <ToggleButton fullWidth size="small" value="consultant">
+                <NewToggleButtonStructure
+                  isEdit={isEdit} label={'Select your role'}
+                  value={roleTypeToggleAlignment} handleChange={handleChangeRoleTypeToggle}
+                  toggleStyle={{ diplay: 'flex', flexDirection: 'column', mt: 1 }}
+                >
+                  <ToggleButton fullWidth size="small" value="consultant" sx={{ border: `1px solid ${colors.LIGHT_GRAY} !important`, borderRadius: '0 !important' }}>
                     I am a Real estate consultant
                   </ToggleButton>
-                  <ToggleButton fullWidth size="small" value="buyer">
+                  <ToggleButton fullWidth size="small" value="buyer" sx={{ border: `1px solid ${colors.LIGHT_GRAY} !important`, borderRadius: '0 !important', ml: '0 !important' }}>
                     I am here to explore / buy a property
                   </ToggleButton>
                 </NewToggleButtonStructure>

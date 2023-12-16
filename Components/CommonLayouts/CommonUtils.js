@@ -37,7 +37,7 @@ const listOfTabsInAddProperty = [{
 }
 ]
 
-const disablePersonalizeAdsOption = ['For this page', 'For 1 week', 'For 1 month', 'Diable - will enable from settings']
+const disablePersonalizeAdsOption = ['For this page', 'For 1 week', 'For 1 month', 'Disable (can enable later)']
 
 const listOfProfileTab = [
     { label: 'User details', value: 'userDetails' },

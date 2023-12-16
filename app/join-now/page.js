@@ -18,12 +18,14 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import InputField from "Components/CommonLayouts/InputField";
 import PhoneInputField from "Components/CommonLayouts/PhoneInputField";
 import React from "react";
+import SelectTextFields from "Components/CommonLayouts/SelectTextFields";
 
 function JoinNow() {
   const [brokerType, setBrokerType] = React.useState("individual");
 
   const handleChangeBrokerType = (event, newAlignment) => {
-    setBrokerType(newAlignment);
+    newAlignment != null &&
+      setBrokerType(newAlignment);
   };
 
   return (
@@ -129,8 +131,14 @@ function JoinNow() {
                 <InputField label="First name" variant="outlined" halfSm />
                 <InputField label="Last name" variant="outlined" halfSm />
                 {brokerType === "company" && (
-                  <InputField label="Company name" variant="outlined" />
+                  <InputField label="Company name" variant="outlined" halfSm />
                 )}
+                {brokerType === 'company' && (
+                  <Grid item xs={6}>
+                    <SelectTextFields label="Company type" />
+                  </Grid>
+                )}
+                <InputField label="Last name" variant="outlined" />
                 <InputField label="Email" variant="outlined" />
                 {/* #ptwon# add a verify button */}
                 <PhoneInputField label="Phone number" variant="outlined" />

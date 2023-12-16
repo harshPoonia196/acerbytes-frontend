@@ -35,7 +35,7 @@ function ActivateAdsPopup({ open, handleClose }) {
           Activate your link
         </Typography>
       </DialogTitle>
-      <DialogContent sx={{ minWidth: 360, }}>
+      <DialogContent sx={{ minWidth: 300, }}>
         <Grid container spacing={2}>
           <NewInputFieldStructure label={'Your personalized link to share'} isEdit={false} value={'https://dsjdjusdi.com'} />
           <NewInputFieldStructure label='Title (10 words)' isFull defaultValue={'The Resident Tower Noida'} />

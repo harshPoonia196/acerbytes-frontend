@@ -103,7 +103,7 @@ export default function ClippedDrawer({ children }) {
     "& .MuiBadge-badge": {
       right: 16,
       top: 12,
-      border: `2px solid ${theme.palette.background.paper}`,
+      // border: `2px solid ${theme.palette.background.paper}`,
       padding: "0 4px",
     },
   }));
@@ -118,7 +118,7 @@ export default function ClippedDrawer({ children }) {
           <ListItemIcon sx={{ minWidth: 40 }}>{item?.icon}</ListItemIcon>
           <StyledBadge
             color="secondary"
-            badgeContent={99}
+            badgeContent={<Typography variant="body2" sx={{ color: 'white' }}>99</Typography>}
             sx={{ flex: 1 }}
             invisible={false}
           >

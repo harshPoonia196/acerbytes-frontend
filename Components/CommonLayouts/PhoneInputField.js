@@ -87,7 +87,7 @@ function PhoneInputField({
                 }}
               >
                 <MenuItem disabled value="">
-                  <em>Code</em>
+                  Code
                 </MenuItem>
                 {countryCode?.map((code, index) => {
                   return (
