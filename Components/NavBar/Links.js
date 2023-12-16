@@ -76,6 +76,11 @@ export const AdminMenuList = [
     route: "/admin/property-list",
     icon: <PlaylistAddIcon fontSize="small" />,
   },
+  {
+    label: "Manage User",
+    route: "/admin/manage-user",
+    icon: <PlaylistAddIcon fontSize="small" />,
+  },
 ];
 
 export const listOfPages = {
