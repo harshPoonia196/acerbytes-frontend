@@ -56,35 +56,35 @@ const listOfPropertyDetailsTab = [
         label: 'Project',
         value: 'project'
     }, {
-        label: 'Builder',
+        label: 'Overview',
         value: 'builder'
     }, {
-        label: 'Landscape',
-        value: 'landscape'
+        label: 'Regulatory info',
+        value: 'clearance'
+    }, {
+        label: 'Layout',
+        value: 'layout'
+    }, {
+        label: 'Units plan',
+        value: 'unitsPlan'
     }, {
         label: 'Amenities',
         value: 'amenities'
     }, {
-        label: 'Clearance',
-        value: 'clearance'
+        label: 'Location',
+        value: 'location'
     }, {
         label: 'Pricing',
         value: 'pricing'
     }, {
+        label: 'Resale',
+        value: 'resale'
+    }, {
         label: 'Value for money',
         value: 'value'
     }, {
-        label: 'Units',
-        value: 'units'
-    }, {
-        label: 'Floor design',
-        value: 'floordesign'
-    }, {
-        label: 'Floor area',
-        value: 'floorarea'
-    }, {
-        label: 'Location',
-        value: 'location'
+        label: 'Property consultants',
+        value: 'propertyConsultants'
     }, {
         label: 'Assesment',
         value: 'assesment'

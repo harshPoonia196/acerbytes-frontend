@@ -44,11 +44,9 @@ function ValueForMoneySection({ refCallback }) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <NewKeyValuePairStructure label="Project status" value={'Yes'} />
-                    <NewKeyValuePairStructure label="RERA" value={'Yes'} />
-                    <NewKeyValuePairStructure label="CC received" value={'Yes'} />
-                    <NewKeyValuePairStructure label="OC received" value={'Yes'} />
-                    <NewKeyValuePairStructure label="Registration" value={'Yes'} />
+                    <NewKeyValuePairStructure label="Appreciation till now" value={'100%'} />
+                    <NewKeyValuePairStructure label="Expected further appreciation" value={'100%'} />
+                    <NewKeyValuePairStructure label="For end user" value={'Yes'} />
                 </Grid>
             </Card>
         </Grid>

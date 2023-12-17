@@ -4,16 +4,16 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function LandscapeSection({ refCallback }) {
+function LandscapeSection() {
 
     const router = useRouter()
 
     return (
-        <Grid item xs={12} ref={refCallback} id='landscape'>
+        <Grid item xs={12} id='layout'>
             <Card>
                 <Box sx={{ p: 2, display: 'flex' }}>
                     <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
-                        Landscape
+                        Layout
                     </Typography>
                     <Box sx={{ alignSelf: "center" }}>
                         <Card
@@ -45,11 +45,17 @@ function LandscapeSection({ refCallback }) {
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
                     <NewKeyValuePairStructure label="Towers" value="5" />
-                    <NewKeyValuePairStructure label="Units" value="5" />
+                    <NewKeyValuePairStructure label="Property type" value="Flat" />
+                    <NewKeyValuePairStructure label="Units(Total)" value="10" />
+                    <NewKeyValuePairStructure label="Floor types" value="3BHK" />
+                    <NewKeyValuePairStructure label="Floors (Max-Min)" value="34" />
                     <NewKeyValuePairStructure label="Area" value="5 acres" />
-                    <NewKeyValuePairStructure label="Open area" value="1 acres" />
+                    <NewKeyValuePairStructure label="Open area" value="4 acres" />
                     <NewKeyValuePairStructure label="Green area" value="0.5 acres" />
-                    <NewKeyValuePairStructure label="Density" value="Low" />
+                    <NewKeyValuePairStructure label="Unit density" value="5" />
+                    <NewKeyValuePairStructure label="Green density" value="10" />
+                    <NewKeyValuePairStructure label="Construction quality" value="10" />
+                    <NewKeyValuePairStructure label="Interior quality" value="10" />
                 </Grid>
             </Card>
         </Grid>

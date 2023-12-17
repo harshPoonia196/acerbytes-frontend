@@ -4,7 +4,7 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function LayoutSection({ refCallback }) {
+function UnitsPlanSection({ refCallback }) {
 
     const router = useRouter()
 
@@ -36,11 +36,11 @@ function LayoutSection({ refCallback }) {
     };
 
     return (
-        <Grid item xs={12} ref={refCallback} id='floordesign' >
+        <Grid item xs={12} ref={refCallback} id='unitsPlan' >
             <Card>
                 <Box sx={{ p: 2, display: 'flex' }}>
                     <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
-                        Floor design
+                        Units plan
                     </Typography>
                     <Box sx={{ alignSelf: "center" }}>
                         <Card
@@ -96,4 +96,4 @@ function LayoutSection({ refCallback }) {
     )
 }
 
-export default LayoutSection
+export default UnitsPlanSection

@@ -3,7 +3,7 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import React, { useRef, useEffect, useState } from 'react'
 import colors from 'styles/theme/colors';
 
-function MarketingSection({ refCallback }) {
+function MarketingSection() {
 
     const myDivRef = useRef(null);
 
@@ -51,7 +51,7 @@ function MarketingSection({ refCallback }) {
                 display: 'flex',
                 height: '70vh',
                 position: 'relative',
-            }} ref={refCallback} id='project'>
+            }} id='project'>
                 <Box sx={{
                     flex: 1,
                     backgroundImage: 'URL(https://lh3.googleusercontent.com/p/AF1QipN7N4JlL5zR8A0bTIa1uYmWuu4RKhGVmxiv9lhB=s1360-w1360-h1020)',
@@ -87,7 +87,7 @@ function MarketingSection({ refCallback }) {
                                     9.8<Typography variant='h6' component='span'> / 10</Typography>
                                 </Typography>
                                 <Typography variant='h6'>
-                                    Investment
+                                    Property
                                 </Typography>
                             </Grid>
                             <Grid item xs={6}>
@@ -95,7 +95,7 @@ function MarketingSection({ refCallback }) {
                                     8.8<Typography variant='h6' component='span'> / 10</Typography>
                                 </Typography>
                                 <Typography variant='h6'>
-                                    Facilities
+                                    Layout and amenities
                                 </Typography>
                             </Grid>
                             <Grid item xs={6}>
@@ -103,7 +103,7 @@ function MarketingSection({ refCallback }) {
                                     9<Typography variant='h6' component='span'> / 10</Typography>
                                 </Typography>
                                 <Typography variant='h6'>
-                                    Construction
+                                    Location
                                 </Typography>
                             </Grid>
                             <Grid item xs={6}>
@@ -111,7 +111,7 @@ function MarketingSection({ refCallback }) {
                                     10<Typography variant='h6' component='span'> / 10</Typography>
                                 </Typography>
                                 <Typography variant='h6'>
-                                    Location
+                                    Value for money
                                 </Typography>
                             </Grid>
 
@@ -129,10 +129,10 @@ function MarketingSection({ refCallback }) {
                 </Card>
             </Card>
             <Container maxWidth="evmd" sx={{ pb: '0 !important' }}>
-                <Card id="builder" ref={refCallback}>
+                <Card id="builder">
                     <Box sx={{ display: 'flex', p: 2 }}>
                         <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
-                            Builder
+                            Overview
                         </Typography>
                         <Box sx={{ alignSelf: "center" }}>
                             <Card
@@ -167,7 +167,12 @@ function MarketingSection({ refCallback }) {
                         <NewKeyValuePairStructure label="Project name" value="Canary" />
                         <NewKeyValuePairStructure label="Project type" value="Residential" />
                         <NewKeyValuePairStructure label="Project category" value="Luxury flats" />
-                        <NewKeyValuePairStructure label="Expected possession" value="2025" />
+                        <NewKeyValuePairStructure label="Phase" value="1" />
+                        <NewKeyValuePairStructure label="Launch" value="2021" />
+                        <NewKeyValuePairStructure label="Completion" value="2025" />
+                        <NewKeyValuePairStructure label="Location" value="Mumbai, Maharashtra" />
+                        <NewKeyValuePairStructure label="Stage" value="Under construction" />
+                        <NewKeyValuePairStructure label="Speed" value="On track" />
                     </Grid>
                 </Card>
             </Container >

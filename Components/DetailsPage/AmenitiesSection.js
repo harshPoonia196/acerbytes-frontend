@@ -44,15 +44,24 @@ function AmenitiesSection({ refCallback }) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
+                    <Grid item xs={12}>
+                        <Typography variant="h6">Basic</Typography>
+                    </Grid>
                     <NewKeyValuePairStructure label="Gym"
                         value={<Rating name="half-rating" defaultValue={2.5} precision={0.5}
                             size='small' sx={{ alignSelf: 'center' }} />} middleValue={'Basic'} />
                     <NewKeyValuePairStructure label="Pool"
                         value={<Rating name="half-rating" defaultValue={2.5} precision={0.5}
                             size='small' sx={{ alignSelf: 'center' }} />} middleValue={'Basic'} />
+                    <Grid item xs={12}>
+                        <Typography variant="h6">Expected</Typography>
+                    </Grid>
                     <NewKeyValuePairStructure label="Yoga"
                         value={<Rating name="half-rating" defaultValue={2.5} precision={0.5}
                             size='small' sx={{ alignSelf: 'center' }} />} middleValue={'Expected'} />
+                    <Grid item xs={12}>
+                        <Typography variant="h6">Unique</Typography>
+                    </Grid>
                     <NewKeyValuePairStructure label="Party hall"
                         value={<Rating name="half-rating" defaultValue={2.5} precision={0.5}
                             size='small' sx={{ alignSelf: 'center' }} />} middleValue={'Unique'} />
