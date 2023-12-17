@@ -35,55 +35,97 @@ function FacilitiesCard({ isEdit }) {
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
+                    <Grid item xs={12}>
+                        <Typography variant="h6">Basic</Typography>
+                    </Grid>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch defaultChecked />
+                        <Switch />
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
                             Gym
                         </Typography>
-                        <Rating name="half-rating" defaultValue={2.5} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch defaultChecked />
+                        <Switch />
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
                             Pool
                         </Typography>
-                        <Rating name="half-rating" defaultValue={2.5} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="h6">Expected</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch defaultChecked />
+                        <Switch />
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
-                            Yoga
+                            Gym
                         </Typography>
-                        <Rating name="half-rating" defaultValue={2.5} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch defaultChecked />
+                        <Switch />
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
-                            Theatre
+                            Pool
                         </Typography>
-                        <Rating name="half-rating" defaultValue={2.5} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="h6">Basic</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch defaultChecked />
+                        <Switch />
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                         >
-                            Party hall
+                            Gym
                         </Typography>
-                        <Rating name="half-rating" defaultValue={2.5} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                    </Grid>
+                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
+                        <Switch />
+                        <Typography
+                            variant="subtitle2"
+                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                        >
+                            Pool
+                        </Typography>
+                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="h6">Basic</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
+                        <Switch />
+                        <Typography
+                            variant="subtitle2"
+                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                        >
+                            Gym
+                        </Typography>
+                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
+                    </Grid>
+                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
+                        <Switch />
+                        <Typography
+                            variant="subtitle2"
+                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                        >
+                            Pool
+                        </Typography>
+                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
                     </Grid>
                 </Grid>
             </Card>

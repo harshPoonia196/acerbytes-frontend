@@ -11,19 +11,19 @@ import {
     IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
-import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
+import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
+import BrokerCard from 'Components/BrokersPage/BrokerCard';
 
-function InvestmentCard({ isEdit }) {
+function PropertyConsultantsCard({ isEdit }) {
     return (
-        <Grid item xs={12} id="investment">
+        <Grid item xs={12} id="propertyConsultants">
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Value for money
+                        Property Consultants
                     </Typography>
                     <Box>
                         <IconButton>
@@ -33,23 +33,14 @@ function InvestmentCard({ isEdit }) {
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                    <NewInputFieldStructure
-                        label="Appreciation till now"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewSelectTextFieldStructure
-                        label="Expected further appreciation"
-                        isEdit={isEdit}
-                    />
-                    <NewSelectTextFieldStructure
-                        label="For end use"
-                        isEdit={isEdit}
-                    />
+                    <NewMultiSelectAutoCompleteInputStructure label="Property type" isEdit={isEdit} />
+                    <Grid item xs={12}>
+                        <BrokerCard broker={{ name: "Anand Gupta", type: "Consultant", stars: 4, clients: 432 }} noReview />
+                    </Grid>
                 </Grid>
             </Card>
-        </Grid>
+        </Grid >
     )
 }
 
-export default InvestmentCard
+export default PropertyConsultantsCard

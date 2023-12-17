@@ -23,17 +23,15 @@ const listOfTabsInAddProperty = [{
     label: 'Builder price',
     value: 'builderPrice'
 }, {
-    label: 'Construction',
-    value: 'construction'
-}, {
-    label: 'Investment',
+    label: 'Value for money',
     value: 'investment'
-},
-// {
-//     label: 'Bank',
-//     value: 'bank'
-// },
-{
+}, {
+    label: 'Property consultants',
+    value: 'propertyConsultants'
+}, {
+    label: 'Overall assessment',
+    value: 'overallAssessment'
+}, {
     label: 'Marketing',
     value: 'marketing'
 }
