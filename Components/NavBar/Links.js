@@ -10,26 +10,11 @@ import GroupIcon from "@mui/icons-material/Group";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import LinkIcon from '@mui/icons-material/Link';
 
-export const UserMenuList = [
+export const CommonMenuList = [
   {
     label: "Listings",
     route: "/property-list",
     icon: <ListIcon fontSize="small" />,
-  },
-  {
-    label: "My Profile",
-    route: "/profile",
-    icon: <AccountCircleIcon fontSize="small" />,
-  },
-  {
-    label: "Shortlisted",
-    route: "/shortlist",
-    icon: <ThumbUpIcon fontSize="small" />,
-  },
-  {
-    label: "My Consultants",
-    route: "/my-consultants",
-    icon: <GroupIcon fontSize="small" />,
   },
   {
     label: "Consultants",
@@ -43,6 +28,24 @@ export const UserMenuList = [
   },
 ];
 
+export const UserMenuList = [
+  {
+    label: "My Profile",
+    route: "/profile",
+    icon: <AccountCircleIcon fontSize="small" />,
+  },
+  {
+    label: "Favourite properties",
+    route: "/shortlist",
+    icon: <ThumbUpIcon fontSize="small" />,
+  },
+  {
+    label: "My Consultants",
+    route: "/my-consultants",
+    icon: <GroupIcon fontSize="small" />,
+  },
+];
+
 export const ConsultantMenuList = [
   {
     label: "My leads",
@@ -50,15 +53,20 @@ export const ConsultantMenuList = [
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
-    label: "Payment",
-    route: "/payment",
-    icon: <PaymentIcon fontSize="small" />,
+    label: "Suggested leads",
+    route: "/my-leads",
+    icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
     label: "My links",
     route: "/my-links",
     icon: <LinkIcon fontSize="small" />,
   },
+  {
+    label: "Payment history",
+    route: "/payment",
+    icon: <PaymentIcon fontSize="small" />,
+  }
 ];
 
 export const AdminMenuList = [

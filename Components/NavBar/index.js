@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import {
   AdminMenuList,
+  CommonMenuList,
   ConsultantMenuList,
   UserMenuList,
   listOfPages,
@@ -134,10 +135,16 @@ export default function ClippedDrawer({ children }) {
       <>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
+          <List>
+            {CommonMenuList.map((item) => (
+              <DrawerListItem key={item.label} item={item} />
+            ))}
+          </List>
+          <Divider />
           <List
             subheader={
               <ListSubheader component="div" id="nested-list-subheader">
-                User
+                Customer / Buyer
               </ListSubheader>
             }
           >

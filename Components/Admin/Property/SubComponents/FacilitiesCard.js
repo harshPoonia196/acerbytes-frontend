@@ -25,7 +25,7 @@ function FacilitiesCard({ isEdit }) {
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Facilities
+                        Amenities
                     </Typography>
                     <Box>
                         <IconButton>

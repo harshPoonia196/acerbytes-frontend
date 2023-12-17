@@ -3,17 +3,9 @@
 import {
     Container,
     Grid,
-    Box,
-    Card,
-    Typography,
-    Tabs,
-    Tab,
-    tabsClasses
 } from "@mui/material";
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import LeftSideLink from "Components/Admin/Property/LeftSideLink";
 import NavTab from "Components/Admin/Property/NavTab";
 import { listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
 import throttle from "lodash/throttle";
@@ -121,7 +113,6 @@ function AddProperty() {
         }
     }, [activeState, itemsServer]);
 
-    // Corresponds to 10 frames at 60 Hz
     useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
     const handleClick = (hash) => () => {
@@ -164,16 +155,16 @@ function AddProperty() {
             <div className="container">
                 <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
                     <ProjectCard isEdit={isEdit} />
-                    <LocationCard isEdit={isEdit} />
+                    <RegulatoryCard isEdit={isEdit} />
                     <LandscapeCard isEdit={isEdit} />
                     <FloorPlanCard isEdit={isEdit} />
-                    <RegulatoryCard isEdit={isEdit} />
-                    <ConstructionCard isEdit={isEdit} />
-                    <BuilderPriceCard isEdit={isEdit} />
-                    <ResalePriceCard isEdit={isEdit} />
-                    <InvestmentCard isEdit={isEdit} />
-                    <BankCard isEdit={isEdit} />
                     <FacilitiesCard isEdit={isEdit} />
+                    <LocationCard isEdit={isEdit} />
+                    <ResalePriceCard isEdit={isEdit} />
+                    <BuilderPriceCard isEdit={isEdit} />
+                    <ConstructionCard isEdit={isEdit} />
+                    <InvestmentCard isEdit={isEdit} />
+                    {/* <BankCard isEdit={isEdit} /> */}
                     <MarketingCard isEdit={isEdit} />
                 </Grid>
             </div>

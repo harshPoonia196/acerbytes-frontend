@@ -24,7 +24,7 @@ function LandscapeCard({ isEdit }) {
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Landscape
+                        Layout
                     </Typography>
                     <Box>
                         <IconButton>
@@ -35,17 +35,25 @@ function LandscapeCard({ isEdit }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <NewInputFieldStructure
-                        label="Towers"
+                        label="Tower"
                         variant="outlined"
                         isEdit={isEdit}
                     />
+                    <NewSelectTextFieldStructure
+                        label="Unit type"
+                        isEdit={isEdit}
+                    />
+                    <NewSelectTextFieldStructure
+                        label="Floor types"
+                        isEdit={isEdit}
+                    />
                     <NewInputFieldStructure
-                        label="Total Units"
+                        label="Floors (Max-Min)"
                         variant="outlined"
                         isEdit={isEdit}
                     />
                     <NewUnitAreaInputField
-                        label="Total area"
+                        label="Area"
                         variant="outlined"
                         isEdit={isEdit}
                     />
@@ -60,7 +68,22 @@ function LandscapeCard({ isEdit }) {
                         isEdit={isEdit}
                     />
                     <NewInputFieldStructure
-                        label="Density"
+                        label="Unit density"
+                        variant="outlined"
+                        isEdit={isEdit}
+                    />
+                    <NewInputFieldStructure
+                        label="Green density"
+                        variant="outlined"
+                        isEdit={isEdit}
+                    />
+                    <NewInputFieldStructure
+                        label="Construction quality"
+                        variant="outlined"
+                        isEdit={isEdit}
+                    />
+                    <NewInputFieldStructure
+                        label="Interior quality"
                         variant="outlined"
                         isEdit={isEdit}
                     />

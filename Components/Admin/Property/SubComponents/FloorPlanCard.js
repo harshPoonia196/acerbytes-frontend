@@ -24,7 +24,7 @@ function FloorPlanCard({ isEdit }) {
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Floor plans
+                        Units plan
                     </Typography>
                     <Box>
                         <IconButton>
@@ -38,18 +38,17 @@ function FloorPlanCard({ isEdit }) {
                         label="Unit type"
                         isEdit={isEdit}
                     />
-                    <NewUnitAreaInputField
-                        label="Super area"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewUnitAreaInputField
-                        label="Carpet area"
-                        variant="outlined"
+                    <NewSelectTextFieldStructure
+                        label="Unit"
                         isEdit={isEdit}
                     />
                     <NewInputFieldStructure
                         label="Name #"
+                        variant="outlined"
+                        isEdit={isEdit}
+                    />
+                    <NewUnitAreaInputField
+                        label="Area"
                         variant="outlined"
                         isEdit={isEdit}
                     />

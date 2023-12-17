@@ -1,37 +1,39 @@
 const listOfTabsInAddProperty = [{
-    label: 'Project',
+    label: 'Overview',
     value: 'project'
+}, {
+    label: 'Regulatory clearance',
+    value: 'regulatory'
+}, {
+    label: 'Layout',
+    value: 'landscape'
+}, {
+    label: 'Units plan',
+    value: 'floorplans'
+}, {
+    label: 'Amenities',
+    value: 'facilities'
 }, {
     label: 'Location',
     value: 'location'
 }, {
-    label: 'Landscape',
-    value: 'landscape'
-}, {
-    label: 'Floor plans',
-    value: 'floorplans'
-}, {
-    label: 'Regulatory',
-    value: 'regulatory'
-}, {
-    label: 'Construction',
-    value: 'construction'
+    label: 'Resale price',
+    value: 'resalePrice'
 }, {
     label: 'Builder price',
     value: 'builderPrice'
 }, {
-    label: 'Resale price',
-    value: 'resalePrice'
+    label: 'Construction',
+    value: 'construction'
 }, {
     label: 'Investment',
     value: 'investment'
-}, {
-    label: 'Bank',
-    value: 'bank'
-}, {
-    label: 'Facilities',
-    value: 'facilities'
-}, {
+},
+// {
+//     label: 'Bank',
+//     value: 'bank'
+// },
+{
     label: 'Marketing',
     value: 'marketing'
 }
@@ -91,4 +93,33 @@ const listOfPropertyDetailsTab = [
     }
 ]
 
-export { listOfTabsInAddProperty, listOfProfileTab, disablePersonalizeAdsOption, listOfPropertyDetailsTab }
+
+function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+        return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+        return 1;
+    }
+    return 0;
+}
+
+function getComparator(order, orderBy) {
+    return order === 'desc'
+        ? (a, b) => descendingComparator(a, b, orderBy)
+        : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) {
+            return order;
+        }
+        return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+}
+
+export { listOfTabsInAddProperty, listOfProfileTab, disablePersonalizeAdsOption, listOfPropertyDetailsTab, descendingComparator, getComparator, stableSort }

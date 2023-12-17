@@ -3,9 +3,7 @@
 import React from "react";
 import {
   Box,
-  IconButton,
   Typography,
-  Collapse,
   Table,
   TableBody,
   TableCell,
@@ -14,21 +12,17 @@ import {
   TableRow,
   Paper,
   Container,
-  Grid,
   TableSortLabel,
   Chip,
-  Menu,
-  MenuItem,
   Button,
-  Card, AvatarGroup, Avatar
+  AvatarGroup,
+  Avatar
 } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import InputField from "Components/CommonLayouts/InputField";
 import { visuallyHidden } from "@mui/utils";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
 import Footer from "Components/Footer";
+import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
 
 function Row(props) {
   const { row, history } = props;
@@ -46,7 +40,9 @@ function Row(props) {
         <TableCell>{row.enquired}</TableCell>
         <TableCell>{row.consultedBy}</TableCell>
         <TableCell>
-          <Chip label="View contact" size="small" onClick={() => { history.push('/join-now') }} sx={{ fontSize: '0.75rem' }} />
+          <Chip label="View contact"
+            size="small"
+            onClick={() => { history.push('/join-now') }} />
         </TableCell>
       </TableRow>
     </React.Fragment>
@@ -88,34 +84,6 @@ const rows = [
     next: "yes",
   },
 ];
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -250,7 +218,6 @@ export default function Enquiries() {
               </Typography>
               <Button variant="contained" sx={{ alignSelf: 'center' }} onClick={() => { history.push('/join-now') }}>Join as real estate consultant</Button>
             </Box>
-
           </Box>
         </Container>
       </Box>
