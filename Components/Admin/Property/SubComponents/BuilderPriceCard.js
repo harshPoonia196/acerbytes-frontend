@@ -34,12 +34,13 @@ function BuilderPriceCard({ isEdit }) {
                     </Box>
                 </Box>
                 <Divider />
-                <Grid container rowSpacing={1} columnSpacing={2} columns={12} sx={{ p: 2 }}>
+                <Grid container rowSpacing={1} columnSpacing={2} columns={{ xs: 12, sm: 18 }} sx={{ p: 2 }}>
+                    <NewSelectTextFieldStructure label="Property type" isEdit={isEdit} />
                     <NewUnitAreaInputField
-                        label="Rate"
+                        label="Asking rate / per"
                         variant="outlined"
-                        isEdit={isEdit}
                         isPrice
+                        isEdit={isEdit}
                     />
                     <DateTimeInputField label="When" variant='outlined' isEdit={isEdit} />
                     <Grid item xs={18} sx={{ textAlign: 'end' }}>

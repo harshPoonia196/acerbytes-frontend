@@ -17,11 +17,12 @@ import FacilitiesCard from 'Components/Admin/Property/SubComponents/FacilitiesCa
 import LandscapeCard from 'Components/Admin/Property/SubComponents/LandscapeCard';
 import FloorPlanCard from 'Components/Admin/Property/SubComponents/FloorPlanCard';
 import RegulatoryCard from 'Components/Admin/Property/SubComponents/RegulatoryCard';
-import ConstructionCard from 'Components/Admin/Property/SubComponents/ConstructionCard';
 import BuilderPriceCard from 'Components/Admin/Property/SubComponents/BuilderPriceCard';
 import ResalePriceCard from 'Components/Admin/Property/SubComponents/ResalePriceCard';
 import InvestmentCard from 'Components/Admin/Property/SubComponents/InvestmentCard';
 import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard';
+import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
+import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
 
 const tabHeight = 116;
 
@@ -148,28 +149,30 @@ function AddProperty() {
     const [isEdit, setIsEdit] = useState(true);
 
     return (
-        <Container>
+        <>
             <nav className={classes.demo2}>
                 <NavTab value={activeState} handleChange={handleClick} list={itemsServer} />
             </nav>
-            <div className="container">
-                <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-                    <ProjectCard isEdit={isEdit} />
-                    <RegulatoryCard isEdit={isEdit} />
-                    <LandscapeCard isEdit={isEdit} />
-                    <FloorPlanCard isEdit={isEdit} />
-                    <FacilitiesCard isEdit={isEdit} />
-                    <LocationCard isEdit={isEdit} />
-                    <ResalePriceCard isEdit={isEdit} />
-                    <BuilderPriceCard isEdit={isEdit} />
-                    <ConstructionCard isEdit={isEdit} />
-                    <InvestmentCard isEdit={isEdit} />
-                    {/* <BankCard isEdit={isEdit} /> */}
-                    <MarketingCard isEdit={isEdit} />
-                </Grid>
-            </div>
-        </Container>
-
+            <Container>
+                <div className="container">
+                    <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+                        <ProjectCard isEdit={isEdit} />
+                        <RegulatoryCard isEdit={isEdit} />
+                        <LandscapeCard isEdit={isEdit} />
+                        <FloorPlanCard isEdit={isEdit} />
+                        <FacilitiesCard isEdit={isEdit} />
+                        <LocationCard isEdit={isEdit} />
+                        <ResalePriceCard isEdit={isEdit} />
+                        <BuilderPriceCard isEdit={isEdit} />
+                        <InvestmentCard isEdit={isEdit} />
+                        <PropertyConsultantsCard isEdit={isEdit} />
+                        <OverallAssessmentCard isEdit={isEdit} />
+                        {/* <BankCard isEdit={isEdit} /> */}
+                        <MarketingCard isEdit={isEdit} />
+                    </Grid>
+                </div>
+            </Container>
+        </>
     );
 }
 

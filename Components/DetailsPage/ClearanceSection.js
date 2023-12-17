@@ -44,11 +44,14 @@ function ClearanceSection({ refCallback }) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <NewKeyValuePairStructure label="Project status" value={'Yes'} />
-                    <NewKeyValuePairStructure label="RERA" value={'Yes'} />
-                    <NewKeyValuePairStructure label="CC received" value={'Yes'} />
-                    <NewKeyValuePairStructure label="OC received" value={'Yes'} />
-                    <NewKeyValuePairStructure label="Registration" value={'Yes'} />
+                    <NewKeyValuePairStructure label="RERA approved" value={'Yes'} />
+                    <NewKeyValuePairStructure label="RERA" value={'fdfhdfhdhjhj'} />
+                    <NewKeyValuePairStructure label="CC" value={'Yes'} />
+                    <NewKeyValuePairStructure label="OC" value={'Yes'} />
+                    <NewKeyValuePairStructure label="Authority registration" value={'Yes'} />
+                    <NewKeyValuePairStructure label="Government bank loan" value={'Yes'} />
+                    <NewKeyValuePairStructure label="Private bank loan" value={'Yes'} />
+                    <NewKeyValuePairStructure label="Resale" value={'Yes'} />
                 </Grid>
             </Card>
         </Grid>

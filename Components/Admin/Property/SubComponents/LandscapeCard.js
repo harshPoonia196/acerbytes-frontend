@@ -14,6 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewUnitAreaInputField from '../../../CommonLayouts/NewUnitAreaInputField';
+import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 
 function LandscapeCard({ isEdit }) {
     return (
@@ -37,10 +38,6 @@ function LandscapeCard({ isEdit }) {
                     <NewInputFieldStructure
                         label="Tower"
                         variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewSelectTextFieldStructure
-                        label="Unit type"
                         isEdit={isEdit}
                     />
                     <NewSelectTextFieldStructure
@@ -87,6 +84,7 @@ function LandscapeCard({ isEdit }) {
                         variant="outlined"
                         isEdit={isEdit}
                     />
+                    <NewMultiSelectAutoCompleteInputStructure label="Property type" />
                 </Grid>
             </Card>
         </Grid>

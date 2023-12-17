@@ -10,7 +10,7 @@ function ResaleSection({ refCallback }) {
     const router = useRouter()
 
     return (
-        <Grid item xs={12} ref={refCallback} id='units' >
+        <Grid item xs={12} ref={refCallback} id='resale' >
             <Card>
                 <Box sx={{ p: 2, display: 'flex' }}>
                     <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
