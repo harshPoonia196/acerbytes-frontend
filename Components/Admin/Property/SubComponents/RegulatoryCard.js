@@ -24,7 +24,7 @@ function RegulatoryCard({ isEdit }) {
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Regulatory
+                        Regulatory clearance
                     </Typography>
                     <Box>
                         <IconButton>
@@ -34,30 +34,37 @@ function RegulatoryCard({ isEdit }) {
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
+                    <NewSelectTextFieldStructure
+                        label="RERA approved"
+                        isEdit={isEdit}
+                    />
                     <NewInputFieldStructure
-                        label="RERA"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-
-                    <NewSelectTextFieldStructure
-                        label="CC available"
+                        label="RERA number"
                         variant="outlined"
                         isEdit={isEdit}
                     />
                     <NewSelectTextFieldStructure
-                        label="OC available"
-                        variant="outlined"
+                        label="CC"
                         isEdit={isEdit}
                     />
                     <NewSelectTextFieldStructure
-                        label="Registration"
-                        variant="outlined"
+                        label="OC"
+                        isEdit={isEdit}
+                    />
+                    <NewSelectTextFieldStructure
+                        label="Authority registration"
+                        isEdit={isEdit}
+                    />
+                    <NewSelectTextFieldStructure
+                        label="Government Loan"
+                        isEdit={isEdit}
+                    />
+                    <NewSelectTextFieldStructure
+                        label="Private Bank loan"
                         isEdit={isEdit}
                     />
                     <NewSelectTextFieldStructure
                         label="Resale"
-                        variant="outlined"
                         isEdit={isEdit}
                     />
                     <Grid item sx={{ display: 'flex', ml: 'auto' }}>

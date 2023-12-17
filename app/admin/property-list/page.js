@@ -13,69 +13,31 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from '@mui/utils';
 import { useRouter } from "next/navigation";
-import { Search } from "@mui/icons-material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
 
-function createData(
-  project,
-  builder,
-  city,
-  area,
-  sector,
-  status,
-  lastModified
-) {
-  return {
-    project,
-    builder,
-    city,
-    area,
-    sector,
-    status,
-    lastModified,
-  };
-}
+
 
 const rows = [
-  createData(
-    "Rizvi heights",
-    "Rizvi builders",
-    "Mumbai",
-    "Noida",
-    'sector 26',
-    "Draft",
-    "12th Nov 2018, 09:18 AM"
-  ),
+  {
+    project: "Rizvi heights",
+    builder: "Rizvi builders",
+    city: "Mumbai",
+    area: "Noida",
+    sector: 'sector 26',
+    status: "Draft",
+    lastModified: "12th Nov 2018, 09:18 AM"
+  }, {
+    project: "Rizvi heights",
+    builder: "Rizvi builders",
+    city: "Mumbai",
+    area: "Noida",
+    sector: 'sector 26',
+    status: "Draft",
+    lastModified: "12th Nov 2018, 09:18 AM"
+  }
 ];
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -121,8 +83,9 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, rowCount, onRequestSort } =
+  const { order, orderBy, onRequestSort } =
     props;
+
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -161,25 +124,14 @@ function PropertyList() {
   const router = useRouter()
 
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
+  const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -220,12 +172,9 @@ function PropertyList() {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <EnhancedTableHead
-            numSelected={selected.length}
             order={order}
             orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={rows.length}
           />
           <TableBody>
             {rows.map((row) => (
@@ -239,12 +188,12 @@ function PropertyList() {
                 <TableCell>{row.area}</TableCell>
                 <TableCell>{row.sector}</TableCell>
                 <TableCell>
-                  <IconButton>
+                  <IconButton size="small">
                     <EditIcon fontSize="small" />
                   </IconButton>
                 </TableCell>
                 <TableCell>
-                  <IconButton>
+                  <IconButton size="small">
                     <DeleteIcon fontSize="small" />
                   </IconButton>
                 </TableCell>
@@ -253,8 +202,8 @@ function PropertyList() {
                 </TableCell>
                 <TableCell><Chip label={row.status} size="small" /></TableCell>
                 <TableCell>
-                  <IconButton>
-                    <MoreVertIcon onClick={handleClick} />
+                  <IconButton size="small">
+                    <MoreVertIcon onClick={handleClick} fontSize="small" />
                   </IconButton>
                   <Menu
                     id="basic-menu"
@@ -273,16 +222,16 @@ function PropertyList() {
             ))}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </Container>
   );
 }

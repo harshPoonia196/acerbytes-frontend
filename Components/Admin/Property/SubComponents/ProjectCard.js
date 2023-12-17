@@ -46,7 +46,7 @@ function ProjectCard({ isEdit }) {
                             variant="subtitle1"
                             sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                         >
-                            Project
+                            Overview
                         </Typography>
                         <Box>
                             <IconButton>
@@ -72,6 +72,32 @@ function ProjectCard({ isEdit }) {
                         />
                         <NewSelectTextFieldStructure
                             label="Project category"
+                            isEdit={isEdit}
+                        />
+                        <NewInputFieldStructure
+                            label="Phase"
+                            variant="outlined"
+                            isEdit={isEdit}
+                        />
+                        <NewSelectTextFieldStructure
+                            label="Launch"
+                            isEdit={isEdit}
+                        />
+                        <NewSelectTextFieldStructure
+                            label="Completion"
+                            isEdit={isEdit}
+                        />
+                        <NewInputFieldStructure
+                            label="Location"
+                            variant="outlined"
+                            isEdit={isEdit}
+                        />
+                        <NewSelectTextFieldStructure
+                            label="Stage"
+                            isEdit={isEdit}
+                        />
+                        <NewSelectTextFieldStructure
+                            label="Speed"
                             isEdit={isEdit}
                         />
                     </Grid>

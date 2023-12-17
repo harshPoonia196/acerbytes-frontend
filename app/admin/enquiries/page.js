@@ -7,62 +7,24 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-
-function createData(
-  firstName,
-  lastName,
-  city,
-  countryCode,
-  phone,
-  phoneVerified,
-  email,
-  emailVerified,
-  role,
-  maxBudget,
-  closedStatus,
-  pendingStatus,
-  updatedBy,
-  lastModified
-) {
-  return {
-    firstName,
-    lastName,
-    city,
-    countryCode,
-    phone,
-    phoneVerified,
-    email,
-    emailVerified,
-    role,
-    maxBudget,
-    closedStatus,
-    pendingStatus,
-    updatedBy,
-    lastModified,
-  };
-}
 
 const rows = [
-  createData(
-    "Anand",
-    "Gupta",
-    "Mumbai",
-    "+91",
-    "1234567558",
-    true,
-    "anand@gmail.com",
-    true,
-    "Investor",
-    "12000",
-    "Pending",
-    "Pending",
-    "Anand",
-    "12th Nov 2018, 09:18 AM"
-  ),
+  {
+    firstName: 'Anand',
+    lastName: 'Gupta',
+    city: 'Mumbai',
+    countryCode: '+91',
+    phone: '1234567558',
+    phoneVerified: true,
+    email: 'anand@gmail.com',
+    emailVerified: true,
+    role: 'Investor',
+    maxBudget: 12000,
+    closedStatus: 'Pending',
+    pendingStatus: 'Pending',
+    updatedBy: 'Anand',
+    lastModified: "12th Nov 2018, 09:18 AM",
+  }
 ];
 
 function Enquiries() {

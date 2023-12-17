@@ -18,6 +18,7 @@ import MuiAccordionSummary from "./MuiAccordionSummary";
 import MuiCard from "./MuiCard";
 import MuiDialogContent from "./MuiDialogContent";
 import MuiDialogTitle from "./MuiDialogTitle";
+import MuiChip from "./MuiChip";
 
 export default {
   MuiButton,
@@ -40,4 +41,5 @@ export default {
   MuiCard,
   MuiDialogContent,
   MuiDialogTitle,
+  MuiChip
 };

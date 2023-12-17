@@ -1,141 +1,61 @@
-import { Box, Button, Card, Container, IconButton, InputBase, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+'use client'
+
+import { Box, Card, Container, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import React from 'react'
-import Paper from "@mui/material/Paper";
-import PersonOffIcon from '@mui/icons-material/PersonOff';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import SearchIcon from "@mui/icons-material/Search";
-
-
-function createData(
-    consultantName,
-    phone,
-    propertyType,
-    propertyName,
-    link,
-    status,
-    validFrom,
-    validTo,
-  ) {
-    return {
-        consultantName,
-        phone,
-        propertyType,
-        propertyName,
-        link,
-        status,
-        validFrom,
-        validTo,
-    };
-  }
-
-  const rows = [
-   
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Ramesh Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Anand Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-    createData("Rajesh Gupta","1234567558","Residency","New Oak","abc.com","Active",'13/12/2023','13/01/2024'),
-  ];
+import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
+import CustomBreadScrum from 'Components/CommonLayouts/CustomBreadScrumbs';
+import ConsultantLinksTable from 'Components/Admin/ConsultantLinks/ConsultantLinksTable';
 
 const page = () => {
-  return (
-    <>
 
-        <Container>
-            <Card>
-            <Box
-                sx={{
-                display: "flex",
-                flex: 1,
-                pl: 2,
-                borderRadius: "8px",
-                }}
-            >
-                <InputBase
-                placeholder="Search"
-                type="text"
-                inputProps={{ "aria-label": "Search..." }}
-                fullWidth
-                />
-                <IconButton type="submit" aria-label="search">
-                <SearchIcon />
-                </IconButton>
+    const [alignment, setAlignment] = React.useState('all');
+
+    const handleChange = (event, newAlignment) => {
+        setAlignment(newAlignment);
+    };
+
+    return (
+        <>
+            <Box sx={{ backgroundColor: "white" }}>
+                <Container
+                    maxWidth="lg"
+                    sx={{ pb: "0 !important" }}
+                >
+                    <CustomBreadScrum
+                    />
+                    <Box sx={{ py: 4 }}>
+                        <Typography variant="h2" sx={{ color: "#000" }}>
+                            Hi, Anand Gupta (Admin)
+                        </Typography>
+                        <Typography variant="h2" sx={{ color: "#000" }}>
+                            3,344 property consultant links are currently active
+                        </Typography>
+                    </Box>
+                </Container>
             </Box>
-            </Card>
-        </Container>
-
-        <Container sx={{mx:'auto',p:2}}>
-            <TableContainer component={Paper} sx={{maxHeight:'80vh'}} >
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Consultant name</TableCell>
-                            <TableCell>Phone</TableCell>
-                            <TableCell>Proper type</TableCell>
-                            <TableCell>Property name</TableCell>
-                            <TableCell>Link</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>Valid from</TableCell>
-                            <TableCell>Valid to</TableCell>
-                            <TableCell>Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                            {rows.map((row) => (
-                        <TableRow
-                            key={row.name}
-                            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                        >
-                            <TableCell>{row.consultantName}</TableCell>
-                            <TableCell>{row.phone}</TableCell>
-                            <TableCell>{row.propertyType}</TableCell>
-                            <TableCell>{row.propertyName}</TableCell>
-                            <TableCell>
-                                <Tooltip title="Copy">
-                                    <IconButton size='small'>
-                                        <ContentCopyIcon size='small' />
-                                    </IconButton>
-                                </Tooltip>
-                            </TableCell>
-                            <TableCell>{row.status}</TableCell>
-                            <TableCell>{row.validFrom}</TableCell>
-                            <TableCell>{row.validTo}</TableCell>
-                            <TableCell>
-                                {/* <Button size='small'>Action</Button> */}
-                                <Tooltip title="Disable">
-                                    <IconButton size='small'>
-                                        <PersonOffIcon size='small' />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Activate">
-                                    <IconButton size='small'>
-                                        <PersonAddIcon size='small' />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Invoice">
-                                    <IconButton size='small'>
-                                        <ReceiptIcon size='small' />
-                                    </IconButton>
-                                </Tooltip>
-                            </TableCell>
-                        </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Container>
-    </>
-  )
+            <Container>
+                <Card sx={{ mb: 2 }}>
+                    <ToggleButtonGroup
+                        color="primary"
+                        value={alignment}
+                        exclusive
+                        onChange={handleChange}
+                        aria-label="Platform"
+                        sx={{ display: 'flex' }}
+                    >
+                        <ToggleButton size='small' value="all" sx={{ flex: 1, border: 'none' }}>All (10)</ToggleButton>
+                        <ToggleButton size='small' value="active" sx={{ flex: 1, border: 'none' }}>Active (10)</ToggleButton>
+                        <ToggleButton size='small' value="expired" sx={{ flex: 1, border: 'none' }}>Expired (10)</ToggleButton>
+                        <ToggleButton size='small' value="expiringSoon" sx={{ flex: 1, border: 'none' }}>Expiring soon (10)</ToggleButton>
+                    </ToggleButtonGroup>
+                </Card>
+                <Card sx={{ mb: 2 }}>
+                    <CustomSearchInput />
+                </Card>
+                <ConsultantLinksTable />
+            </Container>
+        </>
+    )
 }
 
 export default page
