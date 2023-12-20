@@ -31,7 +31,12 @@ export const CommonMenuList = [
 export const UserMenuList = [
   {
     label: "My Profile",
-    route: "/profile",
+    route: "/buyers/profile",
+    icon: <AccountCircleIcon fontSize="small" />,
+  },
+  {
+    label: "Consultant Profile",
+    route: "/consultant/profile",
     icon: <AccountCircleIcon fontSize="small" />,
   },
   {
@@ -96,10 +101,16 @@ export const AdminMenuList = [
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
+    label: "Manage Consultant",
+    route: "/admin/manage-consultant",
+    icon: <PlaylistAddIcon fontSize="small" />,
+  },
+  {
     label: "Consultant links",
-    route: "/admin/consultant-links",
+    route: "/admin/consultant/links",
     icon: <LinkIcon fontSize="small" />,
   },
+
 ];
 
 export const listOfPages = {
