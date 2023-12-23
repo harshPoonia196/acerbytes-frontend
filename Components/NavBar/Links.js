@@ -31,17 +31,17 @@ export const CommonMenuList = [
 export const UserMenuList = [
   {
     label: "My Profile",
-    route: "/buyers/profile",
+    route: "/user/profile",
     icon: <AccountCircleIcon fontSize="small" />,
   },
   {
     label: "Favourite properties",
-    route: "/shortlist",
+    route: "/user/shortlist",
     icon: <ThumbUpIcon fontSize="small" />,
   },
   {
     label: "My Consultants",
-    route: "/my-consultants",
+    route: "/user/my-consultants",
     icon: <GroupIcon fontSize="small" />,
   },
 ];
