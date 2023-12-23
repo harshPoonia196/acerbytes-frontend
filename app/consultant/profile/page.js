@@ -28,8 +28,8 @@ import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles, withStyles } from "@mui/styles";
-import { listOfProfileTab } from "Components/CommonLayouts/CommonUtils";
 import throttle from "lodash/throttle";
+import { listOfConsultantProfileTab } from 'Components/CommonLayouts/CommonUtils';
 
 const tabHeight = 116;
 
@@ -106,6 +106,11 @@ function Profile() {
   const handleChangePropertyTypeToggle = (event, newAlignment) => {
     setPropertyTypeToggleAlignment(newAlignment);
   };
+  const [businessTypeToggleAlignment, setBusinessTypeToggleAlignment] =
+  React.useState("");
+  const handleChangeBusinessTypeToggle = (event, newAlignment) => {
+    setBusinessTypeToggleAlignment(newAlignment);
+  };
 
   const [isDndEnabled, setIsDndEnabled] = useState(false);
   const [isPromotionEnabled, setIsPromotionEnabled] = useState(true);
@@ -122,7 +127,7 @@ function Profile() {
 
   const [activeState, setActiveState] = React.useState(null);
 
-  let itemsServer = listOfProfileTab.map((tab) => {
+  let itemsServer = listOfConsultantProfileTab.map((tab) => {
     const hash = tab.value;
     return {
       text: tab.label,
@@ -207,14 +212,16 @@ function Profile() {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md">
-      <nav className={classes.demo2}>
-        <NavTabProfilePage
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
-      </nav>
+    <>
+    <nav className={classes.demo2}>
+    <NavTabProfilePage
+      value={activeState}
+      handleChange={handleClick}
+      list={itemsServer}
+    />
+  </nav>
+    <Container maxWidth="lg">
+     
       <Grid container spacing={2}>
         <Grid item xs={12} id="userDetails" >
           <Card sx={{ p: 2 }}>
@@ -273,6 +280,7 @@ function Profile() {
                 variant="outlined"
                 isEdit={isEdit}
               />
+
               <NewPhoneInputFieldStructure
                 variant="outlined"
                 label="Phone"
@@ -283,6 +291,20 @@ function Profile() {
                 variant="outlined"
                 isEdit={isEdit}
               />
+              <NewToggleButtonStructure
+                isEdit={isEdit}
+                label="Business type"
+                value={businessTypeToggleAlignment}
+                handleChange={handleChangeBusinessTypeToggle}
+              >
+                <ToggleButton fullWidth size="small" value="individual">
+                  Individual
+                </ToggleButton>
+                <ToggleButton fullWidth size="small" value="company">
+                  Company
+                </ToggleButton>
+              </NewToggleButtonStructure>
+              
             </Grid>
           </Card>
         </Grid>
@@ -312,23 +334,36 @@ function Profile() {
                 variant="outlined"
                 isEdit={isEdit}
               />
+             
+              
               <NewInputFieldStructure
-                label="Salary"
+                label="RERA number"
                 variant="outlined"
                 isEdit={isEdit}
               />
-              <NewSelectTextFieldStructure label="Family" isEdit={isEdit} />
+              <NewInputFieldStructure
+                label="Company email"
+                variant="outlined"
+                isEdit={isEdit}
+              />
+              
+              <NewPhoneInputFieldStructure
+                variant="outlined"
+                label="Registerd phone"
+                isEdit={isEdit}
+              />
+         
             </Grid>
           </Card>
         </Grid>
-        <Grid item xs={12} id="interestedCities" >
+        <Grid item xs={12} id="targetedCustomers" >
           <Card>
             <Box sx={{ display: "flex", p: 2, py: 1 }}>
               <Typography
                 variant="subtitle1"
                 sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
               >
-                Interested cities
+                Target Customers
               </Typography>
               <Box>
                 <IconButton>
@@ -523,7 +558,7 @@ function Profile() {
                 variant="subtitle1"
                 sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
               >
-                Current address
+                Company Current address
               </Typography>
               <Box>
                 <IconButton>
@@ -654,6 +689,7 @@ function Profile() {
       </Grid>
 
     </Container>
+    </>
   );
 }
 

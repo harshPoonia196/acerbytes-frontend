@@ -90,7 +90,7 @@ export default function ClippedDrawer({ children }) {
     >
       <MenuItem
         onClick={() => {
-          router.push("/profile");
+          router.push("buyers/profile");
           handleMenuClose();
         }}
       >

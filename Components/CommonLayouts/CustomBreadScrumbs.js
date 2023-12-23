@@ -24,7 +24,7 @@ export default function CustomBreadScrum() {
             Admin
         </Link>,
         <Typography key="3" color="text.primary" sx={{ textTransform: 'uppercase' }}>
-            Consultant Links
+            Consultant Link
         </Typography>,
     ];
 

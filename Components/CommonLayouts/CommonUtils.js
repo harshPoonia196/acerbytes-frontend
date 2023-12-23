@@ -50,6 +50,16 @@ const listOfProfileTab = [
     { label: 'Setting', value: 'setting' },
 ]
 
+const listOfConsultantProfileTab = [
+    { label: 'User details', value: 'userDetails' },
+    { label: 'Service details', value: 'serviceDetails' },
+    { label: 'Target Customers', value: 'targetedCustomers' },
+    { label: 'Budget', value: 'budget' },
+    { label: 'Enquiries', value: 'enquiries' },
+    { label: 'Property Consultants', value: 'propertyConsultants' },
+    { label: 'Company Current address', value: 'companycurrentAddress' },
+    { label: 'Setting', value: 'setting' },
+]
 
 const listOfPropertyDetailsTab = [
     {
@@ -120,4 +130,4 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-export { listOfTabsInAddProperty, listOfProfileTab, disablePersonalizeAdsOption, listOfPropertyDetailsTab, descendingComparator, getComparator, stableSort }
+export { listOfTabsInAddProperty,listOfConsultantProfileTab, listOfProfileTab, disablePersonalizeAdsOption, listOfPropertyDetailsTab, descendingComparator, getComparator, stableSort }
