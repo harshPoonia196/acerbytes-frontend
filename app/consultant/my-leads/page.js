@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { Box, Container, Typography, Button, ToggleButton, ToggleButtonGroup, Card } from "@mui/material";
-import MyLeadsTable from "Components/ConsultantLeads/MyLeadsTable";
-import UpdateLeadStatus from "Components/ConsultantLeads/Modal/UpdateLeadStatus";
+import MyLeadsTable from "Components/Consultant/ConsultantLeads/MyLeadsTable";
+import UpdateLeadStatus from "Components/Consultant/ConsultantLeads/Modal/UpdateLeadStatus";
 
 function MyLeads() {
   const [openUpdatePopup, setOpenUpdatePopup] = useState()

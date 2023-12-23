@@ -3,7 +3,7 @@
 import { Card, Container } from '@mui/material'
 import React from 'react'
 import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
-import MyLinksTable from 'Components/ConsultantLinks/MyLinksTable';
+import MyLinksTable from 'Components/Consultant/ConsultantLinks/MyLinksTable';
 
 const page = () => {
 
