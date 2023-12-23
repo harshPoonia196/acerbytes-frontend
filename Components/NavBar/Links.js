@@ -35,11 +35,6 @@ export const UserMenuList = [
     icon: <AccountCircleIcon fontSize="small" />,
   },
   {
-    label: "Consultant Profile",
-    route: "/consultant/profile",
-    icon: <AccountCircleIcon fontSize="small" />,
-  },
-  {
     label: "Favourite properties",
     route: "/shortlist",
     icon: <ThumbUpIcon fontSize="small" />,
@@ -53,23 +48,28 @@ export const UserMenuList = [
 
 export const ConsultantMenuList = [
   {
+    label: "Consultant Profile",
+    route: "/consultant/profile",
+    icon: <AccountCircleIcon fontSize="small" />,
+  },
+  {
     label: "My leads",
-    route: "/my-leads",
+    route: "/consultant/my-leads",
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
     label: "Suggested leads",
-    route: "/my-leads",
+    route: "/consultant/my-leads",
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
     label: "My links",
-    route: "/my-links",
+    route: "/consultant/my-links",
     icon: <LinkIcon fontSize="small" />,
   },
   {
     label: "Payment history",
-    route: "/payment",
+    route: "/consultant/make-payment",
     icon: <PaymentIcon fontSize="small" />,
   }
 ];
@@ -81,7 +81,7 @@ export const AdminMenuList = [
     icon: <RecentActorsIcon fontSize="small" />,
   },
   {
-    label: "Leads reviewed",
+    label: "Leads reviewed (No page yet)",
     route: "/leads",
     icon: <ChecklistRtlIcon fontSize="small" />,
   },
@@ -107,7 +107,7 @@ export const AdminMenuList = [
   },
   {
     label: "Consultant links",
-    route: "/admin/consultant/links",
+    route: "/admin/consultant-links",
     icon: <LinkIcon fontSize="small" />,
   },
 

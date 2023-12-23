@@ -9,7 +9,7 @@ function handleClick(event) {
     console.info('You clicked a breadcrumb.');
 }
 
-export default function CustomBreadScrum() {
+export default function CustomBreadScrum({ text }) {
     const breadcrumbs = [
         <Link underline="hover" key="1" color="inherit" href="/" onClick={handleClick} sx={{ textTransform: 'uppercase' }}>
             Home
@@ -24,7 +24,7 @@ export default function CustomBreadScrum() {
             Admin
         </Link>,
         <Typography key="3" color="text.primary" sx={{ textTransform: 'uppercase' }}>
-            Consultant Link
+            {text}
         </Typography>,
     ];
 

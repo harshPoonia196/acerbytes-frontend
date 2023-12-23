@@ -22,19 +22,18 @@ const page = () => {
                     maxWidth="lg"
                     sx={{ pb: "0 !important" }}
                 >
-                   
+                    <CustomBreadScrum text='Manage consultant' />
                     <Box sx={{ py: 4 }}>
                         <Typography variant="h2" sx={{ color: "#000" }}>
                             Hi, Anand Gupta (Admin)
                         </Typography>
                         <Typography variant="h2" sx={{ color: "#000" }}>
-                           Manage Consultants 
+                            Manage Consultants
                         </Typography>
                     </Box>
                 </Container>
             </Box>
             <Container>
-               
                 <Card sx={{ mb: 2 }}>
                     <CustomSearchInput />
                 </Card>

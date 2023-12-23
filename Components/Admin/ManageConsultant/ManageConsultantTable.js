@@ -1,53 +1,53 @@
-import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem,Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,Button,
-     } from '@mui/material'
-import React ,{useState} from 'react'
+import {
+    Table, Box, TableBody, TableContainer, TablePagination, TableHead,
+    TableRow, TableCell, TableSortLabel, IconButton, Dialog, Button
+} from '@mui/material'
+import React, { useState } from 'react'
 import Paper from "@mui/material/Paper";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 
 import { visuallyHidden } from '@mui/utils';
 import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
 import AddIcon from '@mui/icons-material/Add';
+import AddCreditPopup from './Modal/AddCreditPopup';
 
 
 const rows = [
     {
         FirstName: "Anand",
         LastName: "Gupta",
-        CompanyName:"ABC Enterprise",
+        CompanyName: "ABC Enterprise",
         phone: "1234567558",
         RERANumber: "12344",
         NoOfActiveLinks: "2",
         CreditAmount: "5000",
         status: "Active",
-        action:"Add Credit"
-       
+        action: "Add Credit"
+
     },
     {
         FirstName: "Anand",
         LastName: "Gupta",
-        CompanyName:"ABC Enterprise",
+        CompanyName: "ABC Enterprise",
         phone: "1234567558",
         RERANumber: "12344",
         NoOfActiveLinks: "2",
         CreditAmount: "5000",
         status: "Active",
-        action:"Add Credit"
-       
+        action: "Add Credit"
+
     },
     {
         FirstName: "Anand",
         LastName: "Gupta",
-        CompanyName:"ABC Enterprise",
+        CompanyName: "ABC Enterprise",
         phone: "1234567558",
         RERANumber: "12344",
         NoOfActiveLinks: "2",
         CreditAmount: "5000",
         status: "Active",
-        action:"Add Credit"
-       
+        action: "Add Credit"
+
     },
 ];
 
@@ -68,7 +68,7 @@ const headCells = [
         id: 'phone',
         label: 'Phone',
     },
-   
+
     {
         id: 'RERANumber',
         label: 'RERANumber',
@@ -85,8 +85,8 @@ const headCells = [
         id: 'status',
         label: 'Status',
     },
-    
-  
+
+
 ];
 
 function EnhancedTableHead(props) {
@@ -128,55 +128,38 @@ function EnhancedTableHead(props) {
 }
 
 function RowStructure({ row }) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [openDialog, setOpenDialog] = useState(false);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+    const [openAddCredit, setOpenAddCredit] = useState(false);
+    const handleOpenAddCreditPopup = () => {
+        setOpenAddCredit(true);
     };
-    const handleClose = () => {
-        setAnchorEl(null);
+
+    const handleCloseAddCreditPopup = () => {
+        setOpenAddCredit(false);
     };
-    const handleAddCreditClick = () => {
-        setOpenDialog(true);
-      };
-    
-      const handleDialogClose = () => {
-        setOpenDialog(false);
-      };
-    return<><TableRow
-        key={row.name}
-        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
-        <TableCell>{row.FirstName}</TableCell>
-        <TableCell>{row.LastName}</TableCell>
-        <TableCell>{row.CompanyName}</TableCell>
-        <TableCell>{row.phone}</TableCell>
-     
-       
-        <TableCell>{row.RERANumber}</TableCell>
-        <TableCell>{row.NoOfActiveLinks}</TableCell>
-        <TableCell>{row.CreditAmount}</TableCell>
-        <TableCell>{row.status}</TableCell>
-        <TableCell>Add Credit{row.action === 'Add Credit' && (
-            <IconButton onClick={handleAddCreditClick}>
-              <AddIcon fontSize='small'/> 
-            </IconButton>
-          )}</TableCell>
-        
-    </TableRow>
-    <Dialog open={openDialog} onClose={handleDialogClose}>
-    <DialogTitle>Add Credit</DialogTitle>
-    <DialogContent>
-      <p>Credit Amount: {row.CreditAmount}</p>
-      {/* Add balance amount if you have it in your data */}
-      <p>Balance Amount: {row.BalanceAmount}</p>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={handleDialogClose}>Close</Button>
-    </DialogActions>
-  </Dialog>
-  </>
+
+    return (<>
+        <AddCreditPopup open={openAddCredit} handleClose={handleCloseAddCreditPopup} />
+        <TableRow
+            key={row.name}
+            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        >
+            <TableCell>{row.FirstName}</TableCell>
+            <TableCell>{row.LastName}</TableCell>
+            <TableCell>{row.CompanyName}</TableCell>
+            <TableCell>{row.phone}</TableCell>
+            <TableCell>{row.RERANumber}</TableCell>
+            <TableCell>{row.NoOfActiveLinks}</TableCell>
+            <TableCell>{row.CreditAmount}</TableCell>
+            <TableCell>{row.status}</TableCell>
+            <TableCell>
+                {row.action === 'Add Credit' && (
+                    <IconButton sx={{ fontSize: '1rem !important' }} onClick={handleOpenAddCreditPopup}>
+                        <AddIcon fontSize='1rem' />
+                    </IconButton>
+                )}
+            </TableCell>
+        </TableRow>
+    </>)
 }
 
 function ManageConsultantTable() {

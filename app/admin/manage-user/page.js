@@ -5,9 +5,11 @@ import {
   Container,
   Typography,
   Card,
+  Box,
 } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import ManageUserTable from "Components/Admin/ManageUser/ManageUserTable";
+import CustomBreadScrum from "Components/CommonLayouts/CustomBreadScrumbs";
 
 function ManageUser() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,22 +31,32 @@ function ManageUser() {
   // };
 
   return (
-    <Container>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Manage User
-      </Typography>
-      <Card sx={{ mb: 2 }}>
-        <CustomSearchInput
-          label="Search"
-          variant="outlined"
-          value={searchTerm}
-          // onChange={handleSearch}
-          sx={{ mb: 2 }}
+    <>
+      <Box sx={{ backgroundColor: "white" }}>
+        <Container
+          maxWidth="lg"
+          sx={{ pb: "0 !important" }}
+        >
+          <CustomBreadScrum text='Manage user' />
+        </Container>
+      </Box>
+      <Container>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Manage User
+        </Typography>
+        <Card sx={{ mb: 2 }}>
+          <CustomSearchInput
+            label="Search"
+            variant="outlined"
+            value={searchTerm}
+            // onChange={handleSearch}
+            sx={{ mb: 2 }}
 
-        />
-      </Card>
-      <ManageUserTable />
-    </Container>
+          />
+        </Card>
+        <ManageUserTable />
+      </Container>
+    </>
   );
 }
 
