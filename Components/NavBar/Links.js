@@ -9,6 +9,7 @@ import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import GroupIcon from "@mui/icons-material/Group";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import LinkIcon from '@mui/icons-material/Link';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const CommonMenuList = [
   {
@@ -25,6 +26,11 @@ export const CommonMenuList = [
     label: "Leads panel",
     route: "/enquiries",
     icon: <TableRowsIcon fontSize="small" />,
+  },
+  {
+    label: "Page not found",
+    route: "/page-not-found",
+    icon: <CloseIcon fontSize="small" />,
   },
 ];
 

@@ -22,7 +22,6 @@ function AddCreditPopup({ open, handleClose }) {
                     </Grid>
                     <InputField label="Credits to add" />
                 </Grid>
-
             </DialogContent>
             <DialogActions>
                 <Box

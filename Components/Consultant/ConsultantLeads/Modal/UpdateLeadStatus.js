@@ -2,6 +2,11 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, T
 import InputField from 'Components/CommonLayouts/InputField';
 import SelectTextFields from 'Components/CommonLayouts/SelectTextFields';
 import React from 'react'
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 
 function UpdateLeadStatus({ open, handleClose }) {
     return (
@@ -22,7 +27,19 @@ function UpdateLeadStatus({ open, handleClose }) {
                         <SelectTextFields label='Status' />
                     </Grid>
                     <Grid item xs={6}>
-                        <SelectTextFields label='Status' />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
+                                <DateTimePicker
+                                    label="With Time Clock"
+                                    viewRenderers={{
+                                        hours: renderTimeViewClock,
+                                        minutes: renderTimeViewClock,
+                                        seconds: renderTimeViewClock,
+                                    }}
+                                    slotProps={{ textField: { size: 'small', fullWidth: true }, dialog: { backgroundColor: 'red' } }}
+                                />
+                            </DemoContainer>
+                        </LocalizationProvider>
                     </Grid>
                     <InputField variant='outlined' multiline rows={2} label='Comment' />
                     <Grid item xs={12}>

@@ -22,7 +22,7 @@ const page = () => {
                     maxWidth="lg"
                     sx={{ pb: "0 !important" }}
                 >
-                    <CustomBreadScrum text='Manage consultant' />
+                    <CustomBreadScrum text='Manage consultants' />
                     <Box sx={{ py: 4 }}>
                         <Typography variant="h2" sx={{ color: "#000" }}>
                             Hi, Anand Gupta (Admin)

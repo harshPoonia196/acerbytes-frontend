@@ -8,6 +8,7 @@ function SelectTextFields({
   name,
   list,
   error,
+  variant,
   sx,
 }) {
   return (
@@ -19,6 +20,7 @@ function SelectTextFields({
       onChange={handleChange}
       error={error && error}
       defaultValue=""
+      variant={variant && variant}
       fullWidth
       size="small"
       sx={{
@@ -28,18 +30,19 @@ function SelectTextFields({
         ...sx,
       }}
     >
-      {list ? (
-        list?.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
+      {
+        list ? (
+          list?.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem key="No data" value="No data" disabled>
+            No data
           </MenuItem>
-        ))
-      ) : (
-        <MenuItem key="No data" value="No data" disabled>
-          No data
-        </MenuItem>
-      )}
-    </TextField>
+        )}
+    </TextField >
   );
 }
 

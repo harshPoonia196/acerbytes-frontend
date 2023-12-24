@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Box, Container, Typography, Button, ToggleButton, ToggleButtonGroup, Card } from "@mui/material";
 import MyLeadsTable from "Components/Consultant/ConsultantLeads/MyLeadsTable";
 import UpdateLeadStatus from "Components/Consultant/ConsultantLeads/Modal/UpdateLeadStatus";
+import MyLeadsStatusTable from "Components/Consultant/ConsultantLeads/MyLeadsStatusTable";
 
 function MyLeads() {
   const [openUpdatePopup, setOpenUpdatePopup] = useState()
@@ -18,7 +19,8 @@ function MyLeads() {
   const [alignment, setAlignment] = React.useState('all');
 
   const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+    newAlignment != null &&
+      setAlignment(newAlignment);
   };
 
   return (
@@ -37,13 +39,13 @@ function MyLeads() {
           sx={{ display: 'flex' }}
         >
           <ToggleButton size='small' value="all" sx={{ flex: 1, border: 'none' }}>All (10)</ToggleButton>
-          <ToggleButton size='small' value="active" sx={{ flex: 1, border: 'none' }}>Active (10)</ToggleButton>
+          <ToggleButton size='small' value="notes" sx={{ flex: 1, border: 'none' }}>Notes (10)</ToggleButton>
         </ToggleButtonGroup>
       </Card>
-      <Box>
-        <Button onClick={handleOpenUpdatePopup}>Add update</Button>
+      <Box sx={{ textAlign: 'end', mb: 2 }}>
+        <Button variant="outlined" size="small" onClick={handleOpenUpdatePopup}>Add notes</Button>
       </Box>
-      <MyLeadsTable />
+      {alignment === 'all' ? <MyLeadsTable /> : <MyLeadsStatusTable />}
     </Container>
   );
 }
