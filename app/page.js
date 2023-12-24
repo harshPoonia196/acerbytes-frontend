@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import Footer from "Components/Footer";
+import { listOfPages } from "Components/NavBar/Links";
 
 export default function Home() {
   const router = useRouter();
@@ -71,7 +72,7 @@ export default function Home() {
                 <CardActionArea
                   sx={{ p: 2, textAlign: "center" }}
                   onClick={() => {
-                    router.push("/property-list");
+                    router.push(listOfPages.commonPropertyList);
                   }}
                 >
                   <Typography variant="h3">Noida</Typography>
@@ -84,7 +85,7 @@ export default function Home() {
                 <CardActionArea
                   sx={{ p: 2, textAlign: "center" }}
                   onClick={() => {
-                    router.push("/property-list");
+                    router.push(listOfPages.commonPropertyList);
                   }}
                 >
                   <Typography variant="h3">Gurgaon</Typography>
@@ -97,7 +98,7 @@ export default function Home() {
                 <CardActionArea
                   sx={{ p: 2, textAlign: "center" }}
                   onClick={() => {
-                    router.push("/property-list");
+                    router.push(listOfPages.commonPropertyList);
                   }}
                 >
                   <Typography variant="h3">Mumbai</Typography>
@@ -110,7 +111,7 @@ export default function Home() {
                 <CardActionArea
                   sx={{ p: 2, textAlign: "center" }}
                   onClick={() => {
-                    router.push("/property-list");
+                    router.push(listOfPages.commonPropertyList);
                   }}
                 >
                   <Typography variant="h3">Pune</Typography>

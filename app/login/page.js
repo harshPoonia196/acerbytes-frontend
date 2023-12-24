@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import NewPhoneInputField from "Components/CommonLayouts/NewPhoneInputField";
 import OTPInputLayout from "Components/CommonLayouts/OTPInputLayout";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
+import { listOfPages } from "Components/NavBar/Links";
 
 function Login() {
   const router = useRouter();
@@ -143,7 +144,7 @@ function Login() {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    router.push("/");
+                    router.push(listOfPages.home);
                   }}
                 >
                   Confirm
