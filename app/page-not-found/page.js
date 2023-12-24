@@ -20,10 +20,10 @@ function NoPropertyFound() {
       <Card sx={{ p: 2, textAlign: "center" }}>
         <ImageNotSupportedIcon fontSize="large" />
         <Typography variant="h5" sx={{ mt: 1, fontWeight: 600 }}>
-          Property you are looking for can’t be displayed
+          Page you are looking for can’t be displayed
         </Typography>
         <Typography variant="body2" sx={{ mt: 1 }}>
-          Either property listing is removed or you don’t have access. Please
+          Either page listing is removed or you don’t have access. Please
           contact us for more information
         </Typography>
       </Card>
@@ -55,7 +55,7 @@ function NoPropertyFound() {
         <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }}>
           <HowToRegIcon />
           <Typography variant="subtitle2" sx={{ ml: 1, alignSelf: "center" }}>
-            Sign up
+            Sign in
           </Typography>
         </CardActionArea>
       </Card>

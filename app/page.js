@@ -29,9 +29,9 @@ export default function Home() {
         >
           <Typography
             variant="h1"
-            sx={{ color: "#000", fontWeight: 800, fontSize: '1.5em' }}
+            sx={{ color: "#000", fontWeight: 300, fontSize: '4em !important' }}
           >
-            for better decision in real estate
+            for better reach and databased decision in real estate
           </Typography>
           <Box>
             <Box sx={{

@@ -1,62 +1,51 @@
 "use client"
 
 import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from '@mui/utils';
 import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
+import UpdateLeadStatus from './Modal/UpdateLeadStatus';
 
 const rows = [
     {
-        firstName: 'Anand',
-        lastName: 'Gupta',
+        name: 'Anand Gupta',
         city: 'Mumbai',
-        countryCode: '+91',
-        phone: '1234567558',
+        phone: '+91 1234567558',
         phoneVerified: true,
         email: 'anand@gmail.com',
         emailVerified: true,
         role: 'Investor',
         maxBudget: 12000,
-        closedStatus: 'Pending',
-        pendingStatus: 'Pending',
-        updatedBy: 'Anand',
-        lastModified: "12th Nov 2018, 09:18 AM",
+        currentStatus: 'Pending',
+        nextStatus: 'Pending',
+        notesUpdated: "12th Nov 2018, 09:18 AM",
     }
 ];
 
 const headCells = [
     {
-        id: 'firstName',
-        label: 'First name',
-    },
-    {
-        id: 'lastName',
-        label: 'last Name',
+        id: 'Name',
+        label: 'Name',
     },
     {
         id: 'city',
         label: 'city',
     },
     {
-        id: 'country Code',
-        label: 'country Code',
+        id: 'currentStatus',
+        label: 'Current Status',
+    }, {
+        id: 'nextStatus',
+        label: 'Next Status',
     },
     {
         id: 'phone',
         label: 'phone',
     },
     {
-        id: 'phoneVerified',
-        label: 'phoneVerified',
-    },
-    {
         id: 'email',
         label: 'email',
-    },
-    {
-        id: 'emailVerified',
-        label: 'email Verified',
     },
     {
         id: 'role',
@@ -65,17 +54,8 @@ const headCells = [
         id: 'maxBudget',
         label: 'max Budget',
     }, {
-        id: 'closedStatus',
-        label: 'closed Status',
-    }, {
-        id: 'pendingStatus',
-        label: 'pending Status',
-    }, {
-        id: 'updatedBy',
-        label: 'updated By',
-    }, {
-        id: 'lastModified',
-        label: 'last Modified',
+        id: 'notesUpdated',
+        label: 'Notes updated',
     }
 ];
 
@@ -117,25 +97,91 @@ function EnhancedTableHead(props) {
 }
 
 function RowStructure({ row }) {
+
+    const [openUpdatePopup, setOpenUpdatePopup] = useState()
+    const handleOpenUpdatePopup = () => {
+        setOpenUpdatePopup(true)
+    }
+
+    const handleCloseUpdatePopup = () => {
+        setOpenUpdatePopup(false)
+    }
+
+    const [anchorElCurrrent, setAnchorElCurrent] = React.useState(null);
+    const openCurrent = Boolean(anchorElCurrrent);
+    const handleClickCurrent = (event) => {
+        setAnchorElCurrent(event.currentTarget);
+    };
+    const handleCloseCurrent = () => {
+        setAnchorElCurrent(null);
+    };
+
+    const [anchorElNext, setAnchorElNext] = React.useState(null);
+    const openNext = Boolean(anchorElNext);
+    const handleClickNext = (event) => {
+        setAnchorElNext(event.currentTarget);
+    };
+    const handleCloseNext = () => {
+        setAnchorElNext(null);
+    };
+
     return <TableRow
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-        <TableCell>{row.firstName}</TableCell>
-        <TableCell>{row.lastName}</TableCell>
+        <UpdateLeadStatus open={openUpdatePopup} handleClose={handleCloseUpdatePopup} />
+        <TableCell>{row.name}</TableCell>
         <TableCell>{row.city}</TableCell>
-        <TableCell>{row.countryCode}</TableCell>
-        <TableCell>{row.phone}</TableCell>
-        <TableCell>{row.phoneVerified ? "Yes" : "No"}</TableCell>
-        <TableCell>{row.email}</TableCell>
-        <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell>
+        <TableCell>
+            <Chip label={row.currentStatus} onClick={handleClickCurrent} size="small" />
+            <Menu
+                id="demo-positioned-menu"
+                aria-labelledby="demo-positioned-button"
+                anchorEl={anchorElCurrrent}
+                open={openCurrent}
+                onClose={handleCloseCurrent}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            >
+                <MenuItem onClick={handleOpenUpdatePopup}>Profile</MenuItem>
+                <MenuItem onClick={handleOpenUpdatePopup}>My account</MenuItem>
+                <MenuItem onClick={handleOpenUpdatePopup}>Logout</MenuItem>
+            </Menu>
+        </TableCell>
+        <TableCell>
+            <Chip label={row.nextStatus} onClick={handleClickNext} size="small" />
+            <Menu
+                id="demo-positioned-menu"
+                aria-labelledby="demo-positioned-button"
+                anchorEl={anchorElNext}
+                open={openNext}
+                onClose={handleCloseNext}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            >
+                <MenuItem onClick={handleOpenUpdatePopup}>Profile</MenuItem>
+                <MenuItem onClick={handleOpenUpdatePopup}>My account</MenuItem>
+                <MenuItem onClick={handleOpenUpdatePopup}>Logout</MenuItem>
+            </Menu>
+        </TableCell>
+        <TableCell>{row.phone}({row.phoneVerified ? "Yes" : "No"})</TableCell>
+        <TableCell>{row.email}({row.emailVerified ? "Yes" : "No"})</TableCell>
         <TableCell>{row.role}</TableCell>
         <TableCell>{row.maxBudget}</TableCell>
-        <TableCell>{row.closedStatus}</TableCell>
-        <TableCell>{row.pendingStatus}</TableCell>
-        <TableCell>{row.updatedBy}</TableCell>
         <TableCell>
-            <Chip label={row.lastModified} size="small" />
+            <Chip label={row.notesUpdated} size="small" />
         </TableCell>
     </TableRow>
 }

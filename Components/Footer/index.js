@@ -36,7 +36,7 @@ function Footer({ paymentPage }) {
                 !paymentPage &&
                 <Box sx={{ alignSelf: 'center', cursor: 'pointer' }}>
                     <Button variant='outlined'
-                        onClick={() => { history.push('/make-payment') }}
+                        onClick={() => { history.push('/consultant/make-payment') }}
                         size="small" sx={{ fontSize: '0.75rem', ml: 2 }}
                         startIcon={<QrCodeScannerIcon />}
                     >

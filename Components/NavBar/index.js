@@ -321,6 +321,7 @@ export default function ClippedDrawer({ children }) {
                     fontSize: "1rem",
                     fontWeight: 900,
                     lineHeight: 1,
+                    textTransform: 'uppercase'
                   }}
                 >
                   Acrebytes

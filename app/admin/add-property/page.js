@@ -1,6 +1,7 @@
 "use client";
 
 import {
+    Box,
     Container,
     Grid,
 } from "@mui/material";
@@ -23,6 +24,7 @@ import InvestmentCard from 'Components/Admin/Property/SubComponents/InvestmentCa
 import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard';
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
+import CustomBreadScrum from "Components/CommonLayouts/CustomBreadScrumbs";
 
 const tabHeight = 116;
 
@@ -153,6 +155,16 @@ function AddProperty() {
             <nav className={classes.demo2}>
                 <NavTab value={activeState} handleChange={handleClick} list={itemsServer} />
             </nav>
+
+            <Box sx={{ backgroundColor: "white" }}>
+                <Container
+                    maxWidth="lg"
+                    sx={{ py: "0 !important" }}
+                >
+                    <CustomBreadScrum text='Add Property' />
+                </Container>
+            </Box>
+
             <Container>
                 <div className="container">
                     <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>

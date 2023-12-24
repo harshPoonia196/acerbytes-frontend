@@ -12,18 +12,22 @@ const NewToggleButtonStructure = ({
     >
       {label}
     </Typography>
-    {isEdit ? <ToggleButtonGroup
-      color="primary"
-      value={value}
-      exclusive
-      fullWidth
-      onChange={handleChange}
-      aria-label="Platform"
-      sx={toggleStyle}
-    >
-      {children}
-    </ToggleButtonGroup> : <Typography variant="subtitle1">Value</Typography>}
-
+    {isEdit
+      ?
+      <ToggleButtonGroup
+        color="primary"
+        value={value}
+        exclusive
+        fullWidth
+        onChange={handleChange}
+        aria-label="Platform"
+        sx={toggleStyle}
+      >
+        {children}
+      </ToggleButtonGroup>
+      :
+      <Typography variant="subtitle1">Value</Typography>
+    }
   </Grid>
 );
 

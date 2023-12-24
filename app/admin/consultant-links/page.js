@@ -21,8 +21,7 @@ const page = () => {
                     maxWidth="lg"
                     sx={{ pb: "0 !important" }}
                 >
-                    <CustomBreadScrum
-                    />
+                    <CustomBreadScrum text='Consultant links' />
                     <Box sx={{ py: 4 }}>
                         <Typography variant="h2" sx={{ color: "#000" }}>
                             Hi, Anand Gupta (Admin)

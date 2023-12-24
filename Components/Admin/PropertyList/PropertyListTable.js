@@ -7,6 +7,7 @@ import { visuallyHidden } from '@mui/utils';
 import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useRouter } from 'next/navigation';
 
 const rows = [
     {
@@ -105,7 +106,7 @@ function EnhancedTableHead(props) {
     );
 }
 
-function RowStructure({ row }) {
+function RowStructure({ row, router }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -128,16 +129,18 @@ function RowStructure({ row }) {
             <IconButton sx={{ fontSize: "1rem !important" }}>
                 <EditIcon fontSize='1rem' />
             </IconButton>
+        </TableCell>
+        <TableCell sx={{ py: 0 }}>
             <IconButton sx={{ fontSize: "1rem !important" }}>
                 <DeleteIcon fontSize='1rem' />
             </IconButton>
         </TableCell>
         <TableCell>
+            <Chip label={row.lastModified} size="small" />
+        </TableCell>
+        <TableCell>
             <Chip label={row.status} size='small' onClick={() => { }} color={row.status === 'Active' ? 'success' : row.status === 'Expired' ? 'error' : 'warning'} />
         </TableCell>
-        <TableCell>{row.validFrom}</TableCell>
-        <TableCell>{row.validTo}</TableCell>
-        <TableCell>{row.expiresIn}</TableCell>
         <TableCell sx={{ py: 0 }}>
             <IconButton sx={{ fontSize: "1rem !important" }}>
                 <MoreVertIcon onClick={handleClick} fontSize='1rem' />
@@ -159,6 +162,7 @@ function RowStructure({ row }) {
 }
 
 function PropertyListTable() {
+    const router = useRouter()
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState(null);
     const [page, setPage] = React.useState(0);
@@ -197,7 +201,7 @@ function PropertyListTable() {
                     onRequestSort={handleRequestSort} />
                 <TableBody>
                     {rows.map((row) => (
-                        <RowStructure row={row} />
+                        <RowStructure row={row} router={router} />
                     ))}
                 </TableBody>
             </Table>
