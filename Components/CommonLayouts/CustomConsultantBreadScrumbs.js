@@ -182,7 +182,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
     </Dialog>
 )
 
-export default function CustomBreadScrum({ text }) {
+export default function CustomConsultantBreadScrumbs({ text }) {
 
     const router = useRouter()
 
@@ -207,7 +207,7 @@ export default function CustomBreadScrum({ text }) {
             sx={{ cursor: 'pointer', textTransform: 'uppercase', fontSize: '0.875rem' }}
             onClick={handleOpenAdminLinkPopup}
         >
-            Admin
+            Consultant
         </Link>,
         <Typography key="3" color="text.primary" sx={{ textTransform: 'uppercase', fontSize: '0.875rem' }}>
             {text}

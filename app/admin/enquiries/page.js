@@ -3,7 +3,7 @@
 import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import EnquiriesTable from "Components/Admin/Enquiries/EnquiriesTable";
-import CustomBreadScrum from "Components/CommonLayouts/CustomBreadScrumbs";
+import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 
 function Enquiries() {
   return (
@@ -11,9 +11,8 @@ function Enquiries() {
       <Box sx={{ backgroundColor: "white" }}>
         <Container
           maxWidth="lg"
-          sx={{ pb: "0 !important" }}
         >
-          <CustomBreadScrum text='List of leads' />
+          <CustomAdminBreadScrumbs text='List of leads' />
         </Container>
       </Box>
       <Container>

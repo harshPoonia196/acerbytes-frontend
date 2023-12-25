@@ -24,7 +24,7 @@ import InvestmentCard from 'Components/Admin/Property/SubComponents/InvestmentCa
 import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard';
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
-import CustomBreadScrum from "Components/CommonLayouts/CustomBreadScrumbs";
+import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 
 const tabHeight = 116;
 
@@ -159,9 +159,8 @@ function AddProperty() {
             <Box sx={{ backgroundColor: "white" }}>
                 <Container
                     maxWidth="lg"
-                    sx={{ py: "0 !important" }}
                 >
-                    <CustomBreadScrum text='Add Property' />
+                    <CustomAdminBreadScrumbs text='Add Property' />
                 </Container>
             </Box>
 

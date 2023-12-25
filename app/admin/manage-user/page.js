@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import ManageUserTable from "Components/Admin/ManageUser/ManageUserTable";
-import CustomBreadScrum from "Components/CommonLayouts/CustomBreadScrumbs";
+import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 
 function ManageUser() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,9 +35,8 @@ function ManageUser() {
       <Box sx={{ backgroundColor: "white" }}>
         <Container
           maxWidth="lg"
-          sx={{ pb: "0 !important" }}
         >
-          <CustomBreadScrum text='Manage user' />
+          <CustomAdminBreadScrumbs text='Manage user' />
         </Container>
       </Box>
       <Container>

@@ -3,7 +3,7 @@
 import { Box, Card, Container, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import React from 'react'
 import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
-import CustomBreadScrum from 'Components/CommonLayouts/CustomBreadScrumbs';
+import CustomAdminBreadScrumbs from 'Components/CommonLayouts/CustomAdminBreadScrumbs';
 import ConsultantLinksTable from 'Components/Admin/ConsultantLinks/ConsultantLinksTable';
 
 const page = () => {
@@ -19,9 +19,8 @@ const page = () => {
             <Box sx={{ backgroundColor: "white" }}>
                 <Container
                     maxWidth="lg"
-                    sx={{ pb: "0 !important" }}
                 >
-                    <CustomBreadScrum text='Consultant links' />
+                    <CustomAdminBreadScrumbs text='Consultant links' />
                     <Box sx={{ py: 4 }}>
                         <Typography variant="h2" sx={{ color: "#000" }}>
                             Hi, Anand Gupta (Admin)
