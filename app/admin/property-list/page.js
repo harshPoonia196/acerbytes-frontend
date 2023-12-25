@@ -4,7 +4,7 @@ import React from "react";
 import { Container, Typography, Card, Box } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import PropertyListTable from "Components/Admin/PropertyList/PropertyListTable";
-import CustomBreadScrum from "Components/CommonLayouts/CustomBreadScrumbs";
+import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 
 function PropertyList() {
 
@@ -15,7 +15,7 @@ function PropertyList() {
           maxWidth="lg"
           sx={{ pb: "0 !important" }}
         >
-          <CustomBreadScrum text='Property list' />
+          <CustomAdminBreadScrumbs text='Property list' />
         </Container>
       </Box>
       <Container>

@@ -24,6 +24,7 @@ export const listOfPages = {
   consultantMyLeads: "/consultant/my-leads",
   consultantLinks: "/consultant/my-links",
   consultantMyNotes: "/consultant/my-notes",
+  consultantMakePayment: "/consultant/make-payment",
   consultantPaymentHistory: "/consultant/payment-history",
   consultantJoinNow: "/join-now",
   adminEnquiries: '/admin/enquiries',

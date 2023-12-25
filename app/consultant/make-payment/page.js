@@ -11,15 +11,20 @@ function MakePayment() {
         <>
             <Container maxWidth='sm'>
                 <Card>
-                    <Box sx={{ p: 2, borderBottom: '1px solid gainsboro', display: 'flex' }}>
+                    <Box sx={{ p: 2, borderBottom: '1px solid whitesmoke', display: 'flex' }}>
                         <Typography variant="h4" sx={{ flex: 1 }}>
                             Make payment to
                         </Typography>
-                        <Typography variant="h4">
-                            Gravity44
-                        </Typography>
+                        <Box sx={{ textAlign: 'end' }}>
+                            <Typography variant="h4">
+                                Acrebytes
+                            </Typography>
+                            <Typography variant="subtitle2">
+                                Gravity44 platform solution
+                            </Typography>
+                        </Box>
                     </Box>
-                    <Box sx={{ p: 2, textAlign: 'center', borderBottom: '1px solid gainsboro' }}>
+                    <Box sx={{ p: 2, textAlign: 'center', borderBottom: '1px solid whitesmoke' }}>
                         <Image src='/upi.png' width={200} height={200} />
                     </Box>
                     <Box sx={{ p: 2 }}>
@@ -27,7 +32,9 @@ function MakePayment() {
                             1. Scan QR code, enter amount and pay
                         </Typography>
                         <Typography variant='body2'>
-                            2. After successful payment, send payment reference screenshot to <Chip onClick={() => { }} icon={<WhatsAppIcon fontSize="small" />} label="+9198799877" size="small" sx={{ fontSize: '0.875rem' }} />
+                            2. After successful payment, send payment reference screenshot to
+                            <Chip onClick={() => { }} icon={<WhatsAppIcon fontSize="small" />}
+                                label="+9198799877" size="small" sx={{ fontSize: '0.875rem' }} />
                         </Typography>
                     </Box>
                 </Card>
