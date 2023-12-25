@@ -90,7 +90,7 @@ export default function ClippedDrawer({ children }) {
     >
       <MenuItem
         onClick={() => {
-          router.push("buyers/profile");
+          router.push(listOfPages.userProfile);
           handleMenuClose();
         }}
       >
@@ -311,7 +311,7 @@ export default function ClippedDrawer({ children }) {
             </Box>
             <Box sx={{ alignSelf: "center", height: "fit-content" }}>
               <a
-                href="/"
+                href={listOfPages.home}
                 style={{ textDecoration: "none", lineHeight: "normal" }}
               >
                 <Typography

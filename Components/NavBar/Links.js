@@ -11,25 +11,43 @@ import TableRowsIcon from "@mui/icons-material/TableRows";
 import LinkIcon from '@mui/icons-material/Link';
 import CloseIcon from '@mui/icons-material/Close';
 
+export const listOfPages = {
+  home: '/',
+  pageNotFound: 'page-not-found',
+  commonPropertyList: "/property-list",
+  commonAllBrokers: 'all-brokers',
+  commonEnquiries: '/enquiries',
+  userProfile: '/user/profile',
+  userShortlist: '/user/shortlist',
+  userMyConsultant: '/user/my-consultants',
+  consultantJoinNow: "/join-now",
+  adminEnquiries: '/admin/enquiries',
+  adminAddProperty: '/admin/add-property',
+  adminPropertyList: '/admin/property-list',
+  adminManageUser: '/admin/manage-user',
+  adminManageConsultant: '/admin/manage-consultant',
+  adminConsultantLinks: '/admin/consultant-links',
+};
+
 export const CommonMenuList = [
   {
     label: "Listings",
-    route: "/property-list",
+    route: listOfPages.commonPropertyList,
     icon: <ListIcon fontSize="small" />,
   },
   {
     label: "Consultants",
-    route: "/all-brokers",
+    route: listOfPages.commonAllBrokers,
     icon: <GroupIcon fontSize="small" />,
   },
   {
     label: "Leads panel",
-    route: "/enquiries",
+    route: listOfPages.commonEnquiries,
     icon: <TableRowsIcon fontSize="small" />,
   },
   {
     label: "Page not found",
-    route: "/page-not-found",
+    route: listOfPages.pageNotFound,
     icon: <CloseIcon fontSize="small" />,
   },
 ];
@@ -37,17 +55,17 @@ export const CommonMenuList = [
 export const UserMenuList = [
   {
     label: "My Profile",
-    route: "/user/profile",
+    route: listOfPages.userProfile,
     icon: <AccountCircleIcon fontSize="small" />,
   },
   {
     label: "Favourite properties",
-    route: "/user/shortlist",
+    route: listOfPages.userShortlist,
     icon: <ThumbUpIcon fontSize="small" />,
   },
   {
     label: "My Consultants",
-    route: "/user/my-consultants",
+    route: listOfPages.userMyConsultant,
     icon: <GroupIcon fontSize="small" />,
   },
 ];
@@ -83,7 +101,7 @@ export const ConsultantMenuList = [
 export const AdminMenuList = [
   {
     label: "Leads received",
-    route: "/admin/enquiries",
+    route: listOfPages.adminEnquiries,
     icon: <RecentActorsIcon fontSize="small" />,
   },
   {
@@ -93,32 +111,30 @@ export const AdminMenuList = [
   },
   {
     label: "Add Property",
-    route: "/admin/add-property",
+    route: listOfPages.adminAddProperty,
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
     label: "Property list",
-    route: "/admin/property-list",
+    route: listOfPages.adminPropertyList,
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
     label: "Manage User",
-    route: "/admin/manage-user",
+    route: listOfPages.adminManageUser,
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
     label: "Manage Consultant",
-    route: "/admin/manage-consultant",
+    route: listOfPages.adminManageConsultant,
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
     label: "Consultant links",
-    route: "/admin/consultant-links",
+    route: listOfPages.adminConsultantLinks,
     icon: <LinkIcon fontSize="small" />,
   },
 
 ];
 
-export const listOfPages = {
-  consultantJoinNow: "/join-now",
-};
+

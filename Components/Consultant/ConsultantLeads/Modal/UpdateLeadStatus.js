@@ -23,10 +23,10 @@ function UpdateLeadStatus({ open, handleClose }) {
                             Current Update(Completed)
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={6}>
                         <SelectTextFields label='Status' />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
                                 <DateTimePicker
@@ -47,11 +47,23 @@ function UpdateLeadStatus({ open, handleClose }) {
                             Next Update(Follow up / plan)
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={6}>
                         <SelectTextFields label='Status' />
                     </Grid>
-                    <Grid item xs={6}>
-                        <SelectTextFields label='Status' />
+                    <Grid item xs={12} sm={6}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
+                                <DateTimePicker
+                                    label="With Time Clock"
+                                    viewRenderers={{
+                                        hours: renderTimeViewClock,
+                                        minutes: renderTimeViewClock,
+                                        seconds: renderTimeViewClock,
+                                    }}
+                                    slotProps={{ textField: { size: 'small', fullWidth: true }, dialog: { backgroundColor: 'red' } }}
+                                />
+                            </DemoContainer>
+                        </LocalizationProvider>
                     </Grid>
                     <InputField variant='outlined' multiline rows={2} label='Comment' />
                 </Grid>

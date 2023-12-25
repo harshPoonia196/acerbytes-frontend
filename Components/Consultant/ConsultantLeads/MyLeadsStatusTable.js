@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Avatar, Card, Grid } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const rows = [
     {
@@ -102,6 +104,43 @@ function Row(props) {
 export default function MyLeadsStatusTable() {
     return (
         <>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Card sx={{ p: 2 }}>
+                        <Box sx={{ display: 'flex', mb: 2 }}>
+                            <Avatar sx={{ mr: 2 }} />
+                            <Box sx={{ flex: 1 }}>
+                                <Typography variant="h6">Anand Gupta</Typography>
+                                <Typography variant="h6">Tipco heights</Typography>
+                            </Box>
+                            <Box sx={{ textAlign: 'end' }}>
+                                <IconButton>
+                                    <ArrowForwardIcon />
+                                </IconButton>
+                                <Typography sx={{ cursor: 'pointer' }} variant="h6">
+                                    View history
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <Typography variant="body1">Next Status</Typography>
+                                <Typography variant="body1">27th July, 2023, 09:23 AM</Typography>
+                                <Typography variant="body1">
+                                    Meet him and do site visit
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="body1">Current Status</Typography>
+                                <Typography variant="body1">26th July, 2023, 09:23 AM</Typography>
+                                <Typography variant="body1">
+                                    He is ready to visit the site on monday but his budget is little lower
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Card>
+                </Grid>
+            </Grid>
             {/* <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
                     <TableHead>
