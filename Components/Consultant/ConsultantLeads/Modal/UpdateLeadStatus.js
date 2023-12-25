@@ -7,8 +7,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+import NewSelectTextFieldStructure from 'Components/CommonLayouts/NewSelectTextFieldStructure';
 
-function UpdateLeadStatus({ open, handleClose }) {
+function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
     return (
         <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
             <DialogTitle onClose={handleClose}>
@@ -18,9 +19,39 @@ function UpdateLeadStatus({ open, handleClose }) {
             </DialogTitle>
             <DialogContent>
                 <Grid container spacing={2}>
+                    {!isUserSelected && <NewSelectTextFieldStructure label='Customer' isEdit={true} full />}
                     <Grid item xs={12}>
-                        <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                            Current Update(Completed)
+                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                            Current status (Completed)
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <SelectTextFields label='Status' />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
+                                <DateTimePicker
+                                    label="With Time Clock"
+                                    viewRenderers={{
+                                        hours: renderTimeViewClock,
+                                        minutes: renderTimeViewClock,
+                                        seconds: renderTimeViewClock,
+                                    }}
+                                    slotProps={{
+                                        textField: {
+                                            size: 'small', fullWidth: true,
+                                            minWidth: '200px !important'
+                                        }, dialog: { backgroundColor: 'red' }
+                                    }}
+                                />
+                            </DemoContainer>
+                        </LocalizationProvider>
+                    </Grid>
+                    <InputField variant='outlined' multiline rows={2} label='Add note' />
+                    <Grid item xs={12}>
+                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                            Next action (Follow up / plan)
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -41,31 +72,7 @@ function UpdateLeadStatus({ open, handleClose }) {
                             </DemoContainer>
                         </LocalizationProvider>
                     </Grid>
-                    <InputField variant='outlined' multiline rows={2} label='Comment' />
-                    <Grid item xs={12}>
-                        <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                            Next Update(Follow up / plan)
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <SelectTextFields label='Status' />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
-                                <DateTimePicker
-                                    label="With Time Clock"
-                                    viewRenderers={{
-                                        hours: renderTimeViewClock,
-                                        minutes: renderTimeViewClock,
-                                        seconds: renderTimeViewClock,
-                                    }}
-                                    slotProps={{ textField: { size: 'small', fullWidth: true }, dialog: { backgroundColor: 'red' } }}
-                                />
-                            </DemoContainer>
-                        </LocalizationProvider>
-                    </Grid>
-                    <InputField variant='outlined' multiline rows={2} label='Comment' />
+                    <InputField variant='outlined' multiline rows={2} label='Add note' />
                 </Grid>
             </DialogContent>
             <DialogActions>
@@ -81,7 +88,7 @@ function UpdateLeadStatus({ open, handleClose }) {
                         sx={{ mr: 2 }}
                         onClick={handleClose}
                     >
-                        Close
+                        Cancel
                     </Button>
                     <Button
                         // startIcon={<DoneIcon />}

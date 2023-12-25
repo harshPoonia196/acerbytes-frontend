@@ -4,9 +4,14 @@ import React, { useState } from "react";
 import { Box, Container, Typography, Button, ToggleButton, ToggleButtonGroup, Card } from "@mui/material";
 import MyLeadsTable from "Components/Consultant/ConsultantLeads/MyLeadsTable";
 import UpdateLeadStatus from "Components/Consultant/ConsultantLeads/Modal/UpdateLeadStatus";
-import MyLeadsStatusTable from "Components/Consultant/ConsultantLeads/MyLeadsStatusTable";
+import MyLeadsStatus from "Components/Consultant/ConsultantLeads/MyLeadsStatus";
+import { listOfPages } from "Components/NavBar/Links";
+import { useRouter } from "next/navigation";
 
 function MyLeads() {
+
+  const router = useRouter()
+
   const [openUpdatePopup, setOpenUpdatePopup] = useState()
   const handleOpenUpdatePopup = () => {
     setOpenUpdatePopup(true)
@@ -34,18 +39,18 @@ function MyLeads() {
           color="primary"
           value={alignment}
           exclusive
-          onChange={handleChange}
           aria-label="Platform"
           sx={{ display: 'flex' }}
         >
           <ToggleButton size='small' value="all" sx={{ flex: 1, border: 'none' }}>All (10)</ToggleButton>
-          <ToggleButton size='small' value="notes" sx={{ flex: 1, border: 'none' }}>Notes (10)</ToggleButton>
+          <ToggleButton size='small' value="notes" sx={{ flex: 1, border: 'none' }}
+            onClick={() => { router.push(listOfPages.consultantMyNotes) }}>Notes (10)</ToggleButton>
         </ToggleButtonGroup>
       </Card>
       <Box sx={{ textAlign: 'end', mb: 2 }}>
         <Button variant="outlined" size="small" onClick={handleOpenUpdatePopup}>Add notes</Button>
       </Box>
-      {alignment === 'all' ? <MyLeadsTable /> : <MyLeadsStatusTable />}
+      {alignment === 'all' ? <MyLeadsTable /> : <MyLeadsStatus />}
     </Container>
   );
 }

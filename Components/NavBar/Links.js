@@ -15,11 +15,16 @@ export const listOfPages = {
   home: '/',
   pageNotFound: 'page-not-found',
   commonPropertyList: "/property-list",
-  commonAllBrokers: 'all-brokers',
+  commonAllBrokers: '/all-brokers',
   commonEnquiries: '/enquiries',
   userProfile: '/user/profile',
   userShortlist: '/user/shortlist',
   userMyConsultant: '/user/my-consultants',
+  consultantProfile: '/consultant/profile',
+  consultantMyLeads: "/consultant/my-leads",
+  consultantLinks: "/consultant/my-links",
+  consultantMyNotes: "/consultant/my-notes",
+  consultantPaymentHistory: "/consultant/payment-history",
   consultantJoinNow: "/join-now",
   adminEnquiries: '/admin/enquiries',
   adminAddProperty: '/admin/add-property',
@@ -73,27 +78,32 @@ export const UserMenuList = [
 export const ConsultantMenuList = [
   {
     label: "Consultant Profile",
-    route: "/consultant/profile",
+    route: listOfPages.consultantProfile,
     icon: <AccountCircleIcon fontSize="small" />,
   },
   {
     label: "My leads",
-    route: "/consultant/my-leads",
+    route: listOfPages.consultantMyLeads,
+    icon: <PlaylistAddCheckIcon fontSize="small" />,
+  },
+  {
+    label: "My notes",
+    route: listOfPages.consultantMyNotes,
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
     label: "Suggested leads",
-    route: "/consultant/my-leads",
+    route: listOfPages.consultantMyLeads,
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
     label: "My links",
-    route: "/consultant/my-links",
+    route: listOfPages.consultantLinks,
     icon: <LinkIcon fontSize="small" />,
   },
   {
     label: "Payment history",
-    route: "/consultant/make-payment",
+    route: listOfPages.consultantPaymentHistory,
     icon: <PaymentIcon fontSize="small" />,
   }
 ];
