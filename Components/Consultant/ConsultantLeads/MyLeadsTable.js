@@ -129,7 +129,7 @@ function RowStructure({ row }) {
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-        <UpdateLeadStatus open={openUpdatePopup} handleClose={handleCloseUpdatePopup} />
+        <UpdateLeadStatus open={openUpdatePopup} handleClose={handleCloseUpdatePopup} isUserSelected />
         <TableCell>{row.name}</TableCell>
         <TableCell>{row.city}</TableCell>
         <TableCell>
@@ -181,7 +181,7 @@ function RowStructure({ row }) {
         <TableCell>{row.role}</TableCell>
         <TableCell>{row.maxBudget}</TableCell>
         <TableCell>
-            <Chip label={row.notesUpdated} size="small" />
+            <Chip label={row.notesUpdated} size="small" onClick={handleOpenUpdatePopup} />
         </TableCell>
     </TableRow>
 }

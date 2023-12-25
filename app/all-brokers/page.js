@@ -4,6 +4,7 @@ import { Box, Card, Container, Grid, IconButton, InputBase } from '@mui/material
 import React, { useState } from 'react'
 import SearchIcon from "@mui/icons-material/Search";
 import BrokerCard from 'Components/BrokersPage/BrokerCard';
+import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
 
 const page = () => {
 
@@ -15,26 +16,9 @@ const page = () => {
 
   return (
     <>
-      <Container>
+      <Container sx={{ pb: '0 !important' }}>
         <Card>
-          <Box
-            sx={{
-              display: "flex",
-              flex: 1,
-              pl: 2,
-              borderRadius: "8px",
-            }}
-          >
-            <InputBase
-              placeholder="Search"
-              type="text"
-              inputProps={{ "aria-label": "Search..." }}
-              fullWidth
-            />
-            <IconButton type="submit" aria-label="search">
-              <SearchIcon />
-            </IconButton>
-          </Box>
+          <CustomSearchInput />
         </Card>
       </Container>
 

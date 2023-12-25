@@ -15,7 +15,7 @@ export const listOfPages = {
   home: '/',
   pageNotFound: 'page-not-found',
   commonPropertyList: "/property-list",
-  commonAllBrokers: 'all-brokers',
+  commonAllBrokers: '/all-brokers',
   commonEnquiries: '/enquiries',
   userProfile: '/user/profile',
   userShortlist: '/user/shortlist',
@@ -23,6 +23,7 @@ export const listOfPages = {
   consultantProfile: '/consultant/profile',
   consultantMyLeads: "/consultant/my-leads",
   consultantLinks: "/consultant/my-links",
+  consultantMyNotes: "/consultant/my-notes",
   consultantPaymentHistory: "/consultant/payment-history",
   consultantJoinNow: "/join-now",
   adminEnquiries: '/admin/enquiries',
@@ -83,6 +84,11 @@ export const ConsultantMenuList = [
   {
     label: "My leads",
     route: listOfPages.consultantMyLeads,
+    icon: <PlaylistAddCheckIcon fontSize="small" />,
+  },
+  {
+    label: "My notes",
+    route: listOfPages.consultantMyNotes,
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
