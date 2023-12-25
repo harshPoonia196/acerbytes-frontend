@@ -107,30 +107,30 @@ export default function MyLeadsStatusTable() {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Card sx={{ p: 2 }}>
-                        <Box sx={{ display: 'flex', mb: 2 }}>
+                        <Box sx={{ display: 'flex', mb: 1 }}>
                             <Avatar sx={{ mr: 2 }} />
                             <Box sx={{ flex: 1 }}>
                                 <Typography variant="h6">Anand Gupta</Typography>
                                 <Typography variant="h6">Tipco heights</Typography>
                             </Box>
                             <Box sx={{ textAlign: 'end' }}>
-                                <IconButton>
-                                    <ArrowForwardIcon />
+                                <IconButton size='small'>
+                                    <ArrowForwardIcon fontSize='small' />
                                 </IconButton>
-                                <Typography sx={{ cursor: 'pointer' }} variant="h6">
+                                <Typography sx={{ cursor: 'pointer' }} variant="subtitle2">
                                     View history
                                 </Typography>
                             </Box>
                         </Box>
                         <Grid container spacing={2}>
-                            <Grid item xs={6}>
+                            <Grid item xs={12} sm={6}>
                                 <Typography variant="body1">Next Status</Typography>
                                 <Typography variant="body1">27th July, 2023, 09:23 AM</Typography>
                                 <Typography variant="body1">
                                     Meet him and do site visit
                                 </Typography>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={12} sm={6}>
                                 <Typography variant="body1">Current Status</Typography>
                                 <Typography variant="body1">26th July, 2023, 09:23 AM</Typography>
                                 <Typography variant="body1">

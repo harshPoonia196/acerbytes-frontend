@@ -197,19 +197,19 @@ export default function CustomBreadScrum({ text }) {
     }
 
     const breadcrumbs = [
-        <Link underline="hover" key="1" color="inherit" href={listOfPages.home} sx={{ textTransform: 'uppercase' }}>
+        <Link underline="hover" key="1" color="inherit" href={listOfPages.home} sx={{ textTransform: 'uppercase', fontSize: '0.875rem' }}>
             Home
         </Link>,
         <Link
             underline="hover"
             key="2"
             color="inherit"
-            sx={{ cursor: 'pointer', textTransform: 'uppercase' }}
+            sx={{ cursor: 'pointer', textTransform: 'uppercase', fontSize: '0.875rem' }}
             onClick={handleOpenAdminLinkPopup}
         >
             Admin
         </Link>,
-        <Typography key="3" color="text.primary" sx={{ textTransform: 'uppercase' }}>
+        <Typography key="3" color="text.primary" sx={{ textTransform: 'uppercase', fontSize: '0.875rem' }}>
             {text}
         </Typography>,
     ];

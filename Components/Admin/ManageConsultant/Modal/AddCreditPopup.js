@@ -17,7 +17,7 @@ function AddCreditPopup({ open, handleClose }) {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                            Current credit : 1000
+                            Current credit : 1000 +
                         </Typography>
                     </Grid>
                     <InputField label="Credits to add" />

@@ -36,7 +36,12 @@ function UpdateLeadStatus({ open, handleClose }) {
                                         minutes: renderTimeViewClock,
                                         seconds: renderTimeViewClock,
                                     }}
-                                    slotProps={{ textField: { size: 'small', fullWidth: true }, dialog: { backgroundColor: 'red' } }}
+                                    slotProps={{
+                                        textField: {
+                                            size: 'small', fullWidth: true,
+                                            minWidth: '200px !important'
+                                        }, dialog: { backgroundColor: 'red' }
+                                    }}
                                 />
                             </DemoContainer>
                         </LocalizationProvider>
