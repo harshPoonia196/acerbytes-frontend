@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
 import Footer from "Components/Footer";
 import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
-import { consultantJoinNow } from 'Components/NavBar'
+import { listOfPages } from "Components/NavBar/Links";
 
 function Row(props) {
   const { row, history } = props;
@@ -43,7 +43,7 @@ function Row(props) {
         <TableCell>
           <Chip label="View contact"
             size="small"
-            onClick={() => { history.push(consultantJoinNow) }} />
+            onClick={() => { history.push(listOfPages.consultantJoinNow) }} />
         </TableCell>
       </TableRow>
     </React.Fragment>
@@ -200,7 +200,7 @@ export default function Enquiries() {
             <Typography variant="h1"
               sx={{ color: "#000" }}>
               Explore a world of possibilities with{' '}
-              <span className="urlStyling" style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push(consultantJoinNow) }}>
+              <span className="urlStyling" style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push(listOfPages.consultantJoinNow) }}>
                 5,433</span> open real estate queries. Your next customer is just a click away
             </Typography>
             <Box sx={{ mt: 2, textAlign: 'center' }}>
@@ -217,7 +217,7 @@ export default function Enquiries() {
               <Typography variant="h3" sx={{ flex: 1, alignSelf: 'center', my: 2 }}>
                 Be a part of approved consultants community
               </Typography>
-              <Button variant="contained" sx={{ alignSelf: 'center' }} onClick={() => { history.push(consultantJoinNow) }}>
+              <Button variant="contained" sx={{ alignSelf: 'center' }} onClick={() => { history.push(listOfPages.consultantJoinNow) }}>
                 Join as real estate consultant
               </Button>
             </Box>
