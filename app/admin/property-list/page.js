@@ -13,7 +13,6 @@ function PropertyList() {
       <Box sx={{ backgroundColor: "white" }}>
         <Container
           maxWidth="lg"
-          sx={{ pb: "0 !important" }}
         >
           <CustomAdminBreadScrumbs text='Property list' />
         </Container>

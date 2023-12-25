@@ -19,7 +19,6 @@ const page = () => {
             <Box sx={{ backgroundColor: "white" }}>
                 <Container
                     maxWidth="lg"
-                    sx={{ pb: "0 !important" }}
                 >
                     <CustomAdminBreadScrumbs text='Consultant links' />
                     <Box sx={{ py: 4 }}>

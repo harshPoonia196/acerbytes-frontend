@@ -138,7 +138,7 @@ function JoinNow() {
                     <SelectTextFields label="Company type" />
                   </Grid>
                 )}
-                <InputField label="Last name" variant="outlined" />
+                <InputField label="RERA Number" variant="outlined" />
                 <InputField label="Email" variant="outlined" />
                 {/* #ptwon# add a verify button */}
                 <PhoneInputField label="Phone number" variant="outlined" />

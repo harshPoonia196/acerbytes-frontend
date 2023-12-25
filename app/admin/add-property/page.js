@@ -159,7 +159,6 @@ function AddProperty() {
             <Box sx={{ backgroundColor: "white" }}>
                 <Container
                     maxWidth="lg"
-                    sx={{ py: "0 !important" }}
                 >
                     <CustomAdminBreadScrumbs text='Add Property' />
                 </Container>

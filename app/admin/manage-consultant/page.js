@@ -20,7 +20,6 @@ const page = () => {
             <Box sx={{ backgroundColor: "white" }}>
                 <Container
                     maxWidth="lg"
-                    sx={{ pb: "0 !important" }}
                 >
                     <CustomAdminBreadScrumbs text='Manage consultants' />
                     <Box sx={{ py: 4 }}>
