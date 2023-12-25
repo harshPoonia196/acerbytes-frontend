@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Box, Container, Typography, Button, ToggleButton, ToggleButtonGroup, Card } from "@mui/material";
 import MyLeadsTable from "Components/Consultant/ConsultantLeads/MyLeadsTable";
 import UpdateLeadStatus from "Components/Consultant/ConsultantLeads/Modal/UpdateLeadStatus";
-import MyLeadsStatusTable from "Components/Consultant/ConsultantLeads/MyLeadsStatusTable";
+import MyLeadsStatus from "Components/Consultant/ConsultantLeads/MyLeadsStatus";
 
 function MyLeads() {
   const [openUpdatePopup, setOpenUpdatePopup] = useState()
@@ -45,7 +45,7 @@ function MyLeads() {
       <Box sx={{ textAlign: 'end', mb: 2 }}>
         <Button variant="outlined" size="small" onClick={handleOpenUpdatePopup}>Add notes</Button>
       </Box>
-      {alignment === 'all' ? <MyLeadsTable /> : <MyLeadsStatusTable />}
+      {alignment === 'all' ? <MyLeadsTable /> : <MyLeadsStatus />}
     </Container>
   );
 }
