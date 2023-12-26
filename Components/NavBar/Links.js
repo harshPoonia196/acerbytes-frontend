@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 export const listOfPages = {
   home: '/',
-  pageNotFound: 'page-not-found',
+  pageNotFound: '/page-not-found',
   commonPropertyList: "/property-list",
   commonAllBrokers: '/all-brokers',
   commonEnquiries: '/enquiries',
