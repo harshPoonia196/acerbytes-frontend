@@ -1,6 +1,14 @@
 "use client";
 
-import { Container, Card, Grid, Typography, Box, Button, ToggleButton } from "@mui/material";
+import {
+  Container,
+  Card,
+  Grid,
+  Typography,
+  Box,
+  Button,
+  ToggleButton,
+} from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import React, { useState } from "react";
 import InputField from "Components/CommonLayouts/InputField";
@@ -12,6 +20,13 @@ import NewPhoneInputField from "Components/CommonLayouts/NewPhoneInputField";
 import OTPInputLayout from "Components/CommonLayouts/OTPInputLayout";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import { listOfPages } from "Components/NavBar/Links";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 
 function Login() {
   const router = useRouter();
@@ -23,12 +38,23 @@ function Login() {
   const [otpInput, setOtpInput] = useState();
 
   const [isVerified, setIsVerified] = useState(false);
-  const [isEdit, setIsEdit] = useState(true);
+
   const [roleTypeToggleAlignment, setRoleTypeToggleAlignment] =
     React.useState("");
 
   const handleChangeRoleTypeToggle = (event, newAlignment) => {
     setRoleTypeToggleAlignment(newAlignment);
+  };
+  const [showConsultantDetailsPopup, setShowConsultantDetailsPopup] =
+    useState(false);
+  const handleConsultantDetailsSubmit = () => {
+    setShowConsultantDetailsPopup(false);
+  };
+  const [isEdit, setIsEdit] = useState(true);
+  const [businessTypeToggleAlignment, setBusinessTypeToggleAlignment] =
+    React.useState("");
+  const handleChangeBusinessTypeToggle = (event, newAlignment) => {
+    setBusinessTypeToggleAlignment(newAlignment);
   };
 
   return (
@@ -128,14 +154,38 @@ function Login() {
 
               <Grid item xs={12} sx={{ my: 1 }}>
                 <NewToggleButtonStructure
-                  isEdit={isEdit} label={'Select your role'}
-                  value={roleTypeToggleAlignment} handleChange={handleChangeRoleTypeToggle}
-                  toggleStyle={{ diplay: 'flex', flexDirection: 'column', mt: 1 }}
+                  isEdit={isEdit}
+                  label={"Select your role"}
+                  value={roleTypeToggleAlignment}
+                  handleChange={handleChangeRoleTypeToggle}
+                  toggleStyle={{
+                    diplay: "flex",
+                    flexDirection: "column",
+                    mt: 1,
+                  }}
                 >
-                  <ToggleButton fullWidth size="small" value="consultant" sx={{ border: `1px solid ${colors.LIGHT_GRAY} !important`, borderRadius: '0 !important' }}>
+                  <ToggleButton
+                    fullWidth
+                    size="small"
+                    value="consultant"
+                    sx={{
+                      border: `1px solid ${colors.LIGHT_GRAY} !important`,
+                      borderRadius: "0 !important",
+                    }}
+                    onClick={() => setShowConsultantDetailsPopup(true)}
+                  >
                     I am a Real estate consultant
                   </ToggleButton>
-                  <ToggleButton fullWidth size="small" value="buyer" sx={{ border: `1px solid ${colors.LIGHT_GRAY} !important`, borderRadius: '0 !important', ml: '0 !important' }}>
+                  <ToggleButton
+                    fullWidth
+                    size="small"
+                    value="buyer"
+                    sx={{
+                      border: `1px solid ${colors.LIGHT_GRAY} !important`,
+                      borderRadius: "0 !important",
+                      ml: "0 !important",
+                    }}
+                  >
                     I am here to explore / buy a property
                   </ToggleButton>
                 </NewToggleButtonStructure>
@@ -178,6 +228,53 @@ function Login() {
             </>
           )}
         </Grid>
+        <Dialog
+          open={showConsultantDetailsPopup}
+          onClose={() => setShowConsultantDetailsPopup(false)}
+          fullWidth
+          maxWidth="sm"
+        >
+          <DialogTitle>
+            Additional Details for Real Estate Consultant
+          </DialogTitle>
+          <DialogContent>
+            <NewToggleButtonStructure
+              isEdit={isEdit}
+              label="Business type"
+              value={businessTypeToggleAlignment}
+              handleChange={handleChangeBusinessTypeToggle}
+            >
+              <ToggleButton fullWidth size="small" value="individual">
+                Individual
+              </ToggleButton>
+              <ToggleButton fullWidth size="small" value="company">
+                Company
+              </ToggleButton>
+            </NewToggleButtonStructure>
+            <NewInputFieldStructure
+              label="Company"
+              variant="outlined"
+              isEdit={isEdit}
+            />
+
+            <NewInputFieldStructure
+              label="RERA number"
+              variant="outlined"
+              isEdit={isEdit}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setShowConsultantDetailsPopup(false)}
+              color="primary"
+            >
+             I'll do it later!
+            </Button>
+            <Button onClick={handleConsultantDetailsSubmit} color="primary" variant="contained">
+              Submit
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Card>
     </Container>
   );
