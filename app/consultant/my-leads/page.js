@@ -7,6 +7,7 @@ import UpdateLeadStatus from "Components/Consultant/ConsultantLeads/Modal/Update
 import MyLeadsStatus from "Components/Consultant/ConsultantLeads/MyLeadsStatus";
 import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
+import CustomConsultantBreadScrumbs from 'Components/CommonLayouts/CustomConsultantBreadScrumbs';
 
 function MyLeads() {
 
@@ -30,6 +31,13 @@ function MyLeads() {
 
   return (
     <Container>
+       <Box sx={{ backgroundColor: "white" }}>
+                <Container
+                    maxWidth="lg"
+                >
+                    <CustomConsultantBreadScrumbs text='My leads' />
+                </Container>
+            </Box>
       <Typography variant="h6" sx={{ mb: 2 }}>
         My Leads
       </Typography>

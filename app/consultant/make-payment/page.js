@@ -5,11 +5,20 @@ import { Container, Typography, Card, Box, Chip } from '@mui/material'
 import Image from 'next/image'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Footer from 'Components/Footer';
+import CustomConsultantBreadScrumbs from 'Components/CommonLayouts/CustomConsultantBreadScrumbs';
 
 function MakePayment() {
     return (
         <>
+         <Box sx={{ backgroundColor: "white" }}>
+                <Container
+                    maxWidth="lg"
+                >
+                    <CustomConsultantBreadScrumbs text='Make payment' />
+                </Container>
+            </Box>
             <Container maxWidth='sm'>
+           
                 <Card>
                     <Box sx={{ p: 2, borderBottom: '1px solid whitesmoke', display: 'flex' }}>
                         <Typography variant="h4" sx={{ flex: 1 }}>
