@@ -55,9 +55,9 @@ const listOfConsultantProfileTab = [
     { label: 'Service details', value: 'serviceDetails' },
     { label: 'Target Customers', value: 'targetedCustomers' },
     { label: 'Budget', value: 'budget' },
-    { label: 'Enquiries', value: 'enquiries' },
-    { label: 'Property Consultants', value: 'propertyConsultants' },
-    { label: 'Company Current address', value: 'companycurrentAddress' },
+    // { label: 'Enquiries', value: 'enquiries' },
+    // { label: 'Property Consultants', value: 'propertyConsultants' },
+    { label: 'Current address', value: 'currentAddress' },
     { label: 'Setting', value: 'setting' },
 ]
 

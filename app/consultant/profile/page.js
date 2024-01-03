@@ -287,7 +287,7 @@ function Profile() {
                 isEdit={isEdit}
               />
               <NewInputFieldStructure
-                label="Email 1"
+                label="Alternate Email"
                 variant="outlined"
                 isEdit={isEdit}
               />
@@ -448,109 +448,11 @@ function Profile() {
                 variant="outlined"
                 isEdit={isEdit}
               />
-              <NewToggleButtonStructure
-                label="Exploring as"
-                isEdit={isEdit}
-                value={exploringAsToggle}
-                handleChange={handleChangeExploringAsToggle}
-              >
-                <ToggleButton fullWidth size="small" value="active">
-                  Active
-                </ToggleButton>
-                <ToggleButton fullWidth size="small" value="passive">
-                  Passive
-                </ToggleButton>
-                <ToggleButton fullWidth size="small" value="urgent">
-                  Urgent
-                </ToggleButton>
-                <ToggleButton fullWidth size="small" value="na">
-                  NA
-                </ToggleButton>
-              </NewToggleButtonStructure>
-              <NewToggleButtonStructure
-                label="Purpose"
-                isEdit={isEdit}
-                value={purposeToggle}
-                handleChange={handleChangePurposeToggle}
-              >
-                <ToggleButton fullWidth size="small" value="buyer">
-                  Buyer
-                </ToggleButton>
-                <ToggleButton fullWidth size="small" value="investor">
-                  Investor
-                </ToggleButton>
-                <ToggleButton fullWidth size="small" value="both">
-                  Both
-                </ToggleButton>
-              </NewToggleButtonStructure>
-              <NewToggleButtonStructure
-                label="Purchase"
-                isEdit={isEdit}
-                value={purchaseToggle}
-                handleChange={handleChangePurchaseToggle}
-              >
-                <ToggleButton fullWidth size="small" value="first">
-                  First
-                </ToggleButton>
-                <ToggleButton fullWidth size="small" value="second">
-                  Second
-                </ToggleButton>
-                <ToggleButton fullWidth size="small" value="third">
-                  Third
-                </ToggleButton>
-              </NewToggleButtonStructure>
-              <NewToggleButtonStructure
-                label="Demographic"
-                isEdit={isEdit}
-                value={demographicToggle}
-                handleChange={handleChangeDemographicToggle}
-              >
-                <ToggleButton fullWidth size="small" value="family">
-                  Family
-                </ToggleButton>
-                <ToggleButton fullWidth size="small" value="single">
-                  Single
-                </ToggleButton>
-              </NewToggleButtonStructure>
-              <NewToggleButtonStructure
-                label="Interested for loan"
-                isEdit={isEdit}
-                value={interestedForLoanToggle}
-                handleChange={handleChangeInterestedForLoanToggle}
-              >
-                <ToggleButton fullWidth size="small" value="yes">
-                  Yes
-                </ToggleButton>
-                <ToggleButton fullWidth size="small" value="no">
-                  No
-                </ToggleButton>
-              </NewToggleButtonStructure>
+             
             </Grid>
           </Card>
         </Grid>
-        <Grid item xs={12} id="enquiries" >
-          <Card>
-            <Box sx={{ display: "flex", p: 2, py: 1 }}>
-              <Typography
-                variant="subtitle1"
-                sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-              >
-                User action
-              </Typography>
-              <Box>
-                <IconButton>
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            </Box>
-            <Divider />
-            <Grid container spacing={2} sx={{ p: 2 }}>
-              <Grid item xs={12}>
-                <PropertyTable />
-              </Grid>
-            </Grid>
-          </Card>
-        </Grid>
+       
         <Grid item xs={12} id="currentAddress" >
           <Card>
             <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -558,7 +460,7 @@ function Profile() {
                 variant="subtitle1"
                 sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
               >
-                Company Current address
+                Current address
               </Typography>
               <Box>
                 <IconButton>
