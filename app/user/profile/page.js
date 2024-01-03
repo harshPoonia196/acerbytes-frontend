@@ -283,7 +283,7 @@ function Profile() {
                 isEdit={isEdit}
               />
               <NewInputFieldStructure
-                label="Email 1"
+                label="Alternate Email"
                 variant="outlined"
                 isEdit={isEdit}
               />
