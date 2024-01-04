@@ -44,7 +44,7 @@ const listOfProfileTab = [
     { label: 'Service details', value: 'serviceDetails' },
     { label: 'Interested cities', value: 'interestedCities' },
     { label: 'Budget', value: 'budget' },
-    { label: 'Enquiries', value: 'enquiries' },
+    // { label: 'Enquiries', value: 'enquiries' },
     { label: 'Property Consultants', value: 'propertyConsultants' },
     { label: 'Current address', value: 'currentAddress' },
     { label: 'Setting', value: 'setting' },

@@ -260,7 +260,7 @@ function Profile() {
                 variant="subtitle1"
                 sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
               >
-                User details
+                Consultant details
               </Typography>
               <Box>
                 <IconButton>
