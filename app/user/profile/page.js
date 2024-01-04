@@ -497,7 +497,7 @@ function Profile() {
             </Grid>
           </Card>
         </Grid>
-        <Grid item xs={12} id="enquiries" >
+        {/* <Grid item xs={12} id="enquiries" >
           <Card>
             <Box sx={{ display: "flex", p: 2, py: 1 }}>
               <Typography
@@ -519,7 +519,7 @@ function Profile() {
               </Grid>
             </Grid>
           </Card>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} id="currentAddress" >
           <Card>
             <Box sx={{ display: "flex", p: 2, py: 1 }}>
