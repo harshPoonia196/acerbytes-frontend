@@ -23,6 +23,7 @@ const countries = [
 const NewPhoneInputField = ({
   name,
   handleChange,
+  handleSelectChange,
   label,
   type,
   value,
@@ -44,6 +45,7 @@ const NewPhoneInputField = ({
             <TextField
               select
               defaultValue="+91"
+              onChange={handleSelectChange}
               variant="standard"
               InputProps={{
                 disableUnderline: true,
