@@ -4,22 +4,12 @@ import {
   Container,
   Card,
   Grid,
-  Typography,
-  Box,
   Button,
   ToggleButton,
 } from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
-import React, { useState } from "react";
-import InputField from "Components/CommonLayouts/InputField";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import colors from "styles/theme/colors";
-import HomeIcon from "@mui/icons-material/Home";
-import { useRouter } from "next/navigation";
-import NewPhoneInputField from "Components/CommonLayouts/NewPhoneInputField";
-import OTPInputLayout from "Components/CommonLayouts/OTPInputLayout";
+import React, { useEffect, useState } from "react";
+import { redirect, useSearchParams } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
-import { listOfPages } from "Components/NavBar/Links";
 import {
   Dialog,
   DialogTitle,
@@ -27,24 +17,16 @@ import {
   DialogActions,
 } from "@mui/material";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
+import { createUserAPI, sendOtpAPI, signInAPI, signInAuthenticationAPI, verifyOtpAPI } from "api/Auth.api";
+import SendOtp from "Components/Login/SendOtp";
+import Welcome from "Components/Login/Welcome";
+import VerifyOtp from "Components/Login/VerifyOtp";
+import GoogleSignIn from "Components/Login/GoogleSignIn";
+import { useRouter } from "next/navigation";
 
 function Login() {
   const router = useRouter();
 
-  const [googleUser, setGoogleUser] = useState(null);
-
-  const [sendOtp, setSendOtp] = useState(false);
-
-  const [otpInput, setOtpInput] = useState();
-
-  const [isVerified, setIsVerified] = useState(false);
-
-  const [roleTypeToggleAlignment, setRoleTypeToggleAlignment] =
-    React.useState("");
-
-  const handleChangeRoleTypeToggle = (event, newAlignment) => {
-    setRoleTypeToggleAlignment(newAlignment);
-  };
   const [showConsultantDetailsPopup, setShowConsultantDetailsPopup] =
     useState(false);
   const handleConsultantDetailsSubmit = () => {
@@ -57,176 +39,142 @@ function Login() {
     setBusinessTypeToggleAlignment(newAlignment);
   };
 
+  const [activeStep, setActiveStep] = useState(1)
+  const [otpInput, setOtpInput] = useState("")
+
+
+  const [form, setForm] = useState({
+    countryCode: '+91',
+    phone: "",
+    firstName: '',
+    lastName: '',
+    googleId: '',
+    role: '',
+    businessType: '',
+    reraNo: '',
+    company: ''
+  })
+
+  console.log(form)
+
+  const handleChange = (name, value) => {
+    setForm(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const nextStep = () => {
+    setActiveStep(prev => prev + 1)
+  }
+
+  const getSignInUrl = async () => {
+    const data = await signInAPI()
+    window.location.href = data?.data?.data?.authUrl
+  }
+
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    if (searchParams.get('code')) {
+      AuthenticateUser(searchParams.get('code'))
+    }
+  }, [])
+
+  const AuthenticateUser = async (code) => {
+    const res = await signInAuthenticationAPI({ code: code })
+    const { email, id } = res?.data?.data
+    setForm(prev => ({
+      ...prev,
+      email: email,
+      googleId: id
+    }))
+    nextStep()
+  }
+
+  const sendOtpFun = async () => {
+    try {
+      let payload = {
+        phoneNumber: form.phone,
+        countryCode: form.countryCode
+      }
+      const res = await sendOtpAPI(payload)
+      if (res.status === 200) {
+        nextStep()
+      }
+    } catch (error) {
+
+    }
+  }
+
+  const verifyOtpFun = async () => {
+    try {
+      let payload = {
+        phoneNumber: form.phone,
+        countryCode: form.countryCode,
+        otp: otpInput
+      }
+      const res = await verifyOtpAPI(payload)
+      if (res.status === 200) {
+        nextStep()
+      }
+    } catch (error) {
+
+    }
+  }
+
+  const createUserFun = async () => {
+    console.log("yes")
+    try {
+      let payload = {
+        name: { 
+          firstName: form.firstName,
+          lastName: form.lastName
+        },
+        phone: { 
+          countryCode: form.countryCode,
+          number: form.phone
+        },
+        email: form.email,
+        role: form.role,
+        googleId: form.googleId
+      }
+      const res = await createUserAPI(payload)
+      if (res.status === 200) {
+        const {token, userDetails} = res?.data?.data
+        localStorage.setItem("token", token)
+        localStorage.setItem("userDetails", JSON.stringify(userDetails))
+
+        router.push('/');      
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const getComponentByStep = () => {
+    switch (activeStep) {
+      case 1: {
+        return <GoogleSignIn getSignInUrl={getSignInUrl} />
+      }
+      case 2: {
+        return <SendOtp form={form} handleChange={handleChange} sendOtpFun={sendOtpFun} />
+      }
+      case 3: {
+        return <VerifyOtp verifyOtpFun={verifyOtpFun} otpInput={otpInput} setOtpInput={setOtpInput} />
+      }
+      case 4: {
+        return <Welcome createUserFun={createUserFun} handleChange={handleChange} form={form} />
+      }
+    }
+  }
+
   return (
     <Container maxWidth="sm">
       <Card sx={{ p: 3 }}>
         <Grid container spacing={2}>
-          {googleUser === null && !sendOtp && !isVerified ? (
-            <>
-              <Grid item xs={12}>
-                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  Welcome to, <span style={{ color: "gray" }}>Acrebytes</span>
-                </Typography>
-                <Typography variant="body1">
-                  Create account using Google
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sx={{ textAlign: "end" }}>
-                <Button
-                  variant="contained"
-                  sx={{ mt: 1 }}
-                  startIcon={<GoogleIcon />}
-                  onClick={() => {
-                    setGoogleUser({ email: "" });
-                  }}
-                >
-                  Sign in with Google
-                </Button>
-              </Grid>
-            </>
-          ) : sendOtp && !isVerified ? (
-            <>
-              <Grid item xs={12}>
-                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  Mobile verification,
-                  <span style={{ color: "gray" }}> enter OTP</span>
-                </Typography>
-                <Typography variant="body1">
-                  This is to ensure we connect with intended Customer only
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12} sx={{ display: "flex", mt: 1 }}>
-                <Box sx={{ flex: 1 }}>
-                  <OTPInputLayout
-                    otpInput={otpInput}
-                    setOtpInput={setOtpInput}
-                  />
-                </Box>
-                <Box sx={{ alignSelf: "center" }}>
-                  <Button disabled>Resend OTP</Button>
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography
-                  variant="body2"
-                  sx={{ textTransform: "uppercase", color: colors.DISABLED }}
-                >
-                  Received at +99132435353
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  pt: "24px !important",
-                }}
-              >
-                <Button
-                  startIcon={<ArrowBackIosIcon />}
-                  onClick={() => {
-                    setIsVerified(false);
-                    setSendOtp(false);
-                  }}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setIsVerified(true);
-                  }}
-                >
-                  Verify
-                </Button>
-              </Grid>
-            </>
-          ) : isVerified ? (
-            <>
-              <Grid item xs={12}>
-                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  Hi Anand Gupta,{" "}
-                  <span style={{ color: "gray" }}>welcome to Acrebytes</span>
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12} sx={{ my: 1 }}>
-                <NewToggleButtonStructure
-                  isEdit={isEdit}
-                  label={"Select your role"}
-                  value={roleTypeToggleAlignment}
-                  handleChange={handleChangeRoleTypeToggle}
-                  toggleStyle={{
-                    diplay: "flex",
-                    flexDirection: "column",
-                    mt: 1,
-                  }}
-                >
-                  <ToggleButton
-                    fullWidth
-                    size="small"
-                    value="consultant"
-                    sx={{
-                      border: `1px solid ${colors.LIGHT_GRAY} !important`,
-                      borderRadius: "0 !important",
-                    }}
-                    onClick={() => setShowConsultantDetailsPopup(true)}
-                  >
-                    I am a Real estate consultant
-                  </ToggleButton>
-                  <ToggleButton
-                    fullWidth
-                    size="small"
-                    value="buyer"
-                    sx={{
-                      border: `1px solid ${colors.LIGHT_GRAY} !important`,
-                      borderRadius: "0 !important",
-                      ml: "0 !important",
-                    }}
-                  >
-                    I am here to explore / buy a property
-                  </ToggleButton>
-                </NewToggleButtonStructure>
-              </Grid>
-              <Grid item xs={12} sx={{ textAlign: "end" }}>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    router.push(listOfPages.home);
-                  }}
-                >
-                  Confirm
-                </Button>
-              </Grid>
-            </>
-          ) : (
-            <>
-              <Grid item xs={12} sx={{ mb: 1 }}>
-                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  Create your <span style={{ color: "gray" }}>account</span>
-                </Typography>
-                <Typography variant="body1">
-                  Connect with professional property consultants only
-                </Typography>
-              </Grid>
-              <InputField label="First name" halfSm />
-              <InputField label="Last name" halfSm />
-              <NewPhoneInputField label="Phone number" />
-              <Grid item xs={12} sx={{ textAlign: "end" }}>
-                <Button
-                  sx={{ mt: 1 }}
-                  variant="contained"
-                  onClick={() => {
-                    setSendOtp(true);
-                  }}
-                >
-                  Confirm
-                </Button>
-              </Grid>
-            </>
-          )}
+          {getComponentByStep()}
         </Grid>
         <Dialog
           open={showConsultantDetailsPopup}
@@ -268,7 +216,7 @@ function Login() {
               onClick={() => setShowConsultantDetailsPopup(false)}
               color="primary"
             >
-             I'll do it later!
+              I'll do it later!
             </Button>
             <Button onClick={handleConsultantDetailsSubmit} color="primary" variant="contained">
               Submit
