@@ -21,8 +21,10 @@ const countries = [
 ];
 
 const NewCurrencyInputField = ({
-  name,
+  name1,
+  name2,
   handleChange,
+  handleSelect,
   label,
   type,
   value,
@@ -43,18 +45,21 @@ const NewCurrencyInputField = ({
     {
       isEdit ?
         <TextField
-          name={name}
+          name={name2}
           onChange={handleChange}
           variant={variant ? variant : "standard"}
           fullWidth
+          type="number"
           size="small"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <TextField
                   select
+                  name={name1}
                   defaultValue=""
                   variant="standard"
+                  onChange={handleSelect}
                   InputProps={{
                     disableUnderline: true,
                   }}

@@ -3,7 +3,7 @@ import { Typography, ToggleButton, ToggleButtonGroup, Grid } from "@mui/material
 import colors from "styles/theme/colors";
 
 const NewToggleButtonStructure = ({
-  children, label, value, handleChange, isEdit, toggleStyle
+  children, label, value, handleChange, isEdit, toggleStyle,name
 }) => (
   <Grid item xs={12} sm={isEdit ? 12 : 6}>
     <Typography
@@ -18,6 +18,7 @@ const NewToggleButtonStructure = ({
         color="primary"
         value={value}
         exclusive
+        name={name}
         fullWidth
         onChange={handleChange}
         aria-label="Platform"
