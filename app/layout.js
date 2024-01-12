@@ -4,6 +4,7 @@ import NavBar from "Components/NavBar";
 import ThemeRegistry from "styles/theme/ThemeRegistry";
 import React from "react";
 import { Providers } from "state/Providers";
+import { SnackbarProvider } from "utills/SnackbarContext";
 
 const inter = Inter({ subsets: ["latin"] });
 const ibm_plex_sans = IBM_Plex_Sans({
@@ -27,7 +28,9 @@ export default function RootLayout({ children }) {
       <body className={ibm_plex_sans.className}>
         <Providers>
           <ThemeRegistry options={{ key: "css" }}>
-            <NavBar>{children}</NavBar>
+            <SnackbarProvider>
+              <NavBar>{children}</NavBar>
+            </SnackbarProvider>
           </ThemeRegistry>
         </Providers>
       </body>

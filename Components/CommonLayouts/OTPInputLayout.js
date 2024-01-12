@@ -7,6 +7,8 @@ function OTPInputLayout({ otpInput, setOtpInput }) {
       value={otpInput}
       onChange={setOtpInput}
       numInputs={4}
+      isInputNum={true}
+      inputType="number"
       renderSeparator={<span>&nbsp;&nbsp;</span>}
       renderInput={(props) => (
         <input
