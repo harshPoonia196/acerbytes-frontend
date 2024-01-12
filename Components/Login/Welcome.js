@@ -6,7 +6,7 @@ import colors from "styles/theme/colors";
 
 const Welcome = ({form, handleChange, createUserFun}) => {
     return (
-        <Grid container>
+        <Grid container sx={{p: 3}} spacing={1}>
             <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
                     Hi {form.firstName} {form.lastName},{" "}
@@ -67,6 +67,7 @@ const Welcome = ({form, handleChange, createUserFun}) => {
             <Grid item xs={12} sx={{ textAlign: "end" }}>
                 <Button
                     variant="contained"
+                    disabled={!form.role}
                     onClick={() => createUserFun()}
                 >
                     Confirm

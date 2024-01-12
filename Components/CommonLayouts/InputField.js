@@ -10,17 +10,20 @@ const InputField = ({
   sx,
   variant,
   halfSm,
+  error,
   ...props
 }) => (
   <Grid item xs={12} sm={halfSm ? 6 : 12}>
     <TextField
       name={name}
+      value={value}
       onChange={handleChange}
       label={label}
       variant={variant ? variant : "standard"}
       fullWidth
       size="small"
       sx={sx}
+      error={error}
       {...props}
     />
   </Grid>
