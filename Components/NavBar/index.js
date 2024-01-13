@@ -68,7 +68,7 @@ export default function ClippedDrawer({ children }) {
     };
   }, []);
 
- 
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -117,7 +117,7 @@ export default function ClippedDrawer({ children }) {
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       {
         isLogged ?
-          <MenuItem onClick={()=> logoutUser()}>Logout</MenuItem> : null
+          <MenuItem onClick={() => logoutUser()}>Logout</MenuItem> : null
       }
     </Menu>
   );
@@ -182,7 +182,7 @@ export default function ClippedDrawer({ children }) {
                 id="nested-list-subheader"
                 sx={{ display: "flex" }}
               >
-                <p style={{ flex: 1 }}>Consultant</p>{" "}
+                <p style={{ flex: 1 }}>Property Consultant</p>{" "}
                 <Box sx={{ alignSelf: "center" }}>
                   <IconButton
                     onClick={() => {
