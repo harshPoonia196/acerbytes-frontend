@@ -25,7 +25,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import {
   AdminMenuList,
@@ -41,33 +41,35 @@ import {
 } from "state/DrawerStore/action";
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { isLoggedIn, logoutUser } from "utills/utills";
+import { checkUrlAccess, isLoggedIn, logoutUser, matchUserRole } from "utills/utills";
 import colors from "styles/theme/colors";
+import { checkTokenAPI } from "api/Auth.api";
+import { useAuth } from "utills/AuthContext";
 
 const drawerWidth = 240;
 
 export default function ClippedDrawer({ children }) {
   const { isDrawerOpen } = useSelector((state) => state);
   const router = useRouter();
+  const pathname = usePathname()
+
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [userDetails, setUserDetails] = React.useState({});
-  const [isLogged, setIsLogged] = React.useState(false);
-  console.log(userDetails)
-  const dispatch = useDispatch();
+  const { userDetails, isLogged, logout } = useAuth();
+
 
   React.useEffect(() => {
-    setUserDetails(JSON.parse(localStorage.getItem("userDetails")))
-    setIsLogged(isLoggedIn())
-    const handleStorageChange = (event) => {
-      setIsLogged(isLoggedIn())
-      setUserDetails(JSON.parse(localStorage.getItem("userDetails")))
-    };
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+    checkUserUrlAccess()
+  }, [pathname])
 
+  const redirectUser = (url) => {
+    router.replace(url)
+  }
+
+  const checkUserUrlAccess = () => {
+    checkUrlAccess(isLogged, pathname, redirectUser, userDetails?.role)
+  }
+
+  const dispatch = useDispatch();
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -163,54 +165,71 @@ export default function ClippedDrawer({ children }) {
             ))}
           </List>
           <Divider />
-          <List
-            subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
-                Customer / Buyer
-              </ListSubheader>
-            }
-          >
-            {UserMenuList.map((item) => (
-              <DrawerListItem key={item.label} item={item} />
-            ))}
-          </List>
-          <Divider />
-          <List
-            subheader={
-              <ListSubheader
-                component="div"
-                id="nested-list-subheader"
-                sx={{ display: "flex" }}
+          {
+            matchUserRole(userDetails?.role, "user") &&
+            <>
+              <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Customer / Buyer
+                  </ListSubheader>
+                }
               >
-                <p style={{ flex: 1 }}>Property Consultant</p>{" "}
-                <Box sx={{ alignSelf: "center" }}>
-                  <IconButton
-                    onClick={() => {
-                      router.push(listOfPages.consultantJoinNow);
-                    }}
+                {UserMenuList.map((item) => (
+                  <DrawerListItem key={item.label} item={item} />
+                ))}
+              </List>
+              <Divider />
+            </>
+          }
+
+          {
+            matchUserRole(userDetails?.role, "broker") &&
+            <>
+              <List
+                subheader={
+                  <ListSubheader
+                    component="div"
+                    id="nested-list-subheader"
+                    sx={{ display: "flex" }}
                   >
-                    <HowToRegIcon size="small" />
-                  </IconButton>
-                </Box>
-              </ListSubheader>
-            }
-          >
-            {ConsultantMenuList.map((item, index) => (
-              <DrawerListItem key={item.label} item={item} />
-            ))}
-          </List>
-          <Divider />
-          <List
-            subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
-                Admin
-              </ListSubheader>
-            }
-          >
-            {AdminMenuList.map((item, index) => (
-              <DrawerListItem key={item.label} item={item} />
-            ))}
-          </List>
+                    <p style={{ flex: 1 }}>Consultant</p>{" "}
+                    <Box sx={{ alignSelf: "center" }}>
+                      <IconButton
+                        onClick={() => {
+                          router.push(listOfPages.consultantJoinNow);
+                        }}
+                      >
+                        <HowToRegIcon size="small" />
+                      </IconButton>
+                    </Box>
+                  </ListSubheader>
+                }
+              >
+                {ConsultantMenuList.map((item, index) => (
+                  <DrawerListItem key={item.label} item={item} />
+                ))}
+              </List>
+              <Divider />
+            </>
+          }
+
+          {
+            matchUserRole(userDetails?.role, "admin") &&
+            <>
+              <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Admin
+                  </ListSubheader>
+                }
+              >
+                {AdminMenuList.map((item, index) => (
+                  <DrawerListItem key={item.label} item={item} />
+                ))}
+              </List>
+            </>
+          }
         </Box>
       </>
     );
@@ -240,7 +259,7 @@ export default function ClippedDrawer({ children }) {
                 </IconButton>
               }
             >
-              <ListItemButton sx={{ pl: 3 }} role={undefined}>
+              <ListItemButton onClick={() => logout()} sx={{ pl: 3 }} role={undefined}>
                 <ListItemIcon sx={{ minWidth: 40 }}>
                   <LogoutIcon fontSize="small" />
                 </ListItemIcon>
