@@ -16,14 +16,14 @@ const PopupForLinks = ({ open, handleClose, router }) => (
     <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
         <DialogTitle>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                Access the links for <span style={{ color: "gray" }}>Admin</span>
+                Access the links for <span style={{ color: "gray" }}>Consultant</span>
             </Typography>
         </DialogTitle>
         <DialogContent>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <Box sx={{ cursor: 'pointer' }} onClick={() => {
-                        router.push(listOfPages.adminEnquiries)
+                        router.push(listOfPages.consultantMakePayment)
                         handleClose()
                     }}>
                         <Card>
@@ -40,8 +40,8 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                             >
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
-                                    <Typography variant="h5">Leads received</Typography>
-                                    <Typography variant="body1">Enquiries</Typography>
+                                    <Typography variant="h5">Make payment</Typography>
+                                    <Typography variant="body1">Payment</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -49,7 +49,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Box sx={{ cursor: 'pointer' }} onClick={() => {
-                        router.push(listOfPages.adminAddProperty)
+                        router.push(listOfPages.consultantMyLeads)
                         handleClose()
                     }}>
                         <Card>
@@ -66,8 +66,8 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                             >
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
-                                    <Typography variant="h5">Add property</Typography>
-                                    <Typography variant="body1">List new property</Typography>
+                                    <Typography variant="h5">My leads</Typography>
+                                    <Typography variant="body1">List of all leads</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -75,7 +75,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Box sx={{ cursor: 'pointer' }} onClick={() => {
-                        router.push(listOfPages.adminPropertyList)
+                        router.push(listOfPages.consultantLinks)
                         handleClose()
                     }}>
                         <Card>
@@ -92,8 +92,8 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                             >
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
-                                    <Typography variant="h5">Property list</Typography>
-                                    <Typography variant="body1">List of all property</Typography>
+                                    <Typography variant="h5">My links</Typography>
+                                    <Typography variant="body1">List of all links</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -101,7 +101,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Box sx={{ cursor: 'pointer' }} onClick={() => {
-                        router.push(listOfPages.adminManageUser)
+                        router.push(listOfPages.consultantMyNotes)
                         handleClose()
                     }}>
                         <Card>
@@ -118,8 +118,8 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                             >
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
-                                    <Typography variant="h5">Manage user</Typography>
-                                    <Typography variant="body1">User list</Typography>
+                                    <Typography variant="h5">My notes</Typography>
+                                    <Typography variant="body1">List of all notes</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -127,7 +127,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Box sx={{ cursor: 'pointer' }} onClick={() => {
-                        router.push(listOfPages.adminManageConsultant)
+                        router.push(listOfPages.consultantPaymentHistory)
                         handleClose()
                     }}>
                         <Card>
@@ -144,8 +144,8 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                             >
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
-                                    <Typography variant="h5">Manage Consultant</Typography>
-                                    <Typography variant="body1">Consultant list</Typography>
+                                    <Typography variant="h5">Payment history</Typography>
+                                    <Typography variant="body1">List of all past payment</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -153,7 +153,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Box sx={{ cursor: 'pointer' }} onClick={() => {
-                        router.push(listOfPages.adminConsultantLinks)
+                        router.push(listOfPages.consultantProfile)
                         handleClose()
                     }}>
                         <Card>
@@ -170,8 +170,8 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                             >
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
-                                    <Typography variant="h5">Consultant Links</Typography>
-                                    <Typography variant="body1">Consultant active links</Typography>
+                                    <Typography variant="h5">Consultant profile</Typography>
+                                    <Typography variant="body1">Modify profile</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>

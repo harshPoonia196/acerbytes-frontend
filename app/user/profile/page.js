@@ -286,7 +286,7 @@ function Profile() {
           "error"
         );
         setLoading(false);
-      }finally{
+      } finally {
         setLoading(false);
       }
     }
@@ -518,7 +518,7 @@ function Profile() {
     }
   };
 
-  console.log("profle data: ", profileInfo)
+  console.log("profle data: ", profileInfo);
 
   return (
     <>
@@ -531,9 +531,18 @@ function Profile() {
       </nav>
 
       <Container maxWidth="lg">
-
-        {isLoading && <Loading />}
         <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ textAlign: "end" }}>
+            <LoadingButton
+              onClick={handleSave}
+              loading={isLoading}
+              disabled={!checkMandatoryFields()}
+              loadingPosition="start"
+              variant="contained"
+            >
+              Save
+            </LoadingButton>
+          </Grid>
           <Grid item xs={12} id="userDetails">
             <Card sx={{ p: 2 }}>
               <Box sx={{ display: "flex" }}>
@@ -581,7 +590,7 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                   // handleChange={handleChangeName}
-                  handleChange={(e)=>handleChange(e,"name", "firstName")}
+                  handleChange={(e) => handleChange(e, "name", "firstName")}
                   name={"firstName"}
                   value={profileInfo?.name?.firstName}
                 />
@@ -589,7 +598,7 @@ function Profile() {
                   label="Last name"
                   variant="outlined"
                   isEdit={isEdit}
-                  handleChange={(e)=>handleChange(e,"name", "lastName")}
+                  handleChange={(e) => handleChange(e, "name", "lastName")}
                   name={"lastName"}
                   value={profileInfo?.name?.lastName}
                 />
@@ -597,8 +606,8 @@ function Profile() {
                   variant="outlined"
                   label="Phone"
                   isEdit={isEdit}
-                  handleChange={(e)=>handleChange(e,"phone", "number")}
-                  handleSelect={(e)=>handleChange(e,"phone", "countryCode")}
+                  handleChange={(e) => handleChange(e, "phone", "number")}
+                  handleSelect={(e) => handleChange(e, "phone", "countryCode")}
                   name1={"countryCode"}
                   name2={"number"}
                   value1={profileInfo?.phone?.countryCode}
@@ -608,7 +617,7 @@ function Profile() {
                   label="Alternate Email"
                   variant="outlined"
                   isEdit={isEdit}
-                  handleChange={(e)=>handleChange(e,"alternateEmail")}
+                  handleChange={(e) => handleChange(e, "alternateEmail")}
                   name={"alternateEmail"}
                   value={profileInfo?.alternateEmail}
                 />
@@ -630,7 +639,9 @@ function Profile() {
                 <NewSelectTextFieldStructure
                   label="Service type"
                   isEdit={isEdit}
-                  handleChange={(e)=>handleChange(e,"serviceDetails", "serviceType")}
+                  handleChange={(e) =>
+                    handleChange(e, "serviceDetails", "serviceType")
+                  }
                   name={"serviceType"}
                   list={SERVICE_TYPE}
                   value={profileInfo?.serviceDetails?.serviceType}
@@ -639,14 +650,18 @@ function Profile() {
                   label="Company"
                   variant="outlined"
                   isEdit={isEdit}
-                  handleChange={(e)=>handleChange(e,"serviceDetails", "company")}
+                  handleChange={(e) =>
+                    handleChange(e, "serviceDetails", "company")
+                  }
                   name={"company"}
                   value={profileInfo?.serviceDetails?.company}
                 />
                 <NewSelectTextFieldStructure
                   label="Family"
                   isEdit={isEdit}
-                  handleChange={(e)=>handleChange(e,"serviceDetails", "family")}
+                  handleChange={(e) =>
+                    handleChange(e, "serviceDetails", "family")
+                  }
                   name={"family"}
                   value={profileInfo?.serviceDetails?.family}
                   list={FAMILY}
@@ -770,8 +785,12 @@ function Profile() {
                   name2={"value"}
                   value1={profileInfo?.budget?.minimumBudget?.unit}
                   value2={profileInfo?.budget?.minimumBudget?.value}
-                  handleChange={(e)=>handleChange(e,"budget", "minimumBudget", "value")}
-                  handleSelect={(e)=>handleChange(e,"budget", "minimumBudget", "unit")}
+                  handleChange={(e) =>
+                    handleChange(e, "budget", "minimumBudget", "value")
+                  }
+                  handleSelect={(e) =>
+                    handleChange(e, "budget", "minimumBudget", "unit")
+                  }
                 />
                 <NewCurrencyInputField
                   label="Maximum"
@@ -779,8 +798,12 @@ function Profile() {
                   isEdit={isEdit}
                   value1={profileInfo?.budget?.maximumBudget?.unit}
                   value2={profileInfo?.budget?.maximumBudget?.value}
-                  handleChange={(e)=>handleChange(e,"budget", "maximumBudget", "value")}
-                  handleSelect={(e)=>handleChange(e,"budget", "maximumBudget", "unit")}
+                  handleChange={(e) =>
+                    handleChange(e, "budget", "maximumBudget", "value")
+                  }
+                  handleSelect={(e) =>
+                    handleChange(e, "budget", "maximumBudget", "unit")
+                  }
                   name1={"unit"}
                   name2={"value"}
                 />
@@ -930,7 +953,9 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                   value={profileInfo?.currentAddress?.addressLine1}
-                  handleChange={(e)=>handleChange(e,"currentAddress", "addressLine1")}
+                  handleChange={(e) =>
+                    handleChange(e, "currentAddress", "addressLine1")
+                  }
                   name="addressLine1"
                 />
                 <NewInputFieldStructure
@@ -938,7 +963,9 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                   value={profileInfo?.currentAddress?.addressLine2}
-                  handleChange={(e)=>handleChange(e,"currentAddress", "addressLine2")}
+                  handleChange={(e) =>
+                    handleChange(e, "currentAddress", "addressLine2")
+                  }
                   name="addressLine2"
                 />
                 <NewAutoCompleteInputStructure
@@ -983,7 +1010,9 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                   value={profileInfo?.currentAddress?.city}
-                  handleChange={(e)=>handleChange(e,"currentAddress", "city")}
+                  handleChange={(e) =>
+                    handleChange(e, "currentAddress", "city")
+                  }
                   name="city"
                 />
 
@@ -992,7 +1021,9 @@ function Profile() {
                   variant="outlined"
                   value={profileInfo?.currentAddress?.pinCode}
                   isEdit={isEdit}
-                  handleChange={(e)=>handleChange(e,"currentAddress", "pinCode")}
+                  handleChange={(e) =>
+                    handleChange(e, "currentAddress", "pinCode")
+                  }
                   name="pinCode"
                 />
               </Grid>
@@ -1053,17 +1084,6 @@ function Profile() {
                 </Grid>
               </Grid>
             </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <LoadingButton
-              onClick={handleSave}
-              loading={isLoading}
-              disabled={!checkMandatoryFields()}
-              loadingPosition="start"
-              variant="contained"
-            >
-              Save
-            </LoadingButton>
           </Grid>
         </Grid>
       </Container>

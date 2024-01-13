@@ -18,31 +18,21 @@ import {
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import PeopleIcon from "@mui/icons-material/People";
-import StarIcon from "@mui/icons-material/Star";
 import Fab from "@mui/material/Fab";
 import React, { useState, useEffect, useRef } from "react";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
-import ImageCarousel from "Components/DetailsPage/ImageCarousel";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 
 import ReplyIcon from "@mui/icons-material/Reply";
-import PriceChart from "Components/DetailsPage/PriceChart";
-import Link from "next/link";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
-import { useCallback } from "react";
 import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
-import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";
 import FloorPlanSection from "Components/DetailsPage/FloorPlanSection";
-import CallIcon from '@mui/icons-material/Call';
 import AmenitiesSection from "Components/DetailsPage/AmenitiesSection";
 import ClearanceSection from "Components/DetailsPage/ClearanceSection";
 import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
@@ -50,7 +40,6 @@ import PricingSection from 'Components/DetailsPage/PricingSection'
 import ResaleSection from "Components/DetailsPage/ResaleSection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
-import { Close } from "@mui/icons-material";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
 import { useSearchParams } from 'next/navigation'
