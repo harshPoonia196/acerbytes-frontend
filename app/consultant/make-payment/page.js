@@ -10,7 +10,7 @@ import CustomConsultantBreadScrumbs from 'Components/CommonLayouts/CustomConsult
 function MakePayment() {
     return (
         <>
-         <Box sx={{ backgroundColor: "white" }}>
+            <Box sx={{ backgroundColor: "white" }}>
                 <Container
                     maxWidth="lg"
                 >
@@ -18,7 +18,7 @@ function MakePayment() {
                 </Container>
             </Box>
             <Container maxWidth='sm'>
-           
+
                 <Card>
                     <Box sx={{ p: 2, borderBottom: '1px solid whitesmoke', display: 'flex' }}>
                         <Typography variant="h4" sx={{ flex: 1 }}>

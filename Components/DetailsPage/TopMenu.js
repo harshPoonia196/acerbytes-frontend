@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tabs, Tab, Card, Box, Typography } from '@mui/material'
+import { Tabs, Tab, Card, Box, Typography, tabsClasses } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
@@ -57,15 +57,21 @@ function TopMenu({ value, handleChange, list }) {
                 value={value}
                 // onChange={handleChange}
                 variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
+                scrollButtons
+                allowScrollButtonsMobile
+                aria-label="visible arrows tabs example"
+                sx={{
+                    [`& .${tabsClasses.scrollButtons}`]: {
+                        '&.Mui-disabled': { opacity: 0.3 },
+                    },
+                }}
             >
                 {
                     list.map((current) => (
                         <Tab label={current.text} value={current.hash} onClick={handleChange(current.hash)} />
                     ))
                 }
-            </Tabs>
+            </Tabs >
         </>
     )
 }

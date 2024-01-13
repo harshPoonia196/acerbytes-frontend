@@ -9,6 +9,13 @@ const page = () => {
 
     return (
         <Container>
+            <Box sx={{ backgroundColor: "white" }}>
+                <Container
+                    maxWidth="lg"
+                >
+                    <CustomConsultantBreadScrumbs text='Make links' />
+                </Container>
+            </Box>
             <Card sx={{ mb: 2 }}>
                 <CustomSearchInput />
             </Card>
