@@ -43,6 +43,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { isLoggedIn, logoutUser } from "utills/utills";
 import colors from "styles/theme/colors";
+import { checkTokenAPI } from "api/Auth.api";
 
 const drawerWidth = 240;
 
@@ -67,7 +68,6 @@ export default function ClippedDrawer({ children }) {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
-
  
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
