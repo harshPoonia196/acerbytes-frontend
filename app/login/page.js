@@ -30,8 +30,11 @@ import GoogleSignIn from "Components/Login/GoogleSignIn";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "utills/SnackbarContext";
 import ConsultantDialog from "Components/Login/ConsultantDialog";
+import { useAuth } from "utills/AuthContext";
 
 function Login() {
+  const { login } = useAuth();
+
   const router = useRouter();
   const [showConsultantDetailsPopup, setShowConsultantDetailsPopup] =
     useState(false);
@@ -107,9 +110,7 @@ function Login() {
       const { email, id, name, token, userDetails } = res?.data?.data;
 
       if (token) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("userDetails", JSON.stringify(userDetails));
-        window.dispatchEvent(new Event("storage"));
+        login(userDetails, token)
         router.push("/");
         return
       }
@@ -203,9 +204,7 @@ function Login() {
       const res = await createUserAPI(payload);
       if (res.status === 200) {
         const { token, userDetails } = res?.data?.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("userDetails", JSON.stringify(userDetails));
-        window.dispatchEvent(new Event("storage"));
+        login(userDetails, token)
         router.push("/");
       }
     } catch (error) {

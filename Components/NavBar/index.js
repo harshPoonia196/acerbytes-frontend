@@ -44,6 +44,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { isLoggedIn, logoutUser } from "utills/utills";
 import colors from "styles/theme/colors";
 import { checkTokenAPI } from "api/Auth.api";
+import { useAuth } from "utills/AuthContext";
 
 const drawerWidth = 240;
 
@@ -51,23 +52,10 @@ export default function ClippedDrawer({ children }) {
   const { isDrawerOpen } = useSelector((state) => state);
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [userDetails, setUserDetails] = React.useState({});
-  const [isLogged, setIsLogged] = React.useState(false);
-  console.log(userDetails)
-  const dispatch = useDispatch();
+  const { userDetails, isLogged } = useAuth();
+  console.log("🚀 ~ ClippedDrawer ~ isLogged:", isLogged)
 
-  React.useEffect(() => {
-    setUserDetails(JSON.parse(localStorage.getItem("userDetails")))
-    setIsLogged(isLoggedIn())
-    const handleStorageChange = (event) => {
-      setIsLogged(isLoggedIn())
-      setUserDetails(JSON.parse(localStorage.getItem("userDetails")))
-    };
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+  const dispatch = useDispatch();
  
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
