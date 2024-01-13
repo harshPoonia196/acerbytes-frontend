@@ -40,6 +40,7 @@ import {
   purchase,
   purpose,
 } from "Components/Constants";
+import UserProfileModuleApi from "api/UserProfile.api";
 
 const tabHeight = 116;
 
@@ -79,7 +80,8 @@ function useThrottledOnScroll(callback, delay) {
 
 function Profile() {
   const router = useRouter();
-
+  const [interestedStates, setInterestedStates] = useState([]);
+  const [interestedCities, setInterestedCities] = useState([]);
   const [profileInfo, setProfileInfo] = useState({
     name: {
       firstName: "",
@@ -91,6 +93,11 @@ function Profile() {
     },
     email: "",
     alternateEmail: "",
+    interestedCities: {
+      selectState: "",
+      selectCity: "",
+      selectArea: "",
+    },
     serviceDetails: {
       serviceType: "",
       company: "",
@@ -260,6 +267,47 @@ function Profile() {
     []
   );
 
+  React.useEffect(() => {
+    getAllStateOfIndia();
+  }, []);
+
+  const getAllStateOfIndia = () => {
+    new UserProfileModuleApi()
+      .getAccessToken()
+      .then((res) => {
+        return res.auth_token;
+      })
+      .then((access_token) => {
+        return new UserProfileModuleApi().getAllStateList(access_token);
+      })
+      .then((res) => {
+        setInterestedStates(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getInterestedCities = (stateName) => {
+    new UserProfileModuleApi()
+      .getAccessToken()
+      .then((res) => {
+        return res.auth_token;
+      })
+      .then((access_token) => {
+        return new UserProfileModuleApi().getAllCitiesList(
+          access_token,
+          stateName
+        );
+      })
+      .then((res) => {
+        setInterestedCities(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const classes = useStyles();
 
   const handleChangeName = (event) => {
@@ -344,6 +392,21 @@ function Profile() {
         [event.target.name]: value || event.target.value,
       },
     });
+  };
+
+  const handleChangeInteresetCitiesDetails = (key, newValue) => {
+    setProfileInfo({
+      ...profileInfo,
+      interestedCities: {
+        ...profileInfo.interestedCities,
+        selectCity: key === "selectState" ? "" : profileInfo.interestedCities.selectCity, 
+        [key]: newValue.value,
+      },
+    });
+
+    if (key == "selectState") {
+      getInterestedCities(newValue.value);
+    }
   };
 
   console.log("user profile: ", profileInfo);
@@ -483,16 +546,51 @@ function Profile() {
               </Box>
               <Divider />
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
+                <NewAutoCompleteInputStructure
+                  label="Select State"
+                  // isEdit={isEdit}
+                  handleChange={(e, newValue) =>
+                    handleChangeInteresetCitiesDetails("selectState", newValue)
+                  }
+                  list={interestedStates?.map((rs) => {
+                    return {
+                      label: rs.state_name,
+                      value: rs.state_name,
+                    };
+                  })}
+                />
+
                 {isEdit ? (
                   <>
                     <NewAutoCompleteInputStructure
                       label="Select City"
-                      isEdit={isEdit}
+                      handleChange={(e, newValue) =>
+                        handleChangeInteresetCitiesDetails(
+                          "selectCity",
+                          newValue
+                        )
+                      }
+                      list={interestedCities?.map((rs) => {
+                        return {
+                          label: rs.city_name,
+                          value: rs.city_name,
+                        };
+                      })}
                     />
-                    <NewAutoCompleteInputStructure
+                    {/* <NewAutoCompleteInputStructure
                       label="Select Area"
                       isEdit={isEdit}
-                    />
+                    /> */}
+                      <NewInputFieldStructure
+                  label="Area"
+                  variant="outlined"
+                  // isEdit={isEdit}
+                  handleChange={(e)=>handleChangeInteresetCitiesDetails(
+                    "selectArea",
+                    e.target.value
+                  )}
+                  name={"selectArea"}
+                />
                   </>
                 ) : (
                   ""
