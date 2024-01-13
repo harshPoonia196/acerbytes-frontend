@@ -28,21 +28,21 @@ const scopes = {
 };
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
-    // console.log(isLogged, url, role)
-    // if (!isLogged && !publicRoutes.includes(url)) {
-    //     redirectUser("/login")
-    // }
-    // if (isLogged) {
-    //     if (url.includes("admin") && role !== "admin") {
-    //         redirectUser("/")
-    //     }
-    //     else if (url.includes("user") && role !== "user") {
-    //         redirectUser("/")
-    //     }
-    //     else if (url.includes("consultant") && role !== "broker") {
-    //         redirectUser("/")
-    //     }
-    // }
+    console.log(isLogged, url, role)
+    if (!isLogged && !publicRoutes.includes(url)) {
+        redirectUser("/login")
+    }
+    if (isLogged) {
+        if (url.includes("admin") && role !== "admin") {
+            redirectUser("/")
+        }
+        else if (url.includes("user") && role !== "user") {
+            redirectUser("/")
+        }
+        else if (url.includes("consultant") && role !== "broker") {
+            redirectUser("/")
+        }
+    }
 }
 
 export const matchUserRole = (actualRole, matchingRole) => {
