@@ -2,6 +2,7 @@
 
 import {
     Box,
+    Button,
     Container,
     Grid,
 } from "@mui/material";
@@ -167,6 +168,9 @@ function AddProperty() {
             <Container>
                 <div className="container">
                     <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+                        <Grid item xs={12} sx={{ textAlign: 'end' }}>
+                            <Button variant='contained'>Save</Button>
+                        </Grid>
                         <ProjectCard isEdit={isEdit} />
                         <RegulatoryCard isEdit={isEdit} />
                         <LandscapeCard isEdit={isEdit} />

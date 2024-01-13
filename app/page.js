@@ -30,39 +30,42 @@ export default function Home() {
         >
           <Typography
             variant="h1"
-            sx={{ color: "#000", fontWeight: 300, fontSize: '3em !important' }}
+            sx={{ color: "#000", fontWeight: 300, fontSize: { sm: '2em !important', md: '3em !important' } }}
           >
             for better reach and data base decision in real estate
           </Typography>
-          <Box>
-            <Box sx={{
-              display: 'flex', mt: 2, width: '100%', width: 'fit-content',
-              marginLeft: 'auto',
-              marginRight: 'auto'
-            }}>
-              <Typography
-                variant="h3"
-                sx={{
-                  color: colors.DISABLED,
-                }}
-              >
-                Research
-              </Typography>
-              <ArrowRightAltIcon fontSize="small" sx={{ alignSelf: 'center', color: colors.DISABLED, mx: 0.5 }} />
-              <Typography variant="h3"
-                sx={{
-                  color: colors.DISABLED,
-                }}>
-                Consult
-              </Typography>
-              <ArrowRightAltIcon fontSize="small" sx={{ alignSelf: 'center', color: colors.DISABLED, mx: 0.5 }} />
-              <Typography variant="h3"
-                sx={{
-                  color: colors.DISABLED,
-                }}>
-                Decide
-              </Typography>
-            </Box>
+
+          <Box sx={{
+            display: 'flex', mt: 2, width: '100%', width: 'fit-content',
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          }}>
+            <Typography
+              variant="h3"
+              sx={{
+                color: colors.DISABLED,
+              }}
+            >
+              Research
+            </Typography>
+            <ArrowRightAltIcon fontSize="small" sx={{ alignSelf: 'center', color: colors.DISABLED, mx: 0.5 }} />
+            <Typography variant="h3"
+              sx={{
+                color: colors.DISABLED,
+              }}>
+              Consult
+            </Typography>
+            <ArrowRightAltIcon fontSize="small" sx={{ alignSelf: 'center', color: colors.DISABLED, mx: 0.5 }} />
+            <Typography variant="h3"
+              sx={{
+                color: colors.DISABLED,
+              }}>
+              Decide
+            </Typography>
+          </Box>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h5">data research only for selective properties in</Typography>
           </Box>
         </Box>
         <Box>

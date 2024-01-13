@@ -125,7 +125,7 @@ function ConsultantProfile() {
 
   const [isEdit, setIsEdit] = useState(true);
 
-  const [activeState, setActiveState] = React.useState(null);
+  const [activeState, setActiveState] = React.useState('userDetails');
 
   let itemsServer = listOfConsultantProfileTab.map((tab) => {
     const hash = tab.value;
@@ -223,6 +223,9 @@ function ConsultantProfile() {
       <Container maxWidth="lg">
 
         <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ textAlign: 'end' }}>
+            <Button variant='contained'>Save</Button>
+          </Grid>
           <Grid item xs={12} id="userDetails" >
             <Card sx={{ p: 2 }}>
               <Box sx={{ display: "flex" }}>
@@ -452,70 +455,6 @@ function ConsultantProfile() {
               </Grid>
             </Card>
           </Grid>
-
-          <Grid item xs={12} id="currentAddress" >
-            <Card>
-              <Box sx={{ display: "flex", p: 2, py: 1 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-                >
-                  Current address
-                </Typography>
-                <Box>
-                  <IconButton>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </Box>
-              <Divider />
-              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <NewToggleButtonStructure
-                  isEdit={isEdit}
-                  label="Address type"
-                  value={propertyTypeToggleAlignment}
-                  handleChange={handleChangePropertyTypeToggle}
-                >
-                  <ToggleButton fullWidth size="small" value="owned">
-                    Owned
-                  </ToggleButton>
-                  <ToggleButton fullWidth size="small" value="rented">
-                    Rented
-                  </ToggleButton>
-                </NewToggleButtonStructure>
-                <NewInputFieldStructure
-                  label="Address line 1"
-                  variant="outlined"
-                  isEdit={isEdit}
-                />
-                <NewInputFieldStructure
-                  label="Address line 2"
-                  variant="outlined"
-                  isEdit={isEdit}
-                />
-                <NewInputFieldStructure
-                  label="City"
-                  variant="outlined"
-                  isEdit={isEdit}
-                />
-                <NewInputFieldStructure
-                  label="State"
-                  variant="outlined"
-                  isEdit={isEdit}
-                />
-                <NewInputFieldStructure
-                  label="Country"
-                  variant="outlined"
-                  isEdit={isEdit}
-                />
-                <NewInputFieldStructure
-                  label="Pincode"
-                  variant="outlined"
-                  isEdit={isEdit}
-                />
-              </Grid>
-            </Card>
-          </Grid>
           <Grid item xs={12} id="setting" >
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -576,7 +515,6 @@ function ConsultantProfile() {
             </Card>
           </Grid>
         </Grid>
-
       </Container>
     </>
   );

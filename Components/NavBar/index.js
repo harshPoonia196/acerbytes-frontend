@@ -301,6 +301,7 @@ export default function ClippedDrawer({ children }) {
         anchor={"left"}
         open={isDrawerOpen}
         onClose={handleDrawerClose}
+        BackdropProps={{ invisible: true }}
         sx={{
           width: drawerWidth,
           flexShrink: 0,

@@ -45,7 +45,7 @@ const listOfProfileTab = [
     { label: 'Interested cities', value: 'interestedCities' },
     { label: 'Budget', value: 'budget' },
     // { label: 'Enquiries', value: 'enquiries' },
-    { label: 'Property Consultants', value: 'propertyConsultants' },
+    // { label: 'Property Consultants', value: 'propertyConsultants' },
     { label: 'Current address', value: 'currentAddress' },
     { label: 'Setting', value: 'setting' },
 ]
@@ -57,7 +57,7 @@ const listOfConsultantProfileTab = [
     { label: 'Budget', value: 'budget' },
     // { label: 'Enquiries', value: 'enquiries' },
     // { label: 'Property Consultants', value: 'propertyConsultants' },
-    { label: 'Current address', value: 'currentAddress' },
+    // { label: 'Current address', value: 'currentAddress' },
     { label: 'Setting', value: 'setting' },
 ]
 
@@ -130,4 +130,4 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-export { listOfTabsInAddProperty,listOfConsultantProfileTab, listOfProfileTab, disablePersonalizeAdsOption, listOfPropertyDetailsTab, descendingComparator, getComparator, stableSort }
+export { listOfTabsInAddProperty, listOfConsultantProfileTab, listOfProfileTab, disablePersonalizeAdsOption, listOfPropertyDetailsTab, descendingComparator, getComparator, stableSort }

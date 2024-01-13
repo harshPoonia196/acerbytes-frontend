@@ -220,6 +220,9 @@ function Profile() {
       <Container maxWidth="lg">
 
         <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ textAlign: 'end' }}>
+            <Button variant='contained'>Save</Button>
+          </Grid>
           <Grid item xs={12} id="userDetails" >
             <Card sx={{ p: 2 }}>
               <Box sx={{ display: "flex" }}>
