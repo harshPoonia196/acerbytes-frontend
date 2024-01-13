@@ -36,7 +36,8 @@ function NewPhoneInputFieldStructure({
   handleSelect,
   label,
   type,
-  value,
+  value1,
+  value2,
   sx,
   isEdit,
   variant,
@@ -61,6 +62,7 @@ function NewPhoneInputFieldStructure({
       {isEdit ? (
         <TextField
           name={name2}
+          value={value2}
           type="number"
           onChange={handleChange}
           variant={variant ? variant : "standard"}
@@ -72,6 +74,7 @@ function NewPhoneInputFieldStructure({
                 <TextField
                   select
                   name={name1}
+                  value={value1}
                   onChange={handleSelect}
                   defaultValue="+91"
                   variant="standard"

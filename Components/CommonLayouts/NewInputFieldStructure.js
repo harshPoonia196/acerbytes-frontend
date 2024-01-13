@@ -30,6 +30,7 @@ const NewInputFieldStructure = ({
         onChange={handleChange}
         variant={variant ? variant : "standard"}
         fullWidth
+        value={value}
         size="small"
         defaultValue={defaultValue}
         sx={sx}
@@ -41,6 +42,7 @@ const NewInputFieldStructure = ({
           onChange={handleChange}
           variant={variant ? variant : "standard"}
           fullWidth
+          value={value}
           size="small"
           defaultValue={defaultValue}
           sx={sx}

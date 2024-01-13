@@ -11,28 +11,25 @@ import {
   Chip,
   Button,
   Divider,
-  IconButton,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import CallIcon from "@mui/icons-material/Call";
-import PropertyTable from "Components/ProfilePage/PropertyTable";
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import { useState } from "react";
-import colors from "styles/theme/colors";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import NewCurrencyInputField from "Components/CommonLayouts/NewCurrencyInputField";
 import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
-import { makeStyles, withStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import { listOfProfileTab } from "Components/CommonLayouts/CommonUtils";
 import throttle from "lodash/throttle";
 import {
   FAMILY,
   SERVICE_TYPE,
+  ToasterMessages,
   addressType,
   demographic,
   exploringAs,
@@ -40,7 +37,19 @@ import {
   purchase,
   purpose,
 } from "Components/Constants";
-import UserProfileModuleApi from "api/UserProfile.api";
+import {
+  getUserProfileByGoogleId,
+  updateUserProfile,
+} from "api/UserProfile.api";
+import { useAuth } from "utills/AuthContext";
+import {
+  getAccessToken,
+  getAllCitiesList,
+  getAllCountriesList,
+  getAllStateList,
+} from "api/Util.api";
+import { useSnackbar } from "utills/SnackbarContext";
+import { LoadingButton } from "@mui/lab";
 
 const tabHeight = 116;
 
@@ -79,9 +88,16 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 function Profile() {
-  const router = useRouter();
-  const [interestedStates, setInterestedStates] = useState([]);
-  const [interestedCities, setInterestedCities] = useState([]);
+  const { userDetails, isLogged } = useAuth();
+  const [isLoading, setLoading] = useState(false);
+  const [countryList, setCountryList] = useState([]);
+  const [allStateList, setAllStatesList] = useState([]);
+  const [interestedStatesList, setInterestedStatesList] = useState([]);
+  const [interestedCitiesList, setInterestedCitiesList] = useState([]);
+  const [selectInterestedState, setInterestedState] = useState("");
+  const [selectInterestedCity, setInterestedCity] = useState("");
+  const [selectInterestedArea, setInterestedArea] = useState("");
+
   const [profileInfo, setProfileInfo] = useState({
     name: {
       firstName: "",
@@ -93,11 +109,7 @@ function Profile() {
     },
     email: "",
     alternateEmail: "",
-    interestedCities: {
-      selectState: "",
-      selectCity: "",
-      selectArea: "",
-    },
+    interestedCities: [],
     serviceDetails: {
       serviceType: "",
       company: "",
@@ -132,54 +144,6 @@ function Profile() {
       pinCode: "",
     },
   });
-
-  const [exploringAsToggle, setExploringAsToggle] = useState("");
-
-  const handleChangeExploringAsToggle = (event, newAlignment) => {
-    if (newAlignment != null) setExploringAsToggle(newAlignment);
-  };
-
-  const [purposeToggle, setPurposeToggle] = useState("");
-
-  const handleChangePurposeToggle = (event, newAlignment) => {
-    if (newAlignment != null) setPurposeToggle(newAlignment);
-  };
-
-  const [purchaseToggle, setPurchaseToggle] = useState("");
-
-  const handleChangePurchaseToggle = (event, newAlignment) => {
-    if (newAlignment != null) setPurchaseToggle(newAlignment);
-  };
-
-  const [demographicToggle, setDemographicToggle] = useState("");
-
-  const handleChangeDemographicToggle = (event, newAlignment) => {
-    if (newAlignment != null) setDemographicToggle(newAlignment);
-  };
-
-  const [interestedForLoanToggle, setInterestedForLoanToggle] = useState("");
-
-  const handleChangeInterestedForLoanToggle = (event, newAlignment) => {
-    if (newAlignment != null) setInterestedForLoanToggle(newAlignment);
-  };
-
-  const [propertyTypeToggleAlignment, setPropertyTypeToggleAlignment] =
-    React.useState("");
-
-  const handleChangePropertyTypeToggle = (event, newAlignment) => {
-    setPropertyTypeToggleAlignment(newAlignment);
-  };
-
-  const [isDndEnabled, setIsDndEnabled] = useState(false);
-  const [isPromotionEnabled, setIsPromotionEnabled] = useState(true);
-
-  const handleDndToggle = () => {
-    setIsDndEnabled((prev) => !prev);
-  };
-
-  const handlePromotionToggle = () => {
-    setIsPromotionEnabled((prev) => !prev);
-  };
 
   const [isEdit, setIsEdit] = useState(true);
 
@@ -260,6 +224,12 @@ function Profile() {
     }
   };
 
+  const { openSnackbar } = useSnackbar();
+
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
   React.useEffect(
     () => () => {
       clearTimeout(unsetClickedRef.current);
@@ -269,43 +239,125 @@ function Profile() {
 
   React.useEffect(() => {
     getAllStateOfIndia();
+    getAllCountryList();
   }, []);
 
-  const getAllStateOfIndia = () => {
-    new UserProfileModuleApi()
-      .getAccessToken()
-      .then((res) => {
-        return res.auth_token;
-      })
-      .then((access_token) => {
-        return new UserProfileModuleApi().getAllStateList(access_token);
-      })
-      .then((res) => {
-        setInterestedStates(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  React.useEffect(() => {
+    if (isLogged) {
+      getUserProfile();
+    }
+  }, [isLogged]);
+
+  const getUserProfile = async () => {
+    if (isLogged && userDetails?._id) {
+      try {
+        const res = await getUserProfileByGoogleId(userDetails?.googleID);
+        if (res.status === 200) {
+          const dataPlayload = res?.data?.data;
+          setProfileInfo({
+            ...profileInfo,
+            budget: dataPlayload?.budget,
+            currentAddress: dataPlayload?.currentAddress,
+            interestedCities: dataPlayload?.interestedCities || [],
+            name: dataPlayload?.name,
+            phone: dataPlayload?.phone,
+            serviceDetails: dataPlayload?.serviceDetails,
+            settings: dataPlayload?.settings,
+            alternateEmail: dataPlayload?.alternateEmail,
+
+            // extra info
+            role: dataPlayload?.role,
+            _id: dataPlayload?._id,
+            googleID: dataPlayload?.googleID,
+            email: dataPlayload?.email,
+          });
+        }
+      } catch (error) {
+        showToaterMessages(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Error fetching user profile",
+          "error"
+        );
+      }
+    }
   };
 
-  const getInterestedCities = (stateName) => {
-    new UserProfileModuleApi()
-      .getAccessToken()
-      .then((res) => {
-        return res.auth_token;
-      })
-      .then((access_token) => {
-        return new UserProfileModuleApi().getAllCitiesList(
-          access_token,
-          stateName
-        );
-      })
-      .then((res) => {
-        setInterestedCities(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const getAllCountryList = async () => {
+    try {
+      const res = await getAccessToken();
+      if (res.auth_token) {
+        const response = await getAllCountriesList(res.auth_token);
+        if (response) {
+          setCountryList(response);
+        }
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching country list",
+        "error"
+      );
+    }
+  };
+
+  const getStatListByName = async (stateName) => {
+    try {
+      const res = await getAccessToken();
+      if (res.auth_token) {
+        const response = await getAllStateList(res.auth_token, stateName);
+        if (response) {
+          setAllStatesList(response);
+        }
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list",
+        "error"
+      );
+    }
+  };
+
+  const getAllStateOfIndia = async () => {
+    try {
+      console.log("getAllStateOfIndia:");
+      const res = await getAccessToken();
+      if (res.auth_token) {
+        const response = await getAllStateList(res.auth_token, "India");
+        if (response) {
+          setInterestedStatesList(response);
+        }
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state of india list",
+        "error"
+      );
+    }
+  };
+
+  const getInterestedCities = async (stateName) => {
+    try {
+      const res = await getAccessToken();
+      if (res.auth_token) {
+        const response = await getAllCitiesList(res.auth_token, stateName);
+        if (response) {
+          setInterestedCitiesList(response);
+        }
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state of india list",
+        "error"
+      );
+    }
   };
 
   const classes = useStyles();
@@ -385,31 +437,109 @@ function Profile() {
     if (event.target.name == "addressType") {
       value = newAlignment;
     }
+
     setProfileInfo({
       ...profileInfo,
       currentAddress: {
         ...profileInfo.currentAddress,
+        state:
+          event.target.name === "country"
+            ? ""
+            : profileInfo.currentAddress.state,
         [event.target.name]: value || event.target.value,
       },
     });
-  };
 
-  const handleChangeInteresetCitiesDetails = (key, newValue) => {
-    setProfileInfo({
-      ...profileInfo,
-      interestedCities: {
-        ...profileInfo.interestedCities,
-        selectCity: key === "selectState" ? "" : profileInfo.interestedCities.selectCity, 
-        [key]: newValue.value,
-      },
-    });
-
-    if (key == "selectState") {
-      getInterestedCities(newValue.value);
+    if (event.target.name == "country") {
+      getStatListByName(event.target.value);
     }
   };
 
-  console.log("user profile: ", profileInfo);
+  const handleChangeInteresetCitiesDetails = (key, value) => {
+    if (key == "selectState") {
+      setInterestedState(value);
+      setInterestedCity("");
+    } else if (key == "selectCity") {
+      setInterestedCity(value);
+    } else if (key == "selectArea") {
+      setInterestedArea(value);
+    }
+
+    if (key == "selectState") {
+      getInterestedCities(value);
+    }
+  };
+
+  const handleAddInterestedCities = () => {
+    if (selectInterestedArea && selectInterestedCity && selectInterestedState) {
+      setProfileInfo({
+        ...profileInfo,
+        interestedCities: [
+          ...profileInfo.interestedCities,
+          {
+            selectState: selectInterestedState,
+            selectCity: selectInterestedCity,
+            selectArea: selectInterestedArea,
+          },
+        ],
+      });
+      setInterestedState("");
+      setInterestedCity("");
+      setInterestedArea("");
+    }
+  };
+
+  const removeInterestedCity = (cityIndex) => {
+    setProfileInfo({
+      ...profileInfo,
+      interestedCities: profileInfo.interestedCities.filter(
+        (city, index) => index !== cityIndex
+      ),
+    });
+  };
+
+  const checkMandatoryFields = () => {
+    // Validate name
+    if (!profileInfo?.name?.firstName || !profileInfo?.name?.lastName) {
+      return false;
+    }
+
+    // Validate phone
+    if (!profileInfo?.phone?.countryCode || !profileInfo?.phone?.number) {
+      return false;
+    }
+
+    // Validate email
+    if (!profileInfo?.email) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      if (profileInfo?.googleID) {
+        const resposen = await updateUserProfile(
+          profileInfo.googleID,
+          profileInfo
+        );
+        if (resposen.status == 200) {
+          showToaterMessages(ToasterMessages.PROFILE_UPDATE_SUCCESS, "success");
+        }
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error user profile updating",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -471,6 +601,7 @@ function Profile() {
                   isEdit={isEdit}
                   handleChange={handleChangeName}
                   name={"firstName"}
+                  value={profileInfo?.name?.firstName}
                 />
                 <NewInputFieldStructure
                   label="Last name"
@@ -478,6 +609,7 @@ function Profile() {
                   isEdit={isEdit}
                   handleChange={handleChangeName}
                   name={"lastName"}
+                  value={profileInfo?.name?.lastName}
                 />
                 <NewPhoneInputFieldStructure
                   variant="outlined"
@@ -487,6 +619,8 @@ function Profile() {
                   handleSelect={handleChangePhone}
                   name1={"countryCode"}
                   name2={"number"}
+                  value1={profileInfo?.phone?.countryCode}
+                  value2={profileInfo?.phone?.number}
                 />
                 <NewInputFieldStructure
                   label="Alternate Email"
@@ -494,6 +628,7 @@ function Profile() {
                   isEdit={isEdit}
                   handleChange={handleChange}
                   name={"alternateEmail"}
+                  value={profileInfo?.alternateEmail}
                 />
               </Grid>
             </Card>
@@ -516,6 +651,7 @@ function Profile() {
                   handleChange={handleChangeServiceDetails}
                   name={"serviceType"}
                   list={SERVICE_TYPE}
+                  value={profileInfo?.serviceDetails?.serviceType}
                 />
                 <NewInputFieldStructure
                   label="Company"
@@ -523,12 +659,14 @@ function Profile() {
                   isEdit={isEdit}
                   handleChange={handleChangeServiceDetails}
                   name={"company"}
+                  value={profileInfo?.serviceDetails?.company}
                 />
                 <NewSelectTextFieldStructure
                   label="Family"
                   isEdit={isEdit}
                   handleChange={handleChangeServiceDetails}
                   name={"family"}
+                  value={profileInfo?.serviceDetails?.family}
                   list={FAMILY}
                 />
               </Grid>
@@ -548,11 +686,14 @@ function Profile() {
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewAutoCompleteInputStructure
                   label="Select State"
-                  // isEdit={isEdit}
                   handleChange={(e, newValue) =>
-                    handleChangeInteresetCitiesDetails("selectState", newValue)
+                    handleChangeInteresetCitiesDetails(
+                      "selectState",
+                      newValue.value
+                    )
                   }
-                  list={interestedStates?.map((rs) => {
+                  value={selectInterestedState}
+                  list={interestedStatesList?.map((rs) => {
                     return {
                       label: rs.state_name,
                       value: rs.state_name,
@@ -567,63 +708,61 @@ function Profile() {
                       handleChange={(e, newValue) =>
                         handleChangeInteresetCitiesDetails(
                           "selectCity",
-                          newValue
+                          newValue.value
                         )
                       }
-                      list={interestedCities?.map((rs) => {
+                      value={selectInterestedCity}
+                      list={interestedCitiesList?.map((rs) => {
                         return {
                           label: rs.city_name,
                           value: rs.city_name,
                         };
                       })}
                     />
-                    {/* <NewAutoCompleteInputStructure
-                      label="Select Area"
-                      isEdit={isEdit}
-                    /> */}
-                      <NewInputFieldStructure
-                  label="Area"
-                  variant="outlined"
-                  // isEdit={isEdit}
-                  handleChange={(e)=>handleChangeInteresetCitiesDetails(
-                    "selectArea",
-                    e.target.value
-                  )}
-                  name={"selectArea"}
-                />
+                    <NewInputFieldStructure
+                      label="Area"
+                      variant="outlined"
+                      value={selectInterestedArea}
+                      handleChange={(e) =>
+                        handleChangeInteresetCitiesDetails(
+                          "selectArea",
+                          e.target.value
+                        )
+                      }
+                      name={"selectArea"}
+                    />
                   </>
                 ) : (
                   ""
                 )}
                 <Grid item xs={12} sx={{ mt: 1, display: "flex" }}>
                   <Box sx={{ flex: 1, alignSelf: "center", ml: -1, mt: -1 }}>
-                    <Chip
-                      label="Mumbai"
-                      size="small"
-                      sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => {}}
-                    />
-                    <Chip
-                      label="Mumbai"
-                      size="small"
-                      sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => {}}
-                    />
-                    <Chip
-                      label="Mumbai"
-                      size="small"
-                      sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => {}}
-                    />
-                    <Chip
-                      label="Mumbai"
-                      size="small"
-                      sx={{ ml: 1, mt: 1 }}
-                      onDelete={() => {}}
-                    />
+                    {profileInfo?.interestedCities?.map((cityInfo, index) => {
+                      return (
+                        <Chip
+                          key={index}
+                          label={`${cityInfo?.selectArea}, ${cityInfo?.selectCity}`}
+                          size="small"
+                          sx={{ ml: 1, mt: 1 }}
+                          onDelete={() => removeInterestedCity(index)}
+                        />
+                      );
+                    })}
                   </Box>
                   <Box>
-                    <Button variant="contained">Add</Button>
+                    <Button
+                      disabled={
+                        !(
+                          selectInterestedArea &&
+                          selectInterestedCity &&
+                          selectInterestedState
+                        )
+                      }
+                      variant="contained"
+                      onClick={handleAddInterestedCities}
+                    >
+                      Add
+                    </Button>
                   </Box>
                 </Grid>
               </Grid>
@@ -647,6 +786,8 @@ function Profile() {
                   isEdit={isEdit}
                   name1={"unit"}
                   name2={"value"}
+                  value1={profileInfo?.budget?.minimumBudget?.unit}
+                  value2={profileInfo?.budget?.minimumBudget?.value}
                   handleChange={(e) =>
                     handleChangeBudgetPricing(e, "minimumBudget")
                   }
@@ -658,6 +799,8 @@ function Profile() {
                   label="Maximum"
                   variant="outlined"
                   isEdit={isEdit}
+                  value1={profileInfo?.budget?.maximumBudget?.unit}
+                  value2={profileInfo?.budget?.maximumBudget?.value}
                   handleChange={(e) =>
                     handleChangeBudgetPricing(e, "maximumBudget")
                   }
@@ -670,9 +813,9 @@ function Profile() {
                 <NewToggleButtonStructure
                   label="Exploring as"
                   isEdit={isEdit}
-                  value={exploringAsToggle}
                   handleChange={handleChangeBudgetToggles}
                   name={"exploringAs"}
+                  value={profileInfo?.budget?.exploringAs}
                 >
                   {exploringAs?.map((rs, i) => {
                     return (
@@ -691,7 +834,7 @@ function Profile() {
                 <NewToggleButtonStructure
                   label="Purpose"
                   isEdit={isEdit}
-                  value={purposeToggle}
+                  value={profileInfo?.budget?.purpose}
                   handleChange={handleChangeBudgetToggles}
                   name={"purpose"}
                 >
@@ -712,7 +855,7 @@ function Profile() {
                 <NewToggleButtonStructure
                   label="Purchase"
                   isEdit={isEdit}
-                  value={purchaseToggle}
+                  value={profileInfo?.budget?.purchase}
                   handleChange={handleChangeBudgetToggles}
                   name={"purchase"}
                 >
@@ -733,7 +876,7 @@ function Profile() {
                 <NewToggleButtonStructure
                   label="Demographic"
                   isEdit={isEdit}
-                  value={demographicToggle}
+                  value={profileInfo?.budget?.demographic}
                   handleChange={handleChangeBudgetToggles}
                   name={"demographic"}
                 >
@@ -754,7 +897,7 @@ function Profile() {
                 <NewToggleButtonStructure
                   label="Interested for loan"
                   isEdit={isEdit}
-                  value={interestedForLoanToggle}
+                  value={profileInfo?.budget?.interestedForLoan}
                   handleChange={handleChangeBudgetToggles}
                   name={"interestedForLoan"}
                 >
@@ -775,29 +918,6 @@ function Profile() {
               </Grid>
             </Card>
           </Grid>
-          {/* <Grid item xs={12} id="enquiries" >
-          <Card>
-            <Box sx={{ display: "flex", p: 2, py: 1 }}>
-              <Typography
-                variant="subtitle1"
-                sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-              >
-                User action
-              </Typography>
-              <Box>
-                <IconButton>
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            </Box>
-            <Divider />
-            <Grid container spacing={2} sx={{ p: 2 }}>
-              <Grid item xs={12}>
-                <PropertyTable />
-              </Grid>
-            </Grid>
-          </Card>
-        </Grid> */}
           <Grid item xs={12} id="currentAddress">
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -813,7 +933,7 @@ function Profile() {
                 <NewToggleButtonStructure
                   isEdit={isEdit}
                   label="Address type"
-                  value={propertyTypeToggleAlignment}
+                  value={profileInfo?.currentAddress?.addressType}
                   handleChange={handleChangeCurrentAddress}
                   name="addressType"
                 >
@@ -835,6 +955,7 @@ function Profile() {
                   label="Address line 1"
                   variant="outlined"
                   isEdit={isEdit}
+                  value={profileInfo?.currentAddress?.addressLine1}
                   handleChange={handleChangeCurrentAddress}
                   name="addressLine1"
                 />
@@ -842,29 +963,60 @@ function Profile() {
                   label="Address line 2"
                   variant="outlined"
                   isEdit={isEdit}
+                  value={profileInfo?.currentAddress?.addressLine2}
                   handleChange={handleChangeCurrentAddress}
                   name="addressLine2"
                 />
-                <NewInputFieldStructure
+                <NewAutoCompleteInputStructure
                   label="Country"
-                  variant="outlined"
-                  isEdit={isEdit}
+                  value={profileInfo?.currentAddress?.country}
+                  handleChange={(e, newValue) =>
+                    handleChangeCurrentAddress({
+                      target: {
+                        name: "country",
+                        value: newValue.value,
+                      },
+                    })
+                  }
+                  list={countryList?.map((rs) => {
+                    return {
+                      label: rs.country_name,
+                      value: rs.country_name,
+                    };
+                  })}
                 />
-                <NewInputFieldStructure
+                <NewAutoCompleteInputStructure
                   label="State"
-                  variant="outlined"
-                  isEdit={isEdit}
+                  value={profileInfo?.currentAddress?.state}
+                  handleChange={(e, newValue) =>
+                    handleChangeCurrentAddress({
+                      target: {
+                        name: "state",
+                        value: newValue.value,
+                      },
+                    })
+                  }
+                  list={allStateList?.map((rs) => {
+                    return {
+                      label: rs.state_name,
+                      value: rs.state_name,
+                    };
+                  })}
                 />
 
                 <NewInputFieldStructure
                   label="City"
                   variant="outlined"
                   isEdit={isEdit}
+                  value={profileInfo?.currentAddress?.city}
+                  handleChange={handleChangeCurrentAddress}
+                  name="city"
                 />
 
                 <NewInputFieldStructure
                   label="Pincode"
                   variant="outlined"
+                  value={profileInfo?.currentAddress?.pinCode}
                   isEdit={isEdit}
                   handleChange={handleChangeCurrentAddress}
                   name="pinCode"
@@ -927,6 +1079,17 @@ function Profile() {
                 </Grid>
               </Grid>
             </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <LoadingButton
+              onClick={handleSave}
+              loading={isLoading}
+              disabled={!checkMandatoryFields()}
+              loadingPosition="start"
+              variant="contained"
+            >
+              Save
+            </LoadingButton>
           </Grid>
         </Grid>
       </Container>

@@ -27,7 +27,8 @@ const NewCurrencyInputField = ({
   handleSelect,
   label,
   type,
-  value,
+  value1,
+  value2,
   variant,
   isEdit,
   halfSm,
@@ -49,6 +50,7 @@ const NewCurrencyInputField = ({
           onChange={handleChange}
           variant={variant ? variant : "standard"}
           fullWidth
+          value={value2}
           type="number"
           size="small"
           InputProps={{
@@ -59,6 +61,7 @@ const NewCurrencyInputField = ({
                   name={name1}
                   defaultValue=""
                   variant="standard"
+                  value={value1}
                   onChange={handleSelect}
                   InputProps={{
                     disableUnderline: true,

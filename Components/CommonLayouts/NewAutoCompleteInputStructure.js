@@ -32,6 +32,7 @@ const NewAutoCompleteInputStructure = ({
         options={list || []}
         onChange={handleChange}
         fullWidth
+        value={value}
         renderInput={(params) => (
           <TextField {...params} size="small" fullWidth />
         )}

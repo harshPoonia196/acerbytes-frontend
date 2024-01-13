@@ -105,3 +105,7 @@ export const addressType = [
     value: "RENTED",
   },
 ];
+
+export const ToasterMessages= {
+  PROFILE_UPDATE_SUCCESS: "Profile updated succesfully!"
+}
