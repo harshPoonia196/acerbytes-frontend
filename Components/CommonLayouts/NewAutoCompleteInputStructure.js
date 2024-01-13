@@ -6,6 +6,7 @@ const top100Films = [{ label: "Mumbai" }];
 
 const NewAutoCompleteInputStructure = ({
   name,
+  list,
   handleChange,
   label,
   type,
@@ -28,8 +29,10 @@ const NewAutoCompleteInputStructure = ({
       <Autocomplete
         disablePortal
         id="combo-box-demo"
-        options={top100Films}
+        options={list || []}
+        onChange={handleChange}
         fullWidth
+        value={value}
         renderInput={(params) => (
           <TextField {...params} size="small" fullWidth />
         )}

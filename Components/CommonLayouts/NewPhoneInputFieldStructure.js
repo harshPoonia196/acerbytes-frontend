@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Typography,
   TextField,
@@ -30,16 +30,25 @@ const countries = [
 ];
 
 function NewPhoneInputFieldStructure({
-  name,
+  name1,
+  name2,
   handleChange,
+  handleSelect,
   label,
   type,
-  value,
+  value1,
+  value2,
   sx,
   isEdit,
   variant,
   ...props
 }) {
+
+  const [countryCode, setCountryCode] = useState([])
+  useLayoutEffect(() => {
+    setCountryCode(countries);
+  }, [])
+
   return (
     <Grid item xs={12} sm={6}>
       <Box>
@@ -52,7 +61,9 @@ function NewPhoneInputFieldStructure({
       </Box>
       {isEdit ? (
         <TextField
-          name={name}
+          name={name2}
+          value={value2}
+          type="number"
           onChange={handleChange}
           variant={variant ? variant : "standard"}
           fullWidth
@@ -62,6 +73,9 @@ function NewPhoneInputFieldStructure({
               <InputAdornment position="start">
                 <TextField
                   select
+                  name={name1}
+                  value={value1}
+                  onChange={handleSelect}
                   defaultValue="+91"
                   variant="standard"
                   size="small"
@@ -69,7 +83,7 @@ function NewPhoneInputFieldStructure({
                     disableUnderline: true,
                   }}
                 >
-                  {countries.map((option) => (
+                  {countryCode.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
