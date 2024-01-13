@@ -67,7 +67,7 @@ function useThrottledOnScroll(callback, delay) {
   }, [throttledCallback]);
 }
 
-function Profile() {
+function ConsultantProfile() {
   const router = useRouter();
 
   const [exploringAsToggle, setExploringAsToggle] = useState("");
@@ -582,4 +582,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default ConsultantProfile;
