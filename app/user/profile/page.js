@@ -50,8 +50,13 @@ import {
 } from "api/Util.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
+import Loading from "Components/Loading";
 
 const tabHeight = 116;
+
+const SELECT_STATE = "selectState";
+const SELECT_CITY = "selectCity";
+const SELECT_AREA = "selectArea";
 
 const useStyles = makeStyles((theme) => ({
   demo2: {
@@ -251,6 +256,7 @@ function Profile() {
   const getUserProfile = async () => {
     if (isLogged && userDetails?._id) {
       try {
+        setLoading(true);
         const res = await getUserProfileByGoogleId(userDetails?.googleID);
         if (res.status === 200) {
           const dataPlayload = res?.data?.data;
@@ -279,6 +285,9 @@ function Profile() {
             "Error fetching user profile",
           "error"
         );
+        setLoading(false);
+      }finally{
+        setLoading(false);
       }
     }
   };
@@ -362,41 +371,22 @@ function Profile() {
 
   const classes = useStyles();
 
-  const handleChangeName = (event) => {
-    setProfileInfo({
-      ...profileInfo,
-      name: {
-        ...profileInfo.name,
-        [event.target.name]: event.target.value,
-      },
-    });
-  };
-
-  const handleChange = (event) => {
-    setProfileInfo({
-      ...profileInfo,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const handleChangePhone = (event) => {
-    setProfileInfo({
-      ...profileInfo,
-      phone: {
-        ...profileInfo.phone,
-        [event.target.name]: event.target.value,
-      },
-    });
-  };
-
-  const handleChangeServiceDetails = (event) => {
-    setProfileInfo({
-      ...profileInfo,
-      serviceDetails: {
-        ...profileInfo.serviceDetails,
-        [event.target.name]: event.target.value,
-      },
-    });
+  const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
+    let value = thirdKeyName === "checked" ? e.target.checked : e.target.value;
+    await setProfileInfo((prev) => ({
+      ...prev,
+      [firstKeyName]: !secondKeyName
+        ? value
+        : {
+            ...prev?.[firstKeyName],
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+          },
+    }));
   };
 
   const handleChangeBudgetToggles = (event, newAlignment) => {
@@ -405,19 +395,6 @@ function Profile() {
       budget: {
         ...profileInfo.budget,
         [event.target.name]: newAlignment,
-      },
-    });
-  };
-
-  const handleChangeBudgetPricing = (event, budgetType) => {
-    setProfileInfo({
-      ...profileInfo,
-      budget: {
-        ...profileInfo.budget,
-        [budgetType]: {
-          ...profileInfo.budget[budgetType],
-          [event.target.name]: event.target.value,
-        },
       },
     });
   };
@@ -456,16 +433,16 @@ function Profile() {
   };
 
   const handleChangeInteresetCitiesDetails = (key, value) => {
-    if (key == "selectState") {
+    if (key == SELECT_STATE) {
       setInterestedState(value);
       setInterestedCity("");
-    } else if (key == "selectCity") {
+    } else if (key == SELECT_CITY) {
       setInterestedCity(value);
-    } else if (key == "selectArea") {
+    } else if (key == SELECT_AREA) {
       setInterestedArea(value);
     }
 
-    if (key == "selectState") {
+    if (key == SELECT_STATE) {
       getInterestedCities(value);
     }
   };
@@ -521,11 +498,11 @@ function Profile() {
     try {
       setLoading(true);
       if (profileInfo?.googleID) {
-        const resposen = await updateUserProfile(
+        const response = await updateUserProfile(
           profileInfo.googleID,
           profileInfo
         );
-        if (resposen.status == 200) {
+        if (response.status == 200) {
           showToaterMessages(ToasterMessages.PROFILE_UPDATE_SUCCESS, "success");
         }
       }
@@ -541,6 +518,8 @@ function Profile() {
     }
   };
 
+  console.log("profle data: ", profileInfo)
+
   return (
     <>
       <nav className={classes.demo2}>
@@ -552,6 +531,8 @@ function Profile() {
       </nav>
 
       <Container maxWidth="lg">
+
+        {isLoading && <Loading />}
         <Grid container spacing={2}>
           <Grid item xs={12} id="userDetails">
             <Card sx={{ p: 2 }}>
@@ -599,7 +580,8 @@ function Profile() {
                   label="First name"
                   variant="outlined"
                   isEdit={isEdit}
-                  handleChange={handleChangeName}
+                  // handleChange={handleChangeName}
+                  handleChange={(e)=>handleChange(e,"name", "firstName")}
                   name={"firstName"}
                   value={profileInfo?.name?.firstName}
                 />
@@ -607,7 +589,7 @@ function Profile() {
                   label="Last name"
                   variant="outlined"
                   isEdit={isEdit}
-                  handleChange={handleChangeName}
+                  handleChange={(e)=>handleChange(e,"name", "lastName")}
                   name={"lastName"}
                   value={profileInfo?.name?.lastName}
                 />
@@ -615,8 +597,8 @@ function Profile() {
                   variant="outlined"
                   label="Phone"
                   isEdit={isEdit}
-                  handleChange={handleChangePhone}
-                  handleSelect={handleChangePhone}
+                  handleChange={(e)=>handleChange(e,"phone", "number")}
+                  handleSelect={(e)=>handleChange(e,"phone", "countryCode")}
                   name1={"countryCode"}
                   name2={"number"}
                   value1={profileInfo?.phone?.countryCode}
@@ -626,7 +608,7 @@ function Profile() {
                   label="Alternate Email"
                   variant="outlined"
                   isEdit={isEdit}
-                  handleChange={handleChange}
+                  handleChange={(e)=>handleChange(e,"alternateEmail")}
                   name={"alternateEmail"}
                   value={profileInfo?.alternateEmail}
                 />
@@ -648,7 +630,7 @@ function Profile() {
                 <NewSelectTextFieldStructure
                   label="Service type"
                   isEdit={isEdit}
-                  handleChange={handleChangeServiceDetails}
+                  handleChange={(e)=>handleChange(e,"serviceDetails", "serviceType")}
                   name={"serviceType"}
                   list={SERVICE_TYPE}
                   value={profileInfo?.serviceDetails?.serviceType}
@@ -657,14 +639,14 @@ function Profile() {
                   label="Company"
                   variant="outlined"
                   isEdit={isEdit}
-                  handleChange={handleChangeServiceDetails}
+                  handleChange={(e)=>handleChange(e,"serviceDetails", "company")}
                   name={"company"}
                   value={profileInfo?.serviceDetails?.company}
                 />
                 <NewSelectTextFieldStructure
                   label="Family"
                   isEdit={isEdit}
-                  handleChange={handleChangeServiceDetails}
+                  handleChange={(e)=>handleChange(e,"serviceDetails", "family")}
                   name={"family"}
                   value={profileInfo?.serviceDetails?.family}
                   list={FAMILY}
@@ -688,7 +670,7 @@ function Profile() {
                   label="Select State"
                   handleChange={(e, newValue) =>
                     handleChangeInteresetCitiesDetails(
-                      "selectState",
+                      SELECT_STATE,
                       newValue.value
                     )
                   }
@@ -707,7 +689,7 @@ function Profile() {
                       label="Select City"
                       handleChange={(e, newValue) =>
                         handleChangeInteresetCitiesDetails(
-                          "selectCity",
+                          SELECT_CITY,
                           newValue.value
                         )
                       }
@@ -725,11 +707,11 @@ function Profile() {
                       value={selectInterestedArea}
                       handleChange={(e) =>
                         handleChangeInteresetCitiesDetails(
-                          "selectArea",
+                          SELECT_AREA,
                           e.target.value
                         )
                       }
-                      name={"selectArea"}
+                      name={SELECT_AREA}
                     />
                   </>
                 ) : (
@@ -788,12 +770,8 @@ function Profile() {
                   name2={"value"}
                   value1={profileInfo?.budget?.minimumBudget?.unit}
                   value2={profileInfo?.budget?.minimumBudget?.value}
-                  handleChange={(e) =>
-                    handleChangeBudgetPricing(e, "minimumBudget")
-                  }
-                  handleSelect={(e) =>
-                    handleChangeBudgetPricing(e, "minimumBudget")
-                  }
+                  handleChange={(e)=>handleChange(e,"budget", "minimumBudget", "value")}
+                  handleSelect={(e)=>handleChange(e,"budget", "minimumBudget", "unit")}
                 />
                 <NewCurrencyInputField
                   label="Maximum"
@@ -801,12 +779,8 @@ function Profile() {
                   isEdit={isEdit}
                   value1={profileInfo?.budget?.maximumBudget?.unit}
                   value2={profileInfo?.budget?.maximumBudget?.value}
-                  handleChange={(e) =>
-                    handleChangeBudgetPricing(e, "maximumBudget")
-                  }
-                  handleSelect={(e) =>
-                    handleChangeBudgetPricing(e, "maximumBudget")
-                  }
+                  handleChange={(e)=>handleChange(e,"budget", "maximumBudget", "value")}
+                  handleSelect={(e)=>handleChange(e,"budget", "maximumBudget", "unit")}
                   name1={"unit"}
                   name2={"value"}
                 />
@@ -956,7 +930,7 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                   value={profileInfo?.currentAddress?.addressLine1}
-                  handleChange={handleChangeCurrentAddress}
+                  handleChange={(e)=>handleChange(e,"currentAddress", "addressLine1")}
                   name="addressLine1"
                 />
                 <NewInputFieldStructure
@@ -964,7 +938,7 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                   value={profileInfo?.currentAddress?.addressLine2}
-                  handleChange={handleChangeCurrentAddress}
+                  handleChange={(e)=>handleChange(e,"currentAddress", "addressLine2")}
                   name="addressLine2"
                 />
                 <NewAutoCompleteInputStructure
@@ -1009,7 +983,7 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                   value={profileInfo?.currentAddress?.city}
-                  handleChange={handleChangeCurrentAddress}
+                  handleChange={(e)=>handleChange(e,"currentAddress", "city")}
                   name="city"
                 />
 
@@ -1018,7 +992,7 @@ function Profile() {
                   variant="outlined"
                   value={profileInfo?.currentAddress?.pinCode}
                   isEdit={isEdit}
-                  handleChange={handleChangeCurrentAddress}
+                  handleChange={(e)=>handleChange(e,"currentAddress", "pinCode")}
                   name="pinCode"
                 />
               </Grid>

@@ -1,9 +1,7 @@
-import {
-  GET_ACCESS_TOKEN,
-  UNIVERSAL_ACCESS_TOKEN,
-  UNIVERSAL_LIST_API,
-} from "Components/config/config";
 import axios from "axios";
+const UNIVERSAL_ACCESS_TOKEN = process.env.NEXT_PUBLIC_UNIVERSAL_ACCESS_TOKEN;
+const UNIVERSAL_LIST_API = process.env.NEXT_PUBLIC_UNIVERSAL_LIST_API;
+const GET_ACCESS_TOKEN = process.env.NEXT_PUBLIC_GET_ACCESS_TOKEN;
 
 export const getAccessToken = () => {
   return new Promise((resolve, reject) => {
