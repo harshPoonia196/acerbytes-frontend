@@ -4,6 +4,8 @@ import NavBar from "Components/NavBar";
 import ThemeRegistry from "styles/theme/ThemeRegistry";
 import React from "react";
 import { Providers } from "state/Providers";
+import { SnackbarProvider } from "utills/SnackbarContext";
+import { AuthProvider } from "utills/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 const ibm_plex_sans = IBM_Plex_Sans({
@@ -27,7 +29,11 @@ export default function RootLayout({ children }) {
       <body className={ibm_plex_sans.className}>
         <Providers>
           <ThemeRegistry options={{ key: "css" }}>
-            <NavBar>{children}</NavBar>
+            <AuthProvider>
+              <SnackbarProvider>
+                <NavBar>{children}</NavBar>
+              </SnackbarProvider>
+            </AuthProvider>
           </ThemeRegistry>
         </Providers>
       </body>

@@ -1,11 +1,40 @@
 import { Box, Button, Grid, Typography } from '@mui/material';
 import OTPInputLayout from 'Components/CommonLayouts/OTPInputLayout';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import colors from "styles/theme/colors";
+import { LoadingButton } from '@mui/lab';
 
-const VerifyOtp = ({setOtpInput, otpInput, verifyOtpFun}) => {
+const VerifyOtp = ({ loading, setOtpInput, form, prevStep, otpInput, verifyOtpFun, sendOtpFun, resendLoading }) => {
+    
+    const [resendDisabled, setResendDisabled] = useState(true);
+    const [timer, setTimer] = useState(60);
+
+    useEffect(() => {
+        let interval;
+        if (resendDisabled) {
+            interval = setInterval(() => {
+                setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [resendDisabled]);
+
+    const handleResendClick = () => {
+        if (!resendDisabled) {
+            setResendDisabled(true);
+            setTimer(60); 
+            sendOtpFun(true);
+        }
+    };
+
+    useEffect(()=> {
+        if(timer === 0){
+            setResendDisabled(false)
+        }
+    }, [timer])
+    
     return (
         <Grid container>
             <Grid item xs={12}>
@@ -26,7 +55,9 @@ const VerifyOtp = ({setOtpInput, otpInput, verifyOtpFun}) => {
                     />
                 </Box>
                 <Box sx={{ alignSelf: "center" }}>
-                    <Button disabled>Resend OTP</Button>
+                    <LoadingButton loading={resendLoading} disabled={resendDisabled} onClick={handleResendClick}>
+                        Resend OTP {resendDisabled ? `(${timer}s)` : ''}
+                    </LoadingButton>
                 </Box>
             </Grid>
             <Grid item xs={12}>
@@ -34,7 +65,7 @@ const VerifyOtp = ({setOtpInput, otpInput, verifyOtpFun}) => {
                     variant="body2"
                     sx={{ textTransform: "uppercase", color: colors.DISABLED }}
                 >
-                    Received at +99132435353
+                    Received at {form?.countryCode} {form?.phone}
                 </Typography>
             </Grid>
             <Grid
@@ -48,15 +79,18 @@ const VerifyOtp = ({setOtpInput, otpInput, verifyOtpFun}) => {
             >
                 <Button
                     startIcon={<ArrowBackIosIcon />}
+                    onClick={()=> prevStep()}
                 >
                     Back
                 </Button>
-                <Button
+                <LoadingButton
+                    loading={loading}
                     variant="contained"
-                    onClick={()=> verifyOtpFun()}
+                    disabled={otpInput?.length !== 4}
+                    onClick={() => verifyOtpFun()}
                 >
                     Verify
-                </Button>
+                </LoadingButton>
             </Grid>
         </Grid>
     )

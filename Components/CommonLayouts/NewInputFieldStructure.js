@@ -11,6 +11,7 @@ const NewInputFieldStructure = ({
   sx,
   variant,
   isEdit,
+  error,
   isFull, defaultValue,
   ...props
 }) => (
@@ -35,6 +36,7 @@ const NewInputFieldStructure = ({
         {...props}
       /> : isEdit === true ? (
         <TextField
+          error={error}
           name={name}
           onChange={handleChange}
           variant={variant ? variant : "standard"}

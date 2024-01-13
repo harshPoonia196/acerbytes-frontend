@@ -41,6 +41,10 @@ import {
 } from "state/DrawerStore/action";
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { isLoggedIn, logoutUser } from "utills/utills";
+import colors from "styles/theme/colors";
+import { checkTokenAPI } from "api/Auth.api";
+import { useAuth } from "utills/AuthContext";
 
 const drawerWidth = 240;
 
@@ -48,9 +52,11 @@ export default function ClippedDrawer({ children }) {
   const { isDrawerOpen } = useSelector((state) => state);
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { userDetails, isLogged } = useAuth();
+  console.log("🚀 ~ ClippedDrawer ~ isLogged:", isLogged)
 
   const dispatch = useDispatch();
-
+ 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -97,6 +103,10 @@ export default function ClippedDrawer({ children }) {
         Profile
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {
+        isLogged ?
+          <MenuItem onClick={()=> logoutUser()}>Logout</MenuItem> : null
+      }
     </Menu>
   );
 
@@ -331,13 +341,18 @@ export default function ClippedDrawer({ children }) {
           </Box>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ alignSelf: "center" }}>
-              <Button
-                onClick={() => {
-                  router.push("/login");
-                }}
-              >
-                Sign in
-              </Button>
+              {
+                userDetails ?
+                  <Typography>Hi, <span style={{ color: colors.BLUE }}>{userDetails?.name?.firstName} {userDetails?.name?.lastName}</span></Typography>
+                  :
+                  <Button
+                    onClick={() => {
+                      router.push("/login");
+                    }}
+                  >
+                    Sign in
+                  </Button>
+              }
             </Box>
             <Box>
               <IconButton
@@ -349,7 +364,12 @@ export default function ClippedDrawer({ children }) {
                 onClick={handleProfileMenuOpen}
                 color="#000"
               >
-                <AccountCircle />
+                {
+                  userDetails?.googleDetails?.profilePicture ?
+                    <img style={{ width: '25px', borderRadius: '100%' }} src={userDetails?.googleDetails?.profilePicture} />
+                    :
+                    isLogged ? <AccountCircle /> : null
+                }
               </IconButton>
             </Box>
           </Box>

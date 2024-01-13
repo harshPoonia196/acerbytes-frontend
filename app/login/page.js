@@ -1,228 +1,248 @@
 "use client";
-
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Container,
   Card,
   Grid,
   Button,
   ToggleButton,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { redirect, useSearchParams } from "next/navigation";
-import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
-import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  Snackbar,
+  Alert,
 } from "@mui/material";
+import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
-import { createUserAPI, sendOtpAPI, signInAPI, signInAuthenticationAPI, verifyOtpAPI } from "api/Auth.api";
+import {
+  createUserAPI,
+  sendOtpAPI,
+  signInAPI,
+  signInAuthenticationAPI,
+  verifyOtpAPI,
+} from "api/Auth.api";
 import SendOtp from "Components/Login/SendOtp";
 import Welcome from "Components/Login/Welcome";
 import VerifyOtp from "Components/Login/VerifyOtp";
 import GoogleSignIn from "Components/Login/GoogleSignIn";
 import { useRouter } from "next/navigation";
+import { useSnackbar } from "utills/SnackbarContext";
+import ConsultantDialog from "Components/Login/ConsultantDialog";
+import { useAuth } from "utills/AuthContext";
 
 function Login() {
-  const router = useRouter();
+  const { login } = useAuth();
 
+  const router = useRouter();
   const [showConsultantDetailsPopup, setShowConsultantDetailsPopup] =
     useState(false);
-  const handleConsultantDetailsSubmit = () => {
-    setShowConsultantDetailsPopup(false);
-  };
-  const [isEdit, setIsEdit] = useState(true);
-  const [businessTypeToggleAlignment, setBusinessTypeToggleAlignment] =
-    React.useState("");
-  const handleChangeBusinessTypeToggle = (event, newAlignment) => {
-    setBusinessTypeToggleAlignment(newAlignment);
-  };
 
-  const [activeStep, setActiveStep] = useState(1)
-  const [otpInput, setOtpInput] = useState("")
-
-
+  const [activeStep, setActiveStep] = useState(1);
+  const [otpInput, setOtpInput] = useState("");
   const [form, setForm] = useState({
-    countryCode: '+91',
+    countryCode: "+91",
     phone: "",
-    firstName: '',
-    lastName: '',
-    googleId: '',
-    role: '',
-    businessType: '',
-    reraNo: '',
-    company: ''
-  })
+    firstName: "",
+    lastName: "",
+    googleId: "",
+    role: "",
+    businessType: "INDIVIDUAL",
+    reraNo: "",
+    company: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const { openSnackbar } = useSnackbar();
 
-  console.log(form)
+  const handleClick = (message, severity) => {
+    openSnackbar(message, severity);
+  };
 
-  const handleChange = (name, value) => {
-    setForm(prev => ({
+  const handleChange = async (name, value) => {
+    await setForm((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const nextStep = () => {
-    setActiveStep(prev => prev + 1)
-  }
+    setActiveStep((prev) => prev + 1);
+  };
+
+  const prevStep = () => {
+    setActiveStep((prev) => prev - 1);
+  };
 
   const getSignInUrl = async () => {
-    const data = await signInAPI()
-    window.location.href = data?.data?.data?.authUrl
-  }
-
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    if (searchParams.get('code')) {
-      AuthenticateUser(searchParams.get('code'))
-    }
-  }, [])
-
-  const AuthenticateUser = async (code) => {
-    const res = await signInAuthenticationAPI({ code: code })
-    const { email, id } = res?.data?.data
-    setForm(prev => ({
-      ...prev,
-      email: email,
-      googleId: id
-    }))
-    nextStep()
-  }
-
-  const sendOtpFun = async () => {
     try {
-      let payload = {
-        phoneNumber: form.phone,
-        countryCode: form.countryCode
-      }
-      const res = await sendOtpAPI(payload)
-      if (res.status === 200) {
-        nextStep()
-      }
-    } catch (error) {
+      setLoading(true);
 
-    }
-  }
+      const data = await signInAPI();
 
-  const verifyOtpFun = async () => {
-    try {
-      let payload = {
-        phoneNumber: form.phone,
-        countryCode: form.countryCode,
-        otp: otpInput
-      }
-      const res = await verifyOtpAPI(payload)
-      if (res.status === 200) {
-        nextStep()
-      }
-    } catch (error) {
-
-    }
-  }
-
-  const createUserFun = async () => {
-    console.log("yes")
-    try {
-      let payload = {
-        name: { 
-          firstName: form.firstName,
-          lastName: form.lastName
-        },
-        phone: { 
-          countryCode: form.countryCode,
-          number: form.phone
-        },
-        email: form.email,
-        role: form.role,
-        googleId: form.googleId
-      }
-      const res = await createUserAPI(payload)
-      if (res.status === 200) {
-        const {token, userDetails} = res?.data?.data
-        localStorage.setItem("token", token)
-        localStorage.setItem("userDetails", JSON.stringify(userDetails))
-
-        router.push('/');      
+      if (data?.data?.data?.authUrl) {
+        window.location.href = data.data.data.authUrl;
+      } else {
+        handleClick("Unexpected response format from signInAPI", "error");
       }
     } catch (error) {
       console.log(error)
+      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("code")) {
+      AuthenticateUser(searchParams.get("code"));
+    }
+  }, []);
+
+  const AuthenticateUser = async (code) => {
+    try {
+      setLoading(true);
+
+      const res = await signInAuthenticationAPI({ code: code });
+      const { email, id, name, token, userDetails } = res?.data?.data;
+
+      if (token) {
+        login(userDetails, token)
+        router.push("/");
+        return
+      }
+
+      setLoading(false);
+      openSnackbar("Authentication successful", "success");
+
+      setForm((prev) => ({
+        ...prev,
+        email: email,
+        googleId: id,
+        firstName: name?.split(" ")?.[0] || "",
+        lastName: name?.split(" ")?.[name?.split(" ")?.length - 1] || "",
+      }));
+
+      nextStep();
+    } catch (error) {
+      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
+  const sendOtpFun = async (isResend) => {
+    try {
+      setResendLoading(true);
+      let payload = {
+        phoneNumber: form.phone,
+        countryCode: form.countryCode,
+      };
+      const res = await sendOtpAPI(payload);
+      if (res.status === 200) {
+        if (!isResend) nextStep();
+      }
+    }
+    catch (error) {
+      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
+    }
+    finally {
+      setResendLoading(false);
+    }
+  };
+
+  const verifyOtpFun = async () => {
+    try {
+      setLoading(true);
+      let payload = {
+        phoneNumber: form.phone,
+        countryCode: form.countryCode,
+        otp: otpInput,
+      };
+      const res = await verifyOtpAPI(payload);
+      if (res.status === 200) {
+        nextStep();
+      }
+    } catch (error) {
+      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const checkIfBroker = () => {
+    if (form.role === "broker") {
+      setShowConsultantDetailsPopup(true)
+      return
+    }
+    createUserFun()
   }
 
+  const createUserFun = async () => {
+    try {
+      setLoading(true)
+      let payload = {
+        name: {
+          firstName: form.firstName,
+          lastName: form.lastName,
+        },
+        phone: {
+          countryCode: form.countryCode,
+          number: form.phone,
+        },
+        email: form.email,
+        role: form.role,
+        googleId: form.googleId,
+        businessType: form.businessType,
+        company: form.company,
+        reraNo: form.reraNo
+      };
+      const res = await createUserAPI(payload);
+      if (res.status === 200) {
+        const { token, userDetails } = res?.data?.data;
+        login(userDetails, token)
+        router.push("/");
+      }
+    } catch (error) {
+      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
+    }finally{
+      setLoading(false)
+      setShowConsultantDetailsPopup(false)
+    }
+  };
 
   const getComponentByStep = () => {
     switch (activeStep) {
       case 1: {
-        return <GoogleSignIn getSignInUrl={getSignInUrl} />
+        return <GoogleSignIn googleSignInLoading={loading} getSignInUrl={getSignInUrl} />;
       }
       case 2: {
-        return <SendOtp form={form} handleChange={handleChange} sendOtpFun={sendOtpFun} />
+        return <SendOtp form={form} handleChange={handleChange} sendOtpFun={sendOtpFun} />;
       }
       case 3: {
-        return <VerifyOtp verifyOtpFun={verifyOtpFun} otpInput={otpInput} setOtpInput={setOtpInput} />
+        return <VerifyOtp loading={loading} prevStep={prevStep} resendLoading={resendLoading} sendOtpFun={sendOtpFun} form={form} verifyOtpFun={verifyOtpFun} otpInput={otpInput} setOtpInput={setOtpInput} />;
       }
       case 4: {
-        return <Welcome createUserFun={createUserFun} handleChange={handleChange} form={form} />
+        return <Welcome createUserFun={checkIfBroker} handleChange={handleChange} form={form} />;
+      }
+      default: {
+        return null;
       }
     }
-  }
+  };
 
+  console.log(form)
   return (
     <Container maxWidth="sm">
       <Card sx={{ p: 3 }}>
         <Grid container spacing={2}>
           {getComponentByStep()}
         </Grid>
-        <Dialog
-          open={showConsultantDetailsPopup}
-          onClose={() => setShowConsultantDetailsPopup(false)}
-          fullWidth
-          maxWidth="sm"
-        >
-          <DialogTitle>
-            Additional Details for Real Estate Consultant
-          </DialogTitle>
-          <DialogContent>
-            <NewToggleButtonStructure
-              isEdit={isEdit}
-              label="Business type"
-              value={businessTypeToggleAlignment}
-              handleChange={handleChangeBusinessTypeToggle}
-            >
-              <ToggleButton fullWidth size="small" value="individual">
-                Individual
-              </ToggleButton>
-              <ToggleButton fullWidth size="small" value="company">
-                Company
-              </ToggleButton>
-            </NewToggleButtonStructure>
-            <NewInputFieldStructure
-              label="Company"
-              variant="outlined"
-              isEdit={isEdit}
-            />
-
-            <NewInputFieldStructure
-              label="RERA number"
-              variant="outlined"
-              isEdit={isEdit}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => setShowConsultantDetailsPopup(false)}
-              color="primary"
-            >
-              I'll do it later!
-            </Button>
-            <Button onClick={handleConsultantDetailsSubmit} color="primary" variant="contained">
-              Submit
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <ConsultantDialog loading={loading} form={form} createUserFun={createUserFun}  handleChange={handleChange} showConsultantDetailsPopup={showConsultantDetailsPopup} setShowConsultantDetailsPopup={setShowConsultantDetailsPopup} />
       </Card>
     </Container>
   );
