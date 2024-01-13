@@ -30,6 +30,7 @@ import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import { listOfConsultantProfileTab } from 'Components/CommonLayouts/CommonUtils';
+import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
 
 const tabHeight = 116;
 
@@ -220,8 +221,14 @@ function ConsultantProfile() {
           list={itemsServer}
         />
       </nav>
+      <Box sx={{ backgroundColor: "white" }}>
+        <Container
+          maxWidth="lg"
+        >
+          <CustomConsultantBreadScrumbs text='Profile' />
+        </Container>
+      </Box>
       <Container maxWidth="lg">
-
         <Grid container spacing={2}>
           <Grid item xs={12} sx={{ textAlign: 'end' }}>
             <Button variant='contained'>Save</Button>

@@ -28,8 +28,8 @@ function Footer({ paymentPage }) {
                     Platform solution by Gravity44
                 </Typography>
             </Box>
-            <Box sx={{ display: 'flex' }}>
-                <Box sx={{ alignSelf: 'center', cursor: 'pointer' }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <Box sx={{ alignSelf: 'center', cursor: 'pointer', mr: 1 }}>
                     {/* <a href="whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients." data-action="share/whatsapp/share"
                     target="_blank"> */}
                     <Button startIcon={<WhatsAppIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}>
@@ -37,7 +37,7 @@ function Footer({ paymentPage }) {
                     </Button>
                     {/* </a> */}
                 </Box>
-                <Box sx={{ alignSelf: 'center', cursor: 'pointer', ml: 2 }}>
+                <Box sx={{ alignSelf: 'center', cursor: 'pointer', mr: 1 }}>
                     {/* <a href="whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients." data-action="share/whatsapp/share"
                     target="_blank"> */}
                     <Button startIcon={<WhatsAppIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}>
@@ -50,7 +50,7 @@ function Footer({ paymentPage }) {
                     <Box sx={{ alignSelf: 'center', cursor: 'pointer' }}>
                         <Button variant='outlined'
                             onClick={() => { history.push('/consultant/make-payment') }}
-                            size="small" sx={{ fontSize: '0.75rem', ml: 2 }}
+                            size="small" sx={{ fontSize: '0.75rem' }}
                             startIcon={<QrCodeScannerIcon />}
                         >
                             Pay&nbsp;here
