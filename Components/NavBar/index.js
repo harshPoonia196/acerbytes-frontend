@@ -259,9 +259,9 @@ export default function ClippedDrawer({ children }) {
                 </IconButton>
               }
             >
-              <ListItemButton onClick={()=> logout()} sx={{ pl: 3 }} role={undefined}>
+              <ListItemButton onClick={() => logout()} sx={{ pl: 3 }} role={undefined}>
                 <ListItemIcon sx={{ minWidth: 40 }}>
-                  <LogoutIcon  fontSize="small" />
+                  <LogoutIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText secondary="Log out" />
               </ListItemButton>

@@ -37,12 +37,12 @@ export const listOfPages = {
 
 export const CommonMenuList = [
   {
-    label: "Listings",
+    label: "Property listings",
     route: listOfPages.commonPropertyList,
     icon: <ListIcon fontSize="small" />,
   },
   {
-    label: "Consultants",
+    label: "Property Consultant",
     route: listOfPages.commonAllBrokers,
     icon: <GroupIcon fontSize="small" />,
   },
@@ -78,7 +78,7 @@ export const UserMenuList = [
 
 export const ConsultantMenuList = [
   {
-    label: "Consultant Profile",
+    label: "Consultant profile",
     route: listOfPages.consultantProfile,
     icon: <AccountCircleIcon fontSize="small" />,
   },
@@ -98,7 +98,7 @@ export const ConsultantMenuList = [
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
-    label: "My links",
+    label: "My Properties link",
     route: listOfPages.consultantLinks,
     icon: <LinkIcon fontSize="small" />,
   },
@@ -116,7 +116,7 @@ export const AdminMenuList = [
     icon: <RecentActorsIcon fontSize="small" />,
   },
   {
-    label: "Leads reviewed (No page yet)",
+    label: "Leads reviewed (Pending)",
     route: "/leads",
     icon: <ChecklistRtlIcon fontSize="small" />,
   },
@@ -131,7 +131,7 @@ export const AdminMenuList = [
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
-    label: "Manage User",
+    label: "Manage user",
     route: listOfPages.adminManageUser,
     icon: <PlaylistAddIcon fontSize="small" />,
   },
