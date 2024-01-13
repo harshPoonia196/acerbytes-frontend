@@ -9,3 +9,7 @@ export const logoutUser = ()=> {
     localStorage.removeItem("userDetails")
     window.location.href = "/"
 }
+
+export const getToken = ()=> {
+    return localStorage.getItem("token")
+}
