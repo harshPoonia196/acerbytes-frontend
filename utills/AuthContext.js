@@ -6,7 +6,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState({});
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(true);
 
   useEffect(() => {
     setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
@@ -38,8 +38,10 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("userDetails");
+    localStorage.removeItem("token");
     setUserDetails({});
     setIsLogged(false);
+    window.location.href="/"
   };
 
   const contextValue = {
