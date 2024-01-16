@@ -26,7 +26,7 @@ function TopMenu({ value, handleChange, list }) {
                         Under Construction &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183; Sector 43, Noida, UP
                     </Typography>
                 </Box>
-                <Box sx={{ alignSelf: "center" }}>
+                <Box>
                     <Card
                         sx={{
                             width: "fit-content",
@@ -34,17 +34,17 @@ function TopMenu({ value, handleChange, list }) {
                             borderRadius: "4px !important",
                             m: 0,
                             ml: "auto !important",
+                            cursor: 'pointer'
                         }}
                         onClick={() => router.push("/research")}
                     >
                         <Typography
-                            variant="h6"
+                            variant="h3"
                             sx={{
                                 fontWeight: 600,
                                 width: "fit-content",
                                 color: "white",
-                                p: 0.5,
-                                px: 1,
+                                p: 1,
                             }}
                         >
                             99

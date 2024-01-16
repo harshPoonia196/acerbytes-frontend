@@ -5,6 +5,7 @@ import colors from 'styles/theme/colors'
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { useSelector } from 'react-redux';
+import { listOfPages } from 'Components/NavBar/Links';
 
 function Footer({ paymentPage }) {
     const history = useRouter()
@@ -33,15 +34,15 @@ function Footer({ paymentPage }) {
                     {/* <a href="whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients." data-action="share/whatsapp/share"
                     target="_blank"> */}
                     <Button startIcon={<WhatsAppIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}>
-                        Share&nbsp;to&nbsp;consultant
+                        Share
                     </Button>
                     {/* </a> */}
                 </Box>
                 <Box sx={{ alignSelf: 'center', cursor: 'pointer', mr: 1 }}>
                     {/* <a href="whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients." data-action="share/whatsapp/share"
                     target="_blank"> */}
-                    <Button startIcon={<WhatsAppIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}>
-                        Register&nbsp;as&nbsp;a&nbsp;consultant
+                    <Button startIcon={<WhatsAppIcon />} onClick={() => history.push(listOfPages.consultantJoinNow)} size="small" sx={{ fontSize: '0.75rem' }}>
+                        Register&nbsp;-&nbsp;Consultant
                     </Button>
                     {/* </a> */}
                 </Box>

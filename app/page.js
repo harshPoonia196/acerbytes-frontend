@@ -32,7 +32,7 @@ export default function Home() {
             variant="h1"
             sx={{ color: "#000", fontWeight: 300, fontSize: { sm: '2em !important', md: '3em !important' } }}
           >
-            for better reach and data base decision in real estate
+            for better reach and data based decision in real estate
           </Typography>
 
           <Box sx={{
@@ -63,13 +63,12 @@ export default function Home() {
               Decide
             </Typography>
           </Box>
-
-          <Box sx={{ mt: 2 }}>
-            <Typography variant="h5">data research only for selective properties in</Typography>
-          </Box>
         </Box>
         <Box>
           <Grid container spacing={2}>
+            <Grid item xs={12} sx={{ textAlign: 'center' }}>
+              <Typography variant="h5" sx={{ textTransform: 'uppercase', color: colors.BLUE }}>data research for selective properties in</Typography>
+            </Grid>
             <Grid item xs={6} sm={4} md={3}>
               <Card>
                 <CardActionArea
@@ -124,7 +123,7 @@ export default function Home() {
             </Grid>
           </Grid>
         </Box>
-      </Container>
+      </Container >
       <Footer />
     </>
   );
