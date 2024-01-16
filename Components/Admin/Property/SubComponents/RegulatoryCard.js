@@ -4,18 +4,28 @@ import {
     Typography,
     Grid,
     Box,
-    ToggleButton,
-    Chip,
-    Button,
     Divider,
     IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
-import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
 
-function RegulatoryCard({ isEdit }) {
+function RegulatoryCard({ isEdit, form, handleChange }) {
+
+    const {
+        reraApproved,
+        reraNumber,
+        cc,
+        oc,
+        authorityRegistration,
+        governmentLoan,
+        privateBankLoan,
+        fresh,
+        resale,
+    } = form.regulatoryClearance;
+
+
     return (
         <Grid item xs={12} id="regulatory">
             <Card>
@@ -37,41 +47,98 @@ function RegulatoryCard({ isEdit }) {
                     <NewSelectTextFieldStructure
                         label="RERA approved"
                         isEdit={isEdit}
+                        value={reraApproved}
+                        list={[
+                            {label: "Yes", value: 'Yes'},
+                            {label: "No", value: 'No'},
+                            {label: "Don't know", value: "Don't know"},
+                        ]}
+                        handleChange={(value) => handleChange(value, "regulatoryClearance", "reraApproved")}
                     />
                     <NewInputFieldStructure
                         label="RERA number"
                         variant="outlined"
                         isEdit={isEdit}
+                        value={reraNumber}
+                        handleChange={(value) => handleChange(value, "regulatoryClearance", "reraNumber")}
                     />
                     <NewSelectTextFieldStructure
                         label="CC"
                         isEdit={isEdit}
+                        value={cc}
+                        list={[
+                            {label: "Yes", value: 'Yes'},
+                            {label: "No", value: 'No'},
+                            {label: "Don't know", value: "Don't know"},
+                        ]}
+                        handleChange={(value) => handleChange(value, "regulatoryClearance", "cc")}
                     />
                     <NewSelectTextFieldStructure
                         label="OC"
                         isEdit={isEdit}
+                        value={oc}
+                        list={[
+                            {label: "Yes", value: 'Yes'},
+                            {label: "No", value: 'No'},
+                            {label: "Don't know", value: "Don't know"},
+                        ]}
+                        handleChange={(value) => handleChange(value, "regulatoryClearance", "oc")}
                     />
                     <NewSelectTextFieldStructure
                         label="Authority registration"
                         isEdit={isEdit}
+                        value={authorityRegistration}
+                        list={[
+                            {label: "Yes", value: 'Yes'},
+                            {label: "No", value: 'No'},
+                            {label: "Don't know", value: "Don't know"},
+                        ]}
+                        handleChange={(value) => handleChange(value, "regulatoryClearance", "authorityRegistration")}
                     />
                     <NewSelectTextFieldStructure
                         label="Government Loan"
                         isEdit={isEdit}
+                        value={governmentLoan}
+                        list={[
+                            {label: "Yes", value: 'Yes'},
+                            {label: "No", value: 'No'},
+                            {label: "Don't know", value: "Don't know"},
+                        ]}
+                        handleChange={(value) => handleChange(value, "regulatoryClearance", "governmentLoan")}
                     />
                     <NewSelectTextFieldStructure
                         label="Private Bank loan"
                         isEdit={isEdit}
+                        value={privateBankLoan}
+                        list={[
+                            {label: "Yes", value: 'Yes'},
+                            {label: "No", value: 'No'},
+                            {label: "Don't know", value: "Don't know"},
+                        ]}
+                        handleChange={(value) => handleChange(value, "regulatoryClearance", "privateBankLoan")}
+                    />
+                    <NewSelectTextFieldStructure
+                        label="Fresh"
+                        isEdit={isEdit}
+                        value={fresh}
+                        list={[
+                            {label: "Yes", value: 'Yes'},
+                            {label: "No", value: 'No'},
+                            {label: "Don't know", value: "Don't know"},
+                        ]}
+                        handleChange={(value) => handleChange(value, "regulatoryClearance", "fresh")}
                     />
                     <NewSelectTextFieldStructure
                         label="Resale"
                         isEdit={isEdit}
+                        value={resale}
+                        list={[
+                            {label: "Yes", value: 'Yes'},
+                            {label: "No", value: 'No'},
+                            {label: "Don't know", value: "Don't know"},
+                        ]}
+                        handleChange={(value) => handleChange(value, "regulatoryClearance", "resale")}
                     />
-                    <Grid item sx={{ display: 'flex', ml: 'auto' }}>
-                        <Box sx={{ alignSelf: 'end', flex: 1, }}>
-                            <Button variant='contained' >Add</Button>
-                        </Box>
-                    </Grid>
                 </Grid>
             </Card>
         </Grid>

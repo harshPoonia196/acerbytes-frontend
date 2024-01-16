@@ -13,12 +13,13 @@ const NewAutoCompleteInputStructure = ({
   sx,
   variant,
   isEdit,
+  options
 }) => (
   <>
     <Grid item xs={12} sm={6}>
       <Box>
         <Typography
-          variant="subtitle2"
+          variant={variant}
           sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
         >
           {label}
@@ -28,10 +29,12 @@ const NewAutoCompleteInputStructure = ({
       <Autocomplete
         disablePortal
         id="combo-box-demo"
-        options={top100Films}
+        options={options || top100Films}
+        value={value || []}
         fullWidth
+        onChange={handleChange}
         renderInput={(params) => (
-          <TextField {...params} size="small" fullWidth />
+          <TextField {...params} value={params.value} size="small" fullWidth />
         )}
       />
     </Grid>

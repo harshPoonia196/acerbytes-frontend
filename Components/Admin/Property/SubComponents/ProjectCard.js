@@ -4,17 +4,29 @@ import {
     Typography,
     Grid,
     Box,
-    ToggleButton,
-    Chip,
-    Button,
     Divider,
     IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
+import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompleteInputStructure';
+import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 
-function ProjectCard({ isEdit }) {
+function ProjectCard({ isEdit, form, handleChange, value }) {
+
+    const {
+        builder,
+        projectName,
+        projectCategory,
+        projectType,
+        phase,
+        launchYear,
+        completionYear,
+        status,
+        constructionProgress,
+    } = form.overview;
+
     return (
         <>
             <Grid item xs={12} id="project">
@@ -56,50 +68,97 @@ function ProjectCard({ isEdit }) {
                     </Box>
                     <Divider />
                     <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                        <NewInputFieldStructure
+                        <NewAutoCompleteInputStructure
                             label="Builder"
+                            name="builder"
                             variant="outlined"
                             isEdit={isEdit}
+                            value={builder}
+                            options={[
+                                { label: "Birla", value: "Birla" }
+                            ]}
+                            handleChange={(e, newValue) => handleChange(newValue?.value, "overview", "builder")}
                         />
                         <NewInputFieldStructure
                             label="Project name"
                             variant="outlined"
                             isEdit={isEdit}
-                        />
-                        <NewSelectTextFieldStructure
-                            label="Project type"
-                            isEdit={isEdit}
+                            value={projectName}
+                            handleChange={(e) => handleChange(e, "overview", "projectName")}
                         />
                         <NewSelectTextFieldStructure
                             label="Project category"
+                            name="projectCategory"
                             isEdit={isEdit}
+                            value={projectCategory}
+                            list={[
+                                { label: 'Residential', value: 'Residential' },
+                                { label: 'Commercial', value: 'Commercial' },
+                            ]}
+                            handleChange={(e) => handleChange(e, "overview", "projectCategory")}
+                        />
+                        <NewMultiSelectAutoCompleteInputStructure
+                            label="Project type"
+                            isEdit={isEdit}
+                            value={projectType}
+                            list={[
+                                { label: 'Flat', value: 'Flat' },
+                                { label: 'Shop', value: 'Shop' },
+                            ]}
+                            handleChange={(e, newValue) => handleChange(newValue, "overview", "projectType")}
                         />
                         <NewInputFieldStructure
                             label="Phase"
                             variant="outlined"
                             isEdit={isEdit}
+                            value={phase}
+                            handleChange={(e) => handleChange(e, "overview", "phase")}
                         />
                         <NewSelectTextFieldStructure
                             label="Launch"
                             isEdit={isEdit}
+                            value={launchYear}
+                            list={[
+                                { label: '2000', value: '2000' },
+                                { label: '2001', value: '2001' },
+                            ]}
+                            handleChange={(e) => handleChange(e, "overview", "launchYear")}
                         />
                         <NewSelectTextFieldStructure
                             label="Completion"
                             isEdit={isEdit}
-                        />
-                        <NewInputFieldStructure
-                            label="Location"
-                            variant="outlined"
-                            isEdit={isEdit}
-                        />
-                        <NewSelectTextFieldStructure
-                            label="Stage"
-                            isEdit={isEdit}
+                            value={completionYear}
+                            list={[
+                                { label: '2000', value: '2000' },
+                                { label: '2001', value: '2001' },
+                            ]}
+                            handleChange={(e) => handleChange(e, "overview", "completionYear")}
                         />
                         <NewSelectTextFieldStructure
-                            label="Speed"
+                            label="Status"
                             isEdit={isEdit}
+                            value={status}
+                            list={[
+                                { label: 'under construction', value: 'under construction' },
+                                { label: 'completed', value: 'completed' },
+                            ]}
+                            handleChange={(e) => handleChange(e, "overview", "status")}
                         />
+
+                        {
+                            status === "under construction" &&
+                            <NewSelectTextFieldStructure
+                                label="Construction Progress"
+                                isEdit={isEdit}
+                                value={constructionProgress}
+                                list={[
+                                    { label: 'Delay', value: 'Delay' },
+                                    { label: 'On time', value: 'On time' },
+                                ]}
+                                handleChange={(e) => handleChange(e, "overview", "constructionProgress")}
+                            />
+                        }
+
                     </Grid>
                 </Card>
             </Grid>

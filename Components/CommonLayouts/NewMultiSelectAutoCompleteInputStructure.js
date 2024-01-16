@@ -10,12 +10,13 @@ const NewMultiSelectAutoCompleteInputStructure = ({
   label,
   type,
   value,
+  list,
   sx,
   variant,
   isEdit,
 }) => (
   <>
-    <Grid item xs={12}>
+    <Grid item xs={6}>
       <Box>
         <Typography
           variant="subtitle2"
@@ -29,7 +30,9 @@ const NewMultiSelectAutoCompleteInputStructure = ({
         multiple
         disablePortal
         id="combo-box-demo"
-        options={top100Films}
+        onChange={handleChange}
+        options={list || top100Films}
+        value={value || []}
         fullWidth
         size="small"
         renderTags={(value, getTagProps) =>

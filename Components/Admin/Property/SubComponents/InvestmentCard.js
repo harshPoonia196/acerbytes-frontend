@@ -4,17 +4,17 @@ import {
     Typography,
     Grid,
     Box,
-    ToggleButton,
-    Chip,
-    Button,
     Divider,
     IconButton,
+    Rating,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
-import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
+import colors from 'styles/theme/colors';
 
-function InvestmentCard({ isEdit }) {
+function InvestmentCard({ isEdit, form, handleChange }) {
+
+    const {forEndUse, expectedFurtherApp, appTillNow} = form.valueForMoney
+
     return (
         <Grid item xs={12} id="investment">
             <Card>
@@ -33,19 +33,39 @@ function InvestmentCard({ isEdit }) {
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                    <NewInputFieldStructure
-                        label="Appreciation till now"
-                        variant="outlined"
-                        isEdit={isEdit}
-                    />
-                    <NewSelectTextFieldStructure
-                        label="Expected further appreciation"
-                        isEdit={isEdit}
-                    />
-                    <NewSelectTextFieldStructure
-                        label="For end use"
-                        isEdit={isEdit}
-                    />
+                    <Grid item xs={6}>
+                        <Box>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                            >
+                                Appreciation till now
+                            </Typography>
+                        </Box>
+                        <Rating value={appTillNow} handleChange={(e)=>  handleChange(e, "valueForMoney", "appTillNow")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Box>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                            >
+                                Expected further appreciation
+                            </Typography>
+                        </Box>
+                        <Rating value={expectedFurtherApp} handleChange={(e)=>  handleChange(e, "valueForMoney", "expectedFurtherApp")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Box>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                            >
+                                For end use
+                            </Typography>
+                        </Box>
+                        <Rating value={forEndUse} handleChange={(e)=>  handleChange(e, "valueForMoney", "forEndUse")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                    </Grid>
                 </Grid>
             </Card>
         </Grid>

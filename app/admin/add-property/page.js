@@ -150,6 +150,245 @@ function AddProperty() {
 
     const [isEdit, setIsEdit] = useState(true);
 
+    const [form, setForm] = useState({
+        overview: {
+            builder: '',
+            projectName: '',
+            projectCategory: '',
+            projectType: [],
+            phase: '',
+            launchYear: '',
+            completionYear: '',
+            status: '',
+            constructionProgress: '',
+        },
+        regulatoryClearance: {
+            reraApproved: '',
+            reraNumber: '',
+            cc: '',
+            oc: '',
+            authorityRegistration: '',
+            governmentLoan: '',
+            privateBankLoan: '',
+            fresh: '',
+            resale: '',
+        },
+        layout: {
+            numberOfBuildings: '',
+            layoutType: [],
+            maxFloors: '',
+            minFloors: '',
+            totalUnits: '',
+            area: '',
+            greenArea: '',
+            unitDensity: '',
+            greenDensity: '',
+            constructionQuality: 0,
+            interiorQuality: 0,
+        },
+        unitsPlan: [
+            {
+                propertyType: "dsd",
+                propertyLayout: "dsd",
+                name: "dssd",
+                areaUnit: "dsd",
+                areaValue: "dsd",
+                bsp: "dsd",
+                applicableMonth: "sds",
+                applicableYear: "sds"
+            }
+        ],
+
+        amenitiesData : {
+            Basic: {
+                Gym: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Yoga: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Swimming pool": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Club: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Fitness center": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                SPA: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+            },
+            Expected: {
+                Pool: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Yoga: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Party hall": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Indoor games": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Spa: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Clubhouse: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Jacuzzi: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Theatre: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Barbeque Lawn": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Jogging track": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Covered Sitting": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Garden: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Wi-fi": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+            },
+            Desired: {
+                Theatre: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Barbeque Lawn": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Jogging track": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Covered Sitting": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Garden: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Yoga: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                SPA: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Swimming pool": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                Club: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+            },
+            Unique: {
+                Library: {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Kids play area": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Back up": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Wi-fi": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Gas line": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+                "Shopping mart": {
+                    isApplicable: true,
+                    rating: 0,
+                },
+            },
+        },
+        location: {
+            state: "",
+            city: "",
+            sector: '',
+            area: "",
+            pinCode: "",
+            googleMapLink: "",
+            longitude: "",
+            latitude: "",
+        },
+        valueForMoney: {
+            appTillNow: 0,
+            expectedFurtherApp: 0,
+            forEndUse: 0
+        },
+        consultants: [],
+        marketing: {
+            tagLine: "",
+            description: ""
+        }
+
+    })
+    
+
+    const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
+        let value = e?.target ? thirdKeyName === 'checked' ? e.target.checked : e.target.value : e
+        await setForm((prev) => ({
+            ...prev,
+            [firstKeyName]: !secondKeyName
+                ? value
+                : {
+                    ...prev?.[firstKeyName],
+                    [secondKeyName]: !thirdKeyName
+                        ? value
+                        : {
+                            ...prev?.[firstKeyName]?.[secondKeyName],
+                            [thirdKeyName]: value,
+                        },
+                },
+        }))
+    }
+
+    console.log(form)
+
     return (
         <>
             <nav className={classes.demo2}>
@@ -167,15 +406,15 @@ function AddProperty() {
             <Container>
                 <div className="container">
                     <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-                        <ProjectCard isEdit={isEdit} />
-                        <RegulatoryCard isEdit={isEdit} />
-                        <LandscapeCard isEdit={isEdit} />
-                        <FloorPlanCard isEdit={isEdit} />
-                        <FacilitiesCard isEdit={isEdit} />
-                        <LocationCard isEdit={isEdit} />
-                        <ResalePriceCard isEdit={isEdit} />
-                        <BuilderPriceCard isEdit={isEdit} />
-                        <InvestmentCard isEdit={isEdit} />
+                        <ProjectCard form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <RegulatoryCard form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <LandscapeCard form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <FloorPlanCard form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <FacilitiesCard form={form} isEdit={isEdit} />
+                        <LocationCard form={form} handleChange={handleChange} isEdit={isEdit} />
+                        {/* <ResalePriceCard isEdit={isEdit} />
+                        <BuilderPriceCard isEdit={isEdit} /> */}
+                        <InvestmentCard form={form} handleChange={handleChange} isEdit={isEdit} />
                         <PropertyConsultantsCard isEdit={isEdit} />
                         <OverallAssessmentCard isEdit={isEdit} />
                         {/* <BankCard isEdit={isEdit} /> */}

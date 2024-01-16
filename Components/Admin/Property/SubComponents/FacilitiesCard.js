@@ -16,7 +16,9 @@ import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextF
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
 import colors from 'styles/theme/colors';
 
-function FacilitiesCard({ isEdit }) {
+function FacilitiesCard({ isEdit, form }) {
+
+    const { amenitiesData } = form
     return (
         <Grid item xs={12} id="facilities">
             <Card>
@@ -35,98 +37,32 @@ function FacilitiesCard({ isEdit }) {
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                    <Grid item xs={12}>
-                        <Typography variant="h6">Basic</Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch />
-                        <Typography
-                            variant="subtitle2"
-                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-                        >
-                            Gym
-                        </Typography>
-                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch />
-                        <Typography
-                            variant="subtitle2"
-                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-                        >
-                            Pool
-                        </Typography>
-                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="h6">Expected</Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch />
-                        <Typography
-                            variant="subtitle2"
-                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-                        >
-                            Gym
-                        </Typography>
-                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch />
-                        <Typography
-                            variant="subtitle2"
-                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-                        >
-                            Pool
-                        </Typography>
-                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="h6">Basic</Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch />
-                        <Typography
-                            variant="subtitle2"
-                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-                        >
-                            Gym
-                        </Typography>
-                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch />
-                        <Typography
-                            variant="subtitle2"
-                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-                        >
-                            Pool
-                        </Typography>
-                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="h6">Basic</Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch />
-                        <Typography
-                            variant="subtitle2"
-                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-                        >
-                            Gym
-                        </Typography>
-                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                        <Switch />
-                        <Typography
-                            variant="subtitle2"
-                            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-                        >
-                            Pool
-                        </Typography>
-                        <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} />
-                    </Grid>
+                    {
+                        Object?.keys(amenitiesData)?.map(key => {
+                            return <>
+                                <Grid item xs={12}>
+                                    <Typography variant="h6">{key}</Typography>
+                                </Grid>
+
+                                {
+                                    Object.keys(amenitiesData?.[key])?.map(insideKey => {
+                                        return <>
+                                            <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
+                                                <Switch checked={amenitiesData?.[key]?.[insideKey]?.isApplicable} />
+                                                <Typography
+                                                    variant="subtitle2"
+                                                    sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                                                >
+                                                    {insideKey}
+                                                </Typography>
+                                                <Rating name="half-rating" defaultValue={0} precision={amenitiesData?.[key]?.[insideKey]?.isApplicable} size='small' sx={{ alignSelf: 'center' }} />
+                                            </Grid>
+                                        </>
+                                    })
+                                }
+                            </>
+                        })
+                    }
                 </Grid>
             </Card>
         </Grid>
