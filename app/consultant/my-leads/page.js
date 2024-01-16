@@ -31,13 +31,13 @@ function MyLeads() {
 
   return (
     <Container>
-       <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <CustomConsultantBreadScrumbs text='My leads' />
-                </Container>
-            </Box>
+      <Box sx={{ backgroundColor: "white" }}>
+        <Container
+          maxWidth="lg"
+        >
+          <CustomConsultantBreadScrumbs text='My leads' />
+        </Container>
+      </Box>
       <Typography variant="h6" sx={{ mb: 2 }}>
         My Leads
       </Typography>

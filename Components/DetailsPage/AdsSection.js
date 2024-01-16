@@ -8,24 +8,26 @@ import PhoneIcon from '@mui/icons-material/Phone';
 function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant }) {
     return (
         <>
-            <Card sx={{ m: 2, mx: 8, mb: 0, position: 'relative', border: isConsultant ? '2px solid gold' : `2px solid ${colors.BLUE}` }}>
+            <Card sx={{ m: 2, mx: { xs: 2, sm: 8 }, mb: 0, position: 'relative', border: isConsultant ? '2px solid gold' : `2px solid ${colors.BLUE}` }}>
                 <Box sx={{ display: 'flex', background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue' }}>
                     <Box sx={{ display: 'flex', p: 2, py: 1, flex: 1 }}>
-                        <Typography variant='h6' sx={{}}>Contact (Anand Gupta &#183; 4.7</Typography>
-                        <Rating
-                            name="text-feedback"
-                            value={4}
-                            readOnly
-                            precision={0.5}
-                            sx={{ fontSize: '1rem', alignSelf: 'center', ml: 1 }}
-                            emptyIcon={
-                                <StarIcon
-                                    style={{ opacity: 0.55 }}
-                                    fontSize="inherit"
-                                />
-                            }
-                        />
-                        <Typography variant="h6" sx={{ alignSelf: 'center' }}>) for Godrej forest &#183; Sector &#183; 132 &#183; Noida</Typography>
+                        <Typography variant='h6' sx={{}}>Contact (Anand Gupta &#183; 4.7&nbsp;
+                            <Rating
+                                name="text-feedback"
+                                value={4}
+                                readOnly
+                                precision={0.5}
+                                sx={{ fontSize: '1rem', alignSelf: 'center', verticalAlign: 'text-top' }}
+                                emptyIcon={
+                                    <StarIcon
+                                        style={{ opacity: 0.55 }}
+                                        fontSize="inherit"
+                                    />
+                                }
+                            />
+                            ) for Godrejforest &#183; Sector &#183; 132 &#183; Noida
+                        </Typography>
+                        <Typography variant="h6" sx={{ alignSelf: 'center' }}></Typography>
                     </Box>
                     <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
                         <Tooltip title="Don't show me again">
@@ -45,10 +47,10 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                 <Typography variant='body2' noWrap sx={{ p: 2, py: 1 }}>Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on</Typography>
                 {/* <Divider sx={{ borderColor: 'gainsboro' }} /> */}
             </Card>
-            <Box sx={{ m: 2, mx: 8, p: 2, py: 1, pt: 0, display: 'flex' }}>
+            <Box sx={{ m: 2, mx: { xs: 2, sm: 8 }, px: 2, display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
                 {
                     isConsultant &&
-                    <Typography variant='body2' sx={{ alignSelf: 'center' }}>
+                    <Typography variant='body2' sx={{ alignSelf: 'center', mb: 2 }}>
                         <i>
                             {
                                 name ? 'Your Link will expiry in 20 days' :
@@ -61,7 +63,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                 <Box sx={{ flex: 1, textAlign: 'end' }}>
                     {isConsultant ?
                         <Button variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup}>
-                            {name ? 'Extend' : `Activate my link`}
+                            {name ? 'Extend' : <>Activate&nbsp;my&nbsp;link</>}
                         </Button>
                         :
                         <a>

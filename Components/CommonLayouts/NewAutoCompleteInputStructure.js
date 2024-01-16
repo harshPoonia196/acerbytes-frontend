@@ -6,6 +6,7 @@ const top100Films = [{ label: "Mumbai" }];
 
 const NewAutoCompleteInputStructure = ({
   name,
+  list,
   handleChange,
   label,
   type,

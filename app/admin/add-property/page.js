@@ -2,6 +2,7 @@
 
 import {
     Box,
+    Button,
     Container,
     Grid,
 } from "@mui/material";
@@ -406,6 +407,7 @@ function AddProperty() {
             <Container>
                 <div className="container">
                     <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+<<<<<<< HEAD
                         <ProjectCard form={form} handleChange={handleChange} isEdit={isEdit} />
                         <RegulatoryCard form={form} handleChange={handleChange} isEdit={isEdit} />
                         <LandscapeCard form={form} handleChange={handleChange} isEdit={isEdit} />
@@ -415,6 +417,20 @@ function AddProperty() {
                         {/* <ResalePriceCard isEdit={isEdit} />
                         <BuilderPriceCard isEdit={isEdit} /> */}
                         <InvestmentCard form={form} handleChange={handleChange} isEdit={isEdit} />
+=======
+                        <Grid item xs={12} sx={{ textAlign: 'end' }}>
+                            <Button variant='contained'>Save</Button>
+                        </Grid>
+                        <ProjectCard isEdit={isEdit} />
+                        <RegulatoryCard isEdit={isEdit} />
+                        <LandscapeCard isEdit={isEdit} />
+                        <FloorPlanCard isEdit={isEdit} />
+                        <FacilitiesCard isEdit={isEdit} />
+                        <LocationCard isEdit={isEdit} />
+                        <ResalePriceCard isEdit={isEdit} />
+                        <BuilderPriceCard isEdit={isEdit} />
+                        <InvestmentCard isEdit={isEdit} />
+>>>>>>> main
                         <PropertyConsultantsCard isEdit={isEdit} />
                         <OverallAssessmentCard isEdit={isEdit} />
                         {/* <BankCard isEdit={isEdit} /> */}
