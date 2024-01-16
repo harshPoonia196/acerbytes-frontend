@@ -14,7 +14,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
-function LocationCard({ isEdit }) {
+function LocationCard({ isEdit, form, handleChange }) {
+
+    const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
+
     return (
         <Grid item xs={12} id="location" >
             <Card>
@@ -36,41 +39,57 @@ function LocationCard({ isEdit }) {
                     <NewSelectTextFieldStructure
                         label="State"
                         isEdit={isEdit}
+                        value={state}
+                        handleChange={(e) => handleChange(e, "location", "state")}
                     />
                     <NewInputFieldStructure
                         label="City"
                         variant="outlined"
                         isEdit={isEdit}
-                    />
-                    <NewInputFieldStructure
-                        label="Area"
-                        variant="outlined"
-                        isEdit={isEdit}
+                        value={city}
+                        handleChange={(e) => handleChange(e, "location", "city")}
                     />
                     <NewInputFieldStructure
                         label="Sector"
                         variant="outlined"
                         isEdit={isEdit}
+                        value={sector}
+                        handleChange={(e) => handleChange(e, "location", "sector")}
+                    />
+                    <NewInputFieldStructure
+                        label="Area"
+                        variant="outlined"
+                        isEdit={isEdit}
+                        value={area}
+                        handleChange={(e) => handleChange(e, "location", "area")}
                     />
                     <NewInputFieldStructure
                         label="Pincode"
                         variant="outlined"
                         isEdit={isEdit}
+                        value={pinCode}
+                        handleChange={(e)=> handleChange(e, "location", "pinCode")}
                     />
                     <NewInputFieldStructure
                         label="Google map link"
                         variant="outlined"
                         isEdit={isEdit}
+                        value={googleMapLink}
+                        handleChange={(e)=> handleChange(e, "location", "googleMapLink")}
                     />
                     <NewInputFieldStructure
                         label="Geo longitude"
                         variant="outlined"
                         isEdit={isEdit}
+                        value={longitude}
+                        handleChange={(e)=> handleChange(e, "location", "longitude")}
                     />
                     <NewInputFieldStructure
                         label="Geo latitude"
                         variant="outlined"
                         isEdit={isEdit}
+                        value={latitude}
+                        handleChange={(e)=> handleChange(e, "location", "latitude")}
                     />
                 </Grid>
             </Card>

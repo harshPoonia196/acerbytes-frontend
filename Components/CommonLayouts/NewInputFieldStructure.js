@@ -39,6 +39,7 @@ const NewInputFieldStructure = ({
         <TextField
           error={error}
           name={name}
+          value={value}
           onChange={handleChange}
           variant={variant ? variant : "standard"}
           fullWidth
