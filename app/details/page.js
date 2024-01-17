@@ -402,29 +402,22 @@ const PropertyDetailsPage = () => {
               bottom: 0,
               width: "100%",
               display: { xs: "block", evmd: "none" },
-              justifyContent: "space-between",
             }}
           >
-            <Chip
-              icon={<ThumbUpOffAltIcon fontSize="small" />}
-              label="Like"
-              onClick={handleOpenEnquiryForm}
-            />
-            <Chip
-              icon={<ReplyIcon fontSize="small" sx={{ transform: "scaleX(-1)" }} />}
-              label="Share"
-              onClick={handleOpenEnquiryForm}
-            />
-            <Chip
-              icon={<AssignmentIcon fontSize="small" />}
-              label="Enquire"
-              onClick={handleOpenEnquiryForm}
-            />
-            <Chip
-              icon={<WhatsAppIcon fontSize="small" />}
-              label="Contact"
-              onClick={handleOpenEnquiryForm}
-            />
+            <Box sx={{ mt: -1, ml: -1, display: 'flex', flexWrap: "wrap" }}>
+              <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<ThumbUpOffAltIcon />}>
+                Like
+              </Button>
+              <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}>
+                Share
+              </Button>
+              <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<WhatsAppIcon />}>
+                Contact
+              </Button>
+              <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<AssignmentIcon />}>
+                Enquire
+              </Button>
+            </Box>
           </Card>
 
           <Box
@@ -436,15 +429,15 @@ const PropertyDetailsPage = () => {
               flexDirection: "column",
             }}
           >
-            <Fab variant="extended" sx={{ mb: 2, justifyContent: "flex-start" }}>
+            <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
               <ThumbUpOffAltIcon sx={{ mr: 1 }} />
               Like
             </Fab>
-            <Fab variant="extended" sx={{ mb: 2, justifyContent: "flex-start" }}>
+            <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
               <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
               Share
             </Fab>
-            <Fab variant="extended" sx={{ mb: 2, justifyContent: "flex-start" }}>
+            <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
               <WhatsAppIcon sx={{ mr: 1 }} />
               Contact
             </Fab>

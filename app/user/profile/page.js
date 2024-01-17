@@ -49,7 +49,6 @@ import {
 } from "api/Util.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
-import Loading from "Components/Loading";
 import { listOfProfileTab } from "utills/Constants";
 
 const tabHeight = 116;

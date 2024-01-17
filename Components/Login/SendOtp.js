@@ -26,7 +26,7 @@ const SendOtp = ({ form, handleChange, sendOtpFun }) => {
         return Object.keys(newErrors).length === 0;
     };
 
-    useEffect(()=> {
+    useEffect(() => {
         validateForm()
     }, [form])
 
