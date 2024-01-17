@@ -1,6 +1,6 @@
 import React from 'react'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { listOfTabsInAddProperty } from 'Components/CommonLayouts/CommonUtils'
+import { listOfTabsInAddProperty } from 'utills/CommonFunction'
 
 function LeftSideLink({ value, handleChange }) {
     return (

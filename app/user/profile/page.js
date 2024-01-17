@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles } from "@mui/styles";
-import { listOfProfileTab } from "Components/CommonLayouts/CommonUtils";
+import { listOfProfileTab } from "utills/CommonFunction";
 import throttle from "lodash/throttle";
 import {
   FAMILY,
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -191,9 +191,9 @@ function Profile() {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -281,8 +281,8 @@ function Profile() {
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-            error?.message ||
-            "Error fetching user profile",
+          error?.message ||
+          "Error fetching user profile",
           "error"
         );
         setLoading(false);
@@ -304,8 +304,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching country list",
+        error?.message ||
+        "Error fetching country list",
         "error"
       );
     }
@@ -323,8 +323,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     }
@@ -343,8 +343,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -362,8 +362,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -378,14 +378,14 @@ function Profile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-            ...prev?.[firstKeyName],
-            [secondKeyName]: !thirdKeyName
-              ? value
-              : {
-                  ...prev?.[firstKeyName]?.[secondKeyName],
-                  [thirdKeyName]: value,
-                },
-          },
+          ...prev?.[firstKeyName],
+          [secondKeyName]: !thirdKeyName
+            ? value
+            : {
+              ...prev?.[firstKeyName]?.[secondKeyName],
+              [thirdKeyName]: value,
+            },
+        },
     }));
   };
 
@@ -509,8 +509,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error user profile updating",
+        error?.message ||
+        "Error user profile updating",
         "error"
       );
     } finally {

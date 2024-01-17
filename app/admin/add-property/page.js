@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { useState } from "react";
 import NavTab from "Components/Admin/Property/NavTab";
-import { listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
+import { listOfTabsInAddProperty } from "utills/CommonFunction";
 import throttle from "lodash/throttle";
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from 'Components/Admin/Property/SubComponents/LocationCard';
@@ -200,7 +200,7 @@ function AddProperty() {
             }
         ],
 
-        amenitiesData : {
+        amenitiesData: {
             Basic: {
                 Gym: {
                     isApplicable: true,
@@ -377,7 +377,7 @@ function AddProperty() {
             description: ""
         }
     })
-    
+
 
     const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
         let value = e?.target ? thirdKeyName === 'checked' ? e.target.checked : e.target.value : e

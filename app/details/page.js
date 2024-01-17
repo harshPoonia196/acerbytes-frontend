@@ -28,7 +28,7 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
-import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "Components/CommonLayouts/CommonUtils";
+import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/CommonFunction";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";

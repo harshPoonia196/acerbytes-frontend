@@ -4,7 +4,7 @@ import Paper from "@mui/material/Paper";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { visuallyHidden } from '@mui/utils';
-import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
+import { getComparator, stableSort } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from 'next/navigation';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { listOfTabsInAddProperty } from 'Components/CommonLayouts/CommonUtils';
+import { listOfTabsInAddProperty } from 'utills/CommonFunction';
 import { useRouter } from 'next/navigation';
 
 const NavTab = ({ value, handleChange, list }) => {

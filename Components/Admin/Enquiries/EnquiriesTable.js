@@ -4,7 +4,7 @@ import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, Tabl
 import React from 'react'
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from '@mui/utils';
-import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
+import { getComparator, stableSort } from "utills/CommonFunction";
 
 const rows = [
     {
