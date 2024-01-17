@@ -29,8 +29,8 @@ import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonSt
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
-import { listOfConsultantProfileTab } from 'Components/CommonLayouts/CommonUtils';
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
+import { listOfConsultantProfileTab } from "utills/Constants";
 
 const tabHeight = 116;
 

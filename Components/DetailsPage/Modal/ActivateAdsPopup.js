@@ -18,7 +18,6 @@ import {
 import DoneIcon from "@mui/icons-material/Done";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { disablePersonalizeAdsOption } from "Components/CommonLayouts/CommonUtils";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 
 function ActivateAdsPopup({ open, handleClose }) {

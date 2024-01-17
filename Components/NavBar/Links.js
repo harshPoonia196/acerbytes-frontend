@@ -26,7 +26,7 @@ export const listOfPages = {
   consultantMyNotes: "/consultant/my-notes",
   consultantMakePayment: "/consultant/make-payment",
   consultantPaymentHistory: "/consultant/payment-history",
-  consultantJoinNow: "/join-now",
+  consultantJoinNow: "/consultant/join-now",
   adminEnquiries: '/admin/enquiries',
   adminAddProperty: '/admin/add-property',
   adminPropertyList: '/admin/property-list',
