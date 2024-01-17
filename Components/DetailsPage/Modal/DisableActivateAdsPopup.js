@@ -18,7 +18,7 @@ import {
 import DoneIcon from "@mui/icons-material/Done";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { disablePersonalizeAdsOption } from "utills/CommonFunction";
+import { disablePersonalizeAdsOption } from "utills/Constants";
 
 function DisableActivateAdsPopup({ open, handleClose }) {
   const router = useRouter();

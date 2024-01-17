@@ -24,7 +24,6 @@ import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles } from "@mui/styles";
-import { listOfProfileTab } from "utills/CommonFunction";
 import throttle from "lodash/throttle";
 import {
   FAMILY,
@@ -51,6 +50,7 @@ import {
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import Loading from "Components/Loading";
+import { listOfProfileTab } from "utills/Constants";
 
 const tabHeight = 116;
 

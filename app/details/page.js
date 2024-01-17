@@ -28,7 +28,6 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
-import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/CommonFunction";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";
@@ -46,6 +45,7 @@ import { useSearchParams } from 'next/navigation'
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import AdsSection from "Components/DetailsPage/AdsSection";
+import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/Constants";
 
 const tabHeight = 200;
 

@@ -9,7 +9,6 @@ import {
 import React from "react";
 import { useState } from "react";
 import NavTab from "Components/Admin/Property/NavTab";
-import { listOfTabsInAddProperty } from "utills/CommonFunction";
 import throttle from "lodash/throttle";
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from 'Components/Admin/Property/SubComponents/LocationCard';
@@ -26,6 +25,7 @@ import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
+import { listOfTabsInAddProperty } from "utills/Constants";
 
 const tabHeight = 116;
 
