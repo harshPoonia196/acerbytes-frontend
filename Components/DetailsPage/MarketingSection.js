@@ -59,17 +59,11 @@ function MarketingSection() {
                     // backgroundRepeat: 'no-repeat'
                     backgroundSize: 'cover',
                 }}></Box>
-                {/* <Box sx={{
-                flex: 1,
-                backgroundImage: 'URL(https://is1-3.housingcdn.com/4f2250e8/d4c49fdb7326f44a91dadd6ac1b4462d/v0/medium/prateek_canary-sector_150-noida-prateek_group.jpeg)',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat'
-            }}></Box> */}
 
                 <Box sx={{ backgroundImage: 'linear-gradient(240deg,transparent,rgba(37,37,37,.21),#111);', height: '70vh', width: '100%', position: 'absolute', top: 0, left: 0 }}>
 
                 </Box>
-                <Card sx={{ position: 'absolute', top: 24, left: 24, opacity: 0.85, display: 'flex' }}>
+                <Card sx={{ position: 'absolute', top: 24, left: 24, opacity: 0.85, display: 'flex', maxWidth: 'calc(100% - 48px)' }}>
                     <Box ref={myDivRef} sx={{ p: 2, textAlign: 'center' }}>
                         <Typography variant="h2">
                             Prateek Canary
@@ -117,7 +111,7 @@ function MarketingSection() {
 
                         </Grid>
                     </Box>
-                    <Box>
+                    <Box sx={{ display: { xs: "none", evmd: 'block' } }}>
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
                             style={{ border: 0 }}
@@ -129,6 +123,17 @@ function MarketingSection() {
                 </Card>
             </Card>
             <Container maxWidth="evmd" sx={{ pb: '0 !important' }}>
+                <Card sx={{ display: { xs: 'block', evmd: 'none' } }}>
+                    <Box>
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
+                            style={{ border: 0 }}
+                            height="100%"
+                            width={'100%'}
+                            loading="lazy"
+                        />
+                    </Box>
+                </Card>
                 <Card id="builder">
                     <Box sx={{ display: 'flex', p: 2 }}>
                         <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
