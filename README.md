@@ -1,6 +1,8 @@
 ## Location to read or store Common reusable component, function or constants
 Common reusable component => component/CommonLayout
+
 Common Function => utills/CommonFunction
+
 Constant => utills/Constant
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
