@@ -12,9 +12,11 @@ import {
   Button,
   Divider,
   IconButton,
+  Fab,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import CallIcon from "@mui/icons-material/Call";
+import SaveIcon from "@mui/icons-material/Save";
 import PropertyTable from "Components/ProfilePage/PropertyTable";
 import React, { useCallback, useEffect, useRef } from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
@@ -29,8 +31,8 @@ import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonSt
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
-import { listOfConsultantProfileTab } from 'Components/CommonLayouts/CommonUtils';
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
+import { listOfConsultantProfileTab } from "utills/Constants";
 
 const tabHeight = 116;
 
@@ -230,9 +232,9 @@ function ConsultantProfile() {
       </Box>
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ textAlign: 'end' }}>
+          {/* <Grid item xs={12} sx={{ textAlign: 'end' }}>
             <Button variant='contained'>Save</Button>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} id="userDetails" >
             <Card sx={{ p: 2 }}>
               <Box sx={{ display: "flex" }}>
@@ -522,6 +524,24 @@ function ConsultantProfile() {
             </Card>
           </Grid>
         </Grid>
+        <Box
+          sx={{
+            position: "fixed",
+            right: 16,
+            bottom: 16,
+            display: { xs: "none", evmd: "flex" },
+            flexDirection: "column",
+          }}
+        >
+          <Fab
+            variant="extended"
+            sx={{ justifyContent: "flex-start" }}
+            onClick={() => { }}
+          >
+            <SaveIcon fontSize="small" sx={{ mr: 1 }} />
+            Save
+          </Fab>
+        </Box>
       </Container>
     </>
   );

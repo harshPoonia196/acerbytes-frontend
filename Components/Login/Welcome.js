@@ -4,9 +4,9 @@ import { listOfPages } from 'Components/NavBar/Links';
 import React from 'react'
 import colors from "styles/theme/colors";
 
-const Welcome = ({form, handleChange, createUserFun}) => {
+const Welcome = ({ form, handleChange, createUserFun }) => {
     return (
-        <Grid container sx={{p: 3}} spacing={1}>
+        <Grid container sx={{ p: 2 }} spacing={3}>
             <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
                     Hi {form.firstName} {form.lastName},{" "}
@@ -14,12 +14,12 @@ const Welcome = ({form, handleChange, createUserFun}) => {
                 </Typography>
             </Grid>
 
-            <Grid item xs={12} sx={{ my: 1 }}>
+            <Grid item xs={12}>
                 <NewToggleButtonStructure
                     isEdit={true}
                     label={"Select your role"}
                     value={form.role}
-                    handleChange={(e)=> handleChange("role", e.target.value)}
+                    handleChange={(e) => handleChange("role", e.target.value)}
                     toggleStyle={{
                         diplay: "flex",
                         flexDirection: "column",
@@ -34,7 +34,7 @@ const Welcome = ({form, handleChange, createUserFun}) => {
                             border: `1px solid ${colors.LIGHT_GRAY} !important`,
                             borderRadius: "0 !important",
                         }}
-                        // onClick={() => setShowConsultantDetailsPopup(true)}
+                    // onClick={() => setShowConsultantDetailsPopup(true)}
                     >
                         I am a Real estate consultant
                     </ToggleButton>

@@ -22,7 +22,7 @@ import { visuallyHidden } from "@mui/utils";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
 import Footer from "Components/Footer";
-import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
+import { getComparator, stableSort } from "utills/CommonFunction";
 import { listOfPages } from "Components/NavBar/Links";
 
 function Row(props) {

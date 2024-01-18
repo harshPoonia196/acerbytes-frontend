@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 
 
 import { visuallyHidden } from '@mui/utils';
-import { getComparator, stableSort } from "Components/CommonLayouts/CommonUtils";
+import { getComparator, stableSort } from "utills/CommonFunction";
 import AddIcon from '@mui/icons-material/Add';
 import AddCreditPopup from './Modal/AddCreditPopup';
 

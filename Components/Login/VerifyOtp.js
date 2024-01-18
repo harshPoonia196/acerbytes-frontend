@@ -7,7 +7,7 @@ import colors from "styles/theme/colors";
 import { LoadingButton } from '@mui/lab';
 
 const VerifyOtp = ({ loading, setOtpInput, form, prevStep, otpInput, verifyOtpFun, sendOtpFun, resendLoading }) => {
-    
+
     const [resendDisabled, setResendDisabled] = useState(true);
     const [timer, setTimer] = useState(60);
 
@@ -24,19 +24,19 @@ const VerifyOtp = ({ loading, setOtpInput, form, prevStep, otpInput, verifyOtpFu
     const handleResendClick = () => {
         if (!resendDisabled) {
             setResendDisabled(true);
-            setTimer(60); 
+            setTimer(60);
             sendOtpFun(true);
         }
     };
 
-    useEffect(()=> {
-        if(timer === 0){
+    useEffect(() => {
+        if (timer === 0) {
             setResendDisabled(false)
         }
     }, [timer])
-    
+
     return (
-        <Grid container>
+        <Grid container sx={{ p: 2 }} spacing={2}>
             <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
                     Mobile verification,
@@ -79,7 +79,7 @@ const VerifyOtp = ({ loading, setOtpInput, form, prevStep, otpInput, verifyOtpFu
             >
                 <Button
                     startIcon={<ArrowBackIosIcon />}
-                    onClick={()=> prevStep()}
+                    onClick={() => prevStep()}
                 >
                     Back
                 </Button>

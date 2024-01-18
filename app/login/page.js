@@ -4,18 +4,8 @@ import { useSearchParams } from "next/navigation";
 import {
   Container,
   Card,
-  Grid,
-  Button,
-  ToggleButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Snackbar,
-  Alert,
+  Box,
 } from "@mui/material";
-import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
-import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import {
   createUserAPI,
   sendOtpAPI,
@@ -209,7 +199,7 @@ function Login() {
       }
     } catch (error) {
       handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
-    }finally{
+    } finally {
       setLoading(false)
       setShowConsultantDetailsPopup(false)
     }
@@ -239,10 +229,10 @@ function Login() {
   return (
     <Container maxWidth="sm">
       <Card sx={{ p: 3 }}>
-        <Grid container spacing={2}>
+        <Box>
           {getComponentByStep()}
-        </Grid>
-        <ConsultantDialog loading={loading} form={form} createUserFun={createUserFun}  handleChange={handleChange} showConsultantDetailsPopup={showConsultantDetailsPopup} setShowConsultantDetailsPopup={setShowConsultantDetailsPopup} />
+        </Box>
+        <ConsultantDialog loading={loading} form={form} createUserFun={createUserFun} handleChange={handleChange} showConsultantDetailsPopup={showConsultantDetailsPopup} setShowConsultantDetailsPopup={setShowConsultantDetailsPopup} />
       </Card>
     </Container>
   );
