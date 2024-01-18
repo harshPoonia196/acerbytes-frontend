@@ -10,12 +10,14 @@ const rows = [
         firstName: 'Anand',
         lastName: 'Gupta',
         phone: 1234567558,
+        propertName: "Test",
         role: 'Consultant',
         status: 'Active',
     },
     {
         firstName: 'Anand',
         lastName: 'Gupta',
+        propertName: "Abc",
         phone: 1234567558,
         role: 'Consultant',
         status: 'Active',
@@ -36,8 +38,12 @@ const headCells = [
         label: 'Property type',
     },
     {
-        id: 'role',
+        id: 'propertyName', // role
         label: 'Property name',
+    },
+    {
+        id: 'role',
+        label: 'Role',
     },
     {
         id: 'status',
@@ -100,6 +106,7 @@ function RowStructure({ row }) {
         <TableCell>{row.firstName}</TableCell>
         <TableCell>{row.lastName}</TableCell>
         <TableCell>{row.phone}</TableCell>
+        <TableCell>{row.propertName}</TableCell>
         <TableCell>{row.role}</TableCell>
         <TableCell>{row.status}</TableCell>
         <TableCell sx={{ py: 0 }}>
