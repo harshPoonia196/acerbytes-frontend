@@ -538,8 +538,6 @@ function Profile() {
     localStorage.setItem("userDetails", JSON.stringify(userInfo));
   }
 
-  console.log("profle data: ", profileInfo);
-
   return (
     <>
       <nav className={classes.demo2}>
@@ -606,7 +604,7 @@ function Profile() {
               <Divider />
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewInputFieldStructure
-                  label="First name"
+                  label="First name *"
                   variant="outlined"
                   isEdit={isEdit}
                   // handleChange={handleChangeName}
@@ -615,7 +613,7 @@ function Profile() {
                   value={profileInfo?.name?.firstName}
                 />
                 <NewInputFieldStructure
-                  label="Last name"
+                  label="Last name *"
                   variant="outlined"
                   isEdit={isEdit}
                   handleChange={(e) => handleChange(e, "name", "lastName")}
@@ -624,7 +622,7 @@ function Profile() {
                 />
                 <NewPhoneInputFieldStructure
                   variant="outlined"
-                  label="Phone"
+                  label="Phone *"
                   isEdit={isEdit}
                   handleChange={(e) => handleChange(e, "phone", "number")}
                   handleSelect={(e) => handleChange(e, "phone", "countryCode")}
