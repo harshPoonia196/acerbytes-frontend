@@ -35,10 +35,11 @@ const BrokerDetails = (props) => {
 
   return (
     <>
-      <Card sx={{
-        p: 2,
+      <Box sx={{
+        px: 2,
         display: 'flex', gap: '1rem',
         flexDirection: { xs: 'column', evmd: 'row' },
+
       }}>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h3" sx={{ textTransform: 'capitalize' }}>
@@ -93,7 +94,7 @@ const BrokerDetails = (props) => {
             </Menu>
           </Box>
         </Box>
-      </Card >
+      </Box >
     </>
   )
 }

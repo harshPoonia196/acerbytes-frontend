@@ -198,7 +198,7 @@ export default function Enquiries() {
         >
           <Box sx={{ py: 4 }}>
             <Typography variant="h1"
-              sx={{ color: "#000" }}>
+              sx={{ color: "#000", fontWeight: 300 }}>
               Explore a world of possibilities with{' '}
               <span className="urlStyling" style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push(listOfPages.consultantJoinNow) }}>
                 5,433</span> open real estate queries. Your next customer is just a click away
