@@ -24,23 +24,27 @@ function CreditRequestPaymentPopup({ open, handleClose }) {
                         <Typography variant="h2" sx={{ fontWeight: 600 }}>
                             <span style={{ fontSize: '1rem' }}>Rs&nbsp;</span>34,500
                         </Typography>
-                        <Tooltip title='Copy'>
-                            <IconButton size='small'>
-                                <ContentCopyIcon fontSize='small' />
-                            </IconButton>
-                        </Tooltip>
+                        <Box sx={{ alignSelf: 'center' }}>
+                            <Tooltip title='Copy'>
+                                <IconButton size='small'>
+                                    <ContentCopyIcon fontSize='1.25rem' />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
                     </Box>
                     <Typography variant="h3">
                         <span style={{ fontSize: '1rem' }}>for</span>&nbsp;45,500&nbsp;<span style={{ fontSize: '1rem' }}>credits (points)</span>
                     </Typography>
                     <Typography variant="h6">is pending for payment for request number</Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Typography variant="h3" sx={{ mb: 2, mt: 2 }}>AB56TRT</Typography>
-                        <Tooltip title='Copy'>
-                            <IconButton size='small'>
-                                <ContentCopyIcon fontSize='small' />
-                            </IconButton>
-                        </Tooltip>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2, mt: 2 }}>
+                        <Typography variant="h3">AB56TRT</Typography>
+                        <Box>
+                            <Tooltip title='Copy'>
+                                <IconButton size='small'>
+                                    <ContentCopyIcon fontSize='1.25rem' />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
                     </Box>
                     <Button variant="contained" onClick={() => { router.push(listOfPages.consultantMakePayment) }}>
                         Pay Rs 34,500

@@ -19,7 +19,9 @@ function HistoryCard() {
             <CustomAccordionSummary aria-controls="panel1d-content" id="panel1d-header">
                 <Box sx={{ flex: 1, ml: 2 }}>
                     <Box sx={{ display: 'flex' }}>
-                        <Typography variant='h6' sx={{ flex: 1 }}>Paid rs 23,000 + 18% tax</Typography>
+                        <Typography variant='h6' sx={{ flex: 1 }}>
+                            23rd April, 2023 &#183; Paid ₹23,000 + 18% tax
+                        </Typography>
                         <Typography variant='h6' sx={{ color: colors.BLUE }}>Balance: 32,000</Typography>
                     </Box>
                     <Typography variant='h6'>
@@ -36,7 +38,7 @@ function HistoryCard() {
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
                         <Box sx={{ display: 'flex', px: 2, mb: 2 }}>
-                            <Typography variant='subtitle2' sx={{ color: colors.DISABLED, flex: 1 }}>Points Consumed</Typography>
+                            <Typography variant='subtitle2' sx={{ flex: 1 }}>Credit points consumed</Typography>
                             <Typography variant='h6'>12,000</Typography>
                         </Box>
                     </Grid>

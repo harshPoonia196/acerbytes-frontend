@@ -1,4 +1,4 @@
-import { Box, Button, Menu, Rating, Typography, MenuItem } from '@mui/material'
+import { Box, Card, Button, Menu, Rating, Typography, MenuItem } from '@mui/material'
 import React, { useState } from 'react'
 import StarIcon from "@mui/icons-material/Star";
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
@@ -35,10 +35,17 @@ const BrokerDetails = (props) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', gap: '1rem', justifyContent: 'space-between', flexDirection: { xs: 'column', evmd: 'row' } }}>
-        <Box>
-          <Typography variant="h3" sx={{ textTransform: 'capitalize' }}>{name}</Typography>
-          <Typography sx={{ my: '4px' }} variant="body2">{'6133 Rockside Rd #400 , independence, OH'}</Typography>
+      <Box sx={{
+        px: 2,
+        display: 'flex', gap: '1rem',
+        flexDirection: { xs: 'column', evmd: 'row' },
+
+      }}>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="h3" sx={{ textTransform: 'capitalize' }}>
+            {/* {name} */}Anand Gupta
+          </Typography>
+          <Typography sx={{ my: '4px' }} variant="body1">{'6133 Rockside Rd #400 , independence, OH'}</Typography>
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Rating
@@ -46,8 +53,8 @@ const BrokerDetails = (props) => {
               value={4}
               readOnly
               precision={0.5}
-              sx={{ fontSize: "1.25rem" }}
-              emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="small" />}
+              sx={{ fontSize: "1rem" }}
+              emptyIcon={<StarIcon style={{ opacity: 0.55 }} sx={{ fontSize: "1rem" }} />}
             />
             <Typography variant="body2" sx={{ ml: 1 }}>
               {labels[4]}
@@ -58,8 +65,10 @@ const BrokerDetails = (props) => {
 
         </Box>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'row', evmd: 'column' }, justifyContent: 'space-between' }}>
-          <Box><Button startIcon={<DriveFileRenameOutlineRoundedIcon />} size='small' variant='contained'>Write a Review</Button></Box>
           <Box>
+            <Button startIcon={<DriveFileRenameOutlineRoundedIcon />} size='small' variant='contained'>Write a Review</Button>
+          </Box>
+          <Box sx={{ textAlign: 'end' }}>
             <Button
               size='small'
               id="basic-button"
@@ -82,11 +91,10 @@ const BrokerDetails = (props) => {
             >
               <MenuItem onClick={handleClose}>Most Helpful</MenuItem>
               <MenuItem onClick={handleClose}>Recent</MenuItem>
-
             </Menu>
           </Box>
         </Box>
-      </Box>
+      </Box >
     </>
   )
 }
