@@ -7,7 +7,6 @@ import StarIcon from "@mui/icons-material/Star";
 const BrokerFeedBack = () => {
     return (
         <>
-
             <Box sx={{ mt: '1rem' }}>
                 <Card sx={{ display: 'flex', gap: '0.5rem', p: 2 }}>
                     <Box>
@@ -45,8 +44,8 @@ const BrokerFeedBack = () => {
                         </Box>
 
                         <Card sx={{ borderLeft: '2px solid gray', mt: '0.5rem', p: 2 }}>
-                            <Typography variant="h6">Response from the owner <Typography sx={{ fontWeight: 300, display: 'inline' }} variant="body2">a month ago</Typography></Typography>
-                            <Typography variant="p" sx={{}}>
+                            <Typography variant="h6">Response from Anand <Typography sx={{ fontWeight: 300, display: 'inline' }} variant="body2">a month ago</Typography></Typography>
+                            <Typography variant="body2" sx={{}}>
                                 Let nam vitae possimus dignissimos recusandae esse. Aperiam, quia!
                             </Typography>
                         </Card>

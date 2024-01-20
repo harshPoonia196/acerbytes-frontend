@@ -7,23 +7,20 @@ import BrokerDetails from 'Components/AllBrokers/BrokerDetails';
 import BrokerFeedBack from 'Components/AllBrokers/BrokerFeedBack';
 
 
-  
-const page = () => {
- 
-    const searchParams = useSearchParams()
-    const name = searchParams.get('name')
 
+const page = () => {
+
+  const searchParams = useSearchParams()
+  const name = searchParams.get('name')
 
   return (
     <>
-    <Container maxWidth="sm" sx={{mx:'auto'}}>
-      
-      <BrokerDetails name={name}/>
-      <BrokerFeedBack/>
-      <BrokerFeedBack/>
-      <BrokerFeedBack/>
-     
-    </Container>
+      <Container maxWidth="evmd" sx={{ mx: 'auto' }}>
+        <BrokerDetails name={name} />
+        <BrokerFeedBack />
+        <BrokerFeedBack />
+        <BrokerFeedBack />
+      </Container>
     </>
   )
 }

@@ -53,7 +53,7 @@ function BrokerCard({ broker, type, noReview }) {
         />
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">{broker?.name}</Typography>
-          <Typography variant="body2">{broker?.type}</Typography>
+          <Typography variant="body2">{broker?.location} &#183; {broker?.type}</Typography>
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: '1rem' }}>
             <Box sx={{ flex: 1 }}>
               <Box
