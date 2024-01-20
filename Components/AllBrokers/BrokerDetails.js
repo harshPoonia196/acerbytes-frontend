@@ -37,7 +37,7 @@ const BrokerDetails = (props) => {
     <>
       <Box sx={{ display: 'flex', gap: '1rem', justifyContent: 'space-between', flexDirection: { xs: 'column', evmd: 'row' } }}>
         <Box>
-          <Typography variant="h3">{name}</Typography>
+          <Typography variant="h3" sx={{ textTransform: 'capitalize' }}>{name}</Typography>
           <Typography sx={{ my: '4px' }} variant="body2">{'6133 Rockside Rd #400 , independence, OH'}</Typography>
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
