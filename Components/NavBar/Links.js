@@ -21,6 +21,7 @@ export const listOfPages = {
   userShortlist: '/user/shortlist',
   userMyConsultant: '/user/my-consultants',
   consultantProfile: '/consultant/profile',
+  consultantRatings: '/property-consultant/review',
   consultantMyLeads: "/consultant/my-leads",
   consultantLinks: "/consultant/my-links",
   consultantMyNotes: "/consultant/my-notes",
@@ -80,6 +81,11 @@ export const ConsultantMenuList = [
   {
     label: "Consultant profile",
     route: listOfPages.consultantProfile,
+    icon: <AccountCircleIcon fontSize="small" />,
+  },
+  {
+    label: "My ratings",
+    route: listOfPages.consultantRatings,
     icon: <AccountCircleIcon fontSize="small" />,
   },
   {
