@@ -166,7 +166,7 @@ export default function ClippedDrawer({ children }) {
           </List>
           <Divider />
           {
-            // matchUserRole(userDetails?.role, "user") &&
+            matchUserRole(userDetails?.role, "user") &&
             <>
               <List
                 subheader={
@@ -184,7 +184,7 @@ export default function ClippedDrawer({ children }) {
           }
 
           {
-            // matchUserRole(userDetails?.role, "broker") &&
+            matchUserRole(userDetails?.role, "broker") &&
             <>
               <List
                 subheader={
@@ -215,7 +215,7 @@ export default function ClippedDrawer({ children }) {
           }
 
           {
-            // matchUserRole(userDetails?.role, "admin") &&
+            matchUserRole(userDetails?.role, "admin") &&
             <>
               <List
                 subheader={
