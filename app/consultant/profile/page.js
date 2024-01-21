@@ -37,6 +37,7 @@ import { getBrokerProfile, updateBrokerProfile } from "api/BrokerProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
+import PageLoader from "Components/Loader/PageLoader";
 
 const tabHeight = 116;
 
@@ -328,9 +329,10 @@ function ConsultantProfile() {
   };
 
   const classes = useStyles();
-
+  console.log(mutate);
   return (
     <>
+      <PageLoader isLoading={isLoading || mutate.isPending} />
       <nav className={classes.demo2}>
         <NavTabProfilePage
           value={activeState}
