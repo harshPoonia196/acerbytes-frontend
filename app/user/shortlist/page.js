@@ -4,19 +4,12 @@ import {
   Container,
   Grid,
   Card,
-  InputBase,
   Box,
-  IconButton,
-  ToggleButton,
-  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import PropertyCard from "Components/PropertyList/PropertyCard";
-import SearchIcon from "@mui/icons-material/Search";
-import SelectTextFields from "Components/CommonLayouts/SelectTextFields";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import React from "react";
+import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 
 function ShortList() {
   const [alignment, setAlignment] = React.useState("asc");
@@ -26,6 +19,16 @@ function ShortList() {
   };
   return (
     <>
+      <Box sx={{ background: 'white', borderBottom: '1px solid whitesmoke', boxShadow: '1px 2px 2px -2px gainsboro!important' }}>
+        <Container maxWidth='lg'>
+          <Typography variant='h3' sx={{ my: 2, ml: 2 }}>
+            My favourite Properties (45)
+          </Typography>
+          <Card>
+            <CustomSearchInput />
+          </Card>
+        </Container>
+      </Box>
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           <Grid item xs={12}>

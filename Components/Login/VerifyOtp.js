@@ -43,7 +43,7 @@ const VerifyOtp = ({ loading, setOtpInput, form, prevStep, otpInput, verifyOtpFu
                     <span style={{ color: "gray" }}> enter OTP</span>
                 </Typography>
                 <Typography variant="body1">
-                    This is to ensure we connect with intended Customer only
+                    to ensure we connect with intended user only
                 </Typography>
             </Grid>
 

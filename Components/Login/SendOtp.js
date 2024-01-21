@@ -34,10 +34,10 @@ const SendOtp = ({ form, handleChange, sendOtpFun }) => {
         <Grid container sx={{ p: 2 }} spacing={2}>
             <Grid item xs={12} sx={{ mb: 1 }}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    Create your <span style={{ color: "gray" }}>account</span>
+                    Complete your <span style={{ color: "gray" }}>account creation</span>
                 </Typography>
                 <Typography variant="body1">
-                    Connect with professional property consultants only
+                    Sign in using 1-step when you visit next
                 </Typography>
             </Grid>
             <InputField

@@ -10,6 +10,12 @@ const page = () => {
   const [brokersList, setBrokersList] = useState([
     { name: "Anand Gupta", location: "Noida", type: "Individual Consultant", stars: 4, clients: 432 },
     { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
   ]);
 
 
