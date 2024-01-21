@@ -31,6 +31,8 @@ export const listOfPages = {
   consultantPaymentHistory: "/consultant/payment-history",
   consultantJoinNow: "/consultant/join-now",
   adminEnquiries: '/admin/enquiries',
+  adminOrdersRequest: '/admin/orders-request',
+  adminCreditStatus: '/admin/credit-status',
   adminAddProperty: '/admin/add-property',
   adminPropertyList: '/admin/property-list',
   adminManageUser: '/admin/manage-user',
@@ -121,6 +123,16 @@ export const AdminMenuList = [
   {
     label: "Leads received",
     route: listOfPages.adminEnquiries,
+    icon: <RecentActorsIcon fontSize="small" />,
+  },
+  {
+    label: "Orders request",
+    route: listOfPages.adminOrdersRequest,
+    icon: <RecentActorsIcon fontSize="small" />,
+  },
+  {
+    label: "Credit status",
+    route: listOfPages.adminCreditStatus,
     icon: <RecentActorsIcon fontSize="small" />,
   },
   {
