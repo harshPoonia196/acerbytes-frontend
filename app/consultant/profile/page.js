@@ -492,7 +492,7 @@ function ConsultantProfile() {
                   }}
                 >
                   <Typography variant="body1">
-                    Do Not Disturb (DND) Mode
+                    Do not disturb (DND) mode
                   </Typography>
                   <Switch
                     checked={isDndEnabled}
@@ -512,7 +512,7 @@ function ConsultantProfile() {
                   }}
                 >
                   <Typography variant="body1">
-                    Receive WhatsApp Promotions
+                    Dont send WhatsApp promotions
                   </Typography>
                   <Switch
                     checked={isPromotionEnabled}

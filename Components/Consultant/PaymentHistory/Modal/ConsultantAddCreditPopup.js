@@ -57,14 +57,14 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
                             <Button variant='contained' size='small' onClick={handleOpenCreditRequestPaymentPopup}>Get 1,00,000 points</Button>
                         </Box>
                     </Card>
-                    <Divider sx={{ my: 2, borderColor: 'gainsboro' }} />
-                    <Typography variant='body1'>
-                        Post requesting you will receive a <span style={{ fontWeight: 600 }}>order number</span>
-                        that can be shared with {companyName} representative (if any) and send screenshot at
-                        <Chip onClick={() => { }} icon={<WhatsAppIcon fontSize="small" />}
-                            label="+9198799877" size="small" sx={{ fontSize: '0.875rem' }} />
-                    </Typography>
-                    <Divider sx={{ my: 2, borderColor: 'gainsboro' }} />
+                    <Box sx={{ backgroundColor: 'whitesmoke', p: 2, my: 2 }}>
+                        <Typography variant='body1'>
+                            Post requesting you will receive a <span style={{ fontWeight: 600 }}>order number</span>
+                            that can be shared with {companyName} representative (if any) and send screenshot at
+                            <Chip onClick={() => { }} icon={<WhatsAppIcon fontSize="small" />}
+                                label="+9198799877" size="small" sx={{ fontSize: '0.875rem' }} />
+                        </Typography>
+                    </Box>
                     <Typography variant='body2'>
                         Property consultant can use above credits to activate below services
                     </Typography>
@@ -82,6 +82,11 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
                         <li style={{ marginLeft: '16px' }}>
                             <Typography variant='body2'>
                                 Managing leads panel with notes
+                            </Typography>
+                        </li>
+                        <li style={{ marginLeft: '16px' }}>
+                            <Typography variant='body2'>
+                                Link own profile with Property page
                             </Typography>
                         </li>
                     </ul>

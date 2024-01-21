@@ -12,7 +12,7 @@ function CreditRequestPaymentPopup({ open, handleClose }) {
         <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
             <DialogTitle onClose={handleClose}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    Credits (points) request generated
+                    Credits (points) purchase order generated
                 </Typography>
                 <Typography variant="body1">
                     Payment pending
@@ -20,11 +20,9 @@ function CreditRequestPaymentPopup({ open, handleClose }) {
             </DialogTitle>
             <DialogContent>
                 <Box sx={{ textAlign: 'center' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Typography variant="h2" sx={{ fontWeight: 600 }}>
-                            <span style={{ fontSize: '1rem' }}>Rs&nbsp;</span>34,500
-                        </Typography>
-                        <Box sx={{ alignSelf: 'center' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                        <Typography variant="h3">AB56TRT</Typography>
+                        <Box>
                             <Tooltip title='Copy'>
                                 <IconButton size='small'>
                                     <ContentCopyIcon fontSize='1.25rem' />
@@ -36,9 +34,11 @@ function CreditRequestPaymentPopup({ open, handleClose }) {
                         <span style={{ fontSize: '1rem' }}>for</span>&nbsp;45,500&nbsp;<span style={{ fontSize: '1rem' }}>credits (points)</span>
                     </Typography>
                     <Typography variant="h6">is pending for payment for request number</Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2, mt: 2 }}>
-                        <Typography variant="h3">AB56TRT</Typography>
-                        <Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+                        <Typography variant="h2" sx={{ fontWeight: 600 }}>
+                            <span style={{ fontSize: '1rem' }}>Rs&nbsp;</span>34,500
+                        </Typography>
+                        <Box sx={{ alignSelf: 'center' }}>
                             <Tooltip title='Copy'>
                                 <IconButton size='small'>
                                     <ContentCopyIcon fontSize='1.25rem' />
@@ -47,7 +47,7 @@ function CreditRequestPaymentPopup({ open, handleClose }) {
                         </Box>
                     </Box>
                     <Button variant="contained" onClick={() => { router.push(listOfPages.consultantMakePayment) }}>
-                        Pay Rs 34,500
+                        Pay here
                     </Button>
                 </Box>
                 <Divider sx={{ my: 2, borderColor: 'gainsboro' }} />
