@@ -237,7 +237,6 @@ function ConsultantProfile() {
   }, [itemsServer]);
 
   React.useEffect(() => {
-    console.log(data);
     setBrokerProfileInfo(data || {});
   }, [data]);
 
