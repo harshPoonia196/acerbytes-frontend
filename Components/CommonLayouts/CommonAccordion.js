@@ -18,7 +18,7 @@ const CustomAccordion = styled((props) => (
 
 const CustomAccordionSummary = styled((props) => (
     <MuiAccordionSummary
-        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} onClick={props.onIconClick} />}
         {...props}
     />
 ))(({ theme }) => ({
@@ -39,7 +39,7 @@ const CustomAccordionSummary = styled((props) => (
 
 const CustomAccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     padding: theme.spacing(2),
-    borderTop: '1px solid rgba(0, 0, 0, .125)',
+    borderTop: '1px solid whitesmoke',
 }));
 
 export { CustomAccordion, CustomAccordionSummary, CustomAccordionDetails }

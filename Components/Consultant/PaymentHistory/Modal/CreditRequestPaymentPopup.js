@@ -3,7 +3,7 @@ import React from 'react'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { useRouter } from 'next/navigation';
-import { listOfPages } from 'Components/NavBar/Links';
+import { companyName, listOfPages } from 'Components/NavBar/Links';
 
 function CreditRequestPaymentPopup({ open, handleClose }) {
     const router = useRouter()
@@ -54,7 +54,7 @@ function CreditRequestPaymentPopup({ open, handleClose }) {
                 <ul>
                     <li style={{ marginLeft: '16px' }}>
                         <Typography variant='body2'>
-                            Please share credits (points) request number with AreaBytes representative (if any)
+                            Please share credits (points) request number with {companyName} representative (if any)
                         </Typography>
                     </li>
                     <li style={{ marginLeft: '16px' }}>

@@ -1,6 +1,6 @@
 import { Button, Grid, ToggleButton, Typography } from '@mui/material';
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
-import { listOfPages } from 'Components/NavBar/Links';
+import { companyName, listOfPages } from 'Components/NavBar/Links';
 import React from 'react'
 import colors from "styles/theme/colors";
 
@@ -10,7 +10,7 @@ const Welcome = ({ form, handleChange, createUserFun }) => {
             <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
                     Hi {form.firstName} {form.lastName},{" "}
-                    <span style={{ color: "gray" }}>Welcome to Acrebytes</span>
+                    <span style={{ color: "gray" }}>Welcome to {companyName}</span>
                 </Typography>
             </Grid>
 
@@ -60,7 +60,7 @@ const Welcome = ({ form, handleChange, createUserFun }) => {
                             ml: "0 !important",
                         }}
                     >
-                        I am from Acrebytes Team
+                        I am from {companyName} Team
                     </ToggleButton>
                 </NewToggleButtonStructure>
             </Grid>

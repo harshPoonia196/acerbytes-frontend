@@ -2,6 +2,7 @@ import { Box, Button, Card, Chip, Dialog, DialogActions, DialogContent, DialogTi
 import React, { useState } from 'react'
 import CreditRequestPaymentPopup from './CreditRequestPaymentPopup'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import { companyName } from 'Components/NavBar/Links'
 
 function ConsultantAddCreditPopup({ open, handleClose }) {
     const [openCreditRequestPaymentPopup, setCreditRequestPaymentPopup] = useState(false)
@@ -20,7 +21,7 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
             <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
                 <DialogTitle onClose={handleClose}>
                     <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                        Request for credits (points)
+                        Request for buying credits (points)
                     </Typography>
                     <Typography variant="body1">
                         Potential to buy leads from the panel
@@ -58,7 +59,8 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
                     </Card>
                     <Divider sx={{ my: 2, borderColor: 'gainsboro' }} />
                     <Typography variant='body1'>
-                        Post requesting you will receive a service request number that can be shared with AreaBytes representative (if any) and send screenshot to
+                        Post requesting you will receive a <span style={{ fontWeight: 600 }}>order number</span>
+                        that can be shared with {companyName} representative (if any) and send screenshot at
                         <Chip onClick={() => { }} icon={<WhatsAppIcon fontSize="small" />}
                             label="+9198799877" size="small" sx={{ fontSize: '0.875rem' }} />
                     </Typography>

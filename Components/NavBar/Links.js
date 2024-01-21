@@ -11,6 +11,8 @@ import TableRowsIcon from "@mui/icons-material/TableRows";
 import LinkIcon from '@mui/icons-material/Link';
 import CloseIcon from '@mui/icons-material/Close';
 
+export const companyName = 'AcreBytes'
+
 export const listOfPages = {
   home: '/',
   pageNotFound: '/page-not-found',
