@@ -352,31 +352,37 @@ function ConsultantProfile() {
             <Grid item xs={12} id="userDetails">
               <Card sx={{ p: 2 }}>
                 <Box sx={{ display: "flex" }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                      Anand Gupta
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <a
-                      href="tel:8794561234"
-                      style={{
-                        display: "flex",
-                        alignSelf: "center",
-                        textDecoration: "none",
-                        color: "inherit",
-                      }}
-                    >
-                      <CallIcon fontSize="small" sx={{ alignSelf: "center" }} />
-                      <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                        +91 8794561234
+                  {brokerProfileInfo?.name ? (
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 900 }}>
+                        {`${brokerProfileInfo?.name?.firstName} ${brokerProfileInfo?.name?.lastName}`}
                       </Typography>
-                    </a>
-                  </Box>
+                    </Box>
+                  ) : null}
+                  {brokerProfileInfo?.phone?.number ? (
+                    <Box>
+                      <a
+                        href="tel:8794561234"
+                        style={{
+                          display: "flex",
+                          alignSelf: "center",
+                          textDecoration: "none",
+                          color: "inherit",
+                        }}
+                      >
+                        <CallIcon
+                          fontSize="small"
+                          sx={{ alignSelf: "center" }}
+                        />
+                        <Typography variant="h6" sx={{ alignSelf: "center" }}>
+                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${
+                            brokerProfileInfo?.phone?.number
+                          }`}
+                        </Typography>
+                      </a>
+                    </Box>
+                  ) : null}
                 </Box>
-                <Typography variant="body1" sx={{ mt: 1 }}>
-                  Mumbai
-                </Typography>
               </Card>
             </Grid>
             <Grid item xs={12}>
