@@ -3,7 +3,7 @@ import { Typography, ToggleButton, ToggleButtonGroup, Grid } from "@mui/material
 import colors from "styles/theme/colors";
 
 const NewToggleButtonStructure = ({
-  children, label, value, handleChange, isEdit, toggleStyle,name
+  children, label, value, handleChange, isEdit, toggleStyle, name
 }) => (
   <Grid item xs={12} sm={isEdit ? 12 : 6}>
     <Typography
@@ -22,7 +22,14 @@ const NewToggleButtonStructure = ({
         fullWidth
         onChange={handleChange}
         aria-label="Platform"
-        sx={toggleStyle}
+        sx={{
+          ...toggleStyle,
+          '& .Mui-selected, & .Mui-selected:hover': {
+            color: colors.BLACK,
+            fontWeight: 900,
+            backgroundColor: 'gainsboro'
+          }
+        }}
       >
         {children}
       </ToggleButtonGroup>

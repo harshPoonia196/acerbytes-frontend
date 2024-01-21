@@ -9,10 +9,10 @@ const GoogleSignIn = ({ getSignInUrl, googleSignInLoading }) => {
         <Grid container sx={{ p: 2 }} spacing={1}>
             <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    Welcome to, <span style={{ color: "gray" }}>{companyName}</span>
+                    Sign in to, <span style={{ color: "gray" }}>{companyName}</span>
                 </Typography>
                 <Typography variant="body1" sx={{ mt: 0.5 }}>
-                    Create account using Google
+                    for one step sign in, sign in using Google
                 </Typography>
             </Grid>
             <Grid item xs={12} sx={{ textAlign: "end" }}>
