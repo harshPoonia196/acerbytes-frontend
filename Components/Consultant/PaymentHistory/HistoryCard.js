@@ -7,6 +7,7 @@ import colors from 'styles/theme/colors';
 import { CustomAccordion, CustomAccordionDetails, CustomAccordionSummary } from 'Components/CommonLayouts/CommonAccordion';
 import SubAccordionOfHistoryCard from './SubAccordionOfHistoryCard';
 import DescriptionIcon from '@mui/icons-material/Description';
+import PriceFormatter from 'Components/CommonLayouts/PriceFormatter';
 
 function HistoryCard() {
     const [isExpanded, setIsExpanded] = React.useState(false);
@@ -31,7 +32,7 @@ function HistoryCard() {
                 <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant='h6' sx={{ flex: 1 }}>
-                            23rd April, 2023 &#183; Paid ₹23,000 + 18% tax
+                            23rd April, 2023 &#183; Paid <PriceFormatter amount='25000' display='text' currency='inr' /> + 18% tax
                         </Typography>
                         <Typography variant='h6' sx={{ color: colors.BLUE }}>Balance: 32,000</Typography>
                     </Box>
