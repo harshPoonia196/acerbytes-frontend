@@ -39,7 +39,7 @@ const CustomStyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-function CustomSearchInput() {
+function CustomSearchInput(props) {
     return (
         <CustomSearch>
             <CustomSearchIconWrapper>
@@ -47,6 +47,7 @@ function CustomSearchInput() {
             </CustomSearchIconWrapper>
             <CustomStyledInputBase
                 placeholder="Search…"
+                {...props}
                 inputProps={{ 'aria-label': 'search' }}
                 fullWidth
             />

@@ -1,42 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Container,
-  Typography,
-  Card,
-  Box,
-} from "@mui/material";
+import { Container, Typography, Card, Box } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import ManageUserTable from "Components/Admin/ManageUser/ManageUserTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 
 function ManageUser() {
   const [searchTerm, setSearchTerm] = useState("");
-  // const [filteredRows, setFilteredRows] = useState(rows);
 
-  // const handleSearch = (event) => {
-  //   const term = event.target.value.toLowerCase();
-  //   setSearchTerm(term);
-
-  //   const filtered = rows.filter(
-  //     (row) =>
-  //       row.firstName.toLowerCase().includes(term) ||
-  //       row.lastName.toLowerCase().includes(term) ||
-  //       row.phone.toLowerCase().includes(term) ||
-  //       row.role.toLowerCase().includes(term) ||
-  //       row.status.toLowerCase().includes(term)
-  //   );
-  //   setFilteredRows(filtered);
-  // };
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
 
   return (
     <>
       <Box sx={{ backgroundColor: "white" }}>
-        <Container
-          maxWidth="lg"
-        >
-          <CustomAdminBreadScrumbs text='Manage user' />
+        <Container maxWidth="lg">
+          <CustomAdminBreadScrumbs text="Manage user" />
         </Container>
       </Box>
       <Container>
@@ -48,12 +30,10 @@ function ManageUser() {
             label="Search"
             variant="outlined"
             value={searchTerm}
-            // onChange={handleSearch}
-            sx={{ mb: 2 }}
-
+            onChange={handleSearch}
           />
         </Card>
-        <ManageUserTable />
+        <ManageUserTable searchText={searchTerm} />
       </Container>
     </>
   );
