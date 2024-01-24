@@ -32,6 +32,7 @@ import {
   CommonMenuList,
   ConsultantMenuList,
   UserMenuList,
+  companyName,
   listOfPages,
 } from "./Links";
 import { useDispatch, useSelector } from "react-redux";
@@ -366,7 +367,7 @@ export default function ClippedDrawer({ children }) {
                     textTransform: 'uppercase'
                   }}
                 >
-                  Acrebytes
+                  {companyName}
                 </Typography>
               </a>
             </Box>

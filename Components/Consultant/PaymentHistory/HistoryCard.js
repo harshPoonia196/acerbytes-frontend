@@ -1,25 +1,38 @@
 'use client'
 
 import React from 'react'
-import { Box, Card, IconButton, Typography, Grid } from '@mui/material'
+import { Box, Card, IconButton, Typography, Grid, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import colors from 'styles/theme/colors';
 import { CustomAccordion, CustomAccordionDetails, CustomAccordionSummary } from 'Components/CommonLayouts/CommonAccordion';
 import SubAccordionOfHistoryCard from './SubAccordionOfHistoryCard';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 function HistoryCard() {
-    const [expanded, setExpanded] = React.useState(false);
+    const [isExpanded, setIsExpanded] = React.useState(false);
 
-    const handleChange = () => {
-        setExpanded(!expanded);
+    const handleExpandedStateChange = () => {
+        setIsExpanded(!isExpanded);
     };
 
+    const [anchorElMenuState, setAnchorElMenuState] = React.useState(null);
+    const openMenu = Boolean(anchorElMenuState);
+    const handleOpenMenu = (event) => {
+        setAnchorElMenuState(event.currentTarget);
+    };
+    const handleCloseMenu = () => {
+        setAnchorElMenuState(null);
+    };
+
+
     return (
-        <CustomAccordion expanded={expanded} onChange={handleChange}>
-            <CustomAccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                <Box sx={{ flex: 1, ml: 2 }}>
+        <CustomAccordion expanded={isExpanded} >
+            <CustomAccordionSummary aria-controls="panel1d-content" id="panel1d-header" onIconClick={handleExpandedStateChange}>
+                <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
-                        <Typography variant='h6' sx={{ flex: 1 }}>Paid rs 23,000 + 18% tax</Typography>
+                        <Typography variant='h6' sx={{ flex: 1 }}>
+                            23rd April, 2023 &#183; Paid ₹23,000 + 18% tax
+                        </Typography>
                         <Typography variant='h6' sx={{ color: colors.BLUE }}>Balance: 32,000</Typography>
                     </Box>
                     <Typography variant='h6'>
@@ -27,16 +40,32 @@ function HistoryCard() {
                     </Typography>
                 </Box>
                 <Box>
-                    <IconButton>
+                    <IconButton onClick={handleOpenMenu}>
                         <MoreVertIcon />
                     </IconButton>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorElMenuState}
+                        open={openMenu}
+                        onClose={handleCloseMenu}
+                        MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuItem onClick={handleCloseMenu}>
+                            <ListItemIcon>
+                                <DescriptionIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Request for Invoice</ListItemText>
+                        </MenuItem>
+                    </Menu>
                 </Box>
             </CustomAccordionSummary>
             <CustomAccordionDetails>
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
                         <Box sx={{ display: 'flex', px: 2, mb: 2 }}>
-                            <Typography variant='subtitle2' sx={{ color: colors.DISABLED, flex: 1 }}>Points Consumed</Typography>
+                            <Typography variant='subtitle2' sx={{ flex: 1 }}>Credit points consumed</Typography>
                             <Typography variant='h6'>12,000</Typography>
                         </Box>
                     </Grid>

@@ -15,6 +15,7 @@ import BrokerCard from "Components/BrokersPage/BrokerCard";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
+import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 
 function Brokers() {
   const router = useRouter();
@@ -26,13 +27,14 @@ function Brokers() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container sx={{ pb: "0 !important" }}>
-          <Box sx={{ py: 4 }}>
-            <Typography variant="h1">
-              75 consultant may be interested to work with you
-            </Typography>
-          </Box>
+      <Box sx={{ background: 'white', borderBottom: '1px solid whitesmoke', boxShadow: '1px 2px 2px -2px gainsboro!important' }}>
+        <Container>
+          <Typography variant='h3' sx={{ my: 2, ml: 2 }}>
+            75 consultant may be interested to work with you
+          </Typography>
+          <Card>
+            <CustomSearchInput />
+          </Card>
         </Container>
       </Box>
 

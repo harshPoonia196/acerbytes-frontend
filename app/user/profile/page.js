@@ -136,7 +136,7 @@ function Profile() {
     },
     settings: {
       dnd: false,
-      rwp: true,
+      rwp: false,
     },
     currentAddress: {
       addressType: "",
@@ -1039,49 +1039,49 @@ function Profile() {
                 </Typography>
               </Box>
               <Divider />
-              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <Grid
-                  container
-                  item
-                  xs={12}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography variant="body1">
-                    Do Not Disturb (DND) Mode
-                  </Typography>
-                  <Switch
-                    checked={profileInfo?.settings?.dnd}
-                    name={"dnd"}
-                    onChange={handleChangeSettings}
-                    color="primary"
-                  />
-                </Grid>
+              <Box sx={{ p: 2 }}>
+                <Grid container rowSpacing={1} columnSpacing={2}>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="body1">
+                      Do not disturb (DND) mode
+                    </Typography>
+                    <Switch
+                      checked={profileInfo?.settings?.dnd}
+                      name={"dnd"}
+                      onChange={handleChangeSettings}
+                      color="primary"
+                    />
+                  </Grid>
 
-                <Grid
-                  container
-                  item
-                  xs={12}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography variant="body1">
-                    Receive WhatsApp Promotions
-                  </Typography>
-                  <Switch
-                    checked={profileInfo?.settings?.rwp}
-                    name={"rwp"}
-                    onChange={handleChangeSettings}
-                    color="primary"
-                  />
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="body1">
+                      Don't send WhatsApp promotions
+                    </Typography>
+                    <Switch
+                      checked={profileInfo?.settings?.rwp}
+                      name={"rwp"}
+                      onChange={handleChangeSettings}
+                      color="primary"
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
+              </Box>
             </Card>
           </Grid>
         </Grid>

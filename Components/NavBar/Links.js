@@ -11,6 +11,8 @@ import TableRowsIcon from "@mui/icons-material/TableRows";
 import LinkIcon from '@mui/icons-material/Link';
 import CloseIcon from '@mui/icons-material/Close';
 
+export const companyName = 'AcreBytes'
+
 export const listOfPages = {
   home: '/',
   pageNotFound: '/page-not-found',
@@ -21,6 +23,7 @@ export const listOfPages = {
   userShortlist: '/user/shortlist',
   userMyConsultant: '/user/my-consultants',
   consultantProfile: '/consultant/profile',
+  consultantRatings: '/property-consultant/review',
   consultantMyLeads: "/consultant/my-leads",
   consultantLinks: "/consultant/my-links",
   consultantMyNotes: "/consultant/my-notes",
@@ -28,6 +31,8 @@ export const listOfPages = {
   consultantPaymentHistory: "/consultant/payment-history",
   consultantJoinNow: "/consultant/join-now",
   adminEnquiries: '/admin/enquiries',
+  adminOrdersRequest: '/admin/orders-request',
+  adminCreditStatus: '/admin/credit-status',
   adminAddProperty: '/admin/add-property',
   adminPropertyList: '/admin/property-list',
   adminManageUser: '/admin/manage-user',
@@ -83,6 +88,11 @@ export const ConsultantMenuList = [
     icon: <AccountCircleIcon fontSize="small" />,
   },
   {
+    label: "My ratings",
+    route: listOfPages.consultantRatings,
+    icon: <AccountCircleIcon fontSize="small" />,
+  },
+  {
     label: "My leads",
     route: listOfPages.consultantMyLeads,
     icon: <PlaylistAddCheckIcon fontSize="small" />,
@@ -113,6 +123,16 @@ export const AdminMenuList = [
   {
     label: "Leads received",
     route: listOfPages.adminEnquiries,
+    icon: <RecentActorsIcon fontSize="small" />,
+  },
+  {
+    label: "Orders request",
+    route: listOfPages.adminOrdersRequest,
+    icon: <RecentActorsIcon fontSize="small" />,
+  },
+  {
+    label: "Credit status",
+    route: listOfPages.adminCreditStatus,
     icon: <RecentActorsIcon fontSize="small" />,
   },
   {

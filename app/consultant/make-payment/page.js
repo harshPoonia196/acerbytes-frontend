@@ -6,6 +6,7 @@ import Image from 'next/image'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Footer from 'Components/Footer';
 import CustomConsultantBreadScrumbs from 'Components/CommonLayouts/CustomConsultantBreadScrumbs';
+import { companyName } from 'Components/NavBar/Links';
 
 function MakePayment() {
     return (
@@ -26,7 +27,7 @@ function MakePayment() {
                         </Typography>
                         <Box sx={{ textAlign: 'end' }}>
                             <Typography variant="h4">
-                                Acrebytes
+                                {companyName}
                             </Typography>
                             <Typography variant="subtitle2">
                                 Gravity44 platform solution
