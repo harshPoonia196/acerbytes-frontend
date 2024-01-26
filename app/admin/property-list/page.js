@@ -10,13 +10,9 @@ function PropertyList() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container
-          maxWidth="lg"
-        >
-          <CustomAdminBreadScrumbs text='Property list' />
-        </Container>
-      </Box>
+
+      <CustomAdminBreadScrumbs text='Property list' />
+
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
           26 Properties listed

@@ -14,6 +14,8 @@ import StarIcon from "@mui/icons-material/Star";
 import CallIcon from "@mui/icons-material/Call";
 import { useState } from "react";
 import RatingDialog from "./Dialog/RatingDialog";
+import DoneIcon from '@mui/icons-material/Done';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 const labels = {
   0.5: "Useless",
@@ -52,7 +54,9 @@ function BrokerCard({ broker, type, noReview }) {
           sx={{ mr: 2, width: 56, height: 56 }}
         />
         <Box sx={{ flex: 1 }}>
-          <Typography variant="h6">{broker?.name}</Typography>
+          <Typography variant="h6">{broker?.name}<DoneIcon fontSize="1rem" sx={{ alignSelf: 'center', ml: 1 }} />
+            <DoneAllIcon fontSize="1rem" sx={{ alignSelf: 'center', ml: 1 }} />
+          </Typography>
           <Typography variant="body2">{broker?.location} &#183; {broker?.type}</Typography>
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: '1rem' }}>
             <Box sx={{ flex: 1 }}>

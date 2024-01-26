@@ -6,13 +6,9 @@ import React from 'react'
 function OrderRequest() {
     return (
         <>
-            <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <CustomAdminBreadScrumbs text='Orders request' />
-                </Container>
-            </Box>
+
+            <CustomAdminBreadScrumbs text='Orders request' />
+
             <Container>
                 <Typography variant="h6" sx={{ mb: 2 }}>
                     List of Enquiries (Admin)

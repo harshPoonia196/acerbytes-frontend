@@ -402,16 +402,11 @@ function AddProperty() {
     return (
         <>
             <nav className={classes.demo2}>
+                <CustomAdminBreadScrumbs text='Add Property' />
                 <NavTab value={activeState} handleChange={handleClick} list={itemsServer} />
             </nav>
 
-            <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <CustomAdminBreadScrumbs text='Add Property' />
-                </Container>
-            </Box>
+
 
             <Container>
                 <div className="container">

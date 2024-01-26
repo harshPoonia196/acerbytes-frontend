@@ -6,13 +6,7 @@ import React from 'react'
 function CreditStatus() {
     return (
         <>
-            <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <CustomAdminBreadScrumbs text='Credit status' />
-                </Container>
-            </Box>
+            <CustomAdminBreadScrumbs text='Credit status' />
             <Container>
                 <Typography variant="h6" sx={{ mb: 2 }}>
                     Credit status (Admin)
