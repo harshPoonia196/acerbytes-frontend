@@ -29,15 +29,11 @@ function MyNotes() {
     };
 
     return (
-       
+
         <Container>
-             <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <CustomConsultantBreadScrumbs text='My notes' />
-                </Container>
-            </Box>
+
+            <CustomConsultantBreadScrumbs text='My notes' />
+
             <Typography variant="h6" sx={{ mb: 2 }}>
                 My Leads
             </Typography>

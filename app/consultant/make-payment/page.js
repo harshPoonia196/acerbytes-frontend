@@ -11,13 +11,9 @@ import { companyName } from 'Components/NavBar/Links';
 function MakePayment() {
     return (
         <>
-            <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <CustomConsultantBreadScrumbs text='Make payment' />
-                </Container>
-            </Box>
+
+            <CustomConsultantBreadScrumbs text='Make payment' />
+
             <Container maxWidth='sm'>
 
                 <Card>

@@ -27,7 +27,10 @@ function Brokers() {
 
   return (
     <>
-      <Box sx={{ background: 'white', borderBottom: '1px solid whitesmoke', boxShadow: '1px 2px 2px -2px gainsboro!important' }}>
+      <Box sx={{
+        background: 'white', borderBottom: '1px solid whitesmoke', boxShadow: '1px 2px 2px -2px gainsboro!important',
+        position: 'sticky', top: { xs: 54, sm: 64 }, zIndex: 100
+      }}>
         <Container>
           <Typography variant='h3' sx={{ my: 2, ml: 2 }}>
             75 consultant may be interested to work with you
@@ -40,28 +43,6 @@ function Brokers() {
 
       <Container>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Card>
-              <Box
-                sx={{
-                  display: "flex",
-                  flex: 1,
-                  pl: 2,
-                  borderRadius: "8px",
-                }}
-              >
-                <InputBase
-                  placeholder="Search"
-                  type="text"
-                  inputProps={{ "aria-label": "Search..." }}
-                  fullWidth
-                />
-                <IconButton type="submit" aria-label="search">
-                  <SearchIcon />
-                </IconButton>
-              </Box>
-            </Card>
-          </Grid>
           {brokersList?.map((broker) => (
             <Grid item xs={12} key={broker.name}>
               <BrokerCard broker={broker} />

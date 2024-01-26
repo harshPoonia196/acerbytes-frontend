@@ -223,13 +223,9 @@ function ConsultantProfile() {
           list={itemsServer}
         />
       </nav>
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container
-          maxWidth="lg"
-        >
-          <CustomConsultantBreadScrumbs text='Profile' />
-        </Container>
-      </Box>
+
+      <CustomConsultantBreadScrumbs text='Profile' />
+
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           {/* <Grid item xs={12} sx={{ textAlign: 'end' }}>
