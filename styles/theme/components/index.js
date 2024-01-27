@@ -19,6 +19,7 @@ import MuiCard from "./MuiCard";
 import MuiDialogContent from "./MuiDialogContent";
 import MuiDialogTitle from "./MuiDialogTitle";
 import MuiChip from "./MuiChip";
+import MuiToggleButton from "./MuiToggleButton";
 
 export default {
   MuiButton,
@@ -41,5 +42,6 @@ export default {
   MuiCard,
   MuiDialogContent,
   MuiDialogTitle,
-  MuiChip
+  MuiChip,
+  MuiToggleButton
 };

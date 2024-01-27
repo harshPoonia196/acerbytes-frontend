@@ -3,6 +3,7 @@ import React from 'react'
 import GoogleIcon from "@mui/icons-material/Google";
 import { LoadingButton } from '@mui/lab';
 import { companyName } from 'Components/NavBar/Links';
+import colors from 'styles/theme/colors';
 
 const GoogleSignIn = ({ getSignInUrl, googleSignInLoading }) => {
     return (
@@ -28,7 +29,16 @@ const GoogleSignIn = ({ getSignInUrl, googleSignInLoading }) => {
                     Sign in with Google
                 </LoadingButton>
             </Grid>
-        </Grid>
+            <Grid item xs={12}>
+                <Typography variant='body2' sx={{ mt: 1, fontStyle: 'italic' }}>
+                    By signing in, you (user) agree with the acrebytes.com's <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }}>
+                        terms
+                    </span> and <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }}>
+                        privacy
+                    </span>
+                </Typography>
+            </Grid>
+        </Grid >
     )
 }
 

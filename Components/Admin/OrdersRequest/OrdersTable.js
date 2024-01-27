@@ -9,17 +9,22 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const rows = [
     {
+        orderNo: 265444,
         name: 'Anand Gupta',
         mobileNumber: '+91 125454544',
-        lastTopupDate: '10th April, 2023',
-        lastTopupAmount: 18000,
-        opening: 5000,
-        consumedSoFar: 5000,
-        balance: 5000,
+        amount: '18000',
+        point: '5000',
+        approvedDiscount: '10%',
+        approvedPayment: 10000,
+        approvedPoints: 15000,
     }
 ];
 
 const headCells = [
+    {
+        id: 'orderNo',
+        label: 'Order no',
+    },
     {
         id: 'name',
         label: 'Name',
@@ -29,24 +34,24 @@ const headCells = [
         label: 'Mobile number',
     },
     {
-        id: 'lastTopupDate',
-        label: 'Last topup date',
+        id: 'amount',
+        label: 'Amount',
     },
     {
-        id: 'lastTopupAmount',
-        label: 'Last topup amount',
+        id: 'point',
+        label: 'Point',
     },
     {
-        id: 'opening',
-        label: 'Opening',
+        id: 'approvedDiscount',
+        label: 'Approved discount',
     },
     {
-        id: 'consumedSoFar',
-        label: 'Consumed so far',
+        id: 'approvedPayment',
+        label: 'Approved payment',
     },
     {
-        id: 'balance',
-        label: 'Balance',
+        id: 'approvedPoints',
+        label: 'Approved points',
     },
     {
         id: 'action',
@@ -105,13 +110,14 @@ function RowStructure({ row }) {
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
+        <TableCell>{row.orderNo}</TableCell>
         <TableCell>{row.name}</TableCell>
         <TableCell>{row.mobileNumber}</TableCell>
-        <TableCell>{row.lastTopupDate}</TableCell>
-        <TableCell>{row.lastTopupAmount}</TableCell>
-        <TableCell>{row.opening}</TableCell>
-        <TableCell>{row.consumedSoFar}</TableCell>
-        <TableCell>{row.balance}</TableCell>
+        <TableCell>{row.amount}</TableCell>
+        <TableCell>{row.point}</TableCell>
+        <TableCell>{row.approvedDiscount}</TableCell>
+        <TableCell>{row.approvedPayment}</TableCell>
+        <TableCell>{row.approvedPoints}</TableCell>
         <TableCell>
             <IconButton
                 aria-label="more"
@@ -139,7 +145,7 @@ function RowStructure({ row }) {
     </TableRow>
 }
 
-function CreditTable() {
+function OrdersTable() {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState(null);
     const [page, setPage] = React.useState(0);
@@ -195,4 +201,4 @@ function CreditTable() {
     )
 }
 
-export default CreditTable
+export default OrdersTable
