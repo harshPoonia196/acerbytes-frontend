@@ -24,11 +24,7 @@ const NewToggleButtonStructure = ({
         aria-label="Platform"
         sx={{
           ...toggleStyle,
-          '& .Mui-selected, & .Mui-selected:hover': {
-            color: colors.BLACK,
-            fontWeight: 900,
-            backgroundColor: 'gainsboro'
-          }
+
         }}
       >
         {children}
@@ -36,7 +32,7 @@ const NewToggleButtonStructure = ({
       :
       <Typography variant="subtitle1">Value</Typography>
     }
-  </Grid>
+  </Grid >
 );
 
 export default NewToggleButtonStructure;

@@ -9,15 +9,15 @@ import CustomConsultantBreadScrumbs from 'Components/CommonLayouts/CustomConsult
 const page = () => {
 
     return (
-        <Container>
-
+        <>
             <CustomConsultantBreadScrumbs text='Make links' />
-
-            <Card sx={{ mb: 2 }}>
-                <CustomSearchInput />
-            </Card>
-            <MyLinksTable />
-        </Container>
+            <Container>
+                <Card sx={{ mb: 2 }}>
+                    <CustomSearchInput />
+                </Card>
+                <MyLinksTable />
+            </Container>
+        </>
     )
 }
 

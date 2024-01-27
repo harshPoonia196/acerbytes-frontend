@@ -20,7 +20,7 @@ const NewAutoCompleteInputStructure = ({
     <Grid item xs={12} sm={6}>
       <Box>
         <Typography
-          variant={variant}
+          variant='subtitle2'
           sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
         >
           {label}

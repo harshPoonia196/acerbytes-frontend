@@ -11,6 +11,7 @@ function NewSelectTextFieldStructure({
   error,
   isEdit,
   full,
+  variant,
   sx,
 }) {
   return (
@@ -27,6 +28,7 @@ function NewSelectTextFieldStructure({
         <TextField
           select
           name={name}
+          variant={variant ? variant : "outlined"}
           value={value && value}
           onChange={handleChange}
           error={error && error}
