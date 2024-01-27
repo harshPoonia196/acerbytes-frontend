@@ -108,6 +108,8 @@ export const addressType = [
 
 export const ToasterMessages = {
   PROFILE_UPDATE_SUCCESS: "Profile updated succesfully!",
+  ORDER_REQUESTED_SUCCESS: "Order requested succesfully!",
+  ORDER_COMPLETED_SUCCESS: "Order completed succesfully!",
 };
 
 export const BuyingCreditPoints = [
@@ -127,3 +129,10 @@ export const BuyingCreditPoints = [
     discount: "30",
   },
 ];
+
+
+export const ORDER_STATUS = {
+  PENDING: "PENDING",
+  COMPLETED: "COMPLETED",
+  REJECTED: "REJECTED",
+};
