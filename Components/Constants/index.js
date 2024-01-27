@@ -106,6 +106,24 @@ export const addressType = [
   },
 ];
 
-export const ToasterMessages= {
-  PROFILE_UPDATE_SUCCESS: "Profile updated succesfully!"
-}
+export const ToasterMessages = {
+  PROFILE_UPDATE_SUCCESS: "Profile updated succesfully!",
+};
+
+export const BuyingCreditPoints = [
+  {
+    amount: "25,000",
+    point: "25,000",
+    discount: "0",
+  },
+  {
+    amount: "40,000",
+    point: "50,000",
+    discount: "20",
+  },
+  {
+    amount: "70,000",
+    point: "1,00,000",
+    discount: "30",
+  },
+];
