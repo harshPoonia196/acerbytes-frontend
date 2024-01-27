@@ -15,7 +15,7 @@ import {
   IconButton,
   Chip,
   Menu,
-    MenuItem,
+  MenuItem,
 } from "@mui/material";
 import React from "react";
 import Paper from "@mui/material/Paper";
@@ -32,12 +32,12 @@ import {
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
   ROLES,
+  ROLE_CONSTANTS,
 } from "Components/config/config";
 import Loading from "Components/CommonLayouts/Loading";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 import { matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
-
 
 const headCells = [
   {
@@ -108,9 +108,14 @@ const RoleViewer = ({ role, userDetails, updateRole }) => {
         value={role}
         onChange={handleChange}
         label="Select role"
-        disabled={!(matchUserRole(userDetails?.role, "admin") || matchUserRole(userDetails?.role, "superAdmin"))}
+        disabled={
+          !(
+            matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin) ||
+            matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
+          )
+        }
       >
-        {ROLES?.map((rs) => {
+        {ROLES?.filter((rs) => rs.isVisible)?.map((rs) => {
           return <MenuItem value={rs.value}>{rs.label}</MenuItem>;
         })}
       </Select>
@@ -118,7 +123,7 @@ const RoleViewer = ({ role, userDetails, updateRole }) => {
   );
 };
 
-function RowStructure({ row,userDetails, updateRole, handleUpdateStatus }) {
+function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -136,7 +141,7 @@ function RowStructure({ row,userDetails, updateRole, handleUpdateStatus }) {
   return (
     <TableRow
       key={row.name}
-      style={row.isBlocked ? {backgroundColor: "#dcc4c4"}: null}
+      style={row.isBlocked ? { backgroundColor: "#dcc4c4" } : null}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <TableCell>
@@ -154,7 +159,10 @@ function RowStructure({ row,userDetails, updateRole, handleUpdateStatus }) {
         />
       </TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton disabled={!matchUserRole(userDetails?.role, "admin")} sx={{ fontSize: "1rem !important" }}>
+        <IconButton
+          disabled={!matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)}
+          sx={{ fontSize: "1rem !important" }}
+        >
           <MoreVertIcon onClick={handleClick} fontSize="1rem" />
         </IconButton>
         <Menu
@@ -166,13 +174,15 @@ function RowStructure({ row,userDetails, updateRole, handleUpdateStatus }) {
             "aria-labelledby": "basic-button",
           }}
         >
-          {row.isBlocked ?
-          <MenuItem onClick={() => updateStatus(row.googleID, false)}>
-            Unblock
-          </MenuItem>: 
-           <MenuItem onClick={() => updateStatus(row.googleID, true)}>
-           Block
-         </MenuItem>}
+          {row.isBlocked ? (
+            <MenuItem onClick={() => updateStatus(row.googleID, false)}>
+              Unblock
+            </MenuItem>
+          ) : (
+            <MenuItem onClick={() => updateStatus(row.googleID, true)}>
+              Block
+            </MenuItem>
+          )}
         </Menu>
       </TableCell>
     </TableRow>
