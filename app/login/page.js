@@ -97,7 +97,13 @@ function Login() {
       setLoading(true);
 
       const res = await signInAuthenticationAPI({ code: code });
-      const { email, id, name, token, userDetails } = res?.data?.data;
+      const { email, id, name, superAdmin,token, userDetails } = res?.data?.data;
+      let formData = {
+        email: email,
+        googleId: id,
+        firstName: name?.split(" ")?.[0] || "",
+        lastName: name?.split(" ")?.[name?.split(" ")?.length - 1] || "",
+      }
 
       if (token) {
         login(userDetails, token)
@@ -107,13 +113,12 @@ function Login() {
 
       setLoading(false);
       openSnackbar("Authentication successful", "success");
-
+      if(superAdmin){
+        formData.role='superAdmin'
+       }
       setForm((prev) => ({
         ...prev,
-        email: email,
-        googleId: id,
-        firstName: name?.split(" ")?.[0] || "",
-        lastName: name?.split(" ")?.[name?.split(" ")?.length - 1] || "",
+        ...formData
       }));
 
       nextStep();
@@ -154,8 +159,11 @@ function Login() {
         otp: otpInput,
       };
       const res = await verifyOtpAPI(payload);
-      if (res.status === 200) {
+      if (res.status === 200 && !form.role==='superAdmin') {
         nextStep();
+      }
+      if(form.role==="superAdmin"){
+        createUserFun()
       }
     } catch (error) {
       handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
