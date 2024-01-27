@@ -13,7 +13,7 @@ import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextF
 import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompleteInputStructure';
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 
-function ProjectCard({ isEdit, form, handleChange, value }) {
+function ProjectCard({ isEdit, form, handleChange, errors }) {
 
     const {
         builder,
@@ -26,6 +26,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
         status,
         constructionProgress,
     } = form.overview;
+
 
     return (
         <>
@@ -77,6 +78,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                             options={[
                                 { label: "Birla", value: "Birla" }
                             ]}
+                            error={errors?.["overview.builder"]}
                             handleChange={(e, newValue) => handleChange(newValue?.value, "overview", "builder")}
                         />
                         <NewInputFieldStructure
@@ -84,6 +86,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                             variant="outlined"
                             isEdit={isEdit}
                             value={projectName}
+                            error={errors?.["overview.projectName"]}
                             handleChange={(e) => handleChange(e, "overview", "projectName")}
                         />
                         <NewSelectTextFieldStructure
@@ -91,6 +94,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                             name="projectCategory"
                             isEdit={isEdit}
                             value={projectCategory}
+                            error={errors?.["overview.projectCategory"]}
                             list={[
                                 { label: 'Residential', value: 'Residential' },
                                 { label: 'Commercial', value: 'Commercial' },
@@ -105,12 +109,14 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                                 { label: 'Flat', value: 'Flat' },
                                 { label: 'Shop', value: 'Shop' },
                             ]}
+                            error={errors?.["overview.projectType"]}
                             handleChange={(e, newValue) => handleChange(newValue, "overview", "projectType")}
                         />
                         <NewInputFieldStructure
                             label="Phase"
                             variant="outlined"
                             isEdit={isEdit}
+                            error={errors?.["overview.phase"]}
                             value={phase}
                             handleChange={(e) => handleChange(e, "overview", "phase")}
                         />
@@ -122,6 +128,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                                 { label: '2000', value: '2000' },
                                 { label: '2001', value: '2001' },
                             ]}
+                            error={errors?.["overview.launchYear"]}
                             handleChange={(e) => handleChange(e, "overview", "launchYear")}
                         />
                         <NewSelectTextFieldStructure
@@ -142,6 +149,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                                 { label: 'under construction', value: 'under construction' },
                                 { label: 'completed', value: 'completed' },
                             ]}
+                            error={errors?.["overview.status"]}
                             handleChange={(e) => handleChange(e, "overview", "status")}
                         />
 
@@ -155,6 +163,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                                     { label: 'Delay', value: 'Delay' },
                                     { label: 'On time', value: 'On time' },
                                 ]}
+                                error={errors?.["overview.constructionProgress"]}
                                 handleChange={(e) => handleChange(e, "overview", "constructionProgress")}
                             />
                         }

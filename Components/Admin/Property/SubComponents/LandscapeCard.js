@@ -15,7 +15,7 @@ import NewUnitAreaInputField from '../../../CommonLayouts/NewUnitAreaInputField'
 import colors from 'styles/theme/colors';
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 
-function LandscapeCard({ isEdit, form, handleChange }) {
+function LandscapeCard({ isEdit, form, handleChange, errors }) {
 
     const { numberOfBuildings, maxFloors, minFloors, totalUnits, area, greenArea, unitDensity, greenDensity, layoutType } = form.layout;
 
@@ -43,6 +43,7 @@ function LandscapeCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={numberOfBuildings}
+                        error={errors?.["layout.numberOfBuildings"]}
                         handleChange={(e) => handleChange(e, "layout", "numberOfBuildings")}
                     />
                     <NewMultiSelectAutoCompleteInputStructure
@@ -56,6 +57,7 @@ function LandscapeCard({ isEdit, form, handleChange }) {
                             { label: '3 BHK', value: '3 BHK' },
                             { label: '4 BHK', value: '4 BHK' },
                         ]}
+                        error={errors?.["layout.layoutType"]}
                         handleChange={(e, newValue) => handleChange(newValue, "layout", "layoutType")}
                     />
                     <NewInputFieldStructure
@@ -64,6 +66,7 @@ function LandscapeCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={maxFloors}
+                        error={errors?.["layout.maxFloors"]}
                         handleChange={(e) => handleChange(e, "layout", "maxFloors")}
                     />
                     <NewInputFieldStructure
@@ -72,6 +75,7 @@ function LandscapeCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={minFloors}
+                        error={errors?.["layout.minFloors"]}
                         handleChange={(e) => handleChange(e, "layout", "minFloors")}
                     />
                     <NewInputFieldStructure
@@ -79,6 +83,7 @@ function LandscapeCard({ isEdit, form, handleChange }) {
                         name="totalUnits"
                         variant="outlined"
                         isEdit={isEdit}
+                        error={errors?.["layout.totalUnits"]}
                         value={totalUnits}
                         handleChange={(e) => handleChange(e, "layout", "totalUnits")}
                     />
@@ -88,6 +93,7 @@ function LandscapeCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={area}
+                        error={errors?.["layout.area"]}
                         handleChange={(e) => handleChange(e, "layout", "area")}
                         units={[
                             { label: 'acres', value: 'acres' }
@@ -99,6 +105,7 @@ function LandscapeCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={greenArea}
+                        error={errors?.["layout.greenArea"]}
                         handleChange={(e) => handleChange(e, "layout", "greenArea")}
                     />
                     <NewInputFieldStructure
@@ -107,6 +114,7 @@ function LandscapeCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={unitDensity}
+                        error={errors?.["layout.unitDensity"]}
                         handleChange={(e) => handleChange(e, "layout", "unitDensity")}
                     />
                     <NewInputFieldStructure
@@ -115,6 +123,7 @@ function LandscapeCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={greenDensity}
+                        error={errors?.["layout.greenDensity"]}
                         handleChange={(e) => handleChange(e, "layout", "greenDensity")}
                     />
 

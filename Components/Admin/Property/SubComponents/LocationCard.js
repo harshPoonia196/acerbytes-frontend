@@ -14,7 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
-function LocationCard({ isEdit, form, handleChange }) {
+function LocationCard({ isEdit, form, handleChange, errors }) {
 
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
 
@@ -40,6 +40,7 @@ function LocationCard({ isEdit, form, handleChange }) {
                         label="State"
                         isEdit={isEdit}
                         value={state}
+                        error={errors?.["location.state"]}
                         handleChange={(e) => handleChange(e, "location", "state")}
                     />
                     <NewInputFieldStructure
@@ -47,6 +48,7 @@ function LocationCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={city}
+                        error={errors?.["location.city"]}
                         handleChange={(e) => handleChange(e, "location", "city")}
                     />
                     <NewInputFieldStructure
@@ -54,6 +56,7 @@ function LocationCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={sector}
+                        error={errors?.["location.sector"]}
                         handleChange={(e) => handleChange(e, "location", "sector")}
                     />
                     <NewInputFieldStructure
@@ -61,6 +64,7 @@ function LocationCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={area}
+                        error={errors?.["location.area"]}
                         handleChange={(e) => handleChange(e, "location", "area")}
                     />
                     <NewInputFieldStructure
@@ -68,6 +72,7 @@ function LocationCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={pinCode}
+                        error={errors?.["location.pinCode"]}
                         handleChange={(e)=> handleChange(e, "location", "pinCode")}
                     />
                     <NewInputFieldStructure
@@ -75,6 +80,7 @@ function LocationCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={googleMapLink}
+                        error={errors?.["location.googleMapLink"]}
                         handleChange={(e)=> handleChange(e, "location", "googleMapLink")}
                     />
                     <NewInputFieldStructure
@@ -82,6 +88,7 @@ function LocationCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={longitude}
+                        error={errors?.["location.longitude"]}
                         handleChange={(e)=> handleChange(e, "location", "longitude")}
                     />
                     <NewInputFieldStructure
@@ -89,6 +96,7 @@ function LocationCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={latitude}
+                        error={errors?.["location.latitude"]}
                         handleChange={(e)=> handleChange(e, "location", "latitude")}
                     />
                 </Grid>

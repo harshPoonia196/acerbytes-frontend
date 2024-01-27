@@ -21,7 +21,9 @@ import AttachFileIcon from '@mui/icons-material/AttachFile'
 import UploadMarketingImage from 'Components/Admin/Property/Modal/UploadMarketingImage'
 
 
-function MarketingCard({ isEdit }) {
+function MarketingCard({ isEdit, errors, form, handleChange }) {
+
+    const { tagLine, description } = form.marketing
 
     const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false)
 
@@ -98,8 +100,26 @@ function MarketingCard({ isEdit }) {
                             </Button>
                         </Card>
                     </Grid>
-                    <NewInputFieldStructure label='Tag line' variant='outlined' isEdit={isEdit} isFull />
-                    <NewInputFieldStructure label='Tag line' variant='outlined' isEdit={isEdit} multiline rows={2} isFull />
+                    <NewInputFieldStructure
+                        label='Tag line'
+                        variant='outlined'
+                        isEdit={isEdit}
+                        isFull
+                        error={errors?.["marketing.tagLine"]}
+                        value={tagLine}
+                        handleChange={() => handleChange(e, "marketing", "tagLine")}
+                    />
+                    <NewInputFieldStructure
+                        label='Tag line'
+                        variant='outlined'
+                        isEdit={isEdit}
+                        multiline
+                        rows={2}
+                        isFull
+                        error={errors?.["marketing.description"]}
+                        value={description}
+                        handleChange={() => handleChange(e, "marketing", "description")}
+                    />
                 </Grid>
             </Card>
         </Grid>

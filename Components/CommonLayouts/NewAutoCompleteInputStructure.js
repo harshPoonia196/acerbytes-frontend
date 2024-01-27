@@ -14,7 +14,8 @@ const NewAutoCompleteInputStructure = ({
   sx,
   variant,
   isEdit,
-  options
+  options,
+  error
 }) => (
   <>
     <Grid item xs={12} sm={6}>
@@ -35,7 +36,7 @@ const NewAutoCompleteInputStructure = ({
         fullWidth
         onChange={handleChange}
         renderInput={(params) => (
-          <TextField {...params} value={params.value} size="small" fullWidth />
+          <TextField {...params} value={params.value} size="small" fullWidth error={error} />
         )}
       />
     </Grid>

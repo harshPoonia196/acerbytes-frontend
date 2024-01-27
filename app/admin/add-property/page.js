@@ -25,7 +25,6 @@ import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
-import { listOfTabsInAddProperty } from "utills/Constants";
 
 const tabHeight = 116;
 
@@ -377,7 +376,7 @@ function AddProperty() {
             description: ""
         }
     })
-
+    
 
     const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
         let value = e?.target ? thirdKeyName === 'checked' ? e.target.checked : e.target.value : e
@@ -397,7 +396,24 @@ function AddProperty() {
         }))
     }
 
-    console.log(form)
+    const validateForm = () => {
+        const { error } = Schema.validate(form, { abortEarly: false });
+
+        if (error) {
+            // console.log("🚀 ~ validateForm ~ error:", error.details)
+            const validationErrors = {};
+            error.details.forEach((detail) => {
+                validationErrors[detail?.context?.label] = detail?.message
+            });
+            // Handle validation errors, e.g., display error messages
+            setErrors(validationErrors)
+            return false;
+        }
+
+        // Validation passed
+        return true;
+    };
+
 
     return (
         <>
@@ -411,20 +427,20 @@ function AddProperty() {
             <Container>
                 <div className="container">
                     <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-                        <ProjectCard form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <RegulatoryCard form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <LandscapeCard form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <FloorPlanCard form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <FacilitiesCard form={form} isEdit={isEdit} />
-                        <LocationCard form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <ProjectCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <RegulatoryCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <LandscapeCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <FloorPlanCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <FacilitiesCard errors={errors} form={form} isEdit={isEdit} />
+                        <LocationCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         {/* <ResalePriceCard isEdit={isEdit} />
                         <BuilderPriceCard isEdit={isEdit} /> */}
-                        <InvestmentCard form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <InvestmentCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         <PropertyConsultantsCard isEdit={isEdit} />
                         <OverallAssessmentCard isEdit={isEdit} />
                         {/* <BankCard isEdit={isEdit} /> */}
-                        <MarketingCard isEdit={isEdit} />
-                        <Grid item xs={12} sx={{ textAlign: 'end' }}>
+                        <MarketingCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <Grid onClick={validateForm} item xs={12} sx={{ textAlign: 'end' }}>
                             <Button variant='contained'>Save</Button>
                         </Grid>
                     </Grid>
