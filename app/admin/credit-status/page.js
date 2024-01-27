@@ -1,23 +1,19 @@
 import { Box, Container, Typography } from '@mui/material'
-import OrdersTable from 'Components/Admin/OrdersRequest/OrdersTable'
+import CreditTable from 'Components/Admin/CreditStatus/CreditTable'
+
 import CustomAdminBreadScrumbs from 'Components/CommonLayouts/CustomAdminBreadScrumbs'
 import React from 'react'
 
 function CreditStatus() {
     return (
         <>
-            <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <CustomAdminBreadScrumbs text='Credit status' />
-                </Container>
-            </Box>
+            <CustomAdminBreadScrumbs text='Credit point status' />
             <Container>
                 <Typography variant="h6" sx={{ mb: 2 }}>
-                    Credit status (Admin)
+                    Credit point status (Admin)
                 </Typography>
-                <OrdersTable />
+
+                <CreditTable />
             </Container>
         </>
     )

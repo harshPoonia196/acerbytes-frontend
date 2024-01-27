@@ -11,8 +11,10 @@ import {
   Chip,
   Button,
   Divider,
+  Fab,
 } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
+import SaveIcon from "@mui/icons-material/Save";
 import React from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
@@ -531,7 +533,7 @@ function Profile() {
 
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ textAlign: "end" }}>
+          {/* <Grid item xs={12} sx={{ textAlign: "end" }}>
             <LoadingButton
               onClick={handleSave}
               loading={isLoading}
@@ -541,7 +543,7 @@ function Profile() {
             >
               Save
             </LoadingButton>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} id="userDetails">
             <Card sx={{ p: 2 }}>
               <Box sx={{ display: "flex" }}>
@@ -1086,6 +1088,25 @@ function Profile() {
           </Grid>
         </Grid>
       </Container>
+      <Box
+        sx={{
+          position: "fixed",
+          right: 16,
+          bottom: 16,
+          display: { xs: "none", evmd: "flex" },
+          flexDirection: "column",
+        }}
+      >
+        <Fab
+          variant="extended"
+          sx={{ justifyContent: "flex-start" }}
+          onClick={handleSave}
+          disabled={!checkMandatoryFields()}
+        >
+          <SaveIcon fontSize="small" sx={{ mr: 1 }} />
+          Save
+        </Fab>
+      </Box>
     </>
   );
 }

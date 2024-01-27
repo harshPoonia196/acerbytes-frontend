@@ -38,54 +38,55 @@ import AddCreditPointsPopup from "./Modal/AddCreditPointsPopup";
 import { useAuth } from "utills/AuthContext";
 
 const rows = [
-  {
-    name: "Anand Gupta",
-    mobileNumber: "+91 125454544",
-    lastTopupDate: "10th April, 2023",
-    lastTopupAmount: 18000,
-    opening: 5000,
-    consumedSoFar: 5000,
-    balance: 5000,
-  },
+    {
+        orderNo: 265444,
+        name: 'Anand Gupta',
+        mobileNumber: '+91 125454544',
+        amount: '18000',
+        point: '5000',
+        approvedDiscount: '10%',
+        approvedPayment: 10000,
+        approvedPoints: 15000,
+    }
 ];
 
 const headCells = [
-  {
-    id: "orderNumber",
-    label: "Order Number",
-  },
-  {
-    id: "name",
-    label: "Name",
-  },
-  {
-    id: "mobileNumber",
-    label: "Mobile number",
-  },
-  {
-    id: "lastTopupDate",
-    label: "Last topup date",
-  },
-  {
-    id: "lastTopupAmount",
-    label: "Last topup amount",
-  },
-  {
-    id: "points",
-    label: "Points",
-  },
-  // {
-  //   id: "consumedSoFar",
-  //   label: "Consumed so far",
-  // },
-  {
-    id: "discount",
-    label: "Discount",
-  },
-  {
-    id: "action",
-    label: "Action",
-  },
+    {
+        id: 'orderNo',
+        label: 'Order no',
+    },
+    {
+        id: 'name',
+        label: 'Name',
+    },
+    {
+        id: 'mobileNumber',
+        label: 'Mobile number',
+    },
+    {
+        id: 'amount',
+        label: 'Amount',
+    },
+    {
+        id: 'point',
+        label: 'Point',
+    },
+    {
+        id: 'approvedDiscount',
+        label: 'Approved discount',
+    },
+    {
+        id: 'approvedPayment',
+        label: 'Approved payment',
+    },
+    {
+        id: 'approvedPoints',
+        label: 'Approved points',
+    },
+    {
+        id: 'action',
+        label: 'Action',
+    }
 ];
 
 function EnhancedTableHead(props) {
@@ -178,8 +179,15 @@ function RowStructure({ row, isCompleted, userDetails, handleOrderRequest }) {
       <TableRow
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-      >
-        <TableCell>{row?.orderNumber}</TableCell>
+    >
+        <TableCell>{row.orderNumber}</TableCell>
+        <TableCell>{row.name}</TableCell>
+        <TableCell>{row.mobileNumber}</TableCell>
+        <TableCell>{row.amount}</TableCell>
+        <TableCell>{row.point}</TableCell>
+        <TableCell>{row.approvedDiscount}</TableCell>
+        <TableCell>{row.approvedPayment}</TableCell>
+        <TableCell>{row.approvedPoints}</TableCell>
         <TableCell>
           {row?.brokerId?.name?.firstName} {row?.brokerId?.name?.lastName}
         </TableCell>
@@ -373,7 +381,7 @@ function TableView({ status }) {
   );
 }
 
-function CreditTable() {
+function OrdersTable() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -402,4 +410,4 @@ function CreditTable() {
   );
 }
 
-export default CreditTable;
+export default OrdersTable;

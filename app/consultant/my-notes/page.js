@@ -29,37 +29,35 @@ function MyNotes() {
     };
 
     return (
-       
-        <Container>
-             <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <CustomConsultantBreadScrumbs text='My notes' />
-                </Container>
-            </Box>
-            <Typography variant="h6" sx={{ mb: 2 }}>
-                My Leads
-            </Typography>
-            <UpdateLeadStatus open={openUpdatePopup} handleClose={handleCloseUpdatePopup} />
-            <Card sx={{ mb: 2 }}>
-                <ToggleButtonGroup
-                    color="primary"
-                    value={alignment}
-                    exclusive
-                    aria-label="Platform"
-                    sx={{ display: 'flex' }}
-                >
-                    <ToggleButton size='small' value="all" sx={{ flex: 1, border: 'none' }}
-                        onClick={() => { router.push(listOfPages.consultantMyLeads) }}>All (10)</ToggleButton>
-                    <ToggleButton size='small' value="notes" sx={{ flex: 1, border: 'none' }}>Notes (10)</ToggleButton>
-                </ToggleButtonGroup>
-            </Card>
-            <Box sx={{ textAlign: 'end', mb: 2 }}>
-                <Button variant="outlined" size="small" onClick={handleOpenUpdatePopup}>Add notes</Button>
-            </Box>
-            <MyLeadsStatus />
-        </Container>
+        <>
+            <CustomConsultantBreadScrumbs text='My notes' />
+            <Container>
+
+
+
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                    My Leads
+                </Typography>
+                <UpdateLeadStatus open={openUpdatePopup} handleClose={handleCloseUpdatePopup} />
+                <Card sx={{ mb: 2 }}>
+                    <ToggleButtonGroup
+                        color="primary"
+                        value={alignment}
+                        exclusive
+                        aria-label="Platform"
+                        sx={{ display: 'flex' }}
+                    >
+                        <ToggleButton size='small' value="all" sx={{ flex: 1, border: 'none' }}
+                            onClick={() => { router.push(listOfPages.consultantMyLeads) }}>All (10)</ToggleButton>
+                        <ToggleButton size='small' value="notes" sx={{ flex: 1, border: 'none' }}>Notes (10)</ToggleButton>
+                    </ToggleButtonGroup>
+                </Card>
+                <Box sx={{ textAlign: 'end', mb: 2 }}>
+                    <Button variant="outlined" size="small" onClick={handleOpenUpdatePopup}>Add notes</Button>
+                </Box>
+                <MyLeadsStatus />
+            </Container>
+        </>
     );
 }
 
