@@ -1,4 +1,4 @@
-import { InputBase } from '@mui/material';
+import { Box, IconButton, InputBase } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search'
 
@@ -41,17 +41,25 @@ const CustomStyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function CustomSearchInput(props) {
     return (
-        <CustomSearch>
-            <CustomSearchIconWrapper>
-                <SearchIcon />
-            </CustomSearchIconWrapper>
-            <CustomStyledInputBase
-                placeholder="Search…"
+        <Box
+            sx={{
+                display: "flex",
+                flex: 1,
+                pl: 2,
+                borderRadius: "8px",
+            }}
+        >
+            <InputBase
+                placeholder="Search..."
+                type="text"
                 {...props}
-                inputProps={{ 'aria-label': 'search' }}
+                inputProps={{ "aria-label": "Search..." }}
                 fullWidth
             />
-        </CustomSearch>
+            <IconButton type="submit" aria-label="search">
+                <SearchIcon fontSize='small' />
+            </IconButton>
+        </Box>
     )
 }
 

@@ -16,11 +16,9 @@ function ManageUser() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container maxWidth="lg">
-          <CustomAdminBreadScrumbs text="Manage user" />
-        </Container>
-      </Box>
+
+      <CustomAdminBreadScrumbs text='Manage user' />
+
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
           Manage User

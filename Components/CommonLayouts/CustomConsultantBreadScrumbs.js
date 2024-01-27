@@ -227,6 +227,5 @@ export default function CustomConsultantBreadScrumbs({ text }) {
                 </Stack>
             </Container>
         </Box>
-
     );
 }
