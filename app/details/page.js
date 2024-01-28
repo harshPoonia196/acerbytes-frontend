@@ -404,7 +404,7 @@ const PropertyDetailsPage = () => {
               width: "100%",
               display: { xs: "block", evmd: "none" },
               background: 'whitesmoke',
-              boxShadow: '-1px -2px -6px 2px gainsboro !important'
+              boxShadow: '-1px -2px 6px 2px gainsboro !important'
             }}
           >
             <Box sx={{ mt: -1, ml: -1, display: 'flex', flexWrap: "wrap" }}>
