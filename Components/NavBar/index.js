@@ -51,7 +51,7 @@ import { useAuth } from "utills/AuthContext";
 const drawerWidth = 240;
 
 export default function ClippedDrawer({ children }) {
-  const { isDrawerOpen } = useSelector((state) => state);
+  const isDrawerOpen = useSelector((state) => state.isDrawerOpen);
   const router = useRouter();
   const pathname = usePathname()
 
@@ -252,10 +252,9 @@ export default function ClippedDrawer({ children }) {
             <ListItem
               disablePadding
               secondaryAction={
-                <IconButton edge="end">
+                <IconButton onClick={() => handleDrawerClose()} edge="end">
                   <CloseIcon
                     fontSize="small"
-                    onClick={() => handleDrawerClose()}
                   />
                 </IconButton>
               }

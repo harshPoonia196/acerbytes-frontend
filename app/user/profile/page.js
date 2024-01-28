@@ -152,7 +152,7 @@ function Profile() {
 
   const [isEdit, setIsEdit] = useState(true);
 
-  const [activeState, setActiveState] = React.useState(null);
+  const [activeState, setActiveState] = React.useState('userDetails');
 
   let itemsServer = listOfProfileTab.map((tab) => {
     const hash = tab.value;

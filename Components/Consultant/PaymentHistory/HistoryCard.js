@@ -28,7 +28,7 @@ function HistoryCard() {
 
     return (
         <CustomAccordion expanded={isExpanded} >
-            <CustomAccordionSummary aria-controls="panel1d-content" id="panel1d-header" onIconClick={handleExpandedStateChange}>
+            <CustomAccordionSummary handleIconClick={handleExpandedStateChange}>
                 <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant='h5' sx={{ flex: 1 }}>
