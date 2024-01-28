@@ -188,7 +188,7 @@ export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
 
     const router = useRouter()
 
-    const [openAdminLinkPopup, setOpenAdminLinkPopup] = React.useState()
+    const [openAdminLinkPopup, setOpenAdminLinkPopup] = React.useState(false)
 
     const handleOpenAdminLinkPopup = () => {
         setOpenAdminLinkPopup(true)
