@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Card,
     Typography,
@@ -8,6 +8,7 @@ import {
     IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import {yearList} from "Components/Constants/index"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompleteInputStructure';
@@ -108,6 +109,13 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             list={[
                                 { label: 'Flat', value: 'Flat' },
                                 { label: 'Shop', value: 'Shop' },
+                                {label:"Restaurant",value:"Restaurant"},
+                                {label:"Pent house",value:"Pent house"},
+                                {label:"Flat",value:"Flat"},
+                                {label:"Land",value:"Land"},
+                                {label:"Retail space",value:"Retail space"},
+                                {label:"Studio apartment",value:"Studio apartment"},
+                                {label:"Food court",value:"Food court"}
                             ]}
                             error={errors?.["overview.projectType"]}
                             handleChange={(e, newValue) => handleChange(newValue, "overview", "projectType")}
@@ -124,10 +132,7 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             label="Launch"
                             isEdit={isEdit}
                             value={launchYear}
-                            list={[
-                                { label: '2000', value: '2000' },
-                                { label: '2001', value: '2001' },
-                            ]}
+                            list={yearList}
                             error={errors?.["overview.launchYear"]}
                             handleChange={(e) => handleChange(e, "overview", "launchYear")}
                         />
@@ -135,10 +140,8 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             label="Completion"
                             isEdit={isEdit}
                             value={completionYear}
-                            list={[
-                                { label: '2000', value: '2000' },
-                                { label: '2001', value: '2001' },
-                            ]}
+                            list={yearList}
+                            error={errors?.["overview.completionYear"]}
                             handleChange={(e) => handleChange(e, "overview", "completionYear")}
                         />
                         <NewSelectTextFieldStructure
@@ -148,6 +151,15 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             list={[
                                 { label: 'under construction', value: 'under construction' },
                                 { label: 'completed', value: 'completed' },
+                                {label:"Pre launch",value:"Pre launch"},
+                                {label:"RERA approved",value:"RERA approved"},
+                                {label:"Launch",value:"Launch"},
+                                {label:"Under construction",value:"Under construction"},
+                                {label:"CC",value:"CC"},
+                                {label:"OC",value:"OC"},
+                                {label:"Delivered",value:"Delivered"},
+                                {label:"Registeration",value:"Registeration"},
+                                {label:"Resale",value:"Resale"}
                             ]}
                             error={errors?.["overview.status"]}
                             handleChange={(e) => handleChange(e, "overview", "status")}

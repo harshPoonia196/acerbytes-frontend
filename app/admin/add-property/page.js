@@ -8,12 +8,14 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useState } from "react";
+import { listOfTabsInAddProperty } from "utills/Constants";
 import NavTab from "Components/Admin/Property/NavTab";
 import throttle from "lodash/throttle";
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from 'Components/Admin/Property/SubComponents/LocationCard';
 import ProjectCard from 'Components/Admin/Property/SubComponents/ProjectCard';
 import BankCard from 'Components/Admin/Property/SubComponents/BankCard';
+import {Schema} from "Components/Admin/Property/Validation/PropertyValidation"
 import FacilitiesCard from 'Components/Admin/Property/SubComponents/FacilitiesCard';
 import LandscapeCard from 'Components/Admin/Property/SubComponents/LandscapeCard';
 import FloorPlanCard from 'Components/Admin/Property/SubComponents/FloorPlanCard';
@@ -149,7 +151,7 @@ function AddProperty() {
     const classes = useStyles();
 
     const [isEdit, setIsEdit] = useState(true);
-
+    const [errors, setErrors] = useState({});
     const [form, setForm] = useState({
         overview: {
             builder: '',
@@ -378,7 +380,16 @@ function AddProperty() {
     })
     
 
-    const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
+    const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName,autoFill,autoFillField,autoFillFieldValue) => {
+        if(autoFill){
+        let innerObj = {
+            [secondKeyName]:e.target.value,
+            [autoFillField]:autoFillFieldValue
+        }
+setForm({...form,[firstKeyName]:{...form?.[firstKeyName],...innerObj}})
+        }
+     
+else{
         let value = e?.target ? thirdKeyName === 'checked' ? e.target.checked : e.target.value : e
         await setForm((prev) => ({
             ...prev,
@@ -394,11 +405,13 @@ function AddProperty() {
                         },
                 },
         }))
+}
+
     }
 
     const validateForm = () => {
         const { error } = Schema.validate(form, { abortEarly: false });
-
+        // console.log(validationError?.["layout.layoutType"],'errrrrr')
         if (error) {
             // console.log("🚀 ~ validateForm ~ error:", error.details)
             const validationErrors = {};
@@ -413,6 +426,7 @@ function AddProperty() {
         // Validation passed
         return true;
     };
+
 
 
     return (
@@ -438,7 +452,7 @@ function AddProperty() {
                         <InvestmentCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         <PropertyConsultantsCard isEdit={isEdit} />
                         <OverallAssessmentCard isEdit={isEdit} />
-                        {/* <BankCard isEdit={isEdit} /> */}
+                        {/* <BankCard isEdit={isEdit} /> */} 
                         <MarketingCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         <Grid onClick={validateForm} item xs={12} sx={{ textAlign: 'end' }}>
                             <Button variant='contained'>Save</Button>

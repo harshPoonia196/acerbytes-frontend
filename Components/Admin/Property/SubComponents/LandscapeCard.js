@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Card,
     Typography,
@@ -56,6 +56,11 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                             { label: '2 BHK', value: '2 BHK' },
                             { label: '3 BHK', value: '3 BHK' },
                             { label: '4 BHK', value: '4 BHK' },
+                            { label: '5 BHK', value: '5 BHK' },
+                            { label: '6 BHK', value: '6 BHK' },
+                            { label: '7 BHK', value: '7 BHK' },
+                            { label: '8 BHK', value: '8 BHK' },
+                            { label: '9+ BHK', value: '9+ BHK' },
                         ]}
                         error={errors?.["layout.layoutType"]}
                         handleChange={(e, newValue) => handleChange(newValue, "layout", "layoutType")}
@@ -76,7 +81,20 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         isEdit={isEdit}
                         value={minFloors}
                         error={errors?.["layout.minFloors"]}
-                        handleChange={(e) => handleChange(e, "layout", "minFloors")}
+                        handleChange={(e) => handleChange(e, "layout", "minFloors",undefined,true,)}
+                    />
+                    
+                    <NewUnitAreaInputField
+                        label="Area"
+                        name="area"
+                        variant="outlined"
+                        isEdit={isEdit}
+                        value={area}
+                        error={errors?.["layout.area"]}
+                        handleChange={(e) => {console.log('ingaaaa'),handleChange(e, "layout", "area")}}
+                        units={[
+                            { label: 'acres', value: 'acres' }
+                        ]}
                     />
                     <NewInputFieldStructure
                         label="Units (Total)"
@@ -85,19 +103,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         isEdit={isEdit}
                         error={errors?.["layout.totalUnits"]}
                         value={totalUnits}
-                        handleChange={(e) => handleChange(e, "layout", "totalUnits")}
-                    />
-                    <NewUnitAreaInputField
-                        label="Area"
-                        name="area"
-                        variant="outlined"
-                        isEdit={isEdit}
-                        value={area}
-                        error={errors?.["layout.area"]}
-                        handleChange={(e) => handleChange(e, "layout", "area")}
-                        units={[
-                            { label: 'acres', value: 'acres' }
-                        ]}
+                        handleChange={(e) => handleChange(e, "layout", "totalUnits",undefined,true,"unitDensity",e.target.value/area)}
                     />
                     <NewUnitAreaInputField
                         label="Green area"
@@ -136,7 +142,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Construction Quality
                             </Typography>
                         </Box>
-                        <Rating name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating   onChange={(e) => { handleChange(e, "layout", "constructionQuality")}} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
 
                     <Grid item xs={6}>
@@ -148,7 +154,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Interior Quality
                             </Typography>
                         </Box>
-                        <Rating name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating onChange={(e) => { handleChange(e, "layout", "constructionQuality")}} name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
 
                 </Grid>
