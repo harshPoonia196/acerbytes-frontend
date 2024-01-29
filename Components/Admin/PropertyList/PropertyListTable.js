@@ -8,26 +8,12 @@ import { getComparator, stableSort } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from 'next/navigation';
+import {
+    getAllProperty, deleteProperty
+} from "api/Property.api";
+import { useSnackbar } from "utills/SnackbarContext"
 
-const rows = [
-    {
-        project: "Rizvi heights",
-        builder: "Rizvi builders",
-        city: "Mumbai",
-        area: "Noida",
-        sector: 'sector 26',
-        status: "Draft",
-        lastModified: "12th Nov 2018, 09:18 AM"
-    }, {
-        project: "Rizvi heights",
-        builder: "Rizvi builders",
-        city: "Mumbai",
-        area: "Noida",
-        sector: 'sector 26',
-        status: "Draft",
-        lastModified: "12th Nov 2018, 09:18 AM"
-    }
-];
+
 
 const headCells = [
     {
@@ -106,7 +92,7 @@ function EnhancedTableHead(props) {
     );
 }
 
-function RowStructure({ row, router }) {
+function RowStructure({ row, router, handleDelete}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -132,7 +118,7 @@ function RowStructure({ row, router }) {
         </TableCell>
         <TableCell sx={{ py: 0 }}>
             <IconButton sx={{ fontSize: "1rem !important" }}>
-                <DeleteIcon fontSize='1rem' />
+                <DeleteIcon fontSize='1rem' onClick={() => handleDelete(row.id)}  />
             </IconButton>
         </TableCell>
         <TableCell>
@@ -168,6 +154,64 @@ function PropertyListTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+    const [propertyList, setPropertyList] =React.useState([])
+
+    const transformData = (data) => {
+        return data.map(item => ({
+            id: item._id,
+            builder: item.overview?.builder,
+            project: item.overview?.projectName,
+            city: item.location?.city,
+            area: item.location?.area,
+            sector: item.location?.sector,
+            status: item.overview?.status,
+        }));
+    };
+
+    const getAllPropertyList = async () => {
+        try {
+            const res = await getAllProperty();
+            if(res.status === 200){
+                const transformedData = transformData(res.data);
+                setPropertyList(transformedData);
+            }
+                
+        } catch (error) {
+              showToaterMessages(
+                error?.response?.data?.message ||
+                error?.message ||
+                "Error fetching state list",
+                "error"
+              );
+        }
+    };
+
+    const handleDelete = async (propertyId) => {
+        try {
+            const response = await deleteProperty(propertyId);
+            if(response.status === 200){
+                getAllPropertyList();
+            }
+        } catch (error) {
+            showToaterMessages(
+                error?.response?.data?.message ||
+                error?.message ||
+                "Error deleting property",
+                "error"
+            );
+        }
+    };
+    React.useEffect(() => {
+        getAllPropertyList()
+    }, []);
+
+    const { openSnackbar } = useSnackbar();
+
+    const showToaterMessages = (message, severity) => {
+      openSnackbar(message, severity);
+    };
+  
+
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -185,7 +229,7 @@ function PropertyListTable() {
 
     const visibleRows = React.useMemo(
         () =>
-            stableSort(rows, getComparator(order, orderBy)).slice(
+            stableSort(propertyList, getComparator(order, orderBy)).slice(
                 page * rowsPerPage,
                 page * rowsPerPage + rowsPerPage,
             ),
@@ -200,15 +244,15 @@ function PropertyListTable() {
                     orderBy={orderBy}
                     onRequestSort={handleRequestSort} />
                 <TableBody>
-                    {rows.map((row) => (
-                        <RowStructure row={row} router={router} />
+                    {propertyList.map((row) => (
+                        <RowStructure row={row} router={router} handleDelete={handleDelete} />
                     ))}
                 </TableBody>
             </Table>
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={rows.length}
+                count={propertyList.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
