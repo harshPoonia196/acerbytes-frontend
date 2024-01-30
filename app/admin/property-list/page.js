@@ -1,12 +1,18 @@
 'use client'
 
-import React from "react";
+import React, { useState } from "react";
 import { Container, Typography, Card, Box } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import PropertyListTable from "Components/Admin/PropertyList/PropertyListTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 
 function PropertyList() {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
 
   return (
     <>
@@ -18,9 +24,9 @@ function PropertyList() {
           26 Properties listed
         </Typography>
         <Card sx={{ mb: 2 }}>
-          <CustomSearchInput />
+          <CustomSearchInput value={searchTerm}  onChange={handleSearch} />
         </Card>
-        <PropertyListTable />
+        <PropertyListTable searchText={searchTerm}  />
       </Container>
     </>
   );

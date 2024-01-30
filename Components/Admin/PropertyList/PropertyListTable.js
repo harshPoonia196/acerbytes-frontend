@@ -1,5 +1,5 @@
 import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Paper from "@mui/material/Paper";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -13,6 +13,11 @@ import {
 } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext"
 import Loading from "Components/CommonLayouts/Loading";
+import {
+  PAGINATION_LIMIT,
+  PAGINATION_LIMIT_OPTIONS,
+} from "Components/config/config";
+import ConfirmationDialog from 'Components/CommonLayouts/ConfirmationDialog';
 
 
 
@@ -94,9 +99,10 @@ function EnhancedTableHead(props) {
 }
 
 function RowStructure({ row, router, handleDelete }) {
-  console.log(row, router, handleDelete )
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -108,8 +114,9 @@ function RowStructure({ row, router, handleDelete }) {
     key={row.name}
     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
   >
-    <TableCell onClick={() => { router.push('/details') }} sx={{ cursor: 'pointer' }}>{row.builder}</TableCell>
-    <TableCell onClick={() => { router.push('/details') }} sx={{ cursor: 'pointer' }}>{row.project}</TableCell>
+    <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.builder}</TableCell>
+    <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.project}</TableCell>
+    <TableCell>{row.city}</TableCell>
     <TableCell>{row.city}</TableCell>
     <TableCell>{row.area}</TableCell>
     <TableCell>{row.sector}</TableCell>
@@ -149,18 +156,22 @@ function RowStructure({ row, router, handleDelete }) {
   </TableRow>
 }
 
-function PropertyListTable() {
+function PropertyListTable({ searchText }) {
   const router = useRouter()
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState(null);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
 
-  const [propertyList, setPropertyList] = React.useState([])
-  const [isLoading, setLoading] = React.useState(false);
+  const [propertyList, setPropertyList] = useState([])
+  const [property, setProperty] = useState([])
+  const [isLoading, setLoading] = useState(false);
+
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [deletingPropertyId, setDeletingPropertyId] = useState(null);
 
   let transformData = (data) => {
-    return data.map(item => ({
+    return data?.map(item => ({
       id: item._id,
       builder: item.overview?.builder,
       project: item.overview?.projectName,
@@ -171,14 +182,29 @@ function PropertyListTable() {
     }));
   };
 
-  const getAllPropertyList = async () => {
+  const objectToQueryString = (obj) => {
+    const queryString = Object.keys(obj)
+      .map(
+        (key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`
+      )
+      .join("&");
+
+    return queryString;
+  };
+
+  const getAllPropertyList = async (pageOptions, searchText) => {
     try {
       setLoading(true);
+      const querParams = {
+        ...pageOptions,
+        ...(searchText ? { search: searchText } : {})
+      };
 
-      let res = await getAllProperty();
+      let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
-        let transformedData = transformData(res.data?.data?.properties);
+        let transformedData = transformData(res.data?.data?.properties || {});
         setPropertyList(transformedData);
+        setProperty(res.data?.data);
       }
     } catch (error) {
       showToaterMessages(
@@ -192,29 +218,47 @@ function PropertyListTable() {
     }
   };
 
-  const handleDelete = async (propertyId) => {
-    try {
-      setLoading(true);
-      let response = await deleteProperty(propertyId);
-      console.log(response)
-      if (response.status === 200) {
-        getAllPropertyList();
+  const handleDelete = (propertyId) => {
+    setDeletingPropertyId(propertyId);
+    setDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async (confirm) => {
+    if (confirm && deletingPropertyId) {
+      try {
+        setLoading(true);
+        let response = await deleteProperty(deletingPropertyId);
+        if (response.status === 200) {
+          getAllPropertyList();
+          setDeletingPropertyId(null);
+        }
+      } catch (error) {
+        showToaterMessages(
+          error?.response?.data?.message ||
+          error?.message ||
+          "Error deleting property",
+          "error"
+        );
+      } finally {
+        setLoading(false);
+        setDialogOpen(false);
       }
-    } catch (error) {
-      showToaterMessages(
-        error?.response?.data?.message ||
-        error?.message ||
-        "Error deleting property",
-        "error"
-      );
-    } finally {
-      setLoading(false);
+    } else {
+      setDialogOpen(false);
     }
   };
 
-  React.useEffect(() => {
-    getAllPropertyList()
-  }, []);
+  useEffect(() => {
+    const pageOptions = {
+      pageLimit,
+      page: currentPage,
+    };
+    getAllPropertyList(pageOptions, searchText)
+  }, [searchText, currentPage, pageLimit]);
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchText]);
 
   const { openSnackbar } = useSnackbar();
 
@@ -230,51 +274,71 @@ function PropertyListTable() {
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    const page = newPage + 1;
+    setCurrentPage(page);
+    const pageOptions = {
+      pageLimit,
+      page,
+    };
+    getAllPropertyList(pageOptions, searchText)
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setPageLimit(parseInt(event.target.value, 10));
+    setCurrentPage(1);
+    const pageOptions = {
+      pageLimit,
+      page: 1,
+    };
+    getAllPropertyList(pageOptions, searchText)
+
   };
 
   const visibleRows = React.useMemo(
     () =>
       stableSort(propertyList, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
+        currentPage * pageLimit,
+        currentPage * pageLimit + pageLimit,
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, currentPage, pageLimit],
   );
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort} />
-        <TableBody>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            propertyList.map((row) => (
-              <RowStructure row={row} router={router} handleDelete={handleDelete} />
-            ))
-          )}
+    <>
 
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={propertyList.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort} />
+          <TableBody>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              propertyList.map((row) => (
+                <RowStructure row={row} router={router} handleDelete={handleDelete} />
+              ))
+            )}
+
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+          component="div"
+          count={property?.totalCount}
+          rowsPerPage={pageLimit}
+          page={currentPage - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+
+      <ConfirmationDialog
+        open={isDialogOpen}
+        handleAction={handleConfirmDelete}
       />
-    </TableContainer>
+    </>
   )
 }
 
