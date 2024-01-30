@@ -22,7 +22,7 @@ import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import {
   getComparator,
-  getDiscountPercentage,
+  getApprovedDiscountPercentage,
   objectToQueryString,
   stableSort,
 } from "utills/CommonFunction";
@@ -33,60 +33,59 @@ import Typography from "@mui/material/Typography";
 import { ORDER_STATUS, ToasterMessages } from "Components/Constants";
 import Loading from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
-import { completeOrderRequest, getOrderRequests } from "api/Admin.api";
+import {
+  completeOrderRequest,
+  getOrderRequests,
+  getSalesPersons,
+} from "api/Admin.api";
 import AddCreditPointsPopup from "./Modal/AddCreditPointsPopup";
 import { useAuth } from "utills/AuthContext";
-
-const rows = [
-    {
-        orderNo: 265444,
-        name: 'Anand Gupta',
-        mobileNumber: '+91 125454544',
-        amount: '18000',
-        point: '5000',
-        approvedDiscount: '10%',
-        approvedPayment: 10000,
-        approvedPoints: 15000,
-    }
-];
+import {
+  PAGINATION_LIMIT,
+  PAGINATION_LIMIT_OPTIONS,
+} from "Components/config/config";
 
 const headCells = [
-    {
-        id: 'orderNo',
-        label: 'Order no',
-    },
-    {
-        id: 'name',
-        label: 'Name',
-    },
-    {
-        id: 'mobileNumber',
-        label: 'Mobile number',
-    },
-    {
-        id: 'amount',
-        label: 'Amount',
-    },
-    {
-        id: 'point',
-        label: 'Point',
-    },
-    {
-        id: 'approvedDiscount',
-        label: 'Approved discount',
-    },
-    {
-        id: 'approvedPayment',
-        label: 'Approved payment',
-    },
-    {
-        id: 'approvedPoints',
-        label: 'Approved points',
-    },
-    {
-        id: 'action',
-        label: 'Action',
-    }
+  {
+    id: "orderNo",
+    label: "Order no",
+  },
+  {
+    id: "name",
+    label: "Name",
+  },
+  {
+    id: "mobileNumber",
+    label: "Mobile number",
+  },
+  {
+    id: "amount",
+    label: "St Amount",
+  },
+  {
+    id: "point",
+    label: "St Point",
+  },
+  {
+    id: "discount",
+    label: "St discount",
+  },
+  {
+    id: "approvedDiscount",
+    label: "Approved discount",
+  },
+  {
+    id: "approvedPayment",
+    label: "Approved payment",
+  },
+  {
+    id: "approvedPoints",
+    label: "Approved points",
+  },
+  {
+    id: "action",
+    label: "Action",
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -125,7 +124,13 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, isCompleted, userDetails, handleOrderRequest }) {
+function RowStructure({
+  row,
+  salesPersons,
+  isCompleted,
+  userDetails,
+  handleOrderRequest,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openAddCredit, setOpenAddCredit] = React.useState(false);
   const open = Boolean(anchorEl);
@@ -135,10 +140,6 @@ function RowStructure({ row, isCompleted, userDetails, handleOrderRequest }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  // console.log("row: ", row);
-  // const handleOpenAddCreditPopup = () => {
-  //   setOpenAddCredit(true);
-  // };
 
   const handleCloseAddCreditPopup = () => {
     setOpenAddCredit(false);
@@ -149,16 +150,26 @@ function RowStructure({ row, isCompleted, userDetails, handleOrderRequest }) {
     setOpenAddCredit(true);
   };
 
-  const assignPointsHandler = (receivedPayment) => {
-    console.log("receivedPayment:", receivedPayment);
-
+  const assignPointsHandler = ({
+    receivedPayment,
+    assignedPoints,
+    salesPerson,
+  }) => {
     const payload = {
-      paidAmount: receivedPayment,
       adminGoogleID: userDetails?.googleID,
-      discount: getDiscountPercentage(row?.amount, receivedPayment).toString(),
       status: ORDER_STATUS.COMPLETED,
       orderNumber: row.orderNumber,
-      points: row.points
+      points: row.points,
+      brokerGoogleID: row?.brokerId?.googleID,
+      approvedDiscount: getApprovedDiscountPercentage(
+        assignedPoints,
+        receivedPayment
+      )
+        .toFixed(2)
+        .toString(),
+      approvedPayment: receivedPayment,
+      approvedPoints: assignedPoints,
+      salesPerson,
     };
 
     handleOrderRequest(payload);
@@ -172,6 +183,7 @@ function RowStructure({ row, isCompleted, userDetails, handleOrderRequest }) {
           name: `${row?.brokerId?.name?.firstName} ${row?.brokerId?.name?.lastName}`,
           points: row.points,
           amount: row.amount,
+          salesPersons: salesPersons,
         }}
         handleClose={handleCloseAddCreditPopup}
         handleSubmit={assignPointsHandler}
@@ -179,31 +191,27 @@ function RowStructure({ row, isCompleted, userDetails, handleOrderRequest }) {
       <TableRow
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
+      >
         <TableCell>{row.orderNumber}</TableCell>
-        <TableCell>{row.name}</TableCell>
-        <TableCell>{row.mobileNumber}</TableCell>
-        <TableCell>{row.amount}</TableCell>
-        <TableCell>{row.point}</TableCell>
-        <TableCell>{row.approvedDiscount}</TableCell>
-        <TableCell>{row.approvedPayment}</TableCell>
-        <TableCell>{row.approvedPoints}</TableCell>
         <TableCell>
           {row?.brokerId?.name?.firstName} {row?.brokerId?.name?.lastName}
         </TableCell>
         <TableCell>
           {row?.brokerId?.phone?.countryCode} {row?.brokerId?.phone?.number}
         </TableCell>
-        <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
         <TableCell>{row.amount}</TableCell>
         <TableCell>{row.points}</TableCell>
-        {/* <TableCell>{row.consumedSoFar}</TableCell>
-      <TableCell>{row.balance}</TableCell> */}
-        <TableCell>{isCompleted ? "00%" : row.balance}</TableCell>
+        <TableCell>{row?.standardDiscount}%</TableCell>
+        <TableCell>
+          {isCompleted ? `${row?.approvedDiscount}%` : "NA"}
+        </TableCell>
+        <TableCell>{isCompleted ? row?.approvedPayment : "NA"}</TableCell>
+        <TableCell>{isCompleted ? row?.approvedPoints : "NA"}</TableCell>
         <TableCell>
           <IconButton
             aria-label="more"
             id="long-button"
+            disabled={isCompleted}
             aria-controls={open ? "long-menu" : undefined}
             aria-expanded={open ? "true" : undefined}
             aria-haspopup="true"
@@ -260,15 +268,35 @@ function TableView({ status }) {
   const { userDetails } = useAuth();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = React.useState(1);
+  const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
+  const [initialMount, setInitialMount] = React.useState(true);
   const [isLoading, setLoading] = React.useState(false);
-  const [orderRequests, setOrderRequests] = React.useState({});
+  const [orderRequests, setOrderRequests] = React.useState({
+    list: [],
+    totalCount: 0,
+    totalPages: 0,
+    nextPage: 0,
+    prevPage: 0,
+  });
+  const [salesPersons, setSalesPersons] = React.useState([]);
 
   React.useEffect(() => {
-    console.log("component call...");
-    getOrderRequestList();
-  }, []);
+    // This block will run only on initial mount
+    if (initialMount) {
+      setInitialMount(false);
+      return;
+    }
+
+    if (userDetails && Object.keys(userDetails).length) {
+      const pageOptions = {
+        pageLimit: rowsPerPage,
+        page,
+      };
+      getOrderRequestList(pageOptions);
+      getSalesPersonsList();
+    }
+  }, [userDetails && Object.keys(userDetails).length, initialMount]);
 
   const { openSnackbar } = useSnackbar();
 
@@ -276,18 +304,41 @@ function TableView({ status }) {
     openSnackbar(message, severity);
   };
 
-  const getOrderRequestList = async () => {
+  const getOrderRequestList = async (queryParams) => {
     try {
-      console.log("component call.111..");
       setLoading(true);
       const response = await getOrderRequests(
         objectToQueryString({
           status,
+          ...queryParams,
         })
       );
-      console.log("response: ", response);
       if (response.status == 200) {
-        setOrderRequests(response?.data?.data);
+        setOrderRequests({
+          list: response?.data?.data,
+          totalCount: response?.data?.totalCount,
+          totalPages: response?.data?.totalPages,
+          nextPage: response?.data?.nextPage,
+          prevPage: response?.data?.prevPage,
+        });
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error creating order request",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  const getSalesPersonsList = async () => {
+    try {
+      setLoading(true);
+      const response = await getSalesPersons();
+      if (response.status == 200) {
+        setSalesPersons(response?.data?.data);
       }
     } catch (error) {
       showToaterMessages(
@@ -305,10 +356,12 @@ function TableView({ status }) {
     try {
       setLoading(true);
       const response = await completeOrderRequest(payload);
-      console.log("response: ", response);
       if (response.status == 200) {
         showToaterMessages(ToasterMessages.ORDER_COMPLETED_SUCCESS, "success");
-        getOrderRequestList();
+        getOrderRequestList({
+          pageLimit: rowsPerPage,
+          page,
+        });
       }
     } catch (error) {
       showToaterMessages(
@@ -329,23 +382,26 @@ function TableView({ status }) {
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    const page = newPage + 1;
+    setPage(page);
+    const pageOptions = {
+      pageLimit: rowsPerPage,
+      page,
+    };
+    getOrderRequestList(pageOptions);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    const pageLimit = parseInt(event.target.value, 10);
+    setRowsPerPage(pageLimit);
+    setPage(1);
+    const pageOptions = {
+      pageLimit,
+      page: 1,
+    };
+    getOrderRequestList(pageOptions);
   };
 
-  // console.log("orderRequests: ", orderRequests);
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
   return isLoading ? (
     <Loading />
   ) : (
@@ -364,16 +420,17 @@ function TableView({ status }) {
               key={index}
               isCompleted={status === ORDER_STATUS.COMPLETED}
               handleOrderRequest={handleOrderRequest}
+              salesPersons={salesPersons}
             />
           ))}
         </TableBody>
       </Table>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
         component="div"
-        count={rows.length}
+        count={orderRequests.totalCount}
         rowsPerPage={rowsPerPage}
-        page={page}
+        page={page - 1}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />

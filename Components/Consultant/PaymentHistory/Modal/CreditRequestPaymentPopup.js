@@ -64,15 +64,13 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
   };
 
   const handleClickPayHere = async () => {
-    console.log("userDetails: ", userDetails);
     const payload = {
       orderNumber: orderRequestId,
       points: creditRequest?.point || 0,
       amount: creditRequest?.amount || 0,
-      // brokerId: "65a9f448c15c0c1df1393349" // userDetails?._id,
+      standardDiscount: creditRequest?.discount,
       brokerId: userDetails?._id,
     };
-    console.log(payload);
     await handlePaymentRequest(payload);
     router.push(listOfPages.consultantMakePayment);
   };

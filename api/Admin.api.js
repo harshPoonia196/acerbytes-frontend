@@ -8,3 +8,7 @@ export const getOrderRequests = (queryParams) => {
 export const completeOrderRequest = (payload) => {
   return axiosInstance.post(`/admin/completeOrderRequests`, payload);
 };
+
+export const getSalesPersons = () => {
+  return axiosInstance.get(`/higheruser/salesPersons`);
+};

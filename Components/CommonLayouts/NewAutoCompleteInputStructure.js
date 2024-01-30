@@ -30,7 +30,7 @@ const NewAutoCompleteInputStructure = ({
       <Autocomplete
         disablePortal
         id="combo-box-demo"
-        options={options || top100Films}
+        options={list}
         value={value || []}
         fullWidth
         onChange={handleChange}

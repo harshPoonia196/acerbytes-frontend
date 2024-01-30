@@ -1,3 +1,5 @@
+import moment from "moment";
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -47,17 +49,37 @@ const objectToQueryString = (obj) => {
   return queryString;
 };
 
-const getDiscountPercentage = (amountString, paidAmountString) => {
-  const amount = parseFloat(amountString.replace(/,/g, ""));
-  const paidAmount = parseFloat(paidAmountString.replace(/,/g, ""));
-  const discountAmount = Number(amount) - Number(paidAmount);
-  return (discountAmount / amount) * 100;
+const getApprovedDiscountPercentage = (pointsString, amountString) => {
+  const points = parseFloat(pointsString.replace(/,/g, ""));
+  const paidAmount = parseFloat(amountString.replace(/,/g, ""));
+  const discountAmount = Number(points) - Number(paidAmount);
+  return (discountAmount / points) * 100;
 };
+
+const formatDate = (dateString) => {
+  return moment(dateString).format("Do MMMM, YYYY");
+};
+
+const formatAmount = (amount) => {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  }).format(amount);
+};
+
+const formatPoints = (points) => {
+  const formattingValue = typeof points === Number ? points : Number(points);
+  return formattingValue.toLocaleString("en-IN");
+};
+
 export {
   descendingComparator,
   getComparator,
   stableSort,
   generateRandomId,
   objectToQueryString,
-  getDiscountPercentage,
+  getApprovedDiscountPercentage,
+  formatDate,
+  formatAmount,
+  formatPoints,
 };

@@ -1,12 +1,14 @@
-"use client"
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getToken } from './utills';
+"use client";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { getToken } from "./utills";
+import { formatPoints } from "./CommonFunction";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState({});
   const [isLogged, setIsLogged] = useState(true);
+  const [brokerBalance, setBrokerBalance] = useState(0);
 
   useEffect(() => {
     setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
@@ -41,7 +43,13 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setUserDetails({});
     setIsLogged(false);
-    window.location.href="/"
+    window.location.href = "/";
+  };
+
+  const setBrokerPoints = (balance) => {
+    localStorage.setItem("brokerBalance", balance);
+    setBrokerBalance(formatPoints(balance));
+    window.dispatchEvent(new Event("storage"));
   };
 
   const contextValue = {
@@ -49,19 +57,19 @@ export const AuthProvider = ({ children }) => {
     isLogged,
     login,
     logout,
+    setBrokerPoints,
+    brokerBalance,
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
