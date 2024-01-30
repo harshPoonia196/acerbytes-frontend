@@ -52,8 +52,6 @@ function NewPhoneInputFieldStructure({
 
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
-    // Allow only numeric characters
-    // const numericValue = inputValue.replace(/[^0-9]/g, '');
 
     // Limit the length to 10 digits
     const limitedValue = inputValue.slice(0, 10);
