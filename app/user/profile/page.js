@@ -503,6 +503,7 @@ function Profile() {
           profileInfo
         );
         if (response.status == 200) {
+          updateDetailsonLocalStorage(profileInfo);
           showToaterMessages(ToasterMessages.PROFILE_UPDATE_SUCCESS, "success");
         }
       }
@@ -518,7 +519,25 @@ function Profile() {
     }
   };
 
-  console.log("profle data: ", profileInfo);
+
+  const updateDetailsonLocalStorage=(info)=>{
+    let userInfo = JSON.parse(localStorage.getItem("userDetails"));
+    userInfo = {
+      ...userInfo,
+      name: {
+        ...userInfo.name,
+        firstName: info?.name?.firstName,
+        lastName: info?.name?.lastName
+      },
+      phone: {
+        ...userInfo.phone,
+        number: info?.phone?.number,
+        countryCode: info?.phone?.countryCode
+      }
+    }
+
+    localStorage.setItem("userDetails", JSON.stringify(userInfo));
+  }
 
   return (
     <>
@@ -548,7 +567,7 @@ function Profile() {
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ flex: 1 }}>
                   <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                    Anand Gupta
+                    {userDetails?.name?.firstName} {userDetails?.name?.lastName}
                   </Typography>
                 </Box>
                 <Box>
@@ -563,14 +582,14 @@ function Profile() {
                   >
                     <CallIcon fontSize="small" sx={{ alignSelf: "center" }} />
                     <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                      +91 8794561234
+                    {userDetails?.phone?.countryCode} {userDetails?.phone?.number}
                     </Typography>
                   </a>
                 </Box>
               </Box>
-              <Typography variant="body1" sx={{ mt: 1 }}>
+              {/* <Typography variant="body1" sx={{ mt: 1 }}>
                 Mumbai
-              </Typography>
+              </Typography> */}
             </Card>
           </Grid>
           <Grid item xs={12}>
@@ -586,7 +605,7 @@ function Profile() {
               <Divider />
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewInputFieldStructure
-                  label="First name"
+                  label="First name *"
                   variant="outlined"
                   isEdit={isEdit}
                   // handleChange={handleChangeName}
@@ -595,7 +614,7 @@ function Profile() {
                   value={profileInfo?.name?.firstName}
                 />
                 <NewInputFieldStructure
-                  label="Last name"
+                  label="Last name *"
                   variant="outlined"
                   isEdit={isEdit}
                   handleChange={(e) => handleChange(e, "name", "lastName")}
@@ -604,7 +623,7 @@ function Profile() {
                 />
                 <NewPhoneInputFieldStructure
                   variant="outlined"
-                  label="Phone"
+                  label="Phone *"
                   isEdit={isEdit}
                   handleChange={(e) => handleChange(e, "phone", "number")}
                   handleSelect={(e) => handleChange(e, "phone", "countryCode")}

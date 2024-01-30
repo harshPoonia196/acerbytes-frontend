@@ -11,8 +11,10 @@ export const getAccessToken = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "api-token": UNIVERSAL_ACCESS_TOKEN,
-        "user-email": "patidarjitendra973@gmail.com",
+          'api-token':
+          'wf9Su-BHch6J2SrbMm0EpgawFYxmADFvUmNRoPhC3VbipDy0nDiBFNS7ZDhBCrsNa1k',
+        'user-email': 'patidarjitendra973@gmail.com',
+
       },
     })
       .then((res) => resolve(res.data))
