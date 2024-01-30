@@ -223,13 +223,9 @@ function ConsultantProfile() {
           list={itemsServer}
         />
       </nav>
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container
-          maxWidth="lg"
-        >
-          <CustomConsultantBreadScrumbs text='Profile' />
-        </Container>
-      </Box>
+
+      <CustomConsultantBreadScrumbs text='Profile' />
+
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           {/* <Grid item xs={12} sx={{ textAlign: 'end' }}>
@@ -492,7 +488,7 @@ function ConsultantProfile() {
                   }}
                 >
                   <Typography variant="body1">
-                    Do Not Disturb (DND) Mode
+                    Do not disturb (DND) mode
                   </Typography>
                   <Switch
                     checked={isDndEnabled}
@@ -512,7 +508,7 @@ function ConsultantProfile() {
                   }}
                 >
                   <Typography variant="body1">
-                    Receive WhatsApp Promotions
+                    Dont send WhatsApp promotions
                   </Typography>
                   <Switch
                     checked={isPromotionEnabled}

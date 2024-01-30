@@ -41,9 +41,9 @@ function AddCreditPopup({ open, handleClose }) {
                     <Button
                         // startIcon={<DoneIcon />}
                         variant="contained"
-                        onClick={() => {
-                            handleClose();
-                        }}
+                        onClick={
+                            handleClose
+                        }
                     >
                         Submit
                     </Button>

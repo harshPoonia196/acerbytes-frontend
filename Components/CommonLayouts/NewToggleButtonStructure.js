@@ -1,9 +1,9 @@
 import React from "react";
-import { Typography, ToggleButton, ToggleButtonGroup, Grid } from "@mui/material";
+import { Typography, ToggleButtonGroup, Grid } from "@mui/material";
 import colors from "styles/theme/colors";
 
 const NewToggleButtonStructure = ({
-  children, label, value, handleChange, isEdit, toggleStyle,name
+  children, label, value, handleChange, isEdit, toggleStyle, name
 }) => (
   <Grid item xs={12} sm={isEdit ? 12 : 6}>
     <Typography
@@ -22,14 +22,16 @@ const NewToggleButtonStructure = ({
         fullWidth
         onChange={handleChange}
         aria-label="Platform"
-        sx={toggleStyle}
+        sx={{
+          ...toggleStyle,
+        }}
       >
         {children}
       </ToggleButtonGroup>
       :
       <Typography variant="subtitle1">Value</Typography>
     }
-  </Grid>
+  </Grid >
 );
 
 export default NewToggleButtonStructure;

@@ -19,104 +19,124 @@ function PropertyCard({ isShortListPageCard }) {
 
   return (
     <Card>
-      <CardActionArea
-        sx={{ display: "flex", flexDirection: { xs: "column", evmd: "row" } }}
-      >
-        <Box
-          sx={{ padding: 2, pr: { xs: 2, evmd: 0 } }}
-          onClick={() => router.push("/details")}
-        >
-          <CardMedia
-            component="img"
-            alt="green iguana"
-            sx={{
-              width: { xs: "100%", evmd: 80 },
-              borderRadius: "8px",
-            }}
-            image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
-          />
-        </Box>
-        <Box
-          sx={{ display: "flex", flexDirection: "column", flex: "1 0 auto" }}
-        >
-          <CardContent sx={{ flex: "1 0 auto" }}>
-            <Grid container spacing={1} columns={16}>
-              <Grid item xs={8} evmd={2} onClick={() => router.push("/details")}>
+      <CardActionArea sx={{ p: 2 }}>
+        <Grid container spacing={2} columns={16}>
+          <Grid item xs={13.5} sm={8} md={4}>
+            <Box sx={{ display: 'flex' }} onClick={() => router.push("/details")}>
+              <CardMedia
+                component="img"
+                alt="green iguana"
+                sx={{
+                  width: 80,
+                  borderRadius: "8px", mr: 2
+                }}
+                image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
+              />
+              <Box sx={{ flex: 1 }} onClick={() => router.push("/details")}>
                 <Typography variant="caption">SKA</Typography>
                 <Typography variant="subtitle2">SKA ORION</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={8}
-                evmd={2.5}
-                onClick={() => router.push("/details")}
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={2.5} sx={{ display: { xs: 'block', sm: 'none' } }}>
+            <Card
+              sx={{
+                width: "fit-content",
+                backgroundColor: colors?.BLACK,
+                // borderRadius: "4px !important",
+                m: 0,
+                ml: "auto !important",
+              }}
+              onClick={() => router.push("/research")}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 600,
+                  width: "fit-content",
+                  color: "white",
+                  p: 0.5,
+                  px: 1,
+                }}
               >
-                <Typography variant="caption">Noida Expressway</Typography>
-                <Typography variant="subtitle2">Sector 143</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={8}
-                evmd={2.5}
-                onClick={() => router.push("/details")}
+                99
+              </Typography>
+            </Card>
+          </Grid>
+          <Grid
+            item
+            xs={8}
+            sm={4}
+            md={2}
+            onClick={() => router.push("/details")}
+          >
+            <Typography variant="caption">Noida Expressway</Typography>
+            <Typography variant="subtitle2">Sector 143</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={8}
+            sm={4}
+            md={2.5}
+            onClick={() => router.push("/details")}
+          >
+            <Typography variant="caption">14,500/sqft</Typography>
+            <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography>
+          </Grid>
+          <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push("/details")}>
+            <Typography variant="caption">345 Units</Typography>
+            <Typography variant="subtitle2">2.5 acres</Typography>
+          </Grid>
+          <Grid item xs={8} sm={4} md={2} onClick={() => router.push("/details")}>
+            <Typography variant="caption">5 layouts</Typography>
+            <Typography variant="subtitle2">2, 2.5, 3 BHK</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={8}
+            sm={4}
+            md={2}
+            onClick={() => router.push("/details")}
+          >
+            <Typography variant="caption">Under construction</Typography>
+            <Typography variant="subtitle2">2022 - 2025</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={8}
+            sm={2.5}
+            md={1}
+            onClick={() => router.push("/details")}
+          >
+            <Typography variant="caption">Enquiries</Typography>
+            <Typography variant="subtitle2">345</Typography>
+          </Grid>
+          <Grid item sm={1.5} md={1} sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Card
+              sx={{
+                width: "fit-content",
+                backgroundColor: colors?.BLACK,
+                // borderRadius: "4px !important",
+                m: 0,
+                ml: "auto !important",
+              }}
+              onClick={() => router.push("/research")}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 600,
+                  width: "fit-content",
+                  color: "white",
+                  p: 0.5,
+                  px: 1,
+                }}
               >
-                <Typography variant="caption">14,500/sqft</Typography>
-                <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography>
-              </Grid>
-              <Grid item xs={8} evmd={2} onClick={() => router.push("/details")}>
-                <Typography variant="caption">345 Units</Typography>
-                <Typography variant="subtitle2">2.5 acres</Typography>
-              </Grid>
-              <Grid item xs={8} evmd={2} onClick={() => router.push("/details")}>
-                <Typography variant="caption">5 layouts</Typography>
-                <Typography variant="subtitle2">2, 2.5, 3 BHK</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={8}
-                evmd={2.5}
-                onClick={() => router.push("/details")}
-              >
-                <Typography variant="caption">Under construction</Typography>
-                <Typography variant="subtitle2">2022 - 2025</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={8}
-                evmd={1.5}
-                onClick={() => router.push("/details")}
-              >
-                <Typography variant="caption">Enquiries</Typography>
-                <Typography variant="subtitle2">345</Typography>
-              </Grid>
-              <Grid item xs={8} evmd={1}>
-                <Card
-                  sx={{
-                    width: "fit-content",
-                    backgroundColor: colors?.BLACK,
-                    // borderRadius: "4px !important",
-                    m: 0,
-                    ml: "auto !important",
-                  }}
-                  onClick={() => router.push("/research")}
-                >
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontWeight: 600,
-                      width: "fit-content",
-                      color: "white",
-                      p: 0.5,
-                      px: 1,
-                    }}
-                  >
-                    99
-                  </Typography>
-                </Card>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Box>
+                99
+              </Typography>
+            </Card>
+          </Grid>
+        </Grid>
       </CardActionArea>
       {isShortListPageCard && <Divider />}
       {isShortListPageCard && (

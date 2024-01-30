@@ -11,8 +11,10 @@ import {
   Chip,
   Button,
   Divider,
+  Fab,
 } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
+import SaveIcon from "@mui/icons-material/Save";
 import React from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
@@ -68,7 +70,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
-    marginBottom: "16px",
   },
 }));
 
@@ -136,7 +137,7 @@ function Profile() {
     },
     settings: {
       dnd: false,
-      rwp: true,
+      rwp: false,
     },
     currentAddress: {
       addressType: "",
@@ -151,7 +152,7 @@ function Profile() {
 
   const [isEdit, setIsEdit] = useState(true);
 
-  const [activeState, setActiveState] = React.useState(null);
+  const [activeState, setActiveState] = React.useState('userDetails');
 
   let itemsServer = listOfProfileTab.map((tab) => {
     const hash = tab.value;
@@ -550,7 +551,7 @@ function Profile() {
 
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ textAlign: "end" }}>
+          {/* <Grid item xs={12} sx={{ textAlign: "end" }}>
             <LoadingButton
               onClick={handleSave}
               loading={isLoading}
@@ -560,7 +561,7 @@ function Profile() {
             >
               Save
             </LoadingButton>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} id="userDetails">
             <Card sx={{ p: 2 }}>
               <Box sx={{ display: "flex" }}>
@@ -1058,53 +1059,72 @@ function Profile() {
                 </Typography>
               </Box>
               <Divider />
-              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <Grid
-                  container
-                  item
-                  xs={12}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography variant="body1">
-                    Do Not Disturb (DND) Mode
-                  </Typography>
-                  <Switch
-                    checked={profileInfo?.settings?.dnd}
-                    name={"dnd"}
-                    onChange={handleChangeSettings}
-                    color="primary"
-                  />
-                </Grid>
+              <Box sx={{ p: 2 }}>
+                <Grid container rowSpacing={1} columnSpacing={2}>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="body1">
+                      Do not disturb (DND) mode
+                    </Typography>
+                    <Switch
+                      checked={profileInfo?.settings?.dnd}
+                      name={"dnd"}
+                      onChange={handleChangeSettings}
+                      color="primary"
+                    />
+                  </Grid>
 
-                <Grid
-                  container
-                  item
-                  xs={12}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography variant="body1">
-                    Receive WhatsApp Promotions
-                  </Typography>
-                  <Switch
-                    checked={profileInfo?.settings?.rwp}
-                    name={"rwp"}
-                    onChange={handleChangeSettings}
-                    color="primary"
-                  />
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="body1">
+                      Don't send WhatsApp promotions
+                    </Typography>
+                    <Switch
+                      checked={profileInfo?.settings?.rwp}
+                      name={"rwp"}
+                      onChange={handleChangeSettings}
+                      color="primary"
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
+              </Box>
             </Card>
           </Grid>
         </Grid>
       </Container>
+      <Box
+        sx={{
+          position: "fixed",
+          right: 16,
+          bottom: 16,
+          display: { xs: "none", evmd: "flex" },
+          flexDirection: "column",
+        }}
+      >
+        <Fab
+          variant="extended"
+          sx={{ justifyContent: "flex-start" }}
+          onClick={handleSave}
+          disabled={!checkMandatoryFields()}
+        >
+          <SaveIcon fontSize="small" sx={{ mr: 1 }} />
+          Save
+        </Fab>
+      </Box>
     </>
   );
 }
