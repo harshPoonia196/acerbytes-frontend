@@ -12,7 +12,7 @@ function MyNotes() {
 
     const router = useRouter()
 
-    const [openUpdatePopup, setOpenUpdatePopup] = useState()
+    const [openUpdatePopup, setOpenUpdatePopup] = useState(false)
     const handleOpenUpdatePopup = () => {
         setOpenUpdatePopup(true)
     }

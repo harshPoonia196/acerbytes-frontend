@@ -70,7 +70,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
-    marginBottom: "16px",
   },
 }));
 
@@ -153,7 +152,7 @@ function Profile() {
 
   const [isEdit, setIsEdit] = useState(true);
 
-  const [activeState, setActiveState] = React.useState(null);
+  const [activeState, setActiveState] = React.useState('userDetails');
 
   let itemsServer = listOfProfileTab.map((tab) => {
     const hash = tab.value;
