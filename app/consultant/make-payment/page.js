@@ -6,17 +6,14 @@ import Image from 'next/image'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Footer from 'Components/Footer';
 import CustomConsultantBreadScrumbs from 'Components/CommonLayouts/CustomConsultantBreadScrumbs';
+import { companyName } from 'Components/NavBar/Links';
 
 function MakePayment() {
     return (
         <>
-            <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <CustomConsultantBreadScrumbs text='Make payment' />
-                </Container>
-            </Box>
+
+            <CustomConsultantBreadScrumbs text='Make payment' />
+
             <Container maxWidth='sm'>
 
                 <Card>
@@ -26,7 +23,7 @@ function MakePayment() {
                         </Typography>
                         <Box sx={{ textAlign: 'end' }}>
                             <Typography variant="h4">
-                                Acrebytes
+                                {companyName}
                             </Typography>
                             <Typography variant="subtitle2">
                                 Gravity44 platform solution

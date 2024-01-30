@@ -12,19 +12,19 @@ import colors from "styles/theme/colors";
 
 const countries = [
   {
-    value: "+91",
+    value: "91",
     label: "+91",
   },
   {
-    value: "+92",
+    value: "92",
     label: "+92",
   },
   {
-    value: "+9528",
+    value: "9528",
     label: "+9528",
   },
   {
-    value: "+1",
+    value: "1",
     label: "+1",
   },
 ];
@@ -49,6 +49,21 @@ function NewPhoneInputFieldStructure({
     setCountryCode(countries);
   }, [])
 
+
+  const handleInputChange = (event) => {
+    const inputValue = event.target.value;
+
+    // Limit the length to 10 digits
+    const limitedValue = inputValue.slice(0, 10);
+
+    // Update the input value
+    event.target.value = limitedValue;
+
+    // Handle the input change if needed
+    console.log(limitedValue);
+    handleChange(event)
+  };
+
   return (
     <Grid item xs={12} sm={6}>
       <Box>
@@ -64,11 +79,11 @@ function NewPhoneInputFieldStructure({
           name={name2}
           value={value2}
           type="number"
-          onChange={handleChange}
+          onChange={handleInputChange}
           variant={variant ? variant : "standard"}
           fullWidth
           size="small"
-          InputProps={{
+          InputProps={{       
             startAdornment: (
               <InputAdornment position="start">
                 <TextField

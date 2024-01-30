@@ -22,6 +22,7 @@ import {
   ListSubheader,
   Card,
   Badge,
+  Avatar,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -32,6 +33,7 @@ import {
   CommonMenuList,
   ConsultantMenuList,
   UserMenuList,
+  companyName,
   listOfPages,
 } from "./Links";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,7 +51,7 @@ import { useAuth } from "utills/AuthContext";
 const drawerWidth = 240;
 
 export default function ClippedDrawer({ children }) {
-  const { isDrawerOpen } = useSelector((state) => state);
+  const isDrawerOpen = useSelector((state) => state.isDrawerOpen);
   const router = useRouter();
   const pathname = usePathname()
 
@@ -116,7 +118,6 @@ export default function ClippedDrawer({ children }) {
       >
         Profile
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       {
         isLogged ?
           <MenuItem onClick={() => logoutUser()}>Logout</MenuItem> : null
@@ -251,10 +252,9 @@ export default function ClippedDrawer({ children }) {
             <ListItem
               disablePadding
               secondaryAction={
-                <IconButton edge="end">
+                <IconButton onClick={() => handleDrawerClose()} edge="end">
                   <CloseIcon
                     fontSize="small"
-                    onClick={() => handleDrawerClose()}
                   />
                 </IconButton>
               }
@@ -366,7 +366,7 @@ export default function ClippedDrawer({ children }) {
                     textTransform: 'uppercase'
                   }}
                 >
-                  Acrebytes
+                  {companyName}
                 </Typography>
               </a>
             </Box>
@@ -386,24 +386,27 @@ export default function ClippedDrawer({ children }) {
                   </Button>
               }
             </Box>
-            <Box>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="#000"
-              >
-                {
-                  userDetails?.googleDetails?.profilePicture ?
-                    <img style={{ width: '25px', borderRadius: '100%' }} src={userDetails?.googleDetails?.profilePicture} />
-                    :
-                    isLogged ? <AccountCircle /> : null
-                }
-              </IconButton>
-            </Box>
+            {isLogged &&
+              <Box>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="#000"
+                >
+                  {
+                    userDetails?.googleDetails?.profilePicture ?
+                      <Avatar
+                        src={userDetails?.googleDetails?.profilePicture}
+                      />
+                      : <AccountCircle />
+                  }
+                </IconButton>
+              </Box>
+            }
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,9 +1,11 @@
+'use client'
+
 import * as React from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import { Box, Card, CardActionArea, Dialog, DialogContent, DialogTitle, Grid } from '@mui/material';
+import { Box, Card, CardActionArea, Container, Dialog, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { listOfPages } from 'Components/NavBar/Links'
 
@@ -182,11 +184,11 @@ const PopupForLinks = ({ open, handleClose, router }) => (
     </Dialog>
 )
 
-export default function CustomAdminBreadScrumbs({ text }) {
+export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
 
     const router = useRouter()
 
-    const [openAdminLinkPopup, setOpenAdminLinkPopup] = React.useState()
+    const [openAdminLinkPopup, setOpenAdminLinkPopup] = React.useState(false)
 
     const handleOpenAdminLinkPopup = () => {
         setOpenAdminLinkPopup(true)
@@ -215,11 +217,17 @@ export default function CustomAdminBreadScrumbs({ text }) {
     ];
 
     return (
-        <Stack spacing={2}>
-            <PopupForLinks router={router} open={openAdminLinkPopup} handleClose={handleCloseAdminLinkPopup} />
-            <Breadcrumbs separator="›" aria-label="breadcrumb">
-                {breadcrumbs}
-            </Breadcrumbs>
-        </Stack>
+        <Box sx={{ backgroundColor: "white", borderBottom: "1px solid whitesmoke" }}>
+            <Container
+                maxWidth={maxWidthTill ? maxWidthTill : "lg"}
+            >
+                <Stack spacing={2}>
+                    <PopupForLinks router={router} open={openAdminLinkPopup} handleClose={handleCloseAdminLinkPopup} />
+                    <Breadcrumbs separator="›" aria-label="breadcrumb">
+                        {breadcrumbs}
+                    </Breadcrumbs>
+                </Stack>
+            </Container>
+        </Box>
     );
 }

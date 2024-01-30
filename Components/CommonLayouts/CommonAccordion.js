@@ -7,7 +7,7 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 const CustomAccordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
-    border: `1px solid ${theme.palette.divider}`,
+    border: `1px solid whitesmoke`,
     '&:not(:last-child)': {
         borderBottom: 0,
     },
@@ -16,9 +16,9 @@ const CustomAccordion = styled((props) => (
     },
 }));
 
-const CustomAccordionSummary = styled((props) => (
+const CustomAccordionSummary = styled(({ handleIconClick, ...props }) => (
     <MuiAccordionSummary
-        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} onClick={handleIconClick} />}
         {...props}
     />
 ))(({ theme }) => ({
@@ -39,7 +39,7 @@ const CustomAccordionSummary = styled((props) => (
 
 const CustomAccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     padding: theme.spacing(2),
-    borderTop: '1px solid rgba(0, 0, 0, .125)',
+    borderTop: '1px solid whitesmoke',
 }));
 
 export { CustomAccordion, CustomAccordionSummary, CustomAccordionDetails }

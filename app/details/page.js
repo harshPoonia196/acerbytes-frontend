@@ -24,7 +24,7 @@ import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-
+import GroupIcon from '@mui/icons-material/Group';
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
@@ -46,6 +46,8 @@ import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import AdsSection from "Components/DetailsPage/AdsSection";
 import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/Constants";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import colors from "styles/theme/colors";
 
 const tabHeight = 200;
 
@@ -355,8 +357,8 @@ const PropertyDetailsPage = () => {
                     </Box>
                     <Box>
                       <Chip
-                        label="Register as a consultant"
-                        icon={<AssignmentIcon fontSize="small" />}
+                        label="View all"
+                        icon={<GroupIcon fontSize="small" />}
                         size="small"
                         onClick={() => { }}
                         sx={{ fontSize: '0.875rem !important' }}
@@ -373,12 +375,11 @@ const PropertyDetailsPage = () => {
                   <Grid item xs={12}>
                     <Box sx={{ display: 'flex' }}>
                       <Typography variant="body2" sx={{ flex: 1, alignSelf: 'center' }}>
-                        Are you a professional real estate consultant, serve 544
-                        Clients for Godrej Woods
+                        Are you a property consultant, let Customers reach you
                       </Typography>
                       <Chip
-                        label="Yes"
-                        icon={<WhatsAppIcon fontSize="small" />}
+                        label="Yes, show me here !"
+                        icon={<PersonAddIcon fontSize="small" />}
                         size="small"
                         sx={{ fontSize: "0.875rem" }}
                         onClick={() => { }}
@@ -402,6 +403,8 @@ const PropertyDetailsPage = () => {
               bottom: 0,
               width: "100%",
               display: { xs: "block", evmd: "none" },
+              background: 'whitesmoke',
+              boxShadow: '-1px -2px 6px 2px gainsboro !important'
             }}
           >
             <Box sx={{ mt: -1, ml: -1, display: 'flex', flexWrap: "wrap" }}>

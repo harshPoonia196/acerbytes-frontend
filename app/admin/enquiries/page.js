@@ -8,13 +8,9 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 function Enquiries() {
   return (
     <>
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container
-          maxWidth="lg"
-        >
-          <CustomAdminBreadScrumbs text='List of leads' />
-        </Container>
-      </Box>
+
+      <CustomAdminBreadScrumbs text='List of leads' />
+
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
           List of Enquiries (Admin)

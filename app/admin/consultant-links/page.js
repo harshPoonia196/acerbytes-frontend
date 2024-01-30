@@ -16,11 +16,11 @@ const page = () => {
 
     return (
         <>
+            <CustomAdminBreadScrumbs text='Consultant links' />
             <Box sx={{ backgroundColor: "white" }}>
                 <Container
                     maxWidth="lg"
                 >
-                    <CustomAdminBreadScrumbs text='Consultant links' />
                     <Box sx={{ py: 4 }}>
                         <Typography variant="h2" sx={{ color: "#000" }}>
                             Hi, Anand Gupta (Admin)

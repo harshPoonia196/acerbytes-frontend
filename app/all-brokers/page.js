@@ -10,12 +10,21 @@ const page = () => {
   const [brokersList, setBrokersList] = useState([
     { name: "Anand Gupta", location: "Noida", type: "Individual Consultant", stars: 4, clients: 432 },
     { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
   ]);
 
 
   return (
     <>
-      <Box sx={{ background: 'white', borderBottom: '1px solid whitesmoke', boxShadow: '1px 2px 2px -2px gainsboro!important' }}>
+      <Box sx={{
+        background: 'white', borderBottom: '1px solid whitesmoke', boxShadow: '1px 2px 2px -2px gainsboro!important', position: "sticky",
+        top: { xs: 54, sm: 64 }, zIndex: 100
+      }}>
         <Container maxWidth='evmd'>
           <Typography variant='h3' sx={{ my: 2, ml: 2 }}>
             Consultants (45)
@@ -35,8 +44,6 @@ const page = () => {
           ))}
         </Grid>
       </Container>
-
-
     </>
   )
 }

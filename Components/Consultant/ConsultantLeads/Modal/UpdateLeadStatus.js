@@ -14,7 +14,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
         <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
             <DialogTitle onClose={handleClose}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    Update leads
+                    Update notes for ABCD
                 </Typography>
             </DialogTitle>
             <DialogContent>
@@ -32,7 +32,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
                                 <DateTimePicker
-                                    label="With Time Clock"
+                                    label="Time"
                                     viewRenderers={{
                                         hours: renderTimeViewClock,
                                         minutes: renderTimeViewClock,
@@ -61,7 +61,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
                                 <DateTimePicker
-                                    label="With Time Clock"
+                                    label="Time"
                                     viewRenderers={{
                                         hours: renderTimeViewClock,
                                         minutes: renderTimeViewClock,

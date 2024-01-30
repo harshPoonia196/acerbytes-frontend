@@ -14,6 +14,8 @@ import StarIcon from "@mui/icons-material/Star";
 import CallIcon from "@mui/icons-material/Call";
 import { useState } from "react";
 import RatingDialog from "./Dialog/RatingDialog";
+import DoneIcon from '@mui/icons-material/Done';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 const labels = {
   0.5: "Useless",
@@ -52,15 +54,17 @@ function BrokerCard({ broker, type, noReview }) {
           sx={{ mr: 2, width: 56, height: 56 }}
         />
         <Box sx={{ flex: 1 }}>
-          <Typography variant="h6">{broker?.name}</Typography>
+          <Typography variant="h6">{broker?.name}<DoneIcon fontSize="1rem" sx={{ alignSelf: 'center', ml: 1 }} />
+            <DoneAllIcon fontSize="1rem" sx={{ alignSelf: 'center', ml: 1 }} />
+          </Typography>
           <Typography variant="body2">{broker?.location} &#183; {broker?.type}</Typography>
-          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: '1rem' }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: '1rem', mt: 0.5 }}>
             <Box sx={{ flex: 1 }}>
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: { xs: "row", sm: "column", md: "row" },
-                  alignItems: { xs: "center", sm: "normal", md: "center" },
+                  flexDirection: { xs: "row" },
+                  alignItems: { xs: "center" },
                 }}
               >
                 <Rating
@@ -68,14 +72,14 @@ function BrokerCard({ broker, type, noReview }) {
                   value={broker?.stars}
                   readOnly
                   precision={0.5}
-                  sx={{ fontSize: "1.25rem" }}
-                  emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="small" />}
+                  sx={{ fontSize: "1rem" }}
+                  emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="1rem" />}
                 />
                 <Typography variant="body2" sx={{ ml: { xs: 1, sm: 0, md: 1 } }}>
                   {labels[broker?.stars]}
                 </Typography>
               </Box>
-              <Typography variant="caption">
+              <Typography variant="caption" sx={{}}>
                 <i>{broker?.clients} clients served</i>
               </Typography>
             </Box>

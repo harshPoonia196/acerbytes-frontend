@@ -1,11 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  Container,
-  Card,
-  Box,
-} from "@mui/material";
+import { Container, Card, Box } from "@mui/material";
 import {
   createUserAPI,
   sendOtpAPI,
@@ -77,8 +73,13 @@ function Login() {
         handleClick("Unexpected response format from signInAPI", "error");
       }
     } catch (error) {
-      console.log(error)
-      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
+      console.log(error);
+      handleClick(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching sign-in URL",
+        "error"
+      );
     } finally {
       setLoading(false);
     }
@@ -97,30 +98,45 @@ function Login() {
       setLoading(true);
 
       const res = await signInAuthenticationAPI({ code: code });
-      const { email, id, name, token, userDetails } = res?.data?.data;
-
-      if (token) {
-        login(userDetails, token)
-        router.push("/");
-        return
-      }
-
-      setLoading(false);
-      openSnackbar("Authentication successful", "success");
-
-      setForm((prev) => ({
-        ...prev,
+      const { email, id, name, superAdmin,token, userDetails } = res?.data?.data;
+      let formData = {
         email: email,
         googleId: id,
         firstName: name?.split(" ")?.[0] || "",
         lastName: name?.split(" ")?.[name?.split(" ")?.length - 1] || "",
+      }
+
+      if (token) {
+        if (userDetails?.isBlocked) {
+          setLoading(false);
+          openSnackbar("You are blocked", "warning");
+          return;
+        } else {
+          login(userDetails, token);
+          router.push("/");
+          return;
+        }
+      }
+
+      setLoading(false);
+      openSnackbar("Authentication successful", "success");
+      if(superAdmin){
+        formData.role='superAdmin'
+       }
+      setForm((prev) => ({
+        ...prev,
+        ...formData
       }));
 
       nextStep();
     } catch (error) {
-      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
-    }
-    finally {
+      handleClick(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching sign-in URL",
+        "error"
+      );
+    } finally {
       setLoading(false);
     }
   };
@@ -136,11 +152,14 @@ function Login() {
       if (res.status === 200) {
         if (!isResend) nextStep();
       }
-    }
-    catch (error) {
-      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
-    }
-    finally {
+    } catch (error) {
+      handleClick(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching sign-in URL",
+        "error"
+      );
+    } finally {
       setResendLoading(false);
     }
   };
@@ -154,11 +173,19 @@ function Login() {
         otp: otpInput,
       };
       const res = await verifyOtpAPI(payload);
-      if (res.status === 200) {
+      if (res.status === 200 && !form.role==='superAdmin') {
         nextStep();
       }
+      if(form.role==="superAdmin"){
+        createUserFun()
+      }
     } catch (error) {
-      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
+      handleClick(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching sign-in URL",
+        "error"
+      );
     } finally {
       setLoading(false);
     }
@@ -166,15 +193,15 @@ function Login() {
 
   const checkIfBroker = () => {
     if (form.role === "broker") {
-      setShowConsultantDetailsPopup(true)
-      return
+      setShowConsultantDetailsPopup(true);
+      return;
     }
-    createUserFun()
-  }
+    createUserFun();
+  };
 
   const createUserFun = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       let payload = {
         name: {
           firstName: form.firstName,
@@ -189,35 +216,73 @@ function Login() {
         googleId: form.googleId,
         businessType: form.businessType,
         company: form.company,
-        reraNo: form.reraNo
+        reraNo: form.reraNo,
       };
       const res = await createUserAPI(payload);
       if (res.status === 200) {
         const { token, userDetails } = res?.data?.data;
-        login(userDetails, token)
-        router.push("/");
+        if (userDetails?.isBlocked) {
+          openSnackbar("You are blocked", "warning");
+          return;
+        } else {
+          login(userDetails, token);
+          router.push("/");
+        }
       }
     } catch (error) {
-      handleClick(error?.response?.data?.message || error?.message || "Error fetching sign-in URL", "error");
+      handleClick(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching sign-in URL",
+        "error"
+      );
     } finally {
-      setLoading(false)
-      setShowConsultantDetailsPopup(false)
+      setLoading(false);
+      setShowConsultantDetailsPopup(false);
     }
   };
 
   const getComponentByStep = () => {
     switch (activeStep) {
       case 1: {
-        return <GoogleSignIn googleSignInLoading={loading} getSignInUrl={getSignInUrl} />;
+        return (
+          <GoogleSignIn
+            googleSignInLoading={loading}
+            getSignInUrl={getSignInUrl}
+          />
+        );
       }
       case 2: {
-        return <SendOtp form={form} handleChange={handleChange} sendOtpFun={sendOtpFun} />;
+        return (
+          <SendOtp
+            form={form}
+            handleChange={handleChange}
+            sendOtpFun={sendOtpFun}
+          />
+        );
       }
       case 3: {
-        return <VerifyOtp loading={loading} prevStep={prevStep} resendLoading={resendLoading} sendOtpFun={sendOtpFun} form={form} verifyOtpFun={verifyOtpFun} otpInput={otpInput} setOtpInput={setOtpInput} />;
+        return (
+          <VerifyOtp
+            loading={loading}
+            prevStep={prevStep}
+            resendLoading={resendLoading}
+            sendOtpFun={sendOtpFun}
+            form={form}
+            verifyOtpFun={verifyOtpFun}
+            otpInput={otpInput}
+            setOtpInput={setOtpInput}
+          />
+        );
       }
       case 4: {
-        return <Welcome createUserFun={checkIfBroker} handleChange={handleChange} form={form} />;
+        return (
+          <Welcome
+            createUserFun={checkIfBroker}
+            handleChange={handleChange}
+            form={form}
+          />
+        );
       }
       default: {
         return null;
@@ -225,14 +290,19 @@ function Login() {
     }
   };
 
-  console.log(form)
+  console.log(form);
   return (
     <Container maxWidth="sm">
       <Card sx={{ p: 3 }}>
-        <Box>
-          {getComponentByStep()}
-        </Box>
-        <ConsultantDialog loading={loading} form={form} createUserFun={createUserFun} handleChange={handleChange} showConsultantDetailsPopup={showConsultantDetailsPopup} setShowConsultantDetailsPopup={setShowConsultantDetailsPopup} />
+        <Box>{getComponentByStep()}</Box>
+        <ConsultantDialog
+          loading={loading}
+          form={form}
+          createUserFun={createUserFun}
+          handleChange={handleChange}
+          showConsultantDetailsPopup={showConsultantDetailsPopup}
+          setShowConsultantDetailsPopup={setShowConsultantDetailsPopup}
+        />
       </Card>
     </Container>
   );

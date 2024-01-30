@@ -98,7 +98,7 @@ function EnhancedTableHead(props) {
 
 function RowStructure({ row }) {
 
-    const [openUpdatePopup, setOpenUpdatePopup] = useState()
+    const [openUpdatePopup, setOpenUpdatePopup] = useState(false)
     const handleOpenUpdatePopup = () => {
         setOpenUpdatePopup(true)
     }

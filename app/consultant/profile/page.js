@@ -340,11 +340,9 @@ function ConsultantProfile() {
           list={itemsServer}
         />
       </nav>
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container maxWidth="lg">
-          <CustomConsultantBreadScrumbs text="Profile" />
-        </Container>
-      </Box>
+
+      <CustomConsultantBreadScrumbs text='Profile' />
+
       <Container maxWidth="lg">
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
