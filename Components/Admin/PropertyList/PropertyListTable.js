@@ -117,7 +117,6 @@ function RowStructure({ row, router, handleDelete }) {
     <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.builder}</TableCell>
     <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.project}</TableCell>
     <TableCell>{row.city}</TableCell>
-    <TableCell>{row.city}</TableCell>
     <TableCell>{row.area}</TableCell>
     <TableCell>{row.sector}</TableCell>
     <TableCell sx={{ py: 0 }}>
