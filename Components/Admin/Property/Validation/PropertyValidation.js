@@ -13,15 +13,20 @@ const overviewSchema = Joi.object({
   launchYear: Joi.string().allow(''),
   completionYear: Joi.string().min(1).required(),
   status: Joi.string().required(),
-  constructionProgress: Joi.string().required(),
+  constructionProgress: Joi.string().when('status', {
+    is: "under construction",
+    then:Joi.string().required(),
+    otherwise: Joi.string().allow('').optional(),
+  }),
 });
 
-const layoutSchema = Joi.object({
+const layoutSchema =
+ Joi.object({
   numberOfBuildings: Joi.number()
   .custom((value, helpers) => {
-    const projectType = helpers.state.parent.overview.projectType;
-
-    const isFlatSelected = projectType.some(option => option.label === 'Flat');
+    console.log(helpers.state.ancestors[1].overview,'helllppers')
+    const projectType = helpers.state.ancestors[1].overview.projectType;
+    const isFlatSelected = projectType.some(option => option.label === 'Land');
     if (isFlatSelected) {
       return helpers.error('layout.numberOfBuildings.custom');
     }
@@ -31,8 +36,8 @@ const layoutSchema = Joi.object({
   .when(Joi.ref('...overview.projectType'), {
     is: Joi.array().items(
       Joi.object({
-        label: Joi.string().valid('Flat').required(),
-        value: Joi.string().valid('Flat').required(),
+        label: Joi.string().valid('Land').required(),
+        value: Joi.string().valid('Land').required(),
       })
     ).required(),
     then: Joi.number().allow('').optional(),
@@ -45,7 +50,7 @@ const layoutSchema = Joi.object({
     ,
     then: Joi.array().allow(),
     otherwise: Joi.array().min(1).items(
-      Joi.string()
+      Joi.object()
     ).required(),
   }),
   maxFloors: Joi.number().max(34).required(),
@@ -53,15 +58,17 @@ const layoutSchema = Joi.object({
   totalUnits: Joi.number().required(),
   area: Joi.string().required(),
   greenArea: Joi.string().allow('').optional(),
-  unitDensity: Joi.string().required(),
-  greenDensity: Joi.string().required(),
-  constructionQuality: Joi.number().required(),
-  interiorQuality: Joi.number().required(),
+  unitDensity: Joi.number().required(),
+  greenDensity: Joi.number().required(),
+  constructionQuality: Joi.number().required().min(1),
+  interiorQuality: Joi.number().required().min(1),
 });
 
 
-export const Schema = Joi.object({
-    overview: overviewSchema,
+export const Schema = 
+Joi.object({
+    overview: 
+    overviewSchema,
     regulatoryClearance: Joi.object().keys({
       reraApproved: Joi.string().required(),
       reraNumber: Joi.string().when('reraApproved', {
@@ -85,7 +92,7 @@ export const Schema = Joi.object({
         propertyLayout: Joi.string().required(),
         name: Joi.string().required(),
         areaUnit: Joi.string().required(),
-        areaValue: Joi.string().required(),
+        area: Joi.string().required(),
         bsp: Joi.string().required(),
         applicableMonth: Joi.string().required(),
         applicableYear: Joi.string().required(),
@@ -94,7 +101,11 @@ export const Schema = Joi.object({
     amenitiesData: Joi.object().keys({
       Basic: Joi.object().pattern(/./, Joi.object().keys({
         isApplicable: Joi.boolean().required(),
-        rating: Joi.number().required(),
+        rating:  Joi.number().when('isApplicable', {
+          is: true,
+          then: Joi.number().required(),
+          otherwise: Joi.number().allow(0).required(),
+        })
       })),
       Expected: Joi.object().pattern(/./, Joi.object().keys({
         isApplicable: Joi.boolean().required(),
@@ -118,12 +129,16 @@ export const Schema = Joi.object({
       googleMapLink: Joi.string().required(),
       longitude: Joi.string().required(),
       latitude: Joi.string().required(),
+      assesment: Joi.object().pattern(/./, Joi.object().keys({
+        isApplicable: Joi.boolean().required(),
+        rating: Joi.number().required(),
+      })),
     }),
     valueForMoney: Joi.object().keys({
       appTillNow: Joi.number().required(),
       expectedFurtherApp: Joi.number().required(),
       forEndUse: Joi.number().required(),
-    }),
+    }).required(),
     consultants: Joi.array().items(
       Joi.object().keys({
         id: Joi.string().required(),

@@ -26,31 +26,52 @@ function FloorPlanCard({ isEdit, form, handleChange }) {
     const { layoutType } = form.layout;
     const { unitsPlan } = form;
 
+    const [unitType,setUnitType] = useState();
+    const [unit,setUnit]=useState();
     const [rows, setRows] = useState([]);
     const [selectedItem, setSelectedItem] = useState({
         propertyType: '',
         propertyLayout: '',
         name: '',
         area: '',
+        areaUnit:'',
         bsp: '',
-        applicableMonthYear: '',
+        applicableYear: '',
+        applicableMonth: '',
     });
     const [isEditItem, setIsEditItem] = useState(false)
-
-    useEffect(() => {
-        setRows(unitsPlan);
-    }, [unitsPlan]);
+useEffect(()=>{
+    setUnit(layoutType);
+    setUnitType(projectType)
+},[])
+    // useEffect(() => {
+       
+    //     setRows(unitsPlan);
+    // }, [unitsPlan]);
 
     const addFloorPlan = () => {
-        if (selectedItem.propertyType && selectedItem.propertyLayout && selectedItem.name && selectedItem.area && selectedItem.bsp && selectedItem.applicableMonthYear) {
-            setRows((prevRows) => [...prevRows, selectedItem]);
+        if (selectedItem.propertyType && selectedItem.propertyLayout && selectedItem.name && selectedItem.area && selectedItem.bsp && selectedItem.applicableMonth && selectedItem.applicableYear) {
+        //    const isObjectPresent = rows.some(item =>
+        //     Object.entries(selectedItem).every(([key, value]) => item[key] === value)
+        //   );
+        //   if(isObjectPresent){
+    
+        //   }
+        //   else{
+        //     let temp = [...rows,selectedItem]
+        //     setRows((prevRows) => [...prevRows, selectedItem]);
+        //   }
+        handleChange(undefined,"unitsPlan",undefined,undefined,undefined,undefined,undefined,undefined,[...rows,selectedItem])
+        setRows((prevRows) => [...prevRows, selectedItem]);
             setSelectedItem({
                 propertyType: '',
                 propertyLayout: '',
                 name: '',
                 area: '',
+                areaUnit:'',
                 bsp: '',
-                applicableMonthYear: '',
+                applicableYear: '',
+                applicableMonth: '',
             });
         }
     };
@@ -63,8 +84,10 @@ function FloorPlanCard({ isEdit, form, handleChange }) {
                 propertyLayout: '',
                 name: '',
                 area: '',
+                areaUnit:'',
                 bsp: '',
-                applicableMonthYear: '',
+                applicableYear: '',
+                applicableMonth: '',
             });
             setIsEditItem(false)
         }
@@ -123,6 +146,9 @@ function FloorPlanCard({ isEdit, form, handleChange }) {
                         name="area"
                         value={selectedItem.area}
                         handleChange={(e) => setSelectedItem((prev) => ({ ...prev, area: e.target.value }))}
+                        units={[
+                            { label: 'acres', value: 'acres' }
+                        ]}
                     />
                     <NewInputFieldStructure
                         label="Base Selling Price"
@@ -140,8 +166,19 @@ function FloorPlanCard({ isEdit, form, handleChange }) {
                             { label: '2000', value: '2000' },
                             { label: '2001', value: '2001' },
                         ]}
-                        value={selectedItem.applicableMonthYear}
-                        handleChange={(e) => setSelectedItem((prev) => ({ ...prev, applicableMonthYear: e.target.value }))}
+                        value={selectedItem.applicableYear}
+                        handleChange={(e) => setSelectedItem((prev) => ({ ...prev, applicableYear: e.target.value }))}
+                    />
+                    <NewSelectTextFieldStructure
+                        label="Applicable Month"
+                        name="applicableMonth"
+                        isEdit={isEdit}
+                        list={[
+                            { label: '01', value: '01' },
+                            { label: '02', value: '02' },
+                        ]}
+                        value={selectedItem.applicableMonth}
+                        handleChange={(e) => setSelectedItem((prev) => ({ ...prev, applicableMonth: e.target.value }))}
                     />
                     <Grid item xs={24} sx={{ textAlign: 'end' }}>
                         <Button variant="contained" onClick={isEditItem ? editFloorPlan : addFloorPlan}>
@@ -159,38 +196,42 @@ function FloorPlanCard({ isEdit, form, handleChange }) {
                                     <TableCell align="left">Name</TableCell>
                                     <TableCell align="left">Area</TableCell>
                                     <TableCell align="left">Base Selling Price</TableCell>
-                                    <TableCell align="left">Applicable Month and Year</TableCell>
+                                    <TableCell align="left">Applicable Year</TableCell>
+                                    <TableCell align="left">Applicable Month</TableCell>
                                     <TableCell align="left">Edit</TableCell>
                                     <TableCell align="left">Delete</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {rows.map((row, index) => (
+                                   
                                     <TableRow
                                         key={row.name + index}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
-                                        <TableCell component="th" scope="row">
+                                   
+                                       {row.propertyType && <TableCell component="th" scope="row">
                                             {row.propertyType}
-                                        </TableCell>
-                                        <TableCell align="left">{row.propertyLayout}</TableCell>
-                                        <TableCell align="left">{row.name}</TableCell>
-                                        <TableCell align="left">{row.area}</TableCell>
-                                        <TableCell align="left">{row.bsp}</TableCell>
-                                        <TableCell align="left">{row.applicableMonthYear}</TableCell>
-                                        <TableCell align="left">
+                                        </TableCell>}
+                                        {row.propertyLayout && <TableCell align="left">{row.propertyLayout}</TableCell>}
+                                        {row.name && <TableCell align="left">{row.name}</TableCell>}
+                                        {row.area && <TableCell align="left">{row.area}</TableCell>}
+                                        {row.bsp && <TableCell align="left">{row.bsp}</TableCell>}
+                                        {row.applicableYear && <TableCell align="left">{row.applicableYear}</TableCell>}
+                                        {row.applicableMonth && <TableCell align="left">{row.applicableMonth}</TableCell>}
+                                        {row.propertyType && <TableCell align="left">
                                             <IconButton onClick={() => {
                                                 setSelectedItem(row)
                                                 setIsEditItem(index)
                                             }}>
                                                 <EditIcon fontSize="small" />
                                             </IconButton>
-                                        </TableCell>
-                                        <TableCell align="left">
+                                        </TableCell>}
+                                        {row.propertyType && <TableCell align="left">
                                             <IconButton onClick={() => deleteFloorPlan(index)}>
                                                 <DeleteIcon fontSize="small" />
                                             </IconButton>
-                                        </TableCell>
+                                        </TableCell>}
                                     </TableRow>
                                 ))}
                             </TableBody>

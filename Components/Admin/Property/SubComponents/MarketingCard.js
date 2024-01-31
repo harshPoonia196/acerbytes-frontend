@@ -107,10 +107,10 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                         isFull
                         error={errors?.["marketing.tagLine"]}
                         value={tagLine}
-                        handleChange={() => handleChange(e, "marketing", "tagLine")}
+                        handleChange={(e) => handleChange(e, "marketing", "tagLine")}
                     />
                     <NewInputFieldStructure
-                        label='Tag line'
+                        label='Description'
                         variant='outlined'
                         isEdit={isEdit}
                         multiline
@@ -118,7 +118,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                         isFull
                         error={errors?.["marketing.description"]}
                         value={description}
-                        handleChange={() => handleChange(e, "marketing", "description")}
+                        handleChange={(e) => handleChange(e, "marketing", "description")}
                     />
                 </Grid>
             </Card>

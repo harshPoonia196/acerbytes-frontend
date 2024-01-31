@@ -24,8 +24,12 @@ import BuilderPriceCard from 'Components/Admin/Property/SubComponents/BuilderPri
 import ResalePriceCard from 'Components/Admin/Property/SubComponents/ResalePriceCard';
 import InvestmentCard from 'Components/Admin/Property/SubComponents/InvestmentCard';
 import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard';
+import { useSnackbar } from "utills/SnackbarContext";
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
+import {
+    CreateProperty,
+  } from "api/Property.api";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 
 const tabHeight = 116;
@@ -67,6 +71,7 @@ function useThrottledOnScroll(callback, delay) {
 function AddProperty() {
 
     const [activeState, setActiveState] = React.useState(null);
+    const { openSnackbar } = useSnackbar();
 
     let itemsServer = listOfTabsInAddProperty.map((tab) => {
         const hash = tab.value;
@@ -190,159 +195,159 @@ function AddProperty() {
         },
         unitsPlan: [
             {
-                propertyType: "dsd",
-                propertyLayout: "dsd",
-                name: "dssd",
-                areaUnit: "dsd",
-                areaValue: "dsd",
-                bsp: "dsd",
-                applicableMonth: "sds",
-                applicableYear: "sds"
+                propertyType: "",
+                propertyLayout: "",
+                name: "",
+                areaUnit: "",
+                areaValue: "",
+                bsp: "",
+                applicableMonth: "",
+                applicableYear: ""
             }
         ],
 
         amenitiesData: {
             Basic: {
                 Gym: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Yoga: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Swimming pool": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Club: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Fitness center": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 SPA: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
             },
             Expected: {
                 Pool: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Yoga: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Party hall": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Indoor games": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Spa: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Clubhouse: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Jacuzzi: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Theatre: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Barbeque Lawn": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Jogging track": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Covered Sitting": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Garden: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Wi-fi": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
             },
             Desired: {
                 Theatre: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Barbeque Lawn": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Jogging track": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Covered Sitting": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Garden: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Yoga: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 SPA: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Swimming pool": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Club: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
             },
             Unique: {
                 Library: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Kids play area": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Back up": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Wi-fi": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Gas line": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Shopping mart": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
             },
@@ -356,6 +361,89 @@ function AddProperty() {
             googleMapLink: "",
             longitude: "",
             latitude: "",
+            assesment:{
+                "Pick up / delivery":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "School":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Hospital:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Mall:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Super market":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Restaurants:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Railway:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Metro:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Bus stand":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Highway:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Offices:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Hotels:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Clubs:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Noise:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Safety:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Bus stops":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Train station":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Metro station":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                University:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Parks:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+
+            }
         },
         valueForMoney: {
             appTillNow: 0,
@@ -380,16 +468,42 @@ function AddProperty() {
     })
     
 
-    const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName,autoFill,autoFillField,autoFillFieldValue) => {
+    const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName,autoFill,autoFillField,autoFillFieldValue,isRating,unitsPlanValue) => {
+        console.log('see',firstKeyName,unitsPlanValue,form)
         if(autoFill){
+          
         let innerObj = {
             [secondKeyName]:e.target.value,
             [autoFillField]:autoFillFieldValue
         }
-setForm({...form,[firstKeyName]:{...form?.[firstKeyName],...innerObj}})
+       setForm({...form,[firstKeyName]:{...form?.[firstKeyName],...innerObj}})
         }
-     
+     else if (firstKeyName === "unitsPlan"){
+        setForm({...form,["unitsPlan"]:[...unitsPlanValue]})
+    }
 else{
+   
+    if(thirdKeyName === 'checked'){
+        console.log("okieeee,",e.target.value,autoFillField,isRating)
+        setForm((prevForm) => {
+            const updatedForm = { ...prevForm };
+            if (updatedForm[firstKeyName] && updatedForm[firstKeyName][secondKeyName] && isRating) {
+                updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                    ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                    rating:e.target.value
+                };
+            }
+            else{
+                updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                    ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                    isApplicable:e.target.checked
+                };
+            }
+            return updatedForm;
+          });        
+    }
+   
+    else{
         let value = e?.target ? thirdKeyName === 'checked' ? e.target.checked : e.target.value : e
         await setForm((prev) => ({
             ...prev,
@@ -405,25 +519,44 @@ else{
                         },
                 },
         }))
+    }
+  
 }
 
     }
 
     const validateForm = () => {
         const { error } = Schema.validate(form, { abortEarly: false });
-        // console.log(validationError?.["layout.layoutType"],'errrrrr')
-        if (error) {
-            // console.log("🚀 ~ validateForm ~ error:", error.details)
-            const validationErrors = {};
-            error.details.forEach((detail) => {
-                validationErrors[detail?.context?.label] = detail?.message
-            });
-            // Handle validation errors, e.g., display error messages
-            setErrors(validationErrors)
-            return false;
-        }
+        let store = []
+   error.details.map((item)=>{
+   
+    if(item.context.key==="constructionQuality"||item.context.key==="interiorQuality"){
+      store.push(item.context.key)
+    }
+  
+
+})
+if(store.length<1){
+    openSnackbar(`Ratings needs to be provided for ${store.join(',')}`, "error");
+
+}
+        console.log(form,"formmmm",error,'errrr')
+      
+        // if(error.ValidationError.)
+        // openSnackbar(message, severity);
+        // if (error) {
+        //     // console.log("🚀 ~ validateForm ~ error:", error.details)
+        //     const validationErrors = {};
+        //     error.details.forEach((detail) => {
+        //         validationErrors[detail?.context?.label] = detail?.message
+        //     });
+        //     // Handle validation errors, e.g., display error messages
+        //     setErrors(validationErrors)
+        //     return false;
+        // }
 
         // Validation passed
+        CreateProperty({...form})
         return true;
     };
 
@@ -445,12 +578,12 @@ else{
                         <RegulatoryCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         <LandscapeCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         <FloorPlanCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <FacilitiesCard errors={errors} form={form} isEdit={isEdit} />
+                        <FacilitiesCard errors={errors} form={form} isEdit={isEdit} handleChange={handleChange} />
                         <LocationCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         {/* <ResalePriceCard isEdit={isEdit} />
                         <BuilderPriceCard isEdit={isEdit} /> */}
                         <InvestmentCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <PropertyConsultantsCard isEdit={isEdit} />
+                        <PropertyConsultantsCard isEdit={isEdit} form={form} handleChange={handleChange} />
                         <OverallAssessmentCard isEdit={isEdit} />
                         {/* <BankCard isEdit={isEdit} /> */} 
                         <MarketingCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />

@@ -81,7 +81,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         isEdit={isEdit}
                         value={minFloors}
                         error={errors?.["layout.minFloors"]}
-                        handleChange={(e) => handleChange(e, "layout", "minFloors",undefined,true,)}
+                        handleChange={(e) => handleChange(e, "layout", "minFloors")}
                     />
                     
                     <NewUnitAreaInputField
@@ -91,7 +91,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         isEdit={isEdit}
                         value={area}
                         error={errors?.["layout.area"]}
-                        handleChange={(e) => {console.log('ingaaaa'),handleChange(e, "layout", "area")}}
+                        handleChange={(e) => {handleChange(e, "layout", "area")}}
                         units={[
                             { label: 'acres', value: 'acres' }
                         ]}
@@ -112,7 +112,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         isEdit={isEdit}
                         value={greenArea}
                         error={errors?.["layout.greenArea"]}
-                        handleChange={(e) => handleChange(e, "layout", "greenArea")}
+                        handleChange={(e) => handleChange(e, "layout", "greenArea",undefined,true,"greenDensity",area?e.target.value/area:e.target.value/1)}
                     />
                     <NewInputFieldStructure
                         label="Unit density"
@@ -154,7 +154,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Interior Quality
                             </Typography>
                         </Box>
-                        <Rating onChange={(e) => { handleChange(e, "layout", "constructionQuality")}} name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating onChange={(e) => { handleChange(e, "layout", "interiorQuality")}} name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
 
                 </Grid>

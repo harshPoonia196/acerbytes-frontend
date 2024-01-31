@@ -152,14 +152,13 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                                 { label: 'under construction', value: 'under construction' },
                                 { label: 'completed', value: 'completed' },
                                 {label:"Pre launch",value:"Pre launch"},
-                                {label:"RERA approved",value:"RERA approved"},
-                                {label:"Launch",value:"Launch"},
-                                {label:"Under construction",value:"Under construction"},
-                                {label:"CC",value:"CC"},
-                                {label:"OC",value:"OC"},
-                                {label:"Delivered",value:"Delivered"},
-                                {label:"Registeration",value:"Registeration"},
-                                {label:"Resale",value:"Resale"}
+                                {label:"RERA approved",value:"rera approved"},
+                                {label:"Launch",value:"launch"},
+                                {label:"CC",value:"cc"},
+                                {label:"OC",value:"oc"},
+                                {label:"Delivered",value:"delivered"},
+                                {label:"Registeration",value:"registeration"},
+                                {label:"Resale",value:"resale"}
                             ]}
                             error={errors?.["overview.status"]}
                             handleChange={(e) => handleChange(e, "overview", "status")}
