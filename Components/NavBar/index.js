@@ -72,7 +72,6 @@ export default function ClippedDrawer({ children }) {
   }, [pathname]);
 
   React.useEffect(() => {
-    console.log(userDetails?true:false,'userD')
     if (userDetails && Object.keys(userDetails).length && userDetails?.role == ROLE_CONSTANTS.broker) {
         getBrokerpointBalance();
     }
