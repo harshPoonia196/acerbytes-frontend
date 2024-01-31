@@ -82,7 +82,27 @@ function ConsultantProfile() {
 
   const { data, isLoading, error } = useQueries(
     [reactQueryKey.broker.profile(getGoogleId())],
-    () => getBrokerProfile(openSnackbar)
+    async () => {
+      try {
+        const response = await getBrokerProfile();
+        if (response.status == 200) {
+          const { success, data, message } = response.data;
+          if (success) {
+            return data;
+          } else {
+            openSnackbar(message, "error");
+          }
+        }
+      } catch (error) {
+        openSnackbar(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Something went wrong!",
+          "error"
+        );
+        return error;
+      }
+    }
   );
 
   const onSuccess = (res) => {
@@ -341,7 +361,7 @@ function ConsultantProfile() {
         />
       </nav>
 
-      <CustomConsultantBreadScrumbs text='Profile' />
+      <CustomConsultantBreadScrumbs text="Profile" />
 
       <Container maxWidth="lg">
         <form onSubmit={handleSubmit}>
