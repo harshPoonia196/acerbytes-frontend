@@ -72,6 +72,7 @@ export default function ClippedDrawer({ children }) {
   }, [pathname]);
 
   React.useEffect(() => {
+    console.log(userDetails?true:false,'userD')
     if (userDetails && Object.keys(userDetails).length && userDetails?.role == ROLE_CONSTANTS.broker) {
         getBrokerpointBalance();
     }
@@ -421,7 +422,7 @@ export default function ClippedDrawer({ children }) {
               )}
             </Box>
             <Box sx={{ alignSelf: "center" }}>
-              {userDetails ? (
+              {userDetails && Object.keys(userDetails).length ? (
                 <Typography>
                   Hi,{" "}
                   <span style={{ color: colors.BLUE }}>
