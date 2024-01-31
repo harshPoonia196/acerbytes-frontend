@@ -95,7 +95,17 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([])
-  console.log(propertyData)
+
+  const transformedData = propertyData?.consultants?.map(consultant => ({
+    name: consultant.name,
+    type: "Consultant", 
+    stars: consultant.rating,
+    clients: consultant.clientsServed,
+    id: consultant.id,
+    profilePic: consultant.profilePic
+   
+  }));
+
 
   const detailsGetProperty = async () => {
     try {
@@ -191,10 +201,7 @@ const PropertyDetailsPage = ({ params }) => {
     setAmenitiesTab(newValue);
   };
 
-  const [brokersList, setBrokersList] = React.useState([
-    { name: "Anand Gupta", type: "Consultant", stars: 4, clients: 432 },
-    { name: "Raghav Patel", type: "Consultant", stars: 5, clients: 45 },
-  ]);
+  
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
 
@@ -375,14 +382,14 @@ const PropertyDetailsPage = ({ params }) => {
             />
 
             <Grid container spacing={2} id='section-list'>
-              <ClearanceSection />
-              <LandscapeSection />
-              <UnitsPlanSection />
-              <AmenitiesSection />
+              <ClearanceSection regulatoryClearanceData={propertyData?.regulatoryClearance} />
+              <LandscapeSection  layoutData={propertyData?.layout}/>
+              <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
+              <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
               <LocationSection />
               <PricingSection />
               <ResaleSection />
-              <ValueForMoneySection />
+              <ValueForMoneySection valueForMoneyData={propertyData?.valueForMoney} />
               <FloorPlanSection />
               <Grid item xs={12} id="propertyConsultants">
                 <Card sx={{ p: 2 }}>
@@ -402,7 +409,7 @@ const PropertyDetailsPage = ({ params }) => {
                       </Box>
                     </Grid>
 
-                    {brokersList.map((broker) => (
+                    {transformedData?.map((broker) => (
                       <Grid item xs={12} sm={6} key={broker?.name}>
                         <BrokerCard broker={broker} noReview />
                       </Grid>

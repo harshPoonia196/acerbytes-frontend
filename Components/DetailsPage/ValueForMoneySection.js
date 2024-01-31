@@ -4,8 +4,8 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function ValueForMoneySection({ refCallback }) {
-
+function ValueForMoneySection(props) {
+    const  {refCallback, valueForMoneyData} = props
     const router = useRouter()
 
     return (
@@ -44,9 +44,9 @@ function ValueForMoneySection({ refCallback }) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <NewKeyValuePairStructure label="Appreciation till now" value={'100%'} />
-                    <NewKeyValuePairStructure label="Expected further appreciation" value={'100%'} />
-                    <NewKeyValuePairStructure label="For end user" value={'Yes'} />
+                    <NewKeyValuePairStructure label="Appreciation till now" value={valueForMoneyData?.appTillNow} />
+                    <NewKeyValuePairStructure label="Expected further appreciation" value={valueForMoneyData?.expectedFurtherApp} />
+                    <NewKeyValuePairStructure label="For end user" value={valueForMoneyData?.forEndUse} />
                 </Grid>
             </Card>
         </Grid>

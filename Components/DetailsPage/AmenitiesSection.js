@@ -4,8 +4,11 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function AmenitiesSection({ refCallback }) {
-
+function AmenitiesSection(props) {
+    const { refCallback, amenitiesData } = props
+    if (!amenitiesData) {
+        return <div>No data available</div>;
+    }
     const router = useRouter()
 
     return (
@@ -44,7 +47,29 @@ function AmenitiesSection({ refCallback }) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <Grid item xs={12}>
+                    {Object.entries(amenitiesData).map(([category, amenities]) => {
+                        return (
+                            <React.Fragment key={category}>
+                                <Grid item xs={12}>
+                                    <Typography variant="h6">{category}</Typography>
+                                </Grid>
+
+                                {Object.entries(amenities).map(([amenityName, amenityDetails]) => {
+                                    return (
+                                        <NewKeyValuePairStructure
+                                            key={amenityName}
+                                            label={amenityName}
+                                            value={amenityDetails?.rating}
+                                            middleValue={category}
+                                            isRating={amenityDetails?.isApplicable}
+                                        />
+                                    );
+                                })}
+                            </React.Fragment>
+                        );
+                    })}
+
+                    {/* <Grid item xs={12}>
                         <Typography variant="h6">Basic</Typography>
                     </Grid>
                     <NewKeyValuePairStructure label="Gym"
@@ -62,7 +87,7 @@ function AmenitiesSection({ refCallback }) {
                     <NewKeyValuePairStructure label="Party hall"
                         value={2.5} middleValue={'Unique'} isRating />
                     <NewKeyValuePairStructure label="Theatre"
-                        value={2.5} middleValue={'Unique'} isRating />
+                        value={2.5} middleValue={'Unique'} isRating /> */}
                 </Grid>
             </Card>
         </Grid>

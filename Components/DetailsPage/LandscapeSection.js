@@ -4,7 +4,8 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function LandscapeSection() {
+function LandscapeSection(props) {
+    const  {layoutData} = props
 
     const router = useRouter()
 
@@ -43,19 +44,20 @@ function LandscapeSection() {
                     </Box>
                 </Box>
                 <Divider />
+
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <NewKeyValuePairStructure label="Towers" value="5" />
-                    <NewKeyValuePairStructure label="Property type" value="Flat" />
-                    <NewKeyValuePairStructure label="Units (Total)" value="10" />
+                    <NewKeyValuePairStructure label="Towers" value={layoutData?.numberOfBuildings} />
+                    <NewKeyValuePairStructure label="Property type" value={layoutData?.layoutType.join(", ")} />
+                    <NewKeyValuePairStructure label="Units (Total)" value={layoutData?.totalUnits} />
                     <NewKeyValuePairStructure label="Floor types" value="3BHK" />
-                    <NewKeyValuePairStructure label="Floors (Max-Min)" value="34" />
-                    <NewKeyValuePairStructure label="Area" value="5 acres" />
+                    <NewKeyValuePairStructure label="Floors (Max-Min)" value={`${layoutData?.maxFloors } - ${layoutData?.minFloors}`} />
+                    <NewKeyValuePairStructure label="Area" value={layoutData?.area} />
                     <NewKeyValuePairStructure label="Open area" value="4 acres" />
-                    <NewKeyValuePairStructure label="Green area" value="0.5 acres" />
-                    <NewKeyValuePairStructure label="Unit density" value="5" />
-                    <NewKeyValuePairStructure label="Green density" value="10" />
-                    <NewKeyValuePairStructure label="Construction quality" value="10" />
-                    <NewKeyValuePairStructure label="Interior quality" value="10" />
+                    <NewKeyValuePairStructure label="Green area" value={layoutData?.greenArea} />
+                    <NewKeyValuePairStructure label="Unit density" value={layoutData?.unitDensity} />
+                    <NewKeyValuePairStructure label="Green density" value={layoutData?.greenDensity} />
+                    <NewKeyValuePairStructure label="Construction quality" value={layoutData?.constructionQuality} />
+                    <NewKeyValuePairStructure label="Interior quality" value={layoutData?.interiorQuality} />
                 </Grid>
             </Card>
         </Grid>

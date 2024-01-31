@@ -4,8 +4,8 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function UnitsPlanSection({ refCallback }) {
-
+function UnitsPlanSection(props) {
+    const  {refCallback, unitsPlan} = props
     const router = useRouter()
 
     const GridItemWithCard = (props) => {
