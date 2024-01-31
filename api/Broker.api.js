@@ -12,3 +12,7 @@ export const getBrokerBalance = () => {
 export const getPaymentHisotryList = () => {
   return axiosInstance.get(`/broker/paymentHistory`);
 };
+
+export const generateRandorOrderNumber = () => {
+  return axiosInstance.get(`/broker/generateOrderNumber`);
+};

@@ -197,13 +197,7 @@ function ManageUserTable({ searchText }) {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageLimit, setPageLimit] = React.useState(PAGINATION_LIMIT);
   const [initialMount, setInitialMount] = React.useState(true);
-  const [usersList, setUsersList] = React.useState({
-    list: [],
-    totalCount: 0,
-    totalPages: 0,
-    nextPage: 0,
-    prevPage: 0,
-  });
+  const [usersList, setUsersList] = React.useState({});
   const [confirmationDialog, setConfirmationDialog] = React.useState({
     isOpen: false,
     data: {},
@@ -232,10 +226,6 @@ function ManageUserTable({ searchText }) {
       page: currentPage,
     };
     getAllUsersList(pageOptions, searchText);
-    // Add a cleanup function if necessary
-    return () => {
-      // Your cleanup code here, if needed
-    };
   }, [searchText, initialMount]);
 
   const objectToQueryString = (obj) => {

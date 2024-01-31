@@ -8,7 +8,8 @@ const NewAutoCompleteInputStructure = ({
   handleChange,
   label,
   value,
-  options
+  options,
+  list
 }) => (
   <>
     <Grid item xs={12} sm={6}>

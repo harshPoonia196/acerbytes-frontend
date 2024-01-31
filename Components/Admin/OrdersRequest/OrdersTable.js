@@ -25,6 +25,8 @@ import {
   getApprovedDiscountPercentage,
   objectToQueryString,
   stableSort,
+  formatPoints,
+  formatAmount,
 } from "utills/CommonFunction";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Tabs from "@mui/material/Tabs";
@@ -49,47 +51,67 @@ const headCells = [
   {
     id: "orderNo",
     label: "Order no",
+    isCompleteView: true,
+    isPendingView: true,
   },
   {
     id: "name",
     label: "Name",
+    isCompleteView: true,
+    isPendingView: true,
   },
   {
     id: "mobileNumber",
     label: "Mobile number",
+    isCompleteView: true,
+    isPendingView: true,
   },
   {
     id: "amount",
     label: "St Amount",
+    isCompleteView: true,
+    isPendingView: true,
   },
   {
     id: "point",
     label: "St Point",
+    isCompleteView: true,
+    isPendingView: true,
   },
   {
     id: "discount",
     label: "St discount",
+    isCompleteView: true,
+    isPendingView: true,
   },
   {
     id: "approvedDiscount",
     label: "Approved discount",
+    isCompleteView: true,
+    isPendingView: false,
   },
   {
     id: "approvedPayment",
     label: "Approved payment",
+    isCompleteView: true,
+    isPendingView: false,
   },
   {
     id: "approvedPoints",
     label: "Approved points",
+    isCompleteView: true,
+    isPendingView: false,
   },
   {
     id: "action",
     label: "Action",
+    isCompleteView: false,
+    isPendingView: true,
   },
 ];
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } = props;
+  const { order, orderBy, onRequestSort, isCompleted } = props;
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -98,27 +120,33 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
+        {headCells
+          ?.filter((rs) => {
+            return isCompleted == true ? rs.isCompleteView : rs.isPendingView;
+          })
+          ?.map((headCell) => (
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? "right" : "left"}
+              padding={headCell.disablePadding ? "none" : "normal"}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc"
+                      ? "sorted descending"
+                      : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          ))}
       </TableRow>
     </TableHead>
   );
@@ -202,12 +230,10 @@ function RowStructure({
         <TableCell>{row.amount}</TableCell>
         <TableCell>{row.points}</TableCell>
         <TableCell>{row?.standardDiscount}%</TableCell>
-        <TableCell>
-          {isCompleted ? `${row?.approvedDiscount}%` : "NA"}
-        </TableCell>
-        <TableCell>{isCompleted ? row?.approvedPayment : "NA"}</TableCell>
-        <TableCell>{isCompleted ? row?.approvedPoints : "NA"}</TableCell>
-        <TableCell>
+        {isCompleted && <TableCell>{row?.approvedDiscount}%</TableCell>}
+        {isCompleted && <TableCell>{formatAmount(row?.approvedPayment)}</TableCell>}
+        {isCompleted && <TableCell>{formatPoints(row?.approvedPoints)}</TableCell>}
+        {!isCompleted && <TableCell>
           <IconButton
             aria-label="more"
             id="long-button"
@@ -220,7 +246,7 @@ function RowStructure({
           >
             <MoreVertIcon fontSize="small" />
           </IconButton>
-        </TableCell>
+        </TableCell>}
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -272,13 +298,7 @@ function TableView({ status }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
   const [initialMount, setInitialMount] = React.useState(true);
   const [isLoading, setLoading] = React.useState(false);
-  const [orderRequests, setOrderRequests] = React.useState({
-    list: [],
-    totalCount: 0,
-    totalPages: 0,
-    nextPage: 0,
-    prevPage: 0,
-  });
+  const [orderRequests, setOrderRequests] = React.useState({});
   const [salesPersons, setSalesPersons] = React.useState([]);
 
   React.useEffect(() => {
@@ -411,6 +431,7 @@ function TableView({ status }) {
           order={order}
           orderBy={orderBy}
           onRequestSort={handleRequestSort}
+          isCompleted={status === ORDER_STATUS.COMPLETED}
         />
         <TableBody>
           {orderRequests?.list?.map((row, index) => (

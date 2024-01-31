@@ -28,19 +28,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-function generateRandomId() {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let randomId = "";
-
-  for (let i = 0; i < 7; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    randomId += characters.charAt(randomIndex);
-  }
-
-  return randomId;
-}
-
 const objectToQueryString = (obj) => {
   const queryString = Object.keys(obj)
     .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
@@ -76,7 +63,6 @@ export {
   descendingComparator,
   getComparator,
   stableSort,
-  generateRandomId,
   objectToQueryString,
   getApprovedDiscountPercentage,
   formatDate,

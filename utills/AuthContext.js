@@ -11,12 +11,12 @@ export const AuthProvider = ({ children }) => {
   const [brokerBalance, setBrokerBalance] = useState(0);
 
   useEffect(() => {
-    setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
+    localStorage.getItem("userDetails") && setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
     setIsLogged(isLoggedIn());
 
     const handleStorageChange = (event) => {
       setIsLogged(isLoggedIn());
-      setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
+      localStorage.getItem("userDetails") && setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
     };
 
     window.addEventListener("storage", handleStorageChange);
