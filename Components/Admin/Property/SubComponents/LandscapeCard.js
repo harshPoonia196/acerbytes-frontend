@@ -83,7 +83,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         error={errors?.["layout.minFloors"]}
                         handleChange={(e) => handleChange(e, "layout", "minFloors")}
                     />
-                    
+
                     <NewUnitAreaInputField
                         label="Area"
                         name="area"
@@ -91,7 +91,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         isEdit={isEdit}
                         value={area}
                         error={errors?.["layout.area"]}
-                        handleChange={(e) => {handleChange(e, "layout", "area")}}
+                        handleChange={(e) => { handleChange(e, "layout", "area") }}
                         units={[
                             { label: 'acres', value: 'acres' }
                         ]}
@@ -103,7 +103,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         isEdit={isEdit}
                         error={errors?.["layout.totalUnits"]}
                         value={totalUnits}
-                        handleChange={(e) => handleChange(e, "layout", "totalUnits",undefined,true,"unitDensity",e.target.value/area)}
+                        handleChange={(e) => handleChange(e, "layout", "totalUnits", undefined, true, "unitDensity", e.target.value / area)}
                     />
                     <NewUnitAreaInputField
                         label="Green area"
@@ -112,8 +112,9 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         isEdit={isEdit}
                         value={greenArea}
                         error={errors?.["layout.greenArea"]}
-                        handleChange={(e) => handleChange(e, "layout", "greenArea",undefined,true,"greenDensity",area?e.target.value/area:e.target.value/1)}
+                        handleChange={(e) => handleChange(e, "layout", "greenArea", undefined, true, "greenDensity", area ? e.target.value / area : e.target.value / 1)}
                     />
+                    <Grid item xs={0} sm={6}></Grid>
                     <NewInputFieldStructure
                         label="Unit density"
                         name="unitDensity"
@@ -123,6 +124,17 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         error={errors?.["layout.unitDensity"]}
                         handleChange={(e) => handleChange(e, "layout", "unitDensity")}
                     />
+                    <Grid item xs={12} sm={6}>
+                        <Box>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                            >
+                                Score
+                            </Typography>
+                        </Box>
+                        <Rating defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                    </Grid>
                     <NewInputFieldStructure
                         label="Green density"
                         name="greenDensity"
@@ -132,7 +144,17 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         error={errors?.["layout.greenDensity"]}
                         handleChange={(e) => handleChange(e, "layout", "greenDensity")}
                     />
-
+                    <Grid item xs={12} sm={6}>
+                        <Box>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                            >
+                                Score
+                            </Typography>
+                        </Box>
+                        <Rating defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                    </Grid>
                     <Grid item xs={6}>
                         <Box>
                             <Typography
@@ -142,7 +164,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Construction Quality
                             </Typography>
                         </Box>
-                        <Rating   onChange={(e) => { handleChange(e, "layout", "constructionQuality")}} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating onChange={(e) => { handleChange(e, "layout", "constructionQuality") }} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
 
                     <Grid item xs={6}>
@@ -154,7 +176,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Interior Quality
                             </Typography>
                         </Box>
-                        <Rating onChange={(e) => { handleChange(e, "layout", "interiorQuality")}} name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating onChange={(e) => { handleChange(e, "layout", "interiorQuality") }} name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
 
                 </Grid>

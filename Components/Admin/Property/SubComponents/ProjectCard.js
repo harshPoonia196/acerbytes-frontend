@@ -6,13 +6,15 @@ import {
     Box,
     Divider,
     IconButton,
+    Rating,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import {yearList} from "Components/Constants/index"
+import { yearList } from "Components/Constants/index"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompleteInputStructure';
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
+import colors from 'styles/theme/colors';
 
 function ProjectCard({ isEdit, form, handleChange, errors }) {
 
@@ -82,6 +84,17 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             error={errors?.["overview.builder"]}
                             handleChange={(e, newValue) => handleChange(newValue?.value, "overview", "builder")}
                         />
+                        <Grid item xs={6}>
+                            <Box>
+                                <Typography
+                                    variant="subtitle2"
+                                    sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                                >
+                                    Score
+                                </Typography>
+                            </Box>
+                            <Rating defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        </Grid>
                         <NewInputFieldStructure
                             label="Project name"
                             variant="outlined"
@@ -109,13 +122,13 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             list={[
                                 { label: 'Flat', value: 'Flat' },
                                 { label: 'Shop', value: 'Shop' },
-                                {label:"Restaurant",value:"Restaurant"},
-                                {label:"Pent house",value:"Pent house"},
-                                {label:"Flat",value:"Flat"},
-                                {label:"Land",value:"Land"},
-                                {label:"Retail space",value:"Retail space"},
-                                {label:"Studio apartment",value:"Studio apartment"},
-                                {label:"Food court",value:"Food court"}
+                                { label: "Restaurant", value: "Restaurant" },
+                                { label: "Pent house", value: "Pent house" },
+                                { label: "Flat", value: "Flat" },
+                                { label: "Land", value: "Land" },
+                                { label: "Retail space", value: "Retail space" },
+                                { label: "Studio apartment", value: "Studio apartment" },
+                                { label: "Food court", value: "Food court" }
                             ]}
                             error={errors?.["overview.projectType"]}
                             handleChange={(e, newValue) => handleChange(newValue, "overview", "projectType")}
@@ -151,14 +164,14 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             list={[
                                 { label: 'under construction', value: 'under construction' },
                                 { label: 'completed', value: 'completed' },
-                                {label:"Pre launch",value:"Pre launch"},
-                                {label:"RERA approved",value:"rera approved"},
-                                {label:"Launch",value:"launch"},
-                                {label:"CC",value:"cc"},
-                                {label:"OC",value:"oc"},
-                                {label:"Delivered",value:"delivered"},
-                                {label:"Registeration",value:"registeration"},
-                                {label:"Resale",value:"resale"}
+                                { label: "Pre launch", value: "Pre launch" },
+                                { label: "RERA approved", value: "rera approved" },
+                                { label: "Launch", value: "launch" },
+                                { label: "CC", value: "cc" },
+                                { label: "OC", value: "oc" },
+                                { label: "Delivered", value: "delivered" },
+                                { label: "Registeration", value: "registeration" },
+                                { label: "Resale", value: "resale" }
                             ]}
                             error={errors?.["overview.status"]}
                             handleChange={(e) => handleChange(e, "overview", "status")}
