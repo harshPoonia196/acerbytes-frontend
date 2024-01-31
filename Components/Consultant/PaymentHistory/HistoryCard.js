@@ -8,8 +8,9 @@ import { CustomAccordion, CustomAccordionDetails, CustomAccordionSummary } from 
 import SubAccordionOfHistoryCard from './SubAccordionOfHistoryCard';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PriceFormatter from 'Components/CommonLayouts/PriceFormatter';
+import { formatPoints, formatDate } from 'utills/CommonFunction';
 
-function HistoryCard() {
+function HistoryCard({ history }) {
     const [isExpanded, setIsExpanded] = React.useState(false);
 
     const handleExpandedStateChange = () => {
@@ -32,12 +33,13 @@ function HistoryCard() {
                 <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant='h5' sx={{ flex: 1 }}>
-                            23rd April, 2023 &#183; Paid <PriceFormatter amount='25000' display='text' currency='inr' /> + 18% tax
+                           {formatDate(history?.createdAt)} &#183; Paid <PriceFormatter amount={history?.paymentPaid} display='text' currency='inr' /> 
+                           {/* + 18% tax */}
                         </Typography>
-                        <Typography variant='h6' sx={{ color: colors.BLUE }}>Balance: 32,000</Typography>
+                        {/* <Typography variant='h6' sx={{ color: colors.BLUE }}>Balance: 32,000</Typography> */}
                     </Box>
                     <Typography variant='subtitle1'>
-                        New points: 25,000 | Opening: 8,000 | Consumed: 12,000
+                        New points: {formatPoints(history?.newPoints)} | Opening: {formatPoints(history?.openingPoints)} | Consumed: {formatPoints(history?.consumedPoints)}
                     </Typography>
                 </Box>
                 <Box>
