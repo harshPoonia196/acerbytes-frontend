@@ -12,7 +12,7 @@ const NewAutoCompleteInputStructure = ({
   variant,
   isEdit,
   options,
-  error
+  error,
   list
 }) => (
   <>
