@@ -181,7 +181,7 @@ function MarketingSection(props) {
                         <NewKeyValuePairStructure label="Launch" value={alloverviewData?.launchYear} />
                         <NewKeyValuePairStructure label="Completion" value={alloverviewData?.completionYear} />
                         <NewKeyValuePairStructure label="Location" value={`${AllLocationData?.area}, ${AllLocationData?.city}, ${AllLocationData?.state}`} />
-                        <NewKeyValuePairStructure label="status" value={alloverviewData?.status} />
+                        <NewKeyValuePairStructure label="Status" value={alloverviewData?.status} />
                         <NewKeyValuePairStructure label="Speed" value={alloverviewData?.constructionProgress} />
                     </Grid>
                 </Card>

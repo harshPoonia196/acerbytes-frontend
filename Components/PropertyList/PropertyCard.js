@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 
 function PropertyCard(props) {
   const { propertyDetails, isShortListPageCard } = props
+  console.log(propertyDetails)
   const router = useRouter();
 
   return (
@@ -81,16 +82,16 @@ function PropertyCard(props) {
             md={2.5}
             onClick={() => router.push("/details")}
           >
-            <Typography variant="caption">14,500/sqft</Typography>
-            <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography>
+            <Typography variant="caption">{propertyDetails?.unitsPlan?.map(item => `${item.areaValue} ${item.areaUnit}` ).join(", ")}</Typography>
+            {/* <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography> */}
           </Grid>
           <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push("/details")}>
             <Typography variant="caption">{propertyDetails?.layout?.totalUnits}</Typography>
-            <Typography variant="subtitle2">2.5 acres</Typography>
+            <Typography variant="subtitle2">{propertyDetails?.layout?.area}</Typography>
           </Grid>
           <Grid item xs={8} sm={4} md={2} onClick={() => router.push("/details")}>
             <Typography variant="caption">{propertyDetails?.layout?.layoutType.join(", ")}</Typography>
-            <Typography variant="subtitle2">2, 2.5, 3 BHK</Typography>
+            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.map(item => item.propertyLayout).join(", ")}</Typography>
           </Grid>
           <Grid
             item
