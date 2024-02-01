@@ -49,10 +49,10 @@ function LandscapeSection(props) {
                     <NewKeyValuePairStructure label="Towers" value={layoutData?.numberOfBuildings} />
                     <NewKeyValuePairStructure label="Property type" value={layoutData?.layoutType.join(", ")} />
                     <NewKeyValuePairStructure label="Units (Total)" value={layoutData?.totalUnits} />
-                    <NewKeyValuePairStructure label="Floor types" value="3BHK" />
+                    <NewKeyValuePairStructure label="Floor types" value={layoutData?.layoutType.join(", ")} />
                     <NewKeyValuePairStructure label="Floors (Max-Min)" value={`${layoutData?.maxFloors } - ${layoutData?.minFloors}`} />
                     <NewKeyValuePairStructure label="Area" value={layoutData?.area} />
-                    <NewKeyValuePairStructure label="Open area" value="4 acres" />
+                    <NewKeyValuePairStructure label="Open area" value={layoutData?.area} />
                     <NewKeyValuePairStructure label="Green area" value={layoutData?.greenArea} />
                     <NewKeyValuePairStructure label="Unit density" value={layoutData?.unitDensity} />
                     <NewKeyValuePairStructure label="Green density" value={layoutData?.greenDensity} />

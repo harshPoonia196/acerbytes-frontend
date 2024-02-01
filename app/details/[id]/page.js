@@ -31,12 +31,12 @@ import TopMenu from "Components/DetailsPage/TopMenu";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";
-import FloorPlanSection from "Components/DetailsPage/FloorPlanSection";
+// import FloorPlanSection from "Components/DetailsPage/FloorPlanSection";
 import AmenitiesSection from "Components/DetailsPage/AmenitiesSection";
 import ClearanceSection from "Components/DetailsPage/ClearanceSection";
 import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
-import PricingSection from 'Components/DetailsPage/PricingSection'
-import ResaleSection from "Components/DetailsPage/ResaleSection";
+// import PricingSection from 'Components/DetailsPage/PricingSection'
+// import ResaleSection from "Components/DetailsPage/ResaleSection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
@@ -359,10 +359,10 @@ const PropertyDetailsPage = ({ params }) => {
         <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
 
         <nav className={classes.demo2}>
-          <TopMenu value={activeState} handleChange={handleClick} list={itemsServer} />
+          <TopMenu topMenu={propertyData} value={activeState} handleChange={handleClick} list={itemsServer} />
         </nav>
         <Box>
-          <MarketingSection overviewData={propertyData?.overview} />
+          <MarketingSection overviewData={propertyData} />
           <Container maxWidth="evmd">
             <EnquireNow
               open={openEnquiryForm}
@@ -387,10 +387,10 @@ const PropertyDetailsPage = ({ params }) => {
               <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
               <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
               <LocationSection />
-              <PricingSection />
-              <ResaleSection />
+              {/* <PricingSection /> */}
+              {/* <ResaleSection /> */}
               <ValueForMoneySection valueForMoneyData={propertyData?.valueForMoney} />
-              <FloorPlanSection />
+              {/* <FloorPlanSection /> */}
               <Grid item xs={12} id="propertyConsultants">
                 <Card sx={{ p: 2 }}>
                   <Grid container spacing={2}>

@@ -14,7 +14,8 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
 
-function PropertyCard({ isShortListPageCard }) {
+function PropertyCard(props) {
+  const { propertyDetails, isShortListPageCard } = props
   const router = useRouter();
 
   return (
@@ -33,8 +34,8 @@ function PropertyCard({ isShortListPageCard }) {
                 image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
               />
               <Box sx={{ flex: 1 }} onClick={() => router.push("/details")}>
-                <Typography variant="caption">SKA</Typography>
-                <Typography variant="subtitle2">SKA ORION</Typography>
+                <Typography variant="caption">{propertyDetails?.overview?.builder}</Typography>
+                <Typography variant="subtitle2">{propertyDetails?.overview?.projectName}</Typography>
               </Box>
             </Box>
           </Grid>
@@ -70,8 +71,8 @@ function PropertyCard({ isShortListPageCard }) {
             md={2}
             onClick={() => router.push("/details")}
           >
-            <Typography variant="caption">Noida Expressway</Typography>
-            <Typography variant="subtitle2">Sector 143</Typography>
+            <Typography variant="caption">{propertyDetails?.location?.area}</Typography>
+            <Typography variant="subtitle2">{propertyDetails?.location?.sector}</Typography>
           </Grid>
           <Grid
             item
@@ -84,11 +85,11 @@ function PropertyCard({ isShortListPageCard }) {
             <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography>
           </Grid>
           <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push("/details")}>
-            <Typography variant="caption">345 Units</Typography>
+            <Typography variant="caption">{propertyDetails?.layout?.totalUnits}</Typography>
             <Typography variant="subtitle2">2.5 acres</Typography>
           </Grid>
           <Grid item xs={8} sm={4} md={2} onClick={() => router.push("/details")}>
-            <Typography variant="caption">5 layouts</Typography>
+            <Typography variant="caption">{propertyDetails?.layout?.layoutType.join(", ")}</Typography>
             <Typography variant="subtitle2">2, 2.5, 3 BHK</Typography>
           </Grid>
           <Grid
@@ -98,8 +99,8 @@ function PropertyCard({ isShortListPageCard }) {
             md={2}
             onClick={() => router.push("/details")}
           >
-            <Typography variant="caption">Under construction</Typography>
-            <Typography variant="subtitle2">2022 - 2025</Typography>
+            <Typography variant="caption">{propertyDetails?.overview?.status}</Typography>
+            <Typography variant="subtitle2">{propertyDetails?.overview?.launchYear} - {propertyDetails?.overview?.completionYear}</Typography>
           </Grid>
           <Grid
             item

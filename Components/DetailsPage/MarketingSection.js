@@ -7,6 +7,9 @@ function MarketingSection(props) {
     
     const { overviewData } = props;
 
+    const alloverviewData = overviewData?.overview
+    const AllLocationData =  overviewData?.location
+
     const myDivRef = useRef(null);
 
     const [width, setWidth] = useState()
@@ -170,16 +173,16 @@ function MarketingSection(props) {
                     </Box>
                     <Divider />
                     <Grid container spacing={1} sx={{ p: 2 }}>
-                        <NewKeyValuePairStructure label="Builder" value={overviewData?.builder} />
-                        <NewKeyValuePairStructure label="Project name" value={overviewData?.projectName} />
-                        <NewKeyValuePairStructure label="Project type" value={overviewData?.projectType.join(", ")} />
-                        <NewKeyValuePairStructure label="Project category" value={overviewData?.projectCategory} />
-                        <NewKeyValuePairStructure label="Phase" value={overviewData?.phase} />
-                        <NewKeyValuePairStructure label="Launch" value={overviewData?.launchYear} />
-                        <NewKeyValuePairStructure label="Completion" value={overviewData?.completionYear} />
-                        <NewKeyValuePairStructure label="Location" value="Mumbai, Maharashtra" />
-                        <NewKeyValuePairStructure label="Stage" value="Under construction" />
-                        <NewKeyValuePairStructure label="Speed" value="On track" />
+                        <NewKeyValuePairStructure label="Builder" value={alloverviewData?.builder} />
+                        <NewKeyValuePairStructure label="Project name" value={alloverviewData?.projectName} />
+                        <NewKeyValuePairStructure label="Project type" value={alloverviewData?.projectType.join(", ")} />
+                        <NewKeyValuePairStructure label="Project category" value={alloverviewData?.projectCategory} />
+                        <NewKeyValuePairStructure label="Phase" value={alloverviewData?.phase} />
+                        <NewKeyValuePairStructure label="Launch" value={alloverviewData?.launchYear} />
+                        <NewKeyValuePairStructure label="Completion" value={alloverviewData?.completionYear} />
+                        <NewKeyValuePairStructure label="Location" value={`${AllLocationData?.area}, ${AllLocationData?.city}, ${AllLocationData?.state}`} />
+                        <NewKeyValuePairStructure label="status" value={alloverviewData?.status} />
+                        <NewKeyValuePairStructure label="Speed" value={alloverviewData?.constructionProgress} />
                     </Grid>
                 </Card>
             </Container >

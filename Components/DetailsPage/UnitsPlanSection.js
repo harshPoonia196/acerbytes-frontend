@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
 function UnitsPlanSection(props) {
-    const  {refCallback, unitsPlan} = props
+    const { refCallback, unitsPlan } = props
     const router = useRouter()
 
     const GridItemWithCard = (props) => {
@@ -72,23 +72,25 @@ function UnitsPlanSection(props) {
                 <Divider />
                 <Box sx={{ p: 2 }}>
                     <Grid container spacing={2}>
-                        <GridItemWithCard
-                            xs={6}
-                            sm={3}
-                            boxStyles={{ backgroundColor: "none" }}
-                        >
-                            <Typography variant="subtitle1">3 BHK</Typography>
-                            <img
-                                width="100%"
-                                alt=""
-                                src="https://projectcdn.99acres.com/project_data/8d33f2/block1_1927/3D/5309_B1_1F1_3D.jpg"
-                            />
-
-                            <Typography variant="h5">1545 Sq ft</Typography>
-                            <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                                ₹ 2.3 Cr
-                            </Typography>
-                        </GridItemWithCard>
+                        {unitsPlan?.map((unit, index) => (
+                            <GridItemWithCard
+                                key={unit._id}
+                                xs={6}
+                                sm={3}
+                                boxStyles={{ backgroundColor: "none" }}
+                            >
+                                <Typography variant="subtitle1">{unit?.propertyLayout}</Typography>
+                                <img
+                                    width="100%"
+                                    alt=""
+                                    src="https://projectcdn.99acres.com/project_data/8d33f2/block1_1927/3D/5309_B1_1F1_3D.jpg"
+                                />
+                                <Typography variant="h5">{unit?.areaValue} {unit?.areaUnit}</Typography>
+                                <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                                    {unit?.bsp}
+                                </Typography>
+                            </GridItemWithCard>
+                        ))}
                     </Grid>
                 </Box>
             </Card>
