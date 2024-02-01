@@ -421,7 +421,7 @@ export default function ClippedDrawer({ children }) {
               )}
             </Box>
             <Box sx={{ alignSelf: "center" }}>
-              {userDetails ? (
+              {userDetails && Object.keys(userDetails).length ? (
                 <Typography>
                   Hi,{" "}
                   <span style={{ color: colors.BLUE }}>
