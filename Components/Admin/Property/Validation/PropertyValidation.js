@@ -1,7 +1,8 @@
 import Joi from 'joi';
 
 
-const overviewSchema = Joi.object({
+const overviewSchema = 
+Joi.object({
   builder: Joi.string().required(),
   projectName: Joi.string().required(),
   projectCategory: Joi.string().required(),
@@ -64,6 +65,18 @@ const layoutSchema =
   interiorQuality: Joi.number().required().min(1),
 });
 
+export const unitPlanSchema = 
+Joi.object({
+  propertyType: Joi.string().required(),
+  propertyLayout: Joi.string().required(),
+  name: Joi.string().required(),
+  area: Joi.number().required(),
+  areaUnit: Joi.number().required(),
+  totalUnits:Joi.number().required(),
+  bsp: Joi.string().required(),
+  applicableYear: Joi.string().required(),
+  applicableMonth: Joi.string().required(),
+});
 
 export const Schema = 
 Joi.object({
@@ -103,21 +116,33 @@ Joi.object({
         isApplicable: Joi.boolean().required(),
         rating:  Joi.number().when('isApplicable', {
           is: true,
-          then: Joi.number().required(),
+          then: Joi.number().not(0).required(),
           otherwise: Joi.number().allow(0).required(),
         })
       })),
       Expected: Joi.object().pattern(/./, Joi.object().keys({
         isApplicable: Joi.boolean().required(),
-        rating: Joi.number().required(),
+        rating:  Joi.number().when('isApplicable', {
+          is: true,
+          then: Joi.number().not(0).required(),
+          otherwise: Joi.number().allow(0).required(),
+        })
       })),
       Desired: Joi.object().pattern(/./, Joi.object().keys({
         isApplicable: Joi.boolean().required(),
-        rating: Joi.number().required(),
+        rating:  Joi.number().when('isApplicable', {
+          is: true,
+          then: Joi.number().not(0).required(),
+          otherwise: Joi.number().allow(0).required(),
+        })
       })),
       Unique: Joi.object().pattern(/./, Joi.object().keys({
         isApplicable: Joi.boolean().required(),
-        rating: Joi.number().required(),
+        rating:  Joi.number().when('isApplicable', {
+          is: true,
+          then: Joi.number().not(0).required(),
+          otherwise: Joi.number().allow(0).required(),
+        })
       })),
     }),
     location: Joi.object().keys({
@@ -130,14 +155,18 @@ Joi.object({
       longitude: Joi.string().required(),
       latitude: Joi.string().required(),
       assesment: Joi.object().pattern(/./, Joi.object().keys({
-        isApplicable: Joi.boolean().required(),
-        rating: Joi.number().required(),
-      })),
+    isApplicable: Joi.boolean().required(),
+    rating: Joi.when('isApplicable', {
+        is: true,
+        then: Joi.number().not(0).required(),
+        otherwise: Joi.number().optional().default(0),
+    }),
+})),
     }),
     valueForMoney: Joi.object().keys({
-      appTillNow: Joi.number().required(),
-      expectedFurtherApp: Joi.number().required(),
-      forEndUse: Joi.number().required(),
+      appTillNow: Joi.number().not(0).required(),
+      expectedFurtherApp: Joi.number().not(0).required(),
+      forEndUse: Joi.number().not(0).required(),
     }).required(),
     consultants: Joi.array().items(
       Joi.object().keys({

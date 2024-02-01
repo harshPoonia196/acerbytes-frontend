@@ -536,27 +536,25 @@ else{
   
 
 })
-if(store.length<1){
+if(store.length>1){
     openSnackbar(`Ratings needs to be provided for ${store.join(',')}`, "error");
 
 }
         console.log(form,"formmmm",error,'errrr')
       
-        // if(error.ValidationError.)
-        // openSnackbar(message, severity);
-        // if (error) {
-        //     // console.log("🚀 ~ validateForm ~ error:", error.details)
-        //     const validationErrors = {};
-        //     error.details.forEach((detail) => {
-        //         validationErrors[detail?.context?.label] = detail?.message
-        //     });
-        //     // Handle validation errors, e.g., display error messages
-        //     setErrors(validationErrors)
-        //     return false;
-        // }
+        if (error) {
+            // console.log("🚀 ~ validateForm ~ error:", error.details)
+            const validationErrors = {};
+            error.details.forEach((detail) => {
+                validationErrors[detail?.context?.label] = detail?.message
+            });
+            // Handle validation errors, e.g., display error messages
+            setErrors(validationErrors)
+            return false;
+        }
 
         // Validation passed
-        CreateProperty({...form})
+        // CreateProperty({...form})
         return true;
     };
 
@@ -587,8 +585,9 @@ if(store.length<1){
                         <OverallAssessmentCard isEdit={isEdit} />
                         {/* <BankCard isEdit={isEdit} /> */} 
                         <MarketingCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <Grid onClick={validateForm} item xs={12} sx={{ textAlign: 'end' }}>
-                            <Button variant='contained'>Save</Button>
+                        <Grid item xs={12}  sx={{ textAlign: 'end' }}>
+                            <Button  onClick={validateForm} variant='contained'>Save</Button>
+                            <Button sx={{ marginLeft: '10px' }} variant='contained'>Publish</Button>
                         </Grid>
                     </Grid>
                 </div>

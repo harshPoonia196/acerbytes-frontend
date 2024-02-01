@@ -16,6 +16,7 @@ import {
     TableBody,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import {unitPlanSchema} from "Components/Admin/Property/Validation/PropertyValidation"
 import DeleteIcon from "@mui/icons-material/Delete";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
@@ -28,12 +29,14 @@ function FloorPlanCard({ isEdit, form, handleChange }) {
 
     const [unitType,setUnitType] = useState();
     const [unit,setUnit]=useState();
+    const [localError,setLocalError]=useState();
     const [rows, setRows] = useState([]);
     const [selectedItem, setSelectedItem] = useState({
         propertyType: '',
         propertyLayout: '',
         name: '',
         area: '',
+        totalUnits:'',
         areaUnit:'',
         bsp: '',
         applicableYear: '',
@@ -69,10 +72,24 @@ useEffect(()=>{
                 name: '',
                 area: '',
                 areaUnit:'',
+                totalUnits:'',
                 bsp: '',
                 applicableYear: '',
                 applicableMonth: '',
             });
+        }
+        else{
+            const { error } = unitPlanSchema.validate(selectedItem, { abortEarly: false });
+            if (error) {
+                // console.log("🚀 ~ validateForm ~ error:", error.details)
+                const validationErrors = {};
+                error.details.forEach((detail) => {
+                    validationErrors[detail?.context?.label] = detail?.message
+                });
+                // Handle validation errors, e.g., display error messages
+                setLocalError(validationErrors)
+                return false;
+            }
         }
     };
 
@@ -84,6 +101,7 @@ useEffect(()=>{
                 propertyLayout: '',
                 name: '',
                 area: '',
+                totalUnits:'',
                 areaUnit:'',
                 bsp: '',
                 applicableYear: '',
@@ -120,6 +138,7 @@ useEffect(()=>{
                         isEdit={isEdit}
                         list={projectType}
                         name="propertyType"
+                        error={localError?.["propertyType"]}
                         value={selectedItem.propertyType}
                         handleChange={(e) => setSelectedItem((prev) => ({ ...prev, propertyType: e.target.value }))}
                     />
@@ -128,6 +147,7 @@ useEffect(()=>{
                         isEdit={isEdit}
                         name="propertyLayout"
                         list={layoutType}
+                        error={localError?.["propertyLayout"]}
                         value={selectedItem.propertyLayout}
                         handleChange={(e) => setSelectedItem((prev) => ({ ...prev, propertyLayout: e.target.value }))}
                     />
@@ -136,31 +156,79 @@ useEffect(()=>{
                         variant="outlined"
                         isEdit={isEdit}
                         name="name"
+                        error={localError?.["name"]}
                         value={selectedItem.name}
                         handleChange={(e) => setSelectedItem((prev) => ({ ...prev, name: e.target.value }))}
                     />
-                    <NewUnitAreaInputField
-                        label="Area"
+
+                    <NewSelectTextFieldStructure
+                        label="Area Unit"
+                        name="areaUnit"
+                        infoText='Changing the unit leads to re enter the plan. The old entries will be removed'
+                        showInfo={true}
+                        error={localError?.["areaUnit"]}
+                        isEdit={isEdit}
+                        list={[
+                            { label: 'acres', value: 'acres' },
+                            { label: 'sqft', value: 'sqft' }
+                        ]}
+                        value={selectedItem.areaUnit}
+                        handleChange={(e) => {
+                            if(rows.length>1)
+                            {
+                                let check = rows.every(obj => obj["areaUnit"] !== e.target.value)
+                                if(check){
+                                    setRows([])
+                                }
+                                else{
+                                    setSelectedItem((prev) => ({ ...prev, areaUnit: e.target.value }))
+                                }    
+                            }
+                            else{
+                                setSelectedItem((prev) => ({ ...prev, areaUnit: e.target.value }))
+                            }
+
+                            }
+                          
+                            
+                        }
+                    />
+
+                    <NewInputFieldStructure
+                        label="Area (Per Unit)"
                         variant="outlined"
                         isEdit={isEdit}
                         name="area"
                         value={selectedItem.area}
+                        error={localError?.["area"]}
                         handleChange={(e) => setSelectedItem((prev) => ({ ...prev, area: e.target.value }))}
-                        units={[
-                            { label: 'acres', value: 'acres' }
-                        ]}
                     />
+
+                   
                     <NewInputFieldStructure
-                        label="Base Selling Price"
+                        label="Base Selling Price (Per Unit)"
                         variant="outlined"
                         isEdit={isEdit}
                         name="bsp"
+                        error={localError?.["bsp"]}
                         value={selectedItem.bsp}
                         handleChange={(e) => setSelectedItem((prev) => ({ ...prev, bsp: e.target.value }))}
                     />
+
+                    <NewInputFieldStructure
+                        label="Total Units"
+                        variant="outlined"
+                        isEdit={isEdit}
+                        name="totalUnits"
+                        value={selectedItem.totalUnits}
+                        error={localError?.["totalUnits"]}
+                        handleChange={(e) => setSelectedItem((prev) => ({ ...prev, totalUnits: e.target.value }))}
+                    />
+
                     <NewSelectTextFieldStructure
                         label="Applicable Year"
                         name="applicableYear"
+                        error={localError?.["applicableYear"]}
                         isEdit={isEdit}
                         list={[
                             { label: '2000', value: '2000' },
@@ -172,6 +240,7 @@ useEffect(()=>{
                     <NewSelectTextFieldStructure
                         label="Applicable Month"
                         name="applicableMonth"
+                        error={localError?.["applicableMonth"]}
                         isEdit={isEdit}
                         list={[
                             { label: '01', value: '01' },
@@ -195,6 +264,7 @@ useEffect(()=>{
                                     <TableCell align="left">Property Layout</TableCell>
                                     <TableCell align="left">Name</TableCell>
                                     <TableCell align="left">Area</TableCell>
+                                    <TableCell align="left">Area Unit</TableCell>
                                     <TableCell align="left">Base Selling Price</TableCell>
                                     <TableCell align="left">Applicable Year</TableCell>
                                     <TableCell align="left">Applicable Month</TableCell>
@@ -216,6 +286,7 @@ useEffect(()=>{
                                         {row.propertyLayout && <TableCell align="left">{row.propertyLayout}</TableCell>}
                                         {row.name && <TableCell align="left">{row.name}</TableCell>}
                                         {row.area && <TableCell align="left">{row.area}</TableCell>}
+                                        {row.areaUnit && <TableCell align="left">{row.areaUnit}</TableCell>}
                                         {row.bsp && <TableCell align="left">{row.bsp}</TableCell>}
                                         {row.applicableYear && <TableCell align="left">{row.applicableYear}</TableCell>}
                                         {row.applicableMonth && <TableCell align="left">{row.applicableMonth}</TableCell>}
