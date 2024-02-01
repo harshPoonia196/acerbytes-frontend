@@ -22,6 +22,7 @@ import {
   ListSubheader,
   Card,
   Badge,
+  Avatar,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -42,33 +43,69 @@ import {
 } from "state/DrawerStore/action";
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { checkUrlAccess, isLoggedIn, logoutUser, matchUserRole } from "utills/utills";
+import {
+  checkUrlAccess,
+  isLoggedIn,
+  logoutUser,
+  matchUserRole,
+} from "utills/utills";
 import colors from "styles/theme/colors";
 import { checkTokenAPI } from "api/Auth.api";
 import { useAuth } from "utills/AuthContext";
+import { getBrokerBalance } from "api/Broker.api";
+import { ROLE_CONSTANTS } from "Components/config/config";
+import { useSnackbar } from "utills/SnackbarContext";
 
 const drawerWidth = 240;
 
 export default function ClippedDrawer({ children }) {
-  const { isDrawerOpen } = useSelector((state) => state);
+  const isDrawerOpen = useSelector((state) => state.isDrawerOpen);
   const router = useRouter();
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { userDetails, isLogged, logout } = useAuth();
-
+  const { userDetails, isLogged, logout, setBrokerPoints, brokerBalance } =
+    useAuth();
 
   React.useEffect(() => {
-    checkUserUrlAccess()
-  }, [pathname])
+    checkUserUrlAccess();
+  }, [pathname]);
+
+  React.useEffect(() => {
+    if (userDetails && Object.keys(userDetails).length && userDetails?.role == ROLE_CONSTANTS.broker) {
+        getBrokerpointBalance();
+    }
+  }, [userDetails && Object.keys(userDetails).length]);
+
+  const { openSnackbar } = useSnackbar();
+
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
+  const getBrokerpointBalance = async () => {
+    try {
+      const response = await getBrokerBalance();
+      if (response.status == 200) {
+        setBrokerPoints(response?.data?.data?.balance || 0);
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error getbroker balance request",
+        "error"
+      );
+    }
+  };
 
   const redirectUser = (url) => {
-    router.replace(url)
-  }
+    router.replace(url);
+  };
 
   const checkUserUrlAccess = () => {
-    checkUrlAccess(isLogged, pathname, redirectUser, userDetails?.role)
-  }
+    checkUrlAccess(isLogged, pathname, redirectUser, userDetails?.role);
+  };
 
   const dispatch = useDispatch();
 
@@ -91,7 +128,6 @@ export default function ClippedDrawer({ children }) {
   };
 
   const isMenuOpen = Boolean(anchorEl);
-
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -117,7 +153,6 @@ export default function ClippedDrawer({ children }) {
       >
         Profile
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       {
         isLogged ?
           <MenuItem onClick={() => logoutUser()}>Logout</MenuItem> : null
@@ -137,14 +172,21 @@ export default function ClippedDrawer({ children }) {
   const DrawerListItem = ({ item }) => {
     return (
       <ListItem key={item.label} disablePadding>
-        <ListItemButton sx={{ pl: 3 }} onClick={() => {
-          router.push(item.route)
-          handleDrawerClose()
-        }}>
+        <ListItemButton
+          sx={{ pl: 3 }}
+          onClick={() => {
+            router.push(item.route);
+            handleDrawerClose();
+          }}
+        >
           <ListItemIcon sx={{ minWidth: 40 }}>{item?.icon}</ListItemIcon>
           <StyledBadge
             color="secondary"
-            badgeContent={<Typography variant="body2" sx={{ color: 'white' }}>99</Typography>}
+            badgeContent={
+              <Typography variant="body2" sx={{ color: "white" }}>
+                99
+              </Typography>
+            }
             sx={{ flex: 1 }}
             invisible={false}
           >
@@ -166,8 +208,7 @@ export default function ClippedDrawer({ children }) {
             ))}
           </List>
           <Divider />
-          {
-            matchUserRole(userDetails?.role, "user") &&
+          {matchUserRole(userDetails?.role, "user") && (
             <>
               <List
                 subheader={
@@ -182,10 +223,9 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-          }
+          )}
 
-          {
-            matchUserRole(userDetails?.role, "broker") &&
+          {matchUserRole(userDetails?.role, "broker") && (
             <>
               <List
                 subheader={
@@ -213,10 +253,9 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-          }
+          )}
 
-          {
-            matchUserRole(userDetails?.role, "admin") &&
+          {matchUserRole(userDetails?.role, "admin") && (
             <>
               <List
                 subheader={
@@ -230,7 +269,7 @@ export default function ClippedDrawer({ children }) {
                 ))}
               </List>
             </>
-          }
+          )}
         </Box>
       </>
     );
@@ -252,15 +291,18 @@ export default function ClippedDrawer({ children }) {
             <ListItem
               disablePadding
               secondaryAction={
-                <IconButton edge="end">
+                <IconButton onClick={() => handleDrawerClose()} edge="end">
                   <CloseIcon
                     fontSize="small"
-                    onClick={() => handleDrawerClose()}
                   />
                 </IconButton>
               }
             >
-              <ListItemButton onClick={() => logout()} sx={{ pl: 3 }} role={undefined}>
+              <ListItemButton
+                onClick={() => logout()}
+                sx={{ pl: 3 }}
+                role={undefined}
+              >
                 <ListItemIcon sx={{ minWidth: 40 }}>
                   <LogoutIcon fontSize="small" />
                 </ListItemIcon>
@@ -364,7 +406,7 @@ export default function ClippedDrawer({ children }) {
                     fontSize: "1rem",
                     fontWeight: 900,
                     lineHeight: 1,
-                    textTransform: 'uppercase'
+                    textTransform: "uppercase",
                   }}
                 >
                   {companyName}
@@ -374,37 +416,49 @@ export default function ClippedDrawer({ children }) {
           </Box>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ alignSelf: "center" }}>
-              {
-                userDetails ?
-                  <Typography>Hi, <span style={{ color: colors.BLUE }}>{userDetails?.name?.firstName} {userDetails?.name?.lastName}</span></Typography>
-                  :
-                  <Button
-                    onClick={() => {
-                      router.push("/login");
-                    }}
-                  >
-                    Sign in
-                  </Button>
-              }
+              {userDetails?.role == ROLE_CONSTANTS.broker && (
+                <Typography>Points: {brokerBalance} &nbsp;&nbsp;</Typography>
+              )}
             </Box>
-            <Box>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="#000"
-              >
-                {
-                  userDetails?.googleDetails?.profilePicture ?
-                    <img style={{ width: '25px', borderRadius: '100%' }} src={userDetails?.googleDetails?.profilePicture} />
-                    :
-                    isLogged ? <AccountCircle /> : null
-                }
-              </IconButton>
+            <Box sx={{ alignSelf: "center" }}>
+              {userDetails && Object.keys(userDetails).length ? (
+                <Typography>
+                  Hi,{" "}
+                  <span style={{ color: colors.BLUE }}>
+                    {userDetails?.name?.firstName} {userDetails?.name?.lastName}
+                  </span>
+                </Typography>
+              ) : (
+                <Button
+                  onClick={() => {
+                    router.push("/login");
+                  }}
+                >
+                  Sign in
+                </Button>
+              )}
             </Box>
+            {isLogged &&
+              <Box>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="#000"
+                >
+                  {
+                    userDetails?.googleDetails?.profilePicture ?
+                      <Avatar
+                        src={userDetails?.googleDetails?.profilePicture}
+                      />
+                      : <AccountCircle />
+                  }
+                </IconButton>
+              </Box>
+            }
           </Box>
         </Toolbar>
       </AppBar>

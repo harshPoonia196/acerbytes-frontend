@@ -108,16 +108,16 @@ function PropertyList() {
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={0.25}>
-            <Grid item xs={12} sm={6} evmd={12}>
+            <Grid item xs={12}>
               <PropertyCard isShortListPageCard />
             </Grid>
-            <Grid item xs={12} sm={6} evmd={12}>
+            <Grid item xs={12}>
               <PropertyCard />
             </Grid>
-            <Grid item xs={12} sm={6} evmd={12}>
+            <Grid item xs={12}>
               <PropertyCard />
             </Grid>
-            <Grid item xs={12} sm={6} evmd={12}>
+            <Grid item xs={12}>
               <PropertyCard />
             </Grid>
           </Grid>

@@ -36,8 +36,8 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
     }
 
     const [image, setImage] = useState('')
-    const [cropData, setCropData] = useState()
-    const [cropper, setCropper] = useState()
+    const [cropData, setCropData] = useState('')
+    const [cropper, setCropper] = useState(false)
     const [enableCropper, setEnableCropper] = useState(false)
 
     const handleImageSelect = (e) => {

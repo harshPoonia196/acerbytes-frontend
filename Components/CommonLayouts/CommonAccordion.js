@@ -16,9 +16,9 @@ const CustomAccordion = styled((props) => (
     },
 }));
 
-const CustomAccordionSummary = styled((props) => (
+const CustomAccordionSummary = styled(({ handleIconClick, ...props }) => (
     <MuiAccordionSummary
-        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} onClick={props.onIconClick} />}
+        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} onClick={handleIconClick} />}
         {...props}
     />
 ))(({ theme }) => ({

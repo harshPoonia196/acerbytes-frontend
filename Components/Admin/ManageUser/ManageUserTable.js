@@ -196,6 +196,7 @@ function ManageUserTable({ searchText }) {
   const [isLoading, setLoading] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageLimit, setPageLimit] = React.useState(PAGINATION_LIMIT);
+  const [initialMount, setInitialMount] = React.useState(true);
   const [usersList, setUsersList] = React.useState({});
   const [confirmationDialog, setConfirmationDialog] = React.useState({
     isOpen: false,
@@ -214,12 +215,18 @@ function ManageUserTable({ searchText }) {
   };
 
   React.useEffect(() => {
+    // This block will run only on initial mount
+    if (initialMount) {
+      setInitialMount(false);
+      return;
+    }
+
     const pageOptions = {
       pageLimit,
       page: currentPage,
     };
     getAllUsersList(pageOptions, searchText);
-  }, [searchText]);
+  }, [searchText, initialMount]);
 
   const objectToQueryString = (obj) => {
     const queryString = Object.keys(obj)
@@ -242,7 +249,13 @@ function ManageUserTable({ searchText }) {
       setLoading(true);
       const response = await getUsersList(objectToQueryString(querParams));
       if (response.status == 200) {
-        setUsersList(response?.data?.data || {});
+        setUsersList({
+          list: response?.data?.data,
+          totalCount: response?.data?.totalCount,
+          totalPages: response?.data?.totalPages,
+          nextPage: response?.data?.nextPage,
+          prevPage: response?.data?.prevPage,
+        });
       }
     } catch (error) {
       showToaterMessages(

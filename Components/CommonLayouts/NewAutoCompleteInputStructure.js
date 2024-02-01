@@ -5,17 +5,15 @@ import colors from "styles/theme/colors";
 const top100Films = [{ label: "Mumbai" }];
 
 const NewAutoCompleteInputStructure = ({
-  name,
-  list,
   handleChange,
   label,
-  type,
   value,
   sx,
   variant,
   isEdit,
   options,
   error
+  list
 }) => (
   <>
     <Grid item xs={12} sm={6}>
@@ -31,12 +29,13 @@ const NewAutoCompleteInputStructure = ({
       <Autocomplete
         disablePortal
         id="combo-box-demo"
-        options={options || top100Films}
-        value={value || []}
+        getOptionLabel={(option) => option.label || ""}
+        value={value || null}
+        options={list}
         fullWidth
         onChange={handleChange}
-        renderInput={(params) => (
-          <TextField {...params} value={params.value} size="small" fullWidth error={error} />
+        renderInput={(params, index) => (
+          <TextField key={index} {...params} value={params.value} size="small" fullWidth />
         )}
       />
     </Grid>

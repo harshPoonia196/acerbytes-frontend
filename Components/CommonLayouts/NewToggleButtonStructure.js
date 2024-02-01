@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, ToggleButton, ToggleButtonGroup, Grid } from "@mui/material";
+import { Typography, ToggleButtonGroup, Grid } from "@mui/material";
 import colors from "styles/theme/colors";
 
 const NewToggleButtonStructure = ({
@@ -24,7 +24,6 @@ const NewToggleButtonStructure = ({
         aria-label="Platform"
         sx={{
           ...toggleStyle,
-
         }}
       >
         {children}
