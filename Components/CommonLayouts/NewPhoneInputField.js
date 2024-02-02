@@ -3,19 +3,19 @@ import { TextField, Grid, InputAdornment, MenuItem } from "@mui/material";
 
 const countries = [
   {
-    value: "+91",
+    value: "91",
     label: "+91",
   },
   {
-    value: "+92",
+    value: "92",
     label: "+92",
   },
   {
-    value: "+9528",
+    value: "9528",
     label: "+9528",
   },
   {
-    value: "+1",
+    value: "1",
     label: "+1",
   },
 ];

@@ -8,7 +8,8 @@ const NewAutoCompleteInputStructure = ({
   handleChange,
   label,
   value,
-  options
+  options,
+  list
 }) => (
   <>
     <Grid item xs={12} sm={6}>
@@ -25,12 +26,12 @@ const NewAutoCompleteInputStructure = ({
         disablePortal
         id="combo-box-demo"
         getOptionLabel={(option) => option.label || ""}
-        options={options || top100Films}
         value={value || null}
+        options={list}
         fullWidth
         onChange={handleChange}
-        renderInput={(params) => (
-          <TextField {...params} size="small" fullWidth />
+        renderInput={(params, index) => (
+          <TextField key={index} {...params} value={params.value} size="small" fullWidth />
         )}
       />
     </Grid>
