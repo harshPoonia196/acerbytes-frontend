@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 
 function PropertyCard(props) {
   const { propertyDetails, isShortListPageCard } = props
-  console.log(propertyDetails)
   const router = useRouter();
 
   return (
@@ -24,7 +23,7 @@ function PropertyCard(props) {
       <CardActionArea sx={{ p: 2 }}>
         <Grid container spacing={2} columns={16}>
           <Grid item xs={13.5} sm={8} md={4}>
-            <Box sx={{ display: 'flex' }} onClick={() => router.push("/details")}>
+            <Box sx={{ display: 'flex' }} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
               <CardMedia
                 component="img"
                 alt="green iguana"
@@ -34,7 +33,7 @@ function PropertyCard(props) {
                 }}
                 image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
               />
-              <Box sx={{ flex: 1 }} onClick={() => router.push("/details")}>
+              <Box sx={{ flex: 1 }} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
                 <Typography variant="caption">{propertyDetails?.overview?.builder}</Typography>
                 <Typography variant="subtitle2">{propertyDetails?.overview?.projectName}</Typography>
               </Box>
@@ -70,7 +69,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2}
-            onClick={() => router.push("/details")}
+            onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
             <Typography variant="caption">{propertyDetails?.location?.area}</Typography>
             <Typography variant="subtitle2">{propertyDetails?.location?.sector}</Typography>
@@ -80,16 +79,16 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2.5}
-            onClick={() => router.push("/details")}
+            onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
             <Typography variant="caption">{propertyDetails?.unitsPlan?.map(item => `${item.areaValue} ${item.areaUnit}` ).join(", ")}</Typography>
             {/* <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography> */}
           </Grid>
-          <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push("/details")}>
+          <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
             <Typography variant="caption">{propertyDetails?.layout?.totalUnits}</Typography>
             <Typography variant="subtitle2">{propertyDetails?.layout?.area}</Typography>
           </Grid>
-          <Grid item xs={8} sm={4} md={2} onClick={() => router.push("/details")}>
+          <Grid item xs={8} sm={4} md={2} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
             <Typography variant="caption">{propertyDetails?.layout?.layoutType.join(", ")}</Typography>
             <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.map(item => item.propertyLayout).join(", ")}</Typography>
           </Grid>
@@ -98,7 +97,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2}
-            onClick={() => router.push("/details")}
+            onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
             <Typography variant="caption">{propertyDetails?.overview?.status}</Typography>
             <Typography variant="subtitle2">{propertyDetails?.overview?.launchYear} - {propertyDetails?.overview?.completionYear}</Typography>
@@ -108,7 +107,7 @@ function PropertyCard(props) {
             xs={8}
             sm={2.5}
             md={1}
-            onClick={() => router.push("/details")}
+            onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
             <Typography variant="caption">Enquiries</Typography>
             <Typography variant="subtitle2">345</Typography>

@@ -7,7 +7,7 @@ import colors from 'styles/theme/colors'
 function AmenitiesSection(props) {
     const { refCallback, amenitiesData } = props
     if (!amenitiesData) {
-        return <div>No data available</div>;
+        return <div></div>;
     }
     const router = useRouter()
 
@@ -68,26 +68,6 @@ function AmenitiesSection(props) {
                             </React.Fragment>
                         );
                     })}
-
-                    {/* <Grid item xs={12}>
-                        <Typography variant="h6">Basic</Typography>
-                    </Grid>
-                    <NewKeyValuePairStructure label="Gym"
-                        value={2.5} middleValue={'Basic'} isRating />
-                    <NewKeyValuePairStructure label="Pool"
-                        value={2.5} middleValue={'Basic'} isRating />
-                    <Grid item xs={12}>
-                        <Typography variant="h6">Expected</Typography>
-                    </Grid>
-                    <NewKeyValuePairStructure label="Yoga"
-                        value={2.5} middleValue={'Expected'} isRating />
-                    <Grid item xs={12}>
-                        <Typography variant="h6">Unique</Typography>
-                    </Grid>
-                    <NewKeyValuePairStructure label="Party hall"
-                        value={2.5} middleValue={'Unique'} isRating />
-                    <NewKeyValuePairStructure label="Theatre"
-                        value={2.5} middleValue={'Unique'} isRating /> */}
                 </Grid>
             </Card>
         </Grid>

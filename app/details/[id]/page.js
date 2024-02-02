@@ -386,7 +386,7 @@ const PropertyDetailsPage = ({ params }) => {
               <LandscapeSection  layoutData={propertyData?.layout}/>
               <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
               <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
-              <LocationSection />
+              <LocationSection locationData={propertyData?.location}/>
               {/* <PricingSection /> */}
               {/* <ResaleSection /> */}
               <ValueForMoneySection valueForMoneyData={propertyData?.valueForMoney} />
