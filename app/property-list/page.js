@@ -63,8 +63,7 @@ function PropertyList() {
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
-
-        setCount(res?.data);
+        setCount(res.data);
       }
     } catch (error) {
       showToaterMessages(
@@ -214,7 +213,7 @@ function PropertyList() {
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={0.25}>
-                {property?.map((propertyDetails) => (
+                {property.map((propertyDetails) => (
                   <Grid item xs={12}>
                     <PropertyCard isShortListPageCard propertyDetails={propertyDetails} />
                   </Grid>
