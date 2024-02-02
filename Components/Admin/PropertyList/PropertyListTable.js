@@ -201,9 +201,9 @@ function PropertyListTable({ searchText }) {
 
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
-        let transformedData = transformData(res.data?.data?.properties || {});
+        let transformedData = transformData(res.data?.data || []);
         setPropertyList(transformedData);
-        setProperty(res.data?.data);
+        setProperty(res?.data);
       }
     } catch (error) {
       showToaterMessages(

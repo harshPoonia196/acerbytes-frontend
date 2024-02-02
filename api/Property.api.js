@@ -2,7 +2,7 @@ import axiosInstance from "./AxiosInstance";
 
 
 export const getAllProperty = (queryParams) => {
-  return axiosInstance.get(`property/getProperties/` + (queryParams ? `?${queryParams}` : ''));
+  return axiosInstance.get(`property/getProperties` + (queryParams ? `?${queryParams}` : ''));
 };
 
 

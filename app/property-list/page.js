@@ -62,8 +62,9 @@ function PropertyList() {
       };
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
-        setProperty(res.data?.data?.properties || {});
-        setCount(res.data?.data);
+        setProperty(res.data?.data || []);
+
+        setCount(res?.data);
       }
     } catch (error) {
       showToaterMessages(
