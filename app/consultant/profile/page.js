@@ -584,7 +584,7 @@ function ConsultantProfile() {
                     <>
                       <NewAutoCompleteInputStructure
                         label="Select City"
-                        options={cityOptions}
+                        list={cityOptions}
                         isEdit={isEdit}
                         value={targetCustomer.selectCity}
                         handleChange={(e, newValue) =>
@@ -594,7 +594,7 @@ function ConsultantProfile() {
                       <NewAutoCompleteInputStructure
                         label="Select Area"
                         isEdit={isEdit}
-                        options={areaOptions}
+                        list={areaOptions}
                         value={targetCustomer.selectArea}
                         handleChange={(e, newValue) =>
                           handleTargetCustomer(e, newValue, "selectArea")
