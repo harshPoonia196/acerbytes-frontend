@@ -46,7 +46,7 @@ function LandscapeSection() {
                 <Grid container spacing={1} sx={{ p: 2 }}>
                     <NewKeyValuePairStructure label="Towers" value="5" />
                     <NewKeyValuePairStructure label="Property type" value="Flat" />
-                    <NewKeyValuePairStructure label="Units(Total)" value="10" />
+                    <NewKeyValuePairStructure label="Units (Total)" value="10" />
                     <NewKeyValuePairStructure label="Floor types" value="3BHK" />
                     <NewKeyValuePairStructure label="Floors (Max-Min)" value="34" />
                     <NewKeyValuePairStructure label="Area" value="5 acres" />

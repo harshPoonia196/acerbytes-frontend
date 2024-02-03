@@ -152,8 +152,8 @@ function RowStructure({ row }) {
         <TableCell>{row.validTo}</TableCell>
         <TableCell>{row.expiresIn}</TableCell>
         <TableCell sx={{ py: 0 }}>
-            <IconButton sx={{ fontSize: "1rem !important" }}>
-                <MoreVertIcon onClick={handleClick} fontSize='1rem' />
+            <IconButton onClick={handleClick} sx={{ fontSize: "1rem !important" }}>
+                <MoreVertIcon fontSize='1rem' />
             </IconButton>
             <Menu
                 id="basic-menu"

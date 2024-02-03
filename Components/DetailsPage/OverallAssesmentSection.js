@@ -15,7 +15,7 @@ function OverallAssesmentSection({ refCallback }) {
             <Card>
                 <Box sx={{ p: 2, display: 'flex' }}>
                     <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
-                        Overall Assesment
+                        Overall assesment
                     </Typography>
                     <Box sx={{ alignSelf: "center" }}>
                         <Card
@@ -68,17 +68,25 @@ function OverallAssesmentSection({ refCallback }) {
                     </Typography>
                     <Chip
                         icon={<WhatsAppIcon />}
-                        label="Contact us on whatsapp"
+                        label="Contact us on Whatsapp"
+                        size='small'
                         sx={{ mr: 2 }}
                         onClick={() => { }}
                     />
                     <Chip
                         icon={<AssignmentIcon />}
                         label="Enquire now"
+                        size='small'
                         onClick={() => { }}
                     />
                 </Box>
-
+                <Divider />
+                <Box sx={{ p: 1, display: 'flex' }}>
+                    <Chip label='Disclaimer' size='small' />
+                    <Typography variant='subtitle2' style={{ fontSize: '0.6rem', alignSelf: 'center' }}>
+                        &nbsp;&nbsp;AcresByte.com acts as a inside research and marketing platform, doesnt take any responsibility on the accuracy
+                    </Typography>
+                </Box>
             </Card>
         </Grid>
     )

@@ -11,8 +11,10 @@ import {
   Chip,
   Button,
   Divider,
+  Fab,
 } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
+import SaveIcon from "@mui/icons-material/Save";
 import React from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
@@ -68,11 +70,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
-    marginBottom: "16px",
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -151,7 +152,7 @@ function Profile() {
 
   const [isEdit, setIsEdit] = useState(true);
 
-  const [activeState, setActiveState] = React.useState(null);
+  const [activeState, setActiveState] = React.useState('userDetails');
 
   let itemsServer = listOfProfileTab.map((tab) => {
     const hash = tab.value;
@@ -190,9 +191,9 @@ function Profile() {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -280,8 +281,8 @@ function Profile() {
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching user profile",
+            error?.message ||
+            "Error fetching user profile",
           "error"
         );
         setLoading(false);
@@ -303,8 +304,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching country list",
+          error?.message ||
+          "Error fetching country list",
         "error"
       );
     }
@@ -322,8 +323,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     }
@@ -331,7 +332,6 @@ function Profile() {
 
   const getAllStateOfIndia = async () => {
     try {
-      console.log("getAllStateOfIndia:");
       const res = await getAccessToken();
       if (res.auth_token) {
         const response = await getAllStateList(res.auth_token, "India");
@@ -342,8 +342,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -361,8 +361,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -377,14 +377,14 @@ function Profile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-          ...prev?.[firstKeyName],
-          [secondKeyName]: !thirdKeyName
-            ? value
-            : {
-              ...prev?.[firstKeyName]?.[secondKeyName],
-              [thirdKeyName]: value,
-            },
-        },
+            ...prev?.[firstKeyName],
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+          },
     }));
   };
 
@@ -502,14 +502,15 @@ function Profile() {
           profileInfo
         );
         if (response.status == 200) {
+          updateDetailsonLocalStorage(profileInfo);
           showToaterMessages(ToasterMessages.PROFILE_UPDATE_SUCCESS, "success");
         }
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error user profile updating",
+          error?.message ||
+          "Error user profile updating",
         "error"
       );
     } finally {
@@ -517,7 +518,25 @@ function Profile() {
     }
   };
 
-  console.log("profle data: ", profileInfo);
+
+  const updateDetailsonLocalStorage=(info)=>{
+    let userInfo = JSON.parse(localStorage.getItem("userDetails"));
+    userInfo = {
+      ...userInfo,
+      name: {
+        ...userInfo.name,
+        firstName: info?.name?.firstName,
+        lastName: info?.name?.lastName
+      },
+      phone: {
+        ...userInfo.phone,
+        number: info?.phone?.number,
+        countryCode: info?.phone?.countryCode
+      }
+    }
+
+    localStorage.setItem("userDetails", JSON.stringify(userInfo));
+  }
 
   return (
     <>
@@ -531,7 +550,7 @@ function Profile() {
 
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ textAlign: "end" }}>
+          {/* <Grid item xs={12} sx={{ textAlign: "end" }}>
             <LoadingButton
               onClick={handleSave}
               loading={isLoading}
@@ -541,13 +560,13 @@ function Profile() {
             >
               Save
             </LoadingButton>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} id="userDetails">
             <Card sx={{ p: 2 }}>
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ flex: 1 }}>
                   <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                    Anand Gupta
+                    {userDetails?.name?.firstName} {userDetails?.name?.lastName}
                   </Typography>
                 </Box>
                 <Box>
@@ -562,14 +581,14 @@ function Profile() {
                   >
                     <CallIcon fontSize="small" sx={{ alignSelf: "center" }} />
                     <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                      +91 8794561234
+                    {userDetails?.phone?.countryCode} {userDetails?.phone?.number}
                     </Typography>
                   </a>
                 </Box>
               </Box>
-              <Typography variant="body1" sx={{ mt: 1 }}>
+              {/* <Typography variant="body1" sx={{ mt: 1 }}>
                 Mumbai
-              </Typography>
+              </Typography> */}
             </Card>
           </Grid>
           <Grid item xs={12}>
@@ -585,7 +604,7 @@ function Profile() {
               <Divider />
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewInputFieldStructure
-                  label="First name"
+                  label="First name *"
                   variant="outlined"
                   isEdit={isEdit}
                   // handleChange={handleChangeName}
@@ -594,7 +613,7 @@ function Profile() {
                   value={profileInfo?.name?.firstName}
                 />
                 <NewInputFieldStructure
-                  label="Last name"
+                  label="Last name *"
                   variant="outlined"
                   isEdit={isEdit}
                   handleChange={(e) => handleChange(e, "name", "lastName")}
@@ -603,7 +622,7 @@ function Profile() {
                 />
                 <NewPhoneInputFieldStructure
                   variant="outlined"
-                  label="Phone"
+                  label="Phone *"
                   isEdit={isEdit}
                   handleChange={(e) => handleChange(e, "phone", "number")}
                   handleSelect={(e) => handleChange(e, "phone", "countryCode")}
@@ -1086,6 +1105,25 @@ function Profile() {
           </Grid>
         </Grid>
       </Container>
+      <Box
+        sx={{
+          position: "fixed",
+          right: 16,
+          bottom: 16,
+          display: { xs: "none", evmd: "flex" },
+          flexDirection: "column",
+        }}
+      >
+        <Fab
+          variant="extended"
+          sx={{ justifyContent: "flex-start" }}
+          onClick={handleSave}
+          disabled={!checkMandatoryFields()}
+        >
+          <SaveIcon fontSize="small" sx={{ mr: 1 }} />
+          Save
+        </Fab>
+      </Box>
     </>
   );
 }

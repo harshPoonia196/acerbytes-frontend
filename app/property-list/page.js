@@ -17,6 +17,8 @@ import SelectTextFields from "Components/CommonLayouts/SelectTextFields";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import React from "react";
+import CustomSearchInput from "Components/CommonLayouts/SearchInput";
+import NewMultiSelectAutoCompleteInputStructure from "Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure";
 
 function PropertyList() {
   const [alignment, setAlignment] = React.useState("asc");
@@ -59,36 +61,43 @@ function PropertyList() {
         </Grid>
       </Card>
 
-      <Grid container spacing={2}>
-        <Grid item xs={6} sm={3}>
-          <Card>
-            <Box
-              sx={{
-                display: "flex",
-                flex: 1,
-                pl: 2,
-                borderRadius: "8px",
-              }}
-            >
-              <InputBase
-                placeholder="Search"
-                type="text"
-                inputProps={{ "aria-label": "Search..." }}
-                fullWidth
-              />
-              <IconButton type="submit" aria-label="search">
-                <SearchIcon />
-              </IconButton>
-            </Box>
-          </Card>
+      <Grid container spacing={2} columns={36}>
+        {/* commercial,residential */} {/*please delete this after done and same for all below*/}
+        <NewMultiSelectAutoCompleteInputStructure label="Category" />
+        {/* Flat,shop */}
+        <NewMultiSelectAutoCompleteInputStructure label="Property type" />
+        {/* 1BHK, 2BHK */}
+        <NewMultiSelectAutoCompleteInputStructure label="Unit type" />
+        {/* Noida,gurgoan */}
+        <NewMultiSelectAutoCompleteInputStructure label="City" />
+        {/* Sector/area */}
+        <NewMultiSelectAutoCompleteInputStructure label="Location" />
+        <NewMultiSelectAutoCompleteInputStructure label="Status" />
+        <Grid item xs={18} sx={{ alignSelf: "center" }}>
+          <ToggleButtonGroup
+            color="primary"
+            value={alignment}
+            exclusive
+            onChange={handleChange}
+            aria-label="Platform"
+            sx={{ display: "flex" }}
+            size="small"
+          >
+            <ToggleButton value="score" sx={{ flex: 1 }}>
+              Score
+            </ToggleButton>
+            <ToggleButton value="price" sx={{ flex: 1 }}>
+              Price
+            </ToggleButton>
+            <ToggleButton value="area" sx={{ flex: 1 }}>
+              Area
+            </ToggleButton>
+            <ToggleButton value="completion" sx={{ flex: 1 }}>
+              Completion
+            </ToggleButton>
+          </ToggleButtonGroup>
         </Grid>
-        <Grid item xs={6} sm={3}>
-          <SelectTextFields label="Sort by" />
-        </Grid>
-        <Grid item xs={6} sm={3}>
-          <SelectTextFields label="Filter by" />
-        </Grid>
-        <Grid item xs={6} sm={3} sx={{ alignSelf: "center" }}>
+        <Grid item xs={18} sx={{ alignSelf: "center" }}>
           <ToggleButtonGroup
             color="primary"
             value={alignment}
@@ -100,24 +109,31 @@ function PropertyList() {
           >
             <ToggleButton value="asc" sx={{ flex: 1 }}>
               <ArrowUpwardIcon fontSize="small" />
+              Low to high
             </ToggleButton>
             <ToggleButton value="dec" sx={{ flex: 1 }}>
               <ArrowDownwardIcon fontSize="small" />
+              High to low
             </ToggleButton>
           </ToggleButtonGroup>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={36}>
+          <Card>
+            <CustomSearchInput />
+          </Card>
+        </Grid>
+        <Grid item xs={36}>
           <Grid container spacing={0.25}>
-            <Grid item xs={12} sm={6} evmd={12}>
+            <Grid item xs={12}>
               <PropertyCard isShortListPageCard />
             </Grid>
-            <Grid item xs={12} sm={6} evmd={12}>
+            <Grid item xs={12}>
               <PropertyCard />
             </Grid>
-            <Grid item xs={12} sm={6} evmd={12}>
+            <Grid item xs={12}>
               <PropertyCard />
             </Grid>
-            <Grid item xs={12} sm={6} evmd={12}>
+            <Grid item xs={12}>
               <PropertyCard />
             </Grid>
           </Grid>

@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, ToggleButton } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, ToggleButton } from '@mui/material'
 import NewInputFieldStructure from 'Components/CommonLayouts/NewInputFieldStructure'
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure'
 import React, { useEffect, useState } from 'react'
@@ -39,20 +39,21 @@ const ConsultantDialog = ({ loading, createUserFun, form, handleChange, showCons
         await handleChange(name, value)
         setValidationErrors({});
     }
-    
+
 
     return (
-        <div>
-            <Dialog
-                open={showConsultantDetailsPopup}
-                onClose={() => setShowConsultantDetailsPopup(false)}
-                fullWidth
-                maxWidth="sm"
-            >
-                <DialogTitle>
-                    Additional Details for Real Estate Consultant
-                </DialogTitle>
-                <DialogContent>
+
+        <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
+            open={showConsultantDetailsPopup}
+            onClose={() => setShowConsultantDetailsPopup(false)}
+            fullWidth
+            maxWidth="sm"
+        >
+            <DialogTitle onClose={() => setShowConsultantDetailsPopup(false)}>
+                Additional Details for Real Estate Consultant
+            </DialogTitle>
+            <DialogContent>
+                <Grid container spacing={2}>
                     <NewToggleButtonStructure
                         isEdit={true}
                         label="Business type"
@@ -68,25 +69,26 @@ const ConsultantDialog = ({ loading, createUserFun, form, handleChange, showCons
                     </NewToggleButtonStructure>
                     <NewInputFieldStructure isEdit={true} error={validationErrors?.company} value={form.company} handleChange={(e) => handleChangeFun("company", e.target.value)} label="Company" variant="outlined" />
                     <NewInputFieldStructure isEdit={true} error={validationErrors?.reraNo} value={form.reraNo} handleChange={(e) => handleChangeFun("reraNo", e.target.value)} label="RERA number" variant="outlined" />
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick={() => createUserFun()}
-                        color="primary"
-                    >
-                        I'll do it later!
-                    </Button>
-                    <LoadingButton
-                        onClick={() => handleSubmit()}
-                        color="primary"
-                        variant="contained"
-                        loading={loading}
-                    >
-                        Submit
-                    </LoadingButton>
-                </DialogActions>
-            </Dialog>
-        </div>
+                </Grid>
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    onClick={createUserFun}
+                // color="primary"
+                >
+                    I'll do it later!
+                </Button>
+                <LoadingButton
+                    onClick={handleSubmit}
+                    color="primary"
+                    variant="contained"
+                    loading={loading}
+                >
+                    Submit
+                </LoadingButton>
+            </DialogActions>
+        </Dialog>
+
     )
 }
 

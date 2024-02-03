@@ -55,7 +55,11 @@ function FacilitiesCard({ isEdit, form }) {
                                                 >
                                                     {insideKey}
                                                 </Typography>
-                                                <Rating name="half-rating" defaultValue={0} precision={amenitiesData?.[key]?.[insideKey]?.isApplicable} size='small' sx={{ alignSelf: 'center' }} />
+                                                <Rating name="half-rating" defaultValue={0}
+                                                    //precision should be any number between 0 to 1 e.g=> 0.1, 0.5
+                                                    precision={amenitiesData?.[key]?.[insideKey]?.isApplicable}
+                                                    size='small' sx={{ alignSelf: 'center' }}
+                                                />
                                             </Grid>
                                         </>
                                     })

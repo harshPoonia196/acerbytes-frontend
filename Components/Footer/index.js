@@ -21,7 +21,9 @@ function Footer({ paymentPage }) {
 
     return (
         <Card sx={{
-            position: 'fixed', bottom: 0, p: 2, borderTop: '1px solid gainsboro', width: '100%', display: 'flex', flexDirection: {
+            position: 'fixed', bottom: 0, p: 2, width: '100%', display: 'flex',
+            boxShadow: '-1px -2px 6px -2px gainsboro!important',
+            flexDirection: {
                 xs: 'column-reverse', md: 'row'
             }
         }}>
