@@ -349,7 +349,6 @@ function ConsultantProfile() {
   };
 
   const classes = useStyles();
-  console.log(mutate);
   return (
     <>
       <PageLoader isLoading={isLoading || mutate.isPending} />

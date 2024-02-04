@@ -1,9 +1,5 @@
-import React, { useState } from 'react'
-import {
-  Typography,
-  Box,
-  Rating,
-} from "@mui/material";
+import React, { useState } from "react";
+import { Typography, Box, Rating } from "@mui/material";
 
 const labels = {
   0.5: "Useless",
@@ -19,26 +15,30 @@ const labels = {
 };
 
 function getLabelText(value) {
-  return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
+  return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
 
 const RatingDetails = (props) => {
+  const { title, description, value, setValue } = props;
 
-  const { title } = props
-
-  const [value, setValue] = useState(0)
-  const [hover, setHover] = useState(0)
+  const [hover, setHover] = useState(0);
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>{title}</Typography>
-          <Typography variant='body2'>This includes Communication,</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {title}
+          </Typography>
+          <Typography variant="body2">{description}</Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: '0.5rem', mb: 1 }}>
-          <Rating size="small" name="hover-feedback" precision={0.5}
-            value={value} getLabelText={getLabelText}
+        <Box sx={{ display: "flex", gap: "0.5rem", mb: 1 }}>
+          <Rating
+            size="small"
+            name="hover-feedback"
+            precision={0.2}
+            value={value}
+            getLabelText={getLabelText}
             onChange={(event, newValue) => {
               setValue(newValue);
             }}
@@ -50,10 +50,9 @@ const RatingDetails = (props) => {
             <Box sx={{}}>{labels[hover !== -1 ? hover : value]}</Box>
           )}
         </Box>
-
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default RatingDetails
+export default RatingDetails;
