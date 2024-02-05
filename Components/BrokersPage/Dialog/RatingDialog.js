@@ -116,7 +116,7 @@ const RatingDialog = (props) => {
   const handleIsPrivateChange = (e) => {
     e.persist();
     setRating((existingRating) => {
-      existingRating.isPrivate = e.target.checked;
+      existingRating.isPrivate = !e.target.checked;
       return { ...existingRating };
     });
   };
@@ -198,7 +198,7 @@ const RatingDialog = (props) => {
                     Public
                   </Typography>
                   <Switch
-                    checked={rating?.isPrivate}
+                    checked={!rating?.isPrivate}
                     onChange={handleIsPrivateChange}
                   />
                 </Grid>

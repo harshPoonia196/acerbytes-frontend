@@ -166,11 +166,19 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-        <IconButton>
-          <CallIcon fontSize="small" />
-        </IconButton>
-      </Box>
+      {broker?.phone?.number ? (
+        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+          <a
+            href={`tel:${
+              (broker?.phone?.countryCode || "") + (broker?.phone?.number || "")
+            }`}
+          >
+            <IconButton>
+              <CallIcon fontSize="small" />
+            </IconButton>
+          </a>
+        </Box>
+      ) : null}
       <Divider />
       {!noReview && (
         <Grid container spacing={1} sx={{ p: 2 }}>
@@ -213,7 +221,12 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
             <Grid item xs={12} sx={{ mt: 1 }}>
               <Box sx={{ background: "whitesmoke", p: 2 }}>
                 <Typography variant="caption">
-                  You wrote a Public review{broker?.reviews?.createdAt ? moment(broker?.reviews?.createdAt).format(" on DD MMM, YYYY") : ""}
+                  You wrote a Public review
+                  {broker?.reviews?.createdAt
+                    ? moment(broker?.reviews?.createdAt).format(
+                        " on DD MMM, YYYY"
+                      )
+                    : ""}
                 </Typography>
                 <Typography variant="body2">
                   <i>{broker?.reviews?.note}</i>
