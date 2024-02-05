@@ -154,4 +154,4 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
     )
 }
 
-export default RegulatoryCard
+export default React.memo(RegulatoryCard)

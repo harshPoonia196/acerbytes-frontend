@@ -201,4 +201,4 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
     )
 }
 
-export default LandscapeCard;
+export default React.memo(LandscapeCard);

@@ -126,4 +126,4 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
     )
 }
 
-export default MarketingCard
+export default React.memo(MarketingCard)

@@ -28,9 +28,6 @@ const NewInputFieldStructure = ({
       </Box>
       {isEdit === undefined ? <TextField
         name={name}
-        InputProps={{
-          readOnly: {readOnly},
-        }}
         onChange={handleChange}
         disabled={disabled}
         variant={variant ? variant : "standard"}

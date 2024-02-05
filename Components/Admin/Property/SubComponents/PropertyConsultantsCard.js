@@ -49,4 +49,4 @@ function PropertyConsultantsCard({ isEdit , form , handleChange }) {
     )
 }
 
-export default PropertyConsultantsCard
+export default React.memo(PropertyConsultantsCard)

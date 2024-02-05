@@ -74,4 +74,4 @@ function InvestmentCard({ isEdit, form, handleChange }) {
     )
 }
 
-export default InvestmentCard
+export default React.memo(InvestmentCard)

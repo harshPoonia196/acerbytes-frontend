@@ -402,5 +402,5 @@ let calculation = overallCalc(remainingItems, selectedItem[0],false)
     );
 }
 
-export default FloorPlanCard;
+export default React.memo(FloorPlanCard);
 

@@ -111,4 +111,4 @@ function LocationCard({ isEdit, form, handleChange, errors }) {
     )
 }
 
-export default LocationCard
+export default React.memo(LocationCard)

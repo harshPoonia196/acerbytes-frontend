@@ -69,4 +69,4 @@ function FacilitiesCard({ isEdit, form,handleChange }) {
     )
 }
 
-export default FacilitiesCard
+export default React.memo(FacilitiesCard)
