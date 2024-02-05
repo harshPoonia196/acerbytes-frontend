@@ -51,6 +51,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import colors from "styles/theme/colors";
 import { detailsProperty } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
+import { useSnackbar } from "utills/SnackbarContext";
 
 const tabHeight = 200;
 
@@ -95,15 +96,16 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([])
+  console.log(propertyData)
 
   const transformedData = propertyData?.consultants?.map(consultant => ({
     name: consultant.name,
-    type: "Consultant", 
+    type: "Consultant",
     stars: consultant.rating,
     clients: consultant.clientsServed,
     id: consultant.id,
     profilePic: consultant.profilePic
-   
+
   }));
 
 
@@ -126,7 +128,10 @@ const PropertyDetailsPage = ({ params }) => {
     }
   };
 
-
+  const { openSnackbar } = useSnackbar();
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
 
   useEffect(() => {
     detailsGetProperty()
@@ -201,7 +206,6 @@ const PropertyDetailsPage = ({ params }) => {
     setAmenitiesTab(newValue);
   };
 
-  
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
 
@@ -351,12 +355,24 @@ const PropertyDetailsPage = ({ params }) => {
   return (
     <>
       {isLoading ? <Loader /> : <>
-        <ActivateAdsPopup open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
+        <ActivateAdsPopup SinglePropertyId={propertyData} detailsGetProperty={detailsGetProperty} open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
         <DisableActivateAdsPopup open={disablePersonalizeAds} handleOpen={handleOpenPersonalizeAds} handleClose={handleClosePersonalizeAds} />
 
-        <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} isConsultant />
+        {
+          !propertyData.isActiveAd ? (
+            <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} isConsultant />
+          ) : (
+            null
+          )
+        }
 
-        <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
+        {
+          propertyData.isActiveAd ? (
+            <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
+          ) : (
+            null
+          )
+        }
 
         <nav className={classes.demo2}>
           <TopMenu topMenu={propertyData} value={activeState} handleChange={handleClick} list={itemsServer} />
@@ -383,10 +399,10 @@ const PropertyDetailsPage = ({ params }) => {
 
             <Grid container spacing={2} id='section-list'>
               <ClearanceSection regulatoryClearanceData={propertyData?.regulatoryClearance} />
-              <LandscapeSection  layoutData={propertyData?.layout}/>
+              <LandscapeSection layoutData={propertyData?.layout} />
               <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
               <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
-              <LocationSection locationData={propertyData?.location}/>
+              <LocationSection locationData={propertyData?.location} />
               {/* <PricingSection /> */}
               {/* <ResaleSection /> */}
               <ValueForMoneySection valueForMoneyData={propertyData?.valueForMoney} />

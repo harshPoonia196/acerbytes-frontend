@@ -16,4 +16,7 @@ export const detailsProperty = (detailsPropertyId) =>{
   return axiosInstance.get(`property/getProperty/${detailsPropertyId}`)
 }
 
+export const activeadCreate = (data) => {
+  return axiosInstance.post(`/activead/create`, data);
+};
 
