@@ -11,6 +11,7 @@ const NewInputFieldStructure = ({
   sx,
   variant,
   isEdit,
+  disabled=false,
   error,
   isFull, defaultValue,
   ...props
@@ -27,7 +28,11 @@ const NewInputFieldStructure = ({
       </Box>
       {isEdit === undefined ? <TextField
         name={name}
+        InputProps={{
+          readOnly: {readOnly},
+        }}
         onChange={handleChange}
+        disabled={disabled}
         variant={variant ? variant : "standard"}
         fullWidth
         value={value}
@@ -40,6 +45,7 @@ const NewInputFieldStructure = ({
           error={error}
           name={name}
           value={value}
+          disabled={disabled}
           onChange={handleChange}
           variant={variant ? variant : "standard"}
           fullWidth

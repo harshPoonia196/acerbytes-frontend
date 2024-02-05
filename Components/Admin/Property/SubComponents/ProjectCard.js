@@ -82,7 +82,8 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                                 { label: "Birla", value: "Birla" }
                             ]}
                             error={errors?.["overview.builder"]}
-                            handleChange={(e, newValue) => handleChange(newValue?.value, "overview", "builder")}
+                            handleChange={(e, newValue) =>{
+                            handleChange(newValue.value, "overview", "builder")}}
                         />
                         <Grid item xs={6}>
                             <Box>

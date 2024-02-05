@@ -17,7 +17,7 @@ import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/N
 
 function LandscapeCard({ isEdit, form, handleChange, errors }) {
 
-    const { numberOfBuildings, maxFloors, minFloors, totalUnits, area, greenArea, unitDensity, greenDensity, layoutType } = form.layout;
+    const { numberOfBuildings, maxFloors, minFloors, totalUnits,areaUnit ,area, greenArea, unitDensity, greenDensity, layoutType } = form.layout;
 
     return (
         <Grid item xs={12} id="landscape">
@@ -90,10 +90,20 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={area}
+                        unitValue={areaUnit}
                         error={errors?.["layout.area"]}
-                        handleChange={(e) => { handleChange(e, "layout", "area") }}
+                        handleChange={(e,name) => { 
+                            if(name==="textField"){
+                                handleChange(e, "layout", "area")
+                            }      
+                            else{
+                                handleChange(e, "layout", "areaUnit")
+                            }
+                    
+                         }
+                        }
                         units={[
-                            { label: 'acres', value: 'acres' }
+                            { label: 'acres', value: 'Acres' }
                         ]}
                     />
                     <NewInputFieldStructure
@@ -110,6 +120,10 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         name="greenArea"
                         variant="outlined"
                         isEdit={isEdit}
+                        units={[
+                            { label: 'acres', value: 'Acres' }
+                        ]}
+                        unitValue={areaUnit}
                         value={greenArea}
                         error={errors?.["layout.greenArea"]}
                         handleChange={(e) => handleChange(e, "layout", "greenArea", undefined, true, "greenDensity", area ? e.target.value / area : e.target.value / 1)}
@@ -119,6 +133,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         label="Unit density"
                         name="unitDensity"
                         variant="outlined"
+                        disabled={true}
                         isEdit={isEdit}
                         value={unitDensity}
                         error={errors?.["layout.unitDensity"]}
@@ -139,6 +154,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                         label="Green density"
                         name="greenDensity"
                         variant="outlined"
+                        disabled={true}
                         isEdit={isEdit}
                         value={greenDensity}
                         error={errors?.["layout.greenDensity"]}

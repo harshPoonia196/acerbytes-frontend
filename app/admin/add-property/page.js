@@ -15,7 +15,7 @@ import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from 'Components/Admin/Property/SubComponents/LocationCard';
 import ProjectCard from 'Components/Admin/Property/SubComponents/ProjectCard';
 import BankCard from 'Components/Admin/Property/SubComponents/BankCard';
-import {Schema} from "Components/Admin/Property/Validation/PropertyValidation"
+import {Schema,projectName} from "Components/Admin/Property/Validation/PropertyValidation"
 import FacilitiesCard from 'Components/Admin/Property/SubComponents/FacilitiesCard';
 import LandscapeCard from 'Components/Admin/Property/SubComponents/LandscapeCard';
 import FloorPlanCard from 'Components/Admin/Property/SubComponents/FloorPlanCard';
@@ -186,6 +186,7 @@ function AddProperty() {
             maxFloors: '',
             minFloors: '',
             totalUnits: '',
+            areaUnit:'',
             area: '',
             greenArea: '',
             unitDensity: '',
@@ -193,18 +194,25 @@ function AddProperty() {
             constructionQuality: 0,
             interiorQuality: 0,
         },
-        unitsPlan: [
+        unitsPlan: {
+            averagePrice:'',
+            minPriceRange:'',
+            maxPriceRange:'',
+            uniqueLayouts:[],
+            planList: [
             {
                 propertyType: "",
                 propertyLayout: "",
                 name: "",
                 areaUnit: "",
                 areaValue: "",
+                totalUnits:'',
                 bsp: "",
                 applicableMonth: "",
                 applicableYear: ""
             }
-        ],
+        ]
+    },
 
         amenitiesData: {
             Basic: {
@@ -353,7 +361,7 @@ function AddProperty() {
             },
         },
         location: {
-            state: "",
+            state: "Andhra",
             city: "",
             sector: '',
             area: "",
@@ -450,17 +458,17 @@ function AddProperty() {
             expectedFurtherApp: 0,
             forEndUse: 0
         },
-        consultants: [
-            {
-                id: "",
-                name: "",
-                profilePic: "",
-                rating: 0,
-                ratingTag: "",
-                clientsServed: 0,
-                number: ""
-            }
-        ],
+        // consultants: [
+        //     {
+        //         id: "",
+        //         name: "",
+        //         profilePic: "",
+        //         rating: 0,
+        //         ratingTag: "",
+        //         clientsServed: 0,
+        //         number: ""
+        //     }
+        // ],
         marketing: {
             tagLine: "",
             description: ""
@@ -469,7 +477,8 @@ function AddProperty() {
     
 
     const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName,autoFill,autoFillField,autoFillFieldValue,isRating,unitsPlanValue) => {
-        console.log('see',firstKeyName,unitsPlanValue,form)
+  
+
         if(autoFill){
           
         let innerObj = {
@@ -479,12 +488,14 @@ function AddProperty() {
        setForm({...form,[firstKeyName]:{...form?.[firstKeyName],...innerObj}})
         }
      else if (firstKeyName === "unitsPlan"){
-        setForm({...form,["unitsPlan"]:[...unitsPlanValue]})
+        
+        setForm({...form,["unitsPlan"]:{...unitsPlanValue}})
+   
     }
+ 
 else{
    
     if(thirdKeyName === 'checked'){
-        console.log("okieeee,",e.target.value,autoFillField,isRating)
         setForm((prevForm) => {
             const updatedForm = { ...prevForm };
             if (updatedForm[firstKeyName] && updatedForm[firstKeyName][secondKeyName] && isRating) {
@@ -522,24 +533,35 @@ else{
     }
   
 }
-
+const { error } = Schema.validate(form, { abortEarly: false });
+if (error) {
+    // console.log("🚀 ~ validateForm ~ error:", error.details)
+    const validationErrors = {};
+    error.details.forEach((detail) => {
+        validationErrors[detail?.context?.label] = detail?.message
+    });
+    // Handle validation errors, e.g., display error messages
+    setErrors(validationErrors)
+    return false;
+}
     }
 
     const validateForm = () => {
         const { error } = Schema.validate(form, { abortEarly: false });
-        let store = []
-   error.details.map((item)=>{
-   
-    if(item.context.key==="constructionQuality"||item.context.key==="interiorQuality"){
-      store.push(item.context.key)
-    }
-  
+        let store = [
+"constructionQuality",
+"interiorQuality",
+"rating"
+
+        ]
+
+   error?.details.map((item)=>{
+   if(store.includes(item.context.key)){
+    
+    openSnackbar(`Ratings needs to be provided for ${item.context.label}`, "error");
+   }  
 
 })
-if(store.length>1){
-    openSnackbar(`Ratings needs to be provided for ${store.join(',')}`, "error");
-
-}
         console.log(form,"formmmm",error,'errrr')
       
         if (error) {
@@ -552,9 +574,12 @@ if(store.length>1){
             setErrors(validationErrors)
             return false;
         }
+        else{
 
         // Validation passed
-        // CreateProperty({...form})
+        CreateProperty({...form})
+        }
+
         return true;
     };
 

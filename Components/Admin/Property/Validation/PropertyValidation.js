@@ -58,25 +58,18 @@ const layoutSchema =
   minFloors: Joi.number().min(24).required(),
   totalUnits: Joi.number().required(),
   area: Joi.string().required(),
+  areaUnit: Joi.string().required(),
   greenArea: Joi.string().allow('').optional(),
   unitDensity: Joi.number().required(),
-  greenDensity: Joi.number().required(),
+  greenDensity: Joi.when('greenArea', {
+    is: Joi.string().not('').required(),
+    then: Joi.number().required(),
+    otherwise: Joi.number().optional(),
+  }),
   constructionQuality: Joi.number().required().min(1),
   interiorQuality: Joi.number().required().min(1),
 });
 
-export const unitPlanSchema = 
-Joi.object({
-  propertyType: Joi.string().required(),
-  propertyLayout: Joi.string().required(),
-  name: Joi.string().required(),
-  area: Joi.number().required(),
-  areaUnit: Joi.number().required(),
-  totalUnits:Joi.number().required(),
-  bsp: Joi.string().required(),
-  applicableYear: Joi.string().required(),
-  applicableMonth: Joi.string().required(),
-});
 
 export const Schema = 
 Joi.object({
@@ -99,18 +92,37 @@ Joi.object({
     }),
     
     layout: layoutSchema,
-    unitsPlan: Joi.array().items(
-      Joi.object().keys({
-        propertyType: Joi.string().required(),
-        propertyLayout: Joi.string().required(),
-        name: Joi.string().required(),
-        areaUnit: Joi.string().required(),
-        area: Joi.string().required(),
-        bsp: Joi.string().required(),
-        applicableMonth: Joi.string().required(),
-        applicableYear: Joi.string().required(),
-      })
-    ),
+    // unitsPlan: Joi.array().items(
+    //   Joi.object().keys({
+    //     propertyType: Joi.string().required(),
+    //     propertyLayout: Joi.string().required(),
+    //     name: Joi.string().required(),
+    //     areaUnit: Joi.string().required(),
+    //     area: Joi.string().required(),
+    //     bsp: Joi.string().required(),
+    //     applicableMonth: Joi.string().required(),
+    //     applicableYear: Joi.string().required(),
+    //   })
+    unitsPlan:Joi.object({
+      averagePrice: Joi.number().allow(''),
+      minPriceRange: Joi.number().allow(''),
+      maxPriceRange: Joi.number().allow(''),
+      uniqueLayouts: Joi.array().items(Joi.string()),
+      planList: Joi.array().min(1).items(
+        Joi.object({
+          propertyType: Joi.string().required(),
+          propertyLayout: Joi.string().required(),
+          name: Joi.string().required(),
+          areaUnit: Joi.string().required(),
+          totalUnits:Joi.string().required(),
+          area: Joi.string().required(),
+          bsp: Joi.string().required(),
+          applicableMonth: Joi.string().required(),
+          applicableYear: Joi.string().required(),
+        })
+      ),
+    }),
+    
     amenitiesData: Joi.object().keys({
       Basic: Joi.object().pattern(/./, Joi.object().keys({
         isApplicable: Joi.boolean().required(),
@@ -168,17 +180,17 @@ Joi.object({
       expectedFurtherApp: Joi.number().not(0).required(),
       forEndUse: Joi.number().not(0).required(),
     }).required(),
-    consultants: Joi.array().items(
-      Joi.object().keys({
-        id: Joi.string().required(),
-        name: Joi.string().required(),
-        profilePic: Joi.string().required(),
-        rating: Joi.number().required(),
-        ratingTag: Joi.string().required(),
-        clientsServed: Joi.number().required(),
-        number: Joi.string().required(),
-      })
-    ),
+    // consultants: Joi.array().items(
+    //   Joi.object().keys({
+    //     id: Joi.string().required(),
+    //     name: Joi.string().required(),
+    //     profilePic: Joi.string().required(),
+    //     rating: Joi.number().required(),
+    //     ratingTag: Joi.string().required(),
+    //     clientsServed: Joi.number().required(),
+    //     number: Joi.string().required(),
+    //   })
+    // ),
     marketing: Joi.object().keys({
       tagLine: Joi.string().required(),
       description: Joi.string().required(),
