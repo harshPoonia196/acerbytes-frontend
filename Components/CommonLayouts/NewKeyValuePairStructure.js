@@ -21,7 +21,7 @@ function NewKeyValuePairStructure({ label, value, middleValue, isRating }) {
                         <Typography variant="body2" sx={{ alignSelf: 'center', flex: 1 }}>
                             {value}
                         </Typography>
-                        : <Rating name="half-rating" defaultValue={2.5} precision={0.5}
+                        : <Rating name="half-rating"  defaultValue={2.5} precision={0.5} value={value}
                             size='small' sx={{ alignSelf: 'center', fontSize: '1rem !important' }} />
                 }
             </Grid>
