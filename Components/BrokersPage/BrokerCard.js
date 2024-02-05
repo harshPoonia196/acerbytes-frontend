@@ -74,7 +74,7 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
     router.push(`/broker-review?name=${name}`);
   };
 
-  const precision = 0.2;
+  const precision = 0.5;
 
   return (
     <Card sx={{ position: "relative" }}>
@@ -86,7 +86,7 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
         />
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">
-            {broker?.name?.firstName + " " + broker?.name?.lastName}
+            {broker?.fullName}
             <DoneIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
             <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
           </Typography>

@@ -25,28 +25,31 @@ const RatingDialog = (props) => {
   const onSuccess = (res) => {
     setSubmitReview(true);
     openSnackbar(res?.data?.message || "Success!", "success");
-    let overallRating = 0;
-    for (let i = 0; i < rating?.subRatings?.length; i++) {
-      overallRating += rating?.subRatings[i]?.rating || 0;
+    if (updateBroker) {
+      updateBroker();
     }
-    overallRating = overallRating / (rating?.subRatings?.length || 1);
-    let newRating =
-      ((broker?.rating || 0) * (broker?.ratingCount || 0) -
-        (broker?.reviews?.overallRating || 0) +
-        overallRating) /
-      (broker?.ratingCount + (broker?.reviews ? 0 : 1) || 1);
-    updateBroker({
-      ...broker,
-      rating: newRating,
-      ratingCount: broker?.ratingCount + (broker?.reviews ? 0 : 1) || 0,
-      reviews: {
-        ...(broker?.reviews || {}),
-        note: rating?.note || "",
-        isPrivate: rating?.isPrivate || false,
-        ratings: rating?.subRatings || [],
-        createdAt: broker?.reviews?.createdAt || new Date(),
-      },
-    });
+    // let overallRating = 0;
+    // for (let i = 0; i < rating?.subRatings?.length; i++) {
+    //   overallRating += rating?.subRatings[i]?.rating || 0;
+    // }
+    // overallRating = overallRating / (rating?.subRatings?.length || 1);
+    // let newRating =
+    //   ((broker?.rating || 0) * (broker?.ratingCount || 0) -
+    //     (broker?.reviews?.overallRating || 0) +
+    //     overallRating) /
+    //   (broker?.ratingCount + (broker?.reviews ? 0 : 1) || 1);
+    // updateBroker({
+    //   ...broker,
+    //   rating: newRating,
+    //   ratingCount: broker?.ratingCount + (broker?.reviews ? 0 : 1) || 0,
+    //   reviews: {
+    //     ...(broker?.reviews || {}),
+    //     note: rating?.note || "",
+    //     isPrivate: rating?.isPrivate || false,
+    //     ratings: rating?.subRatings || [],
+    //     createdAt: broker?.reviews?.createdAt || new Date(),
+    //   },
+    // });
   };
 
   const onError = (err) => {

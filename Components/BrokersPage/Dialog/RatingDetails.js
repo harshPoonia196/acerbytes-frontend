@@ -36,7 +36,7 @@ const RatingDetails = (props) => {
           <Rating
             size="small"
             name="hover-feedback"
-            precision={0.2}
+            precision={0.5}
             value={value}
             getLabelText={getLabelText}
             onChange={(event, newValue) => {

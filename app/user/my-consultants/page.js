@@ -10,6 +10,7 @@ import {
   Card,
   InputBase,
   IconButton,
+  Pagination,
 } from "@mui/material";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -27,11 +28,20 @@ function Brokers() {
 
   const { openSnackbar } = useSnackbar();
 
-  const { data, isLoading, error } = useQueries(
+  const limit = 5;
+
+  var interval = null;
+
+  const firstLoad = React.useRef(true);
+  const [currentPage, setCurrentPage] = React.useState(0);
+  const [searchText, setSearchText] = React.useState("");
+  const [totalPage, setTotalPage] = React.useState(0);
+
+  const { data, isLoading, error, refetch } = useQueries(
     [reactQueryKey.user.myConsultant],
     async () => {
       try {
-        const response = await getBrokers();
+        const response = await getBrokers(limit, currentPage, searchText);
         if (response.status == 200) {
           const { success, data, message } = response.data;
           if (success) {
@@ -54,23 +64,47 @@ function Brokers() {
 
   const [brokersList, setBrokersList] = React.useState([]);
 
-  const handleUpdateBroker = (updatedBroker) => {
-    setBrokersList((brokersList) => {
-      return (
-        brokersList?.map((broker) => {
-          if (broker?._id == updatedBroker?._id) {
-            return updatedBroker;
-          } else {
-            return broker;
-          }
-        }) || []
-      );
-    });
+  const handleUpdateBroker = () => {
+    refetch();
+  };
+
+  const handleSearch = (e) => {
+    e.persist();
+    setSearchText(e.target.value);
   };
 
   React.useEffect(() => {
-    setBrokersList(data || []);
+    if (interval) {
+      clearTimeout(interval);
+    }
+    if (!firstLoad?.current) {
+      interval = setTimeout(handleUpdateBroker, 1000);
+    }
+    return () => {
+      if (interval) {
+        clearTimeout(interval);
+      }
+    };
+  }, [searchText]);
+
+  React.useEffect(() => {
+    setBrokersList(data?.data || []);
+    let total = parseInt((data?.totalCount || 0) / limit);
+    if ((data?.totalCount || 0) % limit) {
+      total += 1;
+    }
+    setTotalPage(total);
+    if (total <= currentPage && currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
   }, [data]);
+
+  React.useEffect(() => {
+    if (!firstLoad?.current) {
+      handleUpdateBroker();
+    }
+    firstLoad.current = false;
+  }, [currentPage]);
 
   return (
     <>
@@ -90,22 +124,34 @@ function Brokers() {
             75 consultant may be interested to work with you
           </Typography>
           <Card>
-            <CustomSearchInput />
+            <CustomSearchInput value={searchText} onChange={handleSearch} />
           </Card>
         </Container>
       </Box>
 
       <Container>
         <Grid container spacing={2}>
-          {brokersList?.map((broker) => (
-            <Grid item xs={12} key={broker._id}>
-              <BrokerCard
-                broker={broker}
-                noReview={!broker?.reviews}
-                updateBroker={handleUpdateBroker}
-              />
-            </Grid>
-          ))}
+          {brokersList?.length
+            ? brokersList?.map((broker) => (
+                <Grid item xs={12} key={broker._id}>
+                  <BrokerCard
+                    broker={broker}
+                    noReview={!broker?.reviews}
+                    updateBroker={handleUpdateBroker}
+                  />
+                </Grid>
+              ))
+            : null}
+          <Grid item xs={12} display={"flex"} justifyContent={"center"}>
+            <Pagination
+              page={currentPage + 1}
+              onChange={(e, value) => {
+                setCurrentPage(value - 1);
+              }}
+              count={totalPage}
+              shape="rounded"
+            />
+          </Grid>
         </Grid>
       </Container>
     </>
