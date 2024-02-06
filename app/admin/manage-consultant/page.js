@@ -5,7 +5,7 @@ import React from 'react'
 import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
 import CustomAdminBreadScrumbs from 'Components/CommonLayouts/CustomAdminBreadScrumbs';
 import ManageConsultantTable from 'Components/Admin/ManageConsultant/ManageConsultantTable';
-
+import InfoBox from 'Components/CommonLayouts/CommonHeader';
 
 const page = () => {
 
@@ -18,20 +18,11 @@ const page = () => {
     return (
         <>
             <CustomAdminBreadScrumbs text='Manage consultants' />
-            <Box sx={{ backgroundColor: "white" }}>
-                <Container
-                    maxWidth="lg"
-                >
-                    <Box sx={{ py: 4 }}>
-                        <Typography variant="h2" sx={{ color: "#000" }}>
-                            Hi, Anand Gupta (Admin)
-                        </Typography>
-                        <Typography variant="h2" sx={{ color: "#000" }}>
-                            Manage Consultants
-                        </Typography>
-                    </Box>
-                </Container>
-            </Box>
+            <InfoBox
+        title="Anand Gupta(Admin)"
+        subtitle="3,344 property consultant links are currently active"
+        pagename="pagename"
+      />
             <Container>
                 <Card sx={{ mb: 2 }}>
                     <CustomSearchInput />

@@ -49,5 +49,5 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
 };
 
 export const matchUserRole = (actualRole, matchingRole) => {
-    return actualRole === matchingRole
+    // return actualRole === matchingRole
 };
