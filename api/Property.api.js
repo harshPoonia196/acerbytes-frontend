@@ -5,8 +5,8 @@ export const CreateProperty = (payload) => {
   return axiosInstance.post(`/property/create`,payload);
 };
 
-export const getAllProperty = () => {
-  return axiosInstance.get("property/getProperties")
+export const getAllProperty = (queryParams) => {
+  return axiosInstance.get(`property/getProperties` + (queryParams ? `?${queryParams}` : ''));
 };
 
 
@@ -15,5 +15,9 @@ export const deleteProperty = (propertyId) => {
 
 };
 
+
+export const detailsProperty = (detailsPropertyId) =>{
+  return axiosInstance.get(`property/getProperty/${detailsPropertyId}`)
+}
 
 
