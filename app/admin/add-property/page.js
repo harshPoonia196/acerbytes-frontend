@@ -522,7 +522,9 @@ function AddProperty() {
         let difference =
           form.overallAssessment.rated?.[secondKeyName] -
           parseInt(e.target.value);
-        if (difference > 1) {
+          let compare =  form.overallAssessment.rated?.[secondKeyName] <
+          parseInt(e.target.value);
+        if (compare) {
           totalScored =
             form.overallAssessment.scoredRating + Math.abs(difference);
         } else {
