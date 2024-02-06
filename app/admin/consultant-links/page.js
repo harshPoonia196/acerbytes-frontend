@@ -44,10 +44,10 @@ const page = () => {
                             overflowX: 'auto',
                         }}
                     >
-                        <ToggleButton size='small' value="all" sx={{ flex: 1, border: 'none' }}>All(10)</ToggleButton>
-                        <ToggleButton size='small' value="active" sx={{ flex: 1, border: 'none' }}>Active(10)</ToggleButton>
-                        <ToggleButton size='small' value="expired" sx={{ flex: 1, border: 'none' }}>Expired(10)</ToggleButton>
-                        <ToggleButton size='small' value="expiringSoon" sx={{ flex: 1, border: 'none' }}>Expiring&nbsp;soon(10)</ToggleButton>
+                        <ToggleButton size='small' value="all" sx={{ flex: 1, border: 'none' }}>All (10)</ToggleButton>
+                        <ToggleButton size='small' value="active" sx={{ flex: 1, border: 'none' }}>Active (10)</ToggleButton>
+                        <ToggleButton size='small' value="expired" sx={{ flex: 1, border: 'none' }}>Expired (10)</ToggleButton>
+                        <ToggleButton size='small' value="expiringSoon" sx={{ flex: 1, border: 'none' }}>Expiring&nbsp;soon (10)</ToggleButton>
                     </ToggleButtonGroup>
                 </Card>
                 <Card sx={{ mb: 2 }}>
