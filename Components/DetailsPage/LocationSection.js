@@ -4,8 +4,9 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import colors from 'styles/theme/colors'
 import { useRouter } from 'next/navigation'
 
-function LocationSection({ refCallback }) {
-
+function LocationSection(props) {
+    const {locationData, refCallback} = props
+    const assessment = locationData?.assessment
     const router = useRouter()
 
     return (
@@ -45,9 +46,9 @@ function LocationSection({ refCallback }) {
                 <Divider />
                 <Box sx={{ p: 2 }}>
                     <Grid container spacing={1}>
-                        <NewKeyValuePairStructure label="School" value="value" middleValue={'Low'} />
+                        {assessment?.School?.isApplicable && <NewKeyValuePairStructure label="School" value={assessment?.School?.rating} middleValue={'Low'} />}
                         <NewKeyValuePairStructure label="App based rides" value="value" middleValue={'Med'} />
-                        <NewKeyValuePairStructure label="Hospital" value="value" />
+                        {assessment?.Hospital?.isApplicable &&<NewKeyValuePairStructure label="Hospital" value={assessment?.Hospital?.rating} />}
                         <NewKeyValuePairStructure label="Railway stop" value="value" />
                         <NewKeyValuePairStructure label="Metro" value="value" />
                         <NewKeyValuePairStructure label="Bus stand" value="value" />
