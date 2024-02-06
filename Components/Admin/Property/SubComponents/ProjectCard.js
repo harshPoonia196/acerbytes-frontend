@@ -94,7 +94,7 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                                     Score
                                 </Typography>
                             </Box>
-                            <Rating defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                            <Rating defaultValue={0} onChange={(e)=>handleChange(e,"overview","builderScore",undefined,undefined,undefined,undefined,undefined,undefined,true)} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                         </Grid>
                         <NewInputFieldStructure
                             label="Project name"
