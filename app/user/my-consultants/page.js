@@ -131,17 +131,23 @@ function Brokers() {
 
       <Container>
         <Grid container spacing={2}>
-          {brokersList?.length
-            ? brokersList?.map((broker) => (
-                <Grid item xs={12} key={broker._id}>
-                  <BrokerCard
-                    broker={broker}
-                    noReview={!broker?.reviews}
-                    updateBroker={handleUpdateBroker}
-                  />
-                </Grid>
-              ))
-            : null}
+          {brokersList?.length ? (
+            brokersList?.map((broker) => (
+              <Grid item xs={12} key={broker._id}>
+                <BrokerCard
+                  broker={broker}
+                  noReview={!broker?.reviews}
+                  updateBroker={handleUpdateBroker}
+                />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12} display={"flex"} justifyContent={"center"}>
+              <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
+                No data found!
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={12} display={"flex"} justifyContent={"center"}>
             <Pagination
               page={currentPage + 1}
