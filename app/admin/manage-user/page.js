@@ -5,7 +5,7 @@ import { Container, Typography, Card, Box } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import ManageUserTable from "Components/Admin/ManageUser/ManageUserTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
-
+import InfoBox from "Components/CommonLayouts/CommonHeader";
 function ManageUser() {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -14,11 +14,14 @@ function ManageUser() {
     setSearchTerm(term);
   };
 
-  return (
+  return (  
     <>
-
       <CustomAdminBreadScrumbs text='Manage user' />
-
+      <InfoBox
+        title="Anand Gupta(Admin)"
+        subtitle="3,344 property consultant links are currently active"
+        pagename="pagename"
+      />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
           Manage User
