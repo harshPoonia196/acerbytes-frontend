@@ -23,7 +23,9 @@ function TopMenu(props) {
                        {topMenu?.overview?.projectName}
                     </Typography>
                     <Typography variant="h5" sx={{ alignSelf: "center" }}>
-                        {topMenu?.overview?.status} &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183; {topMenu?.location?.sector}, {topMenu?.location?.city}, {topMenu?.location?.state}
+                        {topMenu?.overview?.status} 
+                        {/* &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183;  */}
+                        {topMenu?.location?.sector}, {topMenu?.location?.city}, {topMenu?.location?.state}
                     </Typography>
                 </Box>
                 <Box>

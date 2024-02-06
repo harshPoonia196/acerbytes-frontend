@@ -38,7 +38,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
 
   const storedUserDataString = localStorage.getItem('userDetails');
   const storedUserData = JSON.parse(storedUserDataString);
-  const userId = storedUserData._id;
+  const userId = storedUserData?._id;
 
 
 
