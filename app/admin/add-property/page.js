@@ -482,6 +482,8 @@ function AddProperty() {
         area: 0,
         unitsDensity: 0,
         greenDensity: 0,
+        unitsDensityScore: 0,
+        greenDensityScore: 0,
         constructionQuality: 0,
         interiorQuality: 0,
       },
