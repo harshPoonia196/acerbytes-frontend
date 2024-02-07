@@ -24,3 +24,6 @@ export const activeadCreate = (data) => {
   return axiosInstance.post(`/activead/create`, data);
 };
 
+export const favouriteProperty = (data) => {
+  return axiosInstance.post(`/favProperty/create`, data);
+};

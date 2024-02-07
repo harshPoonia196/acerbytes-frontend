@@ -24,6 +24,7 @@ import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import GroupIcon from '@mui/icons-material/Group';
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
@@ -49,7 +50,7 @@ import AdsSection from "Components/DetailsPage/AdsSection";
 import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/Constants";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import colors from "styles/theme/colors";
-import { detailsProperty } from "api/Property.api";
+import { detailsProperty, favouriteProperty } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 
@@ -96,7 +97,6 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([])
-  console.log(propertyData)
 
   const transformedData = propertyData?.consultants?.map(consultant => ({
     name: consultant.name,
@@ -127,6 +127,31 @@ const PropertyDetailsPage = ({ params }) => {
       setLoading(false);
     }
   };
+
+  const handlefavClick = async () => {
+    const adData = {
+      propertyId: detailsPropertyId,
+    }
+    try {
+      const response = await favouriteProperty(adData);
+      if (response.status == 200) {
+        setTimeout(async () => {
+          await detailsGetProperty();
+          setLoading(false);
+        }, 500);
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error generating fav Property",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+
+  }
 
   const { openSnackbar } = useSnackbar();
   const showToaterMessages = (message, severity) => {
@@ -360,7 +385,7 @@ const PropertyDetailsPage = ({ params }) => {
 
         {
           !propertyData.isActiveAd ? (
-            <AdsSection  handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} isConsultant />
+            <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} isConsultant />
           ) : (
             null
           )
@@ -491,8 +516,11 @@ const PropertyDetailsPage = ({ params }) => {
                 flexDirection: "column",
               }}
             >
-              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={handlefavClick}>
+                {propertyData?.isFav
+                  ? <ThumbUpIcon sx={{ color: '#276ef1', mr: 1 }} />
+                  : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                }
                 Like
               </Fab>
               <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
