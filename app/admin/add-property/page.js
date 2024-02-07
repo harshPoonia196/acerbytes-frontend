@@ -471,7 +471,7 @@ function AddProperty() {
       scoredRating: 0,
       rated: {
         builder: 0,
-        ConstructionProgress: 0,
+        constructionProgress: 0,
         reraApproved: 0,
         cc: 0,
         oc: 0,
@@ -518,12 +518,50 @@ function AddProperty() {
     } else if (score === true) {
       let totalRating = 70;
       let totalScored;
+
+      function isNotAlphabet(char) {
+        return !/[a-zA-Z]/.test(char);
+    }
+    let incomingValue;
+      if(isNotAlphabet(e.target.value)){
+        incomingValue = e.target.value
+      }
+      else{
+
+switch (e.target.value.toLowerCase()) {
+  case "yes":
+    incomingValue = 5;
+      break;
+  case "no":
+    incomingValue = 4;
+      break;
+  case "dont know":
+    incomingValue = 3;
+      break;
+      case "don't know":
+    incomingValue = 3;
+      break;
+      case "on time":
+        incomingValue = 5;
+          break;
+  case "delay":
+    incomingValue = 3;
+      break;       
+  default:
+    incomingValue = 0;
+}
+
+      }
+
+
       if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+
+        
         let difference =
           form.overallAssessment.rated?.[secondKeyName] -
-          parseInt(e.target.value);
+          parseInt(incomingValue);
           let compare =  form.overallAssessment.rated?.[secondKeyName] <
-          parseInt(e.target.value);
+          parseInt(incomingValue);
         if (compare) {
           totalScored =
             form.overallAssessment.scoredRating + Math.abs(difference);
@@ -533,7 +571,7 @@ function AddProperty() {
         }
       } else {
         totalScored =
-          form.overallAssessment.scoredRating + parseInt(e.target.value);
+          form.overallAssessment.scoredRating + parseInt(incomingValue);
       }
 
       let calc = (totalScored / totalRating) * 100;
@@ -550,7 +588,7 @@ function AddProperty() {
           scoredRating: totalScored,
           rated: {
             ...form.overallAssessment.rated,
-            [secondKeyName]: parseInt(e.target.value),
+            [secondKeyName]: parseInt(incomingValue),
           },
         },
       });
