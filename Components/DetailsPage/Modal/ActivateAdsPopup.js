@@ -55,7 +55,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       setLoading(true);
       const response = await activeadCreate(adData);
       if (response.status == 200) {
-        showToaterMessages(ToasterMessages.PROFILE_UPDATE_SUCCESS, "success");
+        showToaterMessages(response?.data.message, "success");
         detailsGetProperty()
         handleClose()
       }

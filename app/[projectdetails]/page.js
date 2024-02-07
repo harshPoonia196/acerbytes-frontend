@@ -49,7 +49,7 @@ import AdsSection from "Components/DetailsPage/AdsSection";
 import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/Constants";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import colors from "styles/theme/colors";
-import { detailsProperty } from "api/Property.api";
+import { activeAdGet } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 
@@ -92,13 +92,16 @@ const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams()
   const name = searchParams.get('name')
 
-  const detailsPropertyId = params.id
+  const linkIdData = params.projectdetails;
+  const parts = linkIdData.split('-');
+  const getId = parts[parts.length - 1];
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([])
   console.log(propertyData)
 
-  const transformedData = propertyData?.consultants?.map(consultant => ({
+
+  const transformedData = propertyData[0]?.propertyData?.consultants?.map(consultant => ({
     name: consultant.name,
     type: "Consultant",
     stars: consultant.rating,
@@ -108,11 +111,10 @@ const PropertyDetailsPage = ({ params }) => {
 
   }));
 
-
-  const detailsGetProperty = async () => {
+  const activeAdGetProperty = async () => {
     try {
       setLoading(true);
-      let res = await detailsProperty(detailsPropertyId);
+      let res = await activeAdGet(getId);
       if (res.status === 200) {
         setPropertyData(res.data?.data)
       }
@@ -134,7 +136,7 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   useEffect(() => {
-    detailsGetProperty()
+    activeAdGetProperty()
   }, []);
 
   const GridItemWithCard = (props) => {
@@ -355,30 +357,18 @@ const PropertyDetailsPage = ({ params }) => {
   return (
     <>
       {isLoading ? <Loader /> : <>
-        <ActivateAdsPopup SinglePropertyId={propertyData} detailsGetProperty={detailsGetProperty} open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
+        <ActivateAdsPopup SinglePropertyId={propertyData} activeAdGetProperty={activeAdGetProperty} open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
         <DisableActivateAdsPopup open={disablePersonalizeAds} handleOpen={handleOpenPersonalizeAds} handleClose={handleClosePersonalizeAds} />
 
-        {
-          !propertyData.isActiveAd ? (
-            <AdsSection  handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} isConsultant />
-          ) : (
-            null
-          )
-        }
 
-        {
-          propertyData.isActiveAd ? (
-            <AdsSection SinglePropertyId={propertyData?.propertyBroker[0]} propertyData={propertyData} id={propertyData?.propertyBroker?.[0]?._id} handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
-          ) : (
-            null
-          )
-        }
+        <AdsSection SinglePropertyId={propertyData[0]}  propertyData={propertyData[0]?.propertyData} id={propertyData[0]?._id} handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
+
 
         <nav className={classes.demo2}>
-          <TopMenu topMenu={propertyData} value={activeState} handleChange={handleClick} list={itemsServer} />
+          <TopMenu topMenu={propertyData[0]?.propertyData} value={activeState} handleChange={handleClick} list={itemsServer} />
         </nav>
         <Box>
-          <MarketingSection overviewData={propertyData} />
+          <MarketingSection overviewData={propertyData[0]?.propertyData} />
           <Container maxWidth="evmd">
             <EnquireNow
               open={openEnquiryForm}
@@ -398,14 +388,14 @@ const PropertyDetailsPage = ({ params }) => {
             />
 
             <Grid container spacing={2} id='section-list'>
-              <ClearanceSection regulatoryClearanceData={propertyData?.regulatoryClearance} />
-              <LandscapeSection layoutData={propertyData?.layout} />
-              <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
-              <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
-              <LocationSection locationData={propertyData?.location} />
+              <ClearanceSection regulatoryClearanceData={propertyData[0]?.propertyData?.regulatoryClearance} />
+              <LandscapeSection layoutData={propertyData[0]?.propertyData?.layout} />
+              <UnitsPlanSection unitsPlan={propertyData[0]?.propertyData?.unitsPlan} />
+              <AmenitiesSection amenitiesData={propertyData[0]?.propertyData?.amenitiesData} />
+              <LocationSection locationData={propertyData[0]?.propertyData?.location} />
               {/* <PricingSection /> */}
               {/* <ResaleSection /> */}
-              <ValueForMoneySection valueForMoneyData={propertyData?.valueForMoney} />
+              <ValueForMoneySection valueForMoneyData={propertyData[0]?.propertyData?.valueForMoney} />
               {/* <FloorPlanSection /> */}
               <Grid item xs={12} id="propertyConsultants">
                 <Card sx={{ p: 2 }}>
