@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Card,
     Typography,
@@ -15,10 +15,12 @@ import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStruct
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
 import colors from 'styles/theme/colors';
+import { Assessment } from '@mui/icons-material';
 
-function FacilitiesCard({ isEdit, form,handleChange }) {
+function LocationAssesmentCard({ isEdit, form,handleChange }) {
 
-    const { amenitiesData } = form
+    const { location } = form
+
     return (
         <Grid item xs={12} id="facilities">
             <Card>
@@ -27,7 +29,7 @@ function FacilitiesCard({ isEdit, form,handleChange }) {
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-                        Amenities
+                        Assesment
                     </Typography>
                     <Box>
                         <IconButton>
@@ -38,35 +40,36 @@ function FacilitiesCard({ isEdit, form,handleChange }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     {
-                        Object?.keys(amenitiesData)?.map(key => {
-                            return <>
-                                <Grid item xs={12}>
-                                    <Typography variant="h6">{key}</Typography>
-                                </Grid>
-
+                        
+                        Object?.keys(location)?.map(key => {
+                         
+                            return( 
+                            key==='assesment'?<>
                                 {
-                                    Object.keys(amenitiesData?.[key])?.map(insideKey => {
+                                    Object.keys(location?.[key])?.map(insideKey => {
                                         return <>
                                             <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                                                <Switch onChange={(e)=>{handleChange(e,"amenitiesData",key,"checked",undefined,insideKey)}} checked={amenitiesData?.[key]?.[insideKey]?.isApplicable} />
+                                                <Switch onChange={(e)=>{handleChange(e,"location",key,"checked",undefined,insideKey)}} checked={location?.[key]?.[insideKey]?.isApplicable} />
                                                 <Typography
                                                     variant="subtitle2"
                                                     sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                                                 >
+                                                  
                                                     {insideKey}
                                                 </Typography>
-                                                <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e)=>handleChange(e,"amenitiesData",key,"checked",undefined,insideKey,undefined,true)} />
+                                                <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' onChange={(e)=>handleChange(e,"location",key,"checked",undefined,insideKey,undefined,true)} sx={{ alignSelf: 'center' }} />
                                             </Grid>
                                         </>
                                     })
                                 }
                             </>
-                        })
-                    }
+                            :<></>)
+                         })
+                     } 
                 </Grid>
             </Card>
         </Grid>
     )
 }
 
-export default React.memo(FacilitiesCard)
+export default LocationAssesmentCard

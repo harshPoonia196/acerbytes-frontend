@@ -161,7 +161,11 @@ function ConsultantProfile() {
     }));
   };
   const handleAddTargetCustomer = () => {
-    if (targetCustomer?.selectArea && targetCustomer?.selectCity && targetCustomer?.selectState) {
+    if (
+      targetCustomer?.selectArea &&
+      targetCustomer?.selectCity &&
+      targetCustomer?.selectState
+    ) {
       let value = targetCustomer;
       setBrokerProfileInfo((prev) => ({
         ...prev,

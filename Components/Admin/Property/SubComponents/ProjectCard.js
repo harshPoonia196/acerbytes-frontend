@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Card,
     Typography,
@@ -6,14 +6,17 @@ import {
     Box,
     Divider,
     IconButton,
+    Rating,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { yearList } from "Components/Constants/index"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompleteInputStructure';
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
+import colors from 'styles/theme/colors';
 
-function ProjectCard({ isEdit, form, handleChange, value }) {
+function ProjectCard({ isEdit, form, handleChange, errors }) {
 
     const {
         builder,
@@ -26,6 +29,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
         status,
         constructionProgress,
     } = form.overview;
+
 
     return (
         <>
@@ -77,13 +81,27 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                             options={[
                                 { label: "Birla", value: "Birla" }
                             ]}
-                            handleChange={(e, newValue) => handleChange(newValue?.value, "overview", "builder")}
+                            error={errors?.["overview.builder"]}
+                            handleChange={(e, newValue) =>{
+                            handleChange(newValue.value, "overview", "builder")}}
                         />
+                        <Grid item xs={6}>
+                            <Box>
+                                <Typography
+                                    variant="subtitle2"
+                                    sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+                                >
+                                    Score
+                                </Typography>
+                            </Box>
+                            <Rating defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        </Grid>
                         <NewInputFieldStructure
                             label="Project name"
                             variant="outlined"
                             isEdit={isEdit}
                             value={projectName}
+                            error={errors?.["overview.projectName"]}
                             handleChange={(e) => handleChange(e, "overview", "projectName")}
                         />
                         <NewSelectTextFieldStructure
@@ -91,6 +109,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                             name="projectCategory"
                             isEdit={isEdit}
                             value={projectCategory}
+                            error={errors?.["overview.projectCategory"]}
                             list={[
                                 { label: 'Residential', value: 'Residential' },
                                 { label: 'Commercial', value: 'Commercial' },
@@ -104,13 +123,22 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                             list={[
                                 { label: 'Flat', value: 'Flat' },
                                 { label: 'Shop', value: 'Shop' },
+                                { label: "Restaurant", value: "Restaurant" },
+                                { label: "Pent house", value: "Pent house" },
+                                { label: "Flat", value: "Flat" },
+                                { label: "Land", value: "Land" },
+                                { label: "Retail space", value: "Retail space" },
+                                { label: "Studio apartment", value: "Studio apartment" },
+                                { label: "Food court", value: "Food court" }
                             ]}
+                            error={errors?.["overview.projectType"]}
                             handleChange={(e, newValue) => handleChange(newValue, "overview", "projectType")}
                         />
                         <NewInputFieldStructure
                             label="Phase"
                             variant="outlined"
                             isEdit={isEdit}
+                            error={errors?.["overview.phase"]}
                             value={phase}
                             handleChange={(e) => handleChange(e, "overview", "phase")}
                         />
@@ -118,20 +146,16 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                             label="Launch"
                             isEdit={isEdit}
                             value={launchYear}
-                            list={[
-                                { label: '2000', value: '2000' },
-                                { label: '2001', value: '2001' },
-                            ]}
+                            list={yearList}
+                            error={errors?.["overview.launchYear"]}
                             handleChange={(e) => handleChange(e, "overview", "launchYear")}
                         />
                         <NewSelectTextFieldStructure
                             label="Completion"
                             isEdit={isEdit}
                             value={completionYear}
-                            list={[
-                                { label: '2000', value: '2000' },
-                                { label: '2001', value: '2001' },
-                            ]}
+                            list={yearList}
+                            error={errors?.["overview.completionYear"]}
                             handleChange={(e) => handleChange(e, "overview", "completionYear")}
                         />
                         <NewSelectTextFieldStructure
@@ -141,7 +165,16 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                             list={[
                                 { label: 'under construction', value: 'under construction' },
                                 { label: 'completed', value: 'completed' },
+                                { label: "Pre launch", value: "Pre launch" },
+                                { label: "RERA approved", value: "rera approved" },
+                                { label: "Launch", value: "launch" },
+                                { label: "CC", value: "cc" },
+                                { label: "OC", value: "oc" },
+                                { label: "Delivered", value: "delivered" },
+                                { label: "Registeration", value: "registeration" },
+                                { label: "Resale", value: "resale" }
                             ]}
+                            error={errors?.["overview.status"]}
                             handleChange={(e) => handleChange(e, "overview", "status")}
                         />
 
@@ -155,6 +188,7 @@ function ProjectCard({ isEdit, form, handleChange, value }) {
                                     { label: 'Delay', value: 'Delay' },
                                     { label: 'On time', value: 'On time' },
                                 ]}
+                                error={errors?.["overview.constructionProgress"]}
                                 handleChange={(e) => handleChange(e, "overview", "constructionProgress")}
                             />
                         }

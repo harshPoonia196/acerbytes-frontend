@@ -95,6 +95,9 @@ export const interestedForLoan = [
   },
 ];
 
+export const yearList = Array.from(
+  { length: 41 }, (_, index) =>   { return { label: index>9?`20${index}`:`200${index}`, value: index>9?`20${index}`:`200${index}` }})
+
 export const addressType = [
   {
     label: "Owned",
@@ -110,6 +113,7 @@ export const ToasterMessages = {
   PROFILE_UPDATE_SUCCESS: "Profile updated succesfully!",
   ORDER_REQUESTED_SUCCESS: "Order requested succesfully!",
   ORDER_COMPLETED_SUCCESS: "Order completed succesfully!",
+  LINK_COPIED_SUCCESS: "Link copied to clipboard succesfully!",
 };
 
 export const BuyingCreditPoints = [
