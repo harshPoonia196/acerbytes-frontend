@@ -42,7 +42,9 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                                 Appreciation till now
                             </Typography>
                         </Box>
-                        <Rating value={appTillNow} handleChange={(e)=>  handleChange(e, "valueForMoney", "appTillNow")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={appTillNow} onChange={(e)=> 
+                             handleChange(e, "valueForMoney", "appTillNow")                             
+                             } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
                         <Box>
@@ -53,7 +55,7 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                                 Expected further appreciation
                             </Typography>
                         </Box>
-                        <Rating value={expectedFurtherApp} handleChange={(e)=>  handleChange(e, "valueForMoney", "expectedFurtherApp")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={expectedFurtherApp} onChange={(e)=>  handleChange(e, "valueForMoney", "expectedFurtherApp")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
                         <Box>
@@ -64,7 +66,7 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                                 For end use
                             </Typography>
                         </Box>
-                        <Rating value={forEndUse} handleChange={(e)=>  handleChange(e, "valueForMoney", "forEndUse")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={forEndUse} onChange={(e)=>  handleChange(e, "valueForMoney", "forEndUse")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                 </Grid>
             </Card>
@@ -72,4 +74,4 @@ function InvestmentCard({ isEdit, form, handleChange }) {
     )
 }
 
-export default InvestmentCard
+export default React.memo(InvestmentCard)

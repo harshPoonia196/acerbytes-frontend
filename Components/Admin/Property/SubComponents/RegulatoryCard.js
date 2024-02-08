@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
-function RegulatoryCard({ isEdit, form, handleChange }) {
+function RegulatoryCard({ isEdit, form, handleChange, errors }) {
 
     const {
         reraApproved,
@@ -53,6 +53,7 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
                         ]}
+                        error={errors?.["regulatoryClearance.reraApproved"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "reraApproved")}
                     />
                     <NewInputFieldStructure
@@ -60,6 +61,7 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={reraNumber}
+                        error={errors?.["regulatoryClearance.reraNumber"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "reraNumber")}
                     />
                     <NewSelectTextFieldStructure
@@ -71,6 +73,7 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
                         ]}
+                        error={errors?.["regulatoryClearance.cc"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "cc")}
                     />
                     <NewSelectTextFieldStructure
@@ -82,6 +85,7 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
                         ]}
+                        error={errors?.["regulatoryClearance.oc"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "oc")}
                     />
                     <NewSelectTextFieldStructure
@@ -93,6 +97,7 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
                         ]}
+                        error={errors?.["regulatoryClearance.authorityRegistration"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "authorityRegistration")}
                     />
                     <NewSelectTextFieldStructure
@@ -104,6 +109,7 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
                         ]}
+                        error={errors?.["regulatoryClearance.governmentLoan"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "governmentLoan")}
                     />
                     <NewSelectTextFieldStructure
@@ -115,6 +121,7 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
                         ]}
+                        error={errors?.["regulatoryClearance.privateBankLoan"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "privateBankLoan")}
                     />
                     <NewSelectTextFieldStructure
@@ -126,6 +133,7 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
                         ]}
+                        error={errors?.["regulatoryClearance.fresh"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "fresh")}
                     />
                     <NewSelectTextFieldStructure
@@ -137,6 +145,7 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
                         ]}
+                        error={errors?.["regulatoryClearance.resale"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "resale")}
                     />
                 </Grid>
@@ -145,4 +154,4 @@ function RegulatoryCard({ isEdit, form, handleChange }) {
     )
 }
 
-export default RegulatoryCard
+export default React.memo(RegulatoryCard)

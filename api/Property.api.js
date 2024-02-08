@@ -1,5 +1,9 @@
+
 import axiosInstance from "./AxiosInstance";
 
+export const CreateProperty = (payload) => {
+  return axiosInstance.post(`/property/create`,payload);
+};
 
 export const getAllProperty = (queryParams) => {
   return axiosInstance.get(`property/getProperties` + (queryParams ? `?${queryParams}` : ''));
@@ -16,4 +20,10 @@ export const detailsProperty = (detailsPropertyId) =>{
   return axiosInstance.get(`property/getProperty/${detailsPropertyId}`)
 }
 
+export const activeAdGet = (activeAdGetById) =>{
+  return axiosInstance.get(`activeAd/${activeAdGetById}`)
+}
 
+export const activeadCreate = (data) => {
+  return axiosInstance.post(`/activead/create`, data);
+};
