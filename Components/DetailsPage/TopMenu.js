@@ -3,8 +3,8 @@ import { Tabs, Tab, Card, Box, Typography, tabsClasses } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function TopMenu({ value, handleChange, list }) {
-
+function TopMenu(props) {
+    const {value, handleChange, list, topMenu} = props
     const router = useRouter()
 
     return (
@@ -20,10 +20,12 @@ function TopMenu({ value, handleChange, list }) {
                         variant="h2"
                         sx={{ fontWeight: "700 !important" }}
                     >
-                        Prateek Canary
+                       {topMenu?.overview?.projectName}
                     </Typography>
                     <Typography variant="h5" sx={{ alignSelf: "center" }}>
-                        Under Construction &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183; Sector 43, Noida, UP
+                        {topMenu?.overview?.status} 
+                        {/* &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183;  */}
+                        {topMenu?.location?.sector}, {topMenu?.location?.city}, {topMenu?.location?.state}
                     </Typography>
                 </Box>
                 <Box>

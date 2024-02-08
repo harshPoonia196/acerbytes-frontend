@@ -113,6 +113,7 @@ export const ToasterMessages = {
   PROFILE_UPDATE_SUCCESS: "Profile updated succesfully!",
   ORDER_REQUESTED_SUCCESS: "Order requested succesfully!",
   ORDER_COMPLETED_SUCCESS: "Order completed succesfully!",
+  LINK_COPIED_SUCCESS: "Link copied to clipboard succesfully!",
 };
 
 export const BuyingCreditPoints = [

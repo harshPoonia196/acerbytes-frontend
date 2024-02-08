@@ -1,7 +1,7 @@
 import React from "react";
-import "./Spinner.css";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
+import { CircularProgress } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(0,0,0,0.5)",
   },
   spinner: {
-    height: "15vh",
-    width: "15vh",
+    height: "15vh !important",
+    width: "15vh !important",
   },
 }));
 
@@ -30,7 +30,7 @@ function PageLoader(props) {
     <>
       {isLoading ? (
         <div className={clsx(classes.container)}>
-          <div className={clsx(classes.spinner, "Loader")}>Loading...</div>
+          <CircularProgress className={clsx(classes.spinner)} />
         </div>
       ) : null}
     </>

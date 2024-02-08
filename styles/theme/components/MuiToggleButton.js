@@ -5,13 +5,13 @@ export default {
         root: {
             '&.Mui-selected': {
                 color: 'white',
-                fontWeight: 900,
+                fontWeight: 600,
                 backgroundColor: colors.BLACK
             },
             '&.Mui-selected:hover': {
-                color: colors.BLACK,
-                fontWeight: 900,
-                backgroundColor: 'gainsboro'
+                color: 'white',
+                fontWeight: 600,
+                backgroundColor: colors.BLACK
             }
         },
 
