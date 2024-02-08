@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
@@ -185,6 +186,18 @@ const PopupForLinks = ({ open, handleClose, router }) => (
 )
 
 export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
+    const [isSticky, setSticky] = useState(false);
+
+    const handleScroll = () => {
+        setSticky(window.scrollY > 0);
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     const router = useRouter()
 
@@ -217,13 +230,23 @@ export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
     ];
 
     return (
-        <Box sx={{ backgroundColor: "white", borderBottom: "1px solid whitesmoke" }}>
+        <Box sx={{
+            position: '-webkit-sticky',
+                position: 'sticky',
+            backgroundColor: "white",
+            borderBottom: "1px solid whitesmoke",
+            // position: 'sticky',
+            // top: 0,
+            // width: '100%',
+            // zIndex: 1000,
+        }}>
             <Container
                 maxWidth={maxWidthTill ? maxWidthTill : "lg"}
             >
                 <Stack spacing={2}>
                     <PopupForLinks router={router} open={openAdminLinkPopup} handleClose={handleCloseAdminLinkPopup} />
-                    <Breadcrumbs separator="›" aria-label="breadcrumb">
+                    <Breadcrumbs separator="›" aria-label="breadcrumb"
+>
                         {breadcrumbs}
                     </Breadcrumbs>
                 </Stack>

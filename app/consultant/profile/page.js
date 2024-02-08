@@ -38,6 +38,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
 import PageLoader from "Components/Loader/PageLoader";
+import MarketingCard from "Components/Admin/Property/SubComponents/MarketingCard";
 
 const tabHeight = 116;
 
@@ -701,6 +702,15 @@ function ConsultantProfile() {
                       handleChange(e, "budget", "maximumBudget", "value")
                     }
                   />
+                </Grid>
+              </Card>
+            </Grid>
+            <Grid item xs={12} id="budget">
+              <Card>
+               
+                <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
+                  
+                  <MarketingCard />
                 </Grid>
               </Card>
             </Grid>

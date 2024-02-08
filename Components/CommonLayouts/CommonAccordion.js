@@ -9,7 +9,7 @@ const CustomAccordion = styled((props) => (
 ))(({ theme }) => ({
     border: `1px solid whitesmoke`,
     '&:not(:last-child)': {
-        borderBottom: 0,
+        borderBottom: 0,    
     },
     '&::before': {
         display: 'none',

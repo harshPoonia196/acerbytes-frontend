@@ -29,7 +29,7 @@ function HistoryCard({ history }) {
 
     return (
         <CustomAccordion expanded={isExpanded} >
-            <CustomAccordionSummary handleIconClick={handleExpandedStateChange}>
+            <CustomAccordionSummary expanded={isExpanded}>
                 <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant='h5' sx={{ flex: 1 }}>

@@ -1,12 +1,12 @@
 "use client"
 
-import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem, Button } from '@mui/material'
+import { Card,Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem, Button } from '@mui/material'
 import React from 'react'
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from '@mui/utils';
 import { getComparator, stableSort } from "utills/CommonFunction";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
+import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
 const rows = [
     {
         name: 'Anand Gupta',
@@ -170,7 +170,12 @@ function CreditTable() {
     );
 
     return (
-        <TableContainer component={Paper}>
+        <>
+         <Card sx={{ mb: 2 }}>
+                    <CustomSearchInput />
+                </Card>
+                <TableContainer component={Paper}>
+            
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <EnhancedTableHead
                     order={order}
@@ -192,6 +197,8 @@ function CreditTable() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </TableContainer>
+        </>
+        
     )
 }
 
