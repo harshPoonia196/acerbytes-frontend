@@ -210,7 +210,7 @@ function ManageConsultantTable({ search }) {
                   phone: broker?.phone?.number,
                   RERANumber: broker?.serviceDetails?.reraNumber,
                   NoOfActiveLinks: "2",
-                  CreditAmount: "5000",
+                  CreditAmount: broker?.brokerBalance?.balance || 0,
                   status: "Active",
                   action: "Add Credit",
                 };
