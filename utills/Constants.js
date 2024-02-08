@@ -133,6 +133,9 @@ const reactQueryKey = {
   broker: {
     profile: (uniqueKey) => "broker-profile-" + uniqueKey,
   },
+  user: {
+    myConsultant: "my-consultant"
+  }
 };
 
 export {
