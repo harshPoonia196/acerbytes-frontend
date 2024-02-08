@@ -31,3 +31,8 @@ export const activeadCreate = (data) => {
 export const favPropertyCreate = (data) => {
   return axiosInstance.post(`/favProperty/create`, data);
 };
+
+
+export const getAllfavouriteProperty= (queryParams) => {
+  return axiosInstance.get(`/favProperty/getAll` + (queryParams ? `?${queryParams}` : ''));
+};

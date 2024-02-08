@@ -10,13 +10,16 @@ import {
   Chip,
   Divider,
 } from "@mui/material";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
+import { format } from 'date-fns';
 
 function PropertyCard(props) {
-  const { propertyDetails, isShortListPageCard } = props
+  const { propertyDetails, isShortListPageCard, createdDate } = props
   const router = useRouter();
+
+  const formattedCreatedAt = createdDate && format(new Date(createdDate), 'dd-MM-yyyy \'at\' HH:mm aaa')
 
   return (
     <Card>
@@ -143,8 +146,9 @@ function PropertyCard(props) {
       {isShortListPageCard && (
         <CardActions sx={{ textAlign: "end" }}>
           <Chip
-            icon={<ThumbUpOffAltIcon fontSize='small' />}
-            label="Liked on 23-09-2023 at 09:30 AM"
+            icon={<ThumbUpIcon style={{ color: '#276ef1', mr: 1 }} />}
+            // label="Liked on 23-09-2023 at 09:30 AM"
+            label={`Liked on ${formattedCreatedAt}`}
             onClick={() => { }}
             size="small"
             sx={{ fontSize: '0.75rem' }}
