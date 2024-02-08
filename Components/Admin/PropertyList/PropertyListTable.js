@@ -100,6 +100,9 @@ function EnhancedTableHead(props) {
 
 function RowStructure({ row, router, handleDelete }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const handleEdit=(id)=>{
+    router.push(`/admin/add-property?id=${id}`) 
+  }
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const open = Boolean(anchorEl);
 
@@ -121,7 +124,7 @@ function RowStructure({ row, router, handleDelete }) {
     <TableCell>{row.sector}</TableCell>
     <TableCell sx={{ py: 0 }}>
       <IconButton sx={{ fontSize: "1rem !important" }}>
-        <EditIcon fontSize='1rem' />
+        <EditIcon fontSize='1rem'  onClick={() => handleEdit(row.id)} />
       </IconButton>
     </TableCell>
     <TableCell sx={{ py: 0 }}>

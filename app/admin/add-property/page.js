@@ -10,6 +10,7 @@ import React from "react";
 import { useState } from "react";
 import NavTab from "Components/Admin/Property/NavTab";
 import throttle from "lodash/throttle";
+import { useSearchParams } from 'next/navigation'
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from 'Components/Admin/Property/SubComponents/LocationCard';
 import ProjectCard from 'Components/Admin/Property/SubComponents/ProjectCard';
@@ -25,6 +26,7 @@ import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
+import { detailsProperty } from "api/Property.api";
 import { listOfTabsInAddProperty } from "utills/Constants";
 
 const tabHeight = 116;
@@ -64,9 +66,9 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 function AddProperty() {
-
+    const router = useSearchParams()
     const [activeState, setActiveState] = React.useState(null);
-
+    const detailsPropertyId = router.get('id')
     let itemsServer = listOfTabsInAddProperty.map((tab) => {
         const hash = tab.value;
         return {
@@ -139,12 +141,23 @@ function AddProperty() {
                 });
         }
     };
-
+let getProp = async()=>{
+    try {
+        let res = await detailsProperty(detailsPropertyId);
+        if (res.status === 200) {
+          setForm({...res.data?.data})
+        }
+      } catch (error) {
+        console.log('see',error)
+      }
+}
     React.useEffect(
-        () => () => {
+        () => {
+getProp()
+          return () => {
             clearTimeout(unsetClickedRef.current);
-        },
-        []
+        }
+        },[]
     );
 
     const classes = useStyles();
@@ -411,11 +424,11 @@ function AddProperty() {
             <Container>
                 <div className="container">
                     <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-                        <ProjectCard form={form} handleChange={handleChange} isEdit={isEdit} />
+                        {/* <ProjectCard form={form} handleChange={handleChange} isEdit={isEdit} /> */}
                         <RegulatoryCard form={form} handleChange={handleChange} isEdit={isEdit} />
                         <LandscapeCard form={form} handleChange={handleChange} isEdit={isEdit} />
                         <FloorPlanCard form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <FacilitiesCard form={form} isEdit={isEdit} />
+                        {/* <FacilitiesCard form={form} isEdit={isEdit} /> */}
                         <LocationCard form={form} handleChange={handleChange} isEdit={isEdit} />
                         {/* <ResalePriceCard isEdit={isEdit} />
                         <BuilderPriceCard isEdit={isEdit} /> */}
