@@ -14,9 +14,10 @@ const NewMultiSelectAutoCompleteInputStructure = ({
   sx,
   variant,
   isEdit,
+  error
 }) => (
   <>
-    <Grid item xs={6}>
+    <Grid item xs={12} sm={6}>
       <Box>
         <Typography
           variant="subtitle2"
@@ -46,7 +47,7 @@ const NewMultiSelectAutoCompleteInputStructure = ({
           ))
         }
         renderInput={(params) => (
-          <TextField {...params} size="small" fullWidth />
+          <TextField {...params} size="small" fullWidth error={error} />
         )}
       />
     </Grid>
