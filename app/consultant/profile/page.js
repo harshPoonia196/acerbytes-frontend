@@ -17,6 +17,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import CallIcon from "@mui/icons-material/Call";
 import SaveIcon from "@mui/icons-material/Save";
+import Avatar from "@mui/material/Avatar";
+import AttachFileIcon from '@mui/icons-material/AttachFile'
 import PropertyTable from "Components/ProfilePage/PropertyTable";
 import React, { useCallback, useEffect, useRef } from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
@@ -38,8 +40,8 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
 import PageLoader from "Components/Loader/PageLoader";
-import MarketingCard from "Components/Admin/Property/SubComponents/MarketingCard";
-
+import { ProfilePic } from "Components/CommonLayouts/profilepic";
+import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
@@ -77,6 +79,41 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 function ConsultantProfile() {
+
+  const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false)
+  const [image, setImage] = useState('')
+  const [cropData, setCropData] = useState('')
+  const [cropper, setCropper] = useState(false)
+  const [enableCropper, setEnableCropper] = useState(false)
+
+  const handleOpenUploadPopup = () => {
+      setIsUploadPopupOpen(true)
+  }
+
+  const handleCloseUploadPopup = () => {
+      setIsUploadPopupOpen(false)
+  }
+
+  const handleImageSelect = (e) => {
+    e.preventDefault()
+    let files
+    if (e.dataTransfer) {
+        files = e.dataTransfer.files
+    } else if (e.target) {
+        files = e.target.files
+    }
+    const reader = new FileReader()
+    reader.onload = () => {
+        setImage(reader.result)
+    }
+    reader.readAsDataURL(files[0])
+    handleOpenUploadPopup()
+  }
+  
+  const handleImageRemove = () => {
+    setImage('')
+    handleCloseUploadPopup()
+  }
   const router = useRouter();
 
   const { openSnackbar } = useSnackbar();
@@ -369,9 +406,9 @@ function ConsultantProfile() {
             {/* <Grid item xs={12} sx={{ textAlign: 'end' }}>
             <Button variant='contained'>Save</Button>
           </Grid> */}
-            <Grid item xs={12} id="userDetails">
+            {/* <Grid item xs={12} id="userDetails">
               <Card sx={{ p: 2 }}>
-                <Box sx={{ display: "flex" }}>
+                 <Box sx={{ display: "flex" }}>
                   {brokerProfileInfo?.name ? (
                     <Box sx={{ flex: 1 }}>
                       <Typography variant="h6" sx={{ fontWeight: 900 }}>
@@ -402,9 +439,54 @@ function ConsultantProfile() {
                       </a>
                     </Box>
                   ) : null}
-                </Box>
+                </Box> 
+               
               </Card>
-            </Grid>
+            </Grid> */}
+            <Grid item xs={12} id="userDetails">
+  <Card sx={{ p: 2 }}>
+    {/* ... (other content) ... */}
+    <UploadMarketingImage open={isUploadPopupOpen} image={image} setImage={setImage} onClose={handleCloseUploadPopup} changeImage={handleImageSelect} removeImage={handleImageRemove} />
+
+    {/* Avatar and file input */}
+    <label htmlFor="avatar-input" style={{ cursor: 'pointer' }}>
+      <ProfilePic style={{ minWidth: '3rem', maxWidth: '3rem', height: '3rem' }}>
+        <Avatar
+          sx={{
+            width: '3rem',
+            position: 'static',
+            height: '3rem',
+            cursor: 'pointer', 
+          }}
+          className="profilepic__image"
+          onClick={(e) => {
+            // Trigger the file input click when Avatar is clicked
+            document.getElementById('avatar-input').click();
+          }}
+        >
+          {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+        </Avatar>
+        <div className="profilepic__content">
+          <EditIcon fontSize="small" />
+          <p className="profilepic__text">Edit</p>
+        </div>
+      </ProfilePic>
+    </label>
+
+   
+    <input
+      id="avatar-input"
+      type="file"
+      onChange={handleImageSelect}
+      accept="image/x-png,image/gif,image/jpeg"
+      hidden
+    />
+
+  
+
+    
+  </Card>
+</Grid>
             <Grid item xs={12}>
               <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -704,15 +786,7 @@ function ConsultantProfile() {
                 </Grid>
               </Card>
             </Grid>
-            <Grid item xs={12} id="budget">
-              <Card>
-               
-                <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                  
-                  <MarketingCard />
-                </Grid>
-              </Card>
-            </Grid>
+           
             <Grid item xs={12} id="setting">
               <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>

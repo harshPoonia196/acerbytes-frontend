@@ -230,16 +230,16 @@ export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
     ];
 
     return (
-        <Box sx={{
-            position: '-webkit-sticky',
-                position: 'sticky',
-            backgroundColor: "white",
-            borderBottom: "1px solid whitesmoke",
-            // position: 'sticky',
-            // top: 0,
-            // width: '100%',
-            // zIndex: 1000,
-        }}>
+        
+            <Box
+        sx={{
+          zIndex: 100,
+          background: "white",
+          position: "sticky",
+          top: { xs: 48, sm: 64 },
+        }}
+      >
+        <Box>
             <Container
                 maxWidth={maxWidthTill ? maxWidthTill : "lg"}
             >
@@ -252,5 +252,8 @@ export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
                 </Stack>
             </Container>
         </Box>
+      </Box>
+       
+        
     );
 }
