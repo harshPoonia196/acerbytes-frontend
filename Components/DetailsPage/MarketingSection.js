@@ -71,10 +71,11 @@ function MarketingSection(props) {
                 <Card sx={{ position: 'absolute', top: 24, left: 24, opacity: 0.85, display: 'flex', maxWidth: 'calc(100% - 48px)' }}>
                     <Box ref={myDivRef} sx={{ p: 2, textAlign: 'center' }}>
                         <Typography variant="h2">
-                            Prateek Canary
+                            {`${alloverviewData?.builder} ${alloverviewData?.projectName}`}
+                            
                         </Typography>
                         <Typography variant='h4' sx={{ mb: 2 }}>
-                            Noida expressway
+                        {`${AllLocationData?.city}, ${AllLocationData?.state}`}
                         </Typography>
                         <Typography variant='h1'>77<Typography variant='h6' component='span'> / 100</Typography></Typography>
                         <Typography variant='h4' sx={{ mb: 2 }}>

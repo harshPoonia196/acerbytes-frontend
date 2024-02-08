@@ -136,6 +136,9 @@ const reactQueryKey = {
   admin: {
     brokerList: "admin-broker-list",
   },
+  user: {
+    myConsultant: "my-consultant"
+  }
 };
 
 export {
