@@ -25,3 +25,7 @@ export const getBrokersList = (limit, page, search) => {
   }
   return axiosInstance.get(`/admin/brokerList?${query}`);
 };
+
+export const getCreditPointStatusList = () => {
+  return axiosInstance.get(`/admin/creditPointStatus`);
+};
