@@ -19,6 +19,14 @@ function PropertyCard(props) {
   const { propertyDetails, isShortListPageCard, createdDate } = props
   const router = useRouter();
 
+  const processLayoutType = (layoutType) => {
+    if (layoutType.length > 0 && typeof layoutType[0] === 'object') {
+      return layoutType.map(type => type.value).join(", ");
+    } else {
+      return layoutType.join(", ");
+    }
+  };
+
   const formattedCreatedAt = createdDate && format(new Date(createdDate), 'dd-MM-yyyy \'at\' HH:mm aaa')
 
   return (
@@ -26,7 +34,7 @@ function PropertyCard(props) {
       <CardActionArea sx={{ p: 2 }}>
         <Grid container spacing={2} columns={16}>
           <Grid item xs={13.5} sm={8} md={4}>
-            <Box sx={{ display: 'flex' }} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
+            <Box sx={{ display: 'flex' }} onClick={() => router.push(`/details/${propertyDetails?._id}`)}>
               <CardMedia
                 component="img"
                 alt="green iguana"
@@ -84,7 +92,7 @@ function PropertyCard(props) {
             md={2.5}
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
-            <Typography variant="caption">{propertyDetails?.unitsPlan?.map(item => `${item.areaValue} ${item.areaUnit}` ).join(", ")}</Typography>
+            <Typography variant="caption">{propertyDetails?.unitsPlan?.length && propertyDetails?.unitsPlan?.map(item => `${item.areaValue} ${item.areaUnit}`).join(", ")}</Typography>
             {/* <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography> */}
           </Grid>
           <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
@@ -92,8 +100,12 @@ function PropertyCard(props) {
             <Typography variant="subtitle2">{propertyDetails?.layout?.area}</Typography>
           </Grid>
           <Grid item xs={8} sm={4} md={2} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
-            <Typography variant="caption">{propertyDetails?.layout?.layoutType.join(", ")}</Typography>
-            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.map(item => item.propertyLayout).join(", ")}</Typography>
+            <Typography variant="caption">
+              {processLayoutType(propertyDetails?.layout?.layoutType)}
+            </Typography>
+            {/* <Typography variant="caption">{propertyDetails?.layout?.layoutType.join(", ")} */}
+            {/* </Typography> */}
+            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.length && propertyDetails?.unitsPlan?.map(item => item.propertyLayout).join(", ")}</Typography>
           </Grid>
           <Grid
             item

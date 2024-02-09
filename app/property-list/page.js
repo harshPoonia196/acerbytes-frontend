@@ -244,9 +244,9 @@ function PropertyList() {
             </Grid>
             <Grid item xs={36}>
               <Grid container spacing={0.25}>
-                {property.map((propertyDetails) => (
+                {property?.map((propertyDetails) => (
                   <Grid item xs={12}>
-                    <PropertyCard createdDate={propertyDetails.created_at} isShortListPageCard={propertyDetails.isFav} propertyDetails={propertyDetails} />
+                    <PropertyCard createdDate={propertyDetails?.created_at} isShortListPageCard={propertyDetails?.isFav} propertyDetails={propertyDetails} />
                   </Grid>
                 ))}
               </Grid>

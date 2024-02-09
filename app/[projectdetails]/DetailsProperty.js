@@ -470,7 +470,7 @@ const PropertyDetails = ({ params }) => {
               </Box>
             </Card>
 
-            <Box
+            {/* <Box
               sx={{
                 position: "fixed",
                 right: 16,
@@ -499,7 +499,7 @@ const PropertyDetails = ({ params }) => {
                 <AssignmentIcon sx={{ mr: 1 }} />
                 Enquire
               </Fab>
-            </Box>
+            </Box> */}
           </Container>
         </Box>
       </>}

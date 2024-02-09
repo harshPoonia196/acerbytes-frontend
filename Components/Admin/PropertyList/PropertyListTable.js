@@ -1,5 +1,5 @@
-import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem, CircularProgress, Stack } from '@mui/material'
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import Paper from "@mui/material/Paper";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -110,52 +110,55 @@ function RowStructure({ row, router, handleDelete }) {
     setAnchorEl(null);
   };
 
-  return <TableRow
-    key={row.name}
-    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-  >
-    <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.builder}</TableCell>
-    <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.project}</TableCell>
-    <TableCell>{row.city}</TableCell>
-    <TableCell>{row.area}</TableCell>
-    <TableCell>{row.sector}</TableCell>
-    <TableCell sx={{ py: 0 }}>
-      <IconButton sx={{ fontSize: "1rem !important" }}>
-        <EditIcon fontSize='1rem' />
-      </IconButton>
-    </TableCell>
-    <TableCell sx={{ py: 0 }}>
-      <IconButton sx={{ fontSize: "1rem !important" }}>
-        <DeleteIcon fontSize='1rem' onClick={() => handleDelete(row.id)} />
-      </IconButton>
-    </TableCell>
-    <TableCell>
-      <Chip label={row.lastModified} size="small" />
-    </TableCell>
-    <TableCell>
-      <Chip label={row.status} size='small' onClick={() => { }} color={row.status === 'Active' ? 'success' : row.status === 'Expired' ? 'error' : 'warning'} />
-    </TableCell>
-    <TableCell sx={{ py: 0 }}>
-      <IconButton sx={{ fontSize: "1rem !important" }}>
-        <MoreVertIcon onClick={handleClick} fontSize='1rem' />
-      </IconButton>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-        <MenuItem onClick={handleClose}>Publish</MenuItem>
-      </Menu>
-    </TableCell>
-  </TableRow>
+  return (
+    <TableRow
+      key={row.name}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.builder}</TableCell>
+      <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.project}</TableCell>
+      <TableCell>{row.city}</TableCell>
+      <TableCell>{row.area}</TableCell>
+      <TableCell>{row.sector}</TableCell>
+      <TableCell sx={{ py: 0 }}>
+        <IconButton sx={{ fontSize: "1rem !important" }}>
+          <EditIcon fontSize='1rem' />
+        </IconButton>
+      </TableCell>
+      <TableCell sx={{ py: 0 }}>
+        <IconButton sx={{ fontSize: "1rem !important" }}>
+          <DeleteIcon fontSize='1rem' onClick={() => handleDelete(row.id)} />
+        </IconButton>
+      </TableCell>
+      <TableCell>
+        <Chip label={row.lastModified} size="small" />
+      </TableCell>
+      <TableCell>
+        <Chip label={row.status} size='small' onClick={() => { }} color={row.status === 'Active' ? 'success' : row.status === 'Expired' ? 'error' : 'warning'} />
+      </TableCell>
+      <TableCell sx={{ py: 0 }}>
+        <IconButton sx={{ fontSize: "1rem !important" }}>
+          <MoreVertIcon onClick={handleClick} fontSize='1rem' />
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <MenuItem onClick={handleClose}>Deactivate</MenuItem>
+          <MenuItem onClick={handleClose}>Publish</MenuItem>
+        </Menu>
+      </TableCell>
+    </TableRow>
+
+  )
 }
 
-function PropertyListTable({ searchText }) {
+const PropertyListTable = ({ searchText, setCount }) => {
   const router = useRouter()
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(null);
@@ -163,7 +166,7 @@ function PropertyListTable({ searchText }) {
   const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
 
   const [propertyList, setPropertyList] = useState([])
-  const [property, setProperty] = useState([])
+  const [property, setProperty] = useState({})
   const [isLoading, setLoading] = useState(false);
 
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -203,6 +206,7 @@ function PropertyListTable({ searchText }) {
       if (res.status === 200) {
         let transformedData = transformData(res.data?.data || []);
         setPropertyList(transformedData);
+        setCount(res?.data.totalCount)
         setProperty(res?.data);
       }
     } catch (error) {
@@ -228,7 +232,13 @@ function PropertyListTable({ searchText }) {
         setLoading(true);
         let response = await deleteProperty(deletingPropertyId);
         if (response.status === 200) {
-          getAllPropertyList();
+          const newTotal = property.totalCount - 1;
+          const newTotalPages = Math.ceil(newTotal / pageLimit);
+          if (currentPage > newTotalPages) {
+            setCurrentPage(currentPage - 1 || 1);
+          } else {
+            getAllPropertyList({ pageLimit, page: currentPage }, searchText);
+          }
           setDeletingPropertyId(null);
         }
       } catch (error) {
@@ -302,26 +312,31 @@ function PropertyListTable({ searchText }) {
     [order, orderBy, currentPage, pageLimit],
   );
 
+  // useImperativeHandle(_ref, () =>  property?.totalCount, [property?.totalCount]);
+
   return (
     <>
 
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort} />
-          <TableBody>
-            {isLoading ? (
-              <Loading />
-            ) : (
-              propertyList.map((row) => (
-                <RowStructure row={row} router={router} handleDelete={handleDelete} />
-              ))
-            )}
-
-          </TableBody>
-        </Table>
+        {isLoading ? (
+          <Stack sx={{ my: '1.5rem', alignItems: "center" }}>
+            <CircularProgress color="inherit" />
+          </Stack>
+        ) : (
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort} />
+            <TableBody>
+              {
+                propertyList?.map((row) => (
+                  <RowStructure row={row} router={router} handleDelete={handleDelete} />
+                ))
+              }
+            </TableBody>
+          </Table>
+        )}
         <TablePagination
           rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
           component="div"
