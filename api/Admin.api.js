@@ -12,3 +12,7 @@ export const completeOrderRequest = (payload) => {
 export const getSalesPersons = () => {
   return axiosInstance.get(`/higheruser/salesPersons`);
 };
+
+export const getConsultantsPersons = () => {
+  return axiosInstance.get(`/higheruser/consultantsList`);
+};

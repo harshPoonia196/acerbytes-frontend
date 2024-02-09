@@ -26,7 +26,7 @@ const NewAutoCompleteInputStructure = ({
         disablePortal
         id="combo-box-demo"
         getOptionLabel={(option) => option.label || ""}
-        value={value || null}
+        // value={value || null}
         options={list}
         fullWidth
         onChange={handleChange}
