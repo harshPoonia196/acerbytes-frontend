@@ -4,8 +4,11 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function AmenitiesSection({ refCallback }) {
-
+function AmenitiesSection(props) {
+    const { refCallback, amenitiesData } = props
+    if (!amenitiesData) {
+        return <div></div>;
+    }
     const router = useRouter()
 
     return (
@@ -44,25 +47,27 @@ function AmenitiesSection({ refCallback }) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <Grid item xs={12}>
-                        <Typography variant="h6">Basic</Typography>
-                    </Grid>
-                    <NewKeyValuePairStructure label="Gym"
-                        value={2.5} middleValue={'Basic'} isRating />
-                    <NewKeyValuePairStructure label="Pool"
-                        value={2.5} middleValue={'Basic'} isRating />
-                    <Grid item xs={12}>
-                        <Typography variant="h6">Expected</Typography>
-                    </Grid>
-                    <NewKeyValuePairStructure label="Yoga"
-                        value={2.5} middleValue={'Expected'} isRating />
-                    <Grid item xs={12}>
-                        <Typography variant="h6">Unique</Typography>
-                    </Grid>
-                    <NewKeyValuePairStructure label="Party hall"
-                        value={2.5} middleValue={'Unique'} isRating />
-                    <NewKeyValuePairStructure label="Theatre"
-                        value={2.5} middleValue={'Unique'} isRating />
+                    {Object.entries(amenitiesData).map(([category, amenities]) => {
+                        return (
+                            <React.Fragment key={category}>
+                                <Grid item xs={12}>
+                                    <Typography variant="h6">{category}</Typography>
+                                </Grid>
+
+                                {Object.entries(amenities).map(([amenityName, amenityDetails]) => {
+                                    return (
+                                        <NewKeyValuePairStructure
+                                            key={amenityName}
+                                            label={amenityName}
+                                            value={amenityDetails?.rating}
+                                            middleValue={category}
+                                            isRating={amenityDetails?.isApplicable}
+                                        />
+                                    );
+                                })}
+                            </React.Fragment>
+                        );
+                    })}
                 </Grid>
             </Card>
         </Grid>

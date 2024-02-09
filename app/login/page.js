@@ -173,7 +173,7 @@ function Login() {
         otp: otpInput,
       };
       const res = await verifyOtpAPI(payload);
-      if (res.status === 200 && !form.role==='superAdmin') {
+      if (res.status === 200 && !(form.role==='superAdmin')) {
         nextStep();
       }
       if(form.role==="superAdmin"){

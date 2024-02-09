@@ -16,7 +16,7 @@ import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextF
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
 import colors from 'styles/theme/colors';
 
-function FacilitiesCard({ isEdit, form }) {
+function FacilitiesCard({ isEdit, form,handleChange }) {
 
     const { amenitiesData } = form
     return (
@@ -48,18 +48,14 @@ function FacilitiesCard({ isEdit, form }) {
                                     Object.keys(amenitiesData?.[key])?.map(insideKey => {
                                         return <>
                                             <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                                                <Switch checked={amenitiesData?.[key]?.[insideKey]?.isApplicable} />
+                                                <Switch onChange={(e)=>{handleChange(e,"amenitiesData",key,"checked",undefined,insideKey)}} checked={amenitiesData?.[key]?.[insideKey]?.isApplicable} />
                                                 <Typography
                                                     variant="subtitle2"
                                                     sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                                                 >
                                                     {insideKey}
                                                 </Typography>
-                                                <Rating name="half-rating" defaultValue={0}
-                                                    //precision should be any number between 0 to 1 e.g=> 0.1, 0.5
-                                                    precision={amenitiesData?.[key]?.[insideKey]?.isApplicable}
-                                                    size='small' sx={{ alignSelf: 'center' }}
-                                                />
+                                                <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e)=>handleChange(e,"amenitiesData",key,"checked",undefined,insideKey,undefined,true)} />
                                             </Grid>
                                         </>
                                     })
@@ -73,4 +69,4 @@ function FacilitiesCard({ isEdit, form }) {
     )
 }
 
-export default FacilitiesCard
+export default React.memo(FacilitiesCard)

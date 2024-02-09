@@ -73,7 +73,7 @@ export default function ClippedDrawer({ children }) {
 
   React.useEffect(() => {
     if (userDetails && Object.keys(userDetails).length && userDetails?.role == ROLE_CONSTANTS.broker) {
-        getBrokerpointBalance();
+      getBrokerpointBalance();
     }
   }, [userDetails && Object.keys(userDetails).length]);
 
@@ -92,8 +92,8 @@ export default function ClippedDrawer({ children }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error getbroker balance request",
+        error?.message ||
+        "Error getbroker balance request",
         "error"
       );
     }
@@ -208,7 +208,8 @@ export default function ClippedDrawer({ children }) {
             ))}
           </List>
           <Divider />
-          {matchUserRole(userDetails?.role, "user") && (
+          {
+            // matchUserRole(userDetails?.role, "user") && (
             <>
               <List
                 subheader={
@@ -223,9 +224,11 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-          )}
+            // )
+          }
 
-          {matchUserRole(userDetails?.role, "broker") && (
+          {
+            // matchUserRole(userDetails?.role, "broker") && (
             <>
               <List
                 subheader={
@@ -253,9 +256,11 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-          )}
+            // )
+          }
 
-          {matchUserRole(userDetails?.role, "admin") && (
+          {
+            // matchUserRole(userDetails?.role, "admin") && (
             <>
               <List
                 subheader={
@@ -269,7 +274,8 @@ export default function ClippedDrawer({ children }) {
                 ))}
               </List>
             </>
-          )}
+            // )
+          }
         </Box>
       </>
     );
@@ -421,7 +427,7 @@ export default function ClippedDrawer({ children }) {
               )}
             </Box>
             <Box sx={{ alignSelf: "center" }}>
-              {userDetails ? (
+              {userDetails && Object.keys(userDetails).length ? (
                 <Typography>
                   Hi,{" "}
                   <span style={{ color: colors.BLUE }}>

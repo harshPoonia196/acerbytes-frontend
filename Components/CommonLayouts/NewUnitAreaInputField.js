@@ -33,6 +33,7 @@ const NewUnitAreaInputField = ({
   isEdit,
   halfSm,
   isPrice,
+  unitValue,
   units,
   ...props
 }) => {
@@ -53,7 +54,7 @@ const NewUnitAreaInputField = ({
         isEdit ?
           <TextField
             name={name}
-            onChange={handleChange}
+            onChange={(e)=>handleChange(e,"textField")}
             variant={variant ? variant : "standard"}
             fullWidth
             value={value}
@@ -63,7 +64,9 @@ const NewUnitAreaInputField = ({
                 <InputAdornment position="start">
                   <TextField
                     select
+                    onChange={(e)=>handleChange(e,"unit")}
                     defaultValue=""
+                    value={unitValue||''}
                     variant="standard"
                     InputProps={{
                       disableUnderline: true,

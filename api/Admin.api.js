@@ -1,6 +1,5 @@
 import axiosInstance from "./AxiosInstance";
 
-
 export const getOrderRequests = (queryParams) => {
   return axiosInstance.get(`/admin/orderRequests?${queryParams}`);
 };
@@ -15,4 +14,18 @@ export const getSalesPersons = () => {
 
 export const getConsultantsPersons = () => {
   return axiosInstance.get(`/higheruser/consultantsList`);
+};
+
+export const getBrokersList = (limit, page, search) => {
+  let query = "";
+  if (limit) {
+    query += `limit=${limit || 0}&&`;
+  }
+  if (page) {
+    query += `page=${page || 0}&&`;
+  }
+  if (search) {
+    query += `search=${search || ""}&&`;
+  }
+  return axiosInstance.get(`/admin/brokerList?${query}`);
 };

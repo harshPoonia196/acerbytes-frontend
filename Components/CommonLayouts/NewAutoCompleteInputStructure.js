@@ -8,7 +8,11 @@ const NewAutoCompleteInputStructure = ({
   handleChange,
   label,
   value,
+  sx,
+  variant,
+  isEdit,
   options,
+  error,
   list
 }) => (
   <>
@@ -24,15 +28,17 @@ const NewAutoCompleteInputStructure = ({
 
       <Autocomplete
         disablePortal
+        error={error}
         id="combo-box-demo"
-        getOptionLabel={(option) => option.label || ""}
-        // value={value || null}
-        options={list}
+        // Adding the below option creates issue in property form
+        // getOptionLabel={(option) => option.label || ""}
+        value={value || null}
+        options={options}
         fullWidth
         onChange={handleChange}
-        renderInput={(params, index) => (
-          <TextField key={index} {...params} value={params.value} size="small" fullWidth />
-        )}
+        renderInput={(params, index) => {
+         return <TextField key={index}  error={error} value={params.value} {...params} size="small" fullWidth />
+        }}
       />
     </Grid>
   </>

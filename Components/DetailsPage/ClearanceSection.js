@@ -4,7 +4,8 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
-function ClearanceSection({ refCallback }) {
+function ClearanceSection(props) {
+    const { refCallback, regulatoryClearanceData } = props;
 
     const router = useRouter()
 
@@ -44,14 +45,14 @@ function ClearanceSection({ refCallback }) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <NewKeyValuePairStructure label="RERA approved" value={'Yes'} />
-                    <NewKeyValuePairStructure label="RERA" value={'fdfhdfhdhjhj'} />
-                    <NewKeyValuePairStructure label="CC" value={'Yes'} />
-                    <NewKeyValuePairStructure label="OC" value={'Yes'} />
-                    <NewKeyValuePairStructure label="Authority registration" value={'Yes'} />
-                    <NewKeyValuePairStructure label="Government bank loan" value={'Yes'} />
-                    <NewKeyValuePairStructure label="Private bank loan" value={'Yes'} />
-                    <NewKeyValuePairStructure label="Resale" value={'Yes'} />
+                    <NewKeyValuePairStructure label="RERA approved" value={regulatoryClearanceData?.reraApproved} />
+                    <NewKeyValuePairStructure label="RERA" value={regulatoryClearanceData?.reraNumber} />
+                    <NewKeyValuePairStructure label="CC" value={regulatoryClearanceData?.cc} />
+                    <NewKeyValuePairStructure label="OC" value={regulatoryClearanceData?.oc} />
+                    <NewKeyValuePairStructure label="Authority registration" value={regulatoryClearanceData?.authorityRegistration} />
+                    <NewKeyValuePairStructure label="Government bank loan" value={regulatoryClearanceData?.governmentLoan} />
+                    <NewKeyValuePairStructure label="Private bank loan" value={regulatoryClearanceData?.privateBankLoan} />
+                    <NewKeyValuePairStructure label="Resale" value={regulatoryClearanceData?.resale} />
                 </Grid>
             </Card>
         </Grid>
