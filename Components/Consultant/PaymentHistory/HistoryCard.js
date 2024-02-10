@@ -29,12 +29,12 @@ function HistoryCard({ history }) {
 
     return (
         <CustomAccordion expanded={isExpanded} >
-            <CustomAccordionSummary expanded={isExpanded}>
+            <CustomAccordionSummary handleIconClick={handleExpandedStateChange}>
                 <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant='h5' sx={{ flex: 1 }}>
-                           {formatDate(history?.createdAt)} &#183; Paid <PriceFormatter amount={history?.paymentPaid} display='text' currency='inr' /> 
-                           {/* + 18% tax */}
+                            {formatDate(history?.createdAt)} &#183; Paid <PriceFormatter amount={history?.paymentPaid} display='text' currency='inr' />
+                            {/* + 18% tax */}
                         </Typography>
                         {/* <Typography variant='h6' sx={{ color: colors.BLUE }}>Balance: 32,000</Typography> */}
                     </Box>
