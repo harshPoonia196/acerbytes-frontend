@@ -186,18 +186,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
 )
 
 export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
-    const [isSticky, setSticky] = useState(false);
 
-    const handleScroll = () => {
-        setSticky(window.scrollY > 0);
-    };
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
 
     const router = useRouter()
 

@@ -1,5 +1,5 @@
 
-// @use-client
+
 import { Box, IconButton, InputBase } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search'

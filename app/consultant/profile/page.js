@@ -18,7 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CallIcon from "@mui/icons-material/Call";
 import SaveIcon from "@mui/icons-material/Save";
 import Avatar from "@mui/material/Avatar";
-import AttachFileIcon from '@mui/icons-material/AttachFile'
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import PropertyTable from "Components/ProfilePage/PropertyTable";
 import React, { useCallback, useEffect, useRef } from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
@@ -83,41 +83,40 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 function ConsultantProfile() {
-
-  const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false)
-  const [image, setImage] = useState('')
-  const [cropData, setCropData] = useState('')
-  const [cropper, setCropper] = useState(false)
-  const [enableCropper, setEnableCropper] = useState(false)
+  const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
+  const [image, setImage] = useState("");
+  const [cropData, setCropData] = useState("");
+  const [cropper, setCropper] = useState(false);
+  const [enableCropper, setEnableCropper] = useState(false);
 
   const handleOpenUploadPopup = () => {
-      setIsUploadPopupOpen(true)
-  }
+    setIsUploadPopupOpen(true);
+  };
 
   const handleCloseUploadPopup = () => {
-      setIsUploadPopupOpen(false)
-  }
+    setIsUploadPopupOpen(false);
+  };
 
   const handleImageSelect = (e) => {
-    e.preventDefault()
-    let files
+    e.preventDefault();
+    let files;
     if (e.dataTransfer) {
-        files = e.dataTransfer.files
+      files = e.dataTransfer.files;
     } else if (e.target) {
-        files = e.target.files
+      files = e.target.files;
     }
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onload = () => {
-        setImage(reader.result)
-    }
-    reader.readAsDataURL(files[0])
-    handleOpenUploadPopup()
-  }
-  
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+    handleOpenUploadPopup();
+  };
+
   const handleImageRemove = () => {
-    setImage('')
-    handleCloseUploadPopup()
-  }
+    setImage("");
+    handleCloseUploadPopup();
+  };
   const router = useRouter();
 
   const { openSnackbar } = useSnackbar();
@@ -512,49 +511,57 @@ function ConsultantProfile() {
               </Card>
             </Grid> */}
             <Grid item xs={12} id="userDetails">
-  <Card sx={{ p: 2 }}>
-    {/* ... (other content) ... */}
-    <UploadMarketingImage open={isUploadPopupOpen} image={image} setImage={setImage} onClose={handleCloseUploadPopup} changeImage={handleImageSelect} removeImage={handleImageRemove} />
+              <Card sx={{ p: 2 }}>
+                {/* ... (other content) ... */}
+                <UploadMarketingImage
+                  open={isUploadPopupOpen}
+                  image={image}
+                  setImage={setImage}
+                  onClose={handleCloseUploadPopup}
+                  changeImage={handleImageSelect}
+                  removeImage={handleImageRemove}
+                />
 
-    {/* Avatar and file input */}
-    <label htmlFor="avatar-input" style={{ cursor: 'pointer' }}>
-      <ProfilePic style={{ minWidth: '3rem', maxWidth: '3rem', height: '3rem' }}>
-        <Avatar
-          sx={{
-            width: '3rem',
-            position: 'static',
-            height: '3rem',
-            cursor: 'pointer', 
-          }}
-          className="profilepic__image"
-          onClick={(e) => {
-            // Trigger the file input click when Avatar is clicked
-            document.getElementById('avatar-input').click();
-          }}
-        >
-          {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
-        </Avatar>
-        <div className="profilepic__content">
-          <EditIcon fontSize="small" />
-          <p className="profilepic__text">Edit</p>
-        </div>
-      </ProfilePic>
-    </label>
+                {/* Avatar and file input */}
+                <label htmlFor="avatar-input" style={{ cursor: "pointer" }}>
+                  <ProfilePic
+                    style={{
+                      minWidth: "3rem",
+                      maxWidth: "3rem",
+                      height: "3rem",
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        width: "3rem",
+                        position: "static",
+                        height: "3rem",
+                        cursor: "pointer",
+                      }}
+                      className="profilepic__image"
+                      onClick={(e) => {
+                        // Trigger the file input click when Avatar is clicked
+                        document.getElementById("avatar-input").click();
+                      }}
+                    >
+                      {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+                    </Avatar>
+                    <div className="profilepic__content">
+                      <EditIcon fontSize="small" />
+                      <p className="profilepic__text">Edit</p>
+                    </div>
+                  </ProfilePic>
+                </label>
 
-   
-    <input
-      id="avatar-input"
-      type="file"
-      onChange={handleImageSelect}
-      accept="image/x-png,image/gif,image/jpeg"
-      hidden
-    />
-
-  
-
-    
-  </Card>
-</Grid>
+                <input
+                  id="avatar-input"
+                  type="file"
+                  onChange={handleImageSelect}
+                  accept="image/x-png,image/gif,image/jpeg"
+                  hidden
+                />
+              </Card>
+            </Grid>
             <Grid item xs={12}>
               <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -872,7 +879,7 @@ function ConsultantProfile() {
                 </Grid>
               </Card>
             </Grid>
-           
+
             <Grid item xs={12} id="setting">
               <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
