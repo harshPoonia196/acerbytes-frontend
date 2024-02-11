@@ -511,44 +511,7 @@ let getProp = async()=>{
         }
     })
     
-// const handleRating = async(e, firstKeyName, secondKeyName,autoFillField,isRating) =>{
-//     setForm((prevForm) => {
-//         const updatedForm = { ...prevForm };
-//         if (updatedForm[firstKeyName] && updatedForm[firstKeyName][secondKeyName] && isRating) {
-//             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
-//                 ...updatedForm[firstKeyName][secondKeyName][autoFillField],
-//                 rating:e.target.value
-//             };
-//         }
-//         else{
-//             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
-//                 ...updatedForm[firstKeyName][secondKeyName][autoFillField],
-//                 isApplicable:e.target.checked
-//             };
-//         }
-//         return updatedForm;
-//       }); 
-// }
-// e,"location",key,"checked",undefined,insideKey
-//    const handleRatingSwitch = async (e, firstKeyName, secondKeyName,thirdKeyName,autoFillField) => {
- 
-//     let value = e?.target ? thirdKeyName === 'checked' ? e.target.checked : e.target.value : e
-//     await setForm((prev) => ({
-//         ...prev,
-//         [firstKeyName]: !secondKeyName
-//             ? value
-//             : {
-//                 ...prev?.[firstKeyName],
-//                 [secondKeyName]: !thirdKeyName
-//                     ? value
-//                     : {
-//                         ...prev?.[firstKeyName]?.[secondKeyName],
-//                         [thirdKeyName]: value,
-//                     },
-//             },
-//     }))
 
-//    }
 
    const handleUnitsPlan = async (unitsPlanValue)=>{
     setForm({...form,["unitsPlan"]:{...unitsPlanValue}})
@@ -556,7 +519,6 @@ let getProp = async()=>{
 
     const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName,autoFill,autoFillField,autoFillFieldValue,isRating,unitsPlanValue) => {
   
-
         if(autoFill){
           
         let innerObj = {
@@ -635,8 +597,8 @@ if (error) {
 
    error?.details.map((item)=>{
    if(store.includes(item.context.key)){
-    
-    openSnackbar(`Ratings needs to be provided for ${item.context.label}`, "error");
+    let getLabel= item.context.label.split('.')
+    openSnackbar(`Ratings needs to be provided for ${item.context.key==="rating"?getLabel[getLabel.length-2]:item.context.key}`, "error");
    }  
 
 })
@@ -656,9 +618,11 @@ if (error) {
 if(!editPage){
       // Validation passed
       CreateProperty({...form})
+      openSnackbar(`Property added successfully`, "success");
 }
 else{
   EditProperty(detailsPropertyId,{...form})
+  openSnackbar(`Property edited successfully`, "success");
 }
   
         }
@@ -684,7 +648,7 @@ else{
                         <RegulatoryCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         <LandscapeCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         <FloorPlanCard errors={errors} form={form} handleChange={handleChange} handleUnitsPlan={handleUnitsPlan}  isEdit={isEdit} />
-                        <FacilitiesCard errors={errors} form={form} isEdit={isEdit} handleChange={handleChange} />
+                        <FacilitiesCard errors={errors} form={form} isEdit={isEdit} handleChange={handleChange}  />
                         <LocationCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         {/* <ResalePriceCard isEdit={isEdit} />
                         <BuilderPriceCard isEdit={isEdit} /> */}

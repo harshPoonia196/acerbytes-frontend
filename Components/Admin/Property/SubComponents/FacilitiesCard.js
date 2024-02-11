@@ -48,7 +48,7 @@ function FacilitiesCard({ isEdit, form,handleChange,handleRating }) {
                                     Object.keys(amenitiesData?.[key])?.map(insideKey => {
                                         return <>
                                             <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                                                <Switch onChange={(e)=>{handleRating(e,"amenitiesData",key,"checked",undefined,insideKey)}} checked={amenitiesData?.[key]?.[insideKey]?.isApplicable} />
+                                                <Switch onChange={(e)=>{handleChange(e,"amenitiesData",key,"checked",undefined,insideKey)}} checked={amenitiesData?.[key]?.[insideKey]?.isApplicable} />
                                                 <Typography
                                                     variant="subtitle2"
                                                     sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
