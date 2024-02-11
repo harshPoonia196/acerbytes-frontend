@@ -13,32 +13,32 @@ import { termsData } from "../../utills/Constants";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
 import {
-    CustomAccordion,
-    CustomAccordionSummary,
-    CustomAccordionDetails,
-  } from '../../Components/CommonLayouts/CommonAccordion'
+  CustomAccordion,
+  CustomAccordionSummary,
+  CustomAccordionDetails,
+} from '../../Components/CommonLayouts/CommonAccordion'
 const AccordionInfo = () => {
   return (
     <>
-      
-
       <Container maxWidth="md" sx={{ mx: "auto" }}>
         <Paper sx={{ p: 2 }} square={false} elevation={2}>
           <Typography sx={{ color: colors.BLUE }} variant="h3">
             Terms & Conditions
           </Typography>
-          <Typography variant="body2" sx={{mb:"1rem",ml:"0.25rem"}}>Last Updated on 9th Dec, 2023</Typography>
+          <Typography variant="body2" sx={{ mb: "1rem" }}>Last Updated on 9th Dec, 2023</Typography>
           <Stack spacing={2} >
             <Box>
               <div>
                 {termsData.map(
                   (accordion) => (
-                    
+
                     (
-                      <CustomAccordion key={accordion.id}>
-                        <CustomAccordionSummary sx={{margin:"0.25rem"}}
+                      <CustomAccordion key={accordion.id} sx={{
+                        mb: 1
+                      }}>
+                        < CustomAccordionSummary
                           // expandIcon={<ExpandMoreIcon />}
-                          aria-controls={`panel${accordion.id}-content`}
+                          aria- controls={`panel${accordion.id}-content`}
                           id={`panel${accordion.id}-header`}
                         >
                           {`${accordion.id}.${accordion.title}`}
@@ -53,9 +53,9 @@ const AccordionInfo = () => {
               </div>
             </Box>
           </Stack>
-        </Paper>
-      </Container>
-      </>
+        </Paper >
+      </Container >
+    </>
   )
 }
 

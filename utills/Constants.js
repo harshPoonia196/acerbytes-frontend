@@ -8,6 +8,9 @@ import {
 } from "@mui/material";
 import FiberManualRecord from "@mui/icons-material/FiberManualRecord";
 
+const boxShadowTop = '-1px -2px 6px 2px gainsboro !important';
+const boxShadowBottom = '1px 2px 2px -2px gainsboro !important';
+
 const listOfTabsInAddProperty = [
   {
     label: "Overview",
@@ -169,15 +172,15 @@ export const generateContent = () => (
     <List>
       <ListItem disablePadding>
         <ListItemIcon
-          sx={{ minWidth: "0px", marginRight: "10px", marginBottom: "1rem" }}
+          sx={{ minWidth: "0px", marginRight: "8px" }}
         >
           <FiberManualRecord
-            fontSize="2px"
-            style={{ color: "black", padding: "2px" }}
+            fontSize="1rem"
+            style={{ color: "black", padding: 2 }}
           />
         </ListItemIcon>
         <ListItemText>
-          <Typography variant="body">
+          <Typography variant="body1">
             <b>Account</b> - means and includes the account created on the Site,
             by the User, in accordance with the terms of the Agreement,
             registered with and approved by NoBroker.
@@ -282,14 +285,14 @@ export const termsData = [
     content: generateContent(),
   },
 ];
-export const  privacyContent=()=>(
-  <Typography  sx={{lineHeight:'1.5rem', p:"1rem"}} variant='body1'>
-                     We may collect information from you, through your use of the Website or by joining the Nobroker community on social media websites, or which is provided to one of our marketing partners or through any engagement with Nobroker. We may collect and process personal information provided by you, including but not limited to:    
-                     <br/>
-                    Information that you provide at the time of registration including any information that identifies or can be used to identify, contact or locate the user such as name, address, email address, property photos, bank details, and phone number.
-                     <br/>
-                    Any data that is automatically captured by the Website such as your mobile phone operating system every computer / mobile device connected to the internet is given a domain name and a set of numbers that serve as that computer's Internet Protocol or “IP” address. When you request a page from any page within the Website, our web servers automatically recognize your domain name and IP address. The domain name and IP address reveal nothing personal about you other than the IP address from which you have accessed the Website.
-                 </Typography>
+export const privacyContent = () => (
+  <Typography sx={{ lineHeight: '1.5rem', p: "1rem" }} variant='body1'>
+    We may collect information from you, through your use of the Website or by joining the Nobroker community on social media websites, or which is provided to one of our marketing partners or through any engagement with Nobroker. We may collect and process personal information provided by you, including but not limited to:
+    <br />
+    Information that you provide at the time of registration including any information that identifies or can be used to identify, contact or locate the user such as name, address, email address, property photos, bank details, and phone number.
+    <br />
+    Any data that is automatically captured by the Website such as your mobile phone operating system every computer / mobile device connected to the internet is given a domain name and a set of numbers that serve as that computer's Internet Protocol or “IP” address. When you request a page from any page within the Website, our web servers automatically recognize your domain name and IP address. The domain name and IP address reveal nothing personal about you other than the IP address from which you have accessed the Website.
+  </Typography>
 )
 export const privacyData = [
   {
