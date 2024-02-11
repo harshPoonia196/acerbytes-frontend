@@ -1,16 +1,6 @@
 import React from "react";
-import Paper from "@mui/material/Paper";
-import { Box, Container, Stack, Typography } from "@mui/material";
-import colors from "styles/theme/colors";
 
-import { termsData } from "Components/Constants/terms";
 
-import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Button from "@mui/material/Button";
 import AccordionInfo from "Components/Terms&conditions/Conditions";
 // import {
 //     CustomAccordion,

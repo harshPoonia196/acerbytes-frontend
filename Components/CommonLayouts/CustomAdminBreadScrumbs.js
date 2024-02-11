@@ -226,6 +226,7 @@ export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
           background: "white",
           position: "sticky",
           top: { xs: 48, sm: 64 },
+          boxShadow: '0px 4px 8px rgba(0, 1, 1, 0.1)',
         }}
       >
         <Box>

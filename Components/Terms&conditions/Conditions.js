@@ -4,7 +4,7 @@ import Paper from "@mui/material/Paper";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import colors from "styles/theme/colors";
 
-import { termsData } from "Components/Constants/terms";
+import { termsData } from "../../utills/Constants";
 
 // import Accordion from "@mui/material/Accordion";
 // import AccordionActions from "@mui/material/AccordionActions";
@@ -27,8 +27,8 @@ const AccordionInfo = () => {
           <Typography sx={{ color: colors.BLUE }} variant="h3">
             Terms & Conditions
           </Typography>
-          <Typography variant="body2">Last Updated on 9th Dec, 2023</Typography>
-          <Stack spacing={2} sx={{ my: "1rem" }}>
+          <Typography variant="body2" sx={{mb:"1rem",ml:"0.25rem"}}>Last Updated on 9th Dec, 2023</Typography>
+          <Stack spacing={2} >
             <Box>
               <div>
                 {termsData.map(
@@ -36,7 +36,7 @@ const AccordionInfo = () => {
                     
                     (
                       <CustomAccordion key={accordion.id}>
-                        <CustomAccordionSummary
+                        <CustomAccordionSummary sx={{margin:"0.25rem"}}
                           // expandIcon={<ExpandMoreIcon />}
                           aria-controls={`panel${accordion.id}-content`}
                           id={`panel${accordion.id}-header`}

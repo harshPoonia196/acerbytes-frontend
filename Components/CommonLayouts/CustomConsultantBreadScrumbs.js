@@ -215,7 +215,16 @@ export default function CustomConsultantBreadScrumbs({ text }) {
     ];
 
     return (
-        <Box sx={{ backgroundColor: "white", borderBottom: "1px solid whitesmoke" }}>
+        <Box
+        sx={{
+            zIndex: 100,
+            background: "white",
+            position: "sticky",
+            top: { xs: 48, sm: 64 },
+            boxShadow: '0px 4px 8px rgba(0, 1, 1, 0.1)',
+          }}
+        >
+  <Box sx={{ backgroundColor: "white", borderBottom: "1px solid whitesmoke" }}>
             <Container
                 maxWidth="lg"
             >
@@ -227,5 +236,7 @@ export default function CustomConsultantBreadScrumbs({ text }) {
                 </Stack>
             </Container>
         </Box>
+        </Box>
+      
     );
 }

@@ -458,6 +458,7 @@ function ConsultantProfile() {
     <>
       <PageLoader isLoading={isLoading || mutate.isPending} />
       <nav className={classes.demo2}>
+      <CustomConsultantBreadScrumbs text="Profile" />
         <NavTabProfilePage
           value={activeState}
           handleChange={handleClick}
@@ -465,7 +466,7 @@ function ConsultantProfile() {
         />
       </nav>
 
-      <CustomConsultantBreadScrumbs text="Profile" />
+     
 
       <Container maxWidth="lg">
         <form onSubmit={handleSubmit}>
