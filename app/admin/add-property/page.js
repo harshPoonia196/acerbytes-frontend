@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useState } from "react";
+import { listOfTabsInAddProperty } from "utills/Constants";
 import NavTab from "Components/Admin/Property/NavTab";
 import throttle from "lodash/throttle";
 import { useSearchParams } from 'next/navigation'
@@ -15,6 +16,7 @@ import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from 'Components/Admin/Property/SubComponents/LocationCard';
 import ProjectCard from 'Components/Admin/Property/SubComponents/ProjectCard';
 import BankCard from 'Components/Admin/Property/SubComponents/BankCard';
+import {Schema,projectName} from "Components/Admin/Property/Validation/PropertyValidation"
 import FacilitiesCard from 'Components/Admin/Property/SubComponents/FacilitiesCard';
 import LandscapeCard from 'Components/Admin/Property/SubComponents/LandscapeCard';
 import FloorPlanCard from 'Components/Admin/Property/SubComponents/FloorPlanCard';
@@ -23,11 +25,15 @@ import BuilderPriceCard from 'Components/Admin/Property/SubComponents/BuilderPri
 import ResalePriceCard from 'Components/Admin/Property/SubComponents/ResalePriceCard';
 import InvestmentCard from 'Components/Admin/Property/SubComponents/InvestmentCard';
 import MarketingCard from 'Components/Admin/Property/SubComponents/MarketingCard';
+import { useSnackbar } from "utills/SnackbarContext";
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
+import {
+    CreateProperty,
+    EditProperty
+  } from "api/Property.api";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import { detailsProperty } from "api/Property.api";
-import { listOfTabsInAddProperty } from "utills/Constants";
 
 const tabHeight = 116;
 
@@ -67,8 +73,11 @@ function useThrottledOnScroll(callback, delay) {
 
 function AddProperty() {
     const router = useSearchParams()
+    const [editPage,setEditPage] = useState(false)
     const [activeState, setActiveState] = React.useState(null);
     const detailsPropertyId = router.get('id')
+    const { openSnackbar } = useSnackbar();
+
     let itemsServer = listOfTabsInAddProperty.map((tab) => {
         const hash = tab.value;
         return {
@@ -141,11 +150,27 @@ function AddProperty() {
                 });
         }
     };
+    function removeIds(obj) {
+        for (const key in obj) {
+          if (typeof obj[key] === 'object' && obj[key] !== null) {
+            // Recursively call removeIds for nested objects
+            obj[key] = removeIds(obj[key]);
+          } else if (key === '_id') {
+            // Remove the _id field
+            delete obj[key];
+          }
+        }
+        return obj;
+      }
+
 let getProp = async()=>{
     try {
         let res = await detailsProperty(detailsPropertyId);
         if (res.status === 200) {
-          setForm({...res.data?.data})
+            console.log(res.data?.data,'resss')
+            let data = removeIds(res.data?.data)
+            delete data.__v
+          setForm({...data})
         }
       } catch (error) {
         console.log('see',error)
@@ -153,7 +178,11 @@ let getProp = async()=>{
 }
     React.useEffect(
         () => {
-getProp()
+          if(detailsPropertyId){
+            getProp()
+            setEditPage(true)
+          }
+
           return () => {
             clearTimeout(unsetClickedRef.current);
         }
@@ -163,7 +192,7 @@ getProp()
     const classes = useStyles();
 
     const [isEdit, setIsEdit] = useState(true);
-
+    const [errors, setErrors] = useState({});
     const [form, setForm] = useState({
         overview: {
             builder: '',
@@ -193,6 +222,7 @@ getProp()
             maxFloors: '',
             minFloors: '',
             totalUnits: '',
+            areaUnit:'',
             area: '',
             greenArea: '',
             unitDensity: '',
@@ -200,167 +230,174 @@ getProp()
             constructionQuality: 0,
             interiorQuality: 0,
         },
-        unitsPlan: [
+        unitsPlan: {
+            averagePrice:'',
+            minPriceRange:'',
+            maxPriceRange:'',
+            uniqueLayouts:[],
+            planList: [
             {
-                propertyType: "dsd",
-                propertyLayout: "dsd",
-                name: "dssd",
-                areaUnit: "dsd",
-                areaValue: "dsd",
-                bsp: "dsd",
-                applicableMonth: "sds",
-                applicableYear: "sds"
+                propertyType: "",
+                propertyLayout: "",
+                name: "",
+                areaUnit: "",
+                areaValue: "",
+                totalUnits:'',
+                bsp: "",
+                applicableMonth: "",
+                applicableYear: ""
             }
-        ],
+        ]
+    },
 
         amenitiesData: {
             Basic: {
                 Gym: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Yoga: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Swimming pool": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Club: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Fitness center": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 SPA: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
             },
             Expected: {
                 Pool: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Yoga: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Party hall": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Indoor games": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Spa: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Clubhouse: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Jacuzzi: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Theatre: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Barbeque Lawn": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Jogging track": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Covered Sitting": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Garden: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Wi-fi": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
             },
             Desired: {
                 Theatre: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Barbeque Lawn": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Jogging track": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Covered Sitting": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Garden: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Yoga: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 SPA: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Swimming pool": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 Club: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
             },
             Unique: {
                 Library: {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Kids play area": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Back up": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Wi-fi": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Gas line": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
                 "Shopping mart": {
-                    isApplicable: true,
+                    isApplicable: false,
                     rating: 0,
                 },
             },
         },
         location: {
-            state: "",
+            state: "Andhra",
             city: "",
             sector: '',
             area: "",
@@ -368,6 +405,89 @@ getProp()
             googleMapLink: "",
             longitude: "",
             latitude: "",
+            assesment:{
+                "Pick up / delivery":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "School":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Hospital:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Mall:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Super market":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Restaurants:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Railway:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Metro:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Bus stand":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Highway:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Offices:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Hotels:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Clubs:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Noise:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Safety:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Bus stops":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Train station":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                "Metro station":{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                University:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+                Parks:{
+                    isApplicable: false,
+                    rating: 0,
+                },
+
+            }
         },
         valueForMoney: {
             appTillNow: 0,
@@ -375,24 +495,104 @@ getProp()
             forEndUse: 0
         },
         consultants: [
-            {
-                id: "",
-                name: "",
-                profilePic: "",
-                rating: 0,
-                ratingTag: "",
-                clientsServed: 0,
-                number: ""
-            }
+            // {
+            //     id: "",
+            //     name: "",
+            //     profilePic: "",
+            //     rating: 0,
+            //     ratingTag: "",
+            //     clientsServed: 0,
+            //     number: ""
+            // }
         ],
         marketing: {
             tagLine: "",
             description: ""
         }
     })
+    
+// const handleRating = async(e, firstKeyName, secondKeyName,autoFillField,isRating) =>{
+//     setForm((prevForm) => {
+//         const updatedForm = { ...prevForm };
+//         if (updatedForm[firstKeyName] && updatedForm[firstKeyName][secondKeyName] && isRating) {
+//             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+//                 ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+//                 rating:e.target.value
+//             };
+//         }
+//         else{
+//             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+//                 ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+//                 isApplicable:e.target.checked
+//             };
+//         }
+//         return updatedForm;
+//       }); 
+// }
+// e,"location",key,"checked",undefined,insideKey
+//    const handleRatingSwitch = async (e, firstKeyName, secondKeyName,thirdKeyName,autoFillField) => {
+ 
+//     let value = e?.target ? thirdKeyName === 'checked' ? e.target.checked : e.target.value : e
+//     await setForm((prev) => ({
+//         ...prev,
+//         [firstKeyName]: !secondKeyName
+//             ? value
+//             : {
+//                 ...prev?.[firstKeyName],
+//                 [secondKeyName]: !thirdKeyName
+//                     ? value
+//                     : {
+//                         ...prev?.[firstKeyName]?.[secondKeyName],
+//                         [thirdKeyName]: value,
+//                     },
+//             },
+//     }))
 
+//    }
 
-    const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
+   const handleUnitsPlan = async (unitsPlanValue)=>{
+    setForm({...form,["unitsPlan"]:{...unitsPlanValue}})
+   }
+
+    const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName,autoFill,autoFillField,autoFillFieldValue,isRating,unitsPlanValue) => {
+  
+
+        if(autoFill){
+          
+        let innerObj = {
+            [secondKeyName]:e.target.value,
+            [autoFillField]:autoFillFieldValue
+        }
+       setForm({...form,[firstKeyName]:{...form?.[firstKeyName],...innerObj}})
+        }
+     else if (firstKeyName === "unitsPlan"){
+        
+        setForm({...form,["unitsPlan"]:{...unitsPlanValue}})
+   
+    }
+ 
+else{
+   
+    if(thirdKeyName === 'checked'){
+        setForm((prevForm) => {
+            const updatedForm = { ...prevForm };
+            if (updatedForm[firstKeyName] && updatedForm[firstKeyName][secondKeyName] && isRating) {
+                updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                    ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                    rating:e.target.value
+                };
+            }
+            else{
+                updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                    ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                    isApplicable:e.target.checked
+                };
+            }
+            return updatedForm;
+          });        
+    }
+   
+    else{
         let value = e?.target ? thirdKeyName === 'checked' ? e.target.checked : e.target.value : e
         await setForm((prev) => ({
             ...prev,
@@ -409,8 +609,64 @@ getProp()
                 },
         }))
     }
+  
+}
+const { error } = Schema.validate(form, { abortEarly: false });
+if (error) {
+    // console.log("🚀 ~ validateForm ~ error:", error.details)
+    const validationErrors = {};
+    error.details.forEach((detail) => {
+        validationErrors[detail?.context?.label] = detail?.message
+    });
+    // Handle validation errors, e.g., display error messages
+    setErrors(validationErrors)
+    return false;
+}
+    }
 
-    console.log(form)
+    const validateForm = () => {
+        const { error } = Schema.validate(form, { abortEarly: false });
+        let store = [
+"constructionQuality",
+"interiorQuality",
+"rating"
+
+        ]
+
+   error?.details.map((item)=>{
+   if(store.includes(item.context.key)){
+    
+    openSnackbar(`Ratings needs to be provided for ${item.context.label}`, "error");
+   }  
+
+})
+        console.log(form,"formmmm",error,'errrr')
+      
+        if (error) {
+            // console.log("🚀 ~ validateForm ~ error:", error.details)
+            const validationErrors = {};
+            error.details.forEach((detail) => {
+                validationErrors[detail?.context?.label] = detail?.message
+            });
+            // Handle validation errors, e.g., display error messages
+            setErrors(validationErrors)
+            return false;
+        }
+        else{
+if(!editPage){
+      // Validation passed
+      CreateProperty({...form})
+}
+else{
+  EditProperty(detailsPropertyId,{...form})
+}
+  
+        }
+
+        return true;
+    };
+
+
 
     return (
         <>
@@ -424,21 +680,22 @@ getProp()
             <Container>
                 <div className="container">
                     <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-                        {/* <ProjectCard form={form} handleChange={handleChange} isEdit={isEdit} /> */}
-                        <RegulatoryCard form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <LandscapeCard form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <FloorPlanCard form={form} handleChange={handleChange} isEdit={isEdit} />
-                        {/* <FacilitiesCard form={form} isEdit={isEdit} /> */}
-                        <LocationCard form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <ProjectCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <RegulatoryCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <LandscapeCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <FloorPlanCard errors={errors} form={form} handleChange={handleChange} handleUnitsPlan={handleUnitsPlan}  isEdit={isEdit} />
+                        <FacilitiesCard errors={errors} form={form} isEdit={isEdit} handleChange={handleChange} />
+                        <LocationCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
                         {/* <ResalePriceCard isEdit={isEdit} />
                         <BuilderPriceCard isEdit={isEdit} /> */}
-                        <InvestmentCard form={form} handleChange={handleChange} isEdit={isEdit} />
-                        <PropertyConsultantsCard isEdit={isEdit} />
+                        <InvestmentCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <PropertyConsultantsCard isEdit={isEdit} form={form} handleChange={handleChange} />
                         <OverallAssessmentCard isEdit={isEdit} />
-                        {/* <BankCard isEdit={isEdit} /> */}
-                        <MarketingCard isEdit={isEdit} />
-                        <Grid item xs={12} sx={{ textAlign: 'end' }}>
-                            <Button variant='contained'>Save</Button>
+                        {/* <BankCard isEdit={isEdit} /> */} 
+                        <MarketingCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+                        <Grid item xs={12}  sx={{ textAlign: 'end' }}>
+                            <Button  onClick={validateForm} variant='contained'>{editPage?"Update":"Save"}</Button>
+                            <Button sx={{ marginLeft: '10px' }} variant='contained'>Publish</Button>
                         </Grid>
                     </Grid>
                 </div>

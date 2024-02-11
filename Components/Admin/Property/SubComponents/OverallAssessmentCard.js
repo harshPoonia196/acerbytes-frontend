@@ -52,4 +52,4 @@ function OverallAssessmentCard({ isEdit }) {
     )
 }
 
-export default OverallAssessmentCard
+export default React.memo(OverallAssessmentCard)
