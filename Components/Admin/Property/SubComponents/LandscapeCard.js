@@ -17,7 +17,7 @@ import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/N
 
 function LandscapeCard({ isEdit, form, handleChange, errors }) {
 
-    const { numberOfBuildings, maxFloors, minFloors, totalUnits,areaUnit ,area, greenArea, unitDensity, greenDensity, layoutType } = form.layout;
+    const { numberOfBuildings, maxFloors, minFloors, totalUnits,areaUnit ,area, greenArea, unitDensity, greenDensity, layoutType,interiorQuality,constructionQuality } = form.layout;
 
     return (
         <Grid item xs={12} id="landscape">
@@ -180,7 +180,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Construction Quality
                             </Typography>
                         </Box>
-                        <Rating onChange={(e) => { handleChange(e, "layout", "constructionQuality") }} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={constructionQuality} onChange={(e) => { handleChange(e, "layout", "constructionQuality") }} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
 
                     <Grid item xs={6}>
@@ -192,7 +192,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Interior Quality
                             </Typography>
                         </Box>
-                        <Rating onChange={(e) => { handleChange(e, "layout", "interiorQuality") }} name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={interiorQuality} onChange={(e) => { handleChange(e, "layout", "interiorQuality") }} name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
 
                 </Grid>

@@ -16,7 +16,7 @@ import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextF
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
 import colors from 'styles/theme/colors';
 
-function FacilitiesCard({ isEdit, form,handleChange }) {
+function FacilitiesCard({ isEdit, form,handleChange,handleRating }) {
 
     const { amenitiesData } = form
     return (
@@ -48,14 +48,14 @@ function FacilitiesCard({ isEdit, form,handleChange }) {
                                     Object.keys(amenitiesData?.[key])?.map(insideKey => {
                                         return <>
                                             <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                                                <Switch onChange={(e)=>{handleChange(e,"amenitiesData",key,"checked",undefined,insideKey)}} checked={amenitiesData?.[key]?.[insideKey]?.isApplicable} />
+                                                <Switch onChange={(e)=>{handleRating(e,"amenitiesData",key,"checked",undefined,insideKey)}} checked={amenitiesData?.[key]?.[insideKey]?.isApplicable} />
                                                 <Typography
                                                     variant="subtitle2"
                                                     sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                                                 >
                                                     {insideKey}
                                                 </Typography>
-                                                <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e)=>handleChange(e,"amenitiesData",key,"checked",undefined,insideKey,undefined,true)} />
+                                                <Rating value={amenitiesData?.[key]?.[insideKey]?.rating} name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e)=>handleChange(e,"amenitiesData",key,"checked",undefined,insideKey,undefined,true)} />
                                             </Grid>
                                         </>
                                     })

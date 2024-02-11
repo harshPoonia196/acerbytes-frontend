@@ -27,7 +27,7 @@ import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputFiel
 import NewInputFieldStructure from 'Components/CommonLayouts/NewInputFieldStructure';
 import { TroubleshootSharp } from '@mui/icons-material';
 
-function FloorPlanCard({ isEdit, form, handleChange,errors }) {
+function FloorPlanCard({ isEdit, form, handleChange,errors,handleUnitsPlan }) {
     const { projectType } = form.overview;
     const { layoutType } = form.layout;
     const { unitsPlan } = form;
@@ -55,11 +55,12 @@ function FloorPlanCard({ isEdit, form, handleChange,errors }) {
 useEffect(()=>{
     setUnit(layoutType);
     setUnitType(projectType)
+    setRows([...unitsPlan.planList])
 },[])
-    // useEffect(() => {
-       
-    //     setRows(unitsPlan);
-    // }, [unitsPlan]);
+    useEffect(() => {
+        delete unitsPlan._id
+        setRows([...unitsPlan.planList])
+    }, [unitsPlan]);
 
     const style = {
         position: 'absolute',
@@ -127,8 +128,8 @@ if(rows.length<=1 && sum === false){
                   applicableYear: '',
                   applicableMonth: '',
               });
-
-            handleChange(undefined,"unitsPlan",undefined,undefined,undefined,undefined,undefined,undefined,{...calculation,planList:[...rows,selectedItem]})
+            handleUnitsPlan({...calculation,planList:[...rows,selectedItem]})
+            // handleChange(undefined,"unitsPlan",undefined,undefined,undefined,undefined,undefined,undefined,{...calculation,planList:[...rows,selectedItem]})
         }
         else{
             const { error } = unitPlanSchema.validate(selectedItem, { abortEarly: false });
@@ -168,8 +169,8 @@ if(rows.length<=1 && sum === false){
 let selectedItem =rows.filter((_, i) => i === index)
 let remainingItems = rows.filter((_, i) => i !== index)
 let calculation = overallCalc(remainingItems, selectedItem[0],false)
-  handleChange(undefined,"unitsPlan",undefined,undefined,undefined,undefined,undefined,undefined,{...calculation,planList:[...remainingItems]})
-
+//   handleChange(undefined,"unitsPlan",undefined,undefined,undefined,undefined,undefined,undefined,{...calculation,planList:[...remainingItems]})
+  handleUnitsPlan({...calculation,planList:[...remainingItems]})
   setRows((prevRows) => prevRows.filter((_, i) => i !== index));
 
 
@@ -340,7 +341,7 @@ let calculation = overallCalc(remainingItems, selectedItem[0],false)
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row, index) => (
+                                {rows?.map((row, index) => (
                                  
                                     <TableRow
                                         key={row.name + index}

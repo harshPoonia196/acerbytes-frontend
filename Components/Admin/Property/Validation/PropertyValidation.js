@@ -180,17 +180,18 @@ Joi.object({
       expectedFurtherApp: Joi.number().not(0).required(),
       forEndUse: Joi.number().not(0).required(),
     }).required(),
-    // consultants: Joi.array().items(
-    //   Joi.object().keys({
-    //     id: Joi.string().required(),
-    //     name: Joi.string().required(),
-    //     profilePic: Joi.string().required(),
-    //     rating: Joi.number().required(),
-    //     ratingTag: Joi.string().required(),
-    //     clientsServed: Joi.number().required(),
-    //     number: Joi.string().required(),
-    //   })
-    // ),
+    consultants: Joi.array().items(
+      // Joi.object().keys({
+      //   id: Joi.string().required(),
+      //   name: Joi.string().required(),
+      //   profilePic: Joi.string().required(),
+      //   rating: Joi.number().required(),
+      //   ratingTag: Joi.string().required(),
+      //   clientsServed: Joi.number().required(),
+      //   number: Joi.string().required(),
+      // })
+    ),
+    isActiveAd:Joi.boolean(),
     marketing: Joi.object().keys({
       tagLine: Joi.string().required(),
       description: Joi.string().required(),

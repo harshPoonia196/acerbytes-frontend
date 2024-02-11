@@ -27,3 +27,7 @@ export const activeAdGet = (activeAdGetById) =>{
 export const activeadCreate = (data) => {
   return axiosInstance.post(`/activead/create`, data);
 };
+
+export const EditProperty = (detailsPropertyId,data) =>{
+  return axiosInstance.put(`/property/update/${detailsPropertyId}`,data);
+}
