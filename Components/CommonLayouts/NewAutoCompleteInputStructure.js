@@ -33,7 +33,7 @@ const NewAutoCompleteInputStructure = ({
         // Adding the below option creates issue in property form
         // getOptionLabel={(option) => option.label || ""}
         value={value || null}
-        options={options}
+        options={list ||options}
         fullWidth
         onChange={handleChange}
         renderInput={(params, index) => {
