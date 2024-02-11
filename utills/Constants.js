@@ -7,9 +7,9 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import FiberManualRecord from "@mui/icons-material/FiberManualRecord";
-
-const boxShadowTop = '-1px -2px 6px 2px gainsboro !important';
-const boxShadowBottom = '1px 2px 2px -2px gainsboro !important';
+import colors from "styles/theme/colors";
+export const boxShadowTop = '-1px -2px 6px 2px gainsboro !important';
+export const boxShadowBottom = '1px 2px 2px -2px gainsboro !important';
 
 const listOfTabsInAddProperty = [
   {
@@ -165,18 +165,18 @@ export {
 
 export const generateContent = () => (
   <>
-    <Typography variant="body1" sx={{ marginLeft: "1.5rem" }}>
+    <Typography variant="body1">
       Unless otherwise specified, the capitalized terms shall have the meanings
       set out below:
     </Typography>
-    <List>
+    <List disablePadding>
       <ListItem disablePadding>
         <ListItemIcon
-          sx={{ minWidth: "0px", marginRight: "8px" }}
+          sx={{ minWidth: "0px", mr: "0.5rem" ,mb:"0.6rem" }}
         >
           <FiberManualRecord
             fontSize="1rem"
-            style={{ color: "black", padding: 2 }}
+            sx={{ color:colors.BLACK,p: "0.1rem" }}
           />
         </ListItemIcon>
         <ListItemText>
@@ -188,12 +188,12 @@ export const generateContent = () => (
         </ListItemText>
       </ListItem>
       <ListItem disablePadding>
-        <ListItemIcon
-          sx={{ minWidth: "0px", marginRight: "10px", marginBottom: "1rem" }}
+      <ListItemIcon
+          sx={{ minWidth: "0px", mr: "0.5rem",mb: "1rem" }}
         >
           <FiberManualRecord
-            fontSize="2px"
-            style={{ color: "black", padding: "2px" }}
+            fontSize="1rem"
+            sx={{ color:colors.BLACK,p: "0.1rem" }}
           />
         </ListItemIcon>
         <ListItemText>
@@ -207,11 +207,11 @@ export const generateContent = () => (
       </ListItem>
       <ListItem disablePadding>
         <ListItemIcon
-          sx={{ minWidth: "0px", marginRight: "10px", marginBottom: "100px" }}
+          sx={{ minWidth: "0px", mr: "0.5rem", mb: "6rem" }}
         >
           <FiberManualRecord
-            fontSize="2px"
-            style={{ color: "black", padding: "2px" }}
+            fontSize="1rem"
+            sx={{ color:colors.BLACK, p:"0.1rem" }}
           />
         </ListItemIcon>
         <ListItemText>
@@ -286,7 +286,7 @@ export const termsData = [
   },
 ];
 export const privacyContent = () => (
-  <Typography sx={{ lineHeight: '1.5rem', p: "1rem" }} variant='body1'>
+  <Typography sx={{ lineHeight: '1.5rem'}} variant='body1'>
     We may collect information from you, through your use of the Website or by joining the Nobroker community on social media websites, or which is provided to one of our marketing partners or through any engagement with Nobroker. We may collect and process personal information provided by you, including but not limited to:
     <br />
     Information that you provide at the time of registration including any information that identifies or can be used to identify, contact or locate the user such as name, address, email address, property photos, bank details, and phone number.

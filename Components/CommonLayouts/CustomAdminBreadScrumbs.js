@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import { Box, Card, CardActionArea, Container, Dialog, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { listOfPages } from 'Components/NavBar/Links'
-
+import { boxShadowTop } from 'utills/Constants';
 function handleClick(event) {
     event.preventDefault();
     console.info('You clicked a breadcrumb.');
@@ -226,7 +226,7 @@ export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
           background: "white",
           position: "sticky",
           top: { xs: 48, sm: 64 },
-          boxShadow: '0px 4px 8px rgba(0, 1, 1, 0.1)',
+          boxShadow: boxShadowTop
         }}
       >
         <Box>
