@@ -31,12 +31,13 @@ import {
     CreateProperty,
   } from "api/Property.api";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
+import colors from "styles/theme/colors";
 
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
     demo2: {
-        backgroundColor: "#fff",
+        backgroundColor:colors.WHITE,
         position: "sticky",
         top: 54,
         left: 0,
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints?.up('sm')]: {
             top: 64,
         },
-        marginBottom: '16px'
+        mb: '1rem'
     },
 }));
 

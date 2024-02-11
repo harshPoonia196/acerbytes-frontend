@@ -25,7 +25,7 @@ import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStruct
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import { useState } from "react";
-import colors from "styles/theme/colors";
+
 import NewCurrencyInputField from "Components/CommonLayouts/NewCurrencyInputField";
 import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
@@ -46,11 +46,12 @@ import {
 } from "api/Util.api";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
 import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
+import colors from "styles/theme/colors";
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
   demo2: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.WHITE,
     position: "sticky",
     top: 54,
     left: 0,
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
-    marginBottom: "16px",
+    mb: "1rem",
   },
 }));
 

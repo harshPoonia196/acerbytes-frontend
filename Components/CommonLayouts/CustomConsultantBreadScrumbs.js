@@ -7,6 +7,7 @@ import { Box, Card, CardActionArea, Container, Dialog, DialogContent, DialogTitl
 import { useRouter } from 'next/navigation';
 import { listOfPages } from 'Components/NavBar/Links'
 import { boxShadowTop } from 'utills/Constants';
+import colors from 'styles/theme/colors';
 function handleClick(event) {
     event.preventDefault();
     console.info('You clicked a breadcrumb.');
@@ -218,7 +219,7 @@ export default function CustomConsultantBreadScrumbs({ text }) {
         <Box
         sx={{
             zIndex: 100,
-            background: "white",
+            background: colors.WHITE,
             position: "sticky",
             top: { xs: 48, sm: 64 },
             boxShadow:boxShadowTop
