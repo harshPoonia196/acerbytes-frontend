@@ -21,6 +21,18 @@ Joi.object({
   }),
 });
 
+export const unitPlanSchema = Joi.object({
+  propertyType: Joi.string().required(),
+  propertyLayout: Joi.string().required(),
+  name: Joi.string().required(),
+  areaUnit: Joi.string().required(),
+  totalUnits:Joi.string().required(),
+  area: Joi.string().required(),
+  bsp: Joi.string().required(),
+  applicableMonth: Joi.string().required(),
+  applicableYear: Joi.string().required(),
+})
+
 const layoutSchema =
  Joi.object({
   numberOfBuildings: Joi.number()
@@ -176,7 +188,7 @@ Joi.object({
 })),
     }),
     valueForMoney: Joi.object().keys({
-      appTillNow: Joi.number().not(0).required(),
+      appTillNow: Joi.number().required().min(1),
       expectedFurtherApp: Joi.number().not(0).required(),
       forEndUse: Joi.number().not(0).required(),
     }).required(),

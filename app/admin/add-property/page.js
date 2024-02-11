@@ -591,14 +591,37 @@ if (error) {
         let store = [
 "constructionQuality",
 "interiorQuality",
-"rating"
-
+"rating",
+"valueForMoney",
+"forEndUse",
+"appTillNow",
+"expectedFurtherApp"
         ]
 
    error?.details.map((item)=>{
    if(store.includes(item.context.key)){
     let getLabel= item.context.label.split('.')
-    openSnackbar(`Ratings needs to be provided for ${item.context.key==="rating"?getLabel[getLabel.length-2]:item.context.key}`, "error");
+
+    function convertToTitleCase(inputString) {
+        let txt = inputString
+          .replace(/([A-Z])/g, ' $1') 
+          .replace(/^./, (str) => str.toUpperCase()); 
+          return txt
+      }
+      
+
+    let label;
+    if(item.context.key==="rating"){
+      label = getLabel[getLabel.length-2]
+    }
+    else if(item.context==="forEndUse"||item.context==="appTillNow" ||item.context==="expectedFurtherApp" ) {
+     label = convertToTitleCase(item.context)
+    }
+    else{
+        label = item.context.key
+    }
+
+    openSnackbar(`Ratings needs to be provided for ${label}`, "error");
    }  
 
 })

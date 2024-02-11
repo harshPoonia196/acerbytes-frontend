@@ -352,7 +352,7 @@ let calculation = overallCalc(remainingItems, selectedItem[0],false)
                                         </TableCell>}
                                         {row.propertyLayout && <TableCell align="left">{row.propertyLayout}</TableCell>}
                                         {row.name ? <TableCell align="left">{row.name}</TableCell>:''}
-                                        {row.area ? <TableCell align="left">{row.area}</TableCell>:<TableCell><InfoIcon sx={{fontSize:18,cursor:"pointer",color:'red'}}/></TableCell>}
+                                        {row.area !=='' ? <TableCell align="left">{row.area}</TableCell>:<TableCell><InfoIcon sx={{fontSize:18,cursor:"pointer",color:'red'}}/></TableCell>}
                                         {row.areaUnit ? <TableCell align="left">{row.areaUnit?row.areaUnit:" "}</TableCell>:''}
                                         {row.bsp ? <TableCell align="left">{row.bsp}</TableCell> : ''}
                                         {row.applicableYear ? <TableCell align="left">{row.applicableYear}</TableCell>: ''}
