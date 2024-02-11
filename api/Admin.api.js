@@ -12,6 +12,10 @@ export const getSalesPersons = () => {
   return axiosInstance.get(`/higheruser/salesPersons`);
 };
 
+export const getConsultantsPersons = () => {
+  return axiosInstance.get(`/higheruser/consultantsList`);
+};
+
 export const getBrokersList = (limit, page, search) => {
   let query = "";
   if (limit) {
