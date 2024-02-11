@@ -38,6 +38,7 @@ import Loading from "Components/CommonLayouts/Loading";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 import { matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
+import { debounce } from "lodash";
 
 const headCells = [
   {
@@ -160,7 +161,9 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
       </TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton
-          disabled={!matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)}
+          disabled={
+            !matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
+          }
           sx={{ fontSize: "1rem !important" }}
         >
           <MoreVertIcon onClick={handleClick} fontSize="1rem" />
@@ -198,6 +201,7 @@ function ManageUserTable({ searchText }) {
   const [pageLimit, setPageLimit] = React.useState(PAGINATION_LIMIT);
   const [initialMount, setInitialMount] = React.useState(true);
   const [usersList, setUsersList] = React.useState({});
+  const debouncedSearch = debounce(performSearch, 300); // Adjust the debounce delay as needed
   const [confirmationDialog, setConfirmationDialog] = React.useState({
     isOpen: false,
     data: {},
@@ -214,6 +218,14 @@ function ManageUserTable({ searchText }) {
     openSnackbar(message, severity);
   };
 
+  function performSearch() {
+    const pageOptions = {
+      pageLimit,
+      page: currentPage,
+    };
+    getAllUsersList(pageOptions, searchText);
+  }
+
   React.useEffect(() => {
     // This block will run only on initial mount
     if (initialMount) {
@@ -221,11 +233,11 @@ function ManageUserTable({ searchText }) {
       return;
     }
 
-    const pageOptions = {
-      pageLimit,
-      page: currentPage,
+    debouncedSearch();
+
+    return () => {
+      debouncedSearch.cancel();
     };
-    getAllUsersList(pageOptions, searchText);
   }, [searchText, initialMount]);
 
   const objectToQueryString = (obj) => {
