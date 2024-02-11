@@ -494,6 +494,81 @@ function AddProperty() {
     },
   });
 
+  const scoreChange = async (
+    e,
+    firstKeyName,
+    secondKeyName,
+  ) => {
+    let totalScored;
+
+    function isNotAlphabet(char) {
+      return !/[a-zA-Z]/.test(char);
+    }
+    let incomingValue;
+    if (isNotAlphabet(e.target.value)) {
+      incomingValue = e.target.value;
+    } else {
+      switch (e.target.value.toLowerCase()) {
+        case "yes":
+          incomingValue = 5;
+          break;
+        case "no":
+          incomingValue = 4;
+          break;
+        case "dont know":
+          incomingValue = 3;
+          break;
+        case "don't know":
+          incomingValue = 3;
+          break;
+        case "on time":
+          incomingValue = 5;
+          break;
+        case "delay":
+          incomingValue = 3;
+          break;
+        default:
+          incomingValue = 0;
+      }
+    }
+
+    if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+      let difference =
+        form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
+      let compare =
+        form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
+      if (compare) {
+        totalScored =
+          form.overallAssessment.scoredRating + Math.abs(difference);
+      } else {
+        totalScored =
+          form.overallAssessment.scoredRating - Math.abs(difference);
+      }
+    } else {
+      totalScored =
+        form.overallAssessment.scoredRating + parseInt(incomingValue);
+    }
+
+    let calc = (totalScored / totalRating) * 100;
+
+    setForm({
+      ...form,
+      [firstKeyName]: {
+        ...form[firstKeyName],
+        [secondKeyName]: e.target.value,
+      },
+      overallAssessment: {
+        ...form.overallAssessment,
+        score: Math.floor(calc),
+        scoredRating: totalScored,
+        rated: {
+          ...form.overallAssessment.rated,
+          [secondKeyName]: parseInt(incomingValue),
+        },
+      },
+    });
+  };
+
   const handleChange = async (
     e,
     firstKeyName,
@@ -523,46 +598,41 @@ function AddProperty() {
 
       function isNotAlphabet(char) {
         return !/[a-zA-Z]/.test(char);
-    }
-    let incomingValue;
-      if(isNotAlphabet(e.target.value)){
-        incomingValue = e.target.value
       }
-      else{
-
-switch (e.target.value.toLowerCase()) {
-  case "yes":
-    incomingValue = 5;
-      break;
-  case "no":
-    incomingValue = 4;
-      break;
-  case "dont know":
-    incomingValue = 3;
-      break;
-      case "don't know":
-    incomingValue = 3;
-      break;
-      case "on time":
-        incomingValue = 5;
-          break;
-  case "delay":
-    incomingValue = 3;
-      break;       
-  default:
-    incomingValue = 0;
-}
-
+      let incomingValue;
+      if (isNotAlphabet(e.target.value)) {
+        incomingValue = e.target.value;
+      } else {
+        switch (e.target.value.toLowerCase()) {
+          case "yes":
+            incomingValue = 5;
+            break;
+          case "no":
+            incomingValue = 4;
+            break;
+          case "dont know":
+            incomingValue = 3;
+            break;
+          case "don't know":
+            incomingValue = 3;
+            break;
+          case "on time":
+            incomingValue = 5;
+            break;
+          case "delay":
+            incomingValue = 3;
+            break;
+          default:
+            incomingValue = 0;
+        }
       }
-
 
       if (form.overallAssessment.rated?.[secondKeyName] > 0) {
-
-        
         let difference =
           form.overallAssessment.rated?.[secondKeyName] -
           parseInt(incomingValue);
-          let compare =  form.overallAssessment.rated?.[secondKeyName] <
+        let compare =
+          form.overallAssessment.rated?.[secondKeyName] <
           parseInt(incomingValue);
         if (compare) {
           totalScored =
@@ -711,6 +781,7 @@ switch (e.target.value.toLowerCase()) {
             <LandscapeCard
               errors={errors}
               form={form}
+              scoreChange={scoreChange}
               handleChange={handleChange}
               isEdit={isEdit}
             />
