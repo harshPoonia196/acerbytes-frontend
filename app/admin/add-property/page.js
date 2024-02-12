@@ -12,6 +12,7 @@ import { listOfTabsInAddProperty } from "utills/Constants";
 import NavTab from "Components/Admin/Property/NavTab";
 import throttle from "lodash/throttle";
 import { useSearchParams } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from 'Components/Admin/Property/SubComponents/LocationCard';
 import ProjectCard from 'Components/Admin/Property/SubComponents/ProjectCard';
@@ -73,6 +74,7 @@ function useThrottledOnScroll(callback, delay) {
 
 function AddProperty() {
     const router = useSearchParams()
+    const routerNavigation = useRouter();
     const [editPage,setEditPage] = useState(false)
     const [activeState, setActiveState] = React.useState(null);
     const detailsPropertyId = router.get('id')
@@ -642,10 +644,12 @@ if(!editPage){
       // Validation passed
       CreateProperty({...form})
       openSnackbar(`Property added successfully`, "success");
+      routerNavigation.push(`/admin/property-list`) 
 }
 else{
   EditProperty(detailsPropertyId,{...form})
   openSnackbar(`Property edited successfully`, "success");
+  routerNavigation.push(`/admin/property-list`) 
 }
   
         }
