@@ -137,9 +137,12 @@ const reactQueryKey = {
     brokerList: "admin-broker-list",
   },
   user: {
-    myConsultant: "my-consultant"
-  }
+    myConsultant: "my-consultant",
+  },
 };
+
+const enquiryFormKey = "enquiryForm";
+const propertyRedirectKey = "propertyRedirect";
 
 export {
   listOfTabsInAddProperty,
@@ -148,4 +151,6 @@ export {
   disablePersonalizeAdsOption,
   listOfPropertyDetailsTab,
   reactQueryKey,
+  enquiryFormKey,
+  propertyRedirectKey,
 };

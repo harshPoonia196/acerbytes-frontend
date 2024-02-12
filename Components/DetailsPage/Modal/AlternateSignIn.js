@@ -16,9 +16,22 @@ import GoogleIcon from "@mui/icons-material/Google";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import { useState } from "react";
+import { useParams,useRouter } from "next/navigation";
+import { setItem } from "utills/utills";
+import { propertyRedirectKey } from "utills/Constants";
 
 function AlternateSignIn({ open, handleClose }) {
   const [isVerified, setIsVerified] = useState(false);
+  const router = useRouter();
+  const param = useParams();
+
+  const handleSignin = () => {
+    setIsVerified(true);
+    if (param?.projectdetails) {
+      setItem(propertyRedirectKey, param?.projectdetails);
+    }
+    router.push("/login");
+  };
 
   return (
     <Dialog
@@ -50,7 +63,11 @@ function AlternateSignIn({ open, handleClose }) {
             Our team will connect with you shortly
           </Typography>
         ) : (
-          <Card>
+          <Card
+            onClick={() => {
+              handleSignin();
+            }}
+          >
             <CardActionArea
               sx={{ p: 2, display: "flex", justifyContent: "start" }}
             >
@@ -83,7 +100,7 @@ function AlternateSignIn({ open, handleClose }) {
                 startIcon={<DoneIcon />}
                 variant="contained"
                 onClick={() => {
-                  setIsVerified(true);
+                  handleSignin();
                 }}
               >
                 Sign in

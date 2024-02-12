@@ -17,6 +17,8 @@ import { useRouter } from "next/navigation";
 import { useSnackbar } from "utills/SnackbarContext";
 import ConsultantDialog from "Components/Login/ConsultantDialog";
 import { useAuth } from "utills/AuthContext";
+import { getItem } from "utills/utills";
+import { enquiryFormKey } from "utills/Constants";
 
 function Login() {
   const { login } = useAuth();
@@ -27,6 +29,7 @@ function Login() {
 
   const [activeStep, setActiveStep] = useState(1);
   const [otpInput, setOtpInput] = useState("");
+  const formDetail = getItem(enquiryFormKey);
   const [form, setForm] = useState({
     countryCode: "+91",
     phone: "",
@@ -98,12 +101,20 @@ function Login() {
       setLoading(true);
 
       const res = await signInAuthenticationAPI({ code: code });
-      const { email, id, name, superAdmin,token, userDetails } = res?.data?.data;
+      const { email, id, name, superAdmin, token, userDetails } =
+        res?.data?.data;
       let formData = {
         email: email,
         googleId: id,
         firstName: name?.split(" ")?.[0] || "",
         lastName: name?.split(" ")?.[name?.split(" ")?.length - 1] || "",
+      };
+
+      if (formDetail && !name) {
+        formData.countryCode = formDetail?.countryCode || "+91";
+        formData.phone = formDetail?.number || "";
+        formData.firstName = formDetail?.firstName || "";
+        formData.lastName = formDetail?.lastName || "";
       }
 
       if (token) {
@@ -120,12 +131,12 @@ function Login() {
 
       setLoading(false);
       openSnackbar("Authentication successful", "success");
-      if(superAdmin){
-        formData.role='superAdmin'
-       }
+      if (superAdmin) {
+        formData.role = "superAdmin";
+      }
       setForm((prev) => ({
         ...prev,
-        ...formData
+        ...formData,
       }));
 
       nextStep();
@@ -173,11 +184,11 @@ function Login() {
         otp: otpInput,
       };
       const res = await verifyOtpAPI(payload);
-      if (res.status === 200 && !(form.role==='superAdmin')) {
+      if (res.status === 200 && !(form.role === "superAdmin")) {
         nextStep();
       }
-      if(form.role==="superAdmin"){
-        createUserFun()
+      if (form.role === "superAdmin") {
+        createUserFun();
       }
     } catch (error) {
       handleClick(
