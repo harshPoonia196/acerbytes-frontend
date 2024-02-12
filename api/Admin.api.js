@@ -1,5 +1,6 @@
 import axiosInstance from "./AxiosInstance";
 
+
 export const getOrderRequests = (queryParams) => {
   return axiosInstance.get(`/admin/orderRequests?${queryParams}`);
 };

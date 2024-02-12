@@ -15,7 +15,7 @@ import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/N
 import BrokerCard from 'Components/BrokersPage/BrokerCard';
 import NewInputFieldStructure from 'Components/CommonLayouts/NewInputFieldStructure';
 
-function OverallAssessmentCard({ isEdit }) {
+function OverallAssessmentCard({ isEdit,form }) {
     return (
         <Grid item xs={12} id="overallAssessment">
             <Card>
@@ -41,7 +41,7 @@ function OverallAssessmentCard({ isEdit }) {
                             margin: "auto",
                         }}
                     >
-                        <Typography variant="h1">99</Typography>
+                        <Typography variant="h1">{form.overallAssessment.score}</Typography>
                         <Typography variant="h5" sx={{ alignSelf: "end" }}>
                             /100
                         </Typography>
