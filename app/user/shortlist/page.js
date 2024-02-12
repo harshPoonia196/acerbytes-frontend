@@ -20,6 +20,7 @@ function ShortList() {
   const [favouriteProperty, setfavouriteProperty] = useState([])
   const [isLoading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const [focus, setFocus] = useState(false)
   const inputRef = useRef(null);
 
@@ -70,19 +71,21 @@ function ShortList() {
 
 
   useEffect(() => {
-    getAllfavouritePropertyList(searchTerm)
+    getAllfavouritePropertyList(debouncedSearchTerm)
     if (inputRef.current) {
       inputRef.current.focus();
       setFocus(true)
-      console.log(inputRef , 'inputRef')
     }
-  }, [searchTerm]);
-
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
-    getAllfavouritePropertyList(searchTerm)
-   
+    const timerId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500); 
+
+    return () => clearTimeout(timerId);
   }, [searchTerm]);
+
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);

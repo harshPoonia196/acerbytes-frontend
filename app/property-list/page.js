@@ -38,12 +38,14 @@ function PropertyList() {
   const [count, setCount] = useState([])
   const [isLoading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const [focus, setFocus] = useState(false)
   const inputRef = useRef(null);
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term)
+    setFocus(true)
   };
 
   const objectToQueryString = (obj) => {
@@ -91,15 +93,22 @@ function PropertyList() {
       page: currentPage,
     };
 
-    getUserPropertyList(pageOptions, searchTerm)
+    getUserPropertyList(pageOptions, debouncedSearchTerm)
     if (inputRef.current) {
       inputRef.current.focus();
-      setFocus(true)
     }
-  }, [searchTerm, currentPage, pageLimit]);
+  }, [debouncedSearchTerm, currentPage, pageLimit]);
 
   useEffect(() => {
     setCurrentPage(1)
+  }, [searchTerm]);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500); 
+
+    return () => clearTimeout(timerId);
   }, [searchTerm]);
 
   const handleChangePage = (event, newPage) => {
@@ -221,7 +230,7 @@ function PropertyList() {
             </Grid>
             <Grid item xs={36}>
               <Card>
-                <CustomSearchInput />
+                <CustomSearchInput value={searchTerm}  onChange={handleSearch} ref={inputRef}  autoFocus={focus}/>
               </Card>
             </Grid>
             <Grid item xs={6} sm={3} sx={{ alignSelf: "center" }}>

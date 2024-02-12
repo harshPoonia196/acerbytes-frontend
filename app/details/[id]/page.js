@@ -93,6 +93,10 @@ const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams()
   const name = searchParams.get('name')
 
+  const storedUserDataString = localStorage.getItem('userDetails');
+  const storedUserData = JSON.parse(storedUserDataString);
+  const role = storedUserData?.role;
+
   const detailsPropertyId = params.id
 
   const [isLoading, setLoading] = useState(false);
@@ -381,7 +385,7 @@ const PropertyDetailsPage = ({ params }) => {
         <DisableActivateAdsPopup open={disablePersonalizeAds} handleOpen={handleOpenPersonalizeAds} handleClose={handleClosePersonalizeAds} />
 
         {
-          !propertyData.isActiveAd ? (
+          role === 'broker' && !propertyData.isActiveAd ? (
             <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} isConsultant />
           ) : (
             null
@@ -389,7 +393,7 @@ const PropertyDetailsPage = ({ params }) => {
         }
 
         {
-          propertyData.isActiveAd ? (
+          (role !== 'admin' || role !== 'superAdmin') && propertyData.isActiveAd  ? (
             <AdsSection SinglePropertyId={propertyData?.propertyBroker[0]} propertyData={propertyData} id={propertyData?.propertyBroker?.[0]?._id} handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
           ) : (
             null
