@@ -15,7 +15,7 @@ const AccordionInfo = () => {
   return (
     <>
       <Container maxWidth="md" sx={{ mx: "auto" }}>
-        <Paper sx={{ p: 1 }} square={false} elevation={1}>
+        <Paper sx={{ p: 2 }} square={false} elevation={1}>
           <Typography sx={{ color: colors.BLUE }} variant="h3">
             Terms & Conditions
           </Typography>

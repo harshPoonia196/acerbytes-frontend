@@ -17,7 +17,7 @@ const page = () => {
             Privacy Policy
           </Typography>
           <Typography variant="body2">Last Updated on 9th Dec, 2023</Typography>
-          <Typography sx={{ my: 1,lineHeight:"1.5rem" }} variant="body1">
+          <Typography sx={{ my: 1 }} variant="subtitle2">
             The website and the mobile application ‘Nobroker’
             (together“Website”) is owned and operated by Nobroker Technology
             Solutions Private Limited, a company incorporated in India under the
@@ -51,45 +51,43 @@ const page = () => {
             protect the confidentiality of the user information and its
             transmission through the internet.
             <br />
-            </Typography>
-            <Typography sx={{mb:"1rem"}}>
-            <b>
-              By using our Services and the Website or by otherwise giving us
-              your information, you agree to the terms of this Privacy Policy.
-              You also expressly consent to our use and disclosure of your
-              Personal Information (as defined below) in the manner prescribed
-              under this Privacy Policy and further signify your agreement to
-              this Privacy Policy and the Terms of Use. If you do not agree to
-              this Privacy Policy, do not subscribe to the Services, use the
-              Website or give us any of your information.
-            </b>
-            </Typography>
-            
-         
+          </Typography>
+          <Typography variant="subtitle2" sx={{ mb: "1rem", fontWeight: 600 }}>
+            By using our Services and the Website or by otherwise giving us
+            your information, you agree to the terms of this Privacy Policy.
+            You also expressly consent to our use and disclosure of your
+            Personal Information (as defined below) in the manner prescribed
+            under this Privacy Policy and further signify your agreement to
+            this Privacy Policy and the Terms of Use. If you do not agree to
+            this Privacy Policy, do not subscribe to the Services, use the
+            Website or give us any of your information.
+          </Typography>
+
+
           <Stack spacing={2} sx={{}}>
             <div>
-              {privacyData.map((accordion,index) => (
+              {privacyData.map((accordion, index) => (
                 <CustomAccordion
-                key={accordion.id}
-                sx={{
-                  mb: 1,
-                }}
-                defaultExpanded={index === 0}
-              >
-                <CustomAccordionSummary
-                  // expandIcon={<ExpandMoreIcon />}
-                  aria-
-                  controls={`panel${accordion.id}-content`}
-                  id={`panel${accordion.id}-header`}
+                  key={accordion.id}
+                  sx={{
+                    mb: 1,
+                  }}
+                  defaultExpanded={index === 0}
                 >
-                  {`${accordion.id}.${accordion.title}`}
-                </CustomAccordionSummary>
-                <CustomAccordionDetails>
-                  {accordion.content}
-                </CustomAccordionDetails>
-              </CustomAccordion>
+                  <CustomAccordionSummary
+                    // expandIcon={<ExpandMoreIcon />}
+                    aria-
+                    controls={`panel${accordion.id}-content`}
+                    id={`panel${accordion.id}-header`}
+                  >
+                    {`${accordion.id}.${accordion.title}`}
+                  </CustomAccordionSummary>
+                  <CustomAccordionDetails>
+                    {accordion.content}
+                  </CustomAccordionDetails>
+                </CustomAccordion>
 
-               
+
               ))}
             </div>
           </Stack>
