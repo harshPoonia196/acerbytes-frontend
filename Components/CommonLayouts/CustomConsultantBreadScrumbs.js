@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import { Box, Card, CardActionArea, Container, Dialog, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { listOfPages } from 'Components/NavBar/Links'
-import { boxShadowTop } from 'utills/Constants';
+import { boxShadowBottom, boxShadowTop } from 'utills/Constants';
 import colors from 'styles/theme/colors';
 function handleClick(event) {
     event.preventDefault();
@@ -217,15 +217,14 @@ export default function CustomConsultantBreadScrumbs({ text }) {
 
     return (
         <Box
-        sx={{
-            zIndex: 100,
-            background: colors.WHITE,
-            position: "sticky",
-            top: { xs: 48, sm: 64 },
-            boxShadow:boxShadowTop
-          }}
+            sx={{
+                zIndex: 100,
+                background: colors.WHITE,
+                position: "sticky",
+                top: { xs: 48, sm: 64 },
+                boxShadow: boxShadowBottom
+            }}
         >
-  <Box sx={{ backgroundColor: "white", borderBottom: "1px solid whitesmoke" }}>
             <Container
                 maxWidth="lg"
             >
@@ -237,7 +236,6 @@ export default function CustomConsultantBreadScrumbs({ text }) {
                 </Stack>
             </Container>
         </Box>
-        </Box>
-      
+
     );
 }

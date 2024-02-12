@@ -169,11 +169,11 @@ export const generateContent = () => (
     <List disablePadding>
       <ListItem disablePadding>
         <ListItemIcon
-          sx={{ minWidth: "0px", mr: "0.5rem" ,mb:"0.6rem" }}
+          sx={{ minWidth: "0px", mr: "0.5rem" }}
         >
           <FiberManualRecord
             fontSize="1rem"
-            sx={{ color:colors.BLACK,p: "0.1rem" }}
+            sx={{ color: colors.BLACK }}
           />
         </ListItemIcon>
         <ListItemText>
@@ -185,12 +185,12 @@ export const generateContent = () => (
         </ListItemText>
       </ListItem>
       <ListItem disablePadding>
-      <ListItemIcon
-          sx={{ minWidth: "0px", mr: "0.5rem",mb: "1rem" }}
+        <ListItemIcon
+          sx={{ minWidth: "0px", mr: "0.5rem" }}
         >
           <FiberManualRecord
             fontSize="1rem"
-            sx={{ color:colors.BLACK,p: "0.1rem" }}
+            sx={{ color: colors.BLACK }}
           />
         </ListItemIcon>
         <ListItemText>
@@ -204,15 +204,15 @@ export const generateContent = () => (
       </ListItem>
       <ListItem disablePadding>
         <ListItemIcon
-          sx={{ minWidth: "0px", mr: "0.5rem", mb: "6rem" }}
+          sx={{ minWidth: "0px", mr: "0.5rem" }}
         >
           <FiberManualRecord
             fontSize="1rem"
-            sx={{ color:colors.BLACK, p:"0.1rem" }}
+            sx={{ color: colors.BLACK }}
           />
         </ListItemIcon>
         <ListItemText>
-          <Typography variant="body1">
+          <Typography variant="body2">
             <b>Applicable Law</b> - means and includes any statute, law,
             regulation, subordinate legislation, ordinance, rule, judgment, rule
             of law, order (interim or final), writ, decree, clearance,
@@ -283,7 +283,7 @@ export const termsData = [
   },
 ];
 export const privacyContent = () => (
-  <Typography sx={{ lineHeight: '1.5rem'}} variant='body1'>
+  <Typography variant='body2'>
     We may collect information from you, through your use of the Website or by joining the Nobroker community on social media websites, or which is provided to one of our marketing partners or through any engagement with Nobroker. We may collect and process personal information provided by you, including but not limited to:
     <br />
     Information that you provide at the time of registration including any information that identifies or can be used to identify, contact or locate the user such as name, address, email address, property photos, bank details, and phone number.

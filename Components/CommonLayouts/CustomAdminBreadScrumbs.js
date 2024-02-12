@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import { Box, Card, CardActionArea, Container, Dialog, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { listOfPages } from 'Components/NavBar/Links'
-import { boxShadowTop } from 'utills/Constants';
+import { boxShadowBottom, boxShadowTop } from 'utills/Constants';
 import colors from 'styles/theme/colors';
 function handleClick(event) {
     event.preventDefault();
@@ -220,31 +220,27 @@ export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
     ];
 
     return (
-        
-            <Box
-        sx={{
-          zIndex: 100,
-          background: colors.WHITE,
-          position: "sticky",
-          top: { xs: 48, sm: 64 },
-          boxShadow: boxShadowTop
-        }}
-      >
-        <Box>
+
+        <Box
+            sx={{
+                zIndex: 100,
+                background: colors.WHITE,
+                position: "sticky",
+                top: { xs: 48, sm: 64 },
+                boxShadow: boxShadowBottom
+            }}
+        >
             <Container
                 maxWidth={maxWidthTill ? maxWidthTill : "lg"}
             >
                 <Stack spacing={2}>
                     <PopupForLinks router={router} open={openAdminLinkPopup} handleClose={handleCloseAdminLinkPopup} />
                     <Breadcrumbs separator="›" aria-label="breadcrumb"
->
+                    >
                         {breadcrumbs}
                     </Breadcrumbs>
                 </Stack>
             </Container>
         </Box>
-      </Box>
-       
-        
     );
 }

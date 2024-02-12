@@ -40,6 +40,8 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
 import PageLoader from "Components/Loader/PageLoader";
+import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
+import { ProfilePic } from "Components/CommonLayouts/profilepic";
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
@@ -389,11 +391,13 @@ function ConsultantProfile() {
       <PageLoader isLoading={isLoading || mutate.isPending} />
       <nav className={classes.demo2}>
         <CustomConsultantBreadScrumbs text="Profile" />
-        <NavTabProfilePage
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
+        <Card>
+          <NavTabProfilePage
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </Card>
       </nav>
 
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Box, Button, Card, Container, Grid } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { listOfTabsInAddProperty } from "utills/Constants";
@@ -758,11 +758,13 @@ function AddProperty() {
     <>
       <nav className={classes.demo2}>
         <CustomAdminBreadScrumbs text="Add Property" />
-        <NavTab
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
+        <Card>
+          <NavTab
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </Card>
       </nav>
 
       <Container>
