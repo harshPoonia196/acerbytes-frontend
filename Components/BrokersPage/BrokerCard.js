@@ -132,37 +132,42 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
                 <i>{broker?.clients || 50} clients served</i>
               </Typography>
             </Box>
-            {!noReview ? (
-              <Box sx={{ alignSelf: "end" }}>
-                {type ? (
-                  <Button
-                    onClick={() => handleViewReview(broker?.name)}
-                    size="small"
-                    variant="outlined"
-                  >
-                    View Reviews
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleDialogOpen}
-                    size="small"
-                    variant="outlined"
-                  >
-                    Rate your experience
-                  </Button>
-                )}
-              </Box>
-            ) : (
-              <Box sx={{ alignSelf: "end" }}>
-                <Button
-                  onClick={handleDialogOpen}
-                  size="small"
-                  variant="outlined"
-                >
-                  Write your experience
-                </Button>
-              </Box>
-            )}
+            {
+              !noReview ? (
+                <Box sx={{ alignSelf: "end" }}>
+                  {type ? (
+                    <Button
+                      onClick={() => handleViewReview(broker?.name)}
+                      size="small"
+                      variant="outlined"
+                    >
+                      View Reviews
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleDialogOpen}
+                      size="small"
+                      variant="outlined"
+                    >
+                      Rate your experience
+                    </Button>
+                  )}
+                </Box>
+              ) : (
+                <></>
+              )
+              // (
+              //   <Box sx={{ alignSelf: "end" }}>
+              //     <Button
+              //       onClick={handleDialogOpen}
+              //       size="small"
+              //       variant="outlined"
+              //     >
+              //       Write your experience
+              //     </Button>
+              //   </Box>
+              // )
+            }
           </Box>
         </Box>
       </Box>
