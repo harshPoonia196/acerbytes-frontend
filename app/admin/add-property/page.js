@@ -168,7 +168,9 @@ function AddProperty() {
       let res = await detailsProperty(detailsPropertyId);
       if (res.status === 200) {
         let data = removeIds(res.data?.data);
+
         delete data.__v;
+        setEditForm(true);
         setForm({ ...data });
       }
     } catch (error) {
@@ -217,9 +219,11 @@ function AddProperty() {
 
   const [isEdit, setIsEdit] = useState(true);
   const [errors, setErrors] = useState({});
+  const [editForm, setEditForm] = useState(false);
   const [form, setForm] = useState({
     overview: {
       builder: "",
+      builderScore: "",
       projectName: "",
       projectCategory: "",
       projectType: [],
@@ -250,7 +254,9 @@ function AddProperty() {
       area: "",
       greenArea: "",
       unitDensity: "",
+      unitDensityScore: "",
       greenDensity: "",
+      greenDensityScore: "",
       constructionQuality: 0,
       interiorQuality: 0,
     },
@@ -518,14 +524,368 @@ function AddProperty() {
       forEndUse: 0,
     },
     consultants: [],
+    // consultants: [
+    //     {
+    //         id: "",
+    //         name: "",
+    //         profilePic: "",
+    //         rating: 0,
+    //         ratingTag: "",
+    //         clientsServed: 0,
+    //         number: ""
+    //     }
+    // ],
+    overallAssessment: {
+      score: 0,
+      scoredRating: 0,
+      rated: {
+        builder: 0,
+        constructionProgress: 0,
+        reraApproved: 0,
+        cc: 0,
+        oc: 0,
+        authorityRegisteration: 0,
+        governmentBankLoan: 0,
+        privateBankLoan: 0,
+        resale: 0,
+        area: 0,
+        unitsDensity: 0,
+        greenDensity: 0,
+        unitsDensityScore: 0,
+        greenDensityScore: 0,
+        constructionQuality: 0,
+        interiorQuality: 0,
+      },
+    },
     marketing: {
       tagLine: "",
       description: "",
     },
   });
 
+  //   amenitiesData: {
+  //     Basic: {
+  //       Gym: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Yoga: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Swimming pool": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Club: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Fitness center": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       SPA: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //     Expected: {
+  //       Pool: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Yoga: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Party hall": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Indoor games": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Spa: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Clubhouse: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Jacuzzi: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Theatre: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Barbeque Lawn": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Jogging track": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Covered Sitting": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Garden: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Wi-fi": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //     Desired: {
+  //       Theatre: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Barbeque Lawn": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Jogging track": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Covered Sitting": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Garden: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Yoga: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       SPA: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Swimming pool": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Club: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //     Unique: {
+  //       Library: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Kids play area": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Back up": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Wi-fi": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Gas line": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Shopping mart": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //   },
+  //   location: {
+  //     state: "Andhra",
+  //     city: "",
+  //     sector: "",
+  //     area: "",
+  //     pinCode: "",
+  //     googleMapLink: "",
+  //     longitude: "",
+  //     latitude: "",
+  //     assesment: {
+  //       "Pick up / delivery": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       School: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Hospital: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Mall: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Super market": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Restaurants: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Railway: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Metro: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Bus stand": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Highway: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Offices: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Hotels: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Clubs: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Noise: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Safety: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Bus stops": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Train station": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Metro station": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       University: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Parks: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //   },
+  //   valueForMoney: {
+  //     appTillNow: 0,
+  //     expectedFurtherApp: 0,
+  //     forEndUse: 0,
+  //   },
+  //   consultants: [],
+  //   marketing: {
+  //     tagLine: "",
+  //     description: "",
+  //   },
+  // });
+
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
+  };
+  const scoreChange = async (e, firstKeyName, secondKeyName) => {
+    let totalRating = 70;
+    let totalScored;
+
+    function isNotAlphabet(char) {
+      return !/[a-zA-Z]/.test(char);
+    }
+    let incomingValue;
+    if (isNotAlphabet(e.target.value)) {
+      incomingValue = e.target.value;
+    } else {
+      switch (e.target.value.toLowerCase()) {
+        case "yes":
+          incomingValue = 5;
+          break;
+        case "no":
+          incomingValue = 4;
+          break;
+        case "dont know":
+          incomingValue = 3;
+          break;
+        case "don't know":
+          incomingValue = 3;
+          break;
+        case "on time":
+          incomingValue = 5;
+          break;
+        case "delay":
+          incomingValue = 3;
+          break;
+        default:
+          incomingValue = 0;
+      }
+    }
+
+    if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+      let difference =
+        form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
+      let compare =
+        form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
+      if (compare) {
+        totalScored =
+          form.overallAssessment.scoredRating + Math.abs(difference);
+      } else {
+        totalScored =
+          form.overallAssessment.scoredRating - Math.abs(difference);
+      }
+    } else {
+      totalScored =
+        form.overallAssessment.scoredRating + parseInt(incomingValue);
+    }
+
+    let calc = (totalScored / totalRating) * 100;
+
+    setForm({
+      ...form,
+      [firstKeyName]: {
+        ...form[firstKeyName],
+        [secondKeyName]: e.target.value,
+      },
+      overallAssessment: {
+        ...form.overallAssessment,
+        score: Math.floor(calc),
+        scoredRating: totalScored,
+        rated: {
+          ...form.overallAssessment.rated,
+          [secondKeyName]: parseInt(incomingValue),
+        },
+      },
+    });
   };
 
   const handleChange = async (
@@ -537,7 +897,8 @@ function AddProperty() {
     autoFillField,
     autoFillFieldValue,
     isRating,
-    unitsPlanValue
+    unitsPlanValue,
+    score
   ) => {
     if (autoFill) {
       let innerObj = {
@@ -552,6 +913,78 @@ function AddProperty() {
       setForm({ ...form, consultants: [...e] });
     } else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
+    } else if (score === true) {
+      let totalRating = 70;
+      let totalScored;
+
+      function isNotAlphabet(char) {
+        return !/[a-zA-Z]/.test(char);
+      }
+      let incomingValue;
+      if (isNotAlphabet(e.target.value)) {
+        incomingValue = e.target.value;
+      } else {
+        switch (e.target.value.toLowerCase()) {
+          case "yes":
+            incomingValue = 5;
+            break;
+          case "no":
+            incomingValue = 4;
+            break;
+          case "dont know":
+            incomingValue = 3;
+            break;
+          case "don't know":
+            incomingValue = 3;
+            break;
+          case "on time":
+            incomingValue = 5;
+            break;
+          case "delay":
+            incomingValue = 3;
+            break;
+          default:
+            incomingValue = 0;
+        }
+      }
+
+      if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+        let difference =
+          form.overallAssessment.rated?.[secondKeyName] -
+          parseInt(incomingValue);
+        let compare =
+          form.overallAssessment.rated?.[secondKeyName] <
+          parseInt(incomingValue);
+        if (compare) {
+          totalScored =
+            form.overallAssessment.scoredRating + Math.abs(difference);
+        } else {
+          totalScored =
+            form.overallAssessment.scoredRating - Math.abs(difference);
+        }
+      } else {
+        totalScored =
+          form.overallAssessment.scoredRating + parseInt(incomingValue);
+      }
+
+      let calc = (totalScored / totalRating) * 100;
+
+      setForm({
+        ...form,
+        [firstKeyName]: {
+          ...form[firstKeyName],
+          [secondKeyName]: e.target.value,
+        },
+        overallAssessment: {
+          ...form.overallAssessment,
+          score: Math.floor(calc),
+          scoredRating: totalScored,
+          rated: {
+            ...form.overallAssessment.rated,
+            [secondKeyName]: parseInt(incomingValue),
+          },
+        },
+      });
     } else {
       if (thirdKeyName === "checked") {
         setForm((prevForm) => {
@@ -703,12 +1136,14 @@ function AddProperty() {
             <LandscapeCard
               errors={errors}
               form={form}
+              scoreChange={scoreChange}
               handleChange={handleChange}
               isEdit={isEdit}
             />
             <FloorPlanCard
               errors={errors}
               form={form}
+              editForm={editForm}
               handleChange={handleChange}
               handleUnitsPlan={handleUnitsPlan}
               isEdit={isEdit}
@@ -740,7 +1175,7 @@ function AddProperty() {
               list={brokerList}
               handleChange={handleChange}
             />
-            <OverallAssessmentCard isEdit={isEdit} />
+            <OverallAssessmentCard isEdit={isEdit} form={form} />
             {/* <BankCard isEdit={isEdit} /> */}
             <MarketingCard
               errors={errors}
