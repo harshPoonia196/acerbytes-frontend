@@ -42,7 +42,7 @@ const NewMultiSelectAutoCompleteInputStructure = ({
         onChange={handleChange}
         options={list || top100Films}
         getOptionLabel={(option) =>
-          brokerUse ? option.fullName : option.getOptionLabel
+          brokerUse ? option.fullName : option.label
         }
         value={value || []}
         fullWidth

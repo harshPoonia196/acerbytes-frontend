@@ -38,6 +38,7 @@ function PropertyConsultantsCard({ isEdit, form, list, handleChange }) {
           <NewMultiSelectAutoCompleteInputStructure
             value={form.consultants}
             list={list}
+            brokerUse={true}
             handleChange={(e, newValue) => {
               handleChange(newValue, "consultant");
             }}
