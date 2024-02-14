@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Box, Button, Card, Container, Grid } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { listOfTabsInAddProperty } from "utills/Constants";
@@ -27,25 +27,27 @@ import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/Pro
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
 import { CreateProperty } from "api/Property.api";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
+import colors from "styles/theme/colors";
 
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
   demo2: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.WHITE,
     position: "sticky",
     top: 54,
     left: 0,
     right: 0,
     zIndex: 100,
-    [theme.breakpoints?.up("sm")]: {
+    [theme.breakpoints?.up('sm')]: {
       top: 64,
     },
-    marginBottom: "16px",
+    mb: '1rem'
   },
-}));
+}
+));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -104,9 +106,9 @@ function AddProperty() {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -697,14 +699,14 @@ function AddProperty() {
           [firstKeyName]: !secondKeyName
             ? value
             : {
-                ...prev?.[firstKeyName],
-                [secondKeyName]: !thirdKeyName
-                  ? value
-                  : {
-                      ...prev?.[firstKeyName]?.[secondKeyName],
-                      [thirdKeyName]: value,
-                    },
-              },
+              ...prev?.[firstKeyName],
+              [secondKeyName]: !thirdKeyName
+                ? value
+                : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+            },
         }));
       }
     }
@@ -756,11 +758,13 @@ function AddProperty() {
     <>
       <nav className={classes.demo2}>
         <CustomAdminBreadScrumbs text="Add Property" />
-        <NavTab
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
+        <Card>
+          <NavTab
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </Card>
       </nav>
 
       <Container>

@@ -115,10 +115,10 @@ const UploadMarketingImage = ({
 
                         }}
                         component="label"
-                        sx={{ flexDirection: 'column', height: 68, width: 68 }}
+                        sx={{ flexDirection: 'column' }}
                     >
-                        <RemoveCircleOutlineIcon />
-                        <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#757575' }}>
+                        <RemoveCircleOutlineIcon fontSize='small'/>
+                        <Typography variant="body2" >
                             Change
                         </Typography>
                         <input
@@ -131,10 +131,10 @@ const UploadMarketingImage = ({
                     </IconButton>
                     <IconButton
                         onClick={removeImage}
-                        sx={{ flexDirection: 'column', height: 68, width: 68 }}
+                        sx={{ flexDirection: 'column',  }}
                     >
-                        <DeleteIcon />
-                        <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#757575' }}>
+                        <DeleteIcon  fontSize='small'/>
+                        <Typography variant="body2" >
                             Delete
                         </Typography>
                     </IconButton>
@@ -145,6 +145,7 @@ const UploadMarketingImage = ({
                     loadingPosition="start"
                     startIcon={<UploadIcon />}
                     variant="contained"
+                    size='small'
                 >
                     Upload
                 </LoadingButton>
