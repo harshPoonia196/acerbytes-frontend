@@ -25,3 +25,11 @@ export const getBrokersList = (limit, page, search) => {
   }
   return axiosInstance.get(`/admin/brokerList?${query}`);
 };
+
+export const getLeads = ({ limit, page, search }) => {
+  return axiosInstance.get(
+    `/admin/getLeads?limit=${limit || ""}&&page=${page || 0}&&search=${
+      search || ""
+    }`
+  );
+};
