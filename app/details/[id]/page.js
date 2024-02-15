@@ -391,9 +391,9 @@ const PropertyDetailsPage = ({ params }) => {
             null
           )
         }
-
+        
         {
-          (role !== 'admin' || role !== 'superAdmin') && propertyData.isActiveAd  ? (
+          (role !== 'admin' && role !== 'superAdmin') && propertyData.isActiveAd  ? (
             <AdsSection SinglePropertyId={propertyData?.propertyBroker[0]} propertyData={propertyData} id={propertyData?.propertyBroker?.[0]?._id} handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
           ) : (
             null
