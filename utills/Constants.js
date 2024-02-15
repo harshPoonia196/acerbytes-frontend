@@ -132,6 +132,7 @@ const listOfPropertyDetailsTab = [
 const reactQueryKey = {
   broker: {
     profile: (uniqueKey) => "broker-profile-" + uniqueKey,
+    myLeads: "broker-leads"
   },
   admin: {
     brokerList: "admin-broker-list",
