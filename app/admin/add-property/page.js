@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Box, Button, Card, Container, Grid } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { listOfTabsInAddProperty } from "utills/Constants";
@@ -32,12 +32,13 @@ import OverallAssessmentCard from "Components/Admin/Property/SubComponents/Overa
 import { CreateProperty, EditProperty } from "api/Property.api";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import { detailsProperty } from "api/Property.api";
+import colors from "styles/theme/colors";
 
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
   demo2: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.WHITE,
     position: "sticky",
     top: 54,
     left: 0,
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
-    marginBottom: "16px",
+    mb: "1rem",
   },
 }));
 
@@ -1111,11 +1112,13 @@ function AddProperty() {
     <>
       <nav className={classes.demo2}>
         <CustomAdminBreadScrumbs text="Add Property" />
-        <NavTab
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
+        <Card>
+          <NavTab
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </Card>
       </nav>
 
       <Container>

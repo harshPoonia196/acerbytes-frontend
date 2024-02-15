@@ -32,7 +32,7 @@ function PropertyList() {
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        pagename="pagename"
+        
       />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>

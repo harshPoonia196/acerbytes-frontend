@@ -16,7 +16,9 @@ import {
   Menu,
   MenuItem,
   Button,
+  Card
 } from "@mui/material";
+import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
@@ -40,6 +42,7 @@ import {
   getOrderRequests,
   getSalesPersons,
 } from "api/Admin.api";
+
 import AddCreditPointsPopup from "./Modal/AddCreditPointsPopup";
 import { useAuth } from "utills/AuthContext";
 import {
@@ -399,6 +402,10 @@ function TableView({
   return isLoading ? (
     <Loading />
   ) : (
+    <>
+    <Card sx={{ mb: 2 }}>
+    <CustomSearchInput />
+</Card>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <EnhancedTableHead
@@ -430,6 +437,8 @@ function TableView({
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </TableContainer>
+    </>
+    
   );
 }
 
@@ -628,6 +637,7 @@ function OrdersTable() {
           setInitialMount={setInitialMount}
         />
       </CustomTabPanel>
+     
     </Box>
   );
 }
