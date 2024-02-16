@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Card,
   Table,
   Box,
   TableBody,
@@ -10,21 +11,22 @@ import {
   TableRow,
   TableCell,
   TableSortLabel,
+  Tooltip,
   IconButton,
+  Chip,
   Menu,
   MenuItem,
   Button,
 } from "@mui/material";
-import React from "react";
-import Paper from "@mui/material/Paper";
-import { visuallyHidden } from "@mui/utils";
+
 import {
   formatDate,
   formatPoints,
   getApprovedDiscountPercentage,
   objectToQueryString,
+  getComparator,
+  stableSort,
 } from "utills/CommonFunction";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useAuth } from "utills/AuthContext";
 import { useSnackbar } from "utills/SnackbarContext";
 import { completeOrderRequest, getCreditPointStatusList } from "api/Admin.api";
@@ -36,6 +38,22 @@ import {
 import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
 import { ORDER_STATUS, ToasterMessages } from "Components/Constants";
+import React from "react";
+import Paper from "@mui/material/Paper";
+import { visuallyHidden } from "@mui/utils";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CustomSearchInput from "Components/CommonLayouts/SearchInput";
+const rows = [
+  {
+    name: "Anand Gupta",
+    mobileNumber: "+91 125454544",
+    lastTopupDate: "10th April, 2023",
+    lastTopupAmount: 18000,
+    opening: 5000,
+    consumedSoFar: 5000,
+    balance: 5000,
+  },
+];
 
 const headCells = [
   {
@@ -339,6 +357,9 @@ function CreditTable() {
         handleSubmit={adminAssignPointsHandler}
       />
 
+      <Card sx={{ mb: 2 }}>
+        <CustomSearchInput />
+      </Card>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <EnhancedTableHead

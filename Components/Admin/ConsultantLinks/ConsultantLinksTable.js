@@ -1,4 +1,4 @@
-import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem } from '@mui/material'
+import { Card,Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem } from '@mui/material'
 import React from 'react'
 import Paper from "@mui/material/Paper";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -202,6 +202,7 @@ function ConsultantLinksTable() {
     );
 
     return (
+        <>
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <EnhancedTableHead
@@ -224,6 +225,7 @@ function ConsultantLinksTable() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </TableContainer>
+        </>
     )
 }
 

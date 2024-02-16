@@ -17,7 +17,8 @@ function NewSelectTextFieldStructure({
   variant,
   sx,
   showInfo = false,
-  infoText = "Info"
+  infoText = "Info",
+  helperText= ""
 }) {
   return (
     <Grid item xs={12} sm={full ? 12 : 6}>
@@ -53,6 +54,7 @@ function NewSelectTextFieldStructure({
             },
             ...sx,
           }}
+          helperText={helperText}
         >
           {list ? (
             list?.map((option) => (

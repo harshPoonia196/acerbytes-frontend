@@ -148,7 +148,9 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Score
                             </Typography>
                         </Box>
-                        <Rating defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating onChange={(e)=>scoreChange(e, "layout", "unitDensityScore")}
+                          defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} 
+                         />
                     </Grid>
                     <NewInputFieldStructure
                         label="Green density"
@@ -169,7 +171,9 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Score
                             </Typography>
                         </Box>
-                        <Rating defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating 
+                         onChange={(e)=>scoreChange(e, "layout", "greenDensityScore")}
+                         defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
                         <Box>
@@ -180,7 +184,9 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Construction Quality
                             </Typography>
                         </Box>
-                        <Rating onChange={(e) => { handleChange(e, "layout", "constructionQuality") }} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating 
+                          onChange={(e)=>scoreChange(e, "layout", "constructionQuality")}
+                         name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
 
                     <Grid item xs={6}>
@@ -192,7 +198,9 @@ function LandscapeCard({ isEdit, form, handleChange, errors }) {
                                 Interior Quality
                             </Typography>
                         </Box>
-                        <Rating onChange={(e) => { handleChange(e, "layout", "interiorQuality") }} name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating
+                        onChange={(e)=>scoreChange(e, "layout", "interiorQuality")}
+                        name="interior-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
 
                 </Grid>

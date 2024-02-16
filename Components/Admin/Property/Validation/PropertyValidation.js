@@ -4,6 +4,7 @@ import Joi from 'joi';
 const overviewSchema = 
 Joi.object({
   builder: Joi.string().required(),
+  builderScore:Joi.string().allow(''),
   projectName: Joi.string().required(),
   projectCategory: Joi.string().required(),
   projectType: Joi.array().min(1).items(Joi.object({
@@ -56,7 +57,9 @@ const layoutSchema =
   }),
   maxFloors: Joi.number().max(34).required(),
   minFloors: Joi.number().min(24).required(),
+  unitDensityScore:Joi.string().allow('').optional(),
   totalUnits: Joi.number().required(),
+  greenDensityScore:Joi.string().allow('').optional(),
   area: Joi.string().required(),
   areaUnit: Joi.string().required(),
   greenArea: Joi.string().allow('').optional(),
@@ -191,6 +194,34 @@ Joi.object({
     //     number: Joi.string().required(),
     //   })
     // ),
+     // ],
+     overallAssessment: Joi.object().keys({
+      score:  Joi.number().allow(0),
+      scoredRating: Joi.number().allow(0),
+      rated: Joi.object().keys({
+        builder: Joi.number().allow(0),
+        builderScore:Joi.number().allow(0),
+        constructionProgress: Joi.number().allow(0),
+        reraApproved: Joi.number().allow(0),
+        cc: Joi.number().allow(0),
+        oc: Joi.number().allow(0),
+        authorityRegisteration: Joi.number().allow(0),
+        governmentBankLoan: Joi.number().allow(0),
+        privateBankLoan: Joi.number().allow(0),
+        resale: Joi.number().allow(0),
+        governmentLoan:Joi.number().allow(0),
+        authorityRegistration:Joi.number().allow(0),
+        fresh:Joi.number().allow(0),
+        area: Joi.number().allow(0),
+        unitsDensity: Joi.number().allow(0),
+        greenDensity: Joi.number().allow(0),
+        unitsDensityScore: Joi.number().allow(0),
+        greenDensityScore: Joi.number().allow(0),
+        constructionQuality: Joi.number().allow(0),
+        interiorQuality: Joi.number().allow(0),
+      })
+     }),
+    
     marketing: Joi.object().keys({
       tagLine: Joi.string().required(),
       description: Joi.string().required(),

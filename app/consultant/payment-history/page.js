@@ -94,7 +94,7 @@ function PaymentHistory(props) {
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        pagename="pagename"
+        
       />
       <Box sx={{ backgroundColor: "white" }}>
         <Container>
