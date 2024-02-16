@@ -10,9 +10,7 @@ import {
   TableRow,
   TableCell,
   TableSortLabel,
-  Tooltip,
   IconButton,
-  Chip,
   Menu,
   MenuItem,
   Button,
@@ -21,27 +19,23 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import {
-  getComparator,
+  formatDate,
+  formatPoints,
+  getApprovedDiscountPercentage,
   objectToQueryString,
-  stableSort,
 } from "utills/CommonFunction";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useAuth } from "utills/AuthContext";
 import { useSnackbar } from "utills/SnackbarContext";
-import { getCreditPointStatusList } from "api/Admin.api";
-import Loading from 'Components/CommonLayouts/Loading'
-
-const rows = [
-  {
-    name: "Anand Gupta",
-    mobileNumber: "+91 125454544",
-    lastTopupDate: "10th April, 2023",
-    lastTopupAmount: 18000,
-    opening: 5000,
-    consumedSoFar: 5000,
-    balance: 5000,
-  },
-];
+import { completeOrderRequest, getCreditPointStatusList } from "api/Admin.api";
+import Loading from "Components/CommonLayouts/Loading";
+import {
+  PAGINATION_LIMIT,
+  PAGINATION_LIMIT_OPTIONS,
+} from "Components/config/config";
+import { Add } from "@mui/icons-material";
+import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
+import { ORDER_STATUS, ToasterMessages } from "Components/Constants";
 
 const headCells = [
   {
@@ -114,8 +108,9 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row }) {
+function RowStructure({ row, adminAssignPointsHandler }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openAddCreditPoints, setOpenAddCreditPoints] = React.useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -124,43 +119,64 @@ function RowStructure({ row }) {
     setAnchorEl(null);
   };
 
+  const handlePopuChange = (value) => {
+    setOpenAddCreditPoints(value);
+    handleClose();
+  };
+
   return (
-    <TableRow
-      key={row.name}
-      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
-      <TableCell>{row.name}</TableCell>
-      <TableCell>{row.mobileNumber}</TableCell>
-      <TableCell>{row.lastTopupDate}</TableCell>
-      <TableCell>{row.lastTopupAmount}</TableCell>
-      <TableCell>{row.opening}</TableCell>
-      <TableCell>{row.consumedSoFar}</TableCell>
-      <TableCell>{row.balance}</TableCell>
-      <TableCell>
-        <IconButton
-          aria-label="more"
-          id="long-button"
-          aria-controls={open ? "long-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-haspopup="true"
-          onClick={handleClick}
-          size="small"
-        >
-          <MoreVertIcon fontSize="small" />
-        </IconButton>
-      </TableCell>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
+    <>
+      <AdminCreditPointsPopup
+        open={openAddCreditPoints}
+        brokerId={row?.brokerDetails?._id}
+        handleClose={() => handlePopuChange(false)}
+        handleSubmit={adminAssignPointsHandler}
+      />
+      <TableRow
+        key={row._id}
+        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
       >
-        <MenuItem onClick={handleClose}>Assign points</MenuItem>
-      </Menu>
-    </TableRow>
+        <TableCell>
+          {row?.brokerDetails?.name?.firstName}{" "}
+          {row?.brokerDetails?.name?.lastName}
+        </TableCell>
+        <TableCell>
+          {row?.brokerDetails?.phone?.countryCode}{" "}
+          {row?.brokerDetails?.phone?.number}
+        </TableCell>
+        <TableCell>{formatDate(row.createdAt)}</TableCell>
+        <TableCell>{formatPoints(row.newPoints)}</TableCell>
+        <TableCell>{formatPoints(row.openingPoints)}</TableCell>
+        <TableCell>{formatPoints(row.consumedPoints)}</TableCell>
+        <TableCell>{formatPoints(row?.brokerBalance?.balance || 0)}</TableCell>
+        <TableCell>
+          <IconButton
+            aria-label="more"
+            id="long-button"
+            aria-controls={open ? "long-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+            size="small"
+          >
+            <MoreVertIcon fontSize="small" />
+          </IconButton>
+        </TableCell>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={() => handlePopuChange(true)}>
+            Assign points
+          </MenuItem>
+        </Menu>
+      </TableRow>
+    </>
   );
 }
 
@@ -168,11 +184,12 @@ function CreditTable() {
   const { userDetails } = useAuth();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
+  const [page, setPage] = React.useState(1);
   const [initialMount, setInitialMount] = React.useState(true);
   const [isLoading, setLoading] = React.useState(false);
   const [creditPointList, setCreditPointList] = React.useState({});
+  const [openAddCreditPoints, setOpenAddCreditPoints] = React.useState(false);
   const { openSnackbar } = useSnackbar();
 
   const showToaterMessages = (message, severity) => {
@@ -228,49 +245,128 @@ function CreditTable() {
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    const page = newPage + 1;
+    setPage(page);
+    const pageOptions = {
+      pageLimit: rowsPerPage,
+      page,
+    };
+    getCreditPointList(pageOptions);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    const pageLimit = parseInt(event.target.value, 10);
+    setRowsPerPage(pageLimit);
+    setPage(1);
+    const pageOptions = {
+      pageLimit,
+      page: 1,
+    };
+    getCreditPointList(pageOptions);
   };
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
+  const handleCloseAddCreditPopup = () => {
+    setOpenAddCreditPoints(false);
+  };
+
+  const adminAssignPointsHandler = ({
+    approvedPayment,
+    approvedPoints,
+    salesPerson,
+    brokerGoogleID,
+    orderNumber,
+  }) => {
+    const payload = {
+      adminGoogleID: userDetails?.googleID,
+      status: ORDER_STATUS.COMPLETED,
+      orderNumber: orderNumber,
+      points: approvedPoints,
+      brokerGoogleID: brokerGoogleID,
+      approvedDiscount: getApprovedDiscountPercentage(
+        approvedPoints,
+        approvedPayment
+      )
+        .toFixed(2)
+        .toString(),
+      approvedPayment: approvedPayment,
+      approvedPoints: approvedPoints,
+      salesPerson,
+    };
+    handleOrderRequest(payload);
+  };
+
+  const handleOrderRequest = async (payload) => {
+    try {
+      setLoading(true);
+      const response = await completeOrderRequest(payload);
+      if (response.status == 200) {
+        showToaterMessages(ToasterMessages.ORDER_COMPLETED_SUCCESS, "success");
+        getCreditPointList({
+          pageLimit: rowsPerPage,
+          page,
+        });
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error creating order request",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+      handleCloseAddCreditPopup();
+    }
+  };
 
   return isLoading ? (
     <Loading />
   ) : (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-        />
-        <TableBody>
-          {creditPointList?.list?.map((row) => (
-            <RowStructure row={row} key={row.firstName} />
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+    <Box sx={{ width: "100%" }}>
+      <Button
+        variant="contained"
+        style={{ display: "flex", marginLeft: "auto" }}
+        align="right"
+        onClick={() => setOpenAddCreditPoints(true)}
+        startIcon={<Add />}
+      >
+        Add credit
+      </Button>
+
+      <AdminCreditPointsPopup
+        open={openAddCreditPoints}
+        handleClose={handleCloseAddCreditPopup}
+        handleSubmit={adminAssignPointsHandler}
       />
-    </TableContainer>
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {creditPointList?.list?.map((row) => (
+              <RowStructure
+                row={row}
+                key={row.firstName}
+                adminAssignPointsHandler={adminAssignPointsHandler}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+          component="div"
+          count={creditPointList.totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+    </Box>
   );
 }
 

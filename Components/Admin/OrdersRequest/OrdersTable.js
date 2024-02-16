@@ -201,7 +201,7 @@ function RowStructure({
       status: ORDER_STATUS.COMPLETED,
       orderNumber: row.orderNumber,
       points: row.points,
-      brokerGoogleID: row?.brokerId?.googleID,
+      brokerGoogleID: row?.brokerId?._id,
       approvedDiscount: getApprovedDiscountPercentage(
         assignedPoints,
         receivedPayment
