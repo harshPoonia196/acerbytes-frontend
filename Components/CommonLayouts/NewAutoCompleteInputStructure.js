@@ -34,8 +34,8 @@ const NewAutoCompleteInputStructure = ({
         // getOptionLabel={(option) => option.label || ""}
         // value={value || null}
         // options={list || options}
-        // getOptionLabel={(option) => option.label || ""}
-        value={value || null}
+        getOptionLabel={(option) => option.label || ""}
+        value={value}
         options={list ||options}
         fullWidth
         onChange={handleChange}
