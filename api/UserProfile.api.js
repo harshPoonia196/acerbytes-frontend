@@ -30,3 +30,9 @@ export const submitEnquiry = (data) => {
     userId: userDetail?._id,
   });
 };
+
+export const isEnquired = (adId) => {
+  return axiosInstance.post(`/user/isEnquired`, {
+    adId,
+  });
+};

@@ -44,7 +44,7 @@ import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSect
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
@@ -59,8 +59,8 @@ import colors from "styles/theme/colors";
 import { activeAdGet } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
-import { submitEnquiry } from "api/UserProfile.api";
-import { getItem } from "utills/utills";
+import { isEnquired, submitEnquiry } from "api/UserProfile.api";
+import { getItem, getLoggedInUser } from "utills/utills";
 
 const tabHeight = 200;
 
@@ -236,6 +236,8 @@ const PropertyDetailsPage = ({ params }) => {
         const { success, message } = response.data;
         if (success) {
           openSnackbar(message, "success");
+          // hasEnquired();
+          setBrokerContact({});
         } else {
           openSnackbar(message, "error");
         }
@@ -384,13 +386,26 @@ const PropertyDetailsPage = ({ params }) => {
     },
     []
   );
+  const param = useParams();
+  const [brokerContact, setBrokerContact] = React.useState(null);
 
-  // React.useEffect(() => {
-  //   let isEnquiryForm = getItem(enquiryFormKey);
-  //   if (isEnquiryForm) {
-  //     handleOpenEnquiryForm();
-  //   }
-  // }, []);
+  const hasEnquired = async () => {
+    let userDetail = getLoggedInUser();
+    if (userDetail?.role == "user") {
+      let response = await isEnquired(
+        param?.projectdetails?.split("-")?.[
+          param?.projectdetails?.split("-")?.length - 1
+        ] || ""
+      );
+      if (response.status === 200) {
+        setBrokerContact(response?.data?.data?.[0]);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    hasEnquired();
+  }, []);
 
   return (
     <>
@@ -413,9 +428,11 @@ const PropertyDetailsPage = ({ params }) => {
           <AdsSection
             SinglePropertyId={propertyData[0]}
             propertyData={propertyData[0]?.propertyData}
+            brokerContact={brokerContact}
             id={propertyData[0]?._id}
             handleOpenPersonalizeAds={handleOpenPersonalizeAds}
             handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+            handleOpenEnquiryForm={handleOpenEnquiryForm}
           />
 
           <nav className={classes.demo2}>
