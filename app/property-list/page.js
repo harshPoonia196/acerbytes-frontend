@@ -169,7 +169,7 @@ function PropertyList() {
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [searchTerm]);
+  }, [searchTerm, selectedOptions]);
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -200,14 +200,12 @@ function PropertyList() {
 
   };
 
-
   const handleChange = (event, value) => {
     if(value === "dec"){
       setAlignment(-1);
     }else{
       setAlignment(1);
     }
-    
   };
 
   const handleOptionChange = (key, value) => {
