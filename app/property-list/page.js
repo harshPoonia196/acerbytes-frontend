@@ -30,7 +30,9 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 
 
 function PropertyList() {
-  const [alignment, setAlignment] = useState("asc");
+
+  const [alignment, setAlignment] = useState(1);
+  console.log(alignment)
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT + 7);
 
@@ -41,6 +43,66 @@ function PropertyList() {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const [focus, setFocus] = useState(false)
   const inputRef = useRef(null);
+  const [selectedOptions, setSelectedOptions] = useState({});
+
+  const [projectCategory, setProjectCategory] = useState([
+    { label: "Residential", value: "Residential" },
+    { label: "Luxury flats", value: "Luxury flats" },
+  ]);
+
+  const [propertyTypes, setPropertyTypes] = useState([
+    { label: "Shop", value: "Shop" },
+    { label: "Restaurant", value: "Restaurant" },
+    { label: "Pent house", value: "Pent house" },
+    { label: "Flat", value: "Flat" },
+    { label: "Land", value: "Land" },
+    { label: "Retail space", value: "Retail space" },
+    { label: "Studio apartment", value: "Studio apartment" },
+    { label: "Food court", value: "Food court" },
+    { label: "Builder floor", value: "Builder floor" },
+    { label: "Villa", value: "Villa" },
+    { label: "Independent house", value: "Independent house" }
+  ]);
+
+  const [status, setStatus] = useState([
+    { label: "completed", value: "completed" },
+    { label: "RERA approved", value: "RERA approved" },
+    { label: "Launch", value: "Launch" },
+    { label: "Under construction", value: "Under construction" },
+    { label: "CC", value: "CC" },
+    { label: "OC", value: "OC" },
+    { label: "Delivered", value: "Delivered" },
+    { label: "Registeration", value: "Registeration" },
+    { label: "Resale", value: "Resale" },
+    { label: "Residential", value: "Residential" },
+    { label: "Commercial", value: "Commercial" }
+  ]);
+
+  const [unitType, setUnitType] = useState([
+    { label: "1 BHK", value: "1 BHK" },
+    { label: "2 BHK", value: "2 BHK" },
+    { label: "3 BHK", value: "3 BHK" },
+    { label: "4 BHK", value: "4 BHK" },
+    { label: "5 BHK", value: "5 BHK" },
+    { label: "6 BHK", value: "6 BHK" },
+    { label: "7 BHK", value: "7 BHK" },
+    { label: "8 BHK", value: "8 BHK" },
+    { label: "9 BHK", value: "9 BHK" },
+    { label: "10 BHK", value: "10 BHK" },
+    { label: "11 BHK", value: "11 BHK" },
+   
+  ]);
+
+  const [city, setCity] = useState([
+    { label: "bangalore", value: "bangalore" },
+    { label: "haidrabad", value: "haidrabad" },
+  ]);
+
+  const [location, setLocation] = useState([
+    { label: "Andhra", value: "Andhra" },
+    { label: "Andhra", value: "Andhra" },
+    { label: "Gujarat", value: "Gujarat" },
+  ]);
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
@@ -58,13 +120,19 @@ function PropertyList() {
     return queryString;
   };
 
-  const getUserPropertyList = async (pageOptions, searchTerm) => {
+  const getUserPropertyList = async (pageOptions, searchTerm, selectedOptions, alignment) => {
     try {
+      const data = {}
+      Object.keys(selectedOptions).map(item=> data[item] = selectedOptions[item].value)
       setLoading(true);
       const querParams = {
         ...pageOptions,
-        ...(searchTerm ? { search: searchTerm } : {})
+        ...(searchTerm ? { search: searchTerm } : {}),
+        ...(data ? {searchParams: JSON.stringify(data)} : {}),
+        sortBy: alignment, 
+
       };
+      console.log(querParams)
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
@@ -93,11 +161,11 @@ function PropertyList() {
       page: currentPage,
     };
 
-    getUserPropertyList(pageOptions, debouncedSearchTerm)
+    getUserPropertyList(pageOptions, debouncedSearchTerm, selectedOptions, alignment)
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [debouncedSearchTerm, currentPage, pageLimit]);
+  }, [debouncedSearchTerm, currentPage, pageLimit, selectedOptions, alignment]);
 
   useEffect(() => {
     setCurrentPage(1)
@@ -109,7 +177,7 @@ function PropertyList() {
     }, 500); 
 
     return () => clearTimeout(timerId);
-  }, [searchTerm]);
+  }, [searchTerm, selectedOptions]);
 
   const handleChangePage = (event, newPage) => {
     const page = newPage + 1;
@@ -118,7 +186,7 @@ function PropertyList() {
       pageLimit,
       page,
     };
-    getUserPropertyList(pageOptions, searchTerm)
+    getUserPropertyList(pageOptions, searchTerm, selectedOptions, alignment)
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -128,13 +196,36 @@ function PropertyList() {
       pageLimit,
       page: 1,
     };
-    getUserPropertyList(pageOptions, searchTerm)
+    getUserPropertyList(pageOptions, searchTerm, selectedOptions, alignment)
 
   };
 
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+
+  const handleChange = (event, value) => {
+    if(value === "dec"){
+      setAlignment(-1);
+    }else{
+      setAlignment(1);
+    }
+    
   };
+
+  const handleOptionChange = (key, value) => {
+    if(value){
+      setSelectedOptions(prevOptions => ({
+        ...prevOptions,
+        [key]: value,
+      }));
+    }else{
+      setSelectedOptions(prevOptions => {
+        delete prevOptions[key]
+        return ({
+        ...prevOptions,
+      })});
+    }
+
+  };
+
   return (
     <>
       {isLoading ? <Loader /> : <>
@@ -174,16 +265,16 @@ function PropertyList() {
 
           <Grid container spacing={2} columns={36}>
             {/* commercial,residential */} {/*please delete this after done and same for all below*/}
-            <NewMultiSelectAutoCompleteInputStructure label="Category" />
+            <NewMultiSelectAutoCompleteInputStructure label="Category"  list={projectCategory} handleChange={(event, value)=> handleOptionChange("category", value[0])} value={selectedOptions.category ? [selectedOptions.category] : []}/>
             {/* Flat,shop */}
-            <NewMultiSelectAutoCompleteInputStructure label="Property type" />
+            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={propertyTypes} handleChange={(event, value)=> handleOptionChange("propertyType", value[0])} value={selectedOptions.propertyType ? [selectedOptions.propertyType] : []}/>
             {/* 1BHK, 2BHK */}
-            <NewMultiSelectAutoCompleteInputStructure label="Unit type" />
+            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={unitType} handleChange={(event, value)=> handleOptionChange("unitType", value[0])} value={selectedOptions.unitType ? [selectedOptions.unitType] : []}/>
             {/* Noida,gurgoan */}
-            <NewMultiSelectAutoCompleteInputStructure label="City" />
+            <NewMultiSelectAutoCompleteInputStructure label="City" list={city} handleChange={(event, value)=> handleOptionChange("city", value[0])} value={selectedOptions.city ? [selectedOptions.city] : []}/>
             {/* Sector/area */}
-            <NewMultiSelectAutoCompleteInputStructure label="Location" />
-            <NewMultiSelectAutoCompleteInputStructure label="Status" />
+            <NewMultiSelectAutoCompleteInputStructure label="Location" list={location} handleChange={(event, value)=> handleOptionChange("location", value[0])} value={selectedOptions.location ? [selectedOptions.location] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Status" list={status} handleChange={(event, value)=> handleOptionChange("status", value[0])} value={selectedOptions.status ? [selectedOptions.status] : []}/>
             <Grid item xs={18} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
@@ -211,7 +302,7 @@ function PropertyList() {
             <Grid item xs={18} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
-                value={alignment}
+                value={alignment === 1 ? "asc" : "dec" }
                 exclusive
                 onChange={handleChange}
                 aria-label="Platform"
