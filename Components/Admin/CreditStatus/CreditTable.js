@@ -32,6 +32,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { completeOrderRequest, getCreditPointStatusList } from "api/Admin.api";
 import Loading from "Components/CommonLayouts/Loading";
 import {
+  DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
 } from "Components/config/config";
@@ -43,17 +44,7 @@ import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
-const rows = [
-  {
-    name: "Anand Gupta",
-    mobileNumber: "+91 125454544",
-    lastTopupDate: "10th April, 2023",
-    lastTopupAmount: 18000,
-    opening: 5000,
-    consumedSoFar: 5000,
-    balance: 5000,
-  },
-];
+import { debounce } from "lodash";
 
 const headCells = [
   {
@@ -208,11 +199,26 @@ function CreditTable() {
   const [isLoading, setLoading] = React.useState(false);
   const [creditPointList, setCreditPointList] = React.useState({});
   const [openAddCreditPoints, setOpenAddCreditPoints] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER); // Adjust the debounce delay as needed
   const { openSnackbar } = useSnackbar();
 
   const showToaterMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
+
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
+
+  function performSearch() {
+    const pageOptions = {
+      pageLimit: rowsPerPage,
+      page: page,
+    };
+    getCreditPointList(pageOptions, searchTerm);
+  }
 
   React.useEffect(() => {
     // This block will run only on initial mount
@@ -221,20 +227,21 @@ function CreditTable() {
       return;
     }
 
-    if (userDetails && Object.keys(userDetails).length) {
-      const pageOptions = {
-        pageLimit: rowsPerPage,
-        page,
-      };
-      getCreditPointList(pageOptions);
-    }
-  }, [userDetails && Object.keys(userDetails).length, initialMount]);
+    debouncedSearch();
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [userDetails && Object.keys(userDetails).length, searchTerm, initialMount]);
 
-  const getCreditPointList = async (queryParams) => {
+  const getCreditPointList = async (queryParams, searchTerm) => {
     try {
       setLoading(true);
       const response = await getCreditPointStatusList(
-        objectToQueryString(queryParams)
+        objectToQueryString({
+          ...queryParams,
+          firstName: searchTerm,
+          lastName: searchTerm,
+        })
       );
       if (response.status == 200) {
         setCreditPointList({
@@ -358,7 +365,12 @@ function CreditTable() {
       />
 
       <Card sx={{ mb: 2 }}>
-        <CustomSearchInput />
+        <CustomSearchInput
+          label="Search"
+          variant="outlined"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
       </Card>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
