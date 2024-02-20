@@ -25,6 +25,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
 import { getBrokerLeads } from "api/Broker.api";
 import { reactQueryKey } from "utills/Constants";
+import Loader from "Components/CommonLayouts/Loading";
 
 // const rows = [
 //   {
@@ -298,29 +299,32 @@ function MyLeadsTable() {
   }, [rowsPerPage, page]);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
+    <>
+      {isLoading ? <Loader /> : null}
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {rows.map((row) => (
+              <RowStructure row={row} key={row.firstName} />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        <TableBody>
-          {rows.map((row) => (
-            <RowStructure row={row} key={row.firstName} />
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </TableContainer>
+      </TableContainer>
+    </>
   );
 }
 

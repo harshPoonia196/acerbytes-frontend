@@ -24,6 +24,7 @@ export const getBrokers = (limit, page, search) => {
 export const submitEnquiry = (data) => {
   let userDetail = getLoggedInUser();
   return axiosInstance.post(`/user/enquiry`, {
+    propertyId: data?.propertyId || null,
     adId: data?.adId,
     name: { firstName: data?.firstName, lastName: data?.lastName },
     phone: { countryCode: data?.countryCode, number: `${data?.number}` },
@@ -31,8 +32,9 @@ export const submitEnquiry = (data) => {
   });
 };
 
-export const isEnquired = (adId) => {
+export const isEnquired = (adId, propertyId) => {
   return axiosInstance.post(`/user/isEnquired`, {
-    adId,
+    adId: adId || "",
+    propertyId: propertyId || "",
   });
 };

@@ -327,7 +327,9 @@ export default function Enquiries() {
                   <Row key={row.name} row={row} history={history} />
                 ))
               ) : (
-                <div>No Data</div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  No Data
+                </div>
               )}
             </TableBody>
           </Table>
