@@ -32,7 +32,6 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 function PropertyList() {
 
   const [alignment, setAlignment] = useState(1);
-  console.log(alignment)
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT + 7);
 
@@ -44,6 +43,8 @@ function PropertyList() {
   const [focus, setFocus] = useState(false)
   const inputRef = useRef(null);
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [propertyvalue , setPropertyvalue] = useState("")
+  const [buttonColor , setButtonColor] = useState("")
 
   const [projectCategory, setProjectCategory] = useState([
     { label: "Residential", value: "Residential" },
@@ -65,7 +66,7 @@ function PropertyList() {
   ]);
 
   const [status, setStatus] = useState([
-    { label: "completed", value: "completed" },
+    { label: "Completed", value: "Completed" },
     { label: "RERA approved", value: "RERA approved" },
     { label: "Launch", value: "Launch" },
     { label: "Under construction", value: "Under construction" },
@@ -94,8 +95,8 @@ function PropertyList() {
   ]);
 
   const [city, setCity] = useState([
-    { label: "bangalore", value: "bangalore" },
-    { label: "haidrabad", value: "haidrabad" },
+    { label: "Bangalore", value: "Bangalore" },
+    { label: "Haidrabad", value: "Haidrabad" },
   ]);
 
   const [location, setLocation] = useState([
@@ -120,7 +121,7 @@ function PropertyList() {
     return queryString;
   };
 
-  const getUserPropertyList = async (pageOptions, searchTerm, selectedOptions, alignment) => {
+  const getUserPropertyList = async (pageOptions, searchTerm, selectedOptions, alignment, propertyvalue) => {
     try {
       const data = {}
       Object.keys(selectedOptions).map(item=> data[item] = selectedOptions[item].value)
@@ -129,10 +130,9 @@ function PropertyList() {
         ...pageOptions,
         ...(searchTerm ? { search: searchTerm } : {}),
         ...(data ? {searchParams: JSON.stringify(data)} : {}),
-        sortBy: alignment, 
-
+        sortBy: alignment,
+        key: propertyvalue
       };
-      console.log(querParams)
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
@@ -161,15 +161,15 @@ function PropertyList() {
       page: currentPage,
     };
 
-    getUserPropertyList(pageOptions, debouncedSearchTerm, selectedOptions, alignment)
+    getUserPropertyList(pageOptions, debouncedSearchTerm, selectedOptions, alignment, propertyvalue)
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [debouncedSearchTerm, currentPage, pageLimit, selectedOptions, alignment]);
+  }, [debouncedSearchTerm, currentPage, pageLimit, selectedOptions, alignment, propertyvalue]);
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [searchTerm, selectedOptions]);
+  }, [searchTerm, selectedOptions, alignment, propertyvalue]);
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -186,7 +186,7 @@ function PropertyList() {
       pageLimit,
       page,
     };
-    getUserPropertyList(pageOptions, searchTerm, selectedOptions, alignment)
+    getUserPropertyList(pageOptions, searchTerm, selectedOptions, alignment, propertyvalue)
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -196,7 +196,7 @@ function PropertyList() {
       pageLimit,
       page: 1,
     };
-    getUserPropertyList(pageOptions, searchTerm, selectedOptions, alignment)
+    getUserPropertyList(pageOptions, searchTerm, selectedOptions, alignment, propertyvalue)
 
   };
 
@@ -206,6 +206,29 @@ function PropertyList() {
     }else{
       setAlignment(1);
     }
+  };
+
+  const handleChangeData = (event, value) => {
+    setButtonColor(value)
+    setPropertyvalue(value)
+    if(value === "price" || value === "area" || value === "completion"){
+      setAlignment(1);
+    }else{
+      setAlignment(-1);
+    }
+  };
+
+
+  const handleChangeAllData = (event, value) => {
+    const newAlignment = value === "dec" ? -1 : 1;
+    setAlignment(newAlignment);
+
+    const pageOptions = {
+      pageLimit,
+      page: 1,
+    };
+    setPropertyvalue("");
+    getUserPropertyList(pageOptions, debouncedSearchTerm, selectedOptions, newAlignment, propertyvalue);
   };
 
   const handleOptionChange = (key, value) => {
@@ -278,21 +301,21 @@ function PropertyList() {
                 color="primary"
                 value={alignment}
                 exclusive
-                onChange={handleChange}
+                onChange={handleChangeData}
                 aria-label="Platform"
                 sx={{ display: "flex" }}
-                size="small"
+                size="small"  
               >
-                <ToggleButton value="score" sx={{ flex: 1 }}>
+                <ToggleButton value="score" selected={buttonColor === "score"} sx={{ flex: 1 }}>
                   Score
                 </ToggleButton>
-                <ToggleButton value="price" sx={{ flex: 1 }}>
+                <ToggleButton value="price" selected={buttonColor === "price"} sx={{ flex: 1 }}>
                   Price
                 </ToggleButton>
-                <ToggleButton value="area" sx={{ flex: 1 }}>
+                <ToggleButton value="area" selected={buttonColor === "area"} sx={{ flex: 1 }}>
                   Area
                 </ToggleButton>
-                <ToggleButton value="completion" sx={{ flex: 1 }}>
+                <ToggleButton value="completion" selected={buttonColor === "completion"} sx={{ flex: 1 }}>
                   Completion
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -325,9 +348,9 @@ function PropertyList() {
             <Grid item xs={6} sm={3} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
-                value={alignment}
+                value={alignment === 1 ? "asc" : "dec" }
                 exclusive
-                onChange={handleChange}
+                onChange={handleChangeAllData}
                 aria-label="Platform"
                 sx={{ display: "flex" }}
                 size="small"
