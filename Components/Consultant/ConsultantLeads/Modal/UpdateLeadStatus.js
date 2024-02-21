@@ -1,15 +1,25 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import InputField from 'Components/CommonLayouts/InputField';
 import SelectTextFields from 'Components/CommonLayouts/SelectTextFields';
-import React from 'react'
+import React, { useState } from 'react'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import NewSelectTextFieldStructure from 'Components/CommonLayouts/NewSelectTextFieldStructure';
 
 function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
+    const [loading, setLoading] = useState(false);
+    const handleClick = () => {
+        setLoading(true);
+    
+        // Simulate an asynchronous operation (e.g., API call)
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+      };
     return (
         <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
             <DialogTitle onClose={handleClose}>
@@ -90,7 +100,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                     >
                         Cancel
                     </Button>
-                    <Button
+                    {/* <Button
                         // startIcon={<DoneIcon />}
                         variant="contained"
                         onClick={() => {
@@ -98,7 +108,15 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                         }}
                     >
                         Submit
-                    </Button>
+                    </Button> */}
+                    <CustomButton
+      loading={loading}
+      onClick={handleClick}
+      variant="contained"
+      color="primary"
+    >
+      Submit
+    </CustomButton>
                 </Box>
             </DialogActions>
         </Dialog >
