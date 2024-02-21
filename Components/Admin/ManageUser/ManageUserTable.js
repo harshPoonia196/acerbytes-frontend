@@ -440,6 +440,9 @@ function ManageUserTable({ searchText }) {
           </TableBody>
         </Table>
         <TablePagination
+          sx={{
+            overflow: "hidden",
+          }}
           rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
           component="div"
           count={usersList?.totalCount}
