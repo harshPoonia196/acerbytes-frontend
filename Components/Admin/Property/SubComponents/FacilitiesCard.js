@@ -16,7 +16,7 @@ import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextF
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
 import colors from 'styles/theme/colors';
 
-function FacilitiesCard({ isEdit, form,handleChange }) {
+function FacilitiesCard({ isEdit, form,handleChange,handleRating }) {
 
     const { amenitiesData } = form
     return (
@@ -55,7 +55,7 @@ function FacilitiesCard({ isEdit, form,handleChange }) {
                                                 >
                                                     {insideKey}
                                                 </Typography>
-                                                <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e)=>handleChange(e,"amenitiesData",key,"checked",undefined,insideKey,undefined,true)} />
+                                                <Rating value={amenitiesData?.[key]?.[insideKey]?.rating} name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e)=>handleChange(e,"amenitiesData",key,"checked",undefined,insideKey,undefined,true)} />
                                             </Grid>
                                         </>
                                     })

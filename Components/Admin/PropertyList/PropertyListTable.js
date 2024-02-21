@@ -1,68 +1,85 @@
-import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem, CircularProgress, Stack } from '@mui/material'
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import {
+  Table,
+  Box,
+  TableBody,
+  TableContainer,
+  TablePagination,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableSortLabel,
+  Tooltip,
+  IconButton,
+  Chip,
+  Menu,
+  MenuItem,
+  CircularProgress,
+  Stack,
+} from "@mui/material";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import Paper from "@mui/material/Paper";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { visuallyHidden } from '@mui/utils';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useRouter } from 'next/navigation';
-import {
-  getAllProperty, deleteProperty
-} from "api/Property.api";
-import { useSnackbar } from "utills/SnackbarContext"
+import { useRouter } from "next/navigation";
+import { getAllProperty, deleteProperty } from "api/Property.api";
+import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import {
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
 } from "Components/config/config";
-import ConfirmationDialog from 'Components/CommonLayouts/ConfirmationDialog';
-
-
+import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 
 const headCells = [
   {
-    id: 'builder',
-    label: 'Builder',
+    id: "builder",
+    label: "Builder",
   },
   {
-    id: 'project',
-    label: 'Project',
+    id: "project",
+    label: "Project",
   },
   {
-    id: 'city',
-    label: 'City',
+    id: "city",
+    label: "City",
   },
   {
-    id: 'area',
-    label: 'Area',
+    id: "area",
+    label: "Area",
   },
   {
-    id: 'sector',
-    label: 'Sector',
+    id: "sector",
+    label: "Sector",
   },
   {
-    id: 'edit',
-    label: 'Edit',
+    id: "edit",
+    label: "Edit",
   },
   {
-    id: 'delete',
-    label: 'Delete',
+    id: "delete",
+    label: "Delete",
   },
   {
-    id: 'lastModified',
-    label: 'Last modified',
+    id: "lastModified",
+    label: "Last modified",
   },
   {
-    id: 'status',
-    label: 'Status',
-  }
+    id: "status",
+    label: "Status",
+  },
 ];
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } =
-    props;
+  const { order, orderBy, onRequestSort } = props;
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -74,19 +91,19 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            align={headCell.numeric ? "right" : "left"}
+            padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>
               ) : null}
             </TableSortLabel>
@@ -100,6 +117,9 @@ function EnhancedTableHead(props) {
 
 function RowStructure({ row, router, handleDelete }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const handleEdit = (id) => {
+    router.push(`/admin/add-property?id=${id}`);
+  };
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const open = Boolean(anchorEl);
 
@@ -115,30 +135,55 @@ function RowStructure({ row, router, handleDelete }) {
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.builder}</TableCell>
-      <TableCell onClick={() => { router.push(`/details/${row.id}`) }} sx={{ cursor: 'pointer' }}>{row.project}</TableCell>
+      <TableCell
+        onClick={() => {
+          router.push(`/details/${row.id}`);
+        }}
+        sx={{ cursor: "pointer" }}
+      >
+        {row.builder}
+      </TableCell>
+      <TableCell
+        onClick={() => {
+          router.push(`/details/${row.id}`);
+        }}
+        sx={{ cursor: "pointer" }}
+      >
+        {row.project}
+      </TableCell>
       <TableCell>{row.city}</TableCell>
       <TableCell>{row.area}</TableCell>
       <TableCell>{row.sector}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton sx={{ fontSize: "1rem !important" }}>
-          <EditIcon fontSize='1rem' />
+          <EditIcon fontSize="1rem" onClick={() => handleEdit(row.id)} />
         </IconButton>
       </TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton sx={{ fontSize: "1rem !important" }}>
-          <DeleteIcon fontSize='1rem' onClick={() => handleDelete(row.id)} />
+          <DeleteIcon fontSize="1rem" onClick={() => handleDelete(row.id)} />
         </IconButton>
       </TableCell>
       <TableCell>
         <Chip label={row.lastModified} size="small" />
       </TableCell>
       <TableCell>
-        <Chip label={row.status} size='small' onClick={() => { }} color={row.status === 'Active' ? 'success' : row.status === 'Expired' ? 'error' : 'warning'} />
+        <Chip
+          label={row.status}
+          size="small"
+          onClick={() => {}}
+          color={
+            row.status === "Active"
+              ? "success"
+              : row.status === "Expired"
+              ? "error"
+              : "warning"
+          }
+        />
       </TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton sx={{ fontSize: "1rem !important" }}>
-          <MoreVertIcon onClick={handleClick} fontSize='1rem' />
+          <MoreVertIcon onClick={handleClick} fontSize="1rem" />
         </IconButton>
         <Menu
           id="basic-menu"
@@ -146,7 +191,7 @@ function RowStructure({ row, router, handleDelete }) {
           open={open}
           onClose={handleClose}
           MenuListProps={{
-            'aria-labelledby': 'basic-button',
+            "aria-labelledby": "basic-button",
           }}
         >
           <MenuItem onClick={handleClose}>Deactivate</MenuItem>
@@ -154,26 +199,25 @@ function RowStructure({ row, router, handleDelete }) {
         </Menu>
       </TableCell>
     </TableRow>
-
-  )
+  );
 }
 
 const PropertyListTable = ({ searchText, setCount }) => {
-  const router = useRouter()
-  const [order, setOrder] = useState('asc');
+  const router = useRouter();
+  const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
 
-  const [propertyList, setPropertyList] = useState([])
-  const [property, setProperty] = useState({})
+  const [propertyList, setPropertyList] = useState([]);
+  const [property, setProperty] = useState({});
   const [isLoading, setLoading] = useState(false);
 
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [deletingPropertyId, setDeletingPropertyId] = useState(null);
 
   let transformData = (data) => {
-    return data?.map(item => ({
+    return data?.map((item) => ({
       id: item._id,
       builder: item.overview?.builder,
       project: item.overview?.projectName,
@@ -199,21 +243,21 @@ const PropertyListTable = ({ searchText, setCount }) => {
       setLoading(true);
       const querParams = {
         ...pageOptions,
-        ...(searchText ? { search: searchText } : {})
+        ...(searchText ? { search: searchText } : {}),
       };
 
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         let transformedData = transformData(res.data?.data || []);
         setPropertyList(transformedData);
-        setCount(res?.data.totalCount)
+        setCount(res?.data.totalCount);
         setProperty(res?.data);
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -244,8 +288,8 @@ const PropertyListTable = ({ searchText, setCount }) => {
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error deleting property",
+            error?.message ||
+            "Error deleting property",
           "error"
         );
       } finally {
@@ -262,11 +306,11 @@ const PropertyListTable = ({ searchText, setCount }) => {
       pageLimit,
       page: currentPage,
     };
-    getAllPropertyList(pageOptions, searchText)
+    getAllPropertyList(pageOptions, searchText);
   }, [searchText, currentPage, pageLimit]);
 
   useEffect(() => {
-    setCurrentPage(1)
+    setCurrentPage(1);
   }, [searchText]);
 
   const { openSnackbar } = useSnackbar();
@@ -275,10 +319,9 @@ const PropertyListTable = ({ searchText, setCount }) => {
     openSnackbar(message, severity);
   };
 
-
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -289,7 +332,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
       pageLimit,
       page,
     };
-    getAllPropertyList(pageOptions, searchText)
+    getAllPropertyList(pageOptions, searchText);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -299,27 +342,25 @@ const PropertyListTable = ({ searchText, setCount }) => {
       pageLimit,
       page: 1,
     };
-    getAllPropertyList(pageOptions, searchText)
-
+    getAllPropertyList(pageOptions, searchText);
   };
 
   const visibleRows = React.useMemo(
     () =>
       stableSort(propertyList, getComparator(order, orderBy)).slice(
         currentPage * pageLimit,
-        currentPage * pageLimit + pageLimit,
+        currentPage * pageLimit + pageLimit
       ),
-    [order, orderBy, currentPage, pageLimit],
+    [order, orderBy, currentPage, pageLimit]
   );
 
   // useImperativeHandle(_ref, () =>  property?.totalCount, [property?.totalCount]);
 
   return (
     <>
-
       <TableContainer component={Paper}>
         {isLoading ? (
-          <Stack sx={{ my: '1.5rem', alignItems: "center" }}>
+          <Stack sx={{ my: "1.5rem", alignItems: "center" }}>
             <CircularProgress color="inherit" />
           </Stack>
         ) : (
@@ -327,13 +368,16 @@ const PropertyListTable = ({ searchText, setCount }) => {
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
-              onRequestSort={handleRequestSort} />
+              onRequestSort={handleRequestSort}
+            />
             <TableBody>
-              {
-                propertyList?.map((row) => (
-                  <RowStructure row={row} router={router} handleDelete={handleDelete} />
-                ))
-              }
+              {propertyList?.map((row) => (
+                <RowStructure
+                  row={row}
+                  router={router}
+                  handleDelete={handleDelete}
+                />
+              ))}
             </TableBody>
           </Table>
         )}
@@ -356,7 +400,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
         handleAction={handleConfirmDelete}
       />
     </>
-  )
-}
+  );
+};
 
-export default PropertyListTable
+export default PropertyListTable;

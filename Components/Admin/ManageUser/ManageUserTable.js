@@ -29,6 +29,7 @@ import {
 } from "api/ManageUser.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import {
+  DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
   ROLES,
@@ -201,7 +202,7 @@ function ManageUserTable({ searchText }) {
   const [pageLimit, setPageLimit] = React.useState(PAGINATION_LIMIT);
   const [initialMount, setInitialMount] = React.useState(true);
   const [usersList, setUsersList] = React.useState({});
-  const debouncedSearch = debounce(performSearch, 300); // Adjust the debounce delay as needed
+  const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER); // Adjust the debounce delay as needed
   const [confirmationDialog, setConfirmationDialog] = React.useState({
     isOpen: false,
     data: {},
