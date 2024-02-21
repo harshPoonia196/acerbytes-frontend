@@ -36,3 +36,8 @@ export const favPropertyCreate = (data) => {
 export const getAllfavouriteProperty= (queryParams) => {
   return axiosInstance.get(`/favProperty/getAll` + (queryParams ? `?${queryParams}` : ''));
 };
+
+export const getAllOptionData= (data) => {
+  return axiosInstance.get(`/property/getFilterKeyData`, data);
+};
+

@@ -18,7 +18,7 @@ import SelectTextFields from "Components/CommonLayouts/SelectTextFields";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import React, { useEffect, useRef, useState } from "react";
-import { getAllProperty } from "api/Property.api";
+import { getAllOptionData, getAllProperty } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
 import {
@@ -46,64 +46,7 @@ function PropertyList() {
   const [propertyvalue , setPropertyvalue] = useState("")
   const [buttonColor , setButtonColor] = useState("")
 
-  const [projectCategory, setProjectCategory] = useState([
-    { label: "Residential", value: "Residential" },
-    { label: "Luxury flats", value: "Luxury flats" },
-  ]);
-
-  const [propertyTypes, setPropertyTypes] = useState([
-    { label: "Shop", value: "Shop" },
-    { label: "Restaurant", value: "Restaurant" },
-    { label: "Pent house", value: "Pent house" },
-    { label: "Flat", value: "Flat" },
-    { label: "Land", value: "Land" },
-    { label: "Retail space", value: "Retail space" },
-    { label: "Studio apartment", value: "Studio apartment" },
-    { label: "Food court", value: "Food court" },
-    { label: "Builder floor", value: "Builder floor" },
-    { label: "Villa", value: "Villa" },
-    { label: "Independent house", value: "Independent house" }
-  ]);
-
-  const [status, setStatus] = useState([
-    { label: "Completed", value: "Completed" },
-    { label: "RERA approved", value: "RERA approved" },
-    { label: "Launch", value: "Launch" },
-    { label: "Under construction", value: "Under construction" },
-    { label: "CC", value: "CC" },
-    { label: "OC", value: "OC" },
-    { label: "Delivered", value: "Delivered" },
-    { label: "Registeration", value: "Registeration" },
-    { label: "Resale", value: "Resale" },
-    { label: "Residential", value: "Residential" },
-    { label: "Commercial", value: "Commercial" }
-  ]);
-
-  const [unitType, setUnitType] = useState([
-    { label: "1 BHK", value: "1 BHK" },
-    { label: "2 BHK", value: "2 BHK" },
-    { label: "3 BHK", value: "3 BHK" },
-    { label: "4 BHK", value: "4 BHK" },
-    { label: "5 BHK", value: "5 BHK" },
-    { label: "6 BHK", value: "6 BHK" },
-    { label: "7 BHK", value: "7 BHK" },
-    { label: "8 BHK", value: "8 BHK" },
-    { label: "9 BHK", value: "9 BHK" },
-    { label: "10 BHK", value: "10 BHK" },
-    { label: "11 BHK", value: "11 BHK" },
-   
-  ]);
-
-  const [city, setCity] = useState([
-    { label: "Bangalore", value: "Bangalore" },
-    { label: "Haidrabad", value: "Haidrabad" },
-  ]);
-
-  const [location, setLocation] = useState([
-    { label: "Andhra", value: "Andhra" },
-    { label: "Andhra", value: "Andhra" },
-    { label: "Gujarat", value: "Gujarat" },
-  ]);
+  const [selectOption, setSelectOption] = useState([]);
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
@@ -121,7 +64,7 @@ function PropertyList() {
     return queryString;
   };
 
-  const getUserPropertyList = async (pageOptions, searchTerm, selectedOptions, alignment, propertyvalue) => {
+  const  getUserPropertyList = async (pageOptions, searchTerm, selectedOptions, alignment, propertyvalue) => {
     try {
       const data = {}
       Object.keys(selectedOptions).map(item=> data[item] = selectedOptions[item].value)
@@ -137,6 +80,24 @@ function PropertyList() {
       if (res.status === 200) {
         setProperty(res.data?.data || []);
         setCount(res.data);
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const  getAllOptionDataList = async () => {
+    try {
+      let res = await getAllOptionData();
+      if (res.status === 200) {
+        setSelectOption(res?.data?.data)
       }
     } catch (error) {
       showToaterMessages(
@@ -170,6 +131,11 @@ function PropertyList() {
   useEffect(() => {
     setCurrentPage(1)
   }, [searchTerm, selectedOptions, alignment, propertyvalue]);
+
+
+  useEffect(() => {
+    getAllOptionDataList()
+  }, []);
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -286,16 +252,16 @@ function PropertyList() {
 
           <Grid container spacing={2} columns={36}>
             {/* commercial,residential */} {/*please delete this after done and same for all below*/}
-            <NewMultiSelectAutoCompleteInputStructure label="Category"  list={projectCategory} handleChange={(event, value)=> handleOptionChange("category", value[0])} value={selectedOptions.category ? [selectedOptions.category] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Category"  list={selectOption?.category} handleChange={(event, value)=> handleOptionChange("category", value[0])} value={selectedOptions.category ? [selectedOptions.category] : []}/>
             {/* Flat,shop */}
-            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={propertyTypes} handleChange={(event, value)=> handleOptionChange("propertyType", value[0])} value={selectedOptions.propertyType ? [selectedOptions.propertyType] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyTypep} handleChange={(event, value)=> handleOptionChange("propertyType", value[0])} value={selectedOptions.propertyType ? [selectedOptions.propertyType] : []}/>
             {/* 1BHK, 2BHK */}
-            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={unitType} handleChange={(event, value)=> handleOptionChange("unitType", value[0])} value={selectedOptions.unitType ? [selectedOptions.unitType] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value)=> handleOptionChange("unitType", value[0])} value={selectedOptions.unitType ? [selectedOptions.unitType] : []}/>
             {/* Noida,gurgoan */}
-            <NewMultiSelectAutoCompleteInputStructure label="City" list={city} handleChange={(event, value)=> handleOptionChange("city", value[0])} value={selectedOptions.city ? [selectedOptions.city] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="City" list={selectOption?.city} handleChange={(event, value)=> handleOptionChange("city", value[0])} value={selectedOptions.city ? [selectedOptions.city] : []}/>
             {/* Sector/area */}
-            <NewMultiSelectAutoCompleteInputStructure label="Location" list={location} handleChange={(event, value)=> handleOptionChange("location", value[0])} value={selectedOptions.location ? [selectedOptions.location] : []}/>
-            <NewMultiSelectAutoCompleteInputStructure label="Status" list={status} handleChange={(event, value)=> handleOptionChange("status", value[0])} value={selectedOptions.status ? [selectedOptions.status] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value)=> handleOptionChange("location", value[0])} value={selectedOptions.location ? [selectedOptions.location] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value)=> handleOptionChange("status", value[0])} value={selectedOptions.status ? [selectedOptions.status] : []}/>
             <Grid item xs={18} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
