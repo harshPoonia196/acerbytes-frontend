@@ -188,7 +188,7 @@ function PropertyList() {
   const handleChangeAllData = (event, value) => {
     const newAlignment = value === "dec" ? -1 : 1;
     setAlignment(newAlignment);
-
+    setButtonColor('')
     const pageOptions = {
       pageLimit,
       page: 1,
