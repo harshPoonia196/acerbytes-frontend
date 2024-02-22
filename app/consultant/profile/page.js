@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -133,8 +133,8 @@ function ConsultantProfile() {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+            error?.message ||
+            "Something went wrong!",
           "error"
         );
         return error;
@@ -143,6 +143,10 @@ function ConsultantProfile() {
   );
 
   const onSuccess = (res) => {
+    setUserProfileInfo({
+      name: brokerProfileInfo?.name || {},
+      phone: brokerProfileInfo?.phone || {},
+    });
     openSnackbar(res?.data?.message || "Success!", "success");
   };
 
@@ -188,14 +192,14 @@ function ConsultantProfile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-          ...(prev?.[firstKeyName] || {}),
-          [secondKeyName]: !thirdKeyName
-            ? value
-            : {
-              ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
-              [thirdKeyName]: value,
-            },
-        },
+            ...(prev?.[firstKeyName] || {}),
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
+                  [thirdKeyName]: value,
+                },
+          },
     }));
   };
   const handleAddTargetCustomer = () => {
@@ -276,6 +280,7 @@ function ConsultantProfile() {
   const [activeState, setActiveState] = React.useState("userDetails");
 
   const [brokerProfileInfo, setBrokerProfileInfo] = React.useState({});
+  const [userProfileInfo, setUserProfileInfo] = React.useState(null);
 
   const initTargetCustomerValue = { selectCity: "", selectArea: "" };
   const [targetCustomer, setTargetCustomer] = useState(initTargetCustomerValue);
@@ -296,6 +301,9 @@ function ConsultantProfile() {
 
   React.useEffect(() => {
     setBrokerProfileInfo(data || {});
+    if (!userProfileInfo && data) {
+      setUserProfileInfo({ name: data?.name, phone: data?.phone });
+    }
   }, [data]);
 
   const clickedRef = React.useRef(false);
@@ -321,9 +329,9 @@ function ConsultantProfile() {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -400,21 +408,19 @@ function ConsultantProfile() {
         </Card>
       </nav>
 
-
-
       <Container maxWidth="lg">
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {/* <Grid item xs={12} sx={{ textAlign: 'end' }}>
             <Button variant='contained'>Save</Button>
           </Grid> */}
-            {/* <Grid item xs={12} id="userDetails">
+            <Grid item xs={12} id="userDetails">
               <Card sx={{ p: 2 }}>
-                 <Box sx={{ display: "flex" }}>
-                  {brokerProfileInfo?.name ? (
+                <Box sx={{ display: "flex" }}>
+                  {userProfileInfo?.name ? (
                     <Box sx={{ flex: 1 }}>
                       <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                        {`${brokerProfileInfo?.name?.firstName} ${brokerProfileInfo?.name?.lastName}`}
+                        {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
                       </Typography>
                     </Box>
                   ) : null}
@@ -434,17 +440,16 @@ function ConsultantProfile() {
                           sx={{ alignSelf: "center" }}
                         />
                         <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${
-                            brokerProfileInfo?.phone?.number
+                          {`${userProfileInfo?.phone?.countryCode || ""} ${
+                            userProfileInfo?.phone?.number || ""
                           }`}
                         </Typography>
                       </a>
                     </Box>
                   ) : null}
-                </Box> 
-               
+                </Box>
               </Card>
-            </Grid> */}
+            </Grid>
             <Grid item xs={12} id="userDetails">
               <Card sx={{ p: 2 }}>
                 {/* ... (other content) ... */}
@@ -712,8 +717,9 @@ function ConsultantProfile() {
                           }
                           return (
                             <Chip
-                              key={`${targetArea.selectCity || ""}-${targetArea.selectArea || ""
-                                }-${index}`}
+                              key={`${targetArea.selectCity || ""}-${
+                                targetArea.selectArea || ""
+                              }-${index}`}
                               label={label}
                               size="small"
                               sx={{ ml: 1, mt: 1 }}
