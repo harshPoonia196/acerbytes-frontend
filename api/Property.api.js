@@ -38,6 +38,6 @@ export const getAllfavouriteProperty= (queryParams) => {
 };
 
 export const getAllOptionData= (data) => {
-  return axiosInstance.get(`/property/getFilterKeyData`, data);
+  return axiosInstance.get(`/property/get-option-list`, data);
 };
 

@@ -13,8 +13,6 @@ import {
   TablePagination
 } from "@mui/material";
 import PropertyCard from "Components/PropertyList/PropertyCard";
-import SearchIcon from "@mui/icons-material/Search";
-import SelectTextFields from "Components/CommonLayouts/SelectTextFields";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import React, { useEffect, useRef, useState } from "react";
@@ -183,7 +181,6 @@ function PropertyList() {
       setAlignment(-1);
     }
   };
-
 
   const handleChangeAllData = (event, value) => {
     const newAlignment = value === "dec" ? -1 : 1;
