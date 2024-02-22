@@ -44,6 +44,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
+  authRole,
   checkUrlAccess,
   isLoggedIn,
   logoutUser,
@@ -218,7 +219,7 @@ export default function ClippedDrawer({ children }) {
           </List>
           <Divider />
           {
-            // matchUserRole(userDetails?.role, "user") && (
+            authRole(userDetails?.role, "user") && (
             <>
               <List
                 subheader={
@@ -233,11 +234,11 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-            // )
+            )
           }
 
           {
-            // matchUserRole(userDetails?.role, "broker") && (
+            authRole("broker") && (
             <>
               <List
                 subheader={
@@ -265,11 +266,11 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-            // )
+            )
           }
 
           {
-            // matchUserRole(userDetails?.role, "admin") && (
+            authRole("admin") && (
             <>
               <List
                 subheader={
@@ -283,7 +284,7 @@ export default function ClippedDrawer({ children }) {
                 ))}
               </List>
             </>
-            // )
+            )
           }
         </Box>
       </>
