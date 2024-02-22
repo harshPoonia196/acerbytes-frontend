@@ -44,6 +44,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
+  authRole,
   checkUrlAccess,
   isLoggedIn,
   logoutUser,
@@ -72,7 +73,11 @@ export default function ClippedDrawer({ children }) {
   }, [pathname]);
 
   React.useEffect(() => {
-    if (userDetails && Object.keys(userDetails).length && userDetails?.role == ROLE_CONSTANTS.broker) {
+    if (
+      userDetails &&
+      Object.keys(userDetails).length &&
+      userDetails?.role == ROLE_CONSTANTS.broker
+    ) {
       getBrokerpointBalance();
     }
   }, [userDetails && Object.keys(userDetails).length]);
@@ -92,8 +97,8 @@ export default function ClippedDrawer({ children }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error getbroker balance request",
+          error?.message ||
+          "Error getbroker balance request",
         "error"
       );
     }
@@ -153,10 +158,9 @@ export default function ClippedDrawer({ children }) {
       >
         Profile
       </MenuItem>
-      {
-        isLogged ?
-          <MenuItem onClick={() => logoutUser()}>Logout</MenuItem> : null
-      }
+      {isLogged ? (
+        <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
+      ) : null}
     </Menu>
   );
 
@@ -208,8 +212,7 @@ export default function ClippedDrawer({ children }) {
             ))}
           </List>
           <Divider />
-          {
-            // matchUserRole(userDetails?.role, "user") && (
+          {authRole("user") && (
             <>
               <List
                 subheader={
@@ -224,11 +227,9 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-            // )
-          }
+          )}
 
-          {
-            // matchUserRole(userDetails?.role, "broker") && (
+          {authRole("broker") && (
             <>
               <List
                 subheader={
@@ -256,11 +257,9 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-            // )
-          }
+          )}
 
-          {
-            // matchUserRole(userDetails?.role, "admin") && (
+          {authRole("admin") && (
             <>
               <List
                 subheader={
@@ -274,8 +273,7 @@ export default function ClippedDrawer({ children }) {
                 ))}
               </List>
             </>
-            // )
-          }
+          )}
         </Box>
       </>
     );
@@ -298,9 +296,7 @@ export default function ClippedDrawer({ children }) {
               disablePadding
               secondaryAction={
                 <IconButton onClick={() => handleDrawerClose()} edge="end">
-                  <CloseIcon
-                    fontSize="small"
-                  />
+                  <CloseIcon fontSize="small" />
                 </IconButton>
               }
             >
@@ -444,7 +440,7 @@ export default function ClippedDrawer({ children }) {
                 </Button>
               )}
             </Box>
-            {isLogged &&
+            {isLogged && (
               <Box>
                 <IconButton
                   size="large"
@@ -455,16 +451,14 @@ export default function ClippedDrawer({ children }) {
                   onClick={handleProfileMenuOpen}
                   color="#000"
                 >
-                  {
-                    userDetails?.googleDetails?.profilePicture ?
-                      <Avatar
-                        src={userDetails?.googleDetails?.profilePicture}
-                      />
-                      : <AccountCircle />
-                  }
+                  {userDetails?.googleDetails?.profilePicture ? (
+                    <Avatar src={userDetails?.googleDetails?.profilePicture} />
+                  ) : (
+                    <AccountCircle />
+                  )}
                 </IconButton>
               </Box>
-            }
+            )}
           </Box>
         </Toolbar>
       </AppBar>

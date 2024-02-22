@@ -71,3 +71,8 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
 export const matchUserRole = (actualRole, matchingRole) => {
   return actualRole === matchingRole;
 };
+
+export const authRole = (authorizedRole) => {
+  let userDetail = getLoggedInUser();
+  return authorizedRole === userDetail?.role;
+};
