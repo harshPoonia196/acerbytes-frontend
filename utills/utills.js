@@ -4,6 +4,12 @@ export const isLoggedIn = () => {
     return false;
 };
 
+export const getLoggedInUser = () => {
+  const userDetail = localStorage.getItem("userDetails");
+  if (userDetail) return JSON.parse(userDetail);
+  return null;
+};
+
 export const logoutUser = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userDetails");
