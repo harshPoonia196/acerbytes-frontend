@@ -69,7 +69,8 @@ export default function ClippedDrawer({ children }) {
     useAuth();
 
   React.useEffect(() => {
-    checkUserUrlAccess();
+    const userInfo = localStorage.getItem("userDetails");
+    checkUserUrlAccess(JSON.parse(userInfo));
   }, [pathname]);
 
   React.useEffect(() => {
@@ -108,8 +109,13 @@ export default function ClippedDrawer({ children }) {
     router.replace(url);
   };
 
-  const checkUserUrlAccess = () => {
-    checkUrlAccess(isLogged, pathname, redirectUser, userDetails?.role);
+  const checkUserUrlAccess = (tempUserDetails) => {
+    checkUrlAccess(
+      isLogged,
+      pathname,
+      redirectUser,
+      tempUserDetails?.role || userDetails?.role
+    );
   };
 
   const dispatch = useDispatch();
@@ -212,7 +218,8 @@ export default function ClippedDrawer({ children }) {
             ))}
           </List>
           <Divider />
-          {authRole("user") && (
+          {
+            authRole("user") && (
             <>
               <List
                 subheader={
@@ -227,9 +234,11 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-          )}
+            )
+          }
 
-          {authRole("broker") && (
+          {
+            authRole("broker") && (
             <>
               <List
                 subheader={
@@ -257,9 +266,11 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-          )}
+            )
+          }
 
-          {authRole("admin") && (
+          {
+            authRole("admin") && (
             <>
               <List
                 subheader={
@@ -273,7 +284,8 @@ export default function ClippedDrawer({ children }) {
                 ))}
               </List>
             </>
-          )}
+            )
+          }
         </Box>
       </>
     );

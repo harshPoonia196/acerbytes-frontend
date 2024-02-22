@@ -17,6 +17,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import CallIcon from "@mui/icons-material/Call";
 import SaveIcon from "@mui/icons-material/Save";
+import Avatar from "@mui/material/Avatar";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import PropertyTable from "Components/ProfilePage/PropertyTable";
 import React, { useCallback, useEffect, useRef } from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
@@ -24,6 +26,7 @@ import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputF
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import { useState } from "react";
 import colors from "styles/theme/colors";
+import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import NewCurrencyInputField from "Components/CommonLayouts/NewCurrencyInputField";
 import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
@@ -37,17 +40,13 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
 import PageLoader from "Components/Loader/PageLoader";
-import {
-  getAccessToken,
-  getAllCitiesList,
-  getAllStateList,
-} from "api/Util.api";
-
+import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
+import { ProfilePic } from "Components/CommonLayouts/profilepic";
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
   demo2: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.WHITE,
     position: "sticky",
     top: 54,
     left: 0,
@@ -56,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
-    marginBottom: "16px",
+    mb: "1rem",
   },
 }));
 
@@ -80,6 +79,40 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 function ConsultantProfile() {
+  const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
+  const [image, setImage] = useState("");
+  const [cropData, setCropData] = useState("");
+  const [cropper, setCropper] = useState(false);
+  const [enableCropper, setEnableCropper] = useState(false);
+
+  const handleOpenUploadPopup = () => {
+    setIsUploadPopupOpen(true);
+  };
+
+  const handleCloseUploadPopup = () => {
+    setIsUploadPopupOpen(false);
+  };
+
+  const handleImageSelect = (e) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+    handleOpenUploadPopup();
+  };
+
+  const handleImageRemove = () => {
+    setImage("");
+    handleCloseUploadPopup();
+  };
   const router = useRouter();
 
   const { openSnackbar } = useSnackbar();
@@ -110,6 +143,10 @@ function ConsultantProfile() {
   );
 
   const onSuccess = (res) => {
+    setUserProfileInfo({
+      name: brokerProfileInfo?.name || {},
+      phone: brokerProfileInfo?.phone || {},
+    });
     openSnackbar(res?.data?.message || "Success!", "success");
   };
 
@@ -121,19 +158,24 @@ function ConsultantProfile() {
 
   const [exploringAsToggle, setExploringAsToggle] = useState("");
 
-  const [stateOptions, setStateOptions] = useState([]);
-  const [cityOptions, setCityOptions] = useState([]);
+  const cityOptions = [
+    { label: "Mumbai", value: "Mumbai" },
+    { label: "Delhi", value: "Delhi" },
+    { label: "Bangalore", value: "Bangalore" },
+  ];
 
-  const handleTargetCustomer = (e, firstKeyName) => {
+  const areaOptions = [
+    { label: "Subarban Mumbai", value: "Subarban Mumbai" },
+    { label: "New Delhi", value: "New Delhi" },
+    { label: "Old Bangalore", value: "Old Bangalore" },
+  ];
+
+  const handleTargetCustomer = (e, newValue, firstKeyName) => {
     if (e?.persist) {
       e.persist();
     }
-    let value = e?.target?.value || "";
-    let updatedObject = { [firstKeyName]: value };
-    if (firstKeyName == "selectState") {
-      updatedObject["selectCity"] = "";
-    }
-    setTargetCustomer((prev) => ({ ...prev, ...updatedObject }));
+    let value = newValue.value;
+    setTargetCustomer((prev) => ({ ...prev, [firstKeyName]: value }));
   };
 
   const handleChange = (e, firstKeyName, secondKeyName, thirdKeyName) => {
@@ -161,11 +203,7 @@ function ConsultantProfile() {
     }));
   };
   const handleAddTargetCustomer = () => {
-    if (
-      targetCustomer?.selectArea &&
-      targetCustomer?.selectCity &&
-      targetCustomer?.selectState
-    ) {
+    if (targetCustomer?.selectArea || targetCustomer?.selectCity) {
       let value = targetCustomer;
       setBrokerProfileInfo((prev) => ({
         ...prev,
@@ -242,12 +280,9 @@ function ConsultantProfile() {
   const [activeState, setActiveState] = React.useState("userDetails");
 
   const [brokerProfileInfo, setBrokerProfileInfo] = React.useState({});
+  const [userProfileInfo, setUserProfileInfo] = React.useState(null);
 
-  const initTargetCustomerValue = {
-    selectState: "",
-    selectCity: "",
-    selectArea: "",
-  };
+  const initTargetCustomerValue = { selectCity: "", selectArea: "" };
   const [targetCustomer, setTargetCustomer] = useState(initTargetCustomerValue);
 
   let itemsServer = listOfConsultantProfileTab.map((tab) => {
@@ -266,6 +301,9 @@ function ConsultantProfile() {
 
   React.useEffect(() => {
     setBrokerProfileInfo(data || {});
+    if (!userProfileInfo && data) {
+      setUserProfileInfo({ name: data?.name, phone: data?.phone });
+    }
   }, [data]);
 
   const clickedRef = React.useRef(false);
@@ -356,79 +394,19 @@ function ConsultantProfile() {
   };
 
   const classes = useStyles();
-
-  const getAllStateOfIndia = async () => {
-    try {
-      const res = await getAccessToken();
-      if (res.auth_token) {
-        const response = await getAllStateList(res.auth_token, "India");
-        if (response) {
-          setStateOptions(
-            response?.map((stateDetail) => ({
-              label: stateDetail?.state_name || "",
-              value: stateDetail?.state_name || "",
-            })) || []
-          );
-        }
-      }
-    } catch (error) {
-      openSnackbar(
-        error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
-        "error"
-      );
-    }
-  };
-
-  const getInterestedCities = async (stateName) => {
-    try {
-      const res = await getAccessToken();
-      if (res.auth_token) {
-        const response = await getAllCitiesList(res.auth_token, stateName);
-        if (response) {
-          setCityOptions(
-            response?.map((cityDetails) => ({
-              label: cityDetails?.city_name || "",
-              value: cityDetails?.city_name || "",
-            })) || []
-          );
-        }
-      }
-    } catch (error) {
-      openSnackbar(
-        error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
-        "error"
-      );
-    }
-  };
-
-  React.useEffect(() => {
-    getAllStateOfIndia();
-  }, []);
-
-  React.useEffect(() => {
-    if (targetCustomer?.selectState) {
-      getInterestedCities(targetCustomer?.selectState);
-    }
-  }, [targetCustomer?.selectState]);
-
-  console.log(targetCustomer);
-
   return (
     <>
       <PageLoader isLoading={isLoading || mutate.isPending} />
       <nav className={classes.demo2}>
-        <NavTabProfilePage
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
+        <CustomConsultantBreadScrumbs text="Profile" />
+        <Card>
+          <NavTabProfilePage
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </Card>
       </nav>
-
-      <CustomConsultantBreadScrumbs text="Profile" />
 
       <Container maxWidth="lg">
         <form onSubmit={handleSubmit}>
@@ -439,10 +417,10 @@ function ConsultantProfile() {
             <Grid item xs={12} id="userDetails">
               <Card sx={{ p: 2 }}>
                 <Box sx={{ display: "flex" }}>
-                  {brokerProfileInfo?.name ? (
+                  {userProfileInfo?.name ? (
                     <Box sx={{ flex: 1 }}>
                       <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                        {`${brokerProfileInfo?.name?.firstName} ${brokerProfileInfo?.name?.lastName}`}
+                        {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
                       </Typography>
                     </Box>
                   ) : null}
@@ -462,14 +440,66 @@ function ConsultantProfile() {
                           sx={{ alignSelf: "center" }}
                         />
                         <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${
-                            brokerProfileInfo?.phone?.number
+                          {`${userProfileInfo?.phone?.countryCode || ""} ${
+                            userProfileInfo?.phone?.number || ""
                           }`}
                         </Typography>
                       </a>
                     </Box>
                   ) : null}
                 </Box>
+              </Card>
+            </Grid>
+            <Grid item xs={12} id="userDetails">
+              <Card sx={{ p: 2 }}>
+                {/* ... (other content) ... */}
+                <UploadMarketingImage
+                  open={isUploadPopupOpen}
+                  image={image}
+                  setImage={setImage}
+                  onClose={handleCloseUploadPopup}
+                  changeImage={handleImageSelect}
+                  removeImage={handleImageRemove}
+                />
+
+                {/* Avatar and file input */}
+                <label htmlFor="avatar-input" style={{ cursor: "pointer" }}>
+                  <ProfilePic
+                    style={{
+                      minWidth: "3rem",
+                      maxWidth: "3rem",
+                      height: "3rem",
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        width: "3rem",
+                        position: "static",
+                        height: "3rem",
+                        cursor: "pointer",
+                      }}
+                      className="profilepic__image"
+                      onClick={(e) => {
+                        // Trigger the file input click when Avatar is clicked
+                        document.getElementById("avatar-input").click();
+                      }}
+                    >
+                      {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+                    </Avatar>
+                    <div className="profilepic__content">
+                      <EditIcon fontSize="small" />
+                      <p className="profilepic__text">Edit</p>
+                    </div>
+                  </ProfilePic>
+                </label>
+
+                <input
+                  id="avatar-input"
+                  type="file"
+                  onChange={handleImageSelect}
+                  accept="image/x-png,image/gif,image/jpeg"
+                  hidden
+                />
               </Card>
             </Grid>
             <Grid item xs={12}>
@@ -649,33 +679,22 @@ function ConsultantProfile() {
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                   {isEdit ? (
                     <>
-                      <NewSelectTextFieldStructure
-                        label="Select State"
-                        list={stateOptions}
-                        isEdit={isEdit}
-                        value={targetCustomer.selectState}
-                        name="state"
-                        handleChange={(e, newValue) =>
-                          handleTargetCustomer(e, "selectState")
-                        }
-                      />
-                      <NewSelectTextFieldStructure
+                      <NewAutoCompleteInputStructure
                         label="Select City"
                         list={cityOptions}
                         isEdit={isEdit}
                         value={targetCustomer.selectCity}
-                        name="city"
                         handleChange={(e, newValue) =>
-                          handleTargetCustomer(e, "selectCity")
+                          handleTargetCustomer(e, newValue, "selectCity")
                         }
                       />
-                      <NewInputFieldStructure
-                        label="Area"
-                        value={targetCustomer.selectArea}
-                        variant="outlined"
+                      <NewAutoCompleteInputStructure
+                        label="Select Area"
                         isEdit={isEdit}
-                        handleChange={(e) =>
-                          handleTargetCustomer(e, "selectArea")
+                        list={areaOptions}
+                        value={targetCustomer.selectArea}
+                        handleChange={(e, newValue) =>
+                          handleTargetCustomer(e, newValue, "selectArea")
                         }
                       />
                     </>
@@ -687,14 +706,8 @@ function ConsultantProfile() {
                       {brokerProfileInfo?.targetCustomers?.map(
                         (targetArea, index) => {
                           let label = "";
-                          if (targetArea.selectState) {
-                            label = targetArea.selectState;
-                          }
                           if (targetArea.selectCity) {
-                            if (label) {
-                              label += "/";
-                            }
-                            label += targetArea.selectCity;
+                            label = targetArea.selectCity;
                           }
                           if (targetArea.selectArea) {
                             if (label) {
@@ -722,9 +735,8 @@ function ConsultantProfile() {
                       <Button
                         variant="contained"
                         disabled={
-                          targetCustomer?.selectState == "" ||
-                          targetCustomer?.selectCity == "" ||
-                          targetCustomer?.selectArea == ""
+                          targetCustomer?.selectArea == "" &&
+                          targetCustomer?.selectCity == ""
                         }
                         onClick={handleAddTargetCustomer}
                       >
@@ -789,6 +801,7 @@ function ConsultantProfile() {
                 </Grid>
               </Card>
             </Grid>
+
             <Grid item xs={12} id="setting">
               <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>

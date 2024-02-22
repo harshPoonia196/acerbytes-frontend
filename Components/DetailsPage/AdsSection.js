@@ -43,14 +43,23 @@ function AdsSection({
     const projectCategory = (
       overview?.projectCategory.trim() ?? "category"
     ).replace(/\s+/g, "-");
-    const projectType =
-      overview?.projectType
-        ?.map(
-          (type) =>
-            typeof type?.trim == "function" &&
-            type?.trim()?.replace(/\s+/g, "-")
-        )
-        ?.join("-") ?? "type";
+    let projectType;
+    if (
+      Array.isArray(overview?.projectType) &&
+      overview?.projectType.length > 0
+    ) {
+      if (typeof overview.projectType[0] === "object") {
+        projectType = overview.projectType
+          .map((type) => type.value.trim().replace(/\s+/g, "-"))
+          .join("-");
+      } else if (typeof overview.projectType[0] === "string") {
+        projectType = overview.projectType
+          .map((type) => type.trim().replace(/\s+/g, "-"))
+          .join("-");
+      }
+    } else {
+      projectType = "type";
+    }
     const city = (location?.city.trim() ?? "city").replace(/\s+/g, "-");
     const sector = (location?.sector.trim() ?? "sector").replace(/\s+/g, "-");
     const area = (location?.area.trim() ?? "area").replace(/\s+/g, "-");

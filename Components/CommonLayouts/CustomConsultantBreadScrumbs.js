@@ -6,7 +6,8 @@ import Stack from '@mui/material/Stack';
 import { Box, Card, CardActionArea, Container, Dialog, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { listOfPages } from 'Components/NavBar/Links'
-
+import { boxShadowBottom, boxShadowTop } from 'utills/Constants';
+import colors from 'styles/theme/colors';
 function handleClick(event) {
     event.preventDefault();
     console.info('You clicked a breadcrumb.');
@@ -215,7 +216,15 @@ export default function CustomConsultantBreadScrumbs({ text }) {
     ];
 
     return (
-        <Box sx={{ backgroundColor: "white", borderBottom: "1px solid whitesmoke" }}>
+        <Box
+            sx={{
+                zIndex: 100,
+                background: colors.WHITE,
+                position: "sticky",
+                top: { xs: 48, sm: 64 },
+                boxShadow: boxShadowBottom
+            }}
+        >
             <Container
                 maxWidth="lg"
             >
@@ -227,5 +236,6 @@ export default function CustomConsultantBreadScrumbs({ text }) {
                 </Stack>
             </Container>
         </Box>
+
     );
 }

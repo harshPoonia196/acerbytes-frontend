@@ -21,7 +21,7 @@ const page = () => {
             <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        pagename="pagename"
+        
       />
             <Container>
                 <Card sx={{ mb: 2 }}>

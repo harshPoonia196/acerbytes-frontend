@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Typography, Card, Box } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import ManageUserTable from "Components/Admin/ManageUser/ManageUserTable";
@@ -8,7 +8,7 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 function ManageUser() {
   const [searchTerm, setSearchTerm] = useState("");
-
+ 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
@@ -16,11 +16,16 @@ function ManageUser() {
 
   return (  
     <>
-      <CustomAdminBreadScrumbs text='Manage user' />
+
+        <CustomAdminBreadScrumbs text='Manage user' />
+     
+        
+      
+     
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        pagename="pagename"
+        
       />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
@@ -35,6 +40,7 @@ function ManageUser() {
           />
         </Card>
         <ManageUserTable searchText={searchTerm} />
+        
       </Container>
     </>
   );

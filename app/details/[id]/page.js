@@ -56,7 +56,7 @@ import {
 } from "utills/Constants";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
-import { detailsProperty } from "api/Property.api";
+import { detailsProperty, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { isEnquired, submitEnquiry } from "api/UserProfile.api";
@@ -101,7 +101,11 @@ const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
 
-  const detailsPropertyId = params.id;
+  const storedUserDataString = localStorage.getItem('userDetails');
+  const storedUserData = JSON.parse(storedUserDataString);
+  const role = storedUserData?.role;
+
+  const detailsPropertyId = params.id
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([]);
@@ -160,6 +164,28 @@ const PropertyDetailsPage = ({ params }) => {
       setLoading(false);
     }
   };
+
+  const handlefavClick = async () => {
+    const adData = {
+      propertyId: detailsPropertyId,
+    }
+    try {
+      const response = await favPropertyCreate(adData);
+      if (response.status == 200) {
+          detailsGetProperty();
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error generating fav Property",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+
+  }
 
   const { openSnackbar } = useSnackbar();
   const showToaterMessages = (message, severity) => {
@@ -419,7 +445,7 @@ const PropertyDetailsPage = ({ params }) => {
             handleClose={handleClosePersonalizeAds}
           />
 
-          {!propertyData.isActiveAd ? (
+          {role === 'broker' && !propertyData.isActiveAd ? (
             <AdsSection
               handleOpenPersonalizeAds={handleOpenPersonalizeAds}
               handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
@@ -429,7 +455,7 @@ const PropertyDetailsPage = ({ params }) => {
             />
           ) : null}
 
-          {propertyData.isActiveAd ? (
+          {(role !== 'admin' && role !== 'superAdmin') && propertyData.isActiveAd ? (
             <AdsSection
               SinglePropertyId={propertyData?.propertyBroker[0]}
               propertyData={propertyData}

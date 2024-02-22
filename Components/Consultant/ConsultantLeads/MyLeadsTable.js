@@ -1,22 +1,7 @@
 "use client";
 
-import {
-  Table,
-  Box,
-  TableBody,
-  TableContainer,
-  TablePagination,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableSortLabel,
-  Tooltip,
-  IconButton,
-  Chip,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem,Grid,Card } from '@mui/material'
+import React, { useState } from 'react'
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
@@ -26,6 +11,7 @@ import { useQueries } from "utills/ReactQueryContext";
 import { getBrokerLeads } from "api/Broker.api";
 import { reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
+import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
 
 // const rows = [
 //   {
@@ -301,6 +287,11 @@ function MyLeadsTable() {
   return (
     <>
       {isLoading ? <Loader /> : null}
+      <Grid item xs={12}>
+                    <Card sx={{ mb: 2 }}>
+                        <CustomSearchInput />
+                    </Card>
+                </Grid>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <EnhancedTableHead

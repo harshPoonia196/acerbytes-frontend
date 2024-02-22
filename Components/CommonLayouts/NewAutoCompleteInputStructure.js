@@ -32,8 +32,11 @@ const NewAutoCompleteInputStructure = ({
         id="combo-box-demo"
         // Adding the below option creates issue in property form
         // getOptionLabel={(option) => option.label || ""}
-        value={value || null}
-        options={options}
+        // value={value || null}
+        // options={list || options}
+        getOptionLabel={(option) => option.label || ""}
+        value={value}
+        options={list ||options}
         fullWidth
         onChange={handleChange}
         renderInput={(params, index) => {
