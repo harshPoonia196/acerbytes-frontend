@@ -251,7 +251,7 @@ function PropertyList() {
             {/* commercial,residential */} {/*please delete this after done and same for all below*/}
             <NewMultiSelectAutoCompleteInputStructure label="Category"  list={selectOption?.category} handleChange={(event, value)=> handleOptionChange("category", value[0])} value={selectedOptions.category ? [selectedOptions.category] : []}/>
             {/* Flat,shop */}
-            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyTypep} handleChange={(event, value)=> handleOptionChange("propertyType", value[0])} value={selectedOptions.propertyType ? [selectedOptions.propertyType] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyType} handleChange={(event, value)=> handleOptionChange("propertyType", value[0])} value={selectedOptions.propertyType ? [selectedOptions.propertyType] : []}/>
             {/* 1BHK, 2BHK */}
             <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value)=> handleOptionChange("unitType", value[0])} value={selectedOptions.unitType ? [selectedOptions.unitType] : []}/>
             {/* Noida,gurgoan */}
