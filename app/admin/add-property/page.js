@@ -6,6 +6,10 @@ import { useState } from "react";
 import { listOfTabsInAddProperty } from "utills/Constants";
 import NavTab from "Components/Admin/Property/NavTab";
 import throttle from "lodash/throttle";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { getBrokersList } from "api/Admin.api";
+import { getBrokers } from "api/UserProfile.api";
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
@@ -25,8 +29,9 @@ import MarketingCard from "Components/Admin/Property/SubComponents/MarketingCard
 import { useSnackbar } from "utills/SnackbarContext";
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
-import { CreateProperty } from "api/Property.api";
+import { CreateProperty, EditProperty } from "api/Property.api";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
+import { detailsProperty } from "api/Property.api";
 import colors from "styles/theme/colors";
 
 const tabHeight = 116;
@@ -39,15 +44,14 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     zIndex: 100,
-    [theme.breakpoints?.up('sm')]: {
+    [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
-    mb: '1rem'
+    mb: "1rem",
   },
-}
-));
+}));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -67,7 +71,12 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 function AddProperty() {
+  const router = useSearchParams();
+  const routerNavigation = useRouter();
+  const [editPage, setEditPage] = useState(false);
+  const [brokerList, setBrokerList] = useState([]);
   const [activeState, setActiveState] = React.useState(null);
+  const detailsPropertyId = router.get("id");
   const { openSnackbar } = useSnackbar();
 
   let itemsServer = listOfTabsInAddProperty.map((tab) => {
@@ -106,9 +115,9 @@ function AddProperty() {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -142,18 +151,76 @@ function AddProperty() {
         });
     }
   };
+  function removeIds(obj) {
+    for (const key in obj) {
+      if (typeof obj[key] === "object" && obj[key] !== null) {
+        // Recursively call removeIds for nested objects
+        obj[key] = removeIds(obj[key]);
+      } else if (key === "_id") {
+        // Remove the _id field
+        delete obj[key];
+      }
+    }
+    return obj;
+  }
 
-  React.useEffect(
-    () => () => {
+  let getProp = async () => {
+    try {
+      let res = await detailsProperty(detailsPropertyId);
+      if (res.status === 200) {
+        let data = removeIds(res.data?.data);
+
+        delete data.__v;
+        setEditForm(true);
+        setForm({ ...data });
+      }
+    } catch (error) {
+      console.log("see", error);
+    }
+  };
+  const brokersList = async (rowsPerPage, page, search) => {
+    try {
+      const response = await getBrokers();
+      if (response.status == 200) {
+        const { success, data, message } = response.data;
+        if (success) {
+          let getValue = data.data.map((i) => {
+            let u = {
+              name: i.fullName,
+              type: "consultant",
+              rating: i.rating,
+              id: i._id,
+            };
+            return u;
+          });
+          //   setBrokerList([...getValue]);
+          setBrokerList([...data.data]);
+          //   return data;
+        } else {
+          console.log("error");
+          // openSnackbar(message, "error");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  React.useEffect(() => {
+    if (detailsPropertyId) {
+      getProp();
+      setEditPage(true);
+    }
+    brokersList(10, 1);
+    return () => {
       clearTimeout(unsetClickedRef.current);
-    },
-    []
-  );
+    };
+  }, []);
 
   const classes = useStyles();
 
   const [isEdit, setIsEdit] = useState(true);
   const [errors, setErrors] = useState({});
+  const [editForm, setEditForm] = useState(false);
   const [form, setForm] = useState({
     overview: {
       builder: "",
@@ -457,6 +524,7 @@ function AddProperty() {
       expectedFurtherApp: 0,
       forEndUse: 0,
     },
+    consultants: [],
     // consultants: [
     //     {
     //         id: "",
@@ -496,11 +564,261 @@ function AddProperty() {
     },
   });
 
-  const scoreChange = async (
-    e,
-    firstKeyName,
-    secondKeyName,
-  ) => {
+  //   amenitiesData: {
+  //     Basic: {
+  //       Gym: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Yoga: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Swimming pool": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Club: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Fitness center": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       SPA: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //     Expected: {
+  //       Pool: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Yoga: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Party hall": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Indoor games": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Spa: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Clubhouse: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Jacuzzi: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Theatre: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Barbeque Lawn": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Jogging track": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Covered Sitting": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Garden: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Wi-fi": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //     Desired: {
+  //       Theatre: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Barbeque Lawn": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Jogging track": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Covered Sitting": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Garden: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Yoga: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       SPA: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Swimming pool": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Club: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //     Unique: {
+  //       Library: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Kids play area": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Back up": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Wi-fi": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Gas line": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Shopping mart": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //   },
+  //   location: {
+  //     state: "Andhra",
+  //     city: "",
+  //     sector: "",
+  //     area: "",
+  //     pinCode: "",
+  //     googleMapLink: "",
+  //     longitude: "",
+  //     latitude: "",
+  //     assesment: {
+  //       "Pick up / delivery": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       School: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Hospital: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Mall: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Super market": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Restaurants: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Railway: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Metro: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Bus stand": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Highway: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Offices: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Hotels: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Clubs: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Noise: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Safety: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Bus stops": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Train station": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       "Metro station": {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       University: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //       Parks: {
+  //         isApplicable: false,
+  //         rating: 0,
+  //       },
+  //     },
+  //   },
+  //   valueForMoney: {
+  //     appTillNow: 0,
+  //     expectedFurtherApp: 0,
+  //     forEndUse: 0,
+  //   },
+  //   consultants: [],
+  //   marketing: {
+  //     tagLine: "",
+  //     description: "",
+  //   },
+  // });
+
+  const handleUnitsPlan = async (unitsPlanValue) => {
+    setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
+  };
+  const scoreChange = async (e, firstKeyName, secondKeyName) => {
+    let totalRating = 70;
     let totalScored;
 
     function isNotAlphabet(char) {
@@ -592,6 +910,8 @@ function AddProperty() {
         ...form,
         [firstKeyName]: { ...form?.[firstKeyName], ...innerObj },
       });
+    } else if (firstKeyName === "consultant") {
+      setForm({ ...form, consultants: [...e] });
     } else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
     } else if (score === true) {
@@ -688,7 +1008,6 @@ function AddProperty() {
           return updatedForm;
         });
       } else {
-        console.log("innn");
         let value = e?.target
           ? thirdKeyName === "checked"
             ? e.target.checked
@@ -699,14 +1018,14 @@ function AddProperty() {
           [firstKeyName]: !secondKeyName
             ? value
             : {
-              ...prev?.[firstKeyName],
-              [secondKeyName]: !thirdKeyName
-                ? value
-                : {
-                  ...prev?.[firstKeyName]?.[secondKeyName],
-                  [thirdKeyName]: value,
-                },
-            },
+                ...prev?.[firstKeyName],
+                [secondKeyName]: !thirdKeyName
+                  ? value
+                  : {
+                      ...prev?.[firstKeyName]?.[secondKeyName],
+                      [thirdKeyName]: value,
+                    },
+              },
         }));
       }
     }
@@ -725,14 +1044,41 @@ function AddProperty() {
 
   const validateForm = () => {
     const { error } = Schema.validate(form, { abortEarly: false });
-    let store = ["constructionQuality", "interiorQuality", "rating"];
+    let store = [
+      "constructionQuality",
+      "interiorQuality",
+      "rating",
+      "valueForMoney",
+      "forEndUse",
+      "appTillNow",
+      "expectedFurtherApp",
+    ];
 
     error?.details.map((item) => {
       if (store.includes(item.context.key)) {
-        openSnackbar(
-          `Ratings needs to be provided for ${item.context.label}`,
-          "error"
-        );
+        let getLabel = item.context.label.split(".");
+
+        function convertToTitleCase(inputString) {
+          let txt = inputString
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, (str) => str.toUpperCase());
+          return txt;
+        }
+
+        let label;
+        if (item.context.key === "rating") {
+          label = getLabel[getLabel.length - 2];
+        } else if (
+          item.context === "forEndUse" ||
+          item.context === "appTillNow" ||
+          item.context === "expectedFurtherApp"
+        ) {
+          label = convertToTitleCase(item.context);
+        } else {
+          label = item.context.key;
+        }
+
+        openSnackbar(`Ratings needs to be provided for ${label}`, "error");
       }
     });
     console.log(form, "formmmm", error, "errrr");
@@ -747,8 +1093,16 @@ function AddProperty() {
       setErrors(validationErrors);
       return false;
     } else {
-      // Validation passed
-      CreateProperty({ ...form });
+      if (!editPage) {
+        // Validation passed
+        CreateProperty({ ...form });
+        openSnackbar(`Property added successfully`, "success");
+        routerNavigation.push(`/admin/property-list`);
+      } else {
+        EditProperty(detailsPropertyId, { ...form });
+        openSnackbar(`Property edited successfully`, "success");
+        routerNavigation.push(`/admin/property-list`);
+      }
     }
 
     return true;
@@ -792,7 +1146,9 @@ function AddProperty() {
             <FloorPlanCard
               errors={errors}
               form={form}
+              editForm={editForm}
               handleChange={handleChange}
+              handleUnitsPlan={handleUnitsPlan}
               isEdit={isEdit}
             />
             <FacilitiesCard
@@ -815,9 +1171,11 @@ function AddProperty() {
               handleChange={handleChange}
               isEdit={isEdit}
             />
+            {/* {JSON.stringify(brokerList)} */}
             <PropertyConsultantsCard
               isEdit={isEdit}
               form={form}
+              list={brokerList}
               handleChange={handleChange}
             />
             <OverallAssessmentCard isEdit={isEdit} form={form} />
@@ -830,7 +1188,7 @@ function AddProperty() {
             />
             <Grid item xs={12} sx={{ textAlign: "end" }}>
               <Button onClick={validateForm} variant="contained">
-                Save
+                {editPage ? "Update" : "Save"}
               </Button>
               <Button sx={{ marginLeft: "10px" }} variant="contained">
                 Publish

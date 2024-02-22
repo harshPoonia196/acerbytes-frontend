@@ -1,205 +1,406 @@
-"use client"
+"use client";
 
-import { Card,Table, Box, TableBody, TableContainer, TablePagination, TableHead, TableRow, TableCell, TableSortLabel, Tooltip, IconButton, Chip, Menu, MenuItem, Button } from '@mui/material'
-import React from 'react'
+import {
+  Card,
+  Table,
+  Box,
+  TableBody,
+  TableContainer,
+  TablePagination,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableSortLabel,
+  Tooltip,
+  IconButton,
+  Chip,
+  Menu,
+  MenuItem,
+  Button,
+} from "@mui/material";
+
+import {
+  formatDate,
+  formatPoints,
+  getApprovedDiscountPercentage,
+  objectToQueryString,
+  getComparator,
+  stableSort,
+} from "utills/CommonFunction";
+import { useAuth } from "utills/AuthContext";
+import { useSnackbar } from "utills/SnackbarContext";
+import { completeOrderRequest, getCreditPointStatusList } from "api/Admin.api";
+import Loading from "Components/CommonLayouts/Loading";
+import {
+  DEBOUNCE_TIMER,
+  PAGINATION_LIMIT,
+  PAGINATION_LIMIT_OPTIONS,
+} from "Components/config/config";
+import { Add } from "@mui/icons-material";
+import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
+import { ORDER_STATUS, ToasterMessages } from "Components/Constants";
+import React from "react";
 import Paper from "@mui/material/Paper";
-import { visuallyHidden } from '@mui/utils';
-import { getComparator, stableSort } from "utills/CommonFunction";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
-const rows = [
-    {
-        name: 'Anand Gupta',
-        mobileNumber: '+91 125454544',
-        lastTopupDate: '10th April, 2023',
-        lastTopupAmount: 18000,
-        opening: 5000,
-        consumedSoFar: 5000,
-        balance: 5000,
-    }
-];
+import { visuallyHidden } from "@mui/utils";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CustomSearchInput from "Components/CommonLayouts/SearchInput";
+import { debounce } from "lodash";
 
 const headCells = [
-    {
-        id: 'name',
-        label: 'Name',
-    },
-    {
-        id: 'mobileNumber',
-        label: 'Mobile number',
-    },
-    {
-        id: 'lastTopupDate',
-        label: 'Last topup date',
-    },
-    {
-        id: 'lastTopupAmount',
-        label: 'Last topup Points',
-    },
-    {
-        id: 'opening',
-        label: 'Opening',
-    },
-    {
-        id: 'consumedSoFar',
-        label: 'Consumed so far',
-    },
-    {
-        id: 'balance',
-        label: 'Balance',
-    },
-    {
-        id: 'action',
-        label: 'Action',
-    }
+  {
+    id: "name",
+    label: "Name",
+  },
+  {
+    id: "mobileNumber",
+    label: "Mobile number",
+  },
+  {
+    id: "lastTopupDate",
+    label: "Last topup date",
+  },
+  {
+    id: "lastTopupAmount",
+    label: "Last topup Points",
+  },
+  {
+    id: "opening",
+    label: "Opening",
+  },
+  {
+    id: "consumedSoFar",
+    label: "Consumed so far",
+  },
+  {
+    id: "balance",
+    label: "Balance",
+  },
+  {
+    id: "action",
+    label: "Action",
+  },
 ];
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort } =
-        props;
+  const { order, orderBy, onRequestSort } = props;
 
-    const createSortHandler = (property) => (event) => {
-        onRequestSort(event, property);
-    };
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
 
-    return (
-        <TableHead>
-            <TableRow>
-                {headCells.map((headCell) => (
-                    <TableCell
-                        key={headCell.id}
-                        align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'normal'}
-                        sortDirection={orderBy === headCell.id ? order : false}
-                    >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <Box component="span" sx={visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </Box>
-                            ) : null}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
-    );
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? "right" : "left"}
+            padding={headCell.disablePadding ? "none" : "normal"}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : "asc"}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
 }
 
-function RowStructure({ row }) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+function RowStructure({ row, adminAssignPointsHandler }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openAddCreditPoints, setOpenAddCreditPoints] = React.useState(false);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    return <TableRow
-        key={row.name}
+  const handlePopuChange = (value) => {
+    setOpenAddCreditPoints(value);
+    handleClose();
+  };
+
+  return (
+    <>
+      <AdminCreditPointsPopup
+        open={openAddCreditPoints}
+        brokerId={row?.brokerDetails?._id}
+        handleClose={() => handlePopuChange(false)}
+        handleSubmit={adminAssignPointsHandler}
+      />
+      <TableRow
+        key={row._id}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
-        <TableCell>{row.name}</TableCell>
-        <TableCell>{row.mobileNumber}</TableCell>
-        <TableCell>{row.lastTopupDate}</TableCell>
-        <TableCell>{row.lastTopupAmount}</TableCell>
-        <TableCell>{row.opening}</TableCell>
-        <TableCell>{row.consumedSoFar}</TableCell>
-        <TableCell>{row.balance}</TableCell>
+      >
         <TableCell>
-            <IconButton
-                aria-label="more"
-                id="long-button"
-                aria-controls={open ? 'long-menu' : undefined}
-                aria-expanded={open ? 'true' : undefined}
-                aria-haspopup="true"
-                onClick={handleClick}
-                size='small'
-            >
-                <MoreVertIcon fontSize='small' />
-            </IconButton>
+          {row?.brokerDetails?.name?.firstName}{" "}
+          {row?.brokerDetails?.name?.lastName}
+        </TableCell>
+        <TableCell>
+          {row?.brokerDetails?.phone?.countryCode}{" "}
+          {row?.brokerDetails?.phone?.number}
+        </TableCell>
+        <TableCell>{formatDate(row.createdAt)}</TableCell>
+        <TableCell>{formatPoints(row.newPoints)}</TableCell>
+        <TableCell>{formatPoints(row.openingPoints)}</TableCell>
+        <TableCell>{formatPoints(row.consumedPoints)}</TableCell>
+        <TableCell>{formatPoints(row?.brokerBalance?.balance || 0)}</TableCell>
+        <TableCell>
+          <IconButton
+            aria-label="more"
+            id="long-button"
+            aria-controls={open ? "long-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+            size="small"
+          >
+            <MoreVertIcon fontSize="small" />
+          </IconButton>
         </TableCell>
         <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-                'aria-labelledby': 'basic-button',
-            }}
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
         >
-            <MenuItem onClick={handleClose}>Assign points</MenuItem>
+          <MenuItem onClick={() => handlePopuChange(true)}>
+            Assign points
+          </MenuItem>
         </Menu>
-    </TableRow>
+      </TableRow>
+    </>
+  );
 }
 
 function CreditTable() {
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState(null);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { userDetails } = useAuth();
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState(null);
+  const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
+  const [page, setPage] = React.useState(1);
+  const [initialMount, setInitialMount] = React.useState(true);
+  const [isLoading, setLoading] = React.useState(false);
+  const [creditPointList, setCreditPointList] = React.useState({});
+  const [openAddCreditPoints, setOpenAddCreditPoints] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER); // Adjust the debounce delay as needed
+  const { openSnackbar } = useSnackbar();
 
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(property);
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
+
+  function performSearch() {
+    const pageOptions = {
+      pageLimit: rowsPerPage,
+      page: page,
     };
+    getCreditPointList(pageOptions, searchTerm);
+  }
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+  React.useEffect(() => {
+    // This block will run only on initial mount
+    if (initialMount) {
+      setInitialMount(false);
+      return;
+    }
+
+    debouncedSearch();
+    return () => {
+      debouncedSearch.cancel();
     };
+  }, [userDetails && Object.keys(userDetails).length, searchTerm, initialMount]);
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+  const getCreditPointList = async (queryParams, searchTerm) => {
+    try {
+      setLoading(true);
+      const response = await getCreditPointStatusList(
+        objectToQueryString({
+          ...queryParams,
+          firstName: searchTerm,
+          lastName: searchTerm,
+        })
+      );
+      if (response.status == 200) {
+        setCreditPointList({
+          list: response?.data?.data,
+          totalCount: response?.data?.totalCount,
+          totalPages: response?.data?.totalPages,
+          nextPage: response?.data?.nextPage,
+          prevPage: response?.data?.prevPage,
+        });
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error creating order request",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    const page = newPage + 1;
+    setPage(page);
+    const pageOptions = {
+      pageLimit: rowsPerPage,
+      page,
     };
+    getCreditPointList(pageOptions);
+  };
 
-    const visibleRows = React.useMemo(
-        () =>
-            stableSort(rows, getComparator(order, orderBy)).slice(
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage,
-            ),
-        [order, orderBy, page, rowsPerPage],
-    );
+  const handleChangeRowsPerPage = (event) => {
+    const pageLimit = parseInt(event.target.value, 10);
+    setRowsPerPage(pageLimit);
+    setPage(1);
+    const pageOptions = {
+      pageLimit,
+      page: 1,
+    };
+    getCreditPointList(pageOptions);
+  };
 
-    return (
-        <>
-         <Card sx={{ mb: 2 }}>
-                    <CustomSearchInput />
-                </Card>
-                <TableContainer component={Paper}>
-            
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                <EnhancedTableHead
-                    order={order}
-                    orderBy={orderBy}
-                    onRequestSort={handleRequestSort} />
-                <TableBody>
-                    {rows.map((row) => (
-                        <RowStructure row={row} key={row.firstName} />
-                    ))}
-                </TableBody>
-            </Table>
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </TableContainer>
-        </>
-        
-    )
+  const handleCloseAddCreditPopup = () => {
+    setOpenAddCreditPoints(false);
+  };
+
+  const adminAssignPointsHandler = ({
+    approvedPayment,
+    approvedPoints,
+    salesPerson,
+    brokerGoogleID,
+    orderNumber,
+  }) => {
+    const payload = {
+      adminGoogleID: userDetails?.googleID,
+      status: ORDER_STATUS.COMPLETED,
+      orderNumber: orderNumber,
+      points: approvedPoints,
+      brokerGoogleID: brokerGoogleID,
+      approvedDiscount: getApprovedDiscountPercentage(
+        approvedPoints,
+        approvedPayment
+      )
+        .toFixed(2)
+        .toString(),
+      approvedPayment: approvedPayment,
+      approvedPoints: approvedPoints,
+      salesPerson,
+    };
+    handleOrderRequest(payload);
+  };
+
+  const handleOrderRequest = async (payload) => {
+    try {
+      setLoading(true);
+      const response = await completeOrderRequest(payload);
+      if (response.status == 200) {
+        showToaterMessages(ToasterMessages.ORDER_COMPLETED_SUCCESS, "success");
+        getCreditPointList({
+          pageLimit: rowsPerPage,
+          page,
+        });
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error creating order request",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+      handleCloseAddCreditPopup();
+    }
+  };
+
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <Box sx={{ width: "100%" }}>
+      <Button
+        variant="contained"
+        style={{ display: "flex", marginLeft: "auto" }}
+        align="right"
+        onClick={() => setOpenAddCreditPoints(true)}
+        startIcon={<Add />}
+      >
+        Add credit
+      </Button>
+
+      <AdminCreditPointsPopup
+        open={openAddCreditPoints}
+        handleClose={handleCloseAddCreditPopup}
+        handleSubmit={adminAssignPointsHandler}
+      />
+
+      <Card sx={{ mb: 2 }}>
+        <CustomSearchInput
+          label="Search"
+          variant="outlined"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      </Card>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {creditPointList?.list?.map((row) => (
+              <RowStructure
+                row={row}
+                key={row.firstName}
+                adminAssignPointsHandler={adminAssignPointsHandler}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+          component="div"
+          count={creditPointList.totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+    </Box>
+  );
 }
 
-export default CreditTable
+export default CreditTable;

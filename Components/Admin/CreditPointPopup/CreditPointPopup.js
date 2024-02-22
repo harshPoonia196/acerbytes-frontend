@@ -16,11 +16,13 @@ import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import { generateRandorOrderNumber } from "api/Broker.api";
 
-function AdminCreditPointsPopup({ open, handleClose, handleSubmit }) {
+function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
   const [isLoading, setLoading] = React.useState(false);
   const [salesPersons, setSalesPersons] = React.useState([]);
   const [consultantList, setConsultantsList] = React.useState([]);
-  const [creditInfo, setCreditInfo] = React.useState({});
+  const [creditInfo, setCreditInfo] = React.useState({
+    brokerGoogleID: brokerId || "",
+  });
 
   const { openSnackbar } = useSnackbar();
 
@@ -145,6 +147,10 @@ function AdminCreditPointsPopup({ open, handleClose, handleSubmit }) {
     return false;
   };
 
+  const consultantInfo = consultantList?.find(
+    (rs) => rs._id == creditInfo.brokerGoogleID
+  )?.name;
+
   return (
     <Dialog
       sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
@@ -186,6 +192,10 @@ function AdminCreditPointsPopup({ open, handleClose, handleSubmit }) {
                   },
                 })
               }
+              value={{
+                label: `${consultantInfo?.firstName} ${consultantInfo?.lastName}`,
+                value: creditInfo?.brokerGoogleID,
+              }}
               list={consultantList?.map((rs) => {
                 return {
                   label: `${rs.name?.firstName} ${rs.name?.lastName}`,

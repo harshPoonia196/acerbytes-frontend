@@ -19,6 +19,7 @@ const NewMultiSelectAutoCompleteInputStructure = ({
   value,
   list,
   sx,
+  brokerUse = false,
   variant,
   isEdit,
   error,
