@@ -4,6 +4,12 @@ export const isLoggedIn = () => {
     return false;
 };
 
+export const getLoggedInUser = () => {
+  const userDetail = localStorage.getItem("userDetails");
+  if (userDetail) return JSON.parse(userDetail);
+  return null;
+};
+
 export const logoutUser = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userDetails");
@@ -34,20 +40,25 @@ const scopes = {
 };
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
-    // if (!isLogged && !publicRoutes.includes(url)) {
-    //   redirectUser("/login");
-    // }
-    // if (isLogged) {
-    //   if (url.includes("/admin") && role !== "admin") {
-    //     redirectUser("/");
-    //   } else if (url.includes("/user") && role !== "user") {
-    //     redirectUser("/");
-    //   } else if (url.includes("/consultant") && role !== "broker") {
-    //     redirectUser("/");
-    //   }
-    // }
+    if (!isLogged && !publicRoutes.includes(url)) {
+      redirectUser("/login");
+    }
+    if (isLogged) {
+      if (url.includes("/admin") && role !== "admin") {
+        redirectUser("/");
+      } else if (url.includes("/user") && role !== "user") {
+        redirectUser("/");
+      } else if (url.includes("/consultant") && role !== "broker") {
+        redirectUser("/");
+      }
+    }
 };
 
 export const matchUserRole = (actualRole, matchingRole) => {
     // return actualRole === matchingRole
+};
+
+export const authRole = (authorizedRole) => {
+  let userDetail = getLoggedInUser();
+  return authorizedRole === userDetail?.role;
 };
