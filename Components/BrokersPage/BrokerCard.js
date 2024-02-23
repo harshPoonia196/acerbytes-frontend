@@ -20,6 +20,7 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ShieldIcon from "@mui/icons-material/Shield";
 import RemoveModeratorIcon from "@mui/icons-material/RemoveModerator";
 import moment from "moment";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const labels = (rating) => {
   if (rating <= 0.5) {
@@ -136,21 +137,20 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
               !noReview ? (
                 <Box sx={{ alignSelf: "end" }}>
                   {type ? (
-                    <Button
+                    <CustomButton
                       onClick={() => handleViewReview(broker?.name)}
                       size="small"
                       variant="outlined"
-                    >
-                      View Reviews
-                    </Button>
+                    ButtonText={"View Reviews"}
+                    />
                   ) : (
-                    <Button
+                    <CustomButton
                       onClick={handleDialogOpen}
                       size="small"
                       variant="outlined"
-                    >
-                      Rate your experience
-                    </Button>
+                    ButtonText={"Rate your experience"}
+                      
+                    />
                   )}
                 </Box>
               ) : (

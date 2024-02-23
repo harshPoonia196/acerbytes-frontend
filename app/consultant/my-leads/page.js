@@ -9,6 +9,7 @@ import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
 import CustomConsultantBreadScrumbs from 'Components/CommonLayouts/CustomConsultantBreadScrumbs';
 import InfoBox from "Components/CommonLayouts/CommonHeader";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function MyLeads() {
 
@@ -58,7 +59,7 @@ function MyLeads() {
           </ToggleButtonGroup>
         </Card>
         <Box sx={{ textAlign: 'end', mb: 2 }}>
-          <Button variant="outlined" size="small" onClick={handleOpenUpdatePopup}>Add notes</Button>
+          <CustomButton variant="outlined" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add notes"} loading={loading} />
         </Box>
         {alignment === 'all' ? <MyLeadsTable /> : <MyLeadsStatus />}
       </Container>

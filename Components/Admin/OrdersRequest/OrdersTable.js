@@ -51,6 +51,7 @@ import {
 } from "Components/config/config";
 import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const headCells = [
   {
@@ -575,15 +576,15 @@ function OrdersTable() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Button
+      <CustomButton
         variant="contained"
         style={{ display: "flex", marginLeft: "auto" }}
         align="right"
         onClick={() => setOpenAddCreditPoints(true)}
         startIcon={<Add />}
-      >
-        Add request
-      </Button>
+      
+        ButtonText={"Add request"}
+      />
 
       <AdminCreditPointsPopup
         open={openAddCreditPoints}

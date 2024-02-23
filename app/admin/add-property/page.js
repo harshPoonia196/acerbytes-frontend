@@ -33,6 +33,7 @@ import { CreateProperty, EditProperty } from "api/Property.api";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import { detailsProperty } from "api/Property.api";
 import colors from "styles/theme/colors";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const tabHeight = 116;
 
@@ -78,6 +79,7 @@ function AddProperty() {
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
   const { openSnackbar } = useSnackbar();
+  const [loading,setLoading] = useState(false);
 
   let itemsServer = listOfTabsInAddProperty.map((tab) => {
     const hash = tab.value;
@@ -1043,6 +1045,7 @@ function AddProperty() {
   };
 
   const validateForm = () => {
+    setLoading(true)
     const { error } = Schema.validate(form, { abortEarly: false });
     let store = [
       "constructionQuality",
@@ -1081,6 +1084,7 @@ function AddProperty() {
         openSnackbar(`Ratings needs to be provided for ${label}`, "error");
       }
     });
+    setLoading(false);
     console.log(form, "formmmm", error, "errrr");
 
     if (error) {
@@ -1091,7 +1095,9 @@ function AddProperty() {
       });
       // Handle validation errors, e.g., display error messages
       setErrors(validationErrors);
+      setLoading(false)
       return false;
+     
     } else {
       if (!editPage) {
         // Validation passed
@@ -1104,7 +1110,7 @@ function AddProperty() {
         routerNavigation.push(`/admin/property-list`);
       }
     }
-
+    setLoading(false)
     return true;
   };
 
@@ -1187,12 +1193,12 @@ function AddProperty() {
               isEdit={isEdit}
             />
             <Grid item xs={12} sx={{ textAlign: "end" }}>
-              <Button onClick={validateForm} variant="contained">
-                {editPage ? "Update" : "Save"}
-              </Button>
-              <Button sx={{ marginLeft: "10px" }} variant="contained">
-                Publish
-              </Button>
+              <CustomButton onClick={validateForm} variant="contained"
+                ButtonText={editPage ? "Update" : "Save"}/>
+            
+              <CustomButton loading={loading} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
+                
+              
             </Grid>
           </Grid>
         </div>

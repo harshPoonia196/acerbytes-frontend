@@ -52,6 +52,7 @@ import {
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { listOfProfileTab } from "utills/Constants";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const tabHeight = 116;
 
@@ -765,7 +766,7 @@ function Profile() {
                     })}
                   </Box>
                   <Box>
-                    <Button
+                    <CustomButton
                       disabled={
                         !(
                           selectInterestedArea &&
@@ -775,9 +776,9 @@ function Profile() {
                       }
                       variant="contained"
                       onClick={handleAddInterestedCities}
-                    >
-                      Add
-                    </Button>
+                    
+                      ButtonText={"Add"}
+                    />
                   </Box>
                 </Grid>
               </Grid>

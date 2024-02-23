@@ -14,11 +14,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
     const [loading, setLoading] = useState(false);
     const handleClick = () => {
         setLoading(true);
-    
-        // Simulate an asynchronous operation (e.g., API call)
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
+        handleClose();
       };
     return (
         <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
@@ -92,14 +88,14 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Button
+                    <CustomButton
                         // startIcon={<GoogleIcon />}
                         variant="outlined"
                         sx={{ mr: 2 }}
                         onClick={handleClose}
-                    >
-                        Cancel
-                    </Button>
+                    ButtonText={"Cancel"}
+                        
+                    />
                     {/* <Button
                         // startIcon={<DoneIcon />}
                         variant="contained"
@@ -114,9 +110,10 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
       onClick={handleClick}
       variant="contained"
       color="primary"
-    >
-      Submit
-    </CustomButton>
+      ButtonText={"Submit"}
+    />
+    
+   
                 </Box>
             </DialogActions>
         </Dialog >

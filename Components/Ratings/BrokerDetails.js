@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import StarIcon from "@mui/icons-material/Star";
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 
 
 const labels = {
@@ -66,10 +67,10 @@ const BrokerDetails = (props) => {
         </Box>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'row', evmd: 'column' }, justifyContent: 'space-between' }}>
           <Box>
-            <Button startIcon={<DriveFileRenameOutlineRoundedIcon />} size='small' variant='contained'>Write a Review</Button>
+            <CustomButton startIcon={<DriveFileRenameOutlineRoundedIcon />} size='small' variant='contained' ButtonText={"Write a Review"} />
           </Box>
           <Box sx={{ textAlign: 'end' }}>
-            <Button
+            <CustomButton
               size='small'
               id="basic-"
               aria-controls={open ? 'basic-menu' : undefined}
@@ -77,9 +78,9 @@ const BrokerDetails = (props) => {
               aria-expanded={open ? 'true' : undefined}
               onClick={handleClick}
               endIcon={<ExpandMoreOutlinedIcon size='small' />}
-            >
-              Sort By
-            </Button>
+            
+              ButtonText={"Sort By"}
+            />
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}

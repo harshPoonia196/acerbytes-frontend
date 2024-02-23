@@ -55,6 +55,7 @@ import { useAuth } from "utills/AuthContext";
 import { getBrokerBalance } from "api/Broker.api";
 import { ROLE_CONSTANTS } from "Components/config/config";
 import { useSnackbar } from "utills/SnackbarContext";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const drawerWidth = 240;
 
@@ -442,13 +443,12 @@ export default function ClippedDrawer({ children }) {
                   </span>
                 </Typography>
               ) : (
-                <Button
+                <CustomButton
                   onClick={() => {
                     router.push("/login");
                   }}
-                >
-                  Sign in
-                </Button>
+                  ButtonText={"Sign in"}
+                />
               )}
             </Box>
             {isLogged && (
