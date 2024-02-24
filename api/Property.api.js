@@ -38,3 +38,8 @@ export const getAllfavouriteProperty = (queryParams) => {
     `/favProperty/getAll` + (queryParams ? `?${queryParams}` : "")
   );
 };
+
+export const getAllOptionData= (data) => {
+  return axiosInstance.get(`/property/get-option-list`, data);
+};
+
