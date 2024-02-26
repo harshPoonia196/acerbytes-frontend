@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { useSnackbar } from "utills/SnackbarContext";
 import ConsultantDialog from "Components/Login/ConsultantDialog";
 import { useAuth } from "utills/AuthContext";
+import { countries } from "Components/config/config";
 
 function Login() {
   const { login } = useAuth();
@@ -28,7 +29,7 @@ function Login() {
   const [activeStep, setActiveStep] = useState(1);
   const [otpInput, setOtpInput] = useState("");
   const [form, setForm] = useState({
-    countryCode: "+91",
+    countryCode: countries?.[0]?.value,
     phone: "",
     firstName: "",
     lastName: "",
@@ -150,6 +151,7 @@ function Login() {
       };
       const res = await sendOtpAPI(payload);
       if (res.status === 200) {
+        openSnackbar("Verfication code send successfully", "success");
         if (!isResend) nextStep();
       }
     } catch (error) {

@@ -26,6 +26,7 @@ const VerifyOtp = ({ loading, setOtpInput, form, prevStep, otpInput, verifyOtpFu
             setResendDisabled(true);
             setTimer(60);
             sendOtpFun(true);
+            setOtpInput("");
         }
     };
 
