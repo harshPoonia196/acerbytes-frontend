@@ -6,28 +6,47 @@ export const ROLE_CONSTANTS = {
   superAdmin: "superAdmin",
   admin: "admin",
   user: "user",
-  broker: "broker"
-}
+  broker: "broker",
+};
 
 export const ROLES = [
   {
     label: "superAdmin",
     value: "superAdmin",
-    isVisible: false
+    isVisible: false,
   },
   {
     label: "admin",
     value: "admin",
-    isVisible: true
+    isVisible: true,
   },
   {
     label: "user",
     value: "user",
-    isVisible: true
+    isVisible: true,
   },
   {
     label: "broker",
     value: "broker",
-    isVisible: true
+    isVisible: true,
+  },
+];
+
+export const countries = [
+  {
+    value: "91",
+    label: "+91",
+  },
+  {
+    value: "92",
+    label: "+92",
+  },
+  {
+    value: "9528",
+    label: "+9528",
+  },
+  {
+    value: "1",
+    label: "+1",
   },
 ];
