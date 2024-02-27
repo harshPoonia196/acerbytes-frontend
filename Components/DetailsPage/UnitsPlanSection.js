@@ -72,7 +72,7 @@ function UnitsPlanSection(props) {
                 <Divider />
                 <Box sx={{ p: 2 }}>
                     <Grid container spacing={2}>
-                        {unitsPlan?.map((unit, index) => (
+                        {unitsPlan?.length && unitsPlan?.map((unit, index) => (
                             <GridItemWithCard
                                 key={unit._id}
                                 xs={6}

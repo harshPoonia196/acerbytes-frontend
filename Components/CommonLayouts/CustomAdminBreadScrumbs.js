@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
@@ -8,7 +9,8 @@ import Stack from '@mui/material/Stack';
 import { Box, Card, CardActionArea, Container, Dialog, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { listOfPages } from 'Components/NavBar/Links'
-
+import { boxShadowBottom, boxShadowTop } from 'utills/Constants';
+import colors from 'styles/theme/colors';
 function handleClick(event) {
     event.preventDefault();
     console.info('You clicked a breadcrumb.');
@@ -186,6 +188,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
 
 export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
 
+
     const router = useRouter()
 
     const [openAdminLinkPopup, setOpenAdminLinkPopup] = React.useState(false)
@@ -217,13 +220,23 @@ export default function CustomAdminBreadScrumbs({ text, maxWidthTill }) {
     ];
 
     return (
-        <Box sx={{ backgroundColor: "white", borderBottom: "1px solid whitesmoke" }}>
+
+        <Box
+            sx={{
+                zIndex: 100,
+                background: colors.WHITE,
+                position: "sticky",
+                top: { xs: 48, sm: 64 },
+                boxShadow: boxShadowBottom
+            }}
+        >
             <Container
                 maxWidth={maxWidthTill ? maxWidthTill : "lg"}
             >
                 <Stack spacing={2}>
                     <PopupForLinks router={router} open={openAdminLinkPopup} handleClose={handleCloseAdminLinkPopup} />
-                    <Breadcrumbs separator="›" aria-label="breadcrumb">
+                    <Breadcrumbs separator="›" aria-label="breadcrumb"
+                    >
                         {breadcrumbs}
                     </Breadcrumbs>
                 </Stack>

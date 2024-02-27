@@ -20,6 +20,7 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ShieldIcon from "@mui/icons-material/Shield";
 import RemoveModeratorIcon from "@mui/icons-material/RemoveModerator";
 import moment from "moment";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const labels = (rating) => {
   if (rating <= 0.5) {
@@ -132,37 +133,41 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
                 <i>{broker?.clients || 50} clients served</i>
               </Typography>
             </Box>
-            {!noReview ? (
-              <Box sx={{ alignSelf: "end" }}>
-                {type ? (
-                  <Button
-                    onClick={() => handleViewReview(broker?.name)}
-                    size="small"
-                    variant="outlined"
-                  >
-                    View Reviews
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleDialogOpen}
-                    size="small"
-                    variant="outlined"
-                  >
-                    Rate your experience
-                  </Button>
-                )}
-              </Box>
-            ) : (
-              <Box sx={{ alignSelf: "end" }}>
-                <Button
-                  onClick={handleDialogOpen}
-                  size="small"
-                  variant="outlined"
-                >
-                  Write your experience
-                </Button>
-              </Box>
-            )}
+            {
+              !noReview ? (
+                <Box sx={{ alignSelf: "end" }}>
+                  {type ? (
+                    <CustomButton
+                      onClick={() => handleViewReview(broker?.name)}
+                      size="small"
+                      variant="outlined"
+                    ButtonText={"View Reviews"}
+                    />
+                  ) : (
+                    <CustomButton
+                      onClick={handleDialogOpen}
+                      size="small"
+                      variant="outlined"
+                    ButtonText={"Rate your experience"}
+                      
+                    />
+                  )}
+                </Box>
+              ) : (
+                <></>
+              )
+              // (
+              //   <Box sx={{ alignSelf: "end" }}>
+              //     <Button
+              //       onClick={handleDialogOpen}
+              //       size="small"
+              //       variant="outlined"
+              //     >
+              //       Write your experience
+              //     </Button>
+              //   </Box>
+              // )
+            }
           </Box>
         </Box>
       </Box>

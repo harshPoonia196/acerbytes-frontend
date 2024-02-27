@@ -16,7 +16,9 @@ import {
   Menu,
   MenuItem,
   Button,
+  Card,
 } from "@mui/material";
+import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
@@ -40,12 +42,16 @@ import {
   getOrderRequests,
   getSalesPersons,
 } from "api/Admin.api";
+
 import AddCreditPointsPopup from "./Modal/AddCreditPointsPopup";
 import { useAuth } from "utills/AuthContext";
 import {
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
 } from "Components/config/config";
+import { Add } from "@mui/icons-material";
+import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const headCells = [
   {
@@ -152,6 +158,17 @@ function EnhancedTableHead(props) {
   );
 }
 
+function CreditPointModel({ open, info, handleClose, handleSubmit }) {
+  return (
+    <AddCreditPointsPopup
+      open={open}
+      info={info}
+      handleClose={handleClose}
+      handleSubmit={handleSubmit}
+    />
+  );
+}
+
 function RowStructure({
   row,
   salesPersons,
@@ -188,7 +205,7 @@ function RowStructure({
       status: ORDER_STATUS.COMPLETED,
       orderNumber: row.orderNumber,
       points: row.points,
-      brokerGoogleID: row?.brokerId?.googleID,
+      brokerGoogleID: row?.brokerId?._id,
       approvedDiscount: getApprovedDiscountPercentage(
         assignedPoints,
         receivedPayment
@@ -205,17 +222,21 @@ function RowStructure({
 
   return (
     <>
-      <AddCreditPointsPopup
+      <CreditPointModel
         open={openAddCredit}
         info={{
           name: `${row?.brokerId?.name?.firstName} ${row?.brokerId?.name?.lastName}`,
           points: row.points,
           amount: row.amount,
+          approvedPayment: row.approvedPayment,
+          approvedPoints: row.approvedPoints,
+          salesPerson: row.salesPerson,
           salesPersons: salesPersons,
         }}
         handleClose={handleCloseAddCreditPopup}
         handleSubmit={assignPointsHandler}
       />
+
       <TableRow
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -231,22 +252,28 @@ function RowStructure({
         <TableCell>{row.points}</TableCell>
         <TableCell>{row?.standardDiscount}%</TableCell>
         {isCompleted && <TableCell>{row?.approvedDiscount}%</TableCell>}
-        {isCompleted && <TableCell>{formatAmount(row?.approvedPayment)}</TableCell>}
-        {isCompleted && <TableCell>{formatPoints(row?.approvedPoints)}</TableCell>}
-        {!isCompleted && <TableCell>
-          <IconButton
-            aria-label="more"
-            id="long-button"
-            disabled={isCompleted}
-            aria-controls={open ? "long-menu" : undefined}
-            aria-expanded={open ? "true" : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-            size="small"
-          >
-            <MoreVertIcon fontSize="small" />
-          </IconButton>
-        </TableCell>}
+        {isCompleted && (
+          <TableCell>{formatAmount(row?.approvedPayment)}</TableCell>
+        )}
+        {isCompleted && (
+          <TableCell>{formatPoints(row?.approvedPoints)}</TableCell>
+        )}
+        {!isCompleted && (
+          <TableCell>
+            <IconButton
+              aria-label="more"
+              id="long-button"
+              disabled={isCompleted}
+              aria-controls={open ? "long-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
+              size="small"
+            >
+              <MoreVertIcon fontSize="small" />
+            </IconButton>
+          </TableCell>
+        )}
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -290,15 +317,24 @@ function a11yProps(index) {
   };
 }
 
-function TableView({ status }) {
-  const { userDetails } = useAuth();
+function TableView({
+  status,
+  userDetails,
+  handleOrderRequest,
+  showToaterMessages,
+  isLoading,
+  setLoading,
+  getOrderRequestList,
+  setRowsPerPage,
+  setPage,
+  page,
+  rowsPerPage,
+  initialMount,
+  setInitialMount,
+  orderRequests,
+}) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
-  const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
-  const [initialMount, setInitialMount] = React.useState(true);
-  const [isLoading, setLoading] = React.useState(false);
-  const [orderRequests, setOrderRequests] = React.useState({});
   const [salesPersons, setSalesPersons] = React.useState([]);
 
   React.useEffect(() => {
@@ -318,70 +354,12 @@ function TableView({ status }) {
     }
   }, [userDetails && Object.keys(userDetails).length, initialMount]);
 
-  const { openSnackbar } = useSnackbar();
-
-  const showToaterMessages = (message, severity) => {
-    openSnackbar(message, severity);
-  };
-
-  const getOrderRequestList = async (queryParams) => {
-    try {
-      setLoading(true);
-      const response = await getOrderRequests(
-        objectToQueryString({
-          status,
-          ...queryParams,
-        })
-      );
-      if (response.status == 200) {
-        setOrderRequests({
-          list: response?.data?.data,
-          totalCount: response?.data?.totalCount,
-          totalPages: response?.data?.totalPages,
-          nextPage: response?.data?.nextPage,
-          prevPage: response?.data?.prevPage,
-        });
-      }
-    } catch (error) {
-      showToaterMessages(
-        error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
-        "error"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
   const getSalesPersonsList = async () => {
     try {
       setLoading(true);
       const response = await getSalesPersons();
       if (response.status == 200) {
         setSalesPersons(response?.data?.data);
-      }
-    } catch (error) {
-      showToaterMessages(
-        error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
-        "error"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleOrderRequest = async (payload) => {
-    try {
-      setLoading(true);
-      const response = await completeOrderRequest(payload);
-      if (response.status == 200) {
-        showToaterMessages(ToasterMessages.ORDER_COMPLETED_SUCCESS, "success");
-        getOrderRequestList({
-          pageLimit: rowsPerPage,
-          page,
-        });
       }
     } catch (error) {
       showToaterMessages(
@@ -425,49 +403,197 @@ function TableView({ status }) {
   return isLoading ? (
     <Loading />
   ) : (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-          isCompleted={status === ORDER_STATUS.COMPLETED}
+    <>
+      <Card sx={{ mb: 2 }}>
+        <CustomSearchInput />
+      </Card>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+            isCompleted={status === ORDER_STATUS.COMPLETED}
+          />
+          <TableBody>
+            {orderRequests?.list?.map((row, index) => (
+              <RowStructure
+                row={row}
+                userDetails={userDetails}
+                key={index}
+                isCompleted={status === ORDER_STATUS.COMPLETED}
+                handleOrderRequest={handleOrderRequest}
+                salesPersons={salesPersons}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          sx={{
+            overflow: "hidden",
+          }}
+          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+          component="div"
+          count={orderRequests.totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        <TableBody>
-          {orderRequests?.list?.map((row, index) => (
-            <RowStructure
-              row={row}
-              userDetails={userDetails}
-              key={index}
-              isCompleted={status === ORDER_STATUS.COMPLETED}
-              handleOrderRequest={handleOrderRequest}
-              salesPersons={salesPersons}
-            />
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-        component="div"
-        count={orderRequests.totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page - 1}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </TableContainer>
+      </TableContainer>
+    </>
   );
 }
 
 function OrdersTable() {
+  const { userDetails } = useAuth();
+  const [isLoading, setLoading] = React.useState(false);
+
   const [value, setValue] = React.useState(0);
+  const [openAddCreditPoints, setOpenAddCreditPoints] = React.useState(false);
+  const [orderRequests, setOrderRequests] = React.useState({});
+  const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
+  const [page, setPage] = React.useState(1);
+  const [initialMount, setInitialMount] = React.useState(true);
+  const { openSnackbar } = useSnackbar();
+
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
+  React.useEffect(() => {
+    // This block will run only on initial mount
+    if (initialMount) {
+      setInitialMount(false);
+      return;
+    }
+
+    if (userDetails && Object.keys(userDetails).length) {
+      const pageOptions = {
+        pageLimit: rowsPerPage,
+        page,
+      };
+      getOrderRequestList(pageOptions);
+    }
+  }, [userDetails && Object.keys(userDetails).length, initialMount, value]);
+  const handleCloseAddCreditPopup = () => {
+    setOpenAddCreditPoints(false);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const adminAssignPointsHandler = ({
+    approvedPayment,
+    approvedPoints,
+    salesPerson,
+    brokerGoogleID,
+    orderNumber,
+  }) => {
+    const payload = {
+      adminGoogleID: userDetails?.googleID,
+      status: ORDER_STATUS.PENDING,
+      orderNumber: orderNumber,
+      points: approvedPoints,
+      brokerGoogleID: brokerGoogleID,
+      approvedDiscount: getApprovedDiscountPercentage(
+        approvedPoints,
+        approvedPayment
+      )
+        .toFixed(2)
+        .toString(),
+      approvedPayment: approvedPayment,
+      approvedPoints: approvedPoints,
+      salesPerson,
+    };
+    handleOrderRequest(payload);
+  };
+
+  const handleOrderRequest = async (payload) => {
+    try {
+      setLoading(true);
+      const response = await completeOrderRequest(payload);
+      if (response.status == 200) {
+        showToaterMessages(ToasterMessages.ORDER_COMPLETED_SUCCESS, "success");
+        getOrderRequestList({
+          pageLimit: rowsPerPage,
+          page,
+        });
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error creating order request",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+      handleCloseAddCreditPopup();
+    }
+  };
+
+  const orderStatusListing =
+    value == 0 ? ORDER_STATUS.PENDING : ORDER_STATUS.COMPLETED;
+
+  const getOrderRequestList = async (queryParams) => {
+    try {
+      setLoading(true);
+      setOrderRequests({});
+      const response = await getOrderRequests(
+        objectToQueryString({
+          status: orderStatusListing,
+          ...queryParams,
+        })
+      );
+
+      if (response.status == 200) {
+        setOrderRequests({
+          list: response?.data?.data,
+          totalCount: response?.data?.totalCount,
+          totalPages: response?.data?.totalPages,
+          nextPage: response?.data?.nextPage,
+          prevPage: response?.data?.prevPage,
+        });
+      }
+    } catch (error) {
+      setOrderRequests({
+        list: [],
+        totalCount: 0,
+        totalPages: 0,
+        nextPage: null,
+        prevPage: null,
+      });
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error creating order request",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box sx={{ width: "100%" }}>
+      <CustomButton
+        variant="contained"
+        style={{ display: "flex", marginLeft: "auto" }}
+        align="right"
+        onClick={() => setOpenAddCreditPoints(true)}
+        startIcon={<Add />}
+      
+        ButtonText={"Add request"}
+      />
+
+      <AdminCreditPointsPopup
+        open={openAddCreditPoints}
+        handleClose={handleCloseAddCreditPopup}
+        handleSubmit={adminAssignPointsHandler}
+      />
+
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -479,10 +605,40 @@ function OrdersTable() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <TableView status={ORDER_STATUS.PENDING} />
+        <TableView
+          status={ORDER_STATUS.PENDING}
+          userDetails={userDetails}
+          isLoading={isLoading}
+          setLoading={setLoading}
+          setPage={setPage}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          handleOrderRequest={handleOrderRequest}
+          showToaterMessages={showToaterMessages}
+          setRowsPerPage={setRowsPerPage}
+          initialMount={initialMount}
+          orderRequests={orderRequests}
+          setInitialMount={setInitialMount}
+          getOrderRequestList={getOrderRequestList}
+        />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <TableView status={ORDER_STATUS.COMPLETED} />
+        <TableView
+          status={ORDER_STATUS.COMPLETED}
+          userDetails={userDetails}
+          isLoading={isLoading}
+          setLoading={setLoading}
+          setRowsPerPage={setRowsPerPage}
+          setPage={setPage}
+          page={page}
+          orderRequests={orderRequests}
+          rowsPerPage={rowsPerPage}
+          handleOrderRequest={handleOrderRequest}
+          showToaterMessages={showToaterMessages}
+          getOrderRequestList={getOrderRequestList}
+          initialMount={initialMount}
+          setInitialMount={setInitialMount}
+        />
       </CustomTabPanel>
     </Box>
   );

@@ -16,6 +16,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import { useState } from "react";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function AlternateSignIn({ open, handleClose }) {
   const [isVerified, setIsVerified] = useState(false);
@@ -72,22 +73,22 @@ function AlternateSignIn({ open, handleClose }) {
             }}
           >
             <Box>
-              <Button
+              <CustomButton
                 startIcon={<CloseIcon />}
                 sx={{ mr: 2 }}
                 onClick={handleClose}
-              >
-                Skip
-              </Button>
-              <Button
+              
+                ButtonText={"Skip"}
+              />
+              <CustomButton
                 startIcon={<DoneIcon />}
                 variant="contained"
                 onClick={() => {
                   setIsVerified(true);
                 }}
-              >
-                Sign in
-              </Button>
+              ButtonText={" Sign in"}
+               
+              />
             </Box>
           </Box>
         </DialogActions>

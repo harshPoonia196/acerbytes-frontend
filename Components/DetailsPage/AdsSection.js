@@ -8,6 +8,7 @@ import AddLinkIcon from '@mui/icons-material/AddLink';
 import { useSearchParams } from 'next/navigation';
 import { useSnackbar } from 'utills/SnackbarContext';
 import { ToasterMessages } from "Components/Constants";
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 
 function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant, SinglePropertyId, propertyData, id }) {
     const brokerData = SinglePropertyId?.brokerData
@@ -19,7 +20,16 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
         const brokerId = id ?? 'defaultBrokerId'
 
         const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
-        const projectType = (overview?.projectType?.map(type => type.trim().replace(/\s+/g, '-')).join("-")) ?? 'type';
+        let projectType;
+        if (Array.isArray(overview?.projectType) && overview?.projectType.length > 0) {
+            if (typeof overview.projectType[0] === 'object') {
+                projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+            } else if (typeof overview.projectType[0] === 'string') {
+                projectType = overview.projectType.map(type => type.trim().replace(/\s+/g, '-')).join("-");
+            }
+        } else {
+            projectType = 'type';
+        }
         const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
         const sector = (location?.sector.trim() ?? 'sector').replace(/\s+/g, '-');
         const area = (location?.area.trim() ?? 'area').replace(/\s+/g, '-');
@@ -70,12 +80,12 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
-                            <Button startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem', mr: 2 }} onClick={handleOpenActivateAdsPopup}>
-                                {isConsultant ? 'Activate my link' : <>Extend</>}
-                            </Button>
-                            <Button startIcon={<Close />} size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenPersonalizeAds}>
-                                Don't show
-                            </Button>
+                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem', mr: 2 }} onClick={handleOpenActivateAdsPopup} ButtonText= {isConsultant ? 'Activate my link' : <>Extend</>}/>
+                               
+                          
+                            <CustomButton startIcon={<Close />} size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenPersonalizeAds} ButtonText={" Don't show"}/>
+                               
+                            
                         </Box>
                     </Box>
                     :
@@ -87,9 +97,9 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
-                            <Button startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup}>
-                                Extend
-                            </Button>
+                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} ButtonText={"Extend"} />
+                                
+                            
                         </Box>
                     </Box>
             }
@@ -115,9 +125,9 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                     </Box>
                     <Box sx={{ alignSelf: 'center' }}>
                         <a>
-                            <Button variant='outlined' startIcon={<PhoneIcon />} size='small' sx={{ fontSize: '0.875rem' }}>
-                                {phoneNumber}
-                            </Button>
+                            <CustomButton variant='outlined' startIcon={<PhoneIcon />} size='small' sx={{ fontSize: '0.875rem' }}  ButtonText={phoneNumber}/>
+                                
+                            
                         </a>
                     </Box>
                 </Box>

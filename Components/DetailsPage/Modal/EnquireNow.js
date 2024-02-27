@@ -14,6 +14,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import DoneIcon from "@mui/icons-material/Done";
 import { useRouter } from "next/navigation";
 import NewPhoneInputField from "Components/CommonLayouts/NewPhoneInputField";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function EnquireNow({ open, handleClose, handleAction }) {
   const router = useRouter();
@@ -47,24 +48,24 @@ function EnquireNow({ open, handleClose, handleAction }) {
               justifyContent: "space-between",
             }}
           >
-            <Button
+            <CustomButton
               startIcon={<GoogleIcon />}
               variant="outlined"
               sx={{ mr: 2 }}
               onClick={() => router.push("/login")}
-            >
-              Existing user, Sign In
-            </Button>
-            <Button
+            
+              ButtonText={"Existing user, Sign In"}
+            />
+            <CustomButton
               startIcon={<DoneIcon />}
               variant="contained"
               onClick={() => {
                 handleAction();
                 handleClose();
               }}
-            >
-              Submit
-            </Button>
+            ButtonText={"Submit"}
+              
+            />
           </Box>
 
           <Typography variant="caption" sx={{ flex: 1, mt: 1 }}>

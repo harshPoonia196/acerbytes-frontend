@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import InputField from "Components/CommonLayouts/InputField";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import React from "react";
 
@@ -17,6 +18,19 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
   const [assignedPoints, setAssignedPoints] = React.useState("");
   const [salesPerson, setSalesPerson] = React.useState("");
 
+  React.useEffect(() => {
+    if (open == true) {
+      if (info?.approvedPayment) {
+        setReceivedPayment(info?.approvedPayment);
+      }
+      if (info?.approvedPoints) {
+        setAssignedPoints(info?.approvedPoints);
+      }
+      if (info?.salesPerson) {
+        setSalesPerson(info?.salesPerson);
+      }
+    }
+  }, [open]);
   const handleChange = (event) => {
     setReceivedPayment(event.target.value);
   };
@@ -43,7 +57,10 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
       handleClose();
     }
   };
-  const salesPersonInfo = info?.salesPersons?.find(rs=> rs.googleID ===salesPerson);
+  const salesPersonInfo = info?.salesPersons?.find(
+    (rs) => rs.googleID === salesPerson
+  );
+
   return (
     <Dialog
       sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
@@ -74,18 +91,24 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             type="number"
             label="Enter received payment"
             handleChange={handleChange}
+            value={receivedPayment}
           />
           <InputField
             type="number"
             label="Enter assigned points"
             handleChange={handlePointsChange}
+            value={assignedPoints}
           />
           <NewAutoCompleteInputStructure
             label="Select Sales person"
             handleChange={(e, newValue) =>
               handleSelectSalesPerson(newValue?.value ? newValue?.value : "")
             }
-            value={salesPersonInfo ? `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}`: ""}
+            value={
+              salesPersonInfo
+                ? `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}`
+                : ""
+            }
             list={info?.salesPersons?.map((rs) => {
               return {
                 label: `${rs.name?.firstName} ${rs.name?.lastName}`,
@@ -102,23 +125,23 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             justifyContent: "space-between",
           }}
         >
-          <Button
+          <CustomButton
             // startIcon={<GoogleIcon />}
             variant="outlined"
             sx={{ mr: 2 }}
             onClick={handleClose}
-          >
-            Close
-          </Button>
-          <Button
+          
+           ButtonText={"Close"} 
+          />
+          <CustomButton
             // startIcon={<DoneIcon />}
             variant="contained"
             onClick={() => {
               saveHandler();
             }}
-          >
-            Submit
-          </Button>
+          
+            ButtonText={"Submit"}
+          />
         </Box>
       </DialogActions>
     </Dialog>

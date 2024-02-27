@@ -12,6 +12,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import { listOfPages } from "Components/NavBar/Links";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function PaymentHistory(props) {
   const { setBrokerPoints, brokerBalance, userDetails } = useAuth();
@@ -94,7 +95,7 @@ function PaymentHistory(props) {
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        pagename="pagename"
+        
       />
       <Box sx={{ backgroundColor: "white" }}>
         <Container>
@@ -107,14 +108,14 @@ function PaymentHistory(props) {
             </Box>
             <Box sx={{ display: "flex" }}>
               <Box>
-                <Button
+                <CustomButton
                   startIcon={<AddCardIcon />}
                   size="small"
                   variant="contained"
                   onClick={handleOpenAddCredit}
-                >
-                  Add credits
-                </Button>
+                
+                    ButtonText={"Add credits "}/>
+                
               </Box>
             </Box>
           </Box>
