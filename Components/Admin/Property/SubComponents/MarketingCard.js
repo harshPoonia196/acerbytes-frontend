@@ -89,9 +89,9 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                                 component="label"
                                 sx={{ textTransform: 'uppercase' }}
                                 startIcon={<AttachFileIcon />}
-                                ButtonText={"Upload"}
+                                ButtonText={"Attach"}
                             >
-                            
+
                                 <input
                                     id="contained-button-file"
                                     type="file"

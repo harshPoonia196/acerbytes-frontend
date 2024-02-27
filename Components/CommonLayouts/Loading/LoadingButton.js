@@ -1,10 +1,8 @@
 import React from 'react';
 import LoadingButton from '@mui/material/Button';
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import SaveIcon from '@mui/icons-material/Save';
 
-const CustomButton = ({ loading, loadingText, ButtonText, disabled, onClick, icon, variant, ...props }) => (
+const CustomButton = ({ loading, loadingText, ButtonText, disabled, onClick, startIcon, ...props }) => (
   <>
     {
       loading ?
@@ -12,17 +10,17 @@ const CustomButton = ({ loading, loadingText, ButtonText, disabled, onClick, ico
         <LoadingButton
           loading={loading}
           loadingPosition="start"
-          startIcon={icon && icon}
-          variant={variant ? variant : 'contained'}
+          startIcon={startIcon && startIcon}
+          {...props}
         >
           {loadingText && loading ? loadingText : ButtonText}
         </LoadingButton>
         :
         <Button
-          startIcon={icon}
-          variant={variant ? variant : 'contained'}
+          startIcon={startIcon && startIcon}
           onClick={onClick}
-          disabled={disabled}>
+          disabled={disabled}
+          {...props}>
           {ButtonText}</Button>
 
     }

@@ -58,7 +58,7 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
                 <OTPInputLayout otpInput={otp} setOtpInput={setOtp} />
               </Box>
               <Box sx={{ alignSelf: "center" }}>
-                <CustomButton disabled={disabled} ButtonText={"Resend OTP"} />
+                <CustomButton disabled ButtonText={"Resend OTP"} />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -80,7 +80,7 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
               handleClose();
               handleOpen();
             }}
-          
+
             ButtonText={"Back"}
           />
           <CustomButton
@@ -90,7 +90,7 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
               handleAlternateSignIn();
               handleClose();
             }}
-          
+
             ButtonText={"Verify"}
           />
         </DialogActions>

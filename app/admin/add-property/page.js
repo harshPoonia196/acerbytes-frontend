@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -79,7 +79,6 @@ function AddProperty() {
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
   const { openSnackbar } = useSnackbar();
-  const [loading,setLoading] = useState(false);
 
   let itemsServer = listOfTabsInAddProperty.map((tab) => {
     const hash = tab.value;
@@ -117,9 +116,9 @@ function AddProperty() {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -1020,14 +1019,14 @@ function AddProperty() {
           [firstKeyName]: !secondKeyName
             ? value
             : {
-                ...prev?.[firstKeyName],
-                [secondKeyName]: !thirdKeyName
-                  ? value
-                  : {
-                      ...prev?.[firstKeyName]?.[secondKeyName],
-                      [thirdKeyName]: value,
-                    },
-              },
+              ...prev?.[firstKeyName],
+              [secondKeyName]: !thirdKeyName
+                ? value
+                : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+            },
         }));
       }
     }
@@ -1045,7 +1044,6 @@ function AddProperty() {
   };
 
   const validateForm = () => {
-    setLoading(true)
     const { error } = Schema.validate(form, { abortEarly: false });
     let store = [
       "constructionQuality",
@@ -1084,7 +1082,6 @@ function AddProperty() {
         openSnackbar(`Ratings needs to be provided for ${label}`, "error");
       }
     });
-    setLoading(false);
     console.log(form, "formmmm", error, "errrr");
 
     if (error) {
@@ -1095,9 +1092,8 @@ function AddProperty() {
       });
       // Handle validation errors, e.g., display error messages
       setErrors(validationErrors);
-      setLoading(false)
       return false;
-     
+
     } else {
       if (!editPage) {
         // Validation passed
@@ -1110,7 +1106,6 @@ function AddProperty() {
         routerNavigation.push(`/admin/property-list`);
       }
     }
-    setLoading(false)
     return true;
   };
 
@@ -1194,11 +1189,10 @@ function AddProperty() {
             />
             <Grid item xs={12} sx={{ textAlign: "end" }}>
               <CustomButton onClick={validateForm} variant="contained"
-                ButtonText={editPage ? "Update" : "Save"}/>
-            
-              <CustomButton loading={loading} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
-                
-              
+                ButtonText={editPage ? "Update" : "Save"} />
+
+              <CustomButton ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
+
             </Grid>
           </Grid>
         </div>

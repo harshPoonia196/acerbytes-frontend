@@ -39,7 +39,7 @@ function JoinNow() {
             </Typography>
             <Typography variant="h6">75 Active consultant</Typography>
             <Box>
-              <CustomButton  ButtonText={"Share"} startIcon={<WhatsAppIcon />} />
+              <CustomButton ButtonText={"Share"} startIcon={<WhatsAppIcon />} />
             </Box>
           </Box>
         </Container>
@@ -117,9 +117,7 @@ function JoinNow() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <CustomButton variant="contained" fullWidth>
-                    Sign in with Google
-                  </CustomButton>
+                  <CustomButton variant="contained" fullWidth ButtonText={'Sign in with Google'} />
                 </Grid>
                 <Grid item xs={12}>
                   <FormGroup>
@@ -242,9 +240,9 @@ function JoinNow() {
                   </FormGroup>
                 </Grid>
                 <Grid item xs={12}>
-                  <CustomButton variant="contained"  ButtonText={"Sign up"} fullWidth />
-                    
-                  
+                  <CustomButton variant="contained" ButtonText={"Sign up"} fullWidth />
+
+
                 </Grid>
               </Grid>
             </Grid>

@@ -72,13 +72,13 @@ const BrokerDetails = (props) => {
           <Box sx={{ textAlign: 'end' }}>
             <CustomButton
               size='small'
-              id="basic-"
+              id="basic-button"
               aria-controls={open ? 'basic-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
               onClick={handleClick}
               endIcon={<ExpandMoreOutlinedIcon size='small' />}
-            
+
               ButtonText={"Sort By"}
             />
             <Menu

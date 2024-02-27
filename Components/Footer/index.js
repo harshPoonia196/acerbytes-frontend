@@ -41,8 +41,8 @@ function Footer({ paymentPage }) {
                             onClick={() => { history.push('/consultant/make-payment') }}
                             size="small" sx={{ fontSize: '0.75rem' }}
                             startIcon={<QrCodeScannerIcon />}
-                        
-                            ButtonText={<span>Pay&nbsp;here</span>}
+
+                            ButtonText={<>Pay&nbsp;here</>}
                         />
                     </Box>
                 }
@@ -54,15 +54,15 @@ function Footer({ paymentPage }) {
                     />
                 </Box>
                 <Box sx={{ alignSelf: 'center', cursor: 'pointer', }}>
-                    <CustomButton startIcon={<PersonAddAlt1Icon />} onClick={() => history.push(listOfPages.consultantJoinNow)} size="small" sx={{ fontSize: '0.75rem' }} 
-                        ButtonText={<span>Invite&nbsp;-&nbsp;Consultant</span>}
+                    <CustomButton startIcon={<PersonAddAlt1Icon />} onClick={() => history.push(listOfPages.consultantJoinNow)} size="small" sx={{ fontSize: '0.75rem' }}
+                        ButtonText={<>Invite&nbsp;-&nbsp;Consultant</>}
                     />
                 </Box>
                 <Box sx={{ alignSelf: 'center', cursor: 'pointer', }}>
                     {/* <a href="whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients." data-action="share/whatsapp/share"
                     target="_blank"> */}
                     <CustomButton startIcon={<HowToRegIcon />} onClick={() => history.push(listOfPages.consultantJoinNow)} size="small" sx={{ fontSize: '0.75rem' }}
-                        ButtonText={<span>Register&nbsp;-&nbsp;Consultant</span>}
+                        ButtonText={<>Register&nbsp;-&nbsp;Consultant</>}
                     />
                     {/* </a> */}
                 </Box>
