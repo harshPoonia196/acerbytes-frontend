@@ -192,11 +192,11 @@ export default function ClippedDrawer({ children }) {
           <ListItemIcon sx={{ minWidth: 40 }}>{item?.icon}</ListItemIcon>
           <StyledBadge
             color="secondary"
-            badgeContent={
-              <Typography variant="body2" sx={{ color: "white" }}>
-                99
-              </Typography>
-            }
+            // badgeContent={
+            //   <Typography variant="body2" sx={{ color: "white" }}>
+            //     99
+            //   </Typography>
+            // }
             sx={{ flex: 1 }}
             invisible={false}
           >
@@ -212,14 +212,8 @@ export default function ClippedDrawer({ children }) {
       <>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <List>
-            {CommonMenuList.map((item) => (
-              <DrawerListItem key={item.label} item={item} />
-            ))}
-          </List>
           <Divider />
-          {
-            authRole("user") && (
+          {authRole("user") && (
             <>
               <List
                 subheader={
@@ -234,11 +228,9 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-            )
-          }
+          )}
 
-          {
-            authRole("broker") && (
+          {authRole("broker") && (
             <>
               <List
                 subheader={
@@ -266,11 +258,9 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-            )
-          }
+          )}
 
-          {
-            authRole("admin") && (
+          {authRole("admin") && (
             <>
               <List
                 subheader={
@@ -284,8 +274,13 @@ export default function ClippedDrawer({ children }) {
                 ))}
               </List>
             </>
-            )
-          }
+          )}
+          <Divider />
+           <List>
+            {CommonMenuList.map((item) => (
+              <DrawerListItem key={item.label} item={item} />
+            ))}
+          </List>
         </Box>
       </>
     );
@@ -312,16 +307,26 @@ export default function ClippedDrawer({ children }) {
                 </IconButton>
               }
             >
-              <ListItemButton
-                onClick={() => logout()}
-                sx={{ pl: 3 }}
-                role={undefined}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>
-                  <LogoutIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText secondary="Log out" />
-              </ListItemButton>
+              {isLogged ? (
+                <ListItemButton
+                  onClick={() => logout()}
+                  sx={{ pl: 3 }}
+                  role={undefined}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <LogoutIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText secondary="Log out" />
+                </ListItemButton>
+              ) : (
+                <Button
+                  onClick={() => {
+                    router.push("/login");
+                  }}
+                >
+                  Sign in
+                </Button>
+              )}
             </ListItem>
           </List>
         </Card>
@@ -358,6 +363,7 @@ export default function ClippedDrawer({ children }) {
         anchor={"left"}
         open={isDrawerOpen}
         onClose={handleDrawerClose}
+        hideBackdrop={true}
         BackdropProps={{ invisible: true }}
         sx={{
           width: drawerWidth,

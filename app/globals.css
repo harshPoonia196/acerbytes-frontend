@@ -134,3 +134,8 @@ html {
 .MuiStack-root .MuiTextField-root {
   min-width: 200px !important;
 }
+
+.css-xg890m-MuiPaper-root-MuiPopover-paper-MuiMenu-paper{
+  top: 52px !important;
+  right: 12px;
+}

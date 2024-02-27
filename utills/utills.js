@@ -31,7 +31,7 @@ export const getGoogleId = () => {
     return "";
 };
 
-const publicRoutes = ["/login"];
+const publicRoutes = ["/login" , '/property-list' , '/all-brokers' , '/enquiries'];
 
 const scopes = {
     user: {
