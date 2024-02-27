@@ -74,11 +74,10 @@ function Login() {
         handleClick("Unexpected response format from signInAPI", "error");
       }
     } catch (error) {
-      console.log(error);
       handleClick(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching sign-in URL",
+        error?.message ||
+        "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -87,54 +86,57 @@ function Login() {
   };
 
   const searchParams = useSearchParams();
+  let count = 0
 
   useEffect(() => {
-    if (searchParams.get("code")) {
+    if (!loading && searchParams.get("code")) {
       AuthenticateUser(searchParams.get("code"));
     }
   }, []);
 
   const AuthenticateUser = async (code) => {
     try {
-      setLoading(true);
-
-      const res = await signInAuthenticationAPI({ code: code });
-      const { email, id, name, superAdmin,token, userDetails } = res?.data?.data;
-      let formData = {
-        email: email,
-        googleId: id,
-        firstName: name?.split(" ")?.[0] || "",
-        lastName: name?.split(" ")?.[name?.split(" ")?.length - 1] || "",
-      }
-
-      if (token) {
-        if (userDetails?.isBlocked) {
-          setLoading(false);
-          openSnackbar("You are blocked", "warning");
-          return;
-        } else {
-          login(userDetails, token);
-          router.push("/");
-          return;
+      if (count === 0) {
+        count++
+        await setLoading(true);
+        const res = await signInAuthenticationAPI({ code: code });
+        const { email, id, name, superAdmin, token, userDetails } = res?.data?.data;
+        let formData = {
+          email: email,
+          googleId: id,
+          firstName: name?.split(" ")?.[0] || "",
+          lastName: name?.split(" ")?.[name?.split(" ")?.length - 1] || "",
         }
+
+        if (token) {
+          if (userDetails?.isBlocked) {
+            setLoading(false);
+            openSnackbar("You are blocked", "warning");
+            return;
+          } else {
+            login(userDetails, token);
+            router.push("/");
+            return;
+          }
+        }
+
+        setLoading(false);
+        openSnackbar("Authentication successful", "success");
+        if (superAdmin) {
+          formData.role = 'superAdmin'
+        }
+        setForm((prev) => ({
+          ...prev,
+          ...formData
+        }));
+
+        nextStep();
       }
-
-      setLoading(false);
-      openSnackbar("Authentication successful", "success");
-      if(superAdmin){
-        formData.role='superAdmin'
-       }
-      setForm((prev) => ({
-        ...prev,
-        ...formData
-      }));
-
-      nextStep();
     } catch (error) {
       handleClick(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching sign-in URL",
+        error?.message ||
+        "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -157,8 +159,8 @@ function Login() {
     } catch (error) {
       handleClick(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching sign-in URL",
+        error?.message ||
+        "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -175,17 +177,17 @@ function Login() {
         otp: otpInput,
       };
       const res = await verifyOtpAPI(payload);
-      if (res.status === 200 && !(form.role==='superAdmin')) {
+      if (res.status === 200 && !(form.role === 'superAdmin')) {
         nextStep();
       }
-      if(form.role==="superAdmin"){
+      if (form.role === "superAdmin") {
         createUserFun()
       }
     } catch (error) {
       handleClick(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching sign-in URL",
+        error?.message ||
+        "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -234,8 +236,8 @@ function Login() {
     } catch (error) {
       handleClick(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching sign-in URL",
+        error?.message ||
+        "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -292,7 +294,6 @@ function Login() {
     }
   };
 
-  console.log(form);
   return (
     <Container maxWidth="sm">
       <Card sx={{ p: 3 }}>

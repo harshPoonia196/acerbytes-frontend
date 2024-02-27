@@ -59,6 +59,8 @@ const SendOtp = ({ form, handleChange, sendOtpFun }) => {
                 handleChange={(e) => handleChange('phone', e.target.value)}
                 label="Phone number"
                 error={errors.phone}
+                optionValue={form.countryCode}
+                value={form.phone}
             />
             <Grid item xs={12} sx={{ textAlign: 'end' }}>
                 <Button
