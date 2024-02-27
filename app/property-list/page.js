@@ -41,8 +41,8 @@ function PropertyList() {
   const [focus, setFocus] = useState(false)
   const inputRef = useRef(null);
   const [selectedOptions, setSelectedOptions] = useState({});
-  const [propertyvalue , setPropertyvalue] = useState("")
-  const [buttonColor , setButtonColor] = useState("")
+  const [propertyvalue, setPropertyvalue] = useState("")
+  const [buttonColor, setButtonColor] = useState("")
 
   const [selectOption, setSelectOption] = useState([]);
 
@@ -62,15 +62,15 @@ function PropertyList() {
     return queryString;
   };
 
-  const  getUserPropertyList = async (pageOptions, searchTerm, selectedOptions, alignment, propertyvalue) => {
+  const getUserPropertyList = async (pageOptions, searchTerm, selectedOptions, alignment, propertyvalue) => {
     try {
       const data = {}
-      Object.keys(selectedOptions).map(item=> data[item] = selectedOptions[item].value)
+      Object.keys(selectedOptions).map(item => data[item] = selectedOptions[item].value)
       setLoading(true);
       const querParams = {
         ...pageOptions,
         ...(searchTerm ? { search: searchTerm } : {}),
-        ...(data ? {searchParams: JSON.stringify(data)} : {}),
+        ...(data ? { searchParams: JSON.stringify(data) } : {}),
         sortBy: alignment,
         key: propertyvalue
       };
@@ -91,7 +91,7 @@ function PropertyList() {
     }
   };
 
-  const  getAllOptionDataList = async () => {
+  const getAllOptionDataList = async () => {
     try {
       let res = await getAllOptionData();
       if (res.status === 200) {
@@ -138,7 +138,7 @@ function PropertyList() {
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 500); 
+    }, 500);
 
     return () => clearTimeout(timerId);
   }, [searchTerm, selectedOptions]);
@@ -165,9 +165,9 @@ function PropertyList() {
   };
 
   const handleChange = (event, value) => {
-    if(value === "dec"){
+    if (value === "dec") {
       setAlignment(-1);
-    }else{
+    } else {
       setAlignment(1);
     }
   };
@@ -175,9 +175,9 @@ function PropertyList() {
   const handleChangeData = (event, value) => {
     setButtonColor(value)
     setPropertyvalue(value)
-    if(value === "price" || value === "area" || value === "completion"){
+    if (value === "price" || value === "area" || value === "completion") {
       setAlignment(1);
-    }else{
+    } else {
       setAlignment(-1);
     }
   };
@@ -195,17 +195,18 @@ function PropertyList() {
   };
 
   const handleOptionChange = (key, value) => {
-    if(value){
+    if (value) {
       setSelectedOptions(prevOptions => ({
         ...prevOptions,
         [key]: value,
       }));
-    }else{
+    } else {
       setSelectedOptions(prevOptions => {
         delete prevOptions[key]
         return ({
-        ...prevOptions,
-      })});
+          ...prevOptions,
+        })
+      });
     }
 
   };
@@ -249,16 +250,16 @@ function PropertyList() {
 
           <Grid container spacing={2} columns={36}>
             {/* commercial,residential */} {/*please delete this after done and same for all below*/}
-            <NewMultiSelectAutoCompleteInputStructure label="Category"  list={selectOption?.category} handleChange={(event, value)=> handleOptionChange("category", value[0])} value={selectedOptions.category ? [selectedOptions.category] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Category" list={selectOption?.category} handleChange={(event, value) => handleOptionChange("category", value[0])} value={selectedOptions.category ? [selectedOptions.category] : []} />
             {/* Flat,shop */}
-            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyType} handleChange={(event, value)=> handleOptionChange("propertyType", value[0])} value={selectedOptions.propertyType ? [selectedOptions.propertyType] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyType} handleChange={(event, value) => handleOptionChange("propertyType", value[0])} value={selectedOptions.propertyType ? [selectedOptions.propertyType] : []} />
             {/* 1BHK, 2BHK */}
-            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value)=> handleOptionChange("unitType", value[0])} value={selectedOptions.unitType ? [selectedOptions.unitType] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value) => handleOptionChange("unitType", value[0])} value={selectedOptions.unitType ? [selectedOptions.unitType] : []} />
             {/* Noida,gurgoan */}
-            <NewMultiSelectAutoCompleteInputStructure label="City" list={selectOption?.city} handleChange={(event, value)=> handleOptionChange("city", value[0])} value={selectedOptions.city ? [selectedOptions.city] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="City" list={selectOption?.city} handleChange={(event, value) => handleOptionChange("city", value[0])} value={selectedOptions.city ? [selectedOptions.city] : []} />
             {/* Sector/area */}
-            <NewMultiSelectAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value)=> handleOptionChange("location", value[0])} value={selectedOptions.location ? [selectedOptions.location] : []}/>
-            <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value)=> handleOptionChange("status", value[0])} value={selectedOptions.status ? [selectedOptions.status] : []}/>
+            <NewMultiSelectAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value) => handleOptionChange("location", value[0])} value={selectedOptions.location ? [selectedOptions.location] : []} />
+            <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value) => handleOptionChange("status", value[0])} value={selectedOptions.status ? [selectedOptions.status] : []} />
             <Grid item xs={18} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
@@ -267,7 +268,7 @@ function PropertyList() {
                 onChange={handleChangeData}
                 aria-label="Platform"
                 sx={{ display: "flex" }}
-                size="small"  
+                size="small"
               >
                 <ToggleButton value="score" selected={buttonColor === "score"} sx={{ flex: 1 }}>
                   Score
@@ -286,7 +287,7 @@ function PropertyList() {
             <Grid item xs={18} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
-                value={alignment === 1 ? "asc" : "dec" }
+                value={alignment === 1 ? "asc" : "dec"}
                 exclusive
                 onChange={handleChange}
                 aria-label="Platform"
@@ -305,13 +306,13 @@ function PropertyList() {
             </Grid>
             <Grid item xs={36}>
               <Card>
-                <CustomSearchInput value={searchTerm}  onChange={handleSearch} ref={inputRef}  autoFocus={focus}/>
+                <CustomSearchInput value={searchTerm} onChange={handleSearch} ref={inputRef} autoFocus={focus} />
               </Card>
             </Grid>
             <Grid item xs={6} sm={3} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
-                value={alignment === 1 ? "asc" : "dec" }
+                value={alignment === 1 ? "asc" : "dec"}
                 exclusive
                 onChange={handleChangeAllData}
                 aria-label="Platform"

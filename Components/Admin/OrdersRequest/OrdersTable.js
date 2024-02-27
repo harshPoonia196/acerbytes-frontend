@@ -16,7 +16,7 @@ import {
   Menu,
   MenuItem,
   Button,
-  Card
+  Card,
 } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import React from "react";
@@ -403,42 +403,44 @@ function TableView({
     <Loading />
   ) : (
     <>
-    <Card sx={{ mb: 2 }}>
-    <CustomSearchInput />
-</Card>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-          isCompleted={status === ORDER_STATUS.COMPLETED}
+      <Card sx={{ mb: 2 }}>
+        <CustomSearchInput />
+      </Card>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+            isCompleted={status === ORDER_STATUS.COMPLETED}
+          />
+          <TableBody>
+            {orderRequests?.list?.map((row, index) => (
+              <RowStructure
+                row={row}
+                userDetails={userDetails}
+                key={index}
+                isCompleted={status === ORDER_STATUS.COMPLETED}
+                handleOrderRequest={handleOrderRequest}
+                salesPersons={salesPersons}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          sx={{
+            overflow: "hidden",
+          }}
+          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+          component="div"
+          count={orderRequests.totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        <TableBody>
-          {orderRequests?.list?.map((row, index) => (
-            <RowStructure
-              row={row}
-              userDetails={userDetails}
-              key={index}
-              isCompleted={status === ORDER_STATUS.COMPLETED}
-              handleOrderRequest={handleOrderRequest}
-              salesPersons={salesPersons}
-            />
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-        component="div"
-        count={orderRequests.totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page - 1}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </TableContainer>
+      </TableContainer>
     </>
-    
   );
 }
 
@@ -637,7 +639,6 @@ function OrdersTable() {
           setInitialMount={setInitialMount}
         />
       </CustomTabPanel>
-     
     </Box>
   );
 }
