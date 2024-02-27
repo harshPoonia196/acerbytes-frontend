@@ -45,6 +45,7 @@ import { visuallyHidden } from "@mui/utils";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { debounce } from "lodash";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const headCells = [
   {
@@ -348,15 +349,14 @@ function CreditTable() {
     <Loading />
   ) : (
     <Box sx={{ width: "100%" }}>
-      <Button
+      <CustomButton
         variant="contained"
         style={{ display: "flex", marginLeft: "auto" }}
         align="right"
         onClick={() => setOpenAddCreditPoints(true)}
         startIcon={<Add />}
-      >
-        Add credit
-      </Button>
+        ButtonText={"Add credit"}
+      />
 
       <AdminCreditPointsPopup
         open={openAddCreditPoints}

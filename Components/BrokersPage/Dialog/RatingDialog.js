@@ -17,6 +17,7 @@ import colors from "styles/theme/colors";
 import { reviewBroker } from "api/UserProfile.api";
 import { useMutate } from "utills/ReactQueryContext";
 import { useSnackbar } from "utills/SnackbarContext";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const RatingDialog = (props) => {
   const { openDialog, setOpenDialog, broker, updateBroker } = props;
@@ -208,13 +209,12 @@ const RatingDialog = (props) => {
               </Grid>
 
               <Box sx={{ alignSelf: "end", mt: 1 }}>
-                <Button
+                <CustomButton
                   onClick={handelReviewSubmit}
                   startIcon={<DoneIcon />}
                   variant="contained"
-                >
-                  Submit
-                </Button>
+                ButtonText={"Submit"}
+                />
               </Box>
             </Box>
           </DialogContent>

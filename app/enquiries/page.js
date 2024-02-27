@@ -24,6 +24,7 @@ import colors from "styles/theme/colors";
 import Footer from "Components/Footer";
 import { getComparator, stableSort } from "utills/CommonFunction";
 import { listOfPages } from "Components/NavBar/Links";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function Row(props) {
   const { row, history } = props;
@@ -217,9 +218,9 @@ export default function Enquiries() {
               <Typography variant="h3" sx={{ flex: 1, alignSelf: 'center', my: 2 }}>
                 Be a part of approved consultants community
               </Typography>
-              <Button variant="contained" sx={{ alignSelf: 'center' }} onClick={() => { history.push(listOfPages.consultantJoinNow) }}>
-                Join as real estate consultant
-              </Button>
+              <CustomButton variant="contained" sx={{ alignSelf: 'center' }} onClick={() => { history.push(listOfPages.consultantJoinNow) }}
+                ButtonText={"Join as real estate consultant"}
+              />
             </Box>
           </Box>
         </Container>

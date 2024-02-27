@@ -33,6 +33,7 @@ import { CreateProperty, EditProperty } from "api/Property.api";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import { detailsProperty } from "api/Property.api";
 import colors from "styles/theme/colors";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 const tabHeight = 116;
 
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -115,9 +116,9 @@ function AddProperty() {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -1018,14 +1019,14 @@ function AddProperty() {
           [firstKeyName]: !secondKeyName
             ? value
             : {
-                ...prev?.[firstKeyName],
-                [secondKeyName]: !thirdKeyName
-                  ? value
-                  : {
-                      ...prev?.[firstKeyName]?.[secondKeyName],
-                      [thirdKeyName]: value,
-                    },
-              },
+              ...prev?.[firstKeyName],
+              [secondKeyName]: !thirdKeyName
+                ? value
+                : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+            },
         }));
       }
     }
@@ -1092,6 +1093,7 @@ function AddProperty() {
       // Handle validation errors, e.g., display error messages
       setErrors(validationErrors);
       return false;
+
     } else {
       if (!editPage) {
         // Validation passed
@@ -1104,7 +1106,6 @@ function AddProperty() {
         routerNavigation.push(`/admin/property-list`);
       }
     }
-
     return true;
   };
 
@@ -1187,12 +1188,11 @@ function AddProperty() {
               isEdit={isEdit}
             />
             <Grid item xs={12} sx={{ textAlign: "end" }}>
-              <Button onClick={validateForm} variant="contained">
-                {editPage ? "Update" : "Save"}
-              </Button>
-              <Button sx={{ marginLeft: "10px" }} variant="contained">
-                Publish
-              </Button>
+              <CustomButton onClick={validateForm} variant="contained"
+                ButtonText={editPage ? "Update" : "Save"} />
+
+              <CustomButton ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
+
             </Grid>
           </Grid>
         </div>

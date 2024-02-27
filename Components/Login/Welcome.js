@@ -1,4 +1,5 @@
 import { Button, Grid, ToggleButton, Typography } from '@mui/material';
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
 import { companyName, listOfPages } from 'Components/NavBar/Links';
 import React from 'react'
@@ -70,13 +71,12 @@ const Welcome = ({ form, handleChange, createUserFun }) => {
                 </NewToggleButtonStructure>
             </Grid>
             <Grid item xs={12} sx={{ textAlign: "end" }}>
-                <Button
+                <CustomButton
                     variant="contained"
                     disabled={!form.role}
                     onClick={() => createUserFun()}
-                >
-                    Confirm
-                </Button>
+                    ButtonText={"Confirm"}
+                />
             </Grid>
         </Grid>
     )

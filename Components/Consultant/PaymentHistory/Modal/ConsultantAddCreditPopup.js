@@ -68,15 +68,12 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
                     </Typography>
                   </Box>
                   <Box sx={{ ml: 2 }}>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={() =>
-                        handleOpenCreditRequestPaymentPopup(credit)
-                      }
-                    >
-                      Get {credit.point} points
-                    </Button>
+                  <CustomButton
+      variant="contained"
+      size="small"
+      onClick={() => handleOpenCreditRequestPaymentPopup(credit)}
+      ButtonTex={`Get ${credit.point} points`}
+    />
                   </Box>
                 </Card>
                 <Divider />

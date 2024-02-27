@@ -20,6 +20,7 @@ import { activeadCreate } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { ToasterMessages } from "Components/Constants";
 import Loader from "Components/CommonLayouts/Loading";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetProperty }) {
 
@@ -127,29 +128,29 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
           </Typography>
           <Box sx={{ display: 'flex' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: 'end' }}>
-              <Button
+              <CustomButton
                 startIcon={<PaymentIcon fontSize="small" />}
                 variant="outlined"
                 size="small"
-              >
-                35,000
-              </Button>
+              ButtonText={"35,000"}
+                
+              />
               <Typography variant="subtitle2"
                 sx={{ alignSelf: "center", color: colors.GRAY }}>
                 Your balance
               </Typography>
             </Box>
             <Box sx={{ ml: 1 }}>
-              <Button
+              <CustomButton
                 startIcon={<AddCardIcon fontSize="small" />}
                 variant="outlined"
                 size="small"
                 onClick={() => {
                   handleClose();
                 }}
-              >
-                Add
-              </Button>
+              
+                ButtonText={"Add"}
+              />
             </Box>
           </Box>
         </Box>
@@ -184,15 +185,15 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       </DialogContent>
       <DialogActions>
         <Box sx={{ textAlign: "end" }}>
-          <Button
+          <CustomButton
             startIcon={<DoneIcon fontSize="small" />}
             variant="contained"
             size="small"
             onClick={handleActivateClick}
             disabled={isLoading}
-          >
-            {isLoading ? <Loader /> : 'Activate'}
-          </Button>
+          
+            ButtonText={isLoading ? <Loader /> : 'Activate'}
+          />
           <Typography variant="subtitle2"
             sx={{ alignSelf: "center", color: colors.GRAY }}>
             10,000 points

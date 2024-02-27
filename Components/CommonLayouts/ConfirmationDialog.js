@@ -7,6 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import CustomButton from "./Loading/LoadingButton";
 
 const ConfirmationDialog = ({ open, handleAction }) => {
   const handleClose = () => {
@@ -27,12 +28,12 @@ const ConfirmationDialog = ({ open, handleAction }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            No
-          </Button>
-          <Button onClick={handleConfirm} color="primary" autoFocus>
-            Yes
-          </Button>
+          <CustomButton onClick={handleClose} color="primary"
+            ButtonText={"No"}
+          />
+          <CustomButton onClick={handleConfirm} color="primary" autoFocus
+            ButtonText={"Yes"}
+          />
         </DialogActions>
       </Dialog>
     </div>
