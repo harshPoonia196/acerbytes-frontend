@@ -23,46 +23,45 @@ const NewMultiSelectAutoCompleteInputStructure = ({
   variant,
   isEdit,
   error,
-}) => (
-  <>
-    <Grid item xs={12} sm={6}>
-      <Box>
-        <Typography
-          variant="subtitle2"
-          sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-        >
-          {label}
-        </Typography>
-      </Box>
+}) => {
+  return (
+    <>
+      <Grid item xs={12} sm={6}>
+        <Box>
+          <Typography
+            variant="subtitle2"
+            sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
+          >
+            {label}
+          </Typography>
+        </Box>
 
-      <Autocomplete
-        multiple
-        disablePortal
-        id="combo-box-demo"
-        onChange={handleChange}
-        options={list || top100Films}
-        getOptionLabel={(option) =>
-          brokerUse ? option.fullName : option.label
-        }
-        value={value || []}
-        fullWidth
-        size="small"
-        renderTags={(value, getTagProps) =>
-          value.map((option, index) => (
-            <Chip
-              variant="outlined"
-              label={brokerUse ? option.fullName : option.label}
-              size="small"
-              {...getTagProps({ index })}
-            />
-          ))
-        }
-        renderInput={(params) => (
-          <TextField {...params} size="small" fullWidth error={error} />
-        )}
-      />
-    </Grid>
-  </>
-);
+        <Autocomplete
+          multiple
+          disablePortal
+          id="combo-box-demo"
+          onChange={handleChange}
+          options={list || top100Films}
+          value={value || []}
+          fullWidth
+          size="small"
+          renderTags={(value, getTagProps) =>
+            value.length && value.map((option, index) => (
+              <Chip
+                variant="outlined"
+                label={option?.label}
+                size="small"
+                {...getTagProps({ index })}
+              />
+            ))
+          }
+          renderInput={(params) => (
+            <TextField {...params} size="small" fullWidth error={error} />
+          )}
+        />
+      </Grid>
+    </>
+  );
+};
 
 export default NewMultiSelectAutoCompleteInputStructure;

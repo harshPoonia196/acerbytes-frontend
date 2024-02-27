@@ -52,6 +52,7 @@ import {
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { listOfProfileTab } from "utills/Constants";
+import { countries } from "Components/config/config";
 
 const tabHeight = 116;
 
@@ -102,6 +103,7 @@ function Profile() {
   const [selectInterestedState, setInterestedState] = useState("");
   const [selectInterestedCity, setInterestedCity] = useState("");
   const [selectInterestedArea, setInterestedArea] = useState("");
+  const [emailInvalid, setEmailInvalid] = useState(false);
 
   const [profileInfo, setProfileInfo] = useState({
     name: {
@@ -109,7 +111,7 @@ function Profile() {
       lastName: "",
     },
     phone: {
-      countryCode: "",
+      countryCode: countries[0]?.value,
       number: "",
     },
     email: "",
@@ -152,7 +154,7 @@ function Profile() {
 
   const [isEdit, setIsEdit] = useState(true);
 
-  const [activeState, setActiveState] = React.useState('userDetails');
+  const [activeState, setActiveState] = React.useState("userDetails");
 
   let itemsServer = listOfProfileTab.map((tab) => {
     const hash = tab.value;
@@ -493,8 +495,24 @@ function Profile() {
     return true;
   };
 
+  const validateEmail = (email) => {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
+
   const handleSave = async () => {
     try {
+      if (
+        profileInfo?.alternateEmail &&
+        !validateEmail(profileInfo?.alternateEmail)
+      ) {
+        setEmailInvalid(true);
+        return;
+      } else {
+        setEmailInvalid(false);
+      }
+
       setLoading(true);
       if (profileInfo?.googleID) {
         const response = await updateUserProfile(
@@ -518,25 +536,25 @@ function Profile() {
     }
   };
 
-
-  const updateDetailsonLocalStorage=(info)=>{
+  const updateDetailsonLocalStorage = (info) => {
     let userInfo = JSON.parse(localStorage.getItem("userDetails"));
     userInfo = {
       ...userInfo,
       name: {
         ...userInfo.name,
         firstName: info?.name?.firstName,
-        lastName: info?.name?.lastName
+        lastName: info?.name?.lastName,
       },
       phone: {
         ...userInfo.phone,
         number: info?.phone?.number,
-        countryCode: info?.phone?.countryCode
-      }
-    }
+        countryCode: info?.phone?.countryCode,
+      },
+    };
 
     localStorage.setItem("userDetails", JSON.stringify(userInfo));
-  }
+  };
+
 
   return (
     <>
@@ -581,7 +599,8 @@ function Profile() {
                   >
                     <CallIcon fontSize="small" sx={{ alignSelf: "center" }} />
                     <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                    {userDetails?.phone?.countryCode} {userDetails?.phone?.number}
+                      {userDetails?.phone?.countryCode}{" "}
+                      {userDetails?.phone?.number}
                     </Typography>
                   </a>
                 </Box>
@@ -638,6 +657,7 @@ function Profile() {
                   handleChange={(e) => handleChange(e, "alternateEmail")}
                   name={"alternateEmail"}
                   value={profileInfo?.alternateEmail}
+                  error={emailInvalid ? "Invalid email" : ""}
                 />
               </Grid>
             </Card>
@@ -707,7 +727,10 @@ function Profile() {
                       newValue.value
                     )
                   }
-                  value={selectInterestedState}
+                  value={{
+                    label: selectInterestedState,
+                    value: selectInterestedState,
+                  }}
                   list={interestedStatesList?.map((rs) => {
                     return {
                       label: rs.state_name,
@@ -726,7 +749,10 @@ function Profile() {
                           newValue.value
                         )
                       }
-                      value={selectInterestedCity}
+                      value={{
+                        label: selectInterestedCity,
+                        value: selectInterestedCity,
+                      }}
                       list={interestedCitiesList?.map((rs) => {
                         return {
                           label: rs.city_name,
@@ -988,7 +1014,10 @@ function Profile() {
                 />
                 <NewAutoCompleteInputStructure
                   label="Country"
-                  value={profileInfo?.currentAddress?.country}
+                  value={{
+                    label: profileInfo?.currentAddress?.country,
+                    value: profileInfo?.currentAddress?.country,
+                  }}
                   handleChange={(e, newValue) =>
                     handleChangeCurrentAddress({
                       target: {
@@ -1006,7 +1035,10 @@ function Profile() {
                 />
                 <NewAutoCompleteInputStructure
                   label="State"
-                  value={profileInfo?.currentAddress?.state}
+                  value={{
+                    label: profileInfo?.currentAddress?.state,
+                    value: profileInfo?.currentAddress?.state,
+                  }}
                   handleChange={(e, newValue) =>
                     handleChangeCurrentAddress({
                       target: {
