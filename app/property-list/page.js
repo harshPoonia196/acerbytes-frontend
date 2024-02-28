@@ -66,7 +66,6 @@ function PropertyList() {
     try {
       const data = {}
       Object.keys(selectedOptions).map(item => data[item] = selectedOptions[item].value)
-      setLoading(true);
       const querParams = {
         ...pageOptions,
         ...(searchTerm ? { search: searchTerm } : {}),
