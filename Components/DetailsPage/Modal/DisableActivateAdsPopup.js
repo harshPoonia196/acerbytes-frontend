@@ -19,6 +19,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { disablePersonalizeAdsOption } from "utills/Constants";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function DisableActivateAdsPopup({ open, handleClose }) {
   const router = useRouter();
@@ -70,15 +71,14 @@ function DisableActivateAdsPopup({ open, handleClose }) {
       </DialogContent>
       <DialogActions>
         <Box sx={{ textAlign: "end" }}>
-          <Button
+          <CustomButton
             startIcon={<DoneIcon fontSize="small" />}
             variant="contained"
             onClick={() => {
               handleClose();
             }}
-          >
-            Update
-          </Button>
+          ButtonText={"Update"}
+          />
         </Box>
       </DialogActions>
     </Dialog >

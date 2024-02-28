@@ -14,6 +14,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import DoneIcon from "@mui/icons-material/Done";
 import OTPInputLayout from "Components/CommonLayouts/OTPInputLayout";
 import colors from "styles/theme/colors";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
   const [otp, setOtp] = useState("");
@@ -57,7 +58,7 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
                 <OTPInputLayout otpInput={otp} setOtpInput={setOtp} />
               </Box>
               <Box sx={{ alignSelf: "center" }}>
-                <Button disabled>Resend OTP</Button>
+                <CustomButton disabled ButtonText={"Resend OTP"} />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -73,25 +74,25 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
       </DialogContent>
       {!isVerified && (
         <DialogActions>
-          <Button
+          <CustomButton
             startIcon={<ArrowBackIosIcon />}
             onClick={() => {
               handleClose();
               handleOpen();
             }}
-          >
-            Back
-          </Button>
-          <Button
+
+            ButtonText={"Back"}
+          />
+          <CustomButton
             startIcon={<DoneIcon />}
             variant="contained"
             onClick={() => {
               handleAlternateSignIn();
               handleClose();
             }}
-          >
-            Verify
-          </Button>
+
+            ButtonText={"Verify"}
+          />
         </DialogActions>
       )}
     </Dialog>

@@ -15,6 +15,7 @@ import CreditRequestPaymentPopup from "./CreditRequestPaymentPopup";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { companyName } from "Components/NavBar/Links";
 import { BuyingCreditPoints } from "Components/Constants";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function ConsultantAddCreditPopup({ open, handleClose }) {
   const [openCreditRequestPaymentPopup, setCreditRequestPaymentPopup] =
@@ -68,15 +69,12 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
                     </Typography>
                   </Box>
                   <Box sx={{ ml: 2 }}>
-                    <Button
+                    <CustomButton
                       variant="contained"
                       size="small"
-                      onClick={() =>
-                        handleOpenCreditRequestPaymentPopup(credit)
-                      }
-                    >
-                      Get {credit.point} points
-                    </Button>
+                      onClick={() => handleOpenCreditRequestPaymentPopup(credit)}
+                      ButtonTex={`Get ${credit.point} points`}
+                    />
                   </Box>
                 </Card>
                 <Divider />
@@ -90,7 +88,7 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
               that can be shared with {companyName} representative (if any) and
               send screenshot at
               <Chip
-                onClick={() => {}}
+                onClick={() => { }}
                 icon={<WhatsAppIcon fontSize="small" />}
                 label="+9198799877"
                 size="small"

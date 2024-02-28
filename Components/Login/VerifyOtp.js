@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import colors from "styles/theme/colors";
 import { LoadingButton } from '@mui/lab';
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 
 const VerifyOtp = ({ loading, setOtpInput, form, prevStep, otpInput, verifyOtpFun, sendOtpFun, resendLoading }) => {
 
@@ -78,12 +79,11 @@ const VerifyOtp = ({ loading, setOtpInput, form, prevStep, otpInput, verifyOtpFu
                     pt: "24px !important",
                 }}
             >
-                <Button
+                <CustomButton
                     startIcon={<ArrowBackIosIcon />}
                     onClick={() => prevStep()}
-                >
-                    Back
-                </Button>
+                    ButtonText={"Back"}
+                />
                 <LoadingButton
                     loading={loading}
                     variant="contained"

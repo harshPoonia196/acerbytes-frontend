@@ -2,6 +2,7 @@ import React from "react";
 import { TextField, Grid, InputAdornment, MenuItem } from "@mui/material";
 import { countries } from "Components/config/config";
 
+const filterKeys = ["firstName", "lastName", "company", "city", "pinCode"];
 
 const NewPhoneInputField = ({
   name,
@@ -12,6 +13,7 @@ const NewPhoneInputField = ({
   value,
   variant,
   halfSm,
+  optionValue,
   ...props
 }) => {
   const changeHandler = (event) => {
@@ -40,6 +42,7 @@ const NewPhoneInputField = ({
         variant={variant ? variant : "standard"}
         fullWidth
         size="small"
+        value={value}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -51,6 +54,7 @@ const NewPhoneInputField = ({
                 InputProps={{
                   disableUnderline: true,
                 }}
+                value={optionValue}
               >
                 {countries.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
