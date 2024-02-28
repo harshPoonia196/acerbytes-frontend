@@ -157,14 +157,16 @@ export default function ClippedDrawer({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem
-        onClick={() => {
-          router.push(listOfPages.userProfile);
-          handleMenuClose();
-        }}
-      >
-        Profile
-      </MenuItem>
+      {userDetails.role !== "admin" && (
+        <MenuItem
+          onClick={() => {
+            router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
+            handleMenuClose();
+          }}
+        >
+          Profile
+        </MenuItem>
+      )}
       {isLogged ? (
         <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
       ) : null}

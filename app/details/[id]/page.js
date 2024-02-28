@@ -43,7 +43,7 @@ import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
 import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import AdsSection from "Components/DetailsPage/AdsSection";
@@ -53,6 +53,7 @@ import colors from "styles/theme/colors";
 import { detailsProperty, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
+import { useAuth } from "utills/AuthContext";
 
 const tabHeight = 200;
 
@@ -92,11 +93,13 @@ function useThrottledOnScroll(callback, delay) {
 const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams()
   const name = searchParams.get('name')
+  const {isLogged} = useAuth();
+  const router = useRouter();
 
   const storedUserDataString = localStorage.getItem('userDetails');
   const storedUserData = JSON.parse(storedUserDataString);
   const role = storedUserData?.role;
-
+  const brokerId = storedUserData?._id;
   const detailsPropertyId = params.id
 
   const [isLoading, setLoading] = useState(false);
@@ -116,7 +119,7 @@ const PropertyDetailsPage = ({ params }) => {
   const detailsGetProperty = async () => {
     try {
       setLoading(true);
-      let res = await detailsProperty(detailsPropertyId);
+      let res = await detailsProperty(`${detailsPropertyId}${brokerId ? `?brokerId=${brokerId}` : ''}`);
       if (res.status === 200) {
         setPropertyData(res.data?.data)
       }
@@ -507,40 +510,49 @@ const PropertyDetailsPage = ({ params }) => {
                 </Button>
               </Box>
             </Card>
-
-            <Box
-              sx={{
-                position: "fixed",
-                right: 16,
-                bottom: 16,
-                display: { xs: "none", evmd: "flex" },
-                flexDirection: "column",
-              }}
-            >
-              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={handlefavClick}>
-                {propertyData?.isFav
-                  ? <ThumbUpIcon sx={{ color: '#276ef1', mr: 1 }} />
-                  : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                }
-                Like
-              </Fab>
-              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
-                Share
-              </Fab>
-              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                <WhatsAppIcon sx={{ mr: 1 }} />
-                Contact
-              </Fab>
-              <Fab
-                variant="extended"
-                sx={{ justifyContent: "flex-start" }}
-                onClick={handleOpenEnquiryForm}
+            {role !== "admin" && role !== "superAdmin" &&  (
+              <Box
+                sx={{
+                  position: "fixed",
+                  right: 16,
+                  bottom: 16,
+                  display: { xs: "none", evmd: "flex" },
+                  flexDirection: "column",
+                }}
               >
-                <AssignmentIcon sx={{ mr: 1 }} />
-                Enquire
-              </Fab>
-            </Box>
+                {
+                   isLogged ? (
+                    <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={handlefavClick}>
+                      {propertyData?.isFav
+                        ? <ThumbUpIcon sx={{ color: '#276ef1', mr: 1 }} />
+                        : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                      }
+                      Like
+                    </Fab>
+                ) : (
+                  <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={() => router.push("/login")}>
+                    <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                     Likefff
+                  </Fab>
+              )}
+                <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
+                  <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
+                  Share
+                </Fab>
+                <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
+                  <WhatsAppIcon sx={{ mr: 1 }} />
+                  Contact
+                </Fab>
+                <Fab
+                  variant="extended"
+                  sx={{ justifyContent: "flex-start" }}
+                  onClick={handleOpenEnquiryForm}
+                >
+                  <AssignmentIcon sx={{ mr: 1 }} />
+                  Enquire
+                </Fab>
+              </Box>
+            )}
           </Container>
         </Box>
       </>}

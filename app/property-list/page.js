@@ -70,10 +70,11 @@ function PropertyList() {
       const querParams = {
         ...pageOptions,
         ...(searchTerm ? { search: searchTerm } : {}),
-        ...(data ? { searchParams: JSON.stringify(data) } : {}),
+        // ...(data ? { searchParams: JSON.stringify(data) } : ''),
         sortBy: alignment,
         key: propertyvalue
       };
+      // console.log(querParams)  
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
@@ -202,10 +203,13 @@ function PropertyList() {
       }));
     } else {
       setSelectedOptions(prevOptions => {
-        delete prevOptions[key]
-        return ({
-          ...prevOptions,
-        })
+        // delete prevOptions[key]
+        // return ({
+        //   ...prevOptions,
+        // })
+        const newOptions = { ...prevOptions };
+        delete newOptions[key];
+        return newOptions;
       });
     }
 
@@ -250,16 +254,16 @@ function PropertyList() {
 
           <Grid container spacing={2} columns={36}>
             {/* commercial,residential */} {/*please delete this after done and same for all below*/}
-            <NewMultiSelectAutoCompleteInputStructure label="Category" list={selectOption?.category} handleChange={(event, value) => handleOptionChange("category", value[0])} value={selectedOptions.category ? [selectedOptions.category] : []} />
+            <NewMultiSelectAutoCompleteInputStructure label="Category" list={selectOption?.category} handleChange={(event, value) => handleOptionChange("category", value)} value={selectedOptions.category || []} />
             {/* Flat,shop */}
-            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyType} handleChange={(event, value) => handleOptionChange("propertyType", value[0])} value={selectedOptions.propertyType ? [selectedOptions.propertyType] : []} />
+            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyType} handleChange={(event, value) => handleOptionChange("propertyType", value)} value={selectedOptions.propertyType || []} />
             {/* 1BHK, 2BHK */}
-            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value) => handleOptionChange("unitType", value[0])} value={selectedOptions.unitType ? [selectedOptions.unitType] : []} />
+            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value) => handleOptionChange("unitType", value)} value={selectedOptions.unitType || []} />
             {/* Noida,gurgoan */}
-            <NewMultiSelectAutoCompleteInputStructure label="City" list={selectOption?.city} handleChange={(event, value) => handleOptionChange("city", value[0])} value={selectedOptions.city ? [selectedOptions.city] : []} />
+            <NewMultiSelectAutoCompleteInputStructure label="City" list={selectOption?.city} handleChange={(event, value) => handleOptionChange("city", value)} value={selectedOptions.city || []} />
             {/* Sector/area */}
-            <NewMultiSelectAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value) => handleOptionChange("location", value[0])} value={selectedOptions.location ? [selectedOptions.location] : []} />
-            <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value) => handleOptionChange("status", value[0])} value={selectedOptions.status ? [selectedOptions.status] : []} />
+            <NewMultiSelectAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value) => handleOptionChange("location", value)} value={selectedOptions.location || []} />
+            <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value) => handleOptionChange("status", value)}  value={selectedOptions.status || []}  />
             <Grid item xs={18} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
