@@ -271,7 +271,7 @@ export default function ClippedDrawer({ children }) {
           }
 
           {
-            authRole("admin") || authRole("superAdmin") && (
+            (authRole("admin") || authRole("superAdmin")) && (
             <>
               <List
                 subheader={
