@@ -117,7 +117,7 @@ function PropertyCard(props) {
             <Typography variant="caption">{propertyDetails?.overview?.status}</Typography>
             <Typography variant="subtitle2">{propertyDetails?.overview?.launchYear} - {propertyDetails?.overview?.completionYear}</Typography>
           </Grid>
-          <Grid
+          {/* <Grid
             item
             xs={8}
             sm={2.5}
@@ -126,8 +126,8 @@ function PropertyCard(props) {
           >
             <Typography variant="caption">Enquiries</Typography>
             <Typography variant="subtitle2">345</Typography>
-          </Grid>
-          <Grid item sm={1.5} md={1} sx={{ display: { xs: 'none', sm: 'block' } }}>
+          </Grid> */}
+          {/* <Grid item sm={1.5} md={1} sx={{ display: { xs: 'none', sm: 'block' } }}>
             <Card
               sx={{
                 width: "fit-content",
@@ -151,7 +151,7 @@ function PropertyCard(props) {
                 99
               </Typography>
             </Card>
-          </Grid>
+          </Grid> */}
         </Grid>
       </CardActionArea>
       {isShortListPageCard && <Divider />}

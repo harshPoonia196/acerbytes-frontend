@@ -142,35 +142,37 @@ export default function ClippedDrawer({ children }) {
   const isMenuOpen = Boolean(anchorEl);
   const menuId = "primary-search-account-menu";
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      {userDetails.role !== "admin" && (
-        <MenuItem
-          onClick={() => {
-            router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
-            handleMenuClose();
-          }}
-        >
-          Profile
-        </MenuItem>
-      )}
-      {isLogged ? (
-        <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
-      ) : null}
-    </Menu>
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+        className="dropdownfix"
+        sx={{ top: "0px", left: "0px"}}
+      >
+        {userDetails.role !== "admin" && (
+          <MenuItem
+            onClick={() => {
+              router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
+              handleMenuClose();
+            }}
+          >
+            Profile
+          </MenuItem>
+        )}
+        {isLogged ? (
+          <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
+        ) : null}
+      </Menu>
   );
 
   const StyledBadge = styled(Badge)(({ theme }) => ({
