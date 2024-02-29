@@ -106,8 +106,13 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             }
             value={
               salesPersonInfo
-                ? `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}`
-                : ""
+                ? {
+                    label:
+                      `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}` ||
+                      "",
+                    value: salesPersonInfo?.googleID || "",
+                  }
+                : null
             }
             list={info?.salesPersons?.map((rs) => {
               return {
@@ -130,8 +135,7 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             variant="outlined"
             sx={{ mr: 2 }}
             onClick={handleClose}
-          
-           ButtonText={"Close"} 
+            ButtonText={"Close"}
           />
           <CustomButton
             // startIcon={<DoneIcon />}
@@ -139,7 +143,6 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             onClick={() => {
               saveHandler();
             }}
-          
             ButtonText={"Submit"}
           />
         </Box>
