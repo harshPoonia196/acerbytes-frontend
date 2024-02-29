@@ -18,10 +18,10 @@ import { useSnackbar } from "utills/SnackbarContext";
 import ConsultantDialog from "Components/Login/ConsultantDialog";
 import { useAuth } from "utills/AuthContext";
 import { countries } from "Components/config/config";
+import { isLoggedIn } from "utills/utills";
 
 function Login() {
   const { login } = useAuth();
-
   const router = useRouter();
   const [showConsultantDetailsPopup, setShowConsultantDetailsPopup] =
     useState(false);
@@ -87,6 +87,12 @@ function Login() {
 
   const searchParams = useSearchParams();
   let count = 0
+
+  useEffect(() => {
+    isLoggedIn() ?
+      router.push("/")
+      : null
+  }, [])
 
   useEffect(() => {
     if (!loading && searchParams.get("code")) {

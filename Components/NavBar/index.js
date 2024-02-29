@@ -99,8 +99,8 @@ export default function ClippedDrawer({ children }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error getbroker balance request",
+        error?.message ||
+        "Error getbroker balance request",
         "error"
       );
     }
@@ -221,70 +221,70 @@ export default function ClippedDrawer({ children }) {
           <Divider />
           {
             authRole("user") && (
-            <>
-              <List
-                subheader={
-                  <ListSubheader component="div" id="nested-list-subheader">
-                    Customer / Buyer
-                  </ListSubheader>
-                }
-              >
-                {UserMenuList.map((item) => (
-                  <DrawerListItem key={item.label} item={item} />
-                ))}
-              </List>
-              <Divider />
-            </>
+              <>
+                <List
+                  subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                      Customer / Buyer
+                    </ListSubheader>
+                  }
+                >
+                  {UserMenuList.map((item) => (
+                    <DrawerListItem key={item.label} item={item} />
+                  ))}
+                </List>
+                <Divider />
+              </>
             )
           }
 
           {
             authRole("broker") && (
-            <>
-              <List
-                subheader={
-                  <ListSubheader
-                    component="div"
-                    id="nested-list-subheader"
-                    sx={{ display: "flex" }}
-                  >
-                    <p style={{ flex: 1 }}>Consultant</p>{" "}
-                    <Box sx={{ alignSelf: "center" }}>
-                      <IconButton
-                        onClick={() => {
-                          router.push(listOfPages.consultantJoinNow);
-                        }}
-                      >
-                        <HowToRegIcon size="small" />
-                      </IconButton>
-                    </Box>
-                  </ListSubheader>
-                }
-              >
-                {ConsultantMenuList.map((item, index) => (
-                  <DrawerListItem key={item.label} item={item} />
-                ))}
-              </List>
-              <Divider />
-            </>
+              <>
+                <List
+                  subheader={
+                    <ListSubheader
+                      component="div"
+                      id="nested-list-subheader"
+                      sx={{ display: "flex" }}
+                    >
+                      <p style={{ flex: 1 }}>Consultant</p>{" "}
+                      <Box sx={{ alignSelf: "center" }}>
+                        <IconButton
+                          onClick={() => {
+                            router.push(listOfPages.consultantJoinNow);
+                          }}
+                        >
+                          <HowToRegIcon size="small" />
+                        </IconButton>
+                      </Box>
+                    </ListSubheader>
+                  }
+                >
+                  {ConsultantMenuList.map((item, index) => (
+                    <DrawerListItem key={item.label} item={item} />
+                  ))}
+                </List>
+                <Divider />
+              </>
             )
           }
 
           {
             (authRole("admin") || authRole("superAdmin")) && (
-            <>
-              <List
-                subheader={
-                  <ListSubheader component="div" id="nested-list-subheader">
-                    Admin
-                  </ListSubheader>
-                }
-              >
-                {AdminMenuList.map((item, index) => (
-                  <DrawerListItem key={item.label} item={item} />
-                ))}
-              </List>
-            </>
+              <>
+                <List
+                  subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                      Admin
+                    </ListSubheader>
+                  }
+                >
+                  {AdminMenuList.map((item, index) => (
+                    <DrawerListItem key={item.label} item={item} />
+                  ))}
+                </List>
+              </>
             )
           }
         </Box>
@@ -371,7 +371,11 @@ export default function ClippedDrawer({ children }) {
         }}
       >
         <DrawerContent />
-        <DrawerBottomContent />
+        {
+          isLoggedIn() ?
+            <DrawerBottomContent />
+            : null
+        }
       </Drawer>
     );
   };
