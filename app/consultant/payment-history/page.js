@@ -39,7 +39,7 @@ function PaymentHistory(props) {
     if (userDetails && Object.keys(userDetails).length) {
       getBrokerPaymentHistory();
 
-      window.location?.pathname !== listOfPages.consultantPaymentHistory &&
+      // window.location?.pathname !== listOfPages.consultantPaymentHistory &&
         getBrokerpointBalance();
     }
   }, [userDetails && Object.keys(userDetails).length, initialMount]);
