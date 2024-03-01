@@ -19,6 +19,7 @@ import { useState } from 'react';
 import colors from 'styles/theme/colors';
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import UploadMarketingImage from 'Components/Admin/Property/Modal/UploadMarketingImage'
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 
 
 function MarketingCard({ isEdit, errors, form, handleChange }) {
@@ -83,13 +84,14 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                     <Grid item xs={12}>
                         <Card sx={{ display: 'flex', p: 2 }}>
                             <Typography sx={{ flex: 1, alignSelf: 'center' }}>Upload</Typography>
-                            <Button
+                            <CustomButton
                                 variant="contained"
                                 component="label"
                                 sx={{ textTransform: 'uppercase' }}
                                 startIcon={<AttachFileIcon />}
+                                ButtonText={"Attach"}
                             >
-                                Attach
+
                                 <input
                                     id="contained-button-file"
                                     type="file"
@@ -97,7 +99,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                                     accept="image/x-png,image/gif,image/jpeg"
                                     hidden
                                 />
-                            </Button>
+                            </CustomButton>
                         </Card>
                     </Grid>
                     <NewInputFieldStructure

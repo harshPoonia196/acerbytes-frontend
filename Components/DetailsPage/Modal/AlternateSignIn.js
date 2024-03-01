@@ -19,6 +19,7 @@ import { useState } from "react";
 import { useParams,useRouter } from "next/navigation";
 import { setItem } from "utills/utills";
 import { propertyRedirectKey } from "utills/Constants";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function AlternateSignIn({ open, handleClose }) {
   const [isVerified, setIsVerified] = useState(false);
@@ -89,22 +90,22 @@ function AlternateSignIn({ open, handleClose }) {
             }}
           >
             <Box>
-              <Button
+              <CustomButton
                 startIcon={<CloseIcon />}
                 sx={{ mr: 2 }}
                 onClick={handleClose}
-              >
-                Skip
-              </Button>
-              <Button
+              
+                ButtonText={"Skip"}
+              />
+              <CustomButton
                 startIcon={<DoneIcon />}
                 variant="contained"
                 onClick={() => {
                   handleSignin();
                 }}
-              >
-                Sign in
-              </Button>
+              ButtonText={" Sign in"}
+               
+              />
             </Box>
           </Box>
         </DialogActions>

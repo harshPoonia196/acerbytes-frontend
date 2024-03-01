@@ -16,6 +16,7 @@ import OTPInputLayout from "Components/CommonLayouts/OTPInputLayout";
 import colors from "styles/theme/colors";
 import { clearItem } from "utills/utills";
 import { enquiryFormKey } from "utills/Constants";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function OtpVerify({
   open,
@@ -69,7 +70,7 @@ function OtpVerify({
                 <OTPInputLayout otpInput={otp} setOtpInput={setOtp} />
               </Box>
               <Box sx={{ alignSelf: "center" }}>
-                <Button disabled>Resend OTP</Button>
+                <CustomButton disabled ButtonText={"Resend OTP"} />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -85,16 +86,16 @@ function OtpVerify({
       </DialogContent>
       {!isVerified && (
         <DialogActions>
-          <Button
+          <CustomButton
             startIcon={<ArrowBackIosIcon />}
             onClick={() => {
               handleClose();
               handleOpen();
             }}
-          >
-            Back
-          </Button>
-          <Button
+
+            ButtonText={"Back"}
+          />
+          <CustomButton
             startIcon={<DoneIcon />}
             variant="contained"
             onClick={() => {
@@ -102,9 +103,9 @@ function OtpVerify({
               handleAlternateSignIn();
               handleClose();
             }}
-          >
-            Verify
-          </Button>
+
+            ButtonText={"Verify"}
+          />
         </DialogActions>
       )}
     </Dialog>

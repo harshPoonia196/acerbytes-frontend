@@ -23,6 +23,7 @@ import {
 import React from "react";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
 import { enquiryFormKey, propertyRedirectKey } from "utills/Constants";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function EnquireNow({ open, handleClose, handleAction, submitEnquiry }) {
   const router = useRouter();
@@ -134,7 +135,7 @@ function EnquireNow({ open, handleClose, handleAction, submitEnquiry }) {
             {token ? (
               <span></span>
             ) : (
-              <Button
+              <CustomButton
                 startIcon={<GoogleIcon />}
                 variant="outlined"
                 sx={{ mr: 2 }}
@@ -146,11 +147,10 @@ function EnquireNow({ open, handleClose, handleAction, submitEnquiry }) {
                   }
                   router.push("/login");
                 }}
-              >
-                Existing user, Sign In
-              </Button>
+                ButtonText={"Existing user, Sign In"}
+              />
             )}
-            <Button
+            <CustomButton
               startIcon={<DoneIcon />}
               variant="contained"
               onClick={() => {
@@ -168,9 +168,8 @@ function EnquireNow({ open, handleClose, handleAction, submitEnquiry }) {
                 !formData?.firstName ||
                 !formData?.lastName
               }
-            >
-              Submit
-            </Button>
+              ButtonText={"Submit"}
+            />
           </Box>
 
           <Typography variant="caption" sx={{ flex: 1, mt: 1 }}>

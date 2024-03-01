@@ -9,25 +9,7 @@ import {
 } from "@mui/material";
 
 import colors from "styles/theme/colors";
-
-const countries = [
-  {
-    value: "91",
-    label: "+91",
-  },
-  {
-    value: "92",
-    label: "+92",
-  },
-  {
-    value: "9528",
-    label: "+9528",
-  },
-  {
-    value: "1",
-    label: "+1",
-  },
-];
+import { countries } from "Components/config/config";
 
 function NewPhoneInputFieldStructure({
   name1,

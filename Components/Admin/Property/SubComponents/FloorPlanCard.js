@@ -26,6 +26,7 @@ import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextF
 import NewUnitAreaInputField from "Components/CommonLayouts/NewUnitAreaInputField";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import { TroubleshootSharp } from "@mui/icons-material";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function FloorPlanCard({
   isEdit,
@@ -448,12 +449,12 @@ function FloorPlanCard({
             }
           />
           <Grid item xs={24} sx={{ textAlign: "end" }}>
-            <Button
+            <CustomButton
               variant="contained"
               onClick={isEditItem ? editFloorPlan : addFloorPlan}
-            >
-              {isEditItem ? "Edit" : "Add"}
-            </Button>
+            
+              ButtonText={isEditItem ? "Edit" : "Add"}
+            />
           </Grid>
         </Grid>
         <Grid

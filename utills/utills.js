@@ -58,7 +58,7 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
     redirectUser("/login");
   }
   if (isLogged) {
-    if (url.includes("/admin") && role !== "admin") {
+    if (url.includes("/admin") && role !== "admin" && role !== "superAdmin") {
       redirectUser("/");
     } else if (url.includes("/user") && role !== "user") {
       redirectUser("/");

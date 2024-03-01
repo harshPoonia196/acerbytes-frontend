@@ -19,6 +19,7 @@ import { useSearchParams } from "next/navigation";
 import { useSnackbar } from "utills/SnackbarContext";
 import { ToasterMessages } from "Components/Constants";
 import { getLoggedInUser } from "utills/utills";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function AdsSection({
   handleOpenPersonalizeAds,
@@ -138,23 +139,22 @@ function AdsSection({
               </Typography>
             </Box>
             <Box sx={{ textAlign: "end" }}>
-              <Button
+              <CustomButton
                 startIcon={<AddLinkIcon />}
                 variant="outlined"
                 size="small"
                 sx={{ fontSize: "0.875rem", mr: 2 }}
                 onClick={handleOpenActivateAdsPopup}
-              >
-                {isConsultant ? "Activate my link" : <>Extend</>}
-              </Button>
-              <Button
+                ButtonText={isConsultant ? "Activate my link" : <>Extend</>}
+              />
+
+              <CustomButton
                 startIcon={<Close />}
                 size="small"
                 sx={{ fontSize: "0.875rem" }}
                 onClick={handleOpenPersonalizeAds}
-              >
-                Don't show
-              </Button>
+                ButtonText={" Don't show"}
+              />
             </Box>
           </Box>
         ) : (
@@ -184,15 +184,14 @@ function AdsSection({
               </Typography>
             </Box>
             <Box sx={{ textAlign: "end" }}>
-              <Button
+              <CustomButton
                 startIcon={<AddLinkIcon />}
                 variant="outlined"
                 size="small"
                 sx={{ fontSize: "0.875rem" }}
                 onClick={handleOpenActivateAdsPopup}
-              >
-                Extend
-              </Button>
+                ButtonText={"Extend"}
+              />
             </Box>
           </Box>
         )
@@ -233,29 +232,27 @@ function AdsSection({
           <Box sx={{ alignSelf: "center" }}>
             {brokerContact ? (
               <a>
-                <Button
+                <CustomButton
                   variant="outlined"
                   startIcon={<PhoneIcon />}
                   size="small"
                   sx={{ fontSize: "0.875rem" }}
-                >
-                  {phoneNumber}
-                </Button>
+                  ButtonText={phoneNumber}
+                />
               </a>
             ) : (
-              <Button
+              <CustomButton
                 variant="outlined"
                 startIcon={<PhoneIcon />}
                 size="small"
                 sx={{ fontSize: "0.875rem" }}
+                ButtonText={"Contact"}
                 onClick={() => {
                   if (handleOpenEnquiryForm) {
                     handleOpenEnquiryForm();
                   }
                 }}
-              >
-                Contact
-              </Button>
+              />
             )}
           </Box>
         </Box>

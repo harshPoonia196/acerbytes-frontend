@@ -15,6 +15,7 @@ import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStruct
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewUnitAreaInputField from 'Components/CommonLayouts/NewUnitAreaInputField';
 import DateTimeInputField from '../../../CommonLayouts/DateTimeInputField';
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 
 function BuilderPriceCard({ isEdit }) {
     return (
@@ -44,7 +45,7 @@ function BuilderPriceCard({ isEdit }) {
                     />
                     <DateTimeInputField label="When" variant='outlined' isEdit={isEdit} />
                     <Grid item xs={18} sx={{ textAlign: 'end' }}>
-                        <Button variant='contained'>Add</Button>
+                        <CustomButton variant='contained' ButtonText={"Add"}/>
                     </Grid>
                 </Grid>
             </Card>

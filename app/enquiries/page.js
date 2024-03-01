@@ -29,6 +29,7 @@ import { useQueries } from "utills/ReactQueryContext";
 import { getEnquiries } from "api/Util.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function Row(props) {
   const { row, history } = props;
@@ -288,15 +289,9 @@ export default function Enquiries() {
               >
                 Be a part of approved consultants community
               </Typography>
-              <Button
-                variant="contained"
-                sx={{ alignSelf: "center" }}
-                onClick={() => {
-                  history.push(listOfPages.consultantJoinNow);
-                }}
-              >
-                Join as real estate consultant
-              </Button>
+              <CustomButton variant="contained" sx={{ alignSelf: 'center' }} onClick={() => { history.push(listOfPages.consultantJoinNow) }}
+                ButtonText={"Join as real estate consultant"}
+              />
             </Box>
           </Box>
         </Container>

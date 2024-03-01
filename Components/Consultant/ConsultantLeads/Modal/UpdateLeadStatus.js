@@ -1,15 +1,21 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import InputField from 'Components/CommonLayouts/InputField';
 import SelectTextFields from 'Components/CommonLayouts/SelectTextFields';
-import React from 'react'
+import React, { useState } from 'react'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import NewSelectTextFieldStructure from 'Components/CommonLayouts/NewSelectTextFieldStructure';
 
 function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
+    const [loading, setLoading] = useState(false);
+    const handleClick = () => {
+        setLoading(true);
+        handleClose();
+      };
     return (
         <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
             <DialogTitle onClose={handleClose}>
@@ -82,15 +88,15 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Button
+                    <CustomButton
                         // startIcon={<GoogleIcon />}
                         variant="outlined"
                         sx={{ mr: 2 }}
                         onClick={handleClose}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
+                    ButtonText={"Cancel"}
+                        
+                    />
+                    {/* <Button
                         // startIcon={<DoneIcon />}
                         variant="contained"
                         onClick={() => {
@@ -98,7 +104,16 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                         }}
                     >
                         Submit
-                    </Button>
+                    </Button> */}
+                    <CustomButton
+      loading={loading}
+      onClick={handleClick}
+      variant="contained"
+      color="primary"
+      ButtonText={"Submit"}
+    />
+    
+   
                 </Box>
             </DialogActions>
         </Dialog >

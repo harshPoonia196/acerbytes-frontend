@@ -16,6 +16,7 @@ import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 function MyNotes() {
   const router = useRouter();
 
@@ -78,13 +79,12 @@ function MyNotes() {
           </ToggleButtonGroup>
         </Card>
         <Box sx={{ textAlign: "end", mb: 2 }}>
-          <Button
+          <CustomButton
             variant="outlined"
             size="small"
             onClick={handleOpenUpdatePopup}
-          >
-            Add notes
-          </Button>
+            ButtonText={"Add notes"}
+          />
         </Box>
         <MyLeadsStatus />
       </Container>

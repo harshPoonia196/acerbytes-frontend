@@ -256,6 +256,9 @@ function EnquiriesTable() {
           </TableBody>
         </Table>
         <TablePagination
+          sx={{
+            overflow: "hidden",
+          }}
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={totalCount}
