@@ -1,5 +1,6 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material'
 import InputField from 'Components/CommonLayouts/InputField';
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import React from 'react'
 
 function AddCreditPopup({ open, handleClose }) {
@@ -30,23 +31,23 @@ function AddCreditPopup({ open, handleClose }) {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Button
+                    <CustomButton
                         // startIcon={<GoogleIcon />}
                         variant="outlined"
                         sx={{ mr: 2 }}
                         onClick={handleClose}
-                    >
-                        Close
-                    </Button>
-                    <Button
+                    
+                        ButtonText={"Close"}
+                    />
+                    <CustomButton
                         // startIcon={<DoneIcon />}
                         variant="contained"
                         onClick={
                             handleClose
                         }
-                    >
-                        Submit
-                    </Button>
+                    
+                        ButtonTex={"Submit"}
+                    />
                 </Box>
             </DialogActions>
         </Dialog >

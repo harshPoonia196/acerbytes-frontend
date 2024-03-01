@@ -9,25 +9,7 @@ import {
 } from "@mui/material";
 
 import colors from "styles/theme/colors";
-
-const countries = [
-  {
-    value: "91",
-    label: "+91",
-  },
-  {
-    value: "92",
-    label: "+92",
-  },
-  {
-    value: "9528",
-    label: "+9528",
-  },
-  {
-    value: "1",
-    label: "+1",
-  },
-];
+import { countries } from "Components/config/config";
 
 function NewPhoneInputFieldStructure({
   name1,
@@ -42,14 +24,13 @@ function NewPhoneInputFieldStructure({
   isEdit,
   isRequired,
   variant,
+  disabled,
   ...props
 }) {
-
-  const [countryCode, setCountryCode] = useState([])
+  const [countryCode, setCountryCode] = useState([]);
   useLayoutEffect(() => {
     setCountryCode(countries);
-  }, [])
-
+  }, []);
 
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
@@ -62,7 +43,7 @@ function NewPhoneInputFieldStructure({
 
     // Handle the input change if needed
     console.log(limitedValue);
-    handleChange(event)
+    handleChange(event);
   };
 
   return (
@@ -84,7 +65,8 @@ function NewPhoneInputFieldStructure({
           variant={variant ? variant : "standard"}
           fullWidth
           size="small"
-          InputProps={{       
+          disabled={disabled}
+          InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <TextField
@@ -98,6 +80,7 @@ function NewPhoneInputFieldStructure({
                   InputProps={{
                     disableUnderline: true,
                   }}
+                  disabled={disabled}
                 >
                   {countryCode.map((option) => (
                     <MenuItem key={option.value} value={option.value}>

@@ -22,11 +22,11 @@ function ManageUser() {
         
       
      
-      <InfoBox
+      {/* <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
         
-      />
+      /> */}
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
           Manage User

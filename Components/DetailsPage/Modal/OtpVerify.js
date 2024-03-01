@@ -14,8 +14,18 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import DoneIcon from "@mui/icons-material/Done";
 import OTPInputLayout from "Components/CommonLayouts/OTPInputLayout";
 import colors from "styles/theme/colors";
+import { clearItem } from "utills/utills";
+import { enquiryFormKey } from "utills/Constants";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
-function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
+function OtpVerify({
+  open,
+  handleClose,
+  handleOpen,
+  handleAlternateSignIn,
+  formData,
+  handleSubmit
+}) {
   const [otp, setOtp] = useState("");
 
   const [isVerified, setIsVerified] = useState(false);
@@ -24,7 +34,10 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
     <Dialog
       sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
       open={open}
-      onClose={handleClose}
+      onClose={() => {
+        clearItem(enquiryFormKey);
+        handleClose();
+      }}
     >
       <DialogTitle onClose={handleClose}>
         {isVerified ? (
@@ -57,7 +70,7 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
                 <OTPInputLayout otpInput={otp} setOtpInput={setOtp} />
               </Box>
               <Box sx={{ alignSelf: "center" }}>
-                <Button disabled>Resend OTP</Button>
+                <CustomButton disabled ButtonText={"Resend OTP"} />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -65,7 +78,7 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
                 variant="body2"
                 sx={{ textTransform: "uppercase", color: colors.DISABLED }}
               >
-                Received at +99132435353
+                Received at {`+${formData?.countryCode} ${formData?.number}`}
               </Typography>
             </Grid>
           </Grid>
@@ -73,25 +86,26 @@ function OtpVerify({ open, handleClose, handleOpen, handleAlternateSignIn }) {
       </DialogContent>
       {!isVerified && (
         <DialogActions>
-          <Button
+          <CustomButton
             startIcon={<ArrowBackIosIcon />}
             onClick={() => {
               handleClose();
               handleOpen();
             }}
-          >
-            Back
-          </Button>
-          <Button
+
+            ButtonText={"Back"}
+          />
+          <CustomButton
             startIcon={<DoneIcon />}
             variant="contained"
             onClick={() => {
+              handleSubmit(formData);
               handleAlternateSignIn();
               handleClose();
             }}
-          >
-            Verify
-          </Button>
+
+            ButtonText={"Verify"}
+          />
         </DialogActions>
       )}
     </Dialog>

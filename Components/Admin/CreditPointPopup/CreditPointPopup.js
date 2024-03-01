@@ -15,6 +15,7 @@ import React from "react";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import { generateRandorOrderNumber } from "api/Broker.api";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
   const [isLoading, setLoading] = React.useState(false);
@@ -230,18 +231,17 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
             justifyContent: "space-between",
           }}
         >
-          <Button variant="outlined" sx={{ mr: 2 }} onClick={handleClose}>
-            Close
-          </Button>
-          <Button
+          <CustomButton variant="outlined" sx={{ mr: 2 }} onClick={handleClose}
+            ButtonText={"Close"}
+          />
+          <CustomButton
             disabled={validateFields()}
             variant="contained"
             onClick={() => {
               saveHandler();
             }}
-          >
-            Submit
-          </Button>
+            ButtonText={"Submit"}
+          />
         </Box>
       </DialogActions>
     </Dialog>

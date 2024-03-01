@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./AxiosInstance";
 const UNIVERSAL_ACCESS_TOKEN = process.env.NEXT_PUBLIC_UNIVERSAL_ACCESS_TOKEN;
 const UNIVERSAL_LIST_API = process.env.NEXT_PUBLIC_UNIVERSAL_LIST_API;
 const GET_ACCESS_TOKEN = process.env.NEXT_PUBLIC_GET_ACCESS_TOKEN;
@@ -11,10 +12,9 @@ export const getAccessToken = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-          'api-token':
-          'wf9Su-BHch6J2SrbMm0EpgawFYxmADFvUmNRoPhC3VbipDy0nDiBFNS7ZDhBCrsNa1k',
-        'user-email': 'patidarjitendra973@gmail.com',
-
+        "api-token":
+          "wf9Su-BHch6J2SrbMm0EpgawFYxmADFvUmNRoPhC3VbipDy0nDiBFNS7ZDhBCrsNa1k",
+        "user-email": "patidarjitendra973@gmail.com",
       },
     })
       .then((res) => resolve(res.data))
@@ -68,4 +68,8 @@ export const getAllCitiesList = (access_token, name) => {
       .then((res) => resolve(res.data))
       .catch((err) => reject(err));
   });
+};
+
+export const getEnquiries = () => {
+  return axiosInstance.get(`/higheruser/getLeads`);
 };

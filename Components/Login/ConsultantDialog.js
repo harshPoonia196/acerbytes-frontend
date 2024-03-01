@@ -1,5 +1,6 @@
 import { LoadingButton } from '@mui/lab'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, ToggleButton } from '@mui/material'
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton'
 import NewInputFieldStructure from 'Components/CommonLayouts/NewInputFieldStructure'
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure'
 import React, { useEffect, useState } from 'react'
@@ -72,20 +73,19 @@ const ConsultantDialog = ({ loading, createUserFun, form, handleChange, showCons
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button
+                <CustomButton
                     onClick={createUserFun}
                 // color="primary"
-                >
-                    I'll do it later!
-                </Button>
-                <LoadingButton
+                
+                   ButtonText={"I'll do it later!"}
+                />
+                <CustomButton
                     onClick={handleSubmit}
                     color="primary"
                     variant="contained"
                     loading={loading}
-                >
-                    Submit
-                </LoadingButton>
+                    loadingText={"Submit"}
+                />
             </DialogActions>
         </Dialog>
 

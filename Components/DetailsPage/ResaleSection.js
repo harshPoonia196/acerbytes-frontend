@@ -4,6 +4,7 @@ import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairSt
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 import AddIcon from '@mui/icons-material/Add'
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton'
 
 function ResaleSection({ refCallback }) {
 
@@ -17,7 +18,7 @@ function ResaleSection({ refCallback }) {
                         44 Units for resale
                     </Typography>
                     <Box sx={{ alignSelf: "center" }}>
-                        <Button>Sell your property</Button>
+                        <CustomButton ButtonText={"Sell your property"} />
                     </Box>
                 </Box>
                 <Divider />

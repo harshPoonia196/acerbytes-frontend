@@ -1,5 +1,6 @@
 import { Button, Grid, Typography } from '@mui/material';
 import InputField from 'Components/CommonLayouts/InputField';
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import NewPhoneInputField from 'Components/CommonLayouts/NewPhoneInputField';
 import React, { useEffect } from 'react'
 
@@ -59,9 +60,12 @@ const SendOtp = ({ form, handleChange, sendOtpFun }) => {
                 handleChange={(e) => handleChange('phone', e.target.value)}
                 label="Phone number"
                 error={errors.phone}
+                optionValue={form.countryCode}
+                value={form.phone}
+                name="phone"
             />
             <Grid item xs={12} sx={{ textAlign: 'end' }}>
-                <Button
+                <CustomButton
                     sx={{ mt: 1 }}
                     variant="contained"
                     onClick={() => {
@@ -69,9 +73,8 @@ const SendOtp = ({ form, handleChange, sendOtpFun }) => {
                             sendOtpFun();
                         }
                     }}
-                >
-                    Confirm
-                </Button>
+                    ButtonText={"Confirm"}
+                />
             </Grid>
         </Grid>
     )
