@@ -26,10 +26,10 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
 
   const router = useRouter();
   const tempList = [
-    { label: '1 month', value: '1 month' },
-    { label: '2 months', value: '2 months' },
-    { label: '3 months', value: '3 months' },
-    { label: '4 months', value: '4 months' }
+    { label: '1 month', value: '1' },
+    { label: '2 months', value: '2' },
+    { label: '3 months', value: '3' },
+    { label: '4 months', value: '4' }
   ]
 
   const [formData, setFormData] = useState({
@@ -132,8 +132,8 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
                 startIcon={<PaymentIcon fontSize="small" />}
                 variant="outlined"
                 size="small"
-              ButtonText={"35,000"}
-                
+                ButtonText={"35,000"}
+
               />
               <Typography variant="subtitle2"
                 sx={{ alignSelf: "center", color: colors.GRAY }}>
@@ -148,7 +148,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
                 onClick={() => {
                   handleClose();
                 }}
-              
+
                 ButtonText={"Add"}
               />
             </Box>
@@ -191,7 +191,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
             size="small"
             onClick={handleActivateClick}
             disabled={isLoading}
-          
+
             ButtonText={isLoading ? <Loader /> : 'Activate'}
           />
           <Typography variant="subtitle2"
