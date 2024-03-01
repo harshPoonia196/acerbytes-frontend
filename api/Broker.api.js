@@ -1,6 +1,5 @@
 import axiosInstance from "./AxiosInstance";
 
-
 export const createOrderRequest = (data) => {
   return axiosInstance.post(`/broker/createOrderRequest`, data);
 };
@@ -15,4 +14,12 @@ export const getPaymentHisotryList = () => {
 
 export const generateRandorOrderNumber = () => {
   return axiosInstance.get(`/broker/generateOrderNumber`);
+};
+
+export const getBrokerLeads = ({ limit, page, search }) => {
+  return axiosInstance.get(
+    `/broker/myLeads?limit=${limit || ""}&&page=${page || 0}&&search=${
+      search || ""
+    }`
+  );
 };

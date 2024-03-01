@@ -10,12 +10,23 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import Footer from "Components/Footer";
 import { listOfPages } from "Components/NavBar/Links";
+import React from "react";
+import { clearItem, getItem } from "utills/utills";
+import { propertyRedirectKey } from "utills/Constants";
 
 export default function Home() {
   const router = useRouter();
+
+  React.useEffect(() => {
+    let isRedirect = getItem(propertyRedirectKey);
+    if (isRedirect) {
+      clearItem(propertyRedirectKey);
+      router.push(isRedirect);
+    }
+  }, []);
 
   return (
     <>
@@ -30,16 +41,25 @@ export default function Home() {
         >
           <Typography
             variant="h1"
-            sx={{ color: "#000", fontWeight: 300, fontSize: { sm: '2em !important', md: '3em !important' } }}
+            sx={{
+              color: "#000",
+              fontWeight: 300,
+              fontSize: { sm: "2em !important", md: "3em !important" },
+            }}
           >
             for better reach and data based decision in real estate
           </Typography>
 
-          <Box sx={{
-            display: 'flex', mt: 2, width: '100%', width: 'fit-content',
-            marginLeft: 'auto',
-            marginRight: 'auto'
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              mt: 2,
+              width: "100%",
+              width: "fit-content",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
             <Typography
               variant="h3"
               sx={{
@@ -48,26 +68,41 @@ export default function Home() {
             >
               Research
             </Typography>
-            <ArrowRightAltIcon fontSize="small" sx={{ alignSelf: 'center', color: colors.DISABLED, mx: 0.5 }} />
-            <Typography variant="h3"
+            <ArrowRightAltIcon
+              fontSize="small"
+              sx={{ alignSelf: "center", color: colors.DISABLED, mx: 0.5 }}
+            />
+            <Typography
+              variant="h3"
               sx={{
                 color: colors.DISABLED,
-              }}>
+              }}
+            >
               Consult
             </Typography>
-            <ArrowRightAltIcon fontSize="small" sx={{ alignSelf: 'center', color: colors.DISABLED, mx: 0.5 }} />
-            <Typography variant="h3"
+            <ArrowRightAltIcon
+              fontSize="small"
+              sx={{ alignSelf: "center", color: colors.DISABLED, mx: 0.5 }}
+            />
+            <Typography
+              variant="h3"
               sx={{
                 color: colors.DISABLED,
-              }}>
+              }}
+            >
               Decide
             </Typography>
           </Box>
         </Box>
         <Box>
           <Grid container spacing={2}>
-            <Grid item xs={12} sx={{ textAlign: 'center' }}>
-              <Typography variant="h5" sx={{ textTransform: 'uppercase', color: colors.BLUE }}>data research for selective properties in</Typography>
+            <Grid item xs={12} sx={{ textAlign: "center" }}>
+              <Typography
+                variant="h5"
+                sx={{ textTransform: "uppercase", color: colors.BLUE }}
+              >
+                data research for selective properties in
+              </Typography>
             </Grid>
             <Grid item xs={6} sm={4} md={3}>
               <Card>
@@ -123,7 +158,7 @@ export default function Home() {
             </Grid>
           </Grid>
         </Box>
-      </Container >
+      </Container>
       <Footer />
     </>
   );

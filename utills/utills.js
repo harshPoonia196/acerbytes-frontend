@@ -10,6 +10,20 @@ export const getLoggedInUser = () => {
   return null;
 };
 
+export const getItem = (key) => {
+  const data = localStorage.getItem(key);
+  if (data) return JSON.parse(data);
+  return null;
+};
+
+export const setItem = (key, data) => {
+  localStorage.setItem(key, JSON.stringify(data || {}));
+};
+
+export const clearItem = (key) => {
+  localStorage.removeItem(key);
+};
+
 export const logoutUser = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("userDetails");

@@ -16,7 +16,7 @@ import {
   Chip,
   Button,
   AvatarGroup,
-  Avatar
+  Avatar,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { useRouter } from "next/navigation";
@@ -24,6 +24,11 @@ import colors from "styles/theme/colors";
 import Footer from "Components/Footer";
 import { getComparator, stableSort } from "utills/CommonFunction";
 import { listOfPages } from "Components/NavBar/Links";
+import { reactQueryKey } from "utills/Constants";
+import { useQueries } from "utills/ReactQueryContext";
+import { getEnquiries } from "api/Util.api";
+import { useSnackbar } from "utills/SnackbarContext";
+import Loader from "Components/CommonLayouts/Loading";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function Row(props) {
@@ -42,50 +47,54 @@ function Row(props) {
         <TableCell>{row.enquired}</TableCell>
         <TableCell>{row.consultedBy}</TableCell>
         <TableCell>
-          <Chip label="View contact"
+          <Chip
+            label="View contact"
             size="small"
-            onClick={() => { history.push(listOfPages.consultantJoinNow) }} />
+            onClick={() => {
+              history.push(listOfPages.consultantJoinNow);
+            }}
+          />
         </TableCell>
       </TableRow>
     </React.Fragment>
   );
 }
 
-const rows = [
-  {
-    project: "Godrej forest",
-    phone: "+91 97******97",
-    urgency: "High",
-    price: "₹ 120",
-    enquired: "2 days ago",
-    buyingType: 'Investor',
-    consultedBy: 5,
-    location: "Noida, Sector 150",
-    next: "yes",
-  },
-  {
-    project: "Godrej forest",
-    phone: "+91 97******97",
-    urgency: "Low",
-    price: "₹ 120",
-    enquired: "2 days ago",
-    buyingType: 'Buyer',
-    consultedBy: 1,
-    location: "Noida, Sector 150",
-    next: "yes",
-  },
-  {
-    project: "Godrej forest",
-    phone: "+91 97******97",
-    urgency: "Medium",
-    price: "₹ 120",
-    enquired: "2 days ago",
-    buyingType: 'User',
-    consultedBy: 1,
-    location: "Noida, Sector 150",
-    next: "yes",
-  },
-];
+// const rows = [
+//   {
+//     project: "Godrej forest",
+//     phone: "+91 97******97",
+//     urgency: "High",
+//     price: "₹ 120",
+//     enquired: "2 days ago",
+//     buyingType: 'Investor',
+//     consultedBy: 5,
+//     location: "Noida, Sector 150",
+//     next: "yes",
+//   },
+//   {
+//     project: "Godrej forest",
+//     phone: "+91 97******97",
+//     urgency: "Low",
+//     price: "₹ 120",
+//     enquired: "2 days ago",
+//     buyingType: 'Buyer',
+//     consultedBy: 1,
+//     location: "Noida, Sector 150",
+//     next: "yes",
+//   },
+//   {
+//     project: "Godrej forest",
+//     phone: "+91 97******97",
+//     urgency: "Medium",
+//     price: "₹ 120",
+//     enquired: "2 days ago",
+//     buyingType: 'User',
+//     consultedBy: 1,
+//     location: "Noida, Sector 150",
+//     next: "yes",
+//   },
+// ];
 
 const headCells = [
   {
@@ -188,34 +197,96 @@ export default function Enquiries() {
     setOrderBy(property);
   };
 
-  const history = useRouter()
+  const { openSnackbar } = useSnackbar();
+
+  const {
+    data: rows,
+    isLoading,
+    error,
+    refetch,
+  } = useQueries([reactQueryKey.broker.myLeads], async () => {
+    try {
+      const response = await getEnquiries();
+      if (response.status == 200) {
+        const { success, data, message } = response.data;
+        if (success) {
+          return data?.map((enquiry) => {
+            return {
+              project: enquiry?.property?.overview?.projectName || "",
+              phone: `+${enquiry?.broker?.countryCode} ${
+                enquiry?.broker?.startNumber
+              }${
+                enquiry?.broker?.numberLength > 2
+                  ? new Array(enquiry?.broker?.numberLength - 1).join("*")
+                  : ""
+              }`,
+              urgency: "Medium",
+              price: enquiry?.property?.unitsPlan?.[0]?.bsp || "",
+              enquired: enquiry?.leads?.length || 0,
+              buyingType: enquiry?.property?.unitsPlan?.[0]?.propertyType || "",
+              consultedBy: enquiry?.property?.consultants?.length || 0,
+              location: `${enquiry?.property?.location?.area} ${enquiry?.property?.location?.sector} ${enquiry?.property?.location?.state} ${enquiry?.property?.location?.city}`,
+              next: "yes",
+            };
+          });
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  });
+
+  const history = useRouter();
 
   return (
     <>
+      {isLoading ? <Loader /> : null}
       <Box sx={{ backgroundColor: "white" }}>
-        <Container
-          maxWidth="lg"
-          sx={{ pb: "0 !important" }}
-        >
+        <Container maxWidth="lg" sx={{ pb: "0 !important" }}>
           <Box sx={{ py: 4 }}>
-            <Typography variant="h1"
-              sx={{ color: "#000", fontWeight: 300 }}>
-              Explore a world of possibilities with{' '}
-              <span className="urlStyling" style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push(listOfPages.consultantJoinNow) }}>
-                5,433</span> open real estate queries. Your next customer is just a click away
+            <Typography variant="h1" sx={{ color: "#000", fontWeight: 300 }}>
+              Explore a world of possibilities with{" "}
+              <span
+                className="urlStyling"
+                style={{ color: colors.BLUE, cursor: "pointer" }}
+                onClick={() => {
+                  history.push(listOfPages.consultantJoinNow);
+                }}
+              >
+                5,433
+              </span>{" "}
+              open real estate queries. Your next customer is just a click away
             </Typography>
-            <Box sx={{ mt: 2, textAlign: 'center' }}>
-              <Box sx={{ width: 'fit-content', margin: 'auto', }}>
-                <AvatarGroup
-                  total={5}
-                >
+            <Box sx={{ mt: 2, textAlign: "center" }}>
+              <Box sx={{ width: "fit-content", margin: "auto" }}>
+                <AvatarGroup total={5}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                  <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                  <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-                  <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
+                  <Avatar
+                    alt="Travis Howard"
+                    src="/static/images/avatar/2.jpg"
+                  />
+                  <Avatar
+                    alt="Agnes Walker"
+                    src="/static/images/avatar/4.jpg"
+                  />
+                  <Avatar
+                    alt="Trevor Henderson"
+                    src="/static/images/avatar/5.jpg"
+                  />
                 </AvatarGroup>
               </Box>
-              <Typography variant="h3" sx={{ flex: 1, alignSelf: 'center', my: 2 }}>
+              <Typography
+                variant="h3"
+                sx={{ flex: 1, alignSelf: "center", my: 2 }}
+              >
                 Be a part of approved consultants community
               </Typography>
               <CustomButton variant="contained" sx={{ alignSelf: 'center' }} onClick={() => { history.push(listOfPages.consultantJoinNow) }}
@@ -226,14 +297,18 @@ export default function Enquiries() {
         </Container>
       </Box>
       <Container maxWidth="lg">
-        <Typography variant="h6"
+        <Typography
+          variant="h6"
           sx={{
             color: "#000",
             fontSize: "1rem",
             fontWeight: 900,
             lineHeight: 1,
-            mb: 2
-          }}>Leads panel</Typography>
+            mb: 2,
+          }}
+        >
+          Leads panel
+        </Typography>
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table" size="small">
             <EnhancedTableHead
@@ -242,9 +317,15 @@ export default function Enquiries() {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {rows.map((row) => (
-                <Row key={row.name} row={row} history={history} />
-              ))}
+              {rows && Array.isArray(rows) ? (
+                rows?.map((row) => (
+                  <Row key={row.name} row={row} history={history} />
+                ))
+              ) : (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  No Data
+                </div>
+              )}
             </TableBody>
           </Table>
         </TableContainer>

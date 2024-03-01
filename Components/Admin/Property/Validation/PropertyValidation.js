@@ -36,7 +36,10 @@ export const unitPlanSchema = Joi.object({
   applicableMonth: Joi.string().required(),
   applicableYear: Joi.string().required(),
 });
-
+export const reraSchema = Joi.object({
+  reraApproved: Joi.string().valid('Yes').required(),
+  reraNumber: Joi.string().required(),
+})
 const layoutSchema = Joi.object({
   numberOfBuildings: Joi.number()
     .custom((value, helpers) => {
@@ -225,6 +228,7 @@ export const Schema = Joi.object({
     // })
     (),
   isActiveAd: Joi.boolean(),
+  isFav:Joi.boolean(),
   // consultants: Joi.array().items(
   //   Joi.object().keys({
   //     id: Joi.string().required(),
@@ -264,6 +268,9 @@ export const Schema = Joi.object({
       interiorQuality: Joi.number().allow(0),
     }),
   }),
+  published:Joi.boolean(),
+  publishedAt:Joi.date(),
+  createdAt:Joi.date(),
 
   marketing: Joi.object().keys({
     tagLine: Joi.string().required(),
