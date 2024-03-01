@@ -1197,7 +1197,7 @@ function AddProperty() {
             {editPage && <ProjectCard
               errors={errors}
               form={form}
-              newObj={newObj}
+            
               handleNewObjChange={handleNewObjChange}
               handleChange={handleChange}
               isEdit={isEdit}
