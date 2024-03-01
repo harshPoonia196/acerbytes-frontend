@@ -27,6 +27,8 @@ import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonSt
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
+import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
+import { ProfilePic } from "Components/CommonLayouts/profilepic";
 import {
   FAMILY,
   SERVICE_TYPE,
@@ -52,7 +54,8 @@ import {
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { listOfProfileTab } from "utills/Constants";
-
+import Avatar from "@mui/material/Avatar";
+import EditIcon from "@mui/icons-material/Edit";
 const tabHeight = 116;
 
 const SELECT_STATE = "selectState";
@@ -102,6 +105,35 @@ function Profile() {
   const [selectInterestedState, setInterestedState] = useState("");
   const [selectInterestedCity, setInterestedCity] = useState("");
   const [selectInterestedArea, setInterestedArea] = useState("");
+  const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
+  const [image, setImage] = useState("");
+  
+  const handleOpenUploadPopup = () => {
+    setIsUploadPopupOpen(true);
+  };
+  const handleImageSelect = (e) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+    handleOpenUploadPopup();
+  };
+
+  const handleImageRemove = () => {
+    setImage("");
+    handleCloseUploadPopup();
+  };
+  const handleCloseUploadPopup = () => {
+    setIsUploadPopupOpen(false);
+  };
 
   const [profileInfo, setProfileInfo] = useState({
     name: {
@@ -562,12 +594,57 @@ function Profile() {
             </LoadingButton>
           </Grid> */}
           <Grid item xs={12} id="userDetails">
-            <Card sx={{ p: 2 }}>
-              <Box sx={{ display: "flex" }}>
+            <Card sx={{ p: 2,}}>
+            <Box sx={{ display: "flex" }}>
                 <Box sx={{ flex: 1 }}>
                   <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                    {userDetails?.name?.firstName} {userDetails?.name?.lastName}
+                    {/* {userDetails?.name?.firstName} {userDetails?.name?.lastName} */}
                   </Typography>
+                  <UploadMarketingImage
+                  open={isUploadPopupOpen}
+                  image={image}
+                  setImage={setImage}
+                  onClose={handleCloseUploadPopup}
+                  changeImage={handleImageSelect}
+                  removeImage={handleImageRemove}
+                />
+                {/* Avatar and file input */}
+                <label htmlFor="avatar-input" style={{ cursor: "pointer" }}>
+                  <ProfilePic
+                    style={{
+                      minWidth: "3rem",
+                      maxWidth: "3rem",
+                      height: "3rem",
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        width: "3rem",
+                        position: "static",
+                        height: "3rem",
+                        cursor: "pointer",
+                      }}
+                      className="profilepic__image"
+                      onClick={(e) => {
+                        // Trigger the file input click when Avatar is clicked
+                        document.getElementById("avatar-input").click();
+                      }}
+                    >
+                      {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+                    </Avatar>
+                    <div className="profilepic__content">
+                      <EditIcon fontSize="small" />
+                      <p className="profilepic__text">Edit</p>
+                    </div>
+                  </ProfilePic>
+                </label>
+                <input
+                  id="avatar-input"
+                  type="file"
+                  onChange={handleImageSelect}
+                  accept="image/x-png,image/gif,image/jpeg"
+                  hidden
+                />
                 </Box>
                 <Box>
                   <a
@@ -585,7 +662,9 @@ function Profile() {
                     </Typography>
                   </a>
                 </Box>
-              </Box>
+              </Box>  
+            
+            
               {/* <Typography variant="body1" sx={{ mt: 1 }}>
                 Mumbai
               </Typography> */}
@@ -604,26 +683,31 @@ function Profile() {
               <Divider />
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewInputFieldStructure
-                  label="First name *"
+                isRequired={true}
+                  label="First name"
                   variant="outlined"
                   isEdit={isEdit}
+                 
                   // handleChange={handleChangeName}
                   handleChange={(e) => handleChange(e, "name", "firstName")}
                   name={"firstName"}
                   value={profileInfo?.name?.firstName}
                 />
                 <NewInputFieldStructure
-                  label="Last name *"
+                  label="Last name"
                   variant="outlined"
                   isEdit={isEdit}
+                  isRequired={true}
                   handleChange={(e) => handleChange(e, "name", "lastName")}
                   name={"lastName"}
                   value={profileInfo?.name?.lastName}
                 />
                 <NewPhoneInputFieldStructure
                   variant="outlined"
-                  label="Phone *"
+                  label="Phone"
+                  isRequired={true}
                   isEdit={isEdit}
+                 
                   handleChange={(e) => handleChange(e, "phone", "number")}
                   handleSelect={(e) => handleChange(e, "phone", "countryCode")}
                   name1={"countryCode"}
@@ -633,6 +717,7 @@ function Profile() {
                 />
                 <NewInputFieldStructure
                   label="Alternate Email"
+                  isRequired={true}
                   variant="outlined"
                   isEdit={isEdit}
                   handleChange={(e) => handleChange(e, "alternateEmail")}
@@ -657,6 +742,7 @@ function Profile() {
                 <NewSelectTextFieldStructure
                   label="Service type"
                   isEdit={isEdit}
+                  isRequired={true}
                   handleChange={(e) =>
                     handleChange(e, "serviceDetails", "serviceType")
                   }
@@ -666,6 +752,7 @@ function Profile() {
                 />
                 <NewInputFieldStructure
                   label="Company"
+                  isRequired={true}
                   variant="outlined"
                   isEdit={isEdit}
                   handleChange={(e) =>
@@ -675,7 +762,9 @@ function Profile() {
                   value={profileInfo?.serviceDetails?.company}
                 />
                 <NewSelectTextFieldStructure
+                 isRequired={true}
                   label="Family"
+                 
                   isEdit={isEdit}
                   handleChange={(e) =>
                     handleChange(e, "serviceDetails", "family")
@@ -701,6 +790,8 @@ function Profile() {
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewAutoCompleteInputStructure
                   label="Select State"
+                 
+                  isRequired={true}
                   handleChange={(e, newValue) =>
                     handleChangeInteresetCitiesDetails(
                       SELECT_STATE,
@@ -720,6 +811,7 @@ function Profile() {
                   <>
                     <NewAutoCompleteInputStructure
                       label="Select City"
+                      isRequired={true}
                       handleChange={(e, newValue) =>
                         handleChangeInteresetCitiesDetails(
                           SELECT_CITY,
@@ -736,6 +828,7 @@ function Profile() {
                     />
                     <NewInputFieldStructure
                       label="Area"
+                      isRequired={true}
                       variant="outlined"
                       value={selectInterestedArea}
                       handleChange={(e) =>
@@ -947,6 +1040,7 @@ function Profile() {
               <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewToggleButtonStructure
                   isEdit={isEdit}
+                  isRequired={true}
                   label="Address type"
                   value={profileInfo?.currentAddress?.addressType}
                   handleChange={handleChangeCurrentAddress}
@@ -968,6 +1062,7 @@ function Profile() {
                 </NewToggleButtonStructure>
                 <NewInputFieldStructure
                   label="Address line 1"
+                  isRequired={true}
                   variant="outlined"
                   isEdit={isEdit}
                   value={profileInfo?.currentAddress?.addressLine1}
@@ -980,6 +1075,7 @@ function Profile() {
                   label="Address line 2"
                   variant="outlined"
                   isEdit={isEdit}
+                  isRequired={true}
                   value={profileInfo?.currentAddress?.addressLine2}
                   handleChange={(e) =>
                     handleChange(e, "currentAddress", "addressLine2")
@@ -988,6 +1084,7 @@ function Profile() {
                 />
                 <NewAutoCompleteInputStructure
                   label="Country"
+                  isRequired={true}
                   value={profileInfo?.currentAddress?.country}
                   handleChange={(e, newValue) =>
                     handleChangeCurrentAddress({
@@ -1006,6 +1103,7 @@ function Profile() {
                 />
                 <NewAutoCompleteInputStructure
                   label="State"
+                  isRequired={true}
                   value={profileInfo?.currentAddress?.state}
                   handleChange={(e, newValue) =>
                     handleChangeCurrentAddress({
@@ -1027,6 +1125,7 @@ function Profile() {
                   label="City"
                   variant="outlined"
                   isEdit={isEdit}
+                  isRequired={true}
                   value={profileInfo?.currentAddress?.city}
                   handleChange={(e) =>
                     handleChange(e, "currentAddress", "city")
@@ -1036,6 +1135,7 @@ function Profile() {
 
                 <NewInputFieldStructure
                   label="Pincode"
+                  isRequired={true}
                   variant="outlined"
                   value={profileInfo?.currentAddress?.pinCode}
                   isEdit={isEdit}

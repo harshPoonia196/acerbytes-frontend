@@ -520,6 +520,7 @@ function ConsultantProfile() {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                   <NewInputFieldStructure
+                  isRequired={true}
                     label="First name"
                     variant="outlined"
                     value={brokerProfileInfo?.name?.firstName || ""}
@@ -528,6 +529,7 @@ function ConsultantProfile() {
                   />
                   <NewInputFieldStructure
                     label="Last name"
+                    isRequired={true}
                     variant="outlined"
                     value={brokerProfileInfo?.name?.lastName || ""}
                     handleChange={(e) => handleChange(e, "name", "lastName")}
@@ -537,6 +539,7 @@ function ConsultantProfile() {
                   <NewPhoneInputFieldStructure
                     variant="outlined"
                     label="Phone"
+                    isRequired={true}
                     value1={brokerProfileInfo?.phone?.countryCode || ""}
                     value2={brokerProfileInfo?.phone?.number || ""}
                     handleSelect={(e) =>
@@ -547,6 +550,7 @@ function ConsultantProfile() {
                   />
                   <NewInputFieldStructure
                     label="Alternate Email"
+                    isRequired={true}
                     variant="outlined"
                     value={brokerProfileInfo?.alternateEmail || ""}
                     handleChange={(e) => handleChange(e, "alternateEmail")}
@@ -599,6 +603,7 @@ function ConsultantProfile() {
                     }
                   />
                   <NewInputFieldStructure
+                   isRequired={true}
                     label="Company"
                     value={brokerProfileInfo?.serviceDetails?.company || ""}
                     variant="outlined"
@@ -609,6 +614,7 @@ function ConsultantProfile() {
                   />
 
                   <NewInputFieldStructure
+                   isRequired={true}
                     label="RERA number"
                     value={brokerProfileInfo?.serviceDetails?.reraNumber || ""}
                     variant="outlined"
@@ -619,6 +625,7 @@ function ConsultantProfile() {
                   />
                   <NewInputFieldStructure
                     label="Company email"
+                    isRequired={true}
                     value={
                       brokerProfileInfo?.serviceDetails?.companyEmail || ""
                     }
@@ -629,6 +636,7 @@ function ConsultantProfile() {
                     }
                   />
                   <NewPhoneInputFieldStructure
+                   isRequired={true}
                     variant="outlined"
                     label="Registerd phone"
                     value1={
@@ -734,7 +742,7 @@ function ConsultantProfile() {
                     <Box>
                       <Button
                         variant="contained"
-                        disabled={
+                         disabled={
                           targetCustomer?.selectArea == "" &&
                           targetCustomer?.selectCity == ""
                         }

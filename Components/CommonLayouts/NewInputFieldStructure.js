@@ -12,6 +12,7 @@ const NewInputFieldStructure = ({
   variant,
   isEdit,
   disabled = false,
+  isRequired,
   error,
   isFull, defaultValue,
   ...props
@@ -24,7 +25,7 @@ const NewInputFieldStructure = ({
             variant="subtitle2"
             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
           >
-            {label}
+           {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
           </Typography>
         </Box>
         {isEdit === undefined ? <TextField

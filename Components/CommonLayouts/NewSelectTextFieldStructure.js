@@ -15,6 +15,7 @@ function NewSelectTextFieldStructure({
   isEdit,
   full,
   variant,
+  isRequired,
   sx,
   showInfo = false,
   infoText = "Info",
@@ -27,7 +28,7 @@ function NewSelectTextFieldStructure({
           variant="subtitle2"
           sx={{ alignSelf: "center", color: colors.GRAY }}
         >
-          {label}
+          {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
       </Box>
       {isEdit ? (

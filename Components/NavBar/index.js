@@ -219,7 +219,7 @@ export default function ClippedDrawer({ children }) {
           </List>
           <Divider />
           {
-            authRole("user") && (
+            // authRole("user") && (
             <>
               <List
                 subheader={
@@ -234,11 +234,11 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-            )
+            // )
           }
 
           {
-            authRole("broker") && (
+            // authRole("broker") && (
             <>
               <List
                 subheader={
@@ -266,11 +266,11 @@ export default function ClippedDrawer({ children }) {
               </List>
               <Divider />
             </>
-            )
+            // )
           }
 
           {
-            authRole("admin") && (
+            // authRole("admin") && (
             <>
               <List
                 subheader={
@@ -284,7 +284,7 @@ export default function ClippedDrawer({ children }) {
                 ))}
               </List>
             </>
-            )
+            // )
           }
         </Box>
       </>
