@@ -45,7 +45,8 @@ export const getGoogleId = () => {
   return "";
 };
 
-const publicRoutes = ["/login"];
+const publicRoutes = ["/login", "/consultant/make-payment", "/property-list", "/all-brokers", "/enquiries",
+  "/page-not-found", "/terms-and-condition", "/privacy", "/consultant/join-now"];
 
 const scopes = {
   user: {
@@ -70,11 +71,13 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
 
 export const matchUserRole = (actualRole, matchingRole) => {
   return actualRole === matchingRole;
+  // return true
 };
 
 export const authRole = (authorizedRole) => {
   let userDetail = getLoggedInUser();
   return authorizedRole === userDetail?.role;
+  // return true
 };
 
 export const countryCodeFormating = (code = "") => {
