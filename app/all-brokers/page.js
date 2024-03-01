@@ -26,7 +26,7 @@ const page = () => {
         top: { xs: 54, sm: 64 }, zIndex: 100
       }}>
         <Container maxWidth='evmd'>
-          <Typography variant='h3' sx={{ my: 2, ml: 2 }}>
+          <Typography variant='h3' sx={{ mb: 2, ml: 2 }}>
             Consultants (45)
           </Typography>
           <Card>
