@@ -7,6 +7,7 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Typography,
   TableHead,
   TableRow,
   TableCell,
@@ -37,7 +38,7 @@ import {
 } from "Components/config/config";
 import Loading from "Components/CommonLayouts/Loading";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
-import { matchUserRole } from "utills/utills";
+import { countryCodeFormating, matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { debounce } from "lodash";
 
@@ -111,7 +112,8 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
         onChange={handleChange}
         label="Select role"
         disabled={
-          disabled || !(
+          disabled ||
+          !(
             matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin) ||
             matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
           )
@@ -150,7 +152,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
         {row?.name?.firstName} {row?.name?.lastName}
       </TableCell>
       <TableCell>
-        {row?.phone?.countryCode} {row?.phone?.number}
+        {countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}
       </TableCell>
       <TableCell>{row.email}</TableCell>
       <TableCell>
@@ -434,7 +436,7 @@ function ManageUserTable({ searchText }) {
           <TableBody>
             {isLoading ? (
               <Loading />
-            ) : (
+            ) : usersList?.list?.length > 0 ? (
               usersList?.list?.map((row) => (
                 <RowStructure
                   row={row}
@@ -443,6 +445,14 @@ function ManageUserTable({ searchText }) {
                   handleUpdateStatus={handleUpdateStatus}
                 />
               ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <Typography variant="body1" align="center">
+                    No data found
+                  </Typography>
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>
