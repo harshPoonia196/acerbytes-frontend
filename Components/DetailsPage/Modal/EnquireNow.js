@@ -12,18 +12,77 @@ import {
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import DoneIcon from "@mui/icons-material/Done";
-import { useRouter } from "next/navigation";
-import NewPhoneInputField from "Components/CommonLayouts/NewPhoneInputField";
+import { useParams, useRouter } from "next/navigation";
+import {
+  clearItem,
+  getItem,
+  getLoggedInUser,
+  isLoggedIn,
+  setItem,
+} from "utills/utills";
+import React from "react";
+import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
+import { enquiryFormKey, propertyRedirectKey } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
-function EnquireNow({ open, handleClose, handleAction }) {
+function EnquireNow({ open, handleClose, handleAction, submitEnquiry }) {
   const router = useRouter();
+
+  const token = isLoggedIn();
+
+  const param = useParams();
+
+  const initialState = {
+    adId:
+      param?.projectdetails?.split("-")?.[
+        param?.projectdetails?.split("-")?.length - 1
+      ] || "",
+    firstName: "",
+    lastName: "",
+    countryCode: "91",
+    number: "",
+  };
+  const [formData, setFormData] = React.useState(initialState);
+  console.log(formData);
+  React.useEffect(() => {
+    let userDetail = getLoggedInUser();
+    if (userDetail) {
+      setFormData((formData) => ({
+        ...formData,
+        firstName: userDetail?.name?.firstName || "",
+        lastName: userDetail?.name?.lastName || "",
+        countryCode: userDetail?.phone?.countryCode,
+        number: userDetail?.phone?.number,
+      }));
+    } else {
+      userDetail = getItem(enquiryFormKey);
+      setFormData((formData) => ({
+        ...formData,
+        firstName: userDetail?.firstName || "",
+        lastName: userDetail?.lastName || "",
+        countryCode: userDetail?.countryCode,
+        number: userDetail?.number,
+      }));
+    }
+  }, [open]);
+
+  const onChangeHandler = (e, field) => {
+    if (e?.persist) {
+      e.persist();
+    }
+    setFormData((prevData) => {
+      return { ...prevData, [field]: e?.target?.value };
+    });
+  };
 
   return (
     <Dialog
       sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
       open={open}
-      onClose={handleClose}
+      onClose={() => {
+        clearItem(enquiryFormKey);
+        handleClose();
+      }}
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
@@ -35,9 +94,34 @@ function EnquireNow({ open, handleClose, handleAction }) {
       </DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
-          <InputField halfSm label="First name" />
-          <InputField halfSm label="Last name" />
-          <NewPhoneInputField label="Phone number" />
+          <InputField
+            halfSm
+            label="First name"
+            disabled={token}
+            value={formData?.firstName}
+            handleChange={(e) => onChangeHandler(e, "firstName")}
+            required={true}
+          />
+          <InputField
+            halfSm
+            label="Last name"
+            disabled={token}
+            value={formData?.lastName}
+            handleChange={(e) => onChangeHandler(e, "lastName")}
+            required={true}
+          />
+          <NewPhoneInputFieldStructure
+            label="Phone number"
+            isEdit={true}
+            disabled={token}
+            value1={formData?.countryCode}
+            value2={formData?.number}
+            handleSelect={(e) => {
+              onChangeHandler(e, "countryCode");
+            }}
+            handleChange={(e) => onChangeHandler(e, "number")}
+            required={true}
+          />
         </Grid>
       </DialogContent>
       <DialogActions>
@@ -48,23 +132,43 @@ function EnquireNow({ open, handleClose, handleAction }) {
               justifyContent: "space-between",
             }}
           >
-            <CustomButton
-              startIcon={<GoogleIcon />}
-              variant="outlined"
-              sx={{ mr: 2 }}
-              onClick={() => router.push("/login")}
-            
-              ButtonText={"Existing user, Sign In"}
-            />
+            {token ? (
+              <span></span>
+            ) : (
+              <CustomButton
+                startIcon={<GoogleIcon />}
+                variant="outlined"
+                sx={{ mr: 2 }}
+                onClick={() => {
+                  setItem(enquiryFormKey, formData);
+
+                  if (param?.projectdetails) {
+                    setItem(propertyRedirectKey, param?.projectdetails);
+                  }
+                  router.push("/login");
+                }}
+                ButtonText={"Existing user, Sign In"}
+              />
+            )}
             <CustomButton
               startIcon={<DoneIcon />}
               variant="contained"
               onClick={() => {
-                handleAction();
+                if (token) {
+                  submitEnquiry(formData);
+                } else {
+                  setItem(enquiryFormKey, formData);
+                  handleAction();
+                }
                 handleClose();
               }}
-            ButtonText={"Submit"}
-              
+              disabled={
+                !formData?.countryCode ||
+                !formData?.number ||
+                !formData?.firstName ||
+                !formData?.lastName
+              }
+              ButtonText={"Submit"}
             />
           </Box>
 

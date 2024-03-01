@@ -1,5 +1,5 @@
-export const PAGINATION_LIMIT = 3;
-export const PAGINATION_LIMIT_OPTIONS = [3, 5, 10, 25];
+export const PAGINATION_LIMIT = 10;
+export const PAGINATION_LIMIT_OPTIONS = [10, 25];
 export const DEBOUNCE_TIMER = 300;
 
 export const ROLE_CONSTANTS = {
@@ -11,22 +11,22 @@ export const ROLE_CONSTANTS = {
 
 export const ROLES = [
   {
-    label: "superAdmin",
+    label: "Super Admin",
     value: "superAdmin",
     isVisible: false,
   },
   {
-    label: "admin",
+    label: "Admin",
     value: "admin",
     isVisible: true,
   },
   {
-    label: "user",
+    label: "User",
     value: "user",
     isVisible: true,
   },
   {
-    label: "broker",
+    label: "Broker",
     value: "broker",
     isVisible: true,
   },

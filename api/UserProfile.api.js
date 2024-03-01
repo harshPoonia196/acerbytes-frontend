@@ -1,3 +1,4 @@
+import { getLoggedInUser } from "utills/utills";
 import axiosInstance from "./AxiosInstance";
 
 export const getUserProfileByGoogleId = (googleID) => {
@@ -18,4 +19,22 @@ export const getBrokers = (limit, page, search) => {
       search || ""
     }`
   );
+};
+
+export const submitEnquiry = (data) => {
+  let userDetail = getLoggedInUser();
+  return axiosInstance.post(`/user/enquiry`, {
+    propertyId: data?.propertyId || null,
+    adId: data?.adId,
+    name: { firstName: data?.firstName, lastName: data?.lastName },
+    phone: { countryCode: data?.countryCode, number: `${data?.number}` },
+    userId: userDetail?._id,
+  });
+};
+
+export const isEnquired = (adId, propertyId) => {
+  return axiosInstance.post(`/user/isEnquired`, {
+    adId: adId || "",
+    propertyId: propertyId || "",
+  });
 };
