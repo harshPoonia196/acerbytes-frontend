@@ -23,23 +23,28 @@ import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
 import UpdateLeadStatus from "./Modal/UpdateLeadStatus";
+import { useSnackbar } from "utills/SnackbarContext";
+import { useQueries } from "utills/ReactQueryContext";
+import { getBrokerLeads } from "api/Broker.api";
+import { reactQueryKey } from "utills/Constants";
+import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 
-const rows = [
-  {
-    name: "Anand Gupta",
-    city: "Mumbai",
-    phone: "+91 1234567558",
-    phoneVerified: true,
-    email: "anand@gmail.com",
-    emailVerified: true,
-    role: "Investor",
-    maxBudget: 12000,
-    currentStatus: "Pending",
-    nextStatus: "Pending",
-    notesUpdated: "12th Nov 2018, 09:18 AM",
-  },
-];
+// const rows = [
+//   {
+//     name: "Anand Gupta",
+//     city: "Mumbai",
+//     phone: "+91 1234567558",
+//     phoneVerified: true,
+//     email: "anand@gmail.com",
+//     emailVerified: true,
+//     role: "Investor",
+//     maxBudget: 12000,
+//     currentStatus: "Pending",
+//     nextStatus: "Pending",
+//     notesUpdated: "12th Nov 2018, 09:18 AM",
+//   },
+// ];
 
 const headCells = [
   {
@@ -146,7 +151,7 @@ function RowStructure({ row }) {
 
   return (
     <TableRow
-      key={row.name}
+      key={row?._id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <UpdateLeadStatus
@@ -154,8 +159,8 @@ function RowStructure({ row }) {
         handleClose={handleCloseUpdatePopup}
         isUserSelected
       />
-      <TableCell>{row.name}</TableCell>
-      <TableCell>{row.city}</TableCell>
+      <TableCell>{row?.fullName}</TableCell>
+      <TableCell>{row?.property?.location?.city}</TableCell>
       <TableCell>
         <Chip
           label={row.currentStatus}
@@ -205,13 +210,13 @@ function RowStructure({ row }) {
         </Menu>
       </TableCell>
       <TableCell>
-        {row.phone}({row.phoneVerified ? "Yes" : "No"})
+        {row.phone?.number}({row.phoneVerified ? "Yes" : "No"})
       </TableCell>
       <TableCell>
         {row.email}({row.emailVerified ? "Yes" : "No"})
       </TableCell>
       <TableCell>{row.role}</TableCell>
-      <TableCell>{row.maxBudget}</TableCell>
+      <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell>
       <TableCell>
         <Chip
           label={row.notesUpdated}
@@ -228,6 +233,37 @@ function MyLeadsTable() {
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = React.useState([]);
+  const [totalCount, setTotalCount] = React.useState(0);
+  const firstLoad = React.useRef(true);
+
+  const { openSnackbar } = useSnackbar();
+
+  const { data, isLoading, error, refetch } = useQueries(
+    [reactQueryKey.broker.myLeads],
+    async () => {
+      try {
+        const response = await getBrokerLeads({ limit: rowsPerPage, page });
+        if (response.status == 200) {
+          const { success, data, message } = response.data;
+          if (success) {
+            return data;
+          } else {
+            openSnackbar(message, "error");
+          }
+        }
+      } catch (error) {
+        openSnackbar(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Something went wrong!",
+          "error"
+        );
+        return error;
+      }
+    }
+  );
+  console.log("DATA: ", data);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -253,8 +289,21 @@ function MyLeadsTable() {
     [order, orderBy, page, rowsPerPage]
   );
 
+  React.useEffect(() => {
+    setRows(data?.data || []);
+    setTotalCount(data?.totalCount || 0);
+  }, [data]);
+
+  React.useEffect(() => {
+    if (!firstLoad.current) {
+      refetch();
+    }
+    firstLoad.current = false;
+  }, [rowsPerPage, page]);
+
   return (
     <>
+      {isLoading ? <Loader /> : null}
       <Grid item xs={12}>
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput />
@@ -279,7 +328,7 @@ function MyLeadsTable() {
           }}
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={totalCount}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

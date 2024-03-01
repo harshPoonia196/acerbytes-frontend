@@ -23,14 +23,13 @@ function NewPhoneInputFieldStructure({
   sx,
   isEdit,
   variant,
+  disabled,
   ...props
 }) {
-
-  const [countryCode, setCountryCode] = useState([])
+  const [countryCode, setCountryCode] = useState([]);
   useLayoutEffect(() => {
     setCountryCode(countries);
-  }, [])
-
+  }, []);
 
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
@@ -43,7 +42,7 @@ function NewPhoneInputFieldStructure({
 
     // Handle the input change if needed
     console.log(limitedValue);
-    handleChange(event)
+    handleChange(event);
   };
 
   return (
@@ -65,7 +64,8 @@ function NewPhoneInputFieldStructure({
           variant={variant ? variant : "standard"}
           fullWidth
           size="small"
-          InputProps={{       
+          disabled={disabled}
+          InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <TextField
@@ -79,6 +79,7 @@ function NewPhoneInputFieldStructure({
                   InputProps={{
                     disableUnderline: true,
                   }}
+                  disabled={disabled}
                 >
                   {countryCode.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
