@@ -17,6 +17,7 @@ import BankCard from "Components/Admin/Property/SubComponents/BankCard";
 import {
   Schema,
   projectName,
+  reraSchema,
 } from "Components/Admin/Property/Validation/PropertyValidation";
 import FacilitiesCard from "Components/Admin/Property/SubComponents/FacilitiesCard";
 import LandscapeCard from "Components/Admin/Property/SubComponents/LandscapeCard";
@@ -170,7 +171,6 @@ function AddProperty() {
       let res = await detailsProperty(detailsPropertyId);
       if (res.status === 200) {
         let data = removeIds(res.data?.data);
-
         delete data.__v;
         setEditForm(true);
         setForm({ ...data });
@@ -217,6 +217,8 @@ function AddProperty() {
     };
   }, []);
 
+
+  
   const classes = useStyles();
 
   const [isEdit, setIsEdit] = useState(true);
@@ -429,7 +431,7 @@ function AddProperty() {
       },
     },
     location: {
-      state: "Andhra",
+      state: "",
       city: "",
       sector: "",
       area: "",
@@ -559,6 +561,7 @@ function AddProperty() {
         interiorQuality: 0,
       },
     },
+    published:false,
     marketing: {
       tagLine: "",
       description: "",
@@ -814,7 +817,6 @@ function AddProperty() {
   //     description: "",
   //   },
   // });
-
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
   };
@@ -1043,7 +1045,8 @@ function AddProperty() {
     }
   };
 
-  const validateForm = () => {
+
+  const validateForm = (publish) => {
     const { error } = Schema.validate(form, { abortEarly: false });
     let store = [
       "constructionQuality",
@@ -1094,25 +1097,91 @@ function AddProperty() {
       setErrors(validationErrors);
       return false;
 
-    } else {
+    } 
+//     else if(publish && !error){
+//       const { publishError } = reraSchema.validate({reraApproved:form.regulatoryClearance.reraApproved,reraNumber:form.regulatoryClearance.reraNumber}, {
+//         abortEarly: false,
+//       });
+// if(!publishError){
+//   setForm({...form,published:true})
+
+// }
+//     }
+    else {
       if (!editPage) {
         // Validation passed
-        CreateProperty({ ...form });
-        openSnackbar(`Property added successfully`, "success");
+        if(publish){
+          const { error } = reraSchema.validate({reraApproved:form.regulatoryClearance.reraApproved,reraNumber:form.regulatoryClearance.reraNumber}, {
+            abortEarly: false,
+          });
+    if(!error){
+      setForm({...form,published:true})
+      CreateProperty({...form,published:true})
+      .then((res) => {
+        openSnackbar(`Property Published successfully`, "success");
         routerNavigation.push(`/admin/property-list`);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+    else{
+      openSnackbar(`Please check the rera criteria`, "error");
+    }
+        }
+        CreateProperty({ ...form })
+        .then((res) => {
+          openSnackbar(`Property added successfully`, "success");
+          routerNavigation.push(`/admin/property-list`);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+       
       } else {
-        EditProperty(detailsPropertyId, { ...form });
-        openSnackbar(`Property edited successfully`, "success");
+
+        if(publish){
+          const { error } = reraSchema.validate({reraApproved:form.regulatoryClearance.reraApproved,reraNumber:form.regulatoryClearance.reraNumber}, {
+            abortEarly: false,
+          });
+    if(!error){
+      setForm({...form,published:true})
+      EditProperty(detailsPropertyId,{...form,published:true})
+      .then((res) => {
+        openSnackbar(`Property Edited & Published successfully`, "success");
         routerNavigation.push(`/admin/property-list`);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+    else{
+      openSnackbar(`Please check the rera criteria`, "error");
+    }
+        }
+        else{
+          EditProperty(detailsPropertyId, { ...form })
+          .then((res) => {
+            openSnackbar(`Property edited successfully`, "success");
+            routerNavigation.push(`/admin/property-list`);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        }
+
       }
     }
     return true;
   };
+  const handleNewObjChange = (e)=>{
+    setNewObj(e.target.value)
+  }
 
   return (
     <>
       <nav className={classes.demo2}>
-        <CustomAdminBreadScrumbs text="Add Property" />
+        <CustomAdminBreadScrumbs text={editPage?"Edit Property":"Add Property"} />
         <Card>
           <NavTab
             value={activeState}
@@ -1125,12 +1194,14 @@ function AddProperty() {
       <Container>
         <div className="container">
           <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-            <ProjectCard
+            {editPage && <ProjectCard
               errors={errors}
               form={form}
+              newObj={newObj}
+              handleNewObjChange={handleNewObjChange}
               handleChange={handleChange}
               isEdit={isEdit}
-            />
+            />}
             <RegulatoryCard
               errors={errors}
               form={form}
@@ -1188,10 +1259,10 @@ function AddProperty() {
               isEdit={isEdit}
             />
             <Grid item xs={12} sx={{ textAlign: "end" }}>
-              <CustomButton onClick={validateForm} variant="contained"
+              <CustomButton onClick={()=>validateForm(false)} variant="contained"
                 ButtonText={editPage ? "Update" : "Save"} />
 
-              <CustomButton ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
+              <CustomButton onClick={()=>validateForm(true)} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
 
             </Grid>
           </Grid>

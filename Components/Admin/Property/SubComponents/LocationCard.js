@@ -41,6 +41,8 @@ function LocationCard({ isEdit, form, handleChange, errors }) {
                         label="State"
                         isEdit={isEdit}
                         value={state}
+                       
+                        list={[ {label:"Kashmir",value:"Kashmir"}, {label:"Punjab",value:"Punjab"},{label:"Tamil Nadu",value:"TamilNadu"}]}
                         error={errors?.["location.state"]}
                         handleChange={(e) => handleChange(e, "location", "state")}
                     />
