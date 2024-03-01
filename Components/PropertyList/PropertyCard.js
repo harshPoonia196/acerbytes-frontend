@@ -92,7 +92,7 @@ function PropertyCard(props) {
             md={2.5}
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
-            <Typography variant="caption">{propertyDetails?.unitsPlan?.length && propertyDetails?.unitsPlan?.map(item => `${item.areaValue} ${item.areaUnit}`).join(", ")}</Typography>
+            <Typography variant="caption">{propertyDetails?.unitsPlan?.planList.length && propertyDetails?.unitsPlan?.planList?.map(item => `${item.area} ${item.areaUnit}`).join(", ")}</Typography>
             {/* <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography> */}
           </Grid>
           <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
@@ -105,7 +105,7 @@ function PropertyCard(props) {
             </Typography>
             {/* <Typography variant="caption">{propertyDetails?.layout?.layoutType.join(", ")} */}
             {/* </Typography> */}
-            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.length && propertyDetails?.unitsPlan?.map(item => item.propertyLayout).join(", ")}</Typography>
+            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.planList.length && propertyDetails?.unitsPlan?.planList?.map(item => item.propertyLayout).join(", ")}</Typography>
           </Grid>
           <Grid
             item

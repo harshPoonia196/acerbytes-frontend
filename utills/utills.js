@@ -31,7 +31,7 @@ export const getGoogleId = () => {
     return "";
 };
 
-const publicRoutes = ["/login" , '/property-list' , '/all-brokers' , '/enquiries'];
+const publicRoutes = ["/login" , '/property-list' , '/all-brokers' , '/enquiries', '/details/:id'];
 
 const scopes = {
     user: {
@@ -40,9 +40,20 @@ const scopes = {
 };
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
-    if (!isLogged && !publicRoutes.includes(url)) {
+  const isPublicRoute = publicRoutes.some(publicRoute => {
+        if (publicRoute.includes("/:")) { // Handle dynamic routes
+            const baseRoute = publicRoute.split("/:")[0];
+            return url.startsWith(baseRoute);
+        }
+        return url === publicRoute;
+    });
+
+    if (!isLogged && !isPublicRoute) {
       redirectUser("/login");
     }
+    // if (!isLogged && !publicRoutes.includes(url)) {
+    //   redirectUser("/login");
+    // }
     if (isLogged) {
       if (url.includes("/admin") && (role !== "admin" && role !== "superAdmin")) {
         redirectUser("/");

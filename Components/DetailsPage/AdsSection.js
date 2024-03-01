@@ -14,6 +14,19 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
     const brokerData = SinglePropertyId?.brokerData
     const locationData = propertyData?.location;
 
+    let formatDateAndDaysRemaining = (expiryDate) => {
+        const expiry = new Date(expiryDate);
+        const now = new Date();
+        const daysRemaining = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
+      
+        const day = expiry.getDate();
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const nth = (d) => ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d - 20) % 10 < 1 ? d % 10 : 0] || "th";
+        const formattedDate = `${day}${nth(day)} ${monthNames[expiry.getMonth()]}`;
+      
+        return `${formattedDate} (${daysRemaining} days remaining)`;
+      };
+
     const constructPropertyUrl = (property) => {
         const overview = property?.overview;
         const location = property?.location;
@@ -52,7 +65,6 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
         ? `${brokerData.phone.countryCode} ${brokerData.phone.number}`
         : "9322153996667";
     const description = SinglePropertyId?.description ? `${SinglePropertyId.description}` : "Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on";
-
 
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text).then(() => {
@@ -93,7 +105,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                         <Box sx={{ display: 'flex', flex: 1 }}>
                             <Chip size='small' sx={{ backgroundColor: 'lightgoldenrodyellow', border: '2px solid gold', alignSelf: 'center', mr: 1 }} label="Active Ad" />
                             <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
-                                till 25th Feb (5 days remaining)
+                                {SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : " "}
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
@@ -124,10 +136,8 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                         </Typography>
                     </Box>
                     <Box sx={{ alignSelf: 'center' }}>
-                        <a>
+                        <a href={`tel:${phoneNumber}`}>
                             <CustomButton variant='outlined' startIcon={<PhoneIcon />} size='small' sx={{ fontSize: '0.875rem' }}  ButtonText={phoneNumber}/>
-                                
-                            
                         </a>
                     </Box>
                 </Box>

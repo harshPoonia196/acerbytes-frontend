@@ -6,7 +6,7 @@ import colors from 'styles/theme/colors'
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
-function OverallAssesmentSection({ refCallback }) {
+function OverallAssesmentSection({ refCallback, overallAssessment }) {
 
     const router = useRouter()
 
@@ -57,7 +57,7 @@ function OverallAssesmentSection({ refCallback }) {
                             margin: "auto",
                         }}
                     >
-                        <Typography variant="h1">99</Typography>
+                        <Typography variant="h1">{overallAssessment?.score}</Typography>
                         <Typography variant="h5" sx={{ alignSelf: "center" }}>
                             /100
                         </Typography>
