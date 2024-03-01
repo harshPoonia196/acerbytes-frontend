@@ -97,7 +97,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-const RoleViewer = ({ role, userDetails, updateRole }) => {
+const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
   const handleChange = (event) => {
     updateRole(event.target.value);
   };
@@ -111,7 +111,7 @@ const RoleViewer = ({ role, userDetails, updateRole }) => {
         onChange={handleChange}
         label="Select role"
         disabled={
-          !(
+          disabled || !(
             matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin) ||
             matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
           )
@@ -156,6 +156,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
       <TableCell>
         <RoleViewer
           role={row.role}
+          disabled={row.isBlocked}
           userDetails={userDetails}
           updateRole={(newRole) => updateRole(row.googleID, newRole)}
         />
@@ -163,7 +164,10 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
       <TableCell sx={{ py: 0 }}>
         <IconButton
           disabled={
-            !matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
+            !(
+              matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
+              matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)
+            )
           }
           sx={{ fontSize: "1rem !important" }}
         >
@@ -258,6 +262,8 @@ function ManageUserTable({ searchText }) {
         firstName: searchText,
         lastName: searchText,
         role: searchText,
+        phone: Number(searchText),
+        email: searchText,
       };
       setLoading(true);
       const response = await getUsersList(objectToQueryString(querParams));

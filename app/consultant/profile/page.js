@@ -416,7 +416,36 @@ function ConsultantProfile() {
           </Grid> */}
             <Grid item xs={12} id="userDetails">
               <Card sx={{ p: 2 }}>
-                <Box sx={{ display: "flex" }}>
+                <Box sx={{ display: "flex", alignItems: 'center', gap: '20px' }}>
+                <label htmlFor="avatar-input" style={{ cursor: "pointer" }}>
+                  <ProfilePic
+                    style={{
+                      minWidth: "3rem",
+                      maxWidth: "3rem",
+                      height: "3rem",
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        width: "3rem",
+                        position: "static",
+                        height: "3rem",
+                        cursor: "pointer",
+                      }}
+                      className="profilepic__image"
+                      onClick={(e) => {
+                        // Trigger the file input click when Avatar is clicked
+                        document.getElementById("avatar-input").click();
+                      }}
+                    >
+                      {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+                    </Avatar>
+                    <div className="profilepic__content">
+                      <EditIcon fontSize="small" />
+                      <p className="profilepic__text">Edit</p>
+                    </div>
+                  </ProfilePic>
+                </label>
                   {userProfileInfo?.name ? (
                     <Box sx={{ flex: 1 }}>
                       <Typography variant="h6" sx={{ fontWeight: 900 }}>
@@ -448,58 +477,6 @@ function ConsultantProfile() {
                     </Box>
                   ) : null}
                 </Box>
-              </Card>
-            </Grid>
-            <Grid item xs={12} id="userDetails">
-              <Card sx={{ p: 2 }}>
-                {/* ... (other content) ... */}
-                <UploadMarketingImage
-                  open={isUploadPopupOpen}
-                  image={image}
-                  setImage={setImage}
-                  onClose={handleCloseUploadPopup}
-                  changeImage={handleImageSelect}
-                  removeImage={handleImageRemove}
-                />
-
-                {/* Avatar and file input */}
-                <label htmlFor="avatar-input" style={{ cursor: "pointer" }}>
-                  <ProfilePic
-                    style={{
-                      minWidth: "3rem",
-                      maxWidth: "3rem",
-                      height: "3rem",
-                    }}
-                  >
-                    <Avatar
-                      sx={{
-                        width: "3rem",
-                        position: "static",
-                        height: "3rem",
-                        cursor: "pointer",
-                      }}
-                      className="profilepic__image"
-                      onClick={(e) => {
-                        // Trigger the file input click when Avatar is clicked
-                        document.getElementById("avatar-input").click();
-                      }}
-                    >
-                      {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
-                    </Avatar>
-                    <div className="profilepic__content">
-                      <EditIcon fontSize="small" />
-                      <p className="profilepic__text">Edit</p>
-                    </div>
-                  </ProfilePic>
-                </label>
-
-                <input
-                  id="avatar-input"
-                  type="file"
-                  onChange={handleImageSelect}
-                  accept="image/x-png,image/gif,image/jpeg"
-                  hidden
-                />
               </Card>
             </Grid>
             <Grid item xs={12}>

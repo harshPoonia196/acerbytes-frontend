@@ -99,8 +99,8 @@ export default function ClippedDrawer({ children }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error getbroker balance request",
+        error?.message ||
+        "Error getbroker balance request",
         "error"
       );
     }
@@ -380,7 +380,11 @@ export default function ClippedDrawer({ children }) {
         }}
       >
         <DrawerContent />
-        <DrawerBottomContent />
+        {
+          isLoggedIn() ?
+            <DrawerBottomContent />
+            : null
+        }
       </Drawer>
     );
   };
