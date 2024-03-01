@@ -31,6 +31,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
     constructionQuality,
   } = form.layout;
 
+
   return (
     <Grid item xs={12} id="landscape">
       <Card>
@@ -97,7 +98,6 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
             error={errors?.["layout.minFloors"]}
             handleChange={(e) => handleChange(e, "layout", "minFloors")}
           />
-
           <NewUnitAreaInputField
             label="Area"
             name="area"
@@ -178,6 +178,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
             <Rating
               onChange={(e) => scoreChange(e, "layout", "unitDensityScore")}
               defaultValue={0}
+              value={form.layout.unitDensityScore}
               precision={0.5}
               size="small"
               sx={{ alignSelf: "center", mt: 1 }}
@@ -206,6 +207,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
               onChange={(e) => scoreChange(e, "layout", "greenDensityScore")}
               defaultValue={0}
               precision={0.5}
+              value={form.layout.greenDensityScore}
               size="small"
               sx={{ alignSelf: "center", mt: 1 }}
             />
@@ -223,6 +225,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
               onChange={(e) => scoreChange(e, "layout", "constructionQuality")}
               name="construction-quality"
               defaultValue={0}
+              value={form.layout.constructionQuality}
               precision={0.5}
               size="small"
               sx={{ alignSelf: "center", mt: 1 }}
@@ -242,6 +245,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
               onChange={(e) => scoreChange(e, "layout", "interiorQuality")}
               name="interior-quality"
               defaultValue={0}
+              value={form.layout.interiorQuality}
               precision={0.5}
               size="small"
               sx={{ alignSelf: "center", mt: 1 }}
