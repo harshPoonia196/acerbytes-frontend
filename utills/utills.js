@@ -76,3 +76,14 @@ export const authRole = (authorizedRole) => {
   let userDetail = getLoggedInUser();
   return authorizedRole === userDetail?.role;
 };
+
+export const countryCodeFormating = (code = "") => {
+  if (!code) {
+    return "";
+  }
+  if (code.includes("+")) {
+    return code;
+  }
+
+  return `+${code}`;
+};

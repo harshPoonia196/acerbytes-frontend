@@ -11,22 +11,22 @@ export const ROLE_CONSTANTS = {
 
 export const ROLES = [
   {
-    label: "superAdmin",
+    label: "Super Admin",
     value: "superAdmin",
     isVisible: false,
   },
   {
-    label: "admin",
+    label: "Admin",
     value: "admin",
     isVisible: true,
   },
   {
-    label: "user",
+    label: "User",
     value: "user",
     isVisible: true,
   },
   {
-    label: "broker",
+    label: "Broker",
     value: "broker",
     isVisible: true,
   },

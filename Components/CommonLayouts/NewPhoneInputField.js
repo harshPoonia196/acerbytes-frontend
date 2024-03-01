@@ -2,7 +2,7 @@ import React from "react";
 import { TextField, Grid, InputAdornment, MenuItem } from "@mui/material";
 import { countries } from "Components/config/config";
 
-const filterKeys = ["firstName", "lastName", "company", "city", "pinCode"];
+const filterKeys = ["phone"];
 
 const NewPhoneInputField = ({
   name,
@@ -19,7 +19,7 @@ const NewPhoneInputField = ({
   const changeHandler = (event) => {
     if (filterKeys.includes(event.target.name)) {
       const newValue = event.target.value;
-      const validValue = newValue.replace(/\D/g, "");
+      const validValue = newValue.replace(/\D/g, "").slice(0, 10);
       const updatedEvent = {
         ...event,
         target: {
