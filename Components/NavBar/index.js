@@ -441,7 +441,7 @@ export default function ClippedDrawer({ children }) {
                 color="#000"
                 onClick={isDrawerOpen ? handleDrawerClose : handleDrawerOpen}
               >
-                <MenuIcon />
+                <MenuIcon fontSize="small" />
               </IconButton>
             </Box>
             <Box sx={{ alignSelf: "center", height: "fit-content" }}>
@@ -466,18 +466,20 @@ export default function ClippedDrawer({ children }) {
           </Box>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ alignSelf: "center" }}>
-              {userDetails?.role == ROLE_CONSTANTS.broker && (
-                <Typography>Points: {brokerBalance} &nbsp;&nbsp;</Typography>
-              )}
-            </Box>
-            <Box sx={{ alignSelf: "center" }}>
               {userDetails && Object.keys(userDetails).length ? (
-                <Typography>
-                  Hi,{" "}
-                  <span style={{ color: colors.BLUE, textTransform: 'capitalize' }}>
+                <Box>
+                  <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, color: colors.BLUE, textTransform: 'capitalize' }}>
                     {userDetails?.name?.firstName} {userDetails?.name?.lastName}
-                  </span>
-                </Typography>
+                  </Typography>
+                  <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, color: colors.BLUE, textTransform: 'capitalize' }}>
+                    {userDetails?.name?.firstName}
+                  </Typography>
+                  <Box sx={{ alignSelf: "center" }}>
+                    {userDetails?.role == ROLE_CONSTANTS.broker && (
+                      <Typography variant='body2'>Points: {brokerBalance} &nbsp;&nbsp;</Typography>
+                    )}
+                  </Box>
+                </Box>
               ) : (
                 <CustomButton
                   onClick={() => {
@@ -499,7 +501,7 @@ export default function ClippedDrawer({ children }) {
                   color="#000"
                 >
                   {userDetails?.googleDetails?.profilePicture ? (
-                    <Avatar src={userDetails?.googleDetails?.profilePicture} />
+                    <Avatar sx={{ height: 24, width: 24 }} src={userDetails?.googleDetails?.profilePicture} />
                   ) : (
                     <AccountCircle />
                   )}
