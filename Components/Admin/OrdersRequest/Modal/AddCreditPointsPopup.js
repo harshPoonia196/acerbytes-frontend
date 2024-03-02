@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import InputField from "Components/CommonLayouts/InputField";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import React from "react";
 
@@ -105,8 +106,13 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             }
             value={
               salesPersonInfo
-                ? `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}`
-                : ""
+                ? {
+                    label:
+                      `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}` ||
+                      "",
+                    value: salesPersonInfo?.googleID || "",
+                  }
+                : null
             }
             list={info?.salesPersons?.map((rs) => {
               return {
@@ -124,23 +130,21 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             justifyContent: "space-between",
           }}
         >
-          <Button
+          <CustomButton
             // startIcon={<GoogleIcon />}
             variant="outlined"
             sx={{ mr: 2 }}
             onClick={handleClose}
-          >
-            Close
-          </Button>
-          <Button
+            ButtonText={"Close"}
+          />
+          <CustomButton
             // startIcon={<DoneIcon />}
             variant="contained"
             onClick={() => {
               saveHandler();
             }}
-          >
-            Submit
-          </Button>
+            ButtonText={"Submit"}
+          />
         </Box>
       </DialogActions>
     </Dialog>

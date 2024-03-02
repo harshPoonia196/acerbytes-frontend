@@ -19,6 +19,7 @@ import InputField from "Components/CommonLayouts/InputField";
 import PhoneInputField from "Components/CommonLayouts/PhoneInputField";
 import React from "react";
 import SelectTextFields from "Components/CommonLayouts/SelectTextFields";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function JoinNow() {
   const [brokerType, setBrokerType] = React.useState("individual");
@@ -38,7 +39,7 @@ function JoinNow() {
             </Typography>
             <Typography variant="h6">75 Active consultant</Typography>
             <Box>
-              <Button startIcon={<WhatsAppIcon />}>Share</Button>
+              <CustomButton ButtonText={"Share"} startIcon={<WhatsAppIcon />} />
             </Box>
           </Box>
         </Container>
@@ -116,9 +117,7 @@ function JoinNow() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Button variant="contained" fullWidth>
-                    Sign in with Google
-                  </Button>
+                  <CustomButton variant="contained" fullWidth ButtonText={'Sign in with Google'} />
                 </Grid>
                 <Grid item xs={12}>
                   <FormGroup>
@@ -241,9 +240,9 @@ function JoinNow() {
                   </FormGroup>
                 </Grid>
                 <Grid item xs={12}>
-                  <Button variant="contained" fullWidth>
-                    Sign up
-                  </Button>
+                  <CustomButton variant="contained" ButtonText={"Sign up"} fullWidth />
+
+
                 </Grid>
               </Grid>
             </Grid>

@@ -381,7 +381,10 @@ const PropertyListTable = ({ searchText, setCount }) => {
             </TableBody>
           </Table>
         )}
-        <TablePagination
+        <TablePagination sx={{
+        
+        overflow: 'hidden',
+      }}
           rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
           component="div"
           count={property?.totalCount}
