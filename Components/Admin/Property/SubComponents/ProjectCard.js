@@ -16,7 +16,7 @@ import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompl
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 import colors from 'styles/theme/colors';
 
-function ProjectCard({ isEdit, form, handleChange, errors }) {
+function ProjectCard({ isEdit, form,editPage, handleChange, errors }) {
 
     const {
         builder,
@@ -44,7 +44,7 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
    
     return (
         <>
-            <Grid item xs={12} id="project">
+            {editPage && <Grid item xs={12} id="project">
                 <Card sx={{ p: 2 }}>
                     <Box sx={{ display: "flex" }}>
                         <Box sx={{ flex: 1 }}>
@@ -65,7 +65,7 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                         </Box>
                     </Box>
                 </Card>
-            </Grid>
+            </Grid>}
             <Grid item xs={12}>
                 <Card>
                     <Box sx={{ display: "flex", p: 2, py: 1 }}>

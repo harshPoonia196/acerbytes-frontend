@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Card,
     Typography,
@@ -14,10 +14,28 @@ import EditIcon from "@mui/icons-material/Edit";
 import LocationAssesmentCard from "Components/Admin/Property/SubComponents/LocationAssesmentCard"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
+import NewAutocompleteAddOptionToList from "Components/CommonLayouts/NewAutocompleteAddOptionToList"
+import { getLocations } from 'api/Property.api';
 
 function LocationCard({ isEdit, form, handleChange, errors }) {
 
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
+
+const getLocationsCall = async()=>{
+let res = await getLocations()
+if(res.status===200){
+    setOpts(res.data.data)
+}
+else{
+    console.log('err')
+}
+
+}
+const [opts, setOpts] = React.useState([]);
+
+useEffect(()=>{
+getLocationsCall();
+},[])
 
     return (
         <Grid item xs={12} id="location" >
@@ -46,13 +64,20 @@ function LocationCard({ isEdit, form, handleChange, errors }) {
                         error={errors?.["location.state"]}
                         handleChange={(e) => handleChange(e, "location", "state")}
                     />
-                    <NewInputFieldStructure
+                    {/* <NewInputFieldStructure
                         label="City"
                         variant="outlined"
                         isEdit={isEdit}
                         value={city}
                         error={errors?.["location.city"]}
                         handleChange={(e) => handleChange(e, "location", "city")}
+                    /> */}
+                    <NewAutocompleteAddOptionToList
+                    label="City"
+                    value={city}
+                    error={errors?.["location.city"]}
+                    options={opts}
+                    handleChange={(e) => handleChange(e, "location", "city")}
                     />
                   
                     <NewInputFieldStructure
