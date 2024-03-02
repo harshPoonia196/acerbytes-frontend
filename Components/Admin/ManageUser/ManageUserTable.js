@@ -7,6 +7,7 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Typography,
   TableHead,
   TableRow,
   TableCell,
@@ -37,7 +38,7 @@ import {
 } from "Components/config/config";
 import Loading from "Components/CommonLayouts/Loading";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
-import { matchUserRole } from "utills/utills";
+import { countryCodeFormating, matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { debounce } from "lodash";
 
@@ -97,7 +98,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-const RoleViewer = ({ role, userDetails, updateRole }) => {
+const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
   const handleChange = (event) => {
     updateRole(event.target.value);
   };
@@ -111,6 +112,7 @@ const RoleViewer = ({ role, userDetails, updateRole }) => {
         onChange={handleChange}
         label="Select role"
         disabled={
+          disabled ||
           !(
             matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin) ||
             matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
@@ -150,12 +152,13 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
         {row?.name?.firstName} {row?.name?.lastName}
       </TableCell>
       <TableCell>
-        {row?.phone?.countryCode} {row?.phone?.number}
+        {countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}
       </TableCell>
       <TableCell>{row.email}</TableCell>
       <TableCell>
         <RoleViewer
           role={row.role}
+          disabled={row.isBlocked}
           userDetails={userDetails}
           updateRole={(newRole) => updateRole(row.googleID, newRole)}
         />
@@ -163,7 +166,10 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
       <TableCell sx={{ py: 0 }}>
         <IconButton
           disabled={
-            !matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
+            !(
+              matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
+              matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)
+            )
           }
           sx={{ fontSize: "1rem !important" }}
         >
@@ -258,6 +264,8 @@ function ManageUserTable({ searchText }) {
         firstName: searchText,
         lastName: searchText,
         role: searchText,
+        phone: Number(searchText),
+        email: searchText,
       };
       setLoading(true);
       const response = await getUsersList(objectToQueryString(querParams));
@@ -428,7 +436,7 @@ function ManageUserTable({ searchText }) {
           <TableBody>
             {isLoading ? (
               <Loading />
-            ) : (
+            ) : usersList?.list?.length > 0 ? (
               usersList?.list?.map((row) => (
                 <RowStructure
                   row={row}
@@ -437,6 +445,14 @@ function ManageUserTable({ searchText }) {
                   handleUpdateStatus={handleUpdateStatus}
                 />
               ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <Typography variant="body1" align="center">
+                    No data found
+                  </Typography>
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

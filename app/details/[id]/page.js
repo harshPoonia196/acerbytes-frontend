@@ -104,23 +104,14 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([])
-
-  const transformedData = propertyData?.consultants?.map(consultant => ({
-    name: consultant.name,
-    type: "Consultant",
-    stars: consultant.rating,
-    clients: consultant.clientsServed,
-    id: consultant.id,
-    profilePic: consultant.profilePic
-
-  }));
-
+  console.log(propertyData)
 
   const detailsGetProperty = async () => {
     try {
       setLoading(true);
       let res = await detailsProperty(`${detailsPropertyId}${brokerId ? `?brokerId=${brokerId}` : ''}`);
       if (res.status === 200) {
+        console.log(res.data?.data)
         setPropertyData(res.data?.data)
       }
     } catch (error) {
@@ -453,8 +444,8 @@ const PropertyDetailsPage = ({ params }) => {
                         />
                       </Box>
                     </Grid>
-
-                    {transformedData?.map((broker) => (
+                    
+                    {propertyData?.consultants?.map((broker) => (
                       <Grid item xs={12} sm={6} key={broker?.name}>
                         <BrokerCard broker={broker} noReview />
                       </Grid>
@@ -477,7 +468,7 @@ const PropertyDetailsPage = ({ params }) => {
                   </Grid>
                 </Card>
               </Grid>
-              <OverallAssesmentSection />
+              <OverallAssesmentSection overallAssessment={propertyData?.overallAssessment} />
             </Grid>
 
             {/* Dont Touch this */}
@@ -532,7 +523,7 @@ const PropertyDetailsPage = ({ params }) => {
                 ) : (
                   <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={() => router.push("/login")}>
                     <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                     Likefff
+                     Like
                   </Fab>
               )}
                 <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>

@@ -32,7 +32,7 @@ function PropertyList() {
 
   const [alignment, setAlignment] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT + 7);
+  const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
 
   const [property, setProperty] = useState([])
   const [count, setCount] = useState([])

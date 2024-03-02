@@ -20,25 +20,30 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
+import { useQueries } from "utills/ReactQueryContext";
+import { useSnackbar } from "utills/SnackbarContext";
+import { getLeads } from "api/Admin.api";
+import { reactQueryKey } from "utills/Constants";
+import Loader from "Components/CommonLayouts/Loading";
 
-const rows = [
-  {
-    firstName: "Anand",
-    lastName: "Gupta",
-    city: "Mumbai",
-    countryCode: "+91",
-    phone: "1234567558",
-    phoneVerified: true,
-    email: "anand@gmail.com",
-    emailVerified: true,
-    role: "Investor",
-    maxBudget: 12000,
-    closedStatus: "Pending",
-    pendingStatus: "Pending",
-    updatedBy: "Anand",
-    lastModified: "12th Nov 2018, 09:18 AM",
-  },
-];
+// const rows = [
+//   {
+//     firstName: "Anand",
+//     lastName: "Gupta",
+//     city: "Mumbai",
+//     countryCode: "+91",
+//     phone: "1234567558",
+//     phoneVerified: true,
+//     email: "anand@gmail.com",
+//     emailVerified: true,
+//     role: "Investor",
+//     maxBudget: 12000,
+//     closedStatus: "Pending",
+//     pendingStatus: "Pending",
+//     updatedBy: "Anand",
+//     lastModified: "12th Nov 2018, 09:18 AM",
+//   },
+// ];
 
 const headCells = [
   {
@@ -141,16 +146,16 @@ function RowStructure({ row }) {
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell>{row.firstName}</TableCell>
-      <TableCell>{row.lastName}</TableCell>
-      <TableCell>{row.city}</TableCell>
-      <TableCell>{row.countryCode}</TableCell>
-      <TableCell>{row.phone}</TableCell>
+      <TableCell>{row?.name?.firstName}</TableCell>
+      <TableCell>{row?.name?.lastName}</TableCell>
+      <TableCell>{row?.property?.location?.city}</TableCell>
+      <TableCell>{row?.phone?.countryCode}</TableCell>
+      <TableCell>{row?.phone?.number}</TableCell>
       <TableCell>{row.phoneVerified ? "Yes" : "No"}</TableCell>
       <TableCell>{row.email}</TableCell>
       <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell>
       <TableCell>{row.role}</TableCell>
-      <TableCell>{row.maxBudget}</TableCell>
+      <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell>
       <TableCell>{row.closedStatus}</TableCell>
       <TableCell>{row.pendingStatus}</TableCell>
       <TableCell>{row.updatedBy}</TableCell>
@@ -166,6 +171,37 @@ function EnquiriesTable() {
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = React.useState([]);
+  const [totalCount, setTotalCount] = React.useState(0);
+  const firstLoad = React.useRef(true);
+
+  const { openSnackbar } = useSnackbar();
+
+  const { data, isLoading, error, refetch } = useQueries(
+    [reactQueryKey.broker.myLeads],
+    async () => {
+      try {
+        const response = await getLeads({ limit: rowsPerPage, page });
+        if (response.status == 200) {
+          const { success, data, message } = response.data;
+          if (success) {
+            return data;
+          } else {
+            openSnackbar(message, "error");
+          }
+        }
+      } catch (error) {
+        openSnackbar(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Something went wrong!",
+          "error"
+        );
+        return error;
+      }
+    }
+  );
+  console.log("DATA: ", data);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -191,33 +227,48 @@ function EnquiriesTable() {
     [order, orderBy, page, rowsPerPage]
   );
 
+  React.useEffect(() => {
+    setRows(data?.data || []);
+    setTotalCount(data?.totalCount || 0);
+  }, [data]);
+
+  React.useEffect(() => {
+    if (!firstLoad.current) {
+      refetch();
+    }
+    firstLoad.current = false;
+  }, [rowsPerPage, page]);
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
+    <>
+      {isLoading ? <Loader /> : null}
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {rows.map((row) => (
+              <RowStructure row={row} key={row.firstName} />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          sx={{
+            overflow: "hidden",
+          }}
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        <TableBody>
-          {rows.map((row) => (
-            <RowStructure row={row} key={row.firstName} />
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        sx={{
-          overflow: "hidden",
-        }}
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </TableContainer>
+      </TableContainer>
+    </>
   );
 }
 

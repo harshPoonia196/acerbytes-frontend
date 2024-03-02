@@ -145,11 +145,15 @@ const listOfPropertyDetailsTab = [
 const reactQueryKey = {
   broker: {
     profile: (uniqueKey) => "broker-profile-" + uniqueKey,
+    myLeads: "broker-leads"
   },
   user: {
     myConsultant: "my-consultant",
   },
 };
+
+const enquiryFormKey = "enquiryForm";
+const propertyRedirectKey = "propertyRedirect";
 
 export {
   listOfTabsInAddProperty,
@@ -158,6 +162,8 @@ export {
   disablePersonalizeAdsOption,
   listOfPropertyDetailsTab,
   reactQueryKey,
+  enquiryFormKey,
+  propertyRedirectKey,
 };
 
 export const generateContent = () => (

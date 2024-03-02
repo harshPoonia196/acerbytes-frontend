@@ -99,8 +99,8 @@ export default function ClippedDrawer({ children }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error getbroker balance request",
+        error?.message ||
+        "Error getbroker balance request",
         "error"
       );
     }
@@ -181,6 +181,7 @@ export default function ClippedDrawer({ children }) {
       top: 12,
       // border: `2px solid ${theme.palette.background.paper}`,
       padding: "0 4px",
+      backgroundColor: 'whitesmoke !important'
     },
   }));
 
@@ -380,7 +381,11 @@ export default function ClippedDrawer({ children }) {
         }}
       >
         <DrawerContent />
-        <DrawerBottomContent />
+        {
+          isLoggedIn() ?
+            <DrawerBottomContent />
+            : null
+        }
       </Drawer>
     );
   };

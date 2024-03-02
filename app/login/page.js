@@ -17,17 +17,20 @@ import { useRouter } from "next/navigation";
 import { useSnackbar } from "utills/SnackbarContext";
 import ConsultantDialog from "Components/Login/ConsultantDialog";
 import { useAuth } from "utills/AuthContext";
+import { getItem } from "utills/utills";
+import { enquiryFormKey } from "utills/Constants";
 import { countries } from "Components/config/config";
+import { isLoggedIn } from "utills/utills";
 
 function Login() {
   const { login } = useAuth();
-
   const router = useRouter();
   const [showConsultantDetailsPopup, setShowConsultantDetailsPopup] =
     useState(false);
 
   const [activeStep, setActiveStep] = useState(1);
   const [otpInput, setOtpInput] = useState("");
+  const formDetail = getItem(enquiryFormKey);
   const [form, setForm] = useState({
     countryCode: countries?.[0]?.value,
     phone: "",
@@ -89,6 +92,12 @@ function Login() {
   let count = 0
 
   useEffect(() => {
+    isLoggedIn() ?
+      router.push("/")
+      : null
+  }, [])
+
+  useEffect(() => {
     if (!loading && searchParams.get("code")) {
       AuthenticateUser(searchParams.get("code"));
     }
@@ -106,6 +115,13 @@ function Login() {
           googleId: id,
           firstName: name?.split(" ")?.[0] || "",
           lastName: name?.split(" ")?.[name?.split(" ")?.length - 1] || "",
+        }
+
+        if (formDetail && !name) {
+          formData.countryCode = formDetail?.countryCode || "+91";
+          formData.phone = formDetail?.number || "";
+          formData.firstName = formDetail?.firstName || "";
+          formData.lastName = formDetail?.lastName || "";
         }
 
         if (token) {
