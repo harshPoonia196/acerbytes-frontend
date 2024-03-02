@@ -43,7 +43,7 @@ function DisableActivateAdsPopup({ open, handleClose }) {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <List dense sx={{ width: '100%', minWidth: 300, bgcolor: 'background.paper' }}>
+        <List dense sx={{ width: '100%', minWidth: 250, bgcolor: 'background.paper' }}>
           {disablePersonalizeAdsOption.map((value) => {
             const labelId = `checkbox-list-secondary-label-${value}`;
             return (
@@ -59,7 +59,7 @@ function DisableActivateAdsPopup({ open, handleClose }) {
                   />
                 }
                 disablePadding
-                sx={{ border: '1px solid whitesmoke' }}
+                sx={{ border: '1px solid whitesmoke', }}
               >
                 <ListItemButton sx={{ paddingRight: '16px !important', paddingLeft: '16px !important' }} onClick={handleToggle(value)}>
                   <ListItemText id={labelId} primary={<Typography variant='h6'>{value}</Typography>} />
@@ -77,7 +77,7 @@ function DisableActivateAdsPopup({ open, handleClose }) {
             onClick={() => {
               handleClose();
             }}
-          ButtonText={"Update"}
+            ButtonText={"Update"}
           />
         </Box>
       </DialogActions>

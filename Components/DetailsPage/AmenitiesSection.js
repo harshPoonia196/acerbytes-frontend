@@ -62,6 +62,7 @@ function AmenitiesSection(props) {
                                             value={amenityDetails?.rating}
                                             middleValue={category}
                                             isRating={amenityDetails?.isApplicable}
+                                            isRatingReadOnly
                                         />
                                     );
                                 })}

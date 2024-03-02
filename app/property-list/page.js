@@ -26,6 +26,7 @@ import {
 import NewMultiSelectAutoCompleteInputStructure from "Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
+import colors from "styles/theme/colors";
 
 
 function PropertyList() {
@@ -85,11 +86,12 @@ function PropertyList() {
       };
       if (Object.keys(data).length === 0) {
         delete querParams['searchParams'];
-    }
+      }
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
         setCount(res.data);
+        console.log('ressss', res.data)
       }
     } catch (error) {
       showToaterMessages(
@@ -207,7 +209,7 @@ function PropertyList() {
   };
 
   const handleOptionChange = (key, value) => {
-    if(key === "location" || key === "city"){
+    if (key === "location" || key === "city") {
       value = value?.value
     }
     if (value) {
@@ -231,7 +233,8 @@ function PropertyList() {
 
   return (
     <>
-      {isLoading ? <Loader /> : <>
+      <>
+        {isLoading && <Loader />}
         <Container maxWidth="lg">
           <Card sx={{ mb: 2 }}>
             <Grid container sx={{ display: "flex", flexDirection: "row-reverse" }}>
@@ -265,20 +268,27 @@ function PropertyList() {
               </Grid>
             </Grid>
           </Card>
-          <Grid container spacing={2} columns={36} className="ChipStyling">
+          <Grid container spacing={2} columns={36}>
             {/* commercial,residential */} {/*please delete this after done and same for all below*/}
-            <NewMultiSelectAutoCompleteInputStructure label="Category" list={selectOption?.category} handleChange={(event, value) => handleOptionChange("category", value)} value={selectedOptions.category || []} />
+            <NewMultiSelectAutoCompleteInputStructure xs={18} sm={12} md={6} label="Category" list={selectOption?.category} handleChange={(event, value) => handleOptionChange("category", value)} value={selectedOptions.category || []} />
             {/* Flat,shop */}
-            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyType} handleChange={(event, value) => handleOptionChange("propertyType", value)} value={selectedOptions.propertyType || []} />
+            <NewMultiSelectAutoCompleteInputStructure xs={18} sm={12} md={6} label="Property type" list={selectOption?.propertyType} handleChange={(event, value) => handleOptionChange("propertyType", value)} value={selectedOptions.propertyType || []} />
             {/* 1BHK, 2BHK */}
-            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value) => handleOptionChange("unitType", value)} value={selectedOptions.unitType || []} />
+            <NewMultiSelectAutoCompleteInputStructure xs={18} sm={12} md={6} label="Unit type" list={selectOption?.unitType} handleChange={(event, value) => handleOptionChange("unitType", value)} value={selectedOptions.unitType || []} />
             {/* Noida,gurgoan */}
-            <NewAutoCompleteInputStructure label="City" list={selectOption?.city} handleChange={(event, value) => handleOptionChange("city", value)} value={selectedOptions.city} />
+            <NewAutoCompleteInputStructure xs={18} sm={12} md={6} label="City" list={selectOption?.city} handleChange={(event, value) => handleOptionChange("city", value)} value={selectedOptions.city} />
             {/* Sector/area */}
-            <NewAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value) => handleOptionChange("location", value)} value={selectedOptions.location} />
+            <NewAutoCompleteInputStructure xs={18} sm={12} md={6} label="Location" list={selectOption?.location} handleChange={(event, value) => handleOptionChange("location", value)} value={selectedOptions.location} />
 
-            <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value) => handleOptionChange("status", value)}  value={selectedOptions.status || []}  />
-            <Grid item xs={18} sx={{ alignSelf: "center" }}>
+            <NewMultiSelectAutoCompleteInputStructure xs={18} sm={12} md={6} label="Status" list={selectOption?.status} handleChange={(event, value) => handleOptionChange("status", value)} value={selectedOptions.status || []} />
+
+            <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ alignSelf: "center", color: colors.GRAY }}
+              >
+                Sort by
+              </Typography>
               <ToggleButtonGroup
                 color="primary"
                 value={alignment}
@@ -289,20 +299,26 @@ function PropertyList() {
                 size="small"
               >
                 <ToggleButton value="score" selected={buttonColor === "score"} sx={{ flex: 1 }}>
-                  Score
+                  Score <ArrowUpwardIcon fontSize="small" /> <ArrowDownwardIcon fontSize="small" />
                 </ToggleButton>
                 <ToggleButton value="price" selected={buttonColor === "price"} sx={{ flex: 1 }}>
-                  Price
+                  Price <ArrowUpwardIcon fontSize="small" /> <ArrowDownwardIcon fontSize="small" />
                 </ToggleButton>
                 <ToggleButton value="area" selected={buttonColor === "area"} sx={{ flex: 1 }}>
-                  Area
+                  Area <ArrowUpwardIcon fontSize="small" /> <ArrowDownwardIcon fontSize="small" />
                 </ToggleButton>
                 <ToggleButton value="completion" selected={buttonColor === "completion"} sx={{ flex: 1 }}>
-                  Completion
+                  Completion <ArrowUpwardIcon fontSize="small" /> <ArrowDownwardIcon fontSize="small" />
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={18} sx={{ alignSelf: "center" }}>
+            <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ alignSelf: "center", color: colors.GRAY }}
+              >
+                Ascending / Descending
+              </Typography>
               <ToggleButtonGroup
                 color="primary"
                 value={alignment === 1 ? "asc" : "dec"}
@@ -324,7 +340,7 @@ function PropertyList() {
             </Grid>
             <Grid item xs={36}>
               <Card>
-                <CustomSearchInput value={searchTerm} onChange={handleSearch} ref={inputRef} autoFocus={focus} />
+                <CustomSearchInput value={searchTerm} onChange={handleSearch} inputRef={inputRef} autoFocus={focus} />
               </Card>
             </Grid>
             <Grid item xs={36}>
@@ -346,11 +362,10 @@ function PropertyList() {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
-
             </Grid>
           </Grid>
         </Container>
-      </>}
+      </>
     </>
   );
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Card,
   Container,
@@ -11,10 +13,15 @@ import ImageSearchIcon from "@mui/icons-material/ImageSearch";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import HomeIcon from "@mui/icons-material/Home";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
+import { useRouter } from "next/navigation";
+import { listOfPages } from "Components/NavBar/Links";
 
 // https://www.idxhome.com/service/resources/images/listing/no-photo.jpg?1698746845920
 
 function NoPropertyFound() {
+
+  const history = useRouter()
+
   return (
     <Container maxWidth="sm">
       <Card sx={{ p: 2, textAlign: "center" }}>
@@ -27,37 +34,23 @@ function NoPropertyFound() {
           contact us for more information
         </Typography>
       </Card>
-      <Card sx={{ mt: 2 }}>
-        <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }}>
-          <ImageSearchIcon />
-          <Typography variant="subtitle2" sx={{ ml: 1, alignSelf: "center" }}>
-            View more from Supertech
-          </Typography>
-        </CardActionArea>
-      </Card>
-      <Card>
-        <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }}>
-          <TravelExploreIcon />
-          <Typography variant="subtitle2" sx={{ ml: 1, alignSelf: "center" }}>
-            Search more in Noida
-          </Typography>
-        </CardActionArea>
-      </Card>
-      <Card>
-        <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }}>
-          <HomeIcon />
-          <Typography variant="subtitle2" sx={{ ml: 1, alignSelf: "center" }}>
-            Go to Home
-          </Typography>
-        </CardActionArea>
-      </Card>
-      <Card>
-        <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }}>
-          <HowToRegIcon />
-          <Typography variant="subtitle2" sx={{ ml: 1, alignSelf: "center" }}>
-            Sign in
-          </Typography>
-        </CardActionArea>
+      <Card sx={{ mt: 2, p: 2 }}>
+        <Card sx={{ mb: 2 }}>
+          <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }} onClick={() => { history.push(listOfPages.home) }}>
+            <HomeIcon />
+            <Typography variant="subtitle2" sx={{ ml: 1, alignSelf: "center" }}>
+              Go to Home
+            </Typography>
+          </CardActionArea>
+        </Card>
+        <Card>
+          <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }} onClick={() => { history.push(listOfPages.login) }}>
+            <HowToRegIcon />
+            <Typography variant="subtitle2" sx={{ ml: 1, alignSelf: "center" }}>
+              Sign in
+            </Typography>
+          </CardActionArea>
+        </Card>
       </Card>
     </Container>
   );

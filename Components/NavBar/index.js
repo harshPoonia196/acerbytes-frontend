@@ -32,6 +32,7 @@ import {
   AdminMenuList,
   CommonMenuList,
   ConsultantMenuList,
+  ToBeRemoved,
   UserMenuList,
   companyName,
   listOfPages,
@@ -142,37 +143,37 @@ export default function ClippedDrawer({ children }) {
   const isMenuOpen = Boolean(anchorEl);
   const menuId = "primary-search-account-menu";
   const renderMenu = (
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        id={menuId}
-        keepMounted
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-        className="dropdownfix"
-        sx={{ top: "0px", left: "0px"}}
-      >
-        {userDetails.role !== "admin" && (
-          <MenuItem
-            onClick={() => {
-              router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
-              handleMenuClose();
-            }}
-          >
-            Profile
-          </MenuItem>
-        )}
-        {isLogged ? (
-          <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
-        ) : null}
-      </Menu>
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+      className="dropdownfix"
+      sx={{ top: "0px", left: "0px" }}
+    >
+      {userDetails.role !== "admin" && (
+        <MenuItem
+          onClick={() => {
+            router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
+            handleMenuClose();
+          }}
+        >
+          Profile
+        </MenuItem>
+      )}
+      {isLogged ? (
+        <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
+      ) : null}
+    </Menu>
   );
 
   const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -218,74 +219,94 @@ export default function ClippedDrawer({ children }) {
       <>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <Divider />
-          {authRole("user") && (
-            <>
-              <List
-                subheader={
-                  <ListSubheader component="div" id="nested-list-subheader">
-                    Customer / Buyer
-                  </ListSubheader>
-                }
-              >
-                {UserMenuList.map((item) => (
-                  <DrawerListItem key={item.label} item={item} />
-                ))}
-              </List>
-              <Divider />
-            </>
-          )}
-
-          {authRole("broker") && (
-            <>
-              <List
-                subheader={
-                  <ListSubheader
-                    component="div"
-                    id="nested-list-subheader"
-                    sx={{ display: "flex" }}
-                  >
-                    <p style={{ flex: 1 }}>Consultant</p>{" "}
-                    <Box sx={{ alignSelf: "center" }}>
-                      <IconButton
-                        onClick={() => {
-                          router.push(listOfPages.consultantJoinNow);
-                        }}
-                      >
-                        <HowToRegIcon size="small" />
-                      </IconButton>
-                    </Box>
-                  </ListSubheader>
-                }
-              >
-                {ConsultantMenuList.map((item, index) => (
-                  <DrawerListItem key={item.label} item={item} />
-                ))}
-              </List>
-              <Divider />
-            </>
-          )}
-          {authRole("admin") && (
-            <>
-              <List
-                subheader={
-                  <ListSubheader component="div" id="nested-list-subheader">
-                    Admin
-                  </ListSubheader>
-                }
-              >
-                {AdminMenuList.map((item, index) => (
-                  <DrawerListItem key={item.label} item={item} />
-                ))}
-              </List>
-            </>
-          )}
-          <Divider />
-           <List>
+          <List subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              Public
+            </ListSubheader>
+          }>
             {CommonMenuList.map((item) => (
               <DrawerListItem key={item.label} item={item} />
             ))}
           </List>
+          <Divider />
+          <List subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              To be removed
+            </ListSubheader>
+          }>
+            {ToBeRemoved.map((item) => (
+              <DrawerListItem key={item.label} item={item} />
+            ))}
+          </List>
+          <Divider />
+          {
+            authRole("user") && (
+              <>
+                <List
+                  subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                      Customer / Buyer
+                    </ListSubheader>
+                  }
+                >
+                  {UserMenuList.map((item) => (
+                    <DrawerListItem key={item.label} item={item} />
+                  ))}
+                </List>
+                <Divider />
+              </>
+            )
+          }
+
+          {
+            authRole("broker") && (
+              <>
+                <List
+                  subheader={
+                    <ListSubheader
+                      component="div"
+                      id="nested-list-subheader"
+                      sx={{ display: "flex" }}
+                    >
+                      <p style={{ flex: 1 }}>Consultant</p>{" "}
+                      <Box sx={{ alignSelf: "center" }}>
+                        <IconButton
+                          onClick={() => {
+                            router.push(listOfPages.consultantJoinNow);
+                          }}
+                        >
+                          <HowToRegIcon size="small" />
+                        </IconButton>
+                      </Box>
+                    </ListSubheader>
+                  }
+                >
+                  {ConsultantMenuList.map((item, index) => (
+                    <DrawerListItem key={item.label} item={item} />
+                  ))}
+                </List>
+                <Divider />
+              </>
+            )
+          }
+
+          {
+            (authRole("admin") || authRole("superAdmin")) && (
+              <>
+                <List
+                  subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                      Admin
+                    </ListSubheader>
+                  }
+                >
+                  {AdminMenuList.map((item, index) => (
+                    <DrawerListItem key={item.label} item={item} />
+                  ))}
+                </List>
+              </>
+            )
+          }
         </Box>
       </>
     );
@@ -420,7 +441,7 @@ export default function ClippedDrawer({ children }) {
                 color="#000"
                 onClick={isDrawerOpen ? handleDrawerClose : handleDrawerOpen}
               >
-                <MenuIcon />
+                <MenuIcon fontSize="small" />
               </IconButton>
             </Box>
             <Box sx={{ alignSelf: "center", height: "fit-content" }}>
@@ -445,18 +466,20 @@ export default function ClippedDrawer({ children }) {
           </Box>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ alignSelf: "center" }}>
-              {userDetails?.role == ROLE_CONSTANTS.broker && (
-                <Typography>Points: {brokerBalance} &nbsp;&nbsp;</Typography>
-              )}
-            </Box>
-            <Box sx={{ alignSelf: "center" }}>
               {userDetails && Object.keys(userDetails).length ? (
-                <Typography>
-                  Hi,{" "}
-                  <span style={{ color: colors.BLUE }}>
+                <Box>
+                  <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, color: colors.BLUE, textTransform: 'capitalize' }}>
                     {userDetails?.name?.firstName} {userDetails?.name?.lastName}
-                  </span>
-                </Typography>
+                  </Typography>
+                  <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, color: colors.BLUE, textTransform: 'capitalize' }}>
+                    {userDetails?.name?.firstName}
+                  </Typography>
+                  <Box sx={{ alignSelf: "center" }}>
+                    {userDetails?.role == ROLE_CONSTANTS.broker && (
+                      <Typography variant='body2'>Points: {brokerBalance} &nbsp;&nbsp;</Typography>
+                    )}
+                  </Box>
+                </Box>
               ) : (
                 <CustomButton
                   onClick={() => {
@@ -478,7 +501,7 @@ export default function ClippedDrawer({ children }) {
                   color="#000"
                 >
                   {userDetails?.googleDetails?.profilePicture ? (
-                    <Avatar src={userDetails?.googleDetails?.profilePicture} />
+                    <Avatar sx={{ height: 24, width: 24 }} src={userDetails?.googleDetails?.profilePicture} />
                   ) : (
                     <AccountCircle />
                   )}

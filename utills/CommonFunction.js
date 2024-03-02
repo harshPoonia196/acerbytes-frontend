@@ -1,5 +1,17 @@
 import moment from "moment";
 
+function capitalLizeName(text) {
+  let words = text?.split(" ");
+  // Capitalize the first letter of each word
+  let formattedName = words?.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+  // Join the words back into a string
+  return formattedName?.join(" ");
+}
+
+function upperCaseName(text) {
+  return text?.toUpperCase();
+}
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -60,6 +72,8 @@ const formatPoints = (points) => {
 };
 
 export {
+  upperCaseName,
+  capitalLizeName,
   descendingComparator,
   getComparator,
   stableSort,

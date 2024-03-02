@@ -8,14 +8,14 @@ import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
 const page = () => {
 
   const [brokersList, setBrokersList] = useState([
-    { name: "Anand Gupta", location: "Noida", type: "Individual Consultant", stars: 4, clients: 432 },
-    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
-    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
-    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
-    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
-    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
-    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
-    { name: "Raghav Patel", location: "Noida", type: "Consultant", stars: 5, clients: 45 },
+    { fullName: "Anand Gupta", location: "Noida", type: "Individual Consultant", rating: 4, clients: 432 },
+    { fullName: "Raghav Patel", location: "Noida", type: "Consultant", rating: 5, clients: 45 },
+    { fullName: "Raghav Patel", location: "Noida", type: "Consultant", rating: 5, clients: 45 },
+    { fullName: "Raghav Patel", location: "Noida", type: "Consultant", rating: 5, clients: 45 },
+    { fullName: "Raghav Patel", location: "Noida", type: "Consultant", rating: 5, clients: 45 },
+    { fullName: "Raghav Patel", location: "Noida", type: "Consultant", rating: 5, clients: 45 },
+    { fullName: "Raghav Patel", location: "Noida", type: "Consultant", rating: 5, clients: 45 },
+    { fullName: "Raghav Patel", location: "Noida", type: "Consultant", rating: 5, clients: 45 },
   ]);
 
 
@@ -38,7 +38,7 @@ const page = () => {
       <Container maxWidth='evmd'>
         <Grid container spacing={2}>
           {brokersList?.map((broker) => (
-            <Grid item xs={12} key={broker.name}>
+            <Grid item xs={12} key={broker.fullName}>
               <BrokerCard type={'View Reviews'} broker={broker} noReview />
             </Grid>
           ))}
