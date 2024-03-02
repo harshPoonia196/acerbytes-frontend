@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -194,9 +194,9 @@ function Profile() {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -251,10 +251,10 @@ function Profile() {
   }, []);
 
   React.useEffect(() => {
-    if (isLogged) {
-      getUserProfile();
-    }
-  }, [isLogged]);
+    // if (isLogged) {
+    getUserProfile();
+    // }
+  }, [isLogged && userDetails?._id]);
 
   const getUserProfile = async () => {
     if (isLogged && userDetails?._id) {
@@ -280,12 +280,16 @@ function Profile() {
             googleID: dataPlayload?.googleID,
             email: dataPlayload?.email,
           });
+
+          if (dataPlayload?.currentAddress?.country) {
+            getStatListByName(dataPlayload?.currentAddress?.country);
+          }
         }
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching user profile",
+            error?.message ||
+            "Error fetching user profile",
           "error"
         );
         setLoading(false);
@@ -307,8 +311,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching country list",
+          error?.message ||
+          "Error fetching country list",
         "error"
       );
     }
@@ -326,8 +330,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     }
@@ -345,8 +349,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -364,8 +368,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -380,14 +384,14 @@ function Profile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-          ...prev?.[firstKeyName],
-          [secondKeyName]: !thirdKeyName
-            ? value
-            : {
-              ...prev?.[firstKeyName]?.[secondKeyName],
-              [thirdKeyName]: value,
-            },
-        },
+            ...prev?.[firstKeyName],
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+          },
     }));
   };
 
@@ -528,8 +532,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error user profile updating",
+          error?.message ||
+          "Error user profile updating",
         "error"
       );
     } finally {
@@ -555,7 +559,6 @@ function Profile() {
 
     localStorage.setItem("userDetails", JSON.stringify(userInfo));
   };
-
 
   return (
     <>
@@ -802,7 +805,6 @@ function Profile() {
                       }
                       variant="contained"
                       onClick={handleAddInterestedCities}
-
                       ButtonText={"Add"}
                     />
                   </Box>

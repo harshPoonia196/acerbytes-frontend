@@ -43,42 +43,50 @@ const NewCurrencyInputField = ({
         {label}
       </Typography>
     </Box>
-    {
-      isEdit ?
-        <TextField
-          name={name2}
-          onChange={handleChange}
-          variant={variant ? variant : "standard"}
-          fullWidth
-          value={value2}
-          type="number"
-          size="small"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <TextField
-                  select
-                  name={name1}
-                  defaultValue=""
-                  variant="standard"
-                  value={value1}
-                  onChange={handleSelect}
-                  InputProps={{
-                    disableUnderline: true,
-                  }}
-                >
-                  {countries.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </InputAdornment>
-            ),
-          }}
-          {...props}
-        /> : <Typography variant="subtitle1">Value</Typography>
-    }
+    {isEdit ? (
+      <TextField
+        name={name2}
+        // onChange={handleChange}
+        onChange={(e) => {
+          const inputValue = e.target.value;
+          // Check if the input is a positive number
+          if (!isNaN(inputValue) && inputValue > 0) {
+            handleChange(e);
+          }
+        }}
+        variant={variant ? variant : "standard"}
+        fullWidth
+        value={value2}
+        type="number"
+        size="small"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <TextField
+                select
+                name={name1}
+                defaultValue=""
+                variant="standard"
+                value={value1}
+                onChange={handleSelect}
+                InputProps={{
+                  disableUnderline: true,
+                }}
+              >
+                {countries.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </InputAdornment>
+          ),
+        }}
+        {...props}
+      />
+    ) : (
+      <Typography variant="subtitle1">Value</Typography>
+    )}
   </Grid>
 );
 
