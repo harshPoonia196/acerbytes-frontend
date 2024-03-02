@@ -820,6 +820,8 @@ function AddProperty() {
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
   };
+  const [cityOpts, setCityOpts] = React.useState([{city:"Bangalore",area:"Shivaji Nagar"}]);
+
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
     let totalRating = 70;
     let totalScored;
@@ -1194,14 +1196,14 @@ function AddProperty() {
       <Container>
         <div className="container">
           <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-            {editPage && <ProjectCard
+            <ProjectCard
               errors={errors}
               form={form}
-            
+              editPage={editPage}
               handleNewObjChange={handleNewObjChange}
               handleChange={handleChange}
               isEdit={isEdit}
-            />}
+            />
             <RegulatoryCard
               errors={errors}
               form={form}
