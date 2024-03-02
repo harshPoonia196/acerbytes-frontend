@@ -181,6 +181,7 @@ export default function ClippedDrawer({ children }) {
       top: 12,
       // border: `2px solid ${theme.palette.background.paper}`,
       padding: "0 4px",
+      backgroundColor: 'whitesmoke !important'
     },
   }));
 
@@ -196,12 +197,12 @@ export default function ClippedDrawer({ children }) {
         >
           <ListItemIcon sx={{ minWidth: 40 }}>{item?.icon}</ListItemIcon>
           <StyledBadge
-            color="secondary"
-            // badgeContent={
-            //   <Typography variant="body2" sx={{ color: "white" }}>
-            //     99
-            //   </Typography>
-            // }
+            color='whitesmoke'
+            badgeContent={
+              <Typography variant="body2" sx={{ color: colors.BLACK }}>
+                99
+              </Typography>
+            }
             sx={{ flex: 1 }}
             invisible={false}
           >

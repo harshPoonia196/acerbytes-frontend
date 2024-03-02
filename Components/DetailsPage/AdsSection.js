@@ -1,57 +1,78 @@
-import { Box, Button, Card, Chip, Divider, IconButton, Rating, Tooltip, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  Chip,
+  Divider,
+  IconButton,
+  Rating,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import React from 'react'
-import { Close } from '@mui/icons-material';
-import colors from 'styles/theme/colors';
-import PhoneIcon from '@mui/icons-material/Phone';
-import AddLinkIcon from '@mui/icons-material/AddLink';
-import { useSearchParams } from 'next/navigation';
-import { useSnackbar } from 'utills/SnackbarContext';
+import React from "react";
+import { Close } from "@mui/icons-material";
+import colors from "styles/theme/colors";
+import PhoneIcon from "@mui/icons-material/Phone";
+import AddLinkIcon from "@mui/icons-material/AddLink";
+import { useSearchParams } from "next/navigation";
+import { useSnackbar } from "utills/SnackbarContext";
 import { ToasterMessages } from "Components/Constants";
-import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
+import { getLoggedInUser } from "utills/utills";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
-function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant, SinglePropertyId, propertyData, id }) {
-    const brokerData = SinglePropertyId?.brokerData
-    const locationData = propertyData?.location;
-
-    let formatDateAndDaysRemaining = (expiryDate) => {
-        const expiry = new Date(expiryDate);
-        const now = new Date();
-        const daysRemaining = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
-      
-        const day = expiry.getDate();
-        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const nth = (d) => ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d - 20) % 10 < 1 ? d % 10 : 0] || "th";
-        const formattedDate = `${day}${nth(day)} ${monthNames[expiry.getMonth()]}`;
-      
-        return `${formattedDate} (${daysRemaining} days remaining)`;
-      };
+function AdsSection({
+  handleOpenPersonalizeAds,
+  handleOpenActivateAdsPopup,
+  isConsultant,
+  SinglePropertyId,
+  propertyData,
+  id,
+  brokerContact,
+  handleOpenEnquiryForm,
+}) {
+  const brokerData = SinglePropertyId?.brokerData;
+  const locationData = propertyData?.location;
+  const userDetails = getLoggedInUser();
+  const isBroker = userDetails?.role == "broker";
 
     const constructPropertyUrl = (property) => {
         const overview = property?.overview;
         const location = property?.location;
         const brokerId = id ?? 'defaultBrokerId'
 
-        const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
-        let projectType;
-        if (Array.isArray(overview?.projectType) && overview?.projectType.length > 0) {
-            if (typeof overview.projectType[0] === 'object') {
-                projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
-            } else if (typeof overview.projectType[0] === 'string') {
-                projectType = overview.projectType.map(type => type.trim().replace(/\s+/g, '-')).join("-");
-            }
-        } else {
-            projectType = 'type';
-        }
-        const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
-        const sector = (location?.sector.trim() ?? 'sector').replace(/\s+/g, '-');
-        const area = (location?.area.trim() ?? 'area').replace(/\s+/g, '-');
-        const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+    const projectCategory = (
+      overview?.projectCategory.trim() ?? "category"
+    ).replace(/\s+/g, "-");
+    let projectType;
+    if (
+      Array.isArray(overview?.projectType) &&
+      overview?.projectType.length > 0
+    ) {
+      if (typeof overview.projectType[0] === "object") {
+        projectType = overview.projectType
+          .map((type) => type.value.trim().replace(/\s+/g, "-"))
+          .join("-");
+      } else if (typeof overview.projectType[0] === "string") {
+        projectType = overview.projectType
+          .map((type) => type.trim().replace(/\s+/g, "-"))
+          .join("-");
+      }
+    } else {
+      projectType = "type";
+    }
+    const city = (location?.city.trim() ?? "city").replace(/\s+/g, "-");
+    const sector = (location?.sector.trim() ?? "sector").replace(/\s+/g, "-");
+    const area = (location?.area.trim() ?? "area").replace(/\s+/g, "-");
+    const projectName = (overview?.projectName.trim() ?? "projectName").replace(
+      /\s+/g,
+      "-"
+    );
 
-        const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
 
-        return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${brokerId}`;
-    };
+    return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${brokerId}`;
+  };
 
     const propertyUrl = constructPropertyUrl(propertyData)
 
@@ -66,14 +87,16 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
         : "9322153996667";
     const description = SinglePropertyId?.description ? `${SinglePropertyId.description}` : "Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on";
 
-    const copyToClipboard = (text) => {
-        navigator.clipboard.writeText(text).then(() => {
-            showToaterMessages(ToasterMessages?.LINK_COPIED_SUCCESS);
-        }).catch(err => {
-            showToaterMessages('Failed to copy the link: ', err);
-        });
-    };
-
+  const copyToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        showToaterMessages(ToasterMessages?.LINK_COPIED_SUCCESS);
+      })
+      .catch((err) => {
+        showToaterMessages("Failed to copy the link: ", err);
+      });
+  };
 
     const { openSnackbar } = useSnackbar();
     const showToaterMessages = (message, severity) => {
@@ -160,4 +183,4 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
     )
 }
 
-export default AdsSection
+export default AdsSection;

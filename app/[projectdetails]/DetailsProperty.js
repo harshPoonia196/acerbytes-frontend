@@ -210,6 +210,30 @@ const PropertyDetails = ({ params }) => {
 
   const [openOtpPopup, setOpenOtpPopup] = useState(false);
 
+  const handleSubmitEnquiry = async (data) => {
+    try {
+      const response = await submitEnquiry(data);
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+          // hasEnquired();
+          setBrokerContact({});
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
   const handleOpenVerifyPopup = () => {
     setOpenOtpPopup(true);
   };
@@ -322,6 +346,27 @@ const PropertyDetails = ({ params }) => {
     []
   );
 
+  const param = useParams();
+  const [brokerContact, setBrokerContact] = React.useState(null);
+
+  const hasEnquired = async () => {
+    let userDetail = getLoggedInUser();
+    if (userDetail?.role == "user") {
+      let response = await isEnquired(
+        param?.projectdetails?.split("-")?.[
+          param?.projectdetails?.split("-")?.length - 1
+        ] || ""
+      );
+      if (response.status === 200) {
+        setBrokerContact(response?.data?.data?.[0]);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    hasEnquired();
+  }, []);
+
 
   return (
     <>
@@ -336,6 +381,7 @@ const PropertyDetails = ({ params }) => {
               open={openEnquiryForm}
               handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}
+              submitEnquiry={handleSubmitEnquiry}
               handleOpen={handleOpenEnquiryForm}
             />
             <OtpVerify
@@ -343,6 +389,8 @@ const PropertyDetails = ({ params }) => {
               handleClose={handleCloseVerifyPopup}
               handleOpen={handleOpenEnquiryForm}
               handleAlternateSignIn={handleOpenAlternateSignIn}
+              formData={getItem(enquiryFormKey)}
+              handleSubmit={handleSubmitEnquiry}
             />
             <AlternateSignIn
               open={openAlternateSignIn}

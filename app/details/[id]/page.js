@@ -14,7 +14,10 @@ import {
   Chip,
   Rating,
   Toolbar,
-  Avatar, Button, IconButton, Tooltip
+  Avatar,
+  Button,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -24,8 +27,8 @@ import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import GroupIcon from '@mui/icons-material/Group';
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import GroupIcon from "@mui/icons-material/Group";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
@@ -42,17 +45,22 @@ import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSect
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/navigation';
+import { useParams, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import AdsSection from "Components/DetailsPage/AdsSection";
-import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/Constants";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import {
+  listOfPropertyDetailsTab,
+  listOfTabsInAddProperty,
+} from "utills/Constants";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
 import { detailsProperty, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
+import { isEnquired, submitEnquiry } from "api/UserProfile.api";
+import { getLoggedInUser } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 
 const tabHeight = 200;
@@ -65,13 +73,13 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     zIndex: 100,
-    [theme.breakpoints?.up('sm')]: {
+    [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -91,8 +99,8 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 const PropertyDetailsPage = ({ params }) => {
-  const searchParams = useSearchParams()
-  const name = searchParams.get('name')
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name");
   const {isLogged} = useAuth();
   const router = useRouter();
 
@@ -117,8 +125,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -154,7 +162,7 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   useEffect(() => {
-    detailsGetProperty()
+    detailsGetProperty();
   }, []);
 
   const GridItemWithCard = (props) => {
@@ -226,7 +234,6 @@ const PropertyDetailsPage = ({ params }) => {
     setAmenitiesTab(newValue);
   };
 
-
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
 
   const handleOpenEnquiryForm = () => {
@@ -257,31 +264,33 @@ const PropertyDetailsPage = ({ params }) => {
     setOpenAlternateSignIn(false);
   };
 
-  const [disablePersonalizeAds, setDisablePersonalizeAds] = useState(false)
+  const [disablePersonalizeAds, setDisablePersonalizeAds] = useState(false);
 
   const handleOpenPersonalizeAds = () => {
-    setDisablePersonalizeAds(true)
-  }
+    setDisablePersonalizeAds(true);
+  };
 
   const handleClosePersonalizeAds = () => {
-    setDisablePersonalizeAds(false)
-  }
+    setDisablePersonalizeAds(false);
+  };
 
-  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false)
+  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
 
   const handleOpenActivateAdsPopup = () => {
-    setActivateAdsPopupState(true)
-  }
+    setActivateAdsPopupState(true);
+  };
 
   const handleCloseActivateAdsPopup = () => {
-    setActivateAdsPopupState(false)
-  }
+    setActivateAdsPopupState(false);
+  };
 
   const classes = useStyles();
 
   //All codes about scrolling
 
-  const [alignment, setAlignment] = React.useState(listOfTabsInAddProperty[0].value);
+  const [alignment, setAlignment] = React.useState(
+    listOfTabsInAddProperty[0].value
+  );
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -326,9 +335,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -364,6 +373,22 @@ const PropertyDetailsPage = ({ params }) => {
     }
   };
 
+  const hasEnquired = async () => {
+    let userDetail = getLoggedInUser();
+    if (userDetail?.role == "user") {
+      let response = await isEnquired(null,
+        param?.id
+      );
+      if (response.status === 200) {
+        setBrokerContact(response?.data?.data?.[0]);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    hasEnquired();
+  }, []);
+
   React.useEffect(
     () => () => {
       clearTimeout(unsetClickedRef.current);
@@ -371,51 +396,74 @@ const PropertyDetailsPage = ({ params }) => {
     []
   );
 
-
   return (
     <>
-      {isLoading ? <Loader /> : <>
-        <ActivateAdsPopup SinglePropertyId={propertyData} detailsGetProperty={detailsGetProperty} open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
-        <DisableActivateAdsPopup open={disablePersonalizeAds} handleOpen={handleOpenPersonalizeAds} handleClose={handleClosePersonalizeAds} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <ActivateAdsPopup
+            SinglePropertyId={propertyData}
+            detailsGetProperty={detailsGetProperty}
+            open={activateAdsPopupState}
+            handleClose={handleCloseActivateAdsPopup}
+          />
+          <DisableActivateAdsPopup
+            open={disablePersonalizeAds}
+            handleOpen={handleOpenPersonalizeAds}
+            handleClose={handleClosePersonalizeAds}
+          />
 
-        {
-          role === 'broker' && !propertyData.isActiveAd ? (
-            <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} isConsultant />
-          ) : (
-            null
-          )
-        }
-        
-        {
-          (role !== 'admin' && role !== 'superAdmin') && propertyData.isActiveAd  ? (
-            <AdsSection SinglePropertyId={propertyData?.propertyBroker[0]} propertyData={propertyData} id={propertyData?.propertyBroker?.[0]?._id} handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
-          ) : (
-            null
-          )
-        }
+          {role === 'broker' && !propertyData.isActiveAd ? (
+            <AdsSection
+              handleOpenPersonalizeAds={handleOpenPersonalizeAds}
+              handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+              handleOpenEnquiryForm={handleOpenEnquiryForm}
+              isConsultant
+              brokerContact={brokerContact}
+            />
+          ) : null}
 
-        <nav className={classes.demo2}>
-          <TopMenu topMenu={propertyData} value={activeState} handleChange={handleClick} list={itemsServer} />
-        </nav>
-        <Box>
-          <MarketingSection overviewData={propertyData} />
-          <Container maxWidth="evmd">
-            <EnquireNow
-              open={openEnquiryForm}
-              handleClose={handleCloseEnquiryForm}
-              handleAction={handleOpenVerifyPopup}
-              handleOpen={handleOpenEnquiryForm}
+          {(role !== 'admin' && role !== 'superAdmin') && propertyData.isActiveAd ? (
+            <AdsSection
+              SinglePropertyId={propertyData?.propertyBroker[0]}
+              propertyData={propertyData}
+              id={propertyData?.propertyBroker?.[0]?._id}
+              handleOpenPersonalizeAds={handleOpenPersonalizeAds}
+              handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+              handleOpenEnquiryForm={handleOpenEnquiryForm}
+              brokerContact={brokerContact}
             />
-            <OtpVerify
-              open={openOtpPopup}
-              handleClose={handleCloseVerifyPopup}
-              handleOpen={handleOpenEnquiryForm}
-              handleAlternateSignIn={handleOpenAlternateSignIn}
+          ) : null}
+
+          <nav className={classes.demo2}>
+            <TopMenu
+              topMenu={propertyData}
+              value={activeState}
+              handleChange={handleClick}
+              list={itemsServer}
             />
-            <AlternateSignIn
-              open={openAlternateSignIn}
-              handleClose={handleCloseAlternateSignIn}
-            />
+          </nav>
+          <Box>
+            <MarketingSection overviewData={propertyData} />
+            <Container maxWidth="evmd">
+              <EnquireNow
+                open={openEnquiryForm}
+                handleClose={handleCloseEnquiryForm}
+                handleAction={handleOpenVerifyPopup}
+                handleOpen={handleOpenEnquiryForm}
+                submitEnquiry={handleSubmitEnquiry}
+              />
+              <OtpVerify
+                open={openOtpPopup}
+                handleClose={handleCloseVerifyPopup}
+                handleOpen={handleOpenEnquiryForm}
+                handleAlternateSignIn={handleOpenAlternateSignIn}
+              />
+              <AlternateSignIn
+                open={openAlternateSignIn}
+                handleClose={handleCloseAlternateSignIn}
+              />
 
             <Grid container spacing={2} id='section-list'>
               <ClearanceSection regulatoryClearanceData={propertyData?.regulatoryClearance} />
@@ -471,8 +519,8 @@ const PropertyDetailsPage = ({ params }) => {
               <OverallAssesmentSection overallAssessment={propertyData?.overallAssessment} />
             </Grid>
 
-            {/* Dont Touch this */}
-            <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
+              {/* Dont Touch this */}
+              <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
 
             <Card
               sx={{
