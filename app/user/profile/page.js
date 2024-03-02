@@ -53,6 +53,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { listOfProfileTab } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { validateEmail } from "utills/utills";
 import { countries, currencies } from "Components/config/config";
 
 const tabHeight = 116;
@@ -511,12 +512,6 @@ function Profile() {
     }
 
     return true;
-  };
-
-  const validateEmail = (email) => {
-    return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
   };
 
   const handleSave = async () => {
