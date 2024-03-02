@@ -11,12 +11,6 @@ function NavTabProfilePage({ value, handleChange, list }) {
             scrollButtons
             allowScrollButtonsMobile
             aria-label="visible arrows tabs example fghj"
-            sx={{
-                [`& .${tabsClasses.scrollButtons}`]: {
-                    '&.Mui-disabled': { opacity: 0.3 },
-                },
-
-            }}
         >
             {list.map((data, index) => <Tab key={data.hash} label={data.text} value={data.hash} onClick={handleChange(data.hash)} />)}
         </Tabs>
