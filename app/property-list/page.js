@@ -343,24 +343,6 @@ function PropertyList() {
                 <CustomSearchInput value={searchTerm} onChange={handleSearch} inputRef={inputRef} autoFocus={focus} />
               </Card>
             </Grid>
-            <Grid item xs={6} sm={3} sx={{ alignSelf: "center" }}>
-              <ToggleButtonGroup
-                color="primary"
-                value={alignment === 1 ? "asc" : "dec"}
-                exclusive
-                onChange={handleChangeAllData}
-                aria-label="Platform"
-                sx={{ display: "flex" }}
-                size="small"
-              >
-                <ToggleButton value="asc" sx={{ flex: 1 }}>
-                  <ArrowUpwardIcon fontSize="small" />
-                </ToggleButton>
-                <ToggleButton value="dec" sx={{ flex: 1 }}>
-                  <ArrowDownwardIcon fontSize="small" />
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </Grid>
             <Grid item xs={36}>
               <Grid container spacing={0.25}>
                 {property?.map((propertyDetails) => (

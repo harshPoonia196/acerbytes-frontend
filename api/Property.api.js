@@ -42,4 +42,7 @@ export const getAllfavouriteProperty = (queryParams) => {
 export const getAllOptionData= (data) => {
   return axiosInstance.get(`/property/get-option-list`, data);
 };
+export const getLocations = ()=>{
+  return axiosInstance.get(`/category/get-locations`)
+}
 
