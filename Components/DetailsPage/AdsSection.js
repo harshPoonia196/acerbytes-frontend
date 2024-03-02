@@ -84,9 +84,9 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
         <Box sx={{ m: 2, mb: 0, }}>
             {
                 isConsultant ?
-                    <Box sx={{ p: 1, pt: 0, px: 2, display: 'flex', gap: 1, flexDirection: { xs: 'column', evmd: 'row' } }}>
-                        <Box sx={{ display: 'flex', flexDirection: { xs: 'column-reverse', sm: 'row' }, flex: 1 }}>
-                            <Box sx={{ alignSelf: { xs: "end", sm: 'center' } }}>
+                    <Box sx={{ pb: 1, pt: 0, display: 'flex', gap: 1, flexDirection: { xs: 'column', evmd: 'row' } }}>
+                        <Box sx={{ display: 'flex', flex: 1 }}>
+                            <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
                                 <Chip
                                     size="small"
                                     sx={{
@@ -95,15 +95,16 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                                         mr: 1,
                                     }}
                                     label="Sample Ad"
-                                />
-                            </Box>
-                            <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
-                                Get your personalized URL to receive potential buyers queries directly in your leadsbox
+                                />Get your personalized URL to receive potential buyers queries directly in your leadsbox
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
-                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem', mr: 2 }} onClick={handleOpenActivateAdsPopup} ButtonText={isConsultant ? 'Activate my link' : <>Extend</>} />
-                            <CustomButton startIcon={<Close />} size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenPersonalizeAds} ButtonText={" Don't show"} />
+                            <Box sx={{ alignSelf: 'center' }}>
+                                <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} ButtonText={isConsultant ? 'Activate my link' : <>Extend</>} />
+                                <IconButton onClick={handleOpenPersonalizeAds}>
+                                    <Close fontSize='small' />
+                                </IconButton>
+                            </Box>
                         </Box>
                     </Box>
                     :
@@ -120,7 +121,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                     </Box>
             }
             <Card sx={{ border: isConsultant ? '2px solid gold' : `2px solid ${colors.BLUE}` }}>
-                <Box sx={{ display: 'flex', p: 1, px: 2, background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue' }}>
+                <Box sx={{ display: 'flex', p: 1, px: 2, gap: 1, background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue', flexDirection: { xs: 'column', sm: 'row' } }}>
                     <Box sx={{ display: 'flex', flex: 1, alignSelf: 'center' }}>
                         <Typography variant='h5' sx={{}}>Contact ({name} &#183; 4.7&nbsp;
                             <Rating
@@ -139,7 +140,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                             ) for {city} &#183; {sector} &#183; {pinCode} &#183; {state}
                         </Typography>
                     </Box>
-                    <Box sx={{ alignSelf: 'center' }}>
+                    <Box sx={{ alignSelf: { xs: "end", sm: 'center' } }}>
                         <a href={`tel:${phoneNumber}`}>
                             <CustomButton variant='outlined' startIcon={<PhoneIcon />} size='small' sx={{ fontSize: '0.875rem' }} ButtonText={phoneNumber} />
                         </a>

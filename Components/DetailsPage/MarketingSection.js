@@ -4,40 +4,15 @@ import React, { useRef, useEffect, useState } from 'react'
 import colors from 'styles/theme/colors';
 
 function MarketingSection(props) {
-    
+
     const { overviewData } = props;
 
     const alloverviewData = overviewData?.overview
-    const AllLocationData =  overviewData?.location
+    const AllLocationData = overviewData?.location
 
     const myDivRef = useRef(null);
 
     const [width, setWidth] = useState()
-
-    const GridItem = (props) => {
-        const { children, styles, boxStyles, ...rest } = props;
-        return (
-            <Grid
-                item
-                {...rest}
-                sx={{
-                    textAlign: "center",
-                    ...styles,
-                }}
-            >
-                <Box
-                    sx={{
-                        backgroundColor: "whitesmoke",
-                        p: 2,
-                        borderRadius: "8px",
-                        ...boxStyles,
-                    }}
-                >
-                    {children}
-                </Box>
-            </Grid>
-        );
-    };
 
 
     // useEffect(() => {
@@ -54,7 +29,7 @@ function MarketingSection(props) {
             <Card sx={{
                 background: 'whitesmoke',
                 display: 'flex',
-                height: '70vh',
+                height: { xs: '50vh', sm: '70vh' },
                 position: 'relative',
             }} id='project'>
                 <Box sx={{
@@ -71,11 +46,10 @@ function MarketingSection(props) {
                 <Card sx={{ position: 'absolute', top: 24, left: 24, opacity: 0.85, display: 'flex', maxWidth: 'calc(100% - 48px)' }}>
                     <Box ref={myDivRef} sx={{ p: 2, textAlign: 'center' }}>
                         <Typography variant="h2">
-                            {`${alloverviewData?.builder} ${alloverviewData?.projectName}`}
-                            
+                            {`${alloverviewData?.builder} - ${alloverviewData?.projectName}`}
                         </Typography>
                         <Typography variant='h4' sx={{ mb: 2 }}>
-                        {`${AllLocationData?.city}, ${AllLocationData?.state}`}
+                            {`${AllLocationData?.city}, ${AllLocationData?.state}`}
                         </Typography>
                         <Typography variant='h1'>77<Typography variant='h6' component='span'> / 100</Typography></Typography>
                         <Typography variant='h4' sx={{ mb: 2 }}>
@@ -129,7 +103,7 @@ function MarketingSection(props) {
                 </Card>
             </Card>
             <Container maxWidth="evmd" sx={{ pb: '0 !important' }}>
-                <Card sx={{ display: { xs: 'block', evmd: 'none' } }}>
+                <Card sx={{ display: { xs: 'block', evmd: 'none' }, mb: 2 }}>
                     <Box>
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"

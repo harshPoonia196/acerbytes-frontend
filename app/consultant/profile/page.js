@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -142,8 +142,8 @@ function ConsultantProfile() {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-            error?.message ||
-            "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
           "error"
         );
         return error;
@@ -193,14 +193,14 @@ function ConsultantProfile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-            ...(prev?.[firstKeyName] || {}),
-            [secondKeyName]: !thirdKeyName
-              ? value
-              : {
-                  ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
-                  [thirdKeyName]: value,
-                },
-          },
+          ...(prev?.[firstKeyName] || {}),
+          [secondKeyName]: !thirdKeyName
+            ? value
+            : {
+              ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
+              [thirdKeyName]: value,
+            },
+        },
     }));
   };
   const handleAddTargetCustomer = () => {
@@ -364,9 +364,9 @@ function ConsultantProfile() {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -479,8 +479,8 @@ function ConsultantProfile() {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -503,8 +503,8 @@ function ConsultantProfile() {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -580,6 +580,9 @@ function ConsultantProfile() {
                       <Typography variant="h6" sx={{ fontWeight: 900 }}>
                         {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
                       </Typography>
+                      <Typography variant='body2'>
+                        {brokerProfileInfo?.email}
+                      </Typography>
                     </Box>
                   ) : null}
                   {brokerProfileInfo?.phone?.number ? (
@@ -590,17 +593,16 @@ function ConsultantProfile() {
                           display: "flex",
                           alignSelf: "center",
                           textDecoration: "none",
-                          color: "inherit",
+                          color: colors.BLUE,
                         }}
                       >
                         <CallIcon
                           fontSize="small"
                           sx={{ alignSelf: "center" }}
                         />
-                        <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                          {`${userProfileInfo?.phone?.countryCode || ""} ${
-                            userProfileInfo?.phone?.number || ""
-                          }`}
+                        <Typography variant="h6" sx={{ alignSelf: "center", color: colors.BLUE }}>
+                          {`${userProfileInfo?.phone?.countryCode || ""} ${userProfileInfo?.phone?.number || ""
+                            }`}
                         </Typography>
                       </a>
                     </Box>
@@ -626,7 +628,7 @@ function ConsultantProfile() {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                   <NewInputFieldStructure
-                  isRequired={true}
+                    isRequired={true}
                     label="First name"
                     variant="outlined"
                     value={brokerProfileInfo?.name?.firstName || ""}
@@ -714,7 +716,7 @@ function ConsultantProfile() {
                     }
                   />
                   <NewInputFieldStructure
-                   isRequired={true}
+                    isRequired={true}
                     label="Company"
                     value={brokerProfileInfo?.serviceDetails?.company || ""}
                     variant="outlined"
@@ -725,7 +727,7 @@ function ConsultantProfile() {
                   />
 
                   <NewInputFieldStructure
-                   isRequired={true}
+                    isRequired={true}
                     label="RERA number"
                     value={brokerProfileInfo?.serviceDetails?.reraNumber || ""}
                     variant="outlined"
@@ -751,7 +753,7 @@ function ConsultantProfile() {
                     }
                   />
                   <NewPhoneInputFieldStructure
-                   isRequired={true}
+                    isRequired={true}
                     variant="outlined"
                     label="Registerd phone"
                     value1={
@@ -857,9 +859,8 @@ function ConsultantProfile() {
                           }
                           return (
                             <Chip
-                              key={`${targetArea.selectCity || ""}-${
-                                targetArea.selectArea || ""
-                              }-${index}`}
+                              key={`${targetArea.selectCity || ""}-${targetArea.selectArea || ""
+                                }-${index}`}
                               label={label}
                               size="small"
                               sx={{ ml: 1, mt: 1 }}

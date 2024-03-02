@@ -93,7 +93,7 @@ function PropertyCard(props) {
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
             <Typography variant="caption">{propertyDetails?.unitsPlan?.planList.length && propertyDetails?.unitsPlan?.planList?.map(item => `${item.area} ${item.areaUnit}`).join(", ")}</Typography>
-            {/* <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography> */}
+            <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr(static)</Typography>
           </Grid>
           <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
             <Typography variant="caption">{propertyDetails?.layout?.totalUnits}</Typography>

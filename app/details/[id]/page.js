@@ -56,6 +56,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { isEnquired, submitEnquiry } from "api/UserProfile.api";
 import { getLoggedInUser } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
+import { listOfPages } from "Components/NavBar/Links";
 
 const tabHeight = 200;
 
@@ -373,6 +374,17 @@ const PropertyDetailsPage = ({ params }) => {
     []
   );
 
+  const divRef = useRef(null);
+  const [heightOfFooter, setHeightOfFooter] = useState(0)
+
+  useEffect(() => {
+    // Access the div element and get its height
+    if (divRef.current) {
+      const divHeight = divRef.current.clientHeight;
+      setHeightOfFooter(divHeight)
+      console.log("Height of the div:", divHeight);
+    }
+  }, []);
 
   return (
 
@@ -475,77 +487,89 @@ const PropertyDetailsPage = ({ params }) => {
             </Grid>
 
             {/* Dont Touch this */}
-            <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
+            <Toolbar sx={{ display: { xs: "flex", evmd: "none" }, height: heightOfFooter }} />
 
-            <Card
-              sx={{
-                p: 2,
-                position: "fixed",
-                left: 0,
-                bottom: 0,
-                width: "100%",
-                display: { xs: "block", evmd: "none" },
-                background: 'whitesmoke',
-                boxShadow: '-1px -2px 6px 2px gainsboro !important'
-              }}
-            >
-              <Box sx={{ mt: -1, ml: -1, display: 'flex', flexWrap: "wrap" }}>
-                <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<ThumbUpOffAltIcon />}>
-                  Like
-                </Button>
-                <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}>
-                  Share
-                </Button>
-                <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<WhatsAppIcon />}>
-                  Contact
-                </Button>
-                <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<AssignmentIcon />}>
-                  Enquire
-                </Button>
-              </Box>
-            </Card>
+
             {role !== "admin" && role !== "superAdmin" && (
-              <Box
-                sx={{
-                  position: "fixed",
-                  right: 16,
-                  bottom: 16,
-                  display: { xs: "none", evmd: "flex" },
-                  flexDirection: "column",
-                }}
-              >
-                {
-                  isLogged ? (
-                    <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={handlefavClick}>
-                      {propertyData?.isFav
-                        ? <ThumbUpIcon sx={{ color: '#276ef1', mr: 1 }} />
-                        : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                      }
-                      Like
-                    </Fab>
-                  ) : (
-                    <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={() => router.push("/login")}>
-                      <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                      Like
-                    </Fab>
-                  )}
-                <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                  <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
-                  Share
-                </Fab>
-                <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                  <WhatsAppIcon sx={{ mr: 1 }} />
-                  Contact
-                </Fab>
-                <Fab
-                  variant="extended"
-                  sx={{ justifyContent: "flex-start" }}
-                  onClick={handleOpenEnquiryForm}
+              <>
+                <Card
+                  sx={{
+                    p: 2,
+                    position: "fixed",
+                    left: 0,
+                    bottom: 0,
+                    width: "100%",
+                    display: { xs: "block", evmd: "none" },
+                    background: 'whitesmoke',
+                    boxShadow: '-1px -2px 6px 2px gainsboro !important'
+                  }}
+                  ref={divRef}
                 >
-                  <AssignmentIcon sx={{ mr: 1 }} />
-                  Enquire
-                </Fab>
-              </Box>
+                  <Box sx={{ mt: -1, ml: -1, display: 'flex', flexWrap: "wrap" }}>
+                    {
+                      isLogged ? <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handlefavClick} startIcon={
+                        propertyData?.isFav
+                          ? <ThumbUpIcon sx={{ color: colors.BLUE, }} />
+                          : <ThumbUpOffAltIcon />}>
+                        Like
+                      </Button> : <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={() => router.push(listOfPages.login)} startIcon={<ThumbUpOffAltIcon />}>
+                        Like
+                      </Button>
+                    }
+
+                    <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}>
+                      Share
+                    </Button>
+                    <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<WhatsAppIcon />}>
+                      Contact
+                    </Button>
+                    <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<AssignmentIcon />}>
+                      Enquire
+                    </Button>
+                  </Box>
+                </Card>
+                <Box
+                  sx={{
+                    position: "fixed",
+                    right: 16,
+                    bottom: 16,
+                    display: { xs: "none", evmd: "flex" },
+                    flexDirection: "column",
+                  }}
+                >
+                  {
+                    isLogged ? (
+                      <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={handlefavClick}>
+                        {propertyData?.isFav
+                          ? <ThumbUpIcon sx={{ color: colors.BLUE, mr: 1 }} />
+                          : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                        }
+                        Like
+                      </Fab>
+                    ) : (
+                      <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={() => router.push(listOfPages.login)}>
+                        <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                        Like
+                      </Fab>
+                    )}
+                  <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
+                    <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
+                    Share
+                  </Fab>
+                  <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
+                    <WhatsAppIcon sx={{ mr: 1 }} />
+                    Contact
+                  </Fab>
+                  <Fab
+                    variant="extended"
+                    sx={{ justifyContent: "flex-start" }}
+                    onClick={handleOpenEnquiryForm}
+                  >
+                    <AssignmentIcon sx={{ mr: 1 }} />
+                    Enquire
+                  </Fab>
+                </Box>
+              </>
             )}
           </Container>
         </Box>
