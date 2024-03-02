@@ -53,8 +53,8 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { listOfProfileTab } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import { countries } from "Components/config/config";
 import { validateEmail } from "utills/utills";
+import { countries, currencies } from "Components/config/config";
 
 const tabHeight = 116;
 
@@ -126,11 +126,11 @@ function Profile() {
     },
     budget: {
       minimumBudget: {
-        unit: "",
+        unit: currencies[0]?.value,
         value: "",
       },
       maximumBudget: {
-        unit: "",
+        unit: currencies[0]?.value,
         value: "",
       },
       exploringAs: "",
@@ -266,7 +266,20 @@ function Profile() {
           const dataPlayload = res?.data?.data;
           setProfileInfo({
             ...profileInfo,
-            budget: dataPlayload?.budget,
+            budget: {
+              minimumBudget: {
+                value: dataPlayload?.budget?.minimumBudget?.value,
+                unit:
+                  dataPlayload?.budget?.minimumBudget?.unit ||
+                  currencies[0]?.value,
+              },
+              maximumBudget: {
+                value: dataPlayload?.budget?.maximumBudget?.value,
+                unit:
+                  dataPlayload?.budget?.maximumBudget?.unit ||
+                  currencies[0]?.value,
+              },
+            },
             currentAddress: dataPlayload?.currentAddress,
             interestedCities: dataPlayload?.interestedCities || [],
             name: dataPlayload?.name,
