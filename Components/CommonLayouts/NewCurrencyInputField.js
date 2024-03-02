@@ -8,17 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import colors from "styles/theme/colors";
-
-const countries = [
-  {
-    value: "₹INR",
-    label: "₹",
-  },
-  {
-    value: "USD",
-    label: "$",
-  },
-];
+import { currencies } from "Components/config/config";
 
 const NewCurrencyInputField = ({
   name1,
@@ -73,7 +63,7 @@ const NewCurrencyInputField = ({
                   disableUnderline: true,
                 }}
               >
-                {countries.map((option) => (
+                {currencies.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
