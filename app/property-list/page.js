@@ -25,13 +25,14 @@ import {
 } from "Components/config/config";
 import NewMultiSelectAutoCompleteInputStructure from "Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
+import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 
 
 function PropertyList() {
 
   const [alignment, setAlignment] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT + 7);
+  const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
 
   const [property, setProperty] = useState([])
   const [count, setCount] = useState([])
@@ -64,16 +65,27 @@ function PropertyList() {
 
   const getUserPropertyList = async (pageOptions, searchTerm, selectedOptions, alignment, propertyvalue) => {
     try {
-      const data = {}
-      Object.keys(selectedOptions).map(item => data[item] = selectedOptions[item].value)
-      setLoading(true);
-      const querParams = {
+      let data = {}
+      Object.keys(selectedOptions).forEach(key => {
+        const value = selectedOptions[key];
+        if (Array.isArray(value) && value.length > 0) {
+          data[key] = value.map(option => option.value);
+        } else if (!Array.isArray(value) && value !== undefined && value !== null) {
+          // For single-select scenarios or when value is directly usable and not an empty selection
+          // Check for non-array values that are not undefined or null, then wrap in an array
+          data[key] = [value];
+        }
+      });
+      let querParams = {
         ...pageOptions,
         ...(searchTerm ? { search: searchTerm } : {}),
         ...(data ? { searchParams: JSON.stringify(data) } : {}),
         sortBy: alignment,
         key: propertyvalue
       };
+      if (Object.keys(data).length === 0) {
+        delete querParams['searchParams'];
+    }
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
@@ -195,6 +207,9 @@ function PropertyList() {
   };
 
   const handleOptionChange = (key, value) => {
+    if(key === "location" || key === "city"){
+      value = value?.value
+    }
     if (value) {
       setSelectedOptions(prevOptions => ({
         ...prevOptions,
@@ -202,10 +217,13 @@ function PropertyList() {
       }));
     } else {
       setSelectedOptions(prevOptions => {
-        delete prevOptions[key]
-        return ({
-          ...prevOptions,
-        })
+        // delete prevOptions[key]
+        // return ({
+        //   ...prevOptions,
+        // })
+        const newOptions = { ...prevOptions };
+        delete newOptions[key];
+        return newOptions;
       });
     }
 
@@ -247,19 +265,19 @@ function PropertyList() {
               </Grid>
             </Grid>
           </Card>
-
-          <Grid container spacing={2} columns={36}>
+          <Grid container spacing={2} columns={36} className="ChipStyling">
             {/* commercial,residential */} {/*please delete this after done and same for all below*/}
-            <NewMultiSelectAutoCompleteInputStructure label="Category" list={selectOption?.category} handleChange={(event, value) => handleOptionChange("category", value[0])} value={selectedOptions.category ? [selectedOptions.category] : []} />
+            <NewMultiSelectAutoCompleteInputStructure label="Category" list={selectOption?.category} handleChange={(event, value) => handleOptionChange("category", value)} value={selectedOptions.category || []} />
             {/* Flat,shop */}
-            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyType} handleChange={(event, value) => handleOptionChange("propertyType", value[0])} value={selectedOptions.propertyType ? [selectedOptions.propertyType] : []} />
+            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyType} handleChange={(event, value) => handleOptionChange("propertyType", value)} value={selectedOptions.propertyType || []} />
             {/* 1BHK, 2BHK */}
-            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value) => handleOptionChange("unitType", value[0])} value={selectedOptions.unitType ? [selectedOptions.unitType] : []} />
+            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value) => handleOptionChange("unitType", value)} value={selectedOptions.unitType || []} />
             {/* Noida,gurgoan */}
-            <NewMultiSelectAutoCompleteInputStructure label="City" list={selectOption?.city} handleChange={(event, value) => handleOptionChange("city", value[0])} value={selectedOptions.city ? [selectedOptions.city] : []} />
+            <NewAutoCompleteInputStructure label="City" list={selectOption?.city} handleChange={(event, value) => handleOptionChange("city", value)} value={selectedOptions.city} />
             {/* Sector/area */}
-            <NewMultiSelectAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value) => handleOptionChange("location", value[0])} value={selectedOptions.location ? [selectedOptions.location] : []} />
-            <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value) => handleOptionChange("status", value[0])} value={selectedOptions.status ? [selectedOptions.status] : []} />
+            <NewAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value) => handleOptionChange("location", value)} value={selectedOptions.location} />
+
+            <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value) => handleOptionChange("status", value)}  value={selectedOptions.status || []}  />
             <Grid item xs={18} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"

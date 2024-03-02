@@ -49,7 +49,7 @@ function TopMenu(props) {
                                 p: 1,
                             }}
                         >
-                            99
+                            {topMenu?.overallAssessment?.score}
                         </Typography>
                     </Card>
                 </Box>

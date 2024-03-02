@@ -39,19 +39,19 @@ import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
 // import ResaleSection from "Components/DetailsPage/ResaleSection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
-import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
-import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router';
+// import { useSearchParams } from 'next/navigation'
+// import { useRouter } from 'next/router';
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
-import AdsSection from "Components/DetailsPage/AdsSection";
 import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/Constants";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import colors from "styles/theme/colors";
 import { activeAdGet } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
+import { useAuth } from "utills/AuthContext";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 const tabHeight = 200;
 
@@ -89,6 +89,8 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 const PropertyDetails = ({ params }) => {
+  const { userDetails, isLogged } = useAuth();
+  const router = useRouter();
   const searchParams = useSearchParams()
   const name = searchParams.get('name')
 
@@ -99,20 +101,10 @@ const PropertyDetails = ({ params }) => {
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([])
 
-  const transformedData = propertyData[0]?.propertyData?.consultants?.map(consultant => ({
-    name: consultant.name,
-    type: "Consultant",
-    stars: consultant.rating,
-    clients: consultant.clientsServed,
-    id: consultant.id,
-    profilePic: consultant.profilePic
-
-  }));
-
   const activeAdGetProperty = async () => {
     try {
       setLoading(true);
-      let res = await activeAdGet(getId);
+      let res = await activeAdGet(`${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ''}`);
       if (res.status === 200) {
         setPropertyData(res.data?.data)
       }
@@ -135,7 +127,7 @@ const PropertyDetails = ({ params }) => {
 
   useEffect(() => {
     activeAdGetProperty()
-  }, []);
+  }, [userDetails]);
 
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
@@ -219,30 +211,6 @@ const PropertyDetails = ({ params }) => {
 
   const [openOtpPopup, setOpenOtpPopup] = useState(false);
 
-  const handleSubmitEnquiry = async (data) => {
-    try {
-      const response = await submitEnquiry(data);
-      if (response.status == 200) {
-        const { success, message } = response.data;
-        if (success) {
-          openSnackbar(message, "success");
-          // hasEnquired();
-          setBrokerContact({});
-        } else {
-          openSnackbar(message, "error");
-        }
-      }
-    } catch (error) {
-      openSnackbar(
-        error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
-        "error"
-      );
-      return error;
-    }
-  };
-
   const handleOpenVerifyPopup = () => {
     setOpenOtpPopup(true);
   };
@@ -260,26 +228,6 @@ const PropertyDetails = ({ params }) => {
   const handleCloseAlternateSignIn = () => {
     setOpenAlternateSignIn(false);
   };
-
-  const [disablePersonalizeAds, setDisablePersonalizeAds] = useState(false)
-
-  const handleOpenPersonalizeAds = () => {
-    setDisablePersonalizeAds(true)
-  }
-
-  const handleClosePersonalizeAds = () => {
-    setDisablePersonalizeAds(false)
-  }
-
-  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false)
-
-  const handleOpenActivateAdsPopup = () => {
-    setActivateAdsPopupState(true)
-  }
-
-  const handleCloseActivateAdsPopup = () => {
-    setActivateAdsPopupState(false)
-  }
 
   const classes = useStyles();
 
@@ -375,38 +323,10 @@ const PropertyDetails = ({ params }) => {
     []
   );
 
-  const param = useParams();
-  const [brokerContact, setBrokerContact] = React.useState(null);
-
-  const hasEnquired = async () => {
-    let userDetail = getLoggedInUser();
-    if (userDetail?.role == "user") {
-      let response = await isEnquired(
-        param?.projectdetails?.split("-")?.[
-          param?.projectdetails?.split("-")?.length - 1
-        ] || ""
-      );
-      if (response.status === 200) {
-        setBrokerContact(response?.data?.data?.[0]);
-      }
-    }
-  };
-
-  React.useEffect(() => {
-    hasEnquired();
-  }, []);
-
 
   return (
     <>
       {isLoading ? <Loader /> : <>
-        <ActivateAdsPopup SinglePropertyId={propertyData} activeAdGetProperty={activeAdGetProperty} open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
-        <DisableActivateAdsPopup open={disablePersonalizeAds} handleOpen={handleOpenPersonalizeAds} handleClose={handleClosePersonalizeAds} />
-
-
-        <AdsSection SinglePropertyId={propertyData[0]}  propertyData={propertyData[0]?.propertyData} id={propertyData[0]?._id} handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} handleOpenEnquiryForm={handleOpenEnquiryForm}/>
-
-
         <nav className={classes.demo2}>
           <TopMenu topMenu={propertyData[0]?.propertyData} value={activeState} handleChange={handleClick} list={itemsServer} />
         </nav>
@@ -417,7 +337,6 @@ const PropertyDetails = ({ params }) => {
               open={openEnquiryForm}
               handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}
-              submitEnquiry={handleSubmitEnquiry}
               handleOpen={handleOpenEnquiryForm}
             />
             <OtpVerify
@@ -425,8 +344,6 @@ const PropertyDetails = ({ params }) => {
               handleClose={handleCloseVerifyPopup}
               handleOpen={handleOpenEnquiryForm}
               handleAlternateSignIn={handleOpenAlternateSignIn}
-              formData={getItem(enquiryFormKey)}
-              handleSubmit={handleSubmitEnquiry}
             />
             <AlternateSignIn
               open={openAlternateSignIn}
@@ -460,8 +377,7 @@ const PropertyDetails = ({ params }) => {
                         />
                       </Box>
                     </Grid>
-
-                    {transformedData?.map((broker) => (
+                    {propertyData[0]?.propertyData?.consultants?.map((broker) => (
                       <Grid item xs={12} sm={6} key={broker?.name}>
                         <BrokerCard broker={broker} noReview />
                       </Grid>
@@ -484,7 +400,7 @@ const PropertyDetails = ({ params }) => {
                   </Grid>
                 </Card>
               </Grid>
-              <OverallAssesmentSection />
+              <OverallAssesmentSection overallAssessment={propertyData[0]?.propertyData?.overallAssessment}/>
             </Grid>
 
             {/* Dont Touch this */}
@@ -517,37 +433,49 @@ const PropertyDetails = ({ params }) => {
                 </Button>
               </Box>
             </Card>
-
-            {/* <Box
-              sx={{
-                position: "fixed",
-                right: 16,
-                bottom: 16,
-                display: { xs: "none", evmd: "flex" },
-                flexDirection: "column",
-              }}
-            >
-              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                Like
-              </Fab>
-              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
-                Share
-              </Fab>
-              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                <WhatsAppIcon sx={{ mr: 1 }} />
-                Contact
-              </Fab>
-              <Fab
-                variant="extended"
-                sx={{ justifyContent: "flex-start" }}
-                onClick={handleOpenEnquiryForm}
+            {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" &&  (
+              <Box
+                sx={{
+                  position: "fixed",
+                  right: 16,
+                  bottom: 16,
+                  display: { xs: "none", evmd: "flex" },
+                  flexDirection: "column",
+                }}
               >
-                <AssignmentIcon sx={{ mr: 1 }} />
-                Enquire
-              </Fab>
-            </Box> */}
+                 {
+                   isLogged ? (
+                    <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
+                      {propertyData[0]?.isFav
+                        ? <ThumbUpIcon sx={{ color: '#276ef1', mr: 1 }} />
+                        : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                      }
+                      Like
+                    </Fab>
+                ) : (
+                  <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={() => router.push("/login")}>
+                    <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                     Like
+                  </Fab>
+              )}
+                <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
+                  <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
+                  Share
+                </Fab>
+                <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
+                  <WhatsAppIcon sx={{ mr: 1 }} />
+                  Contact
+                </Fab>
+                <Fab
+                  variant="extended"
+                  sx={{ justifyContent: "flex-start" }}
+                  onClick={handleOpenEnquiryForm}
+                >
+                  <AssignmentIcon sx={{ mr: 1 }} />
+                  Enquire
+                </Fab>
+              </Box>
+             )}
           </Container>
         </Box>
       </>}

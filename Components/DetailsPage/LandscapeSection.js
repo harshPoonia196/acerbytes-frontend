@@ -47,9 +47,9 @@ function LandscapeSection(props) {
 
                 <Grid container spacing={1} sx={{ p: 2 }}>
                     <NewKeyValuePairStructure label="Towers" value={layoutData?.numberOfBuildings} />
-                    <NewKeyValuePairStructure label="Property type" value={layoutData?.layoutType.join(", ")} />
+                    <NewKeyValuePairStructure label="Property type" value={layoutData?.layoutType?.map(item => item.value).join(", ")} />
                     <NewKeyValuePairStructure label="Units (Total)" value={layoutData?.totalUnits} />
-                    <NewKeyValuePairStructure label="Floor types" value={layoutData?.layoutType.join(", ")} />
+                    <NewKeyValuePairStructure label="Floor types" value={layoutData?.layoutType?.map(item => item.value).join(", ")} />
                     <NewKeyValuePairStructure label="Floors (Max-Min)" value={`${layoutData?.maxFloors } - ${layoutData?.minFloors}`} />
                     <NewKeyValuePairStructure label="Area" value={layoutData?.area} />
                     <NewKeyValuePairStructure label="Open area" value={layoutData?.area} />

@@ -15,7 +15,6 @@ export const companyName = 'AcreBytes'
 
 export const listOfPages = {
   home: '/',
-  pageNotFound: '/page-not-found',
   commonPropertyList: "/property-list",
   commonAllBrokers: '/all-brokers',
   commonEnquiries: '/enquiries',
@@ -55,11 +54,6 @@ export const CommonMenuList = [
     label: "Leads panel",
     route: listOfPages.commonEnquiries,
     icon: <TableRowsIcon fontSize="small" />,
-  },
-  {
-    label: "Page not found",
-    route: listOfPages.pageNotFound,
-    icon: <CloseIcon fontSize="small" />,
   },
 ];
 
