@@ -16,19 +16,29 @@ import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStruct
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewAutocompleteAddOptionToList from "Components/CommonLayouts/NewAutocompleteAddOptionToList"
 import { getLocations } from 'api/Property.api';
+import { useSnackbar } from "utills/SnackbarContext";
+
 
 function LocationCard({ isEdit, form, handleChange, errors }) {
-
+    const { openSnackbar } = useSnackbar()
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
 
 const getLocationsCall = async()=>{
-let res = await getLocations()
-if(res.status===200){
-    setOpts(res.data.data)
-}
-else{
-    console.log('err')
-}
+    try{
+        let res = await getLocations()
+        if(res.status===200){
+            setOpts(res.data.data)
+        }
+        else{
+            console.log('err')
+        }
+    }
+    catch(err){
+        openSnackbar(
+              "Error getting location  details",
+            "error"
+          );    }
+
 
 }
 const [opts, setOpts] = React.useState([]);
