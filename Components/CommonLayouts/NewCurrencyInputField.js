@@ -40,7 +40,7 @@ const NewCurrencyInputField = ({
         onChange={(e) => {
           const inputValue = e.target.value;
           // Check if the input is a positive number
-          if (!isNaN(inputValue) && inputValue > 0) {
+          if (!isNaN(inputValue) || !inputValue) {
             handleChange(e);
           }
         }}
