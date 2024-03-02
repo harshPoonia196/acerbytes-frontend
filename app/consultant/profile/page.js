@@ -42,7 +42,11 @@ import { useMutate, useQueries } from "utills/ReactQueryContext";
 import PageLoader from "Components/Loader/PageLoader";
 import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
-import { getAccessToken, getAllCitiesList, getAllStateList } from "api/Util.api";
+import {
+  getAccessToken,
+  getAllCitiesList,
+  getAllStateList,
+} from "api/Util.api";
 import { countries, currencies } from "Components/config/config";
 const tabHeight = 116;
 
@@ -306,28 +310,30 @@ function ConsultantProfile() {
   }, [itemsServer]);
 
   React.useEffect(() => {
-    if(data?._id){
+    if (data?._id) {
       setBrokerProfileInfo({
         ...data,
         serviceDetails: {
           ...data.serviceDetails,
           registeredPhone: {
             ...data.serviceDetails?.registeredPhone,
-            countryCode: data.serviceDetails?.registeredPhone?.countryCode || countries[0]?.value
-          }
+            countryCode:
+              data.serviceDetails?.registeredPhone?.countryCode ||
+              countries[0]?.value,
+          },
         },
         budget: {
           minimumBudget: {
             ...data.budget.minimumBudget,
-            unit: data.budget.minimumBudget.unit || currencies[0]?.value
+            unit: data.budget.minimumBudget.unit || currencies[0]?.value,
           },
           maximumBudget: {
             ...data.budget.maximumBudget,
-            unit: data.budget.maximumBudget.unit || currencies[0]?.value
-          }
-        }
+            unit: data.budget.maximumBudget.unit || currencies[0]?.value,
+          },
+        },
       });
-    }else{
+    } else {
       setBrokerProfileInfo({});
     }
     if (!userProfileInfo && data) {
@@ -410,10 +416,32 @@ function ConsultantProfile() {
       brokerProfileInfo?.alternateEmail &&
       !validateEmail(brokerProfileInfo?.alternateEmail)
     ) {
-      setEmailInvalid(true);
+      setEmailInvalid({
+        ...emailInvalid,
+        alternateEmail: true,
+      });
       return;
     } else {
-      setEmailInvalid(false);
+      setEmailInvalid({
+        ...emailInvalid,
+        alternateEmail: false,
+      });
+    }
+
+    if (
+      brokerProfileInfo?.serviceDetails?.companyEmail &&
+      !validateEmail(brokerProfileInfo?.serviceDetails?.companyEmail)
+    ) {
+      setEmailInvalid({
+        ...emailInvalid,
+        companyEmail: true,
+      });
+      return;
+    } else {
+      setEmailInvalid({
+        ...emailInvalid,
+        companyEmail: false,
+      });
     }
 
     const requestBody = {
@@ -487,7 +515,7 @@ function ConsultantProfile() {
   }, []);
 
   React.useEffect(() => {
-    console.log(targetCustomer?.selectState)
+    console.log(targetCustomer?.selectState);
     if (targetCustomer?.selectState) {
       getInterestedCities(targetCustomer?.selectState);
     }
@@ -629,7 +657,11 @@ function ConsultantProfile() {
                     value={brokerProfileInfo?.alternateEmail || ""}
                     handleChange={(e) => handleChange(e, "alternateEmail")}
                     isEdit={isEdit}
-                    error={emailInvalid ? "Invalid alternate email" : ""}
+                    error={
+                      emailInvalid.alternateEmail
+                        ? "Invalid alternate email"
+                        : ""
+                    }
                   />
                   <NewToggleButtonStructure
                     isEdit={isEdit}
@@ -704,6 +736,9 @@ function ConsultantProfile() {
                     }
                     variant="outlined"
                     isEdit={isEdit}
+                    error={
+                      emailInvalid.companyEmail ? "Invalid company email" : ""
+                    }
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "companyEmail")
                     }

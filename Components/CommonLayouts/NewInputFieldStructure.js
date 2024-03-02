@@ -2,14 +2,7 @@ import React from "react";
 import { Typography, TextField, Grid, Box } from "@mui/material";
 import colors from "styles/theme/colors";
 
-const filterKeys = [
-  "firstName",
-  "lastName",
-  "company",
-  "city",
-  "pinCode",
-  "reraNumber",
-];
+const filterKeys = ["firstName", "lastName", "company", "city", "pinCode"];
 
 const NewInputFieldStructure = ({
   name,
@@ -33,8 +26,6 @@ const NewInputFieldStructure = ({
       let validValue = "";
       if (event.target.name == "pinCode") {
         validValue = newValue.replace(/\D/g, "");
-      } else if (event.target.name == "reraNumber") {
-        validValue = newValue.replace(/[^a-zA-Z0-9]/g, "");
       } else {
         validValue = newValue.replace(/\d/g, "");
       }
