@@ -45,7 +45,8 @@ export const getGoogleId = () => {
   return "";
 };
 
-const publicRoutes = ["/login"];
+const publicRoutes = ["/login" , '/property-list' , '/all-brokers' , '/enquiries', '/details/:id', "/consultant/make-payment",
+  "/page-not-found", "/terms-and-condition", "/privacy", "/consultant/join-now"];
 
 const scopes = {
   user: {
@@ -54,9 +55,17 @@ const scopes = {
 };
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
-  if (!isLogged && !publicRoutes.includes(url)) {
-    redirectUser("/login");
-  }
+  const isPublicRoute = publicRoutes.some(publicRoute => {
+    if (publicRoute.includes("/:")) { // Handle dynamic routes
+        const baseRoute = publicRoute.split("/:")[0];
+        return url.startsWith(baseRoute);
+    }
+    return url === publicRoute;
+});
+
+if (!isLogged && !isPublicRoute) {
+  redirectUser("/login");
+}
   if (isLogged) {
     if (url.includes("/admin") && role !== "admin" && role !== "superAdmin") {
       redirectUser("/");
@@ -70,11 +79,13 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
 
 export const matchUserRole = (actualRole, matchingRole) => {
   return actualRole === matchingRole;
+  // return true
 };
 
 export const authRole = (authorizedRole) => {
   let userDetail = getLoggedInUser();
   return authorizedRole === userDetail?.role;
+  // return true
 };
 
 export const countryCodeFormating = (code = "") => {
@@ -86,4 +97,10 @@ export const countryCodeFormating = (code = "") => {
   }
 
   return `+${code}`;
+};
+
+export const validateEmail = (email) => {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
 };

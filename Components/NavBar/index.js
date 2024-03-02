@@ -142,33 +142,37 @@ export default function ClippedDrawer({ children }) {
   const isMenuOpen = Boolean(anchorEl);
   const menuId = "primary-search-account-menu";
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem
-        onClick={() => {
-          router.push(listOfPages.userProfile);
-          handleMenuClose();
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
         }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+        className="dropdownfix"
+        sx={{ top: "0px", left: "0px"}}
       >
-        Profile
-      </MenuItem>
-      {isLogged ? (
-        <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
-      ) : null}
-    </Menu>
+        {userDetails.role !== "admin" && (
+          <MenuItem
+            onClick={() => {
+              router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
+              handleMenuClose();
+            }}
+          >
+            Profile
+          </MenuItem>
+        )}
+        {isLogged ? (
+          <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
+        ) : null}
+      </Menu>
   );
 
   const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -177,6 +181,7 @@ export default function ClippedDrawer({ children }) {
       top: 12,
       // border: `2px solid ${theme.palette.background.paper}`,
       padding: "0 4px",
+      backgroundColor: 'whitesmoke !important'
     },
   }));
 
@@ -193,11 +198,11 @@ export default function ClippedDrawer({ children }) {
           <ListItemIcon sx={{ minWidth: 40 }}>{item?.icon}</ListItemIcon>
           <StyledBadge
             color="secondary"
-            badgeContent={
-              <Typography variant="body2" sx={{ color: "white" }}>
-                99
-              </Typography>
-            }
+            // badgeContent={
+            //   <Typography variant="body2" sx={{ color: "white" }}>
+            //     99
+            //   </Typography>
+            // }
             sx={{ flex: 1 }}
             invisible={false}
           >
@@ -213,80 +218,74 @@ export default function ClippedDrawer({ children }) {
       <>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <List>
+          <Divider />
+          {authRole("user") && (
+            <>
+              <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Customer / Buyer
+                  </ListSubheader>
+                }
+              >
+                {UserMenuList.map((item) => (
+                  <DrawerListItem key={item.label} item={item} />
+                ))}
+              </List>
+              <Divider />
+            </>
+          )}
+
+          {authRole("broker") && (
+            <>
+              <List
+                subheader={
+                  <ListSubheader
+                    component="div"
+                    id="nested-list-subheader"
+                    sx={{ display: "flex" }}
+                  >
+                    <p style={{ flex: 1 }}>Consultant</p>{" "}
+                    <Box sx={{ alignSelf: "center" }}>
+                      <IconButton
+                        onClick={() => {
+                          router.push(listOfPages.consultantJoinNow);
+                        }}
+                      >
+                        <HowToRegIcon size="small" />
+                      </IconButton>
+                    </Box>
+                  </ListSubheader>
+                }
+              >
+                {ConsultantMenuList.map((item, index) => (
+                  <DrawerListItem key={item.label} item={item} />
+                ))}
+              </List>
+              <Divider />
+            </>
+          )}
+          {authRole("admin") && (
+            <>
+              <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Admin
+                  </ListSubheader>
+                }
+              >
+                {AdminMenuList.map((item, index) => (
+                  <DrawerListItem key={item.label} item={item} />
+                ))}
+              </List>
+            </>
+          )}
+          <Divider />
+           <List>
             {CommonMenuList.map((item) => (
               <DrawerListItem key={item.label} item={item} />
             ))}
           </List>
-          <Divider />
-          {
-            authRole("user") && (
-              <>
-                <List
-                  subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
-                      Customer / Buyer
-                    </ListSubheader>
-                  }
-                >
-                  {UserMenuList.map((item) => (
-                    <DrawerListItem key={item.label} item={item} />
-                  ))}
-                </List>
-                <Divider />
-              </>
-            )
-          }
-
-          {
-            authRole("broker") && (
-              <>
-                <List
-                  subheader={
-                    <ListSubheader
-                      component="div"
-                      id="nested-list-subheader"
-                      sx={{ display: "flex" }}
-                    >
-                      <p style={{ flex: 1 }}>Consultant</p>{" "}
-                      <Box sx={{ alignSelf: "center" }}>
-                        <IconButton
-                          onClick={() => {
-                            router.push(listOfPages.consultantJoinNow);
-                          }}
-                        >
-                          <HowToRegIcon size="small" />
-                        </IconButton>
-                      </Box>
-                    </ListSubheader>
-                  }
-                >
-                  {ConsultantMenuList.map((item, index) => (
-                    <DrawerListItem key={item.label} item={item} />
-                  ))}
-                </List>
-                <Divider />
-              </>
-            )
-          }
-
-          {
-            (authRole("admin") || authRole("superAdmin")) && (
-              <>
-                <List
-                  subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
-                      Admin
-                    </ListSubheader>
-                  }
-                >
-                  {AdminMenuList.map((item, index) => (
-                    <DrawerListItem key={item.label} item={item} />
-                  ))}
-                </List>
-              </>
-            )
-          }
         </Box>
       </>
     );
@@ -313,16 +312,26 @@ export default function ClippedDrawer({ children }) {
                 </IconButton>
               }
             >
-              <ListItemButton
-                onClick={() => logout()}
-                sx={{ pl: 3 }}
-                role={undefined}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>
-                  <LogoutIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText secondary="Log out" />
-              </ListItemButton>
+              {isLogged ? (
+                <ListItemButton
+                  onClick={() => logout()}
+                  sx={{ pl: 3 }}
+                  role={undefined}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <LogoutIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText secondary="Log out" />
+                </ListItemButton>
+              ) : (
+                <Button
+                  onClick={() => {
+                    router.push("/login");
+                  }}
+                >
+                  Sign in
+                </Button>
+              )}
             </ListItem>
           </List>
         </Card>
@@ -359,6 +368,7 @@ export default function ClippedDrawer({ children }) {
         anchor={"left"}
         open={isDrawerOpen}
         onClose={handleDrawerClose}
+        hideBackdrop={true}
         BackdropProps={{ invisible: true }}
         sx={{
           width: drawerWidth,

@@ -41,6 +41,7 @@ import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 import { countryCodeFormating, matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { debounce } from "lodash";
+import { ToasterMessages } from "Components/Constants";
 
 const headCells = [
   {
@@ -355,6 +356,10 @@ function ManageUserTable({ searchText }) {
             page: currentPage,
           };
           getAllUsersList(pageOptions, searchText);
+          showToaterMessages(
+            ToasterMessages.ROLE_UPDATE_SUCCESS,
+            "success"
+          );
         }
       } catch (error) {
         showToaterMessages(
