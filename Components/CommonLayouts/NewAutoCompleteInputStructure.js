@@ -13,6 +13,7 @@ const NewAutoCompleteInputStructure = ({
   isEdit,
   options,
   error,
+  isRequired,
   list
 }) => (
   <>
@@ -22,7 +23,7 @@ const NewAutoCompleteInputStructure = ({
           variant='subtitle2'
           sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
         >
-          {label}
+          {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
       </Box>
 

@@ -22,6 +22,7 @@ function NewPhoneInputFieldStructure({
   value2,
   sx,
   isEdit,
+  isRequired,
   variant,
   disabled,
   ...props
@@ -52,7 +53,7 @@ function NewPhoneInputFieldStructure({
           variant="subtitle2"
           sx={{ alignSelf: "center", color: colors.GRAY }}
         >
-          {label}
+         {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
       </Box>
       {isEdit ? (
