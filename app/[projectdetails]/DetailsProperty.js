@@ -40,7 +40,7 @@ import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/Constants";
@@ -89,6 +89,7 @@ function useThrottledOnScroll(callback, delay) {
 
 const PropertyDetails = ({ params }) => {
   const { userDetails, isLogged } = useAuth();
+  const router = useRouter();
   const searchParams = useSearchParams()
   const name = searchParams.get('name')
 
@@ -98,7 +99,6 @@ const PropertyDetails = ({ params }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([])
-  console.log(propertyData)
 
   const activeAdGetProperty = async () => {
     try {
@@ -424,7 +424,7 @@ const PropertyDetails = ({ params }) => {
                         />
                       </Box>
                     </Grid>
-                    {propertyData?.consultants?.map((broker) => (
+                    {propertyData[0]?.propertyData?.consultants?.map((broker) => (
                       <Grid item xs={12} sm={6} key={broker?.name}>
                         <BrokerCard broker={broker} noReview />
                       </Grid>
@@ -447,7 +447,7 @@ const PropertyDetails = ({ params }) => {
                   </Grid>
                 </Card>
               </Grid>
-              <OverallAssesmentSection overallAssessment={propertyData?.overallAssessment}/>
+              <OverallAssesmentSection overallAssessment={propertyData[0]?.propertyData?.overallAssessment}/>
             </Grid>
 
             {/* Dont Touch this */}
@@ -493,7 +493,7 @@ const PropertyDetails = ({ params }) => {
                  {
                    isLogged ? (
                     <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                      {propertyData?.isFav
+                      {propertyData[0]?.isFav
                         ? <ThumbUpIcon sx={{ color: '#276ef1', mr: 1 }} />
                         : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
                       }

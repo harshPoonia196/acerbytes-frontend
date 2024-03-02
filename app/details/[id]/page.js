@@ -594,7 +594,7 @@ const PropertyDetailsPage = ({ params }) => {
             )}
           </Container>
         </Box>
-      </>}
+      </>)}
     </>
   );
 };
