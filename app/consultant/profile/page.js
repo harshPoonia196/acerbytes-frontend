@@ -37,12 +37,13 @@ import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsult
 import { listOfConsultantProfileTab, reactQueryKey } from "utills/Constants";
 import { getBrokerProfile, updateBrokerProfile } from "api/BrokerProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
-import { getGoogleId } from "utills/utills";
+import { getGoogleId, validateEmail } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
 import PageLoader from "Components/Loader/PageLoader";
 import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
 import { getAccessToken, getAllCitiesList, getAllStateList } from "api/Util.api";
+import { countries, currencies } from "Components/config/config";
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
@@ -281,6 +282,7 @@ function ConsultantProfile() {
 
   const [brokerProfileInfo, setBrokerProfileInfo] = React.useState({});
   const [userProfileInfo, setUserProfileInfo] = React.useState(null);
+  const [emailInvalid, setEmailInvalid] = useState(false);
 
   const initTargetCustomerValue = {
     selectState: "",
@@ -304,7 +306,30 @@ function ConsultantProfile() {
   }, [itemsServer]);
 
   React.useEffect(() => {
-    setBrokerProfileInfo(data || {});
+    if(data?._id){
+      setBrokerProfileInfo({
+        ...data,
+        serviceDetails: {
+          ...data.serviceDetails,
+          registeredPhone: {
+            ...data.serviceDetails?.registeredPhone,
+            countryCode: data.serviceDetails?.registeredPhone?.countryCode || countries[0]?.value
+          }
+        },
+        budget: {
+          minimumBudget: {
+            ...data.budget.minimumBudget,
+            unit: data.budget.minimumBudget.unit || currencies[0]?.value
+          },
+          maximumBudget: {
+            ...data.budget.maximumBudget,
+            unit: data.budget.maximumBudget.unit || currencies[0]?.value
+          }
+        }
+      });
+    }else{
+      setBrokerProfileInfo({});
+    }
     if (!userProfileInfo && data) {
       setUserProfileInfo({ name: data?.name, phone: data?.phone });
     }
@@ -380,6 +405,16 @@ function ConsultantProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      brokerProfileInfo?.alternateEmail &&
+      !validateEmail(brokerProfileInfo?.alternateEmail)
+    ) {
+      setEmailInvalid(true);
+      return;
+    } else {
+      setEmailInvalid(false);
+    }
 
     const requestBody = {
       name: brokerProfileInfo?.name,
@@ -594,6 +629,7 @@ function ConsultantProfile() {
                     value={brokerProfileInfo?.alternateEmail || ""}
                     handleChange={(e) => handleChange(e, "alternateEmail")}
                     isEdit={isEdit}
+                    error={emailInvalid ? "Invalid alternate email" : ""}
                   />
                   <NewToggleButtonStructure
                     isEdit={isEdit}
@@ -659,6 +695,7 @@ function ConsultantProfile() {
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "reraNumber")
                     }
+                    name="reraNumber"
                   />
                   <NewInputFieldStructure
                     label="Company email"

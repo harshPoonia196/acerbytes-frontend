@@ -50,3 +50,14 @@ export const countries = [
     label: "+1",
   },
 ];
+
+export const currencies = [
+  {
+    value: "₹INR",
+    label: "₹",
+  },
+  {
+    value: "USD",
+    label: "$",
+  },
+];
