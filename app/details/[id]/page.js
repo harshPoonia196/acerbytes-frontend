@@ -42,8 +42,8 @@ import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSect
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/navigation';
+import { useParams, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import AdsSection from "Components/DetailsPage/AdsSection";
@@ -53,6 +53,8 @@ import colors from "styles/theme/colors";
 import { detailsProperty, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
+import { isEnquired, submitEnquiry } from "api/UserProfile.api";
+import { getLoggedInUser } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 
 const tabHeight = 200;

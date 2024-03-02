@@ -377,7 +377,7 @@ const PropertyDetails = ({ params }) => {
                         />
                       </Box>
                     </Grid>
-                    {propertyData?.consultants?.map((broker) => (
+                    {propertyData[0]?.propertyData?.consultants?.map((broker) => (
                       <Grid item xs={12} sm={6} key={broker?.name}>
                         <BrokerCard broker={broker} noReview />
                       </Grid>
@@ -446,7 +446,7 @@ const PropertyDetails = ({ params }) => {
                  {
                    isLogged ? (
                     <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                      {propertyData?.isFav
+                      {propertyData[0]?.isFav
                         ? <ThumbUpIcon sx={{ color: '#276ef1', mr: 1 }} />
                         : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
                       }

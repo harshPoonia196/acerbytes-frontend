@@ -7,7 +7,6 @@ export async function generateMetadata({ params, searchParams }, parent) {
   const projectdetails = params.projectdetails
   const parts = projectdetails.split('-');
   const getId = parts[parts.length - 1];
- 
   // fetch data
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const product = await fetch(`${baseUrl}/activeAd/${getId}`).then((res) => res.json())
