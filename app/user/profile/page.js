@@ -705,7 +705,7 @@ function Profile() {
                 </Box>
                 <Box>
                   <a
-                    href={`tel:${userDetails?.phone?.number}`}
+                    href={`tel:${profileInfo?.phone?.countryCode}${profileInfo?.phone?.number}`}
                     style={{
                       display: "flex",
                       alignSelf: "center",
@@ -718,8 +718,8 @@ function Profile() {
                       sx={{ alignSelf: "center" }}
                     />
                     <Typography variant="h6" sx={{ alignSelf: "center", color: colors.BLUE, }}>
-                      {userDetails?.phone?.countryCode}{" "}
-                      {userDetails?.phone?.number}
+                      {profileInfo?.phone?.countryCode}{" "}
+                      {profileInfo?.phone?.number}
                     </Typography>
                   </a>
                 </Box>
@@ -766,7 +766,7 @@ function Profile() {
                   name={"lastName"}
                   value={profileInfo?.name?.lastName}
                 />
-                <NewPhoneInputFieldStructure
+                {/* <NewPhoneInputFieldStructure
                   variant="outlined"
                   label="Phone"
                   isRequired={true}
@@ -779,16 +779,14 @@ function Profile() {
                   name2={"number"}
                   value1={profileInfo?.phone?.countryCode}
                   value2={profileInfo?.phone?.number}
-                />
+                /> */}
                 <NewInputFieldStructure
                   label="Alternate Email"
-                  isRequired={true}
                   variant="outlined"
                   isEdit={isEdit}
                   handleChange={(e) => handleChange(e, "alternateEmail")}
                   name={"alternateEmail"}
                   value={profileInfo?.alternateEmail}
-                  error={emailInvalid ? "Invalid email" : ""}
                 />
               </Grid>
             </Card>
@@ -813,7 +811,6 @@ function Profile() {
                 <NewSelectTextFieldStructure
                   label="Service type"
                   isEdit={isEdit}
-                  isRequired={true}
                   handleChange={(e) =>
                     handleChange(e, "serviceDetails", "serviceType")
                   }
@@ -823,7 +820,6 @@ function Profile() {
                 />
                 <NewInputFieldStructure
                   label="Company"
-                  isRequired={true}
                   variant="outlined"
                   isEdit={isEdit}
                   handleChange={(e) =>
@@ -833,7 +829,6 @@ function Profile() {
                   value={profileInfo?.serviceDetails?.company}
                 />
                 <NewSelectTextFieldStructure
-                  isRequired={true}
                   label="Family"
                   isEdit={isEdit}
                   handleChange={(e) =>
@@ -865,7 +860,6 @@ function Profile() {
               >
                 <NewAutoCompleteInputStructure
                   label="Select State"
-                  isRequired={true}
                   handleChange={(e, newValue) =>
                     handleChangeInteresetCitiesDetails(
                       SELECT_STATE,
@@ -888,7 +882,7 @@ function Profile() {
                   <>
                     <NewAutoCompleteInputStructure
                       label="Select City"
-                      isRequired={true}
+
                       handleChange={(e, newValue) =>
                         handleChangeInteresetCitiesDetails(
                           SELECT_CITY,
@@ -908,7 +902,7 @@ function Profile() {
                     />
                     <NewInputFieldStructure
                       label="Area"
-                      isRequired={true}
+
                       variant="outlined"
                       value={selectInterestedArea}
                       handleChange={(e) =>
@@ -1133,7 +1127,6 @@ function Profile() {
               >
                 <NewToggleButtonStructure
                   isEdit={isEdit}
-                  isRequired={true}
                   label="Address type"
                   value={profileInfo?.currentAddress?.addressType}
                   handleChange={handleChangeCurrentAddress}
@@ -1155,7 +1148,6 @@ function Profile() {
                 </NewToggleButtonStructure>
                 <NewInputFieldStructure
                   label="Address line 1"
-                  isRequired={true}
                   variant="outlined"
                   isEdit={isEdit}
                   value={profileInfo?.currentAddress?.addressLine1}
@@ -1168,7 +1160,6 @@ function Profile() {
                   label="Address line 2"
                   variant="outlined"
                   isEdit={isEdit}
-                  isRequired={true}
                   value={profileInfo?.currentAddress?.addressLine2}
                   handleChange={(e) =>
                     handleChange(e, "currentAddress", "addressLine2")
@@ -1177,7 +1168,6 @@ function Profile() {
                 />
                 <NewAutoCompleteInputStructure
                   label="Country"
-                  isRequired={true}
                   value={profileInfo?.currentAddress?.country}
                   handleChange={(e, newValue) =>
                     handleChangeCurrentAddress({
@@ -1196,7 +1186,6 @@ function Profile() {
                 />
                 <NewAutoCompleteInputStructure
                   label="State"
-                  isRequired={true}
                   value={profileInfo?.currentAddress?.state}
                   handleChange={(e, newValue) =>
                     handleChangeCurrentAddress({
@@ -1218,7 +1207,6 @@ function Profile() {
                   label="City"
                   variant="outlined"
                   isEdit={isEdit}
-                  isRequired={true}
                   value={profileInfo?.currentAddress?.city}
                   handleChange={(e) =>
                     handleChange(e, "currentAddress", "city")
@@ -1228,7 +1216,6 @@ function Profile() {
 
                 <NewInputFieldStructure
                   label="Pincode"
-                  isRequired={true}
                   variant="outlined"
                   value={profileInfo?.currentAddress?.pinCode}
                   isEdit={isEdit}

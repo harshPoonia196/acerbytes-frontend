@@ -149,7 +149,7 @@ function Brokers() {
               </Typography>
             </Grid>
           )}
-          <Grid item xs={12} display={"flex"} justifyContent={"center"}>
+          <Grid item xs={12} display={"flex"} justifyContent={"end"}>
             <Pagination
               page={currentPage + 1}
               onChange={(e, value) => {

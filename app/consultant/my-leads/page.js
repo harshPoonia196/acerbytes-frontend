@@ -20,7 +20,7 @@ import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function MyLeads() {
-  
+
   const router = useRouter();
 
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
@@ -44,7 +44,7 @@ function MyLeads() {
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        
+
       />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
@@ -82,7 +82,7 @@ function MyLeads() {
           </ToggleButtonGroup>
         </Card>
         <Box sx={{ textAlign: 'end', mb: 2 }}>
-          <CustomButton variant="outlined" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add notes"} loading={loading} />
+          <CustomButton variant="outlined" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add notes"} />
         </Box>
         {alignment === "all" ? <MyLeadsTable /> : <MyLeadsStatus />}
       </Container>

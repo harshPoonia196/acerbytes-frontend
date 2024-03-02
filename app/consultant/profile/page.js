@@ -590,7 +590,7 @@ function ConsultantProfile() {
                   {brokerProfileInfo?.phone?.number ? (
                     <Box>
                       <a
-                        href={`tel:${brokerProfileInfo?.phone?.number}`}
+                        href={`tel:${brokerProfileInfo?.phone?.countryCode}${brokerProfileInfo?.phone?.number}`}
                         style={{
                           display: "flex",
                           alignSelf: "center",
@@ -603,7 +603,7 @@ function ConsultantProfile() {
                           sx={{ alignSelf: "center" }}
                         />
                         <Typography variant="h6" sx={{ alignSelf: "center", color: colors.BLUE }}>
-                          {`${userProfileInfo?.phone?.countryCode || ""} ${userProfileInfo?.phone?.number || ""
+                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${brokerProfileInfo?.phone?.number || ""
                             }`}
                         </Typography>
                       </a>
@@ -621,11 +621,7 @@ function ConsultantProfile() {
                   >
                     Consultant details
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
+
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -646,7 +642,7 @@ function ConsultantProfile() {
                     isEdit={isEdit}
                   />
 
-                  <NewPhoneInputFieldStructure
+                  {/* <NewPhoneInputFieldStructure
                     variant="outlined"
                     label="Phone"
                     isRequired={true}
@@ -657,7 +653,7 @@ function ConsultantProfile() {
                     }
                     handleChange={(e) => handleChange(e, "phone", "number")}
                     isEdit={isEdit}
-                  />
+                  /> */}
                   <NewInputFieldStructure
                     label="Alternate Email"
                     isRequired={true}
@@ -665,11 +661,7 @@ function ConsultantProfile() {
                     value={brokerProfileInfo?.alternateEmail || ""}
                     handleChange={(e) => handleChange(e, "alternateEmail")}
                     isEdit={isEdit}
-                    error={
-                      emailInvalid.alternateEmail
-                        ? "Invalid alternate email"
-                        : ""
-                    }
+                    error={emailInvalid.alternateEmail && emailInvalid.alternateEmail}
                   />
                   <NewToggleButtonStructure
                     isEdit={isEdit}
@@ -697,11 +689,7 @@ function ConsultantProfile() {
                   >
                     Service details
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
+
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -747,9 +735,7 @@ function ConsultantProfile() {
                     }
                     variant="outlined"
                     isEdit={isEdit}
-                    error={
-                      emailInvalid.companyEmail ? "Invalid company email" : ""
-                    }
+                    error={emailInvalid.companyEmail && emailInvalid.companyEmail}
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "companyEmail")
                     }
@@ -796,11 +782,6 @@ function ConsultantProfile() {
                   >
                     Target Customers
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -900,11 +881,6 @@ function ConsultantProfile() {
                   >
                     Budget
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -955,11 +931,7 @@ function ConsultantProfile() {
                   >
                     Setting
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
+
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -970,17 +942,17 @@ function ConsultantProfile() {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
                     }}
                   >
-                    <Typography variant="body1">
-                      Do Not Disturb (DND) Mode
-                    </Typography>
                     <Switch
                       checked={brokerProfileInfo?.dnd}
                       onChange={(e) => handleChange(e, "dnd")}
                       color="primary"
                     />
+                    <Typography variant="body1">
+                      Do Not Disturb (DND) Mode
+                    </Typography>
+
                   </Grid>
 
                   <Grid
@@ -990,12 +962,8 @@ function ConsultantProfile() {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
                     }}
                   >
-                    <Typography variant="body1">
-                      Receive WhatsApp Promotions
-                    </Typography>
                     <Switch
                       checked={brokerProfileInfo?.receiveWhatsappPromotion}
                       onChange={(e) =>
@@ -1003,6 +971,9 @@ function ConsultantProfile() {
                       }
                       color="primary"
                     />
+                    <Typography variant="body1">
+                      Receive WhatsApp Promotions
+                    </Typography>
                   </Grid>
                 </Grid>
               </Card>
@@ -1013,8 +984,6 @@ function ConsultantProfile() {
               position: "fixed",
               right: 16,
               bottom: 16,
-              display: { xs: "none", evmd: "flex" },
-              flexDirection: "column",
             }}
           >
             <Fab

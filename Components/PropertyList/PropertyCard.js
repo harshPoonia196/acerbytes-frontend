@@ -117,6 +117,31 @@ function PropertyCard(props) {
             <Typography variant="caption">{propertyDetails?.overview?.status}</Typography>
             <Typography variant="subtitle2">{propertyDetails?.overview?.launchYear} - {propertyDetails?.overview?.completionYear}</Typography>
           </Grid>
+          <Grid item xs={8} sm={4} md={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Card
+              sx={{
+                width: "fit-content",
+                backgroundColor: colors?.BLACK,
+                // borderRadius: "4px !important",
+                m: 0,
+                ml: "auto !important",
+              }}
+              onClick={() => router.push("/research")}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 600,
+                  width: "fit-content",
+                  color: "white",
+                  p: 0.5,
+                  px: 1,
+                }}
+              >
+                99
+              </Typography>
+            </Card>
+          </Grid>
           {/* <Grid
             item
             xs={8}
