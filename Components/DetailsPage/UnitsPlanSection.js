@@ -1,39 +1,39 @@
-import React from 'react'
-import { Grid, Card, Typography, Box, Divider, Rating } from '@mui/material'
-import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairStructure'
-import { useRouter } from 'next/navigation'
-import colors from 'styles/theme/colors'
+import React from "react";
+import { Grid, Card, Typography, Box, Divider, Rating } from "@mui/material";
+import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
+import { useRouter } from "next/navigation";
+import colors from "styles/theme/colors";
 
 function UnitsPlanSection(props) {
-    const { refCallback, unitsPlan } = props
-    const router = useRouter()
+  const { refCallback, unitsPlan } = props;
+  const router = useRouter();
 
-    const GridItemWithCard = (props) => {
-        const { children, styles, boxStyles, ...rest } = props;
-        return (
-            <Grid
-                item
-                {...rest}
-                sx={{
-                    textAlign: "center",
-                    ...styles,
-                }}
-            >
-                <Box
-                    sx={{
-                        backgroundColor: "whitesmoke",
-                        p: 2,
-                        borderRadius: "8px",
-                        boxShadow:
-                            "0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%)",
-                        ...boxStyles,
-                    }}
-                >
-                    {children}
-                </Box>
-            </Grid>
-        );
-    };
+  const GridItemWithCard = (props) => {
+    const { children, styles, boxStyles, ...rest } = props;
+    return (
+      <Grid
+        item
+        {...rest}
+        sx={{
+          textAlign: "center",
+          ...styles,
+        }}
+      >
+        <Box
+          sx={{
+            backgroundColor: "whitesmoke",
+            p: 2,
+            borderRadius: "8px",
+            boxShadow:
+              "0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%)",
+            ...boxStyles,
+          }}
+        >
+          {children}
+        </Box>
+      </Grid>
+    );
+  };
 
     return (
         <Grid item xs={12} ref={refCallback} id='unitsPlan' >
@@ -72,7 +72,7 @@ function UnitsPlanSection(props) {
                 <Divider />
                 <Box sx={{ p: 2 }}>
                     <Grid container spacing={2}>
-                        {unitsPlan?.length && unitsPlan?.map((unit, index) => (
+                        {unitsPlan?.planList.length && unitsPlan?.planList?.map((unit, index) => (
                             <GridItemWithCard
                                 key={unit._id}
                                 xs={6}
@@ -98,4 +98,4 @@ function UnitsPlanSection(props) {
     )
 }
 
-export default UnitsPlanSection
+export default UnitsPlanSection;

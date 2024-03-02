@@ -37,11 +37,17 @@ import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsult
 import { listOfConsultantProfileTab, reactQueryKey } from "utills/Constants";
 import { getBrokerProfile, updateBrokerProfile } from "api/BrokerProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
-import { getGoogleId } from "utills/utills";
+import { getGoogleId, validateEmail } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
 import PageLoader from "Components/Loader/PageLoader";
 import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
+import {
+  getAccessToken,
+  getAllCitiesList,
+  getAllStateList,
+} from "api/Util.api";
+import { countries, currencies } from "Components/config/config";
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
@@ -117,6 +123,9 @@ function ConsultantProfile() {
 
   const { openSnackbar } = useSnackbar();
 
+  const [stateOptions, setStateOptions] = useState([]);
+  const [cityOptions, setCityOptions] = useState([]);
+
   const { data, isLoading, error } = useQueries(
     [reactQueryKey.broker.profile(getGoogleId())],
     async () => {
@@ -158,24 +167,16 @@ function ConsultantProfile() {
 
   const [exploringAsToggle, setExploringAsToggle] = useState("");
 
-  const cityOptions = [
-    { label: "Mumbai", value: "Mumbai" },
-    { label: "Delhi", value: "Delhi" },
-    { label: "Bangalore", value: "Bangalore" },
-  ];
-
-  const areaOptions = [
-    { label: "Subarban Mumbai", value: "Subarban Mumbai" },
-    { label: "New Delhi", value: "New Delhi" },
-    { label: "Old Bangalore", value: "Old Bangalore" },
-  ];
-
-  const handleTargetCustomer = (e, newValue, firstKeyName) => {
+  const handleTargetCustomer = (e, firstKeyName) => {
     if (e?.persist) {
       e.persist();
     }
-    let value = newValue.value;
-    setTargetCustomer((prev) => ({ ...prev, [firstKeyName]: value }));
+    let value = e?.target?.value || "";
+    let updatedObject = { [firstKeyName]: value };
+    if (firstKeyName == "selectState") {
+      updatedObject["selectCity"] = "";
+    }
+    setTargetCustomer((prev) => ({ ...prev, ...updatedObject }));
   };
 
   const handleChange = (e, firstKeyName, secondKeyName, thirdKeyName) => {
@@ -203,7 +204,11 @@ function ConsultantProfile() {
     }));
   };
   const handleAddTargetCustomer = () => {
-    if (targetCustomer?.selectArea || targetCustomer?.selectCity) {
+    if (
+      targetCustomer?.selectArea &&
+      targetCustomer?.selectCity &&
+      targetCustomer?.selectState
+    ) {
       let value = targetCustomer;
       setBrokerProfileInfo((prev) => ({
         ...prev,
@@ -281,8 +286,13 @@ function ConsultantProfile() {
 
   const [brokerProfileInfo, setBrokerProfileInfo] = React.useState({});
   const [userProfileInfo, setUserProfileInfo] = React.useState(null);
+  const [emailInvalid, setEmailInvalid] = useState(false);
 
-  const initTargetCustomerValue = { selectCity: "", selectArea: "" };
+  const initTargetCustomerValue = {
+    selectState: "",
+    selectCity: "",
+    selectArea: "",
+  };
   const [targetCustomer, setTargetCustomer] = useState(initTargetCustomerValue);
 
   let itemsServer = listOfConsultantProfileTab.map((tab) => {
@@ -300,7 +310,32 @@ function ConsultantProfile() {
   }, [itemsServer]);
 
   React.useEffect(() => {
-    setBrokerProfileInfo(data || {});
+    if (data?._id) {
+      setBrokerProfileInfo({
+        ...data,
+        serviceDetails: {
+          ...data.serviceDetails,
+          registeredPhone: {
+            ...data.serviceDetails?.registeredPhone,
+            countryCode:
+              data.serviceDetails?.registeredPhone?.countryCode ||
+              countries[0]?.value,
+          },
+        },
+        budget: {
+          minimumBudget: {
+            ...data.budget.minimumBudget,
+            unit: data.budget.minimumBudget.unit || currencies[0]?.value,
+          },
+          maximumBudget: {
+            ...data.budget.maximumBudget,
+            unit: data.budget.maximumBudget.unit || currencies[0]?.value,
+          },
+        },
+      });
+    } else {
+      setBrokerProfileInfo({});
+    }
     if (!userProfileInfo && data) {
       setUserProfileInfo({ name: data?.name, phone: data?.phone });
     }
@@ -377,6 +412,38 @@ function ConsultantProfile() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (
+      brokerProfileInfo?.alternateEmail &&
+      !validateEmail(brokerProfileInfo?.alternateEmail)
+    ) {
+      setEmailInvalid({
+        ...emailInvalid,
+        alternateEmail: true,
+      });
+      return;
+    } else {
+      setEmailInvalid({
+        ...emailInvalid,
+        alternateEmail: false,
+      });
+    }
+
+    if (
+      brokerProfileInfo?.serviceDetails?.companyEmail &&
+      !validateEmail(brokerProfileInfo?.serviceDetails?.companyEmail)
+    ) {
+      setEmailInvalid({
+        ...emailInvalid,
+        companyEmail: true,
+      });
+      return;
+    } else {
+      setEmailInvalid({
+        ...emailInvalid,
+        companyEmail: false,
+      });
+    }
+
     const requestBody = {
       name: brokerProfileInfo?.name,
       alternateEmail: brokerProfileInfo?.alternateEmail,
@@ -394,6 +461,66 @@ function ConsultantProfile() {
   };
 
   const classes = useStyles();
+
+  const getAllStateOfIndia = async () => {
+    try {
+      const res = await getAccessToken();
+      if (res.auth_token) {
+        const response = await getAllStateList(res.auth_token, "India");
+        if (response) {
+          setStateOptions(
+            response?.map((stateDetail) => ({
+              label: stateDetail?.state_name || "",
+              value: stateDetail?.state_name || "",
+            })) || []
+          );
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state of india list",
+        "error"
+      );
+    }
+  };
+
+  const getInterestedCities = async (stateName) => {
+    try {
+      const res = await getAccessToken();
+      if (res.auth_token) {
+        const response = await getAllCitiesList(res.auth_token, stateName);
+        if (response) {
+          setCityOptions(
+            response?.map((cityDetails) => ({
+              label: cityDetails?.city_name || "",
+              value: cityDetails?.city_name || "",
+            })) || []
+          );
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state of india list",
+        "error"
+      );
+    }
+  };
+
+  React.useEffect(() => {
+    getAllStateOfIndia();
+  }, []);
+
+  React.useEffect(() => {
+    console.log(targetCustomer?.selectState);
+    if (targetCustomer?.selectState) {
+      getInterestedCities(targetCustomer?.selectState);
+    }
+  }, [targetCustomer?.selectState]);
+
   return (
     <>
       <PageLoader isLoading={isLoading || mutate.isPending} />
@@ -416,36 +543,38 @@ function ConsultantProfile() {
           </Grid> */}
             <Grid item xs={12} id="userDetails">
               <Card sx={{ p: 2 }}>
-                <Box sx={{ display: "flex", alignItems: 'center', gap: '20px' }}>
-                <label htmlFor="avatar-input" style={{ cursor: "pointer" }}>
-                  <ProfilePic
-                    style={{
-                      minWidth: "3rem",
-                      maxWidth: "3rem",
-                      height: "3rem",
-                    }}
-                  >
-                    <Avatar
-                      sx={{
-                        width: "3rem",
-                        position: "static",
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: "20px" }}
+                >
+                  <label htmlFor="avatar-input" style={{ cursor: "pointer" }}>
+                    <ProfilePic
+                      style={{
+                        minWidth: "3rem",
+                        maxWidth: "3rem",
                         height: "3rem",
-                        cursor: "pointer",
-                      }}
-                      className="profilepic__image"
-                      onClick={(e) => {
-                        // Trigger the file input click when Avatar is clicked
-                        document.getElementById("avatar-input").click();
                       }}
                     >
-                      {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
-                    </Avatar>
-                    <div className="profilepic__content">
-                      <EditIcon fontSize="small" />
-                      <p className="profilepic__text">Edit</p>
-                    </div>
-                  </ProfilePic>
-                </label>
+                      <Avatar
+                        sx={{
+                          width: "3rem",
+                          position: "static",
+                          height: "3rem",
+                          cursor: "pointer",
+                        }}
+                        className="profilepic__image"
+                        onClick={(e) => {
+                          // Trigger the file input click when Avatar is clicked
+                          document.getElementById("avatar-input").click();
+                        }}
+                      >
+                        {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+                      </Avatar>
+                      <div className="profilepic__content">
+                        <EditIcon fontSize="small" />
+                        <p className="profilepic__text">Edit</p>
+                      </div>
+                    </ProfilePic>
+                  </label>
                   {userProfileInfo?.name ? (
                     <Box sx={{ flex: 1 }}>
                       <Typography variant="h6" sx={{ fontWeight: 900 }}>
@@ -456,7 +585,7 @@ function ConsultantProfile() {
                   {brokerProfileInfo?.phone?.number ? (
                     <Box>
                       <a
-                        href="tel:8794561234"
+                        href={`tel:${brokerProfileInfo?.phone?.number}`}
                         style={{
                           display: "flex",
                           alignSelf: "center",
@@ -497,6 +626,7 @@ function ConsultantProfile() {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                   <NewInputFieldStructure
+                  isRequired={true}
                     label="First name"
                     variant="outlined"
                     value={brokerProfileInfo?.name?.firstName || ""}
@@ -505,6 +635,7 @@ function ConsultantProfile() {
                   />
                   <NewInputFieldStructure
                     label="Last name"
+                    isRequired={true}
                     variant="outlined"
                     value={brokerProfileInfo?.name?.lastName || ""}
                     handleChange={(e) => handleChange(e, "name", "lastName")}
@@ -514,6 +645,7 @@ function ConsultantProfile() {
                   <NewPhoneInputFieldStructure
                     variant="outlined"
                     label="Phone"
+                    isRequired={true}
                     value1={brokerProfileInfo?.phone?.countryCode || ""}
                     value2={brokerProfileInfo?.phone?.number || ""}
                     handleSelect={(e) =>
@@ -524,10 +656,16 @@ function ConsultantProfile() {
                   />
                   <NewInputFieldStructure
                     label="Alternate Email"
+                    isRequired={true}
                     variant="outlined"
                     value={brokerProfileInfo?.alternateEmail || ""}
                     handleChange={(e) => handleChange(e, "alternateEmail")}
                     isEdit={isEdit}
+                    error={
+                      emailInvalid.alternateEmail
+                        ? "Invalid alternate email"
+                        : ""
+                    }
                   />
                   <NewToggleButtonStructure
                     isEdit={isEdit}
@@ -576,6 +714,7 @@ function ConsultantProfile() {
                     }
                   />
                   <NewInputFieldStructure
+                   isRequired={true}
                     label="Company"
                     value={brokerProfileInfo?.serviceDetails?.company || ""}
                     variant="outlined"
@@ -586,6 +725,7 @@ function ConsultantProfile() {
                   />
 
                   <NewInputFieldStructure
+                   isRequired={true}
                     label="RERA number"
                     value={brokerProfileInfo?.serviceDetails?.reraNumber || ""}
                     variant="outlined"
@@ -593,19 +733,25 @@ function ConsultantProfile() {
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "reraNumber")
                     }
+                    name="reraNumber"
                   />
                   <NewInputFieldStructure
                     label="Company email"
+                    isRequired={true}
                     value={
                       brokerProfileInfo?.serviceDetails?.companyEmail || ""
                     }
                     variant="outlined"
                     isEdit={isEdit}
+                    error={
+                      emailInvalid.companyEmail ? "Invalid company email" : ""
+                    }
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "companyEmail")
                     }
                   />
                   <NewPhoneInputFieldStructure
+                   isRequired={true}
                     variant="outlined"
                     label="Registerd phone"
                     value1={
@@ -656,22 +802,33 @@ function ConsultantProfile() {
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                   {isEdit ? (
                     <>
-                      <NewAutoCompleteInputStructure
+                      <NewSelectTextFieldStructure
+                        label="Select State"
+                        list={stateOptions}
+                        isEdit={isEdit}
+                        value={targetCustomer.selectState}
+                        name="state"
+                        handleChange={(e, newValue) =>
+                          handleTargetCustomer(e, "selectState")
+                        }
+                      />
+                      <NewSelectTextFieldStructure
                         label="Select City"
                         list={cityOptions}
                         isEdit={isEdit}
                         value={targetCustomer.selectCity}
+                        name="city"
                         handleChange={(e, newValue) =>
-                          handleTargetCustomer(e, newValue, "selectCity")
+                          handleTargetCustomer(e, "selectCity")
                         }
                       />
-                      <NewAutoCompleteInputStructure
-                        label="Select Area"
-                        isEdit={isEdit}
-                        list={areaOptions}
+                      <NewInputFieldStructure
+                        label="Area"
                         value={targetCustomer.selectArea}
-                        handleChange={(e, newValue) =>
-                          handleTargetCustomer(e, newValue, "selectArea")
+                        variant="outlined"
+                        isEdit={isEdit}
+                        handleChange={(e) =>
+                          handleTargetCustomer(e, "selectArea")
                         }
                       />
                     </>
@@ -683,8 +840,14 @@ function ConsultantProfile() {
                       {brokerProfileInfo?.targetCustomers?.map(
                         (targetArea, index) => {
                           let label = "";
+                          if (targetArea.selectState) {
+                            label = targetArea.selectState;
+                          }
                           if (targetArea.selectCity) {
-                            label = targetArea.selectCity;
+                            if (label) {
+                              label += "/";
+                            }
+                            label += targetArea.selectCity;
                           }
                           if (targetArea.selectArea) {
                             if (label) {
@@ -712,8 +875,9 @@ function ConsultantProfile() {
                       <Button
                         variant="contained"
                         disabled={
-                          targetCustomer?.selectArea == "" &&
-                          targetCustomer?.selectCity == ""
+                          targetCustomer?.selectState == "" ||
+                          targetCustomer?.selectCity == "" ||
+                          targetCustomer?.selectArea == ""
                         }
                         onClick={handleAddTargetCustomer}
                       >

@@ -16,7 +16,7 @@ import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompl
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 import colors from 'styles/theme/colors';
 
-function ProjectCard({ isEdit, form, handleChange, errors }) {
+function ProjectCard({ isEdit, form,editPage, handleChange, errors }) {
 
     const {
         builder,
@@ -30,31 +30,42 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
         constructionProgress,
     } = form.overview;
 
-
+    const formatDate = (dateString)=>{
+        const dateObject = new Date(dateString);
+        const formattedDate = dateObject.toLocaleString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          });
+          return formattedDate
+    }
+   
+    
+   
     return (
         <>
-            <Grid item xs={12} id="project">
+            {editPage && <Grid item xs={12} id="project">
                 <Card sx={{ p: 2 }}>
                     <Box sx={{ display: "flex" }}>
                         <Box sx={{ flex: 1 }}>
                             <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                                Property name
+                              {builder+ " "+ projectName}
                             </Typography>
                             <Typography variant="body1" sx={{ mt: 1 }}>
-                                Mumbai
+                               {form.location.city}
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
                             <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                                Active
+                                {form.published?"Active":"In Active"}
                             </Typography>
                             <Typography variant="body1" sx={{ mt: 1 }}>
-                                Publish 2 days ago
+                                {form.published?formatDate(form.publishedAt):'Awaitng action'}
                             </Typography>
                         </Box>
                     </Box>
                 </Card>
-            </Grid>
+            </Grid>}
             <Grid item xs={12}>
                 <Card>
                     <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -95,6 +106,7 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                                 </Typography>
                             </Box>
                             <Rating defaultValue={0}
+                            value={form.overview.builderScore}
                              onChange={(e)=>handleChange(e,"overview","builderScore",undefined,undefined,undefined,undefined,undefined,undefined,true)} 
                              precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                         </Grid>

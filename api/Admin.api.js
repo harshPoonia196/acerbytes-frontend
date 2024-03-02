@@ -1,6 +1,5 @@
 import axiosInstance from "./AxiosInstance";
 
-
 export const getOrderRequests = (queryParams) => {
   return axiosInstance.get(`/admin/orderRequests?${queryParams}`);
 };
@@ -29,6 +28,14 @@ export const getBrokersList = (limit, page, search) => {
     query += `search=${search || ""}&&`;
   }
   return axiosInstance.get(`/admin/brokerList?${query}`);
+};
+
+export const getLeads = ({ limit, page, search }) => {
+  return axiosInstance.get(
+    `/admin/getLeads?limit=${limit || ""}&&page=${page || 0}&&search=${
+      search || ""
+    }`
+  );
 };
 
 export const getCreditPointStatusList = (queryParams) => {

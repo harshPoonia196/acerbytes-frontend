@@ -45,11 +45,15 @@ const NewMultiSelectAutoCompleteInputStructure = ({
           value={value || []}
           fullWidth
           size="small"
+          getOptionLabel={(option) =>
+            brokerUse ? option.fullName : option.label
+          }
           renderTags={(value, getTagProps) =>
             value.length && value.map((option, index) => (
               <Chip
                 variant="outlined"
-                label={option?.label}
+                // label={option?.label}
+                label={brokerUse ? option.fullName : option.label}
                 size="small"
                 {...getTagProps({ index })}
               />

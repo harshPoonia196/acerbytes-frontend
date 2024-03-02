@@ -16,6 +16,7 @@ import {
 import CallIcon from "@mui/icons-material/Call";
 import SaveIcon from "@mui/icons-material/Save";
 import React from "react";
+import { useEffect } from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
@@ -27,6 +28,12 @@ import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonSt
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
+import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
+import { ProfilePic } from "Components/CommonLayouts/profilepic";
+import Avatar from "@mui/material/Avatar";
+import EditIcon from "@mui/icons-material/Edit";
+
+
 import {
   FAMILY,
   SERVICE_TYPE,
@@ -53,7 +60,8 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { listOfProfileTab } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import { countries } from "Components/config/config";
+import { validateEmail } from "utills/utills";
+import { countries, currencies } from "Components/config/config";
 
 const tabHeight = 116;
 
@@ -75,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -105,6 +113,36 @@ function Profile() {
   const [selectInterestedCity, setInterestedCity] = useState("");
   const [selectInterestedArea, setInterestedArea] = useState("");
   const [emailInvalid, setEmailInvalid] = useState(false);
+  const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
+  const [image, setImage] = useState("");
+
+
+  const handleOpenUploadPopup = () => {
+    setIsUploadPopupOpen(true);
+  };
+  const handleImageSelect = (e) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+    handleOpenUploadPopup();
+  };
+
+  const handleImageRemove = () => {
+    setImage("");
+    handleCloseUploadPopup();
+  };
+  const handleCloseUploadPopup = () => {
+    setIsUploadPopupOpen(false);
+  };
 
   const [profileInfo, setProfileInfo] = useState({
     name: {
@@ -125,11 +163,11 @@ function Profile() {
     },
     budget: {
       minimumBudget: {
-        unit: "",
+        unit: currencies[0]?.value,
         value: "",
       },
       maximumBudget: {
-        unit: "",
+        unit: currencies[0]?.value,
         value: "",
       },
       exploringAs: "",
@@ -194,9 +232,9 @@ function Profile() {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -251,10 +289,10 @@ function Profile() {
   }, []);
 
   React.useEffect(() => {
-    if (isLogged) {
-      getUserProfile();
-    }
-  }, [isLogged]);
+    // if (isLogged) {
+    getUserProfile();
+    // }
+  }, [isLogged && userDetails?._id]);
 
   const getUserProfile = async () => {
     if (isLogged && userDetails?._id) {
@@ -265,7 +303,20 @@ function Profile() {
           const dataPlayload = res?.data?.data;
           setProfileInfo({
             ...profileInfo,
-            budget: dataPlayload?.budget,
+            budget: {
+              minimumBudget: {
+                value: dataPlayload?.budget?.minimumBudget?.value,
+                unit:
+                  dataPlayload?.budget?.minimumBudget?.unit ||
+                  currencies[0]?.value,
+              },
+              maximumBudget: {
+                value: dataPlayload?.budget?.maximumBudget?.value,
+                unit:
+                  dataPlayload?.budget?.maximumBudget?.unit ||
+                  currencies[0]?.value,
+              },
+            },
             currentAddress: dataPlayload?.currentAddress,
             interestedCities: dataPlayload?.interestedCities || [],
             name: dataPlayload?.name,
@@ -280,12 +331,16 @@ function Profile() {
             googleID: dataPlayload?.googleID,
             email: dataPlayload?.email,
           });
+
+          if (dataPlayload?.currentAddress?.country) {
+            getStatListByName(dataPlayload?.currentAddress?.country);
+          }
         }
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching user profile",
+            error?.message ||
+            "Error fetching user profile",
           "error"
         );
         setLoading(false);
@@ -307,8 +362,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching country list",
+          error?.message ||
+          "Error fetching country list",
         "error"
       );
     }
@@ -326,8 +381,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     }
@@ -345,8 +400,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -364,8 +419,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -380,14 +435,14 @@ function Profile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-          ...prev?.[firstKeyName],
-          [secondKeyName]: !thirdKeyName
-            ? value
-            : {
-              ...prev?.[firstKeyName]?.[secondKeyName],
-              [thirdKeyName]: value,
-            },
-        },
+            ...prev?.[firstKeyName],
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+          },
     }));
   };
 
@@ -496,12 +551,6 @@ function Profile() {
     return true;
   };
 
-  const validateEmail = (email) => {
-    return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-  };
-
   const handleSave = async () => {
     try {
       if (
@@ -528,8 +577,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error user profile updating",
+          error?.message ||
+          "Error user profile updating",
         "error"
       );
     } finally {
@@ -537,6 +586,7 @@ function Profile() {
     }
   };
 
+  
   const updateDetailsonLocalStorage = (info) => {
     let userInfo = JSON.parse(localStorage.getItem("userDetails"));
     userInfo = {
@@ -556,20 +606,28 @@ function Profile() {
     localStorage.setItem("userDetails", JSON.stringify(userInfo));
   };
 
+  useEffect(() => {
+    // No API call or asynchronous behavior, just setting data to a mock value
+    // setData('Mocked data');
+    setLoading(false);
+  }, []);
 
   return (
     <>
-      <nav className={classes.demo2}>
-        <NavTabProfilePage
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
-      </nav>
-
-      <Container maxWidth="lg">
-        <Grid container spacing={2}>
-          {/* <Grid item xs={12} sx={{ textAlign: "end" }}>
+     {isLoading ? (
+        <Loader isLoading={isLoading}/>
+      ) : (
+        <>
+          <nav className={classes.demo2}>
+            <NavTabProfilePage
+              value={activeState}
+              handleChange={handleClick}
+              list={itemsServer}
+            />
+          </nav>
+          <Container maxWidth="lg">
+            <Grid container spacing={2}>
+              {/* <Grid item xs={12} sx={{ textAlign: "end" }}>
             <LoadingButton
               onClick={handleSave}
               loading={isLoading}
@@ -580,583 +638,678 @@ function Profile() {
               Save
             </LoadingButton>
           </Grid> */}
-          <Grid item xs={12} id="userDetails">
-            <Card sx={{ p: 2 }}>
-              <Box sx={{ display: "flex" }}>
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                    {userDetails?.name?.firstName} {userDetails?.name?.lastName}
-                  </Typography>
-                </Box>
-                <Box>
-                  <a
-                    href="tel:8794561234"
-                    style={{
-                      display: "flex",
-                      alignSelf: "center",
-                      textDecoration: "none",
-                      color: "inherit",
-                    }}
-                  >
-                    <CallIcon fontSize="small" sx={{ alignSelf: "center" }} />
-                    <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                      {userDetails?.phone?.countryCode}{" "}
-                      {userDetails?.phone?.number}
-                    </Typography>
-                  </a>
-                </Box>
-              </Box>
-              {/* <Typography variant="body1" sx={{ mt: 1 }}>
+              <Grid item xs={12} id="userDetails">
+                <Card sx={{ p: 2 }}>
+                  <Box sx={{ display: "flex" }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 900 }}>
+                        {/* {userDetails?.name?.firstName} {userDetails?.name?.lastName} */}
+                      </Typography>
+                      <UploadMarketingImage
+                        open={isUploadPopupOpen}
+                        image={image}
+                        setImage={setImage}
+                        onClose={handleCloseUploadPopup}
+                        changeImage={handleImageSelect}
+                        removeImage={handleImageRemove}
+                      />
+                      {/* Avatar and file input */}
+                      <label
+                        htmlFor="avatar-input"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <ProfilePic
+                          style={{
+                            minWidth: "3rem",
+                            maxWidth: "3rem",
+                            height: "3rem",
+                          }}
+                        >
+                          <Avatar
+                            sx={{
+                              width: "3rem",
+                              position: "static",
+                              height: "3rem",
+                              cursor: "pointer",
+                            }}
+                            className="profilepic__image"
+                            onClick={(e) => {
+                              // Trigger the file input click when Avatar is clicked
+                              document.getElementById("avatar-input").click();
+                            }}
+                          >
+                            {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+                          </Avatar>
+                          <div className="profilepic__content">
+                            <EditIcon fontSize="small" />
+                            <p className="profilepic__text">Edit</p>
+                          </div>
+                        </ProfilePic>
+                      </label>
+                      <input
+                        id="avatar-input"
+                        type="file"
+                        onChange={handleImageSelect}
+                        accept="image/x-png,image/gif,image/jpeg"
+                        hidden
+                      />
+                    </Box>
+                    <Box>
+                      <a
+                        href="tel:8794561234"
+                        style={{
+                          display: "flex",
+                          alignSelf: "center",
+                          textDecoration: "none",
+                          color: "inherit",
+                        }}
+                      >
+                        <CallIcon
+                          fontSize="small"
+                          sx={{ alignSelf: "center" }}
+                        />
+                        <Typography variant="h6" sx={{ alignSelf: "center" }}>
+                          {userDetails?.phone?.countryCode}{" "}
+                          {userDetails?.phone?.number}
+                        </Typography>
+                      </a>
+                    </Box>
+                  </Box>
+
+                  {/* <Typography variant="body1" sx={{ mt: 1 }}>
                 Mumbai
               </Typography> */}
-            </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <Card>
-              <Box sx={{ display: "flex", p: 2, py: 1 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-                >
-                  User details
-                </Typography>
-              </Box>
-              <Divider />
-              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <NewInputFieldStructure
-                  label="First name *"
-                  variant="outlined"
-                  isEdit={isEdit}
-                  // handleChange={handleChangeName}
-                  handleChange={(e) => handleChange(e, "name", "firstName")}
-                  name={"firstName"}
-                  value={profileInfo?.name?.firstName}
-                />
-                <NewInputFieldStructure
-                  label="Last name *"
-                  variant="outlined"
-                  isEdit={isEdit}
-                  handleChange={(e) => handleChange(e, "name", "lastName")}
-                  name={"lastName"}
-                  value={profileInfo?.name?.lastName}
-                />
-                <NewPhoneInputFieldStructure
-                  variant="outlined"
-                  label="Phone *"
-                  isEdit={isEdit}
-                  handleChange={(e) => handleChange(e, "phone", "number")}
-                  handleSelect={(e) => handleChange(e, "phone", "countryCode")}
-                  name1={"countryCode"}
-                  name2={"number"}
-                  value1={profileInfo?.phone?.countryCode}
-                  value2={profileInfo?.phone?.number}
-                />
-                <NewInputFieldStructure
-                  label="Alternate Email"
-                  variant="outlined"
-                  isEdit={isEdit}
-                  handleChange={(e) => handleChange(e, "alternateEmail")}
-                  name={"alternateEmail"}
-                  value={profileInfo?.alternateEmail}
-                  error={emailInvalid ? "Invalid email" : ""}
-                />
+                </Card>
               </Grid>
-            </Card>
-          </Grid>
-          <Grid item xs={12} id="serviceDetails">
-            <Card>
-              <Box sx={{ display: "flex", p: 2, py: 1 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-                >
-                  Service details
-                </Typography>
-              </Box>
-              <Divider />
-              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <NewSelectTextFieldStructure
-                  label="Service type"
-                  isEdit={isEdit}
-                  handleChange={(e) =>
-                    handleChange(e, "serviceDetails", "serviceType")
-                  }
-                  name={"serviceType"}
-                  list={SERVICE_TYPE}
-                  value={profileInfo?.serviceDetails?.serviceType}
-                />
-                <NewInputFieldStructure
-                  label="Company"
-                  variant="outlined"
-                  isEdit={isEdit}
-                  handleChange={(e) =>
-                    handleChange(e, "serviceDetails", "company")
-                  }
-                  name={"company"}
-                  value={profileInfo?.serviceDetails?.company}
-                />
-                <NewSelectTextFieldStructure
-                  label="Family"
-                  isEdit={isEdit}
-                  handleChange={(e) =>
-                    handleChange(e, "serviceDetails", "family")
-                  }
-                  name={"family"}
-                  value={profileInfo?.serviceDetails?.family}
-                  list={FAMILY}
-                />
+              <Grid item xs={12}>
+                <Card>
+                  <Box sx={{ display: "flex", p: 2, py: 1 }}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
+                    >
+                      User details
+                    </Typography>
+                  </Box>
+                  <Divider />
+                  <Grid
+                    container
+                    rowSpacing={1}
+                    columnSpacing={2}
+                    sx={{ p: 2 }}
+                  >
+                    <NewInputFieldStructure
+                      isRequired={true}
+                      label="First name"
+                      variant="outlined"
+                      isEdit={isEdit}
+                      // handleChange={handleChangeName}
+                      handleChange={(e) => handleChange(e, "name", "firstName")}
+                      name={"firstName"}
+                      value={profileInfo?.name?.firstName}
+                    />
+                    <NewInputFieldStructure
+                      label="Last name"
+                      variant="outlined"
+                      isEdit={isEdit}
+                      isRequired={true}
+                      handleChange={(e) => handleChange(e, "name", "lastName")}
+                      name={"lastName"}
+                      value={profileInfo?.name?.lastName}
+                    />
+                    <NewPhoneInputFieldStructure
+                      variant="outlined"
+                      label="Phone"
+                      isRequired={true}
+                      isEdit={isEdit}
+                      handleChange={(e) => handleChange(e, "phone", "number")}
+                      handleSelect={(e) =>
+                        handleChange(e, "phone", "countryCode")
+                      }
+                      name1={"countryCode"}
+                      name2={"number"}
+                      value1={profileInfo?.phone?.countryCode}
+                      value2={profileInfo?.phone?.number}
+                    />
+                    <NewInputFieldStructure
+                      label="Alternate Email"
+                      isRequired={true}
+                      variant="outlined"
+                      isEdit={isEdit}
+                      handleChange={(e) => handleChange(e, "alternateEmail")}
+                      name={"alternateEmail"}
+                      value={profileInfo?.alternateEmail}
+                      error={emailInvalid ? "Invalid email" : ""}
+                    />
+                  </Grid>
+                </Card>
               </Grid>
-            </Card>
-          </Grid>
-          <Grid item xs={12} id="interestedCities">
-            <Card>
-              <Box sx={{ display: "flex", p: 2, py: 1 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-                >
-                  Interested cities
-                </Typography>
-              </Box>
-              <Divider />
-              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <NewAutoCompleteInputStructure
-                  label="Select State"
-                  handleChange={(e, newValue) =>
-                    handleChangeInteresetCitiesDetails(
-                      SELECT_STATE,
-                      newValue.value
-                    )
-                  }
-                  value={{
-                    label: selectInterestedState,
-                    value: selectInterestedState,
-                  }}
-                  list={interestedStatesList?.map((rs) => {
-                    return {
-                      label: rs.state_name,
-                      value: rs.state_name,
-                    };
-                  })}
-                />
-
-                {isEdit ? (
-                  <>
+              <Grid item xs={12} id="serviceDetails">
+                <Card>
+                  <Box sx={{ display: "flex", p: 2, py: 1 }}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
+                    >
+                      Service details
+                    </Typography>
+                  </Box>
+                  <Divider />
+                  <Grid
+                    container
+                    rowSpacing={1}
+                    columnSpacing={2}
+                    sx={{ p: 2 }}
+                  >
+                    <NewSelectTextFieldStructure
+                      label="Service type"
+                      isEdit={isEdit}
+                      isRequired={true}
+                      handleChange={(e) =>
+                        handleChange(e, "serviceDetails", "serviceType")
+                      }
+                      name={"serviceType"}
+                      list={SERVICE_TYPE}
+                      value={profileInfo?.serviceDetails?.serviceType}
+                    />
+                    <NewInputFieldStructure
+                      label="Company"
+                      isRequired={true}
+                      variant="outlined"
+                      isEdit={isEdit}
+                      handleChange={(e) =>
+                        handleChange(e, "serviceDetails", "company")
+                      }
+                      name={"company"}
+                      value={profileInfo?.serviceDetails?.company}
+                    />
+                    <NewSelectTextFieldStructure
+                      isRequired={true}
+                      label="Family"
+                      isEdit={isEdit}
+                      handleChange={(e) =>
+                        handleChange(e, "serviceDetails", "family")
+                      }
+                      name={"family"}
+                      value={profileInfo?.serviceDetails?.family}
+                      list={FAMILY}
+                    />
+                  </Grid>
+                </Card>
+              </Grid>
+              <Grid item xs={12} id="interestedCities">
+                <Card>
+                  <Box sx={{ display: "flex", p: 2, py: 1 }}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
+                    >
+                      Interested cities
+                    </Typography>
+                  </Box>
+                  <Divider />
+                  <Grid
+                    container
+                    rowSpacing={1}
+                    columnSpacing={2}
+                    sx={{ p: 2 }}
+                  >
                     <NewAutoCompleteInputStructure
-                      label="Select City"
+                      label="Select State"
+                      isRequired={true}
                       handleChange={(e, newValue) =>
                         handleChangeInteresetCitiesDetails(
-                          SELECT_CITY,
+                          SELECT_STATE,
                           newValue.value
                         )
                       }
                       value={{
-                        label: selectInterestedCity,
-                        value: selectInterestedCity,
+                        label: selectInterestedState,
+                        value: selectInterestedState,
                       }}
-                      list={interestedCitiesList?.map((rs) => {
+                      list={interestedStatesList?.map((rs) => {
                         return {
-                          label: rs.city_name,
-                          value: rs.city_name,
+                          label: rs.state_name,
+                          value: rs.state_name,
                         };
                       })}
                     />
-                    <NewInputFieldStructure
-                      label="Area"
-                      variant="outlined"
-                      value={selectInterestedArea}
-                      handleChange={(e) =>
-                        handleChangeInteresetCitiesDetails(
-                          SELECT_AREA,
-                          e.target.value
-                        )
-                      }
-                      name={SELECT_AREA}
-                    />
-                  </>
-                ) : (
-                  ""
-                )}
-                <Grid item xs={12} sx={{ mt: 1, display: "flex" }}>
-                  <Box sx={{ flex: 1, alignSelf: "center", ml: -1, mt: -1 }}>
-                    {profileInfo?.interestedCities?.map((cityInfo, index) => {
-                      return (
-                        <Chip
-                          key={index}
-                          label={`${cityInfo?.selectArea}, ${cityInfo?.selectCity}`}
-                          size="small"
-                          sx={{ ml: 1, mt: 1 }}
-                          onDelete={() => removeInterestedCity(index)}
+
+                    {isEdit ? (
+                      <>
+                        <NewAutoCompleteInputStructure
+                          label="Select City"
+                          isRequired={true}
+                          handleChange={(e, newValue) =>
+                            handleChangeInteresetCitiesDetails(
+                              SELECT_CITY,
+                              newValue.value
+                            )
+                          }
+                          value={{
+                            label: selectInterestedCity,
+                            value: selectInterestedCity,
+                          }}
+                          list={interestedCitiesList?.map((rs) => {
+                            return {
+                              label: rs.city_name,
+                              value: rs.city_name,
+                            };
+                          })}
                         />
-                      );
-                    })}
+                        <NewInputFieldStructure
+                          label="Area"
+                          isRequired={true}
+                          variant="outlined"
+                          value={selectInterestedArea}
+                          handleChange={(e) =>
+                            handleChangeInteresetCitiesDetails(
+                              SELECT_AREA,
+                              e.target.value
+                            )
+                          }
+                          name={SELECT_AREA}
+                        />
+                      </>
+                    ) : (
+                      ""
+                    )}
+                    <Grid item xs={12} sx={{ mt: 1, display: "flex" }}>
+                      <Box
+                        sx={{ flex: 1, alignSelf: "center", ml: -1, mt: -1 }}
+                      >
+                        {profileInfo?.interestedCities?.map(
+                          (cityInfo, index) => {
+                            return (
+                              <Chip
+                                key={index}
+                                label={`${cityInfo?.selectArea}, ${cityInfo?.selectCity}`}
+                                size="small"
+                                sx={{ ml: 1, mt: 1 }}
+                                onDelete={() => removeInterestedCity(index)}
+                              />
+                            );
+                          }
+                        )}
+                      </Box>
+                      <Box>
+                        <CustomButton
+                          disabled={
+                            !(
+                              selectInterestedArea &&
+                              selectInterestedCity &&
+                              selectInterestedState
+                            )
+                          }
+                          variant="contained"
+                          onClick={handleAddInterestedCities}
+                          ButtonText={"Add"}
+                        />
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Card>
+              </Grid>
+              <Grid item xs={12} id="budget">
+                <Card>
+                  <Box sx={{ display: "flex", p: 2, py: 1 }}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
+                    >
+                      Budget
+                    </Typography>
                   </Box>
-                  <Box>
-                    <CustomButton
-                      disabled={
-                        !(
-                          selectInterestedArea &&
-                          selectInterestedCity &&
-                          selectInterestedState
-                        )
+                  <Divider />
+                  <Grid
+                    container
+                    rowSpacing={1}
+                    columnSpacing={2}
+                    sx={{ p: 2 }}
+                  >
+                    <NewCurrencyInputField
+                      label="Minimum"
+                      variant="outlined"
+                      isEdit={isEdit}
+                      name1={"unit"}
+                      name2={"value"}
+                      value1={profileInfo?.budget?.minimumBudget?.unit}
+                      value2={profileInfo?.budget?.minimumBudget?.value}
+                      handleChange={(e) =>
+                        handleChange(e, "budget", "minimumBudget", "value")
                       }
-                      variant="contained"
-                      onClick={handleAddInterestedCities}
-
-                      ButtonText={"Add"}
+                      handleSelect={(e) =>
+                        handleChange(e, "budget", "minimumBudget", "unit")
+                      }
                     />
+                    <NewCurrencyInputField
+                      label="Maximum"
+                      variant="outlined"
+                      isEdit={isEdit}
+                      value1={profileInfo?.budget?.maximumBudget?.unit}
+                      value2={profileInfo?.budget?.maximumBudget?.value}
+                      handleChange={(e) =>
+                        handleChange(e, "budget", "maximumBudget", "value")
+                      }
+                      handleSelect={(e) =>
+                        handleChange(e, "budget", "maximumBudget", "unit")
+                      }
+                      name1={"unit"}
+                      name2={"value"}
+                    />
+                    <NewToggleButtonStructure
+                      label="Exploring as"
+                      isEdit={isEdit}
+                      handleChange={handleChangeBudgetToggles}
+                      name={"exploringAs"}
+                      value={profileInfo?.budget?.exploringAs}
+                    >
+                      {exploringAs?.map((rs, i) => {
+                        return (
+                          <ToggleButton
+                            fullWidth
+                            key={i}
+                            size="small"
+                            name={"exploringAs"}
+                            value={rs.value}
+                          >
+                            {rs.label}
+                          </ToggleButton>
+                        );
+                      })}
+                    </NewToggleButtonStructure>
+                    <NewToggleButtonStructure
+                      label="Purpose"
+                      isEdit={isEdit}
+                      value={profileInfo?.budget?.purpose}
+                      handleChange={handleChangeBudgetToggles}
+                      name={"purpose"}
+                    >
+                      {purpose?.map((rs, i) => {
+                        return (
+                          <ToggleButton
+                            fullWidth
+                            key={i}
+                            size="small"
+                            value={rs.value}
+                            name={"purpose"}
+                          >
+                            {rs.label}
+                          </ToggleButton>
+                        );
+                      })}
+                    </NewToggleButtonStructure>
+                    <NewToggleButtonStructure
+                      label="Purchase"
+                      isEdit={isEdit}
+                      value={profileInfo?.budget?.purchase}
+                      handleChange={handleChangeBudgetToggles}
+                      name={"purchase"}
+                    >
+                      {purchase?.map((rs, i) => {
+                        return (
+                          <ToggleButton
+                            fullWidth
+                            key={i}
+                            size="small"
+                            value={rs.value}
+                            name={"purchase"}
+                          >
+                            {rs.label}
+                          </ToggleButton>
+                        );
+                      })}
+                    </NewToggleButtonStructure>
+                    <NewToggleButtonStructure
+                      label="Demographic"
+                      isEdit={isEdit}
+                      value={profileInfo?.budget?.demographic}
+                      handleChange={handleChangeBudgetToggles}
+                      name={"demographic"}
+                    >
+                      {demographic?.map((rs, i) => {
+                        return (
+                          <ToggleButton
+                            key={i}
+                            fullWidth
+                            size="small"
+                            value={rs.value}
+                            name={"demographic"}
+                          >
+                            {rs.label}
+                          </ToggleButton>
+                        );
+                      })}
+                    </NewToggleButtonStructure>
+                    <NewToggleButtonStructure
+                      label="Interested for loan"
+                      isEdit={isEdit}
+                      value={profileInfo?.budget?.interestedForLoan}
+                      handleChange={handleChangeBudgetToggles}
+                      name={"interestedForLoan"}
+                    >
+                      {interestedForLoan?.map((rs, i) => {
+                        return (
+                          <ToggleButton
+                            fullWidth
+                            key={i}
+                            size="small"
+                            value={rs.value}
+                            name={"interestedForLoan"}
+                          >
+                            {rs.label}
+                          </ToggleButton>
+                        );
+                      })}
+                    </NewToggleButtonStructure>
+                  </Grid>
+                </Card>
+              </Grid>
+              <Grid item xs={12} id="currentAddress">
+                <Card>
+                  <Box sx={{ display: "flex", p: 2, py: 1 }}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
+                    >
+                      Current address
+                    </Typography>
                   </Box>
-                </Grid>
-              </Grid>
-            </Card>
-          </Grid>
-          <Grid item xs={12} id="budget">
-            <Card>
-              <Box sx={{ display: "flex", p: 2, py: 1 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-                >
-                  Budget
-                </Typography>
-              </Box>
-              <Divider />
-              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <NewCurrencyInputField
-                  label="Minimum"
-                  variant="outlined"
-                  isEdit={isEdit}
-                  name1={"unit"}
-                  name2={"value"}
-                  value1={profileInfo?.budget?.minimumBudget?.unit}
-                  value2={profileInfo?.budget?.minimumBudget?.value}
-                  handleChange={(e) =>
-                    handleChange(e, "budget", "minimumBudget", "value")
-                  }
-                  handleSelect={(e) =>
-                    handleChange(e, "budget", "minimumBudget", "unit")
-                  }
-                />
-                <NewCurrencyInputField
-                  label="Maximum"
-                  variant="outlined"
-                  isEdit={isEdit}
-                  value1={profileInfo?.budget?.maximumBudget?.unit}
-                  value2={profileInfo?.budget?.maximumBudget?.value}
-                  handleChange={(e) =>
-                    handleChange(e, "budget", "maximumBudget", "value")
-                  }
-                  handleSelect={(e) =>
-                    handleChange(e, "budget", "maximumBudget", "unit")
-                  }
-                  name1={"unit"}
-                  name2={"value"}
-                />
-                <NewToggleButtonStructure
-                  label="Exploring as"
-                  isEdit={isEdit}
-                  handleChange={handleChangeBudgetToggles}
-                  name={"exploringAs"}
-                  value={profileInfo?.budget?.exploringAs}
-                >
-                  {exploringAs?.map((rs, i) => {
-                    return (
-                      <ToggleButton
-                        fullWidth
-                        key={i}
-                        size="small"
-                        name={"exploringAs"}
-                        value={rs.value}
-                      >
-                        {rs.label}
-                      </ToggleButton>
-                    );
-                  })}
-                </NewToggleButtonStructure>
-                <NewToggleButtonStructure
-                  label="Purpose"
-                  isEdit={isEdit}
-                  value={profileInfo?.budget?.purpose}
-                  handleChange={handleChangeBudgetToggles}
-                  name={"purpose"}
-                >
-                  {purpose?.map((rs, i) => {
-                    return (
-                      <ToggleButton
-                        fullWidth
-                        key={i}
-                        size="small"
-                        value={rs.value}
-                        name={"purpose"}
-                      >
-                        {rs.label}
-                      </ToggleButton>
-                    );
-                  })}
-                </NewToggleButtonStructure>
-                <NewToggleButtonStructure
-                  label="Purchase"
-                  isEdit={isEdit}
-                  value={profileInfo?.budget?.purchase}
-                  handleChange={handleChangeBudgetToggles}
-                  name={"purchase"}
-                >
-                  {purchase?.map((rs, i) => {
-                    return (
-                      <ToggleButton
-                        fullWidth
-                        key={i}
-                        size="small"
-                        value={rs.value}
-                        name={"purchase"}
-                      >
-                        {rs.label}
-                      </ToggleButton>
-                    );
-                  })}
-                </NewToggleButtonStructure>
-                <NewToggleButtonStructure
-                  label="Demographic"
-                  isEdit={isEdit}
-                  value={profileInfo?.budget?.demographic}
-                  handleChange={handleChangeBudgetToggles}
-                  name={"demographic"}
-                >
-                  {demographic?.map((rs, i) => {
-                    return (
-                      <ToggleButton
-                        key={i}
-                        fullWidth
-                        size="small"
-                        value={rs.value}
-                        name={"demographic"}
-                      >
-                        {rs.label}
-                      </ToggleButton>
-                    );
-                  })}
-                </NewToggleButtonStructure>
-                <NewToggleButtonStructure
-                  label="Interested for loan"
-                  isEdit={isEdit}
-                  value={profileInfo?.budget?.interestedForLoan}
-                  handleChange={handleChangeBudgetToggles}
-                  name={"interestedForLoan"}
-                >
-                  {interestedForLoan?.map((rs, i) => {
-                    return (
-                      <ToggleButton
-                        fullWidth
-                        key={i}
-                        size="small"
-                        value={rs.value}
-                        name={"interestedForLoan"}
-                      >
-                        {rs.label}
-                      </ToggleButton>
-                    );
-                  })}
-                </NewToggleButtonStructure>
-              </Grid>
-            </Card>
-          </Grid>
-          <Grid item xs={12} id="currentAddress">
-            <Card>
-              <Box sx={{ display: "flex", p: 2, py: 1 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-                >
-                  Current address
-                </Typography>
-              </Box>
-              <Divider />
-              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                <NewToggleButtonStructure
-                  isEdit={isEdit}
-                  label="Address type"
-                  value={profileInfo?.currentAddress?.addressType}
-                  handleChange={handleChangeCurrentAddress}
-                  name="addressType"
-                >
-                  {addressType?.map((rs, i) => {
-                    return (
-                      <ToggleButton
-                        fullWidth
-                        key={i}
-                        size="small"
-                        value={rs.value}
-                        name="addressType"
-                      >
-                        {rs.label}
-                      </ToggleButton>
-                    );
-                  })}
-                </NewToggleButtonStructure>
-                <NewInputFieldStructure
-                  label="Address line 1"
-                  variant="outlined"
-                  isEdit={isEdit}
-                  value={profileInfo?.currentAddress?.addressLine1}
-                  handleChange={(e) =>
-                    handleChange(e, "currentAddress", "addressLine1")
-                  }
-                  name="addressLine1"
-                />
-                <NewInputFieldStructure
-                  label="Address line 2"
-                  variant="outlined"
-                  isEdit={isEdit}
-                  value={profileInfo?.currentAddress?.addressLine2}
-                  handleChange={(e) =>
-                    handleChange(e, "currentAddress", "addressLine2")
-                  }
-                  name="addressLine2"
-                />
-                <NewAutoCompleteInputStructure
-                  label="Country"
-                  value={{
-                    label: profileInfo?.currentAddress?.country,
-                    value: profileInfo?.currentAddress?.country,
-                  }}
-                  handleChange={(e, newValue) =>
-                    handleChangeCurrentAddress({
-                      target: {
-                        name: "country",
-                        value: newValue.value,
-                      },
-                    })
-                  }
-                  list={countryList?.map((rs) => {
-                    return {
-                      label: rs.country_name,
-                      value: rs.country_name,
-                    };
-                  })}
-                />
-                <NewAutoCompleteInputStructure
-                  label="State"
-                  value={{
-                    label: profileInfo?.currentAddress?.state,
-                    value: profileInfo?.currentAddress?.state,
-                  }}
-                  handleChange={(e, newValue) =>
-                    handleChangeCurrentAddress({
-                      target: {
-                        name: "state",
-                        value: newValue.value,
-                      },
-                    })
-                  }
-                  list={allStateList?.map((rs) => {
-                    return {
-                      label: rs.state_name,
-                      value: rs.state_name,
-                    };
-                  })}
-                />
-
-                <NewInputFieldStructure
-                  label="City"
-                  variant="outlined"
-                  isEdit={isEdit}
-                  value={profileInfo?.currentAddress?.city}
-                  handleChange={(e) =>
-                    handleChange(e, "currentAddress", "city")
-                  }
-                  name="city"
-                />
-
-                <NewInputFieldStructure
-                  label="Pincode"
-                  variant="outlined"
-                  value={profileInfo?.currentAddress?.pinCode}
-                  isEdit={isEdit}
-                  handleChange={(e) =>
-                    handleChange(e, "currentAddress", "pinCode")
-                  }
-                  name="pinCode"
-                />
-              </Grid>
-            </Card>
-          </Grid>
-          <Grid item xs={12} id="setting">
-            <Card>
-              <Box sx={{ display: "flex", p: 2, py: 1 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
-                >
-                  Setting
-                </Typography>
-              </Box>
-              <Divider />
-              <Box sx={{ p: 2 }}>
-                <Grid container rowSpacing={1} columnSpacing={2}>
+                  <Divider />
                   <Grid
-                    item
-                    xs={12}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
+                    container
+                    rowSpacing={1}
+                    columnSpacing={2}
+                    sx={{ p: 2 }}
                   >
-                    <Typography variant="body1">
-                      Do not disturb (DND) mode
-                    </Typography>
-                    <Switch
-                      checked={profileInfo?.settings?.dnd}
-                      name={"dnd"}
-                      onChange={handleChangeSettings}
-                      color="primary"
+                    <NewToggleButtonStructure
+                      isEdit={isEdit}
+                      isRequired={true}
+                      label="Address type"
+                      value={profileInfo?.currentAddress?.addressType}
+                      handleChange={handleChangeCurrentAddress}
+                      name="addressType"
+                    >
+                      {addressType?.map((rs, i) => {
+                        return (
+                          <ToggleButton
+                            fullWidth
+                            key={i}
+                            size="small"
+                            value={rs.value}
+                            name="addressType"
+                          >
+                            {rs.label}
+                          </ToggleButton>
+                        );
+                      })}
+                    </NewToggleButtonStructure>
+                    <NewInputFieldStructure
+                      label="Address line 1"
+                      isRequired={true}
+                      variant="outlined"
+                      isEdit={isEdit}
+                      value={profileInfo?.currentAddress?.addressLine1}
+                      handleChange={(e) =>
+                        handleChange(e, "currentAddress", "addressLine1")
+                      }
+                      name="addressLine1"
+                    />
+                    <NewInputFieldStructure
+                      label="Address line 2"
+                      variant="outlined"
+                      isEdit={isEdit}
+                      isRequired={true}
+                      value={profileInfo?.currentAddress?.addressLine2}
+                      handleChange={(e) =>
+                        handleChange(e, "currentAddress", "addressLine2")
+                      }
+                      name="addressLine2"
+                    />
+                    <NewAutoCompleteInputStructure
+                      label="Country"
+                      isRequired={true}
+                      value={profileInfo?.currentAddress?.country}
+                      handleChange={(e, newValue) =>
+                        handleChangeCurrentAddress({
+                          target: {
+                            name: "country",
+                            value: newValue.value,
+                          },
+                        })
+                      }
+                      list={countryList?.map((rs) => {
+                        return {
+                          label: rs.country_name,
+                          value: rs.country_name,
+                        };
+                      })}
+                    />
+                    <NewAutoCompleteInputStructure
+                      label="State"
+                      isRequired={true}
+                      value={profileInfo?.currentAddress?.state}
+                      handleChange={(e, newValue) =>
+                        handleChangeCurrentAddress({
+                          target: {
+                            name: "state",
+                            value: newValue.value,
+                          },
+                        })
+                      }
+                      list={allStateList?.map((rs) => {
+                        return {
+                          label: rs.state_name,
+                          value: rs.state_name,
+                        };
+                      })}
+                    />
+
+                    <NewInputFieldStructure
+                      label="City"
+                      variant="outlined"
+                      isEdit={isEdit}
+                      isRequired={true}
+                      value={profileInfo?.currentAddress?.city}
+                      handleChange={(e) =>
+                        handleChange(e, "currentAddress", "city")
+                      }
+                      name="city"
+                    />
+
+                    <NewInputFieldStructure
+                      label="Pincode"
+                      isRequired={true}
+                      variant="outlined"
+                      value={profileInfo?.currentAddress?.pinCode}
+                      isEdit={isEdit}
+                      handleChange={(e) =>
+                        handleChange(e, "currentAddress", "pinCode")
+                      }
+                      name="pinCode"
                     />
                   </Grid>
-
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography variant="body1">
-                      Don't send WhatsApp promotions
+                </Card>
+              </Grid>
+              <Grid item xs={12} id="setting">
+                <Card>
+                  <Box sx={{ display: "flex", p: 2, py: 1 }}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
+                    >
+                      Setting
                     </Typography>
-                    <Switch
-                      checked={profileInfo?.settings?.rwp}
-                      name={"rwp"}
-                      onChange={handleChangeSettings}
-                      color="primary"
-                    />
-                  </Grid>
-                </Grid>
-              </Box>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-      <Box
-        sx={{
-          position: "fixed",
-          right: 16,
-          bottom: 16,
-          display: { xs: "none", evmd: "flex" },
-          flexDirection: "column",
-        }}
-      >
-        <Fab
-          variant="extended"
-          sx={{ justifyContent: "flex-start" }}
-          onClick={handleSave}
-          disabled={!checkMandatoryFields()}
-        >
-          <SaveIcon fontSize="small" sx={{ mr: 1 }} />
-          Save
-        </Fab>
-      </Box>
+                  </Box>
+                  <Divider />
+                  <Box sx={{ p: 2 }}>
+                    <Grid container rowSpacing={1} columnSpacing={2}>
+                      <Grid
+                        item
+                        xs={12}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography variant="body1">
+                          Do not disturb (DND) mode
+                        </Typography>
+                        <Switch
+                          checked={profileInfo?.settings?.dnd}
+                          name={"dnd"}
+                          onChange={handleChangeSettings}
+                          color="primary"
+                        />
+                      </Grid>
+
+                      <Grid
+                        item
+                        xs={12}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography variant="body1">
+                          Don't send WhatsApp promotions
+                        </Typography>
+                        <Switch
+                          checked={profileInfo?.settings?.rwp}
+                          name={"rwp"}
+                          onChange={handleChangeSettings}
+                          color="primary"
+                        />
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Card>
+              </Grid>
+            </Grid>
+          </Container>
+          <Box
+            sx={{
+              position: "fixed",
+              right: 16,
+              bottom: 16,
+              display: { xs: "none", evmd: "flex" },
+              flexDirection: "column",
+            }}
+          >
+            <Fab
+              variant="extended"
+              sx={{ justifyContent: "flex-start" }}
+              onClick={handleSave}
+              disabled={!checkMandatoryFields()}
+            >
+              <SaveIcon fontSize="small" sx={{ mr: 1 }} />
+              Save
+            </Fab>
+          </Box>
+        </>
+      )}
     </>
   );
 }
