@@ -45,7 +45,7 @@ export const getGoogleId = () => {
   return "";
 };
 
-const publicRoutes = ["/login", "/consultant/make-payment", "/property-list", "/all-brokers", "/enquiries",
+const publicRoutes = ["/", "/login", "/consultant/make-payment", "/property-list", "/all-brokers", "/enquiries",
   "/page-not-found", "/terms-and-condition", "/privacy", "/consultant/join-now"];
 
 const scopes = {

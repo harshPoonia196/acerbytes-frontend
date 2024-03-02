@@ -213,7 +213,8 @@ function PropertyList() {
 
   return (
     <>
-      {isLoading ? <Loader /> : <>
+      <>
+        {isLoading && <Loader />}
         <Container maxWidth="lg">
           <Card sx={{ mb: 2 }}>
             <Grid container sx={{ display: "flex", flexDirection: "row-reverse" }}>
@@ -249,6 +250,7 @@ function PropertyList() {
           </Card>
 
           <Grid container spacing={2} columns={36}>
+
             {/* commercial,residential */} {/*please delete this after done and same for all below*/}
             <NewMultiSelectAutoCompleteInputStructure label="Category" list={selectOption?.category} handleChange={(event, value) => handleOptionChange("category", value[0])} value={selectedOptions.category ? [selectedOptions.category] : []} />
             {/* Flat,shop */}
@@ -260,7 +262,7 @@ function PropertyList() {
             {/* Sector/area */}
             <NewMultiSelectAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value) => handleOptionChange("location", value[0])} value={selectedOptions.location ? [selectedOptions.location] : []} />
             <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value) => handleOptionChange("status", value[0])} value={selectedOptions.status ? [selectedOptions.status] : []} />
-            <Grid item xs={18} sx={{ alignSelf: "center" }}>
+            <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
                 value={alignment}
@@ -284,7 +286,7 @@ function PropertyList() {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={18} sx={{ alignSelf: "center" }}>
+            <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
               <ToggleButtonGroup
                 color="primary"
                 value={alignment === 1 ? "asc" : "dec"}
@@ -350,7 +352,7 @@ function PropertyList() {
             </Grid>
           </Grid>
         </Container>
-      </>}
+      </>
     </>
   );
 }

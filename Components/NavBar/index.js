@@ -32,6 +32,7 @@ import {
   AdminMenuList,
   CommonMenuList,
   ConsultantMenuList,
+  ToBeRemoved,
   UserMenuList,
   companyName,
   listOfPages,
@@ -214,8 +215,22 @@ export default function ClippedDrawer({ children }) {
       <>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <List>
+          <List subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              Public
+            </ListSubheader>
+          }>
             {CommonMenuList.map((item) => (
+              <DrawerListItem key={item.label} item={item} />
+            ))}
+          </List>
+          <Divider />
+          <List subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              To be removed
+            </ListSubheader>
+          }>
+            {ToBeRemoved.map((item) => (
               <DrawerListItem key={item.label} item={item} />
             ))}
           </List>
@@ -444,7 +459,7 @@ export default function ClippedDrawer({ children }) {
               {userDetails && Object.keys(userDetails).length ? (
                 <Typography>
                   Hi,{" "}
-                  <span style={{ color: colors.BLUE }}>
+                  <span style={{ color: colors.BLUE, textTransform: 'capitalize' }}>
                     {userDetails?.name?.firstName} {userDetails?.name?.lastName}
                   </span>
                 </Typography>

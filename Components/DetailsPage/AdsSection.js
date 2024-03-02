@@ -114,7 +114,7 @@ function AdsSection({
         isConsultant ? (
           <Box
             sx={{
-              p: 1,
+              pb: 1,
               pt: 0,
               px: 2,
               display: "flex",
@@ -122,17 +122,18 @@ function AdsSection({
               flexDirection: { xs: "column", evmd: "row" },
             }}
           >
-            <Box sx={{ display: "flex", flex: 1 }}>
-              <Chip
-                size="small"
-                sx={{
-                  backgroundColor: "lightgoldenrodyellow",
-                  border: "2px solid gold",
-                  alignSelf: "center",
-                  mr: 1,
-                }}
-                label="Sample Ad"
-              />
+            <Box sx={{ display: "flex", flexDirection: { xs: 'column-reverse', sm: 'row' }, flex: 1 }}>
+              <Box sx={{ alignSelf: { xs: "end", sm: 'center' } }}>
+                <Chip
+                  size="small"
+                  sx={{
+                    backgroundColor: "lightgoldenrodyellow",
+                    border: "2px solid gold",
+                    mr: 1,
+                  }}
+                  label="Sample Ad"
+                />
+              </Box>
               <Typography variant="h6" sx={{ flex: 1, alignSelf: "center" }}>
                 Get your personalized URL to receive potential buyers queries
                 directly in your leadsbox

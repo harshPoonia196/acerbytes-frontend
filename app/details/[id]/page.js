@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -138,8 +138,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -156,8 +156,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -172,7 +172,7 @@ const PropertyDetailsPage = ({ params }) => {
     try {
       const response = await favPropertyCreate(adData);
       if (response.status == 200) {
-          detailsGetProperty();
+        detailsGetProperty();
       }
     } catch (error) {
       showToaterMessages(
@@ -366,9 +366,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -428,233 +428,231 @@ const PropertyDetailsPage = ({ params }) => {
   );
 
   return (
+
     <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <ActivateAdsPopup
-            SinglePropertyId={propertyData}
-            detailsGetProperty={detailsGetProperty}
-            open={activateAdsPopupState}
-            handleClose={handleCloseActivateAdsPopup}
+      {isLoading &&
+        <Loader />}
+      <ActivateAdsPopup
+        SinglePropertyId={propertyData}
+        detailsGetProperty={detailsGetProperty}
+        open={activateAdsPopupState}
+        handleClose={handleCloseActivateAdsPopup}
+      />
+      <DisableActivateAdsPopup
+        open={disablePersonalizeAds}
+        handleOpen={handleOpenPersonalizeAds}
+        handleClose={handleClosePersonalizeAds}
+      />
+
+      {role === 'broker' && !propertyData.isActiveAd ? (
+        <AdsSection
+          handleOpenPersonalizeAds={handleOpenPersonalizeAds}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+          handleOpenEnquiryForm={handleOpenEnquiryForm}
+          isConsultant
+          brokerContact={brokerContact}
+        />
+      ) : null}
+
+      {(role !== 'admin' && role !== 'superAdmin') && propertyData.isActiveAd ? (
+        <AdsSection
+          SinglePropertyId={propertyData?.propertyBroker[0]}
+          propertyData={propertyData}
+          id={propertyData?.propertyBroker?.[0]?._id}
+          handleOpenPersonalizeAds={handleOpenPersonalizeAds}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+          handleOpenEnquiryForm={handleOpenEnquiryForm}
+          brokerContact={brokerContact}
+        />
+      ) : null}
+
+      <nav className={classes.demo2}>
+        <TopMenu
+          topMenu={propertyData}
+          value={activeState}
+          handleChange={handleClick}
+          list={itemsServer}
+        />
+      </nav>
+      <Box>
+        <MarketingSection overviewData={propertyData} />
+        <Container maxWidth="evmd">
+          <EnquireNow
+            open={openEnquiryForm}
+            handleClose={handleCloseEnquiryForm}
+            handleAction={handleOpenVerifyPopup}
+            handleOpen={handleOpenEnquiryForm}
+            submitEnquiry={handleSubmitEnquiry}
           />
-          <DisableActivateAdsPopup
-            open={disablePersonalizeAds}
-            handleOpen={handleOpenPersonalizeAds}
-            handleClose={handleClosePersonalizeAds}
+          <OtpVerify
+            open={openOtpPopup}
+            handleClose={handleCloseVerifyPopup}
+            handleOpen={handleOpenEnquiryForm}
+            handleAlternateSignIn={handleOpenAlternateSignIn}
+          />
+          <AlternateSignIn
+            open={openAlternateSignIn}
+            handleClose={handleCloseAlternateSignIn}
           />
 
-          {role === 'broker' && !propertyData.isActiveAd ? (
-            <AdsSection
-              handleOpenPersonalizeAds={handleOpenPersonalizeAds}
-              handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
-              handleOpenEnquiryForm={handleOpenEnquiryForm}
-              isConsultant
-              brokerContact={brokerContact}
+          <Grid container spacing={2} id="section-list">
+            <ClearanceSection
+              regulatoryClearanceData={propertyData?.regulatoryClearance}
             />
-          ) : null}
-
-          {(role !== 'admin' && role !== 'superAdmin') && propertyData.isActiveAd ? (
-            <AdsSection
-              SinglePropertyId={propertyData?.propertyBroker[0]}
-              propertyData={propertyData}
-              id={propertyData?.propertyBroker?.[0]?._id}
-              handleOpenPersonalizeAds={handleOpenPersonalizeAds}
-              handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
-              handleOpenEnquiryForm={handleOpenEnquiryForm}
-              brokerContact={brokerContact}
+            <LandscapeSection layoutData={propertyData?.layout} />
+            <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
+            <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
+            <LocationSection locationData={propertyData?.location} />
+            {/* <PricingSection /> */}
+            {/* <ResaleSection /> */}
+            <ValueForMoneySection
+              valueForMoneyData={propertyData?.valueForMoney}
             />
-          ) : null}
+            {/* <FloorPlanSection /> */}
+            <Grid item xs={12} id="propertyConsultants">
+              <Card sx={{ p: 2 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sx={{ display: "flex" }}>
+                    <Box sx={{ flex: 1, alignSelf: "center" }}>
+                      <Typography variant="h4">
+                        Contact verified consultants
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Chip
+                        label="View all"
+                        icon={<GroupIcon fontSize="small" />}
+                        size="small"
+                        onClick={() => { }}
+                        sx={{ fontSize: "0.875rem !important" }}
+                      />
+                    </Box>
+                  </Grid>
 
-          <nav className={classes.demo2}>
-            <TopMenu
-              topMenu={propertyData}
-              value={activeState}
-              handleChange={handleClick}
-              list={itemsServer}
-            />
-          </nav>
-          <Box>
-            <MarketingSection overviewData={propertyData} />
-            <Container maxWidth="evmd">
-              <EnquireNow
-                open={openEnquiryForm}
-                handleClose={handleCloseEnquiryForm}
-                handleAction={handleOpenVerifyPopup}
-                handleOpen={handleOpenEnquiryForm}
-                submitEnquiry={handleSubmitEnquiry}
-              />
-              <OtpVerify
-                open={openOtpPopup}
-                handleClose={handleCloseVerifyPopup}
-                handleOpen={handleOpenEnquiryForm}
-                handleAlternateSignIn={handleOpenAlternateSignIn}
-              />
-              <AlternateSignIn
-                open={openAlternateSignIn}
-                handleClose={handleCloseAlternateSignIn}
-              />
-
-              <Grid container spacing={2} id="section-list">
-                <ClearanceSection
-                  regulatoryClearanceData={propertyData?.regulatoryClearance}
-                />
-                <LandscapeSection layoutData={propertyData?.layout} />
-                <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
-                <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
-                <LocationSection locationData={propertyData?.location} />
-                {/* <PricingSection /> */}
-                {/* <ResaleSection /> */}
-                <ValueForMoneySection
-                  valueForMoneyData={propertyData?.valueForMoney}
-                />
-                {/* <FloorPlanSection /> */}
-                <Grid item xs={12} id="propertyConsultants">
-                  <Card sx={{ p: 2 }}>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} sx={{ display: "flex" }}>
-                        <Box sx={{ flex: 1, alignSelf: "center" }}>
-                          <Typography variant="h4">
-                            Contact verified consultants
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <Chip
-                            label="View all"
-                            icon={<GroupIcon fontSize="small" />}
-                            size="small"
-                            onClick={() => {}}
-                            sx={{ fontSize: "0.875rem !important" }}
-                          />
-                        </Box>
-                      </Grid>
-
-                      {transformedData?.map((broker) => (
-                        <Grid item xs={12} sm={6} key={broker?.name}>
-                          <BrokerCard broker={broker} noReview />
-                        </Grid>
-                      ))}
-
-                      <Grid item xs={12}>
-                        <Box sx={{ display: "flex" }}>
-                          <Typography
-                            variant="body2"
-                            sx={{ flex: 1, alignSelf: "center" }}
-                          >
-                            Are you a property consultant, let Customers reach
-                            you
-                          </Typography>
-                          <Chip
-                            label="Yes, show me here !"
-                            icon={<PersonAddIcon fontSize="small" />}
-                            size="small"
-                            sx={{ fontSize: "0.875rem" }}
-                            onClick={() => {}}
-                          />
-                        </Box>
-                      </Grid>
+                  {transformedData?.map((broker) => (
+                    <Grid item xs={12} sm={6} key={broker?.name}>
+                      <BrokerCard broker={broker} noReview />
                     </Grid>
-                  </Card>
+                  ))}
+
+                  <Grid item xs={12}>
+                    <Box sx={{ display: "flex" }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ flex: 1, alignSelf: "center" }}
+                      >
+                        Are you a property consultant, let Customers reach
+                        you
+                      </Typography>
+                      <Chip
+                        label="Yes, show me here !"
+                        icon={<PersonAddIcon fontSize="small" />}
+                        size="small"
+                        sx={{ fontSize: "0.875rem" }}
+                        onClick={() => { }}
+                      />
+                    </Box>
+                  </Grid>
                 </Grid>
-                <OverallAssesmentSection />
-              </Grid>
-
-              {/* Dont Touch this */}
-              <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
-
-              <Card
-                sx={{
-                  p: 2,
-                  position: "fixed",
-                  left: 0,
-                  bottom: 0,
-                  width: "100%",
-                  display: { xs: "block", evmd: "none" },
-                  background: "whitesmoke",
-                  boxShadow: "-1px -2px 6px 2px gainsboro !important",
-                }}
-              >
-                <Box sx={{ mt: -1, ml: -1, display: "flex", flexWrap: "wrap" }}>
-                  <Button
-                    sx={{ mt: 1, ml: 1 }}
-                    variant="outlined"
-                    onClick={handleOpenEnquiryForm}
-                    startIcon={<ThumbUpOffAltIcon />}
-                  >
-                    Like
-                  </Button>
-                  <Button
-                    sx={{ mt: 1, ml: 1 }}
-                    variant="outlined"
-                    onClick={handleOpenEnquiryForm}
-                    startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
-                  >
-                    Share
-                  </Button>
-                  <Button
-                    sx={{ mt: 1, ml: 1 }}
-                    variant="outlined"
-                    onClick={handleOpenEnquiryForm}
-                    startIcon={<WhatsAppIcon />}
-                  >
-                    Contact
-                  </Button>
-                  <Button
-                    sx={{ mt: 1, ml: 1 }}
-                    variant="outlined"
-                    onClick={handleOpenEnquiryForm}
-                    startIcon={<AssignmentIcon />}
-                  >
-                    Enquire
-                  </Button>
-                </Box>
               </Card>
+            </Grid>
+            <OverallAssesmentSection />
+          </Grid>
 
-              <Box
-                sx={{
-                  position: "fixed",
-                  right: 16,
-                  bottom: 16,
-                  display: { xs: "none", evmd: "flex" },
-                  flexDirection: "column",
-                }}
+          {/* Dont Touch this */}
+          <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
+
+          <Card
+            sx={{
+              p: 2,
+              position: "fixed",
+              left: 0,
+              bottom: 0,
+              width: "100%",
+              display: { xs: "block", evmd: "none" },
+              background: "whitesmoke",
+              boxShadow: "-1px -2px 6px 2px gainsboro !important",
+            }}
+          >
+            <Box sx={{ mt: -1, ml: -1, display: "flex", flexWrap: "wrap" }}>
+              <Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={handleOpenEnquiryForm}
+                startIcon={<ThumbUpOffAltIcon />}
               >
-                <Fab
-                  variant="extended"
-                  sx={{ mb: 1, justifyContent: "flex-start" }}
-                >
-                  <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                  Like
-                </Fab>
-                <Fab
-                  variant="extended"
-                  sx={{ mb: 1, justifyContent: "flex-start" }}
-                >
-                  <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
-                  Share
-                </Fab>
-                <Fab
-                  variant="extended"
-                  sx={{ mb: 1, justifyContent: "flex-start" }}
-                >
-                  <WhatsAppIcon sx={{ mr: 1 }} />
-                  Contact
-                </Fab>
-                <Fab
-                  variant="extended"
-                  sx={{ justifyContent: "flex-start" }}
-                  onClick={handleOpenEnquiryForm}
-                >
-                  <AssignmentIcon sx={{ mr: 1 }} />
-                  Enquire
-                </Fab>
-              </Box>
-            </Container>
+                Like
+              </Button>
+              <Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={handleOpenEnquiryForm}
+                startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
+              >
+                Share
+              </Button>
+              <Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={handleOpenEnquiryForm}
+                startIcon={<WhatsAppIcon />}
+              >
+                Contact
+              </Button>
+              <Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={handleOpenEnquiryForm}
+                startIcon={<AssignmentIcon />}
+              >
+                Enquire
+              </Button>
+            </Box>
+          </Card>
+
+          <Box
+            sx={{
+              position: "fixed",
+              right: 16,
+              bottom: 16,
+              display: { xs: "none", evmd: "flex" },
+              flexDirection: "column",
+            }}
+          >
+            <Fab
+              variant="extended"
+              sx={{ mb: 1, justifyContent: "flex-start" }}
+            >
+              <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+              Like
+            </Fab>
+            <Fab
+              variant="extended"
+              sx={{ mb: 1, justifyContent: "flex-start" }}
+            >
+              <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
+              Share
+            </Fab>
+            <Fab
+              variant="extended"
+              sx={{ mb: 1, justifyContent: "flex-start" }}
+            >
+              <WhatsAppIcon sx={{ mr: 1 }} />
+              Contact
+            </Fab>
+            <Fab
+              variant="extended"
+              sx={{ justifyContent: "flex-start" }}
+              onClick={handleOpenEnquiryForm}
+            >
+              <AssignmentIcon sx={{ mr: 1 }} />
+              Enquire
+            </Fab>
           </Box>
-        </>
-      )}
+        </Container>
+      </Box>
     </>
+
   );
 };
 
