@@ -1,27 +1,53 @@
-import React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
 
-const Loader = () => {
+import React from "react";
+import { makeStyles } from "@mui/styles";
+import clsx from "clsx";
+import {RotatingLines} from "react-loader-spinner"
+
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    zIndex: 10000,
+    width: "100vw",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.1)",
+  },
+  spinner: {
+    height: "15vh !important",
+    width: "15vh !important",
+  },
+}));
+
+function Loader(props) {
+  const { isLoading } = props;
+
+  const classes = useStyles();
   return (
-    <Box
-      sx={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backdropFilter: "blur(-25px)", // Add backdrop filter for blurring
-        backgroundColor: "rgba(0, 0, 0, 0.5)", // Add a semi-transparent background
-        zIndex: 10000, // Set a high z-index to ensure it's on top of other elements
-      }}
-    >
-      <CircularProgress color="inherit" />
-    </Box>
+    <>
+      {isLoading ? (
+        <div className={clsx(classes.container)}>
+          <RotatingLines
+  visible={true}
+  height="48"
+  width="48"
+  strokeColor="black"
+  strokeWidth="5"
+  animationDuration="0.75"
+  ariaLabel="rotating-lines-loading"
+ 
+  className={clsx(classes.spinner)}
+  />
+          
+        </div>
+      ) : null}
+    </>
   );
-};
+}
 
 export default Loader;
