@@ -39,7 +39,6 @@ import { getBrokerProfile, updateBrokerProfile } from "api/BrokerProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId, validateEmail } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
-import PageLoader from "Components/Loader/PageLoader";
 import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
 import {
@@ -48,6 +47,7 @@ import {
   getAllStateList,
 } from "api/Util.api";
 import { countries, currencies } from "Components/config/config";
+import Loader from "Components/CommonLayouts/Loading";
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
@@ -523,7 +523,9 @@ function ConsultantProfile() {
 
   return (
     <>
-      <PageLoader isLoading={isLoading || mutate.isPending} />
+      {
+        (isLoading || mutate.isPending) && <Loader />
+      }
       <nav className={classes.demo2}>
         <CustomConsultantBreadScrumbs text="Profile" />
         <Card>

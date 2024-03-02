@@ -21,7 +21,7 @@ import { useQueries } from "utills/ReactQueryContext";
 import { getBrokers } from "api/UserProfile.api";
 import { reactQueryKey } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
-import PageLoader from "Components/Loader/PageLoader";
+import Loader from "Components/CommonLayouts/Loading";
 
 function Brokers() {
   const router = useRouter();
@@ -53,8 +53,8 @@ function Brokers() {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-            error?.message ||
-            "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
           "error"
         );
         return error;
@@ -108,7 +108,8 @@ function Brokers() {
 
   return (
     <>
-      <PageLoader isLoading={isLoading} />
+      {isLoading && <Loader />}
+
       <Box
         sx={{
           background: "white",

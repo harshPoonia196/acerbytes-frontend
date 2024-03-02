@@ -193,8 +193,8 @@ function EnquiriesTable() {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-            error?.message ||
-            "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
           "error"
         );
         return error;
@@ -241,7 +241,7 @@ function EnquiriesTable() {
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
+      {isLoading && <Loader />}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <EnhancedTableHead
