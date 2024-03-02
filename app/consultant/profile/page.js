@@ -632,6 +632,7 @@ function ConsultantProfile() {
                     value={brokerProfileInfo?.name?.firstName || ""}
                     handleChange={(e) => handleChange(e, "name", "firstName")}
                     isEdit={isEdit}
+                    name="firstName"
                   />
                   <NewInputFieldStructure
                     label="Last name"
@@ -640,6 +641,7 @@ function ConsultantProfile() {
                     value={brokerProfileInfo?.name?.lastName || ""}
                     handleChange={(e) => handleChange(e, "name", "lastName")}
                     isEdit={isEdit}
+                    name="lastName"
                   />
 
                   {/* <NewPhoneInputFieldStructure
