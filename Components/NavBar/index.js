@@ -157,15 +157,19 @@ export default function ClippedDrawer({ children }) {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      className="dropdownfix"
+      sx={{ top: "0px", left: "0px" }}
     >
-      <MenuItem
-        onClick={() => {
-          router.push(listOfPages.userProfile);
-          handleMenuClose();
-        }}
-      >
-        Profile
-      </MenuItem>
+      {userDetails.role !== "admin" && (
+        <MenuItem
+          onClick={() => {
+            router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
+            handleMenuClose();
+          }}
+        >
+          Profile
+        </MenuItem>
+      )}
       {isLogged ? (
         <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
       ) : null}
@@ -194,12 +198,12 @@ export default function ClippedDrawer({ children }) {
         >
           <ListItemIcon sx={{ minWidth: 40 }}>{item?.icon}</ListItemIcon>
           <StyledBadge
-            color='whitesmoke'
-            badgeContent={
-              <Typography variant="body2" sx={{ color: colors.BLACK }}>
-                99
-              </Typography>
-            }
+            color="secondary"
+            // badgeContent={
+            //   <Typography variant="body2" sx={{ color: "white" }}>
+            //     99
+            //   </Typography>
+            // }
             sx={{ flex: 1 }}
             invisible={false}
           >
@@ -329,16 +333,26 @@ export default function ClippedDrawer({ children }) {
                 </IconButton>
               }
             >
-              <ListItemButton
-                onClick={() => logout()}
-                sx={{ pl: 3 }}
-                role={undefined}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>
-                  <LogoutIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText secondary="Log out" />
-              </ListItemButton>
+              {isLogged ? (
+                <ListItemButton
+                  onClick={() => logout()}
+                  sx={{ pl: 3 }}
+                  role={undefined}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <LogoutIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText secondary="Log out" />
+                </ListItemButton>
+              ) : (
+                <Button
+                  onClick={() => {
+                    router.push("/login");
+                  }}
+                >
+                  Sign in
+                </Button>
+              )}
             </ListItem>
           </List>
         </Card>
@@ -375,6 +389,7 @@ export default function ClippedDrawer({ children }) {
         anchor={"left"}
         open={isDrawerOpen}
         onClose={handleDrawerClose}
+        hideBackdrop={true}
         BackdropProps={{ invisible: true }}
         sx={{
           width: drawerWidth,

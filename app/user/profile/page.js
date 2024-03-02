@@ -53,7 +53,8 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { listOfProfileTab } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import { countries } from "Components/config/config";
+import { validateEmail } from "utills/utills";
+import { countries, currencies } from "Components/config/config";
 
 const tabHeight = 116;
 
@@ -75,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -125,11 +126,11 @@ function Profile() {
     },
     budget: {
       minimumBudget: {
-        unit: "",
+        unit: currencies[0]?.value,
         value: "",
       },
       maximumBudget: {
-        unit: "",
+        unit: currencies[0]?.value,
         value: "",
       },
       exploringAs: "",
@@ -194,9 +195,9 @@ function Profile() {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -251,10 +252,10 @@ function Profile() {
   }, []);
 
   React.useEffect(() => {
-    if (isLogged) {
-      getUserProfile();
-    }
-  }, [isLogged]);
+    // if (isLogged) {
+    getUserProfile();
+    // }
+  }, [isLogged && userDetails?._id]);
 
   const getUserProfile = async () => {
     if (isLogged && userDetails?._id) {
@@ -265,7 +266,20 @@ function Profile() {
           const dataPlayload = res?.data?.data;
           setProfileInfo({
             ...profileInfo,
-            budget: dataPlayload?.budget,
+            budget: {
+              minimumBudget: {
+                value: dataPlayload?.budget?.minimumBudget?.value,
+                unit:
+                  dataPlayload?.budget?.minimumBudget?.unit ||
+                  currencies[0]?.value,
+              },
+              maximumBudget: {
+                value: dataPlayload?.budget?.maximumBudget?.value,
+                unit:
+                  dataPlayload?.budget?.maximumBudget?.unit ||
+                  currencies[0]?.value,
+              },
+            },
             currentAddress: dataPlayload?.currentAddress,
             interestedCities: dataPlayload?.interestedCities || [],
             name: dataPlayload?.name,
@@ -280,12 +294,16 @@ function Profile() {
             googleID: dataPlayload?.googleID,
             email: dataPlayload?.email,
           });
+
+          if (dataPlayload?.currentAddress?.country) {
+            getStatListByName(dataPlayload?.currentAddress?.country);
+          }
         }
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching user profile",
+            error?.message ||
+            "Error fetching user profile",
           "error"
         );
         setLoading(false);
@@ -307,8 +325,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching country list",
+          error?.message ||
+          "Error fetching country list",
         "error"
       );
     }
@@ -326,8 +344,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     }
@@ -345,8 +363,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -364,8 +382,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -380,14 +398,14 @@ function Profile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-          ...prev?.[firstKeyName],
-          [secondKeyName]: !thirdKeyName
-            ? value
-            : {
-              ...prev?.[firstKeyName]?.[secondKeyName],
-              [thirdKeyName]: value,
-            },
-        },
+            ...prev?.[firstKeyName],
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+          },
     }));
   };
 
@@ -496,12 +514,6 @@ function Profile() {
     return true;
   };
 
-  const validateEmail = (email) => {
-    return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-  };
-
   const handleSave = async () => {
     try {
       if (
@@ -528,8 +540,8 @@ function Profile() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error user profile updating",
+          error?.message ||
+          "Error user profile updating",
         "error"
       );
     } finally {
@@ -555,7 +567,6 @@ function Profile() {
 
     localStorage.setItem("userDetails", JSON.stringify(userInfo));
   };
-
 
   return (
     <>
@@ -802,7 +813,6 @@ function Profile() {
                       }
                       variant="contained"
                       onClick={handleAddInterestedCities}
-
                       ButtonText={"Add"}
                     />
                   </Box>

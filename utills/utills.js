@@ -45,7 +45,7 @@ export const getGoogleId = () => {
   return "";
 };
 
-const publicRoutes = ["/", "/login", "/consultant/make-payment", "/property-list", "/all-brokers", "/enquiries",
+const publicRoutes = ["/", "/login", '/property-list', '/all-brokers', '/enquiries', '/details/:id', "/consultant/make-payment",
   "/page-not-found", "/terms-and-condition", "/privacy", "/consultant/join-now"];
 
 const scopes = {
@@ -55,7 +55,15 @@ const scopes = {
 };
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
-  if (!isLogged && !publicRoutes.includes(url)) {
+  const isPublicRoute = publicRoutes.some(publicRoute => {
+    if (publicRoute.includes("/:")) { // Handle dynamic routes
+      const baseRoute = publicRoute.split("/:")[0];
+      return url.startsWith(baseRoute);
+    }
+    return url === publicRoute;
+  });
+
+  if (!isLogged && !isPublicRoute) {
     redirectUser("/login");
   }
   if (isLogged) {
@@ -89,4 +97,10 @@ export const countryCodeFormating = (code = "") => {
   }
 
   return `+${code}`;
+};
+
+export const validateEmail = (email) => {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
 };
