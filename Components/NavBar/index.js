@@ -146,7 +146,7 @@ export default function ClippedDrawer({ children }) {
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: "top",
+        vertical: "bottom",
         horizontal: "right",
       }}
       id={menuId}
@@ -157,8 +157,6 @@ export default function ClippedDrawer({ children }) {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
-      className="dropdownfix"
-      sx={{ top: "0px", left: "0px" }}
     >
       {userDetails.role !== "admin" && (
         <MenuItem

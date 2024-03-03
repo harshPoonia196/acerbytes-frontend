@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, TextField, Grid, Box, Autocomplete } from "@mui/material";
 import colors from "styles/theme/colors";
+import { menuMaxHeight } from "utills/Constants";
 
 const NewAutoCompleteInputStructure = ({
   handleChange,
@@ -41,6 +42,13 @@ const NewAutoCompleteInputStructure = ({
         renderInput={(params, index) => {
           return <TextField key={index} error={error} value={params.value} {...params} size="small" fullWidth />
         }}
+        ListboxProps={
+          {
+            style: {
+              maxHeight: menuMaxHeight,
+            }
+          }
+        }
       />
     </Grid>
   </>

@@ -20,6 +20,7 @@ import { getAllOptionData, getAllProperty } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
 import {
+  DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
 } from "Components/config/config";
@@ -152,7 +153,7 @@ function PropertyList() {
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 500);
+    }, DEBOUNCE_TIMER);
 
     return () => clearTimeout(timerId);
   }, [searchTerm, selectedOptions]);

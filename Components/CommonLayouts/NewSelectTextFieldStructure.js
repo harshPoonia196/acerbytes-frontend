@@ -4,6 +4,7 @@ import colors from "styles/theme/colors";
 import Tooltip from '@mui/material/Tooltip';
 import InputAdornment from '@mui/material/InputAdornment';
 import InfoIcon from '@mui/icons-material/Info';
+import { menuMaxHeight } from "utills/Constants";
 
 function NewSelectTextFieldStructure({
   value,
@@ -19,7 +20,7 @@ function NewSelectTextFieldStructure({
   sx,
   showInfo = false,
   infoText = "Info",
-  helperText= ""
+  helperText = ""
 }) {
   return (
     <Grid item xs={12} sm={full ? 12 : 6}>
@@ -41,11 +42,12 @@ function NewSelectTextFieldStructure({
           error={error && error}
           InputProps={
             showInfo && {
-            startAdornment: <Tooltip title={infoText}
-            
-            ><InputAdornment position="start"><InfoIcon sx={{fontSize:25,cursor:"pointer"}}/></InputAdornment></Tooltip>,
+              startAdornment: <Tooltip title={infoText}>
+                <InputAdornment position="start">
+                  <InfoIcon sx={{ fontSize: 25, cursor: "pointer" }} />
+                </InputAdornment></Tooltip>,
+            }
           }
-        }
           defaultValue=""
           fullWidth
           size="small"
@@ -56,6 +58,15 @@ function NewSelectTextFieldStructure({
             ...sx,
           }}
           helperText={helperText}
+          SelectProps={{
+            MenuProps: {
+              PaperProps: {
+                style: {
+                  maxHeight: menuMaxHeight,
+                },
+              },
+            },
+          }}
         >
           {list ? (
             list?.map((option) => (
@@ -71,8 +82,9 @@ function NewSelectTextFieldStructure({
         </TextField>
       ) : (
         <Typography variant="subtitle1">Value</Typography>
-      )}
-    </Grid>
+      )
+      }
+    </Grid >
   );
 }
 

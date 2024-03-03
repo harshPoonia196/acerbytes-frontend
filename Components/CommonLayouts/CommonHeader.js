@@ -7,10 +7,10 @@ const InfoBox = ({ title, subtitle, pagename }) => {
   return (
     <Box sx={{ backgroundColor: "white" }}>
       <Container maxWidth="lg">
-        <Box sx={{ py: 4 }}>
+        <Box sx={{ py: 2 }}>
           {/* {pagename && <Typography variant="h2">{pagename}</Typography>} */}
-          {title && <Typography variant="h2">{title}</Typography>}
-          {subtitle && <Typography variant="h2">{subtitle}</Typography>}
+          {title && <Typography variant="h4">{title}</Typography>}
+          {subtitle && <Typography variant="h3">{subtitle}</Typography>}
         </Box>
       </Container>
     </Box>

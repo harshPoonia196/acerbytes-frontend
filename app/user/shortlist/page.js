@@ -13,6 +13,7 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { getAllfavouriteProperty } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
+import { DEBOUNCE_TIMER } from "Components/config/config";
 
 function ShortList() {
   const [alignment, setAlignment] = useState("asc");
@@ -81,7 +82,7 @@ function ShortList() {
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 500);
+    }, DEBOUNCE_TIMER);
 
     return () => clearTimeout(timerId);
   }, [searchTerm]);

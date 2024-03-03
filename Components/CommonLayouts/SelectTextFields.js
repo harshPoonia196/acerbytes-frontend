@@ -29,6 +29,15 @@ function SelectTextFields({
         },
         ...sx,
       }}
+      SelectProps={{
+        MenuProps: {
+          PaperProps: {
+            style: {
+              maxHeight: menuMaxHeight,
+            },
+          },
+        },
+      }}
     >
       {
         list ? (

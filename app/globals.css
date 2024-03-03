@@ -134,8 +134,3 @@ html {
 .MuiStack-root .MuiTextField-root {
   min-width: 200px !important;
 }
-
-.dropdownfix{
-  top: 42px !important;
-  right: 12px;
-}
