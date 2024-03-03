@@ -306,6 +306,7 @@ function Profile() {
           setProfileInfo({
             ...profileInfo,
             budget: {
+              ...dataPlayload?.budget,
               minimumBudget: {
                 value: dataPlayload?.budget?.minimumBudget?.value,
                 unit:
@@ -787,6 +788,7 @@ function Profile() {
                   handleChange={(e) => handleChange(e, "alternateEmail")}
                   name={"alternateEmail"}
                   value={profileInfo?.alternateEmail}
+                  error={emailInvalid}
                 />
               </Grid>
             </Card>

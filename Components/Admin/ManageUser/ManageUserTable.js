@@ -266,7 +266,7 @@ function ManageUserTable({ searchText }) {
         firstName: searchText,
         lastName: searchText,
         role: searchText,
-        phone: Number(searchText),
+        phone: searchText,
         email: searchText,
       };
       setLoading(true);
