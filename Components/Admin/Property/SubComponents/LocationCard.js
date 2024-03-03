@@ -19,37 +19,38 @@ import { getLocations } from 'api/Property.api';
 import { useSnackbar } from "utills/SnackbarContext";
 
 
-function LocationCard({ isEdit, form, handleChange, errors,selectOptions }) {
+function LocationCard({ isEdit, form, handleChange, errors, selectOptions }) {
     const { openSnackbar } = useSnackbar()
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
 
-const getLocationsCall = async()=>{
-    try{
-        let res = await getLocations()
-        if(res.status===200){
-            setOpts(res.data.data)
+    const getLocationsCall = async () => {
+        try {
+            let res = await getLocations()
+            if (res.status === 200) {
+                setOpts(res.data.data)
+            }
+            else {
+                console.log('err')
+            }
         }
-        else{
-            console.log('err')
+        catch (err) {
+            openSnackbar(
+                "Error getting location  details",
+                "error"
+            );
         }
+
+
     }
-    catch(err){
-        openSnackbar(
-              "Error getting location  details",
-            "error"
-          );    }
+    const [opts, setOpts] = React.useState([]);
 
-
-}
-const [opts, setOpts] = React.useState([]);
-
-useEffect(()=>{
-getLocationsCall();
-},[])
+    useEffect(() => {
+        getLocationsCall();
+    }, [])
 
     return (
         <Grid item xs={12} id="location" >
-            <Card>
+            <Card sx={{ mb: 2 }}>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
                         variant="subtitle1"
@@ -57,11 +58,6 @@ getLocationsCall();
                     >
                         Location
                     </Typography>
-                    <Box>
-                        <IconButton>
-                            <EditIcon fontSize="small" />
-                        </IconButton>
-                    </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -69,8 +65,8 @@ getLocationsCall();
                         label="State"
                         isEdit={isEdit}
                         value={state}
-                       
-                        list={[ {label:"Kashmir",value:"Kashmir"}, {label:"Punjab",value:"Punjab"},{label:"Tamil Nadu",value:"TamilNadu"}]}
+
+                        list={[{ label: "Kashmir", value: "Kashmir" }, { label: "Punjab", value: "Punjab" }, { label: "Tamil Nadu", value: "TamilNadu" }]}
                         error={errors?.["location.state"]}
                         handleChange={(e) => handleChange(e, "location", "state")}
                     />
@@ -83,13 +79,13 @@ getLocationsCall();
                         handleChange={(e) => handleChange(e, "location", "city")}
                     /> */}
                     <NewAutocompleteAddOptionToList
-                    label="City"
-                    value={city}
-                    error={errors?.["location.city"]}
-                    options={opts}
-                    handleChange={(e) => handleChange(e, "location", "city")}
+                        label="City"
+                        value={city}
+                        error={errors?.["location.city"]}
+                        options={opts}
+                        handleChange={(e) => handleChange(e, "location", "city")}
                     />
-                  
+
                     <NewInputFieldStructure
                         label="Area"
                         variant="outlined"
@@ -98,7 +94,7 @@ getLocationsCall();
                         error={errors?.["location.area"]}
                         handleChange={(e) => handleChange(e, "location", "area")}
                     />
-                      <NewInputFieldStructure
+                    <NewInputFieldStructure
                         label="Sector / Locality / Sub area"
                         variant="outlined"
                         isEdit={isEdit}
@@ -112,7 +108,7 @@ getLocationsCall();
                         isEdit={isEdit}
                         value={pinCode}
                         error={errors?.["location.pinCode"]}
-                        handleChange={(e)=> handleChange(e, "location", "pinCode")}
+                        handleChange={(e) => handleChange(e, "location", "pinCode")}
                     />
                     <NewInputFieldStructure
                         label="Google map link"
@@ -120,7 +116,7 @@ getLocationsCall();
                         isEdit={isEdit}
                         value={googleMapLink}
                         error={errors?.["location.googleMapLink"]}
-                        handleChange={(e)=> handleChange(e, "location", "googleMapLink")}
+                        handleChange={(e) => handleChange(e, "location", "googleMapLink")}
                     />
                     <NewInputFieldStructure
                         label="Geo longitude"
@@ -128,7 +124,7 @@ getLocationsCall();
                         isEdit={isEdit}
                         value={longitude}
                         error={errors?.["location.longitude"]}
-                        handleChange={(e)=> handleChange(e, "location", "longitude")}
+                        handleChange={(e) => handleChange(e, "location", "longitude")}
                     />
                     <NewInputFieldStructure
                         label="Geo latitude"
@@ -136,14 +132,12 @@ getLocationsCall();
                         isEdit={isEdit}
                         value={latitude}
                         error={errors?.["location.latitude"]}
-                        handleChange={(e)=> handleChange(e, "location", "latitude")}
+                        handleChange={(e) => handleChange(e, "location", "latitude")}
                     />
-                    <Box>
-
-<LocationAssesmentCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
-</Box>
                 </Grid>
             </Card>
+
+            <LocationAssesmentCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
         </Grid>
     )
 }

@@ -26,11 +26,6 @@ function PropertyConsultantsCard({ isEdit, form, list, handleChange }) {
           >
             Property Consultants
           </Typography>
-          <Box>
-            <IconButton>
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Box>
         </Box>
         <Divider />
         <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
