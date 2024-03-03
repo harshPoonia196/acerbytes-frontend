@@ -747,7 +747,6 @@ function ConsultantProfile() {
                   />
                   <NewInputFieldStructure
                     label="Company email"
-                    isRequired={true}
                     value={
                       brokerProfileInfo?.serviceDetails?.companyEmail || ""
                     }
@@ -761,7 +760,6 @@ function ConsultantProfile() {
                     }
                   />
                   <NewPhoneInputFieldStructure
-                    isRequired={true}
                     variant="outlined"
                     label="Registerd phone"
                     value1={

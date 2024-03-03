@@ -2,6 +2,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, T
 import InputField from 'Components/CommonLayouts/InputField';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import React from 'react'
+import { formatPoints } from 'utills/CommonFunction';
 
 function AddCreditPopup({ open, handleClose }) {
     return (
@@ -18,7 +19,7 @@ function AddCreditPopup({ open, handleClose }) {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                            Current credit : 1000 +
+                            Current credit : {formatPoints(1000)}
                         </Typography>
                     </Grid>
                     <InputField label="Credits to add" />
@@ -36,7 +37,7 @@ function AddCreditPopup({ open, handleClose }) {
                         variant="outlined"
                         sx={{ mr: 2 }}
                         onClick={handleClose}
-                    
+
                         ButtonText={"Close"}
                     />
                     <CustomButton
@@ -45,8 +46,7 @@ function AddCreditPopup({ open, handleClose }) {
                         onClick={
                             handleClose
                         }
-                    
-                        ButtonTex={"Submit"}
+                        ButtonText={"Submit"}
                     />
                 </Box>
             </DialogActions>

@@ -16,6 +16,7 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { companyName } from "Components/NavBar/Links";
 import { BuyingCreditPoints } from "Components/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { formatAmount, formatPoints } from "utills/CommonFunction";
 
 function ConsultantAddCreditPopup({ open, handleClose }) {
   const [openCreditRequestPaymentPopup, setCreditRequestPaymentPopup] =
@@ -56,24 +57,24 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
           {BuyingCreditPoints?.map((credit) => {
             return (
               <>
-                <Card sx={{ display: "flex", p: 1 }}>
+                <Card sx={{ display: "flex", p: 1, gap: 1, flexDirection: { xs: 'column', sm: 'row' } }}>
                   <Box sx={{ flex: 1 }}>
                     <Typography variant="body1">
-                      {credit.point} points
+                      {formatPoints(credit.point)} points
                     </Typography>
                     <Typography variant="subtitle2">
                       <span style={{ fontWeight: 600 }}>
-                        Rs {credit.amount}
+                        {formatAmount(credit.amount)}
                       </span>{" "}
                       ({credit.discount}% discount)
                     </Typography>
                   </Box>
-                  <Box sx={{ ml: 2 }}>
+                  <Box sx={{ textAlign: 'end' }}>
                     <CustomButton
                       variant="contained"
                       size="small"
                       onClick={() => handleOpenCreditRequestPaymentPopup(credit)}
-                      ButtonText={`Get ${credit.point} points`}
+                      ButtonText={`Get ${formatPoints(credit.point)} points`}
                     />
                   </Box>
                 </Card>
@@ -99,21 +100,21 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
           <Typography variant="body2">
             Property consultant can use above credits to activate below services
           </Typography>
-          <ul>
-            <li style={{ marginLeft: "16px" }}>
+          <ul style={{ marginLeft: "16px" }}>
+            <li>
               <Typography variant="body2">
                 Activate unique link for a property
               </Typography>
             </li>
-            <li style={{ marginLeft: "16px" }}>
+            <li>
               <Typography variant="body2">View leads contact</Typography>
             </li>
-            <li style={{ marginLeft: "16px" }}>
+            <li>
               <Typography variant="body2">
                 Managing leads panel with notes
               </Typography>
             </li>
-            <li style={{ marginLeft: "16px" }}>
+            <li>
               <Typography variant="body2">
                 Link own profile with Property page
               </Typography>

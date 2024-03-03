@@ -71,13 +71,13 @@ const disablePersonalizeAdsOption = [
 
 const listOfProfileTab = [
   { label: "User details", value: "userDetails" },
-  { label: "Service details", value: "serviceDetails" },
+  { label: "Work details", value: "serviceDetails" },
   { label: "Interested cities", value: "interestedCities" },
-  { label: "Budget", value: "budget" },
+  { label: "Searching for", value: "budget" },
   // { label: 'Enquiries', value: 'enquiries' },
   // { label: 'Property Consultants', value: 'propertyConsultants' },
   { label: "Current address", value: "currentAddress" },
-  { label: "Setting", value: "setting" },
+  { label: "Settings", value: "setting" },
 ];
 
 const listOfConsultantProfileTab = [
