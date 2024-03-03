@@ -257,309 +257,203 @@ function FloorPlanCard({
           >
             Units plan
           </Typography>
-          <Box>
-            <IconButton>
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Box>
+
         </Box>
         <Divider />
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={2}
-          columns={24}
-          sx={{ p: 2 }}
-        >
-          <NewSelectTextFieldStructure
-            label="Unit type"
-            isEdit={isEdit}
-            list={projectType}
-            name="propertyType"
-            error={
-              localError?.["propertyType"] ||
-              errors?.["unitsPlan.planList[0].propertyType"]
-            }
-            value={selectedItem.propertyType}
-            handleChange={(e) =>
-              setSelectedItem((prev) => ({
-                ...prev,
-                propertyType: e.target.value,
-              }))
-            }
-          />
-          <NewSelectTextFieldStructure
-            label="Unit"
-            isEdit={isEdit}
-            name="propertyLayout"
-            list={layoutType}
-            error={
-              localError?.["propertyLayout"] ||
-              errors?.["unitsPlan.planList[0].propertyLayout"]
-            }
-            value={selectedItem.propertyLayout}
-            handleChange={(e) =>
-              setSelectedItem((prev) => ({
-                ...prev,
-                propertyLayout: e.target.value,
-              }))
-            }
-          />
-          <NewInputFieldStructure
-            label="Name #"
-            variant="outlined"
-            isEdit={isEdit}
-            name="name"
-            error={
-              localError?.["name"] || errors?.["unitsPlan.planList[0].name"]
-            }
-            value={selectedItem.name}
-            handleChange={(e) =>
-              setSelectedItem((prev) => ({ ...prev, name: e.target.value }))
-            }
-          />
+        <Box sx={{ p: 2 }}>
+          <Grid
+            container
+            rowSpacing={1}
+            columnSpacing={2}
+            columns={18}
+          >
+            <NewSelectTextFieldStructure
+              label="Unit type"
+              isEdit={isEdit}
+              list={projectType}
+              name="propertyType"
+              error={
+                localError?.["propertyType"] ||
+                errors?.["unitsPlan.planList[0].propertyType"]
+              }
+              value={selectedItem.propertyType}
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({
+                  ...prev,
+                  propertyType: e.target.value,
+                }))
+              }
+            />
+            <NewSelectTextFieldStructure
+              label="Unit"
+              isEdit={isEdit}
+              name="propertyLayout"
+              list={layoutType}
+              error={
+                localError?.["propertyLayout"] ||
+                errors?.["unitsPlan.planList[0].propertyLayout"]
+              }
+              value={selectedItem.propertyLayout}
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({
+                  ...prev,
+                  propertyLayout: e.target.value,
+                }))
+              }
+            />
+            <NewInputFieldStructure
+              label="Name #"
+              variant="outlined"
+              isEdit={isEdit}
+              name="name"
+              error={
+                localError?.["name"] || errors?.["unitsPlan.planList[0].name"]
+              }
+              value={selectedItem.name}
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({ ...prev, name: e.target.value }))
+              }
+            />
 
-          <NewSelectTextFieldStructure
-            label="Area Unit"
-            name="areaUnit"
-            infoText="Changing the unit leads to re enter the plan. The old entries will be removed"
-            showInfo={true}
-            error={
-              localError?.["areaUnit"] ||
-              errors?.["unitsPlan.planList[0].areaUnit"]
-            }
-            isEdit={isEdit}
-            list={[
-              { label: "acres", value: "acres" },
-              { label: "sqft", value: "sqft" },
-            ]}
-            value={selectedItem.areaUnit}
-            handleChange={(e) => {
-              if (rows.length >= 1) {
-                let check = rows.every(
-                  (obj) => obj["areaUnit"] !== e.target.value
-                );
-                if (check) {
-                  let changeUnit = rows.map((item) => {
-                    return { ...item, area: "", areaUnit: e.target.value };
-                  });
-                  setRows(changeUnit);
-                  handleOpen();
-                  setSelectedItem((prev) => ({
-                    ...prev,
-                    areaUnit: e.target.value,
-                  }));
+            <NewSelectTextFieldStructure
+              label="Area Unit"
+              name="areaUnit"
+              infoText="Changing the unit leads to re enter the plan. The old entries will be removed"
+              showInfo={true}
+              error={
+                localError?.["areaUnit"] ||
+                errors?.["unitsPlan.planList[0].areaUnit"]
+              }
+              isEdit={isEdit}
+              list={[
+                { label: "acres", value: "acres" },
+                { label: "sqft", value: "sqft" },
+              ]}
+              value={selectedItem.areaUnit}
+              handleChange={(e) => {
+                if (rows.length >= 1) {
+                  let check = rows.every(
+                    (obj) => obj["areaUnit"] !== e.target.value
+                  );
+                  if (check) {
+                    let changeUnit = rows.map((item) => {
+                      return { ...item, area: "", areaUnit: e.target.value };
+                    });
+                    setRows(changeUnit);
+                    handleOpen();
+                    setSelectedItem((prev) => ({
+                      ...prev,
+                      areaUnit: e.target.value,
+                    }));
+                  } else {
+                    setSelectedItem((prev) => ({
+                      ...prev,
+                      areaUnit: e.target.value,
+                    }));
+                  }
                 } else {
                   setSelectedItem((prev) => ({
                     ...prev,
                     areaUnit: e.target.value,
                   }));
                 }
-              } else {
+              }}
+            />
+
+            <NewInputFieldStructure
+              label="Area (Per Unit)"
+              variant="outlined"
+              isEdit={isEdit}
+              name="area"
+              value={selectedItem.area}
+              error={
+                localError?.["area"] || errors?.["unitsPlan.planList[0].area"]
+              }
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
+              }
+            />
+
+            <NewInputFieldStructure
+              label="Base Selling Price (Per Unit)"
+              variant="outlined"
+              isEdit={isEdit}
+              name="bsp"
+              error={localError?.["bsp"] || errors?.["unitsPlan.planList[0].bsp"]}
+              value={selectedItem.bsp}
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({ ...prev, bsp: e.target.value }))
+              }
+            />
+
+            <NewInputFieldStructure
+              label="Total Units"
+              variant="outlined"
+              isEdit={isEdit}
+              name="totalUnits"
+              value={selectedItem.totalUnits}
+              error={
+                localError?.["totalUnits"] ||
+                errors?.["unitsPlan.planList[0].totalUnits"]
+              }
+              handleChange={(e) =>
                 setSelectedItem((prev) => ({
                   ...prev,
-                  areaUnit: e.target.value,
-                }));
+                  totalUnits: e.target.value,
+                }))
               }
-            }}
-          />
-
-          <NewInputFieldStructure
-            label="Area (Per Unit)"
-            variant="outlined"
-            isEdit={isEdit}
-            name="area"
-            value={selectedItem.area}
-            error={
-              localError?.["area"] || errors?.["unitsPlan.planList[0].area"]
-            }
-            handleChange={(e) =>
-              setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
-            }
-          />
-
-          <NewInputFieldStructure
-            label="Base Selling Price (Per Unit)"
-            variant="outlined"
-            isEdit={isEdit}
-            name="bsp"
-            error={localError?.["bsp"] || errors?.["unitsPlan.planList[0].bsp"]}
-            value={selectedItem.bsp}
-            handleChange={(e) =>
-              setSelectedItem((prev) => ({ ...prev, bsp: e.target.value }))
-            }
-          />
-
-          <NewInputFieldStructure
-            label="Total Units"
-            variant="outlined"
-            isEdit={isEdit}
-            name="totalUnits"
-            value={selectedItem.totalUnits}
-            error={
-              localError?.["totalUnits"] ||
-              errors?.["unitsPlan.planList[0].totalUnits"]
-            }
-            handleChange={(e) =>
-              setSelectedItem((prev) => ({
-                ...prev,
-                totalUnits: e.target.value,
-              }))
-            }
-          />
-
-          <NewSelectTextFieldStructure
-            label="Applicable Year"
-            name="applicableYear"
-            error={
-              localError?.["applicableYear"] ||
-              errors?.["unitsPlan.planList[0].applicableYear"]
-            }
-            isEdit={isEdit}
-            list={[
-              { label: "2000", value: "2000" },
-              { label: "2001", value: "2001" },
-            ]}
-            value={selectedItem.applicableYear}
-            handleChange={(e) =>
-              setSelectedItem((prev) => ({
-                ...prev,
-                applicableYear: e.target.value,
-              }))
-            }
-          />
-          <NewSelectTextFieldStructure
-            label="Applicable Month"
-            name="applicableMonth"
-            error={
-              localError?.["applicableMonth"] ||
-              errors?.["unitsPlan.planList[0].applicableMonth"]
-            }
-            isEdit={isEdit}
-            list={[
-              { label: "01", value: "01" },
-              { label: "02", value: "02" },
-            ]}
-            value={selectedItem.applicableMonth}
-            handleChange={(e) =>
-              setSelectedItem((prev) => ({
-                ...prev,
-                applicableMonth: e.target.value,
-              }))
-            }
-          />
-          <Grid item xs={24} sx={{ textAlign: "end" }}>
-            <CustomButton
-              variant="contained"
-              onClick={isEditItem ? editFloorPlan : addFloorPlan}
-            
-              ButtonText={isEditItem ? "Edit" : "Add"}
             />
+
+            <NewSelectTextFieldStructure
+              label="Applicable Year"
+              name="applicableYear"
+              error={
+                localError?.["applicableYear"] ||
+                errors?.["unitsPlan.planList[0].applicableYear"]
+              }
+              isEdit={isEdit}
+              list={[
+                { label: "2000", value: "2000" },
+                { label: "2001", value: "2001" },
+              ]}
+              value={selectedItem.applicableYear}
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({
+                  ...prev,
+                  applicableYear: e.target.value,
+                }))
+              }
+            />
+            <NewSelectTextFieldStructure
+              label="Applicable Month"
+              name="applicableMonth"
+              error={
+                localError?.["applicableMonth"] ||
+                errors?.["unitsPlan.planList[0].applicableMonth"]
+              }
+              isEdit={isEdit}
+              list={[
+                { label: "01", value: "01" },
+                { label: "02", value: "02" },
+              ]}
+              value={selectedItem.applicableMonth}
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({
+                  ...prev,
+                  applicableMonth: e.target.value,
+                }))
+              }
+            />
+            <Grid item xs={18} sx={{ textAlign: "end", mt: 1 }}>
+              <CustomButton
+                variant="contained"
+                onClick={isEditItem ? editFloorPlan : addFloorPlan}
+
+                ButtonText={isEditItem ? "Edit" : "Add"}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={2}
-          columns={24}
-          sx={{ p: 2 }}
-        >
-          <TableContainer sx={{ p: 3 }} component={Paper}>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Property Type</TableCell>
-                  <TableCell align="left">Property Layout</TableCell>
-                  <TableCell align="left">Name</TableCell>
-                  <TableCell align="left">Area</TableCell>
-                  <TableCell align="left">Area Unit</TableCell>
-                  <TableCell align="left">Base Selling Price</TableCell>
-                  <TableCell align="left">Applicable Year</TableCell>
-                  <TableCell align="left">Applicable Month</TableCell>
-                  <TableCell align="left">Edit</TableCell>
-                  <TableCell align="left">Delete</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows?.map((row, index) => (
-                  <TableRow
-                    key={row.name + index}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    {row.propertyType && (
-                      <TableCell component="th" scope="row">
-                        {row.propertyType}
-                      </TableCell>
-                    )}
-                    {row.propertyLayout && (
-                      <TableCell align="left">{row.propertyLayout}</TableCell>
-                    )}
-                    {row.name ? (
-                      <TableCell align="left">{row.name}</TableCell>
-                    ) : (
-                      ""
-                    )}
-                    {row.area !== "" ? (
-                      <TableCell align="left">{row.area}</TableCell>
-                    ) : (
-                      <TableCell>
-                        <InfoIcon
-                          sx={{ fontSize: 18, cursor: "pointer", color: "red" }}
-                        />
-                      </TableCell>
-                    )}
-                    {row.areaUnit ? (
-                      <TableCell align="left">
-                        {row.areaUnit ? row.areaUnit : " "}
-                      </TableCell>
-                    ) : (
-                      ""
-                    )}
-                    {row.bsp ? (
-                      <TableCell align="left">{row.bsp}</TableCell>
-                    ) : (
-                      ""
-                    )}
-                    {row.applicableYear ? (
-                      <TableCell align="left">{row.applicableYear}</TableCell>
-                    ) : (
-                      ""
-                    )}
-                    {row.applicableMonth ? (
-                      <TableCell align="left">{row.applicableMonth}</TableCell>
-                    ) : (
-                      ""
-                    )}
-                    {row.propertyType ? (
-                      <TableCell align="left">
-                        <IconButton
-                          onClick={() => {
-                            setSelectedItem(row);
-                            setIsEditItem(true);
-                            setEditItem(index);
-                          }}
-                        >
-                          <EditIcon fontSize="small" />
-                        </IconButton>
-                      </TableCell>
-                    ) : (
-                      ""
-                    )}
-                    {row.propertyType ? (
-                      <TableCell align="left">
-                        <IconButton onClick={() => deleteFloorPlan(index)}>
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                      </TableCell>
-                    ) : (
-                      ""
-                    )}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
+        </Box>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -587,6 +481,100 @@ function FloorPlanCard({
           </Fade>
         </Modal>
       </Card>
+      <TableContainer sx={{ mt: 2 }} component={Paper}>
+        <Table size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <TableCell >Property Type</TableCell>
+              <TableCell align="left" >Property Layout</TableCell>
+              <TableCell align="left" >Name</TableCell>
+              <TableCell align="left" >Area</TableCell>
+              <TableCell align="left" >Area Unit</TableCell>
+              <TableCell align="left" >Base Selling Price</TableCell>
+              <TableCell align="left" >Applicable Year</TableCell>
+              <TableCell align="left" >Applicable Month</TableCell>
+              <TableCell align="left" >Edit</TableCell>
+              <TableCell align="left" >Delete</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows?.map((row, index) => (
+              <TableRow
+                key={row.name + index}
+              >
+                {row.propertyType && (
+                  <TableCell >
+                    {row.propertyType}
+                  </TableCell>
+                )}
+                {row.propertyLayout && (
+                  <TableCell align="left">{row.propertyLayout}</TableCell>
+                )}
+                {row.name ? (
+                  <TableCell align="left">{row.name}</TableCell>
+                ) : (
+                  ""
+                )}
+                {row.area !== "" ? (
+                  <TableCell align="left">{row.area}</TableCell>
+                ) : (
+                  <TableCell>
+                    <InfoIcon
+                      sx={{ fontSize: 18, cursor: "pointer", color: "red" }}
+                    />
+                  </TableCell>
+                )}
+                {row.areaUnit ? (
+                  <TableCell align="left">
+                    {row.areaUnit ? row.areaUnit : " "}
+                  </TableCell>
+                ) : (
+                  ""
+                )}
+                {row.bsp ? (
+                  <TableCell align="left">{row.bsp}</TableCell>
+                ) : (
+                  ""
+                )}
+                {row.applicableYear ? (
+                  <TableCell align="left">{row.applicableYear}</TableCell>
+                ) : (
+                  ""
+                )}
+                {row.applicableMonth ? (
+                  <TableCell align="left">{row.applicableMonth}</TableCell>
+                ) : (
+                  ""
+                )}
+                {row.propertyType ? (
+                  <TableCell align="left" sx={{ py: 0 }}>
+                    <IconButton
+                      onClick={() => {
+                        setSelectedItem(row);
+                        setIsEditItem(true);
+                        setEditItem(index);
+                      }}
+                    >
+                      <EditIcon sx={{ fontSize: "1rem" }} />
+                    </IconButton>
+                  </TableCell>
+                ) : (
+                  ""
+                )}
+                {row.propertyType ? (
+                  <TableCell align="left" sx={{ py: 0 }}>
+                    <IconButton onClick={() => deleteFloorPlan(index)}>
+                      <DeleteIcon sx={{ fontSize: "1rem" }} />
+                    </IconButton>
+                  </TableCell>
+                ) : (
+                  ""
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Grid>
   );
 }

@@ -15,7 +15,7 @@ import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/N
 import BrokerCard from 'Components/BrokersPage/BrokerCard';
 import NewInputFieldStructure from 'Components/CommonLayouts/NewInputFieldStructure';
 
-function OverallAssessmentCard({ isEdit,form }) {
+function OverallAssessmentCard({ isEdit, form }) {
     return (
         <Grid item xs={12} id="overallAssessment">
             <Card>
@@ -26,11 +26,6 @@ function OverallAssessmentCard({ isEdit,form }) {
                     >
                         Overall Assessment
                     </Typography>
-                    <Box>
-                        <IconButton>
-                            <EditIcon fontSize="small" />
-                        </IconButton>
-                    </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>

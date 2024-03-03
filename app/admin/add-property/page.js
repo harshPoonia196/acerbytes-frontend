@@ -221,7 +221,7 @@ function AddProperty() {
   }, []);
 
 
-  
+
   const classes = useStyles();
 
   const [isEdit, setIsEdit] = useState(true);
@@ -239,7 +239,7 @@ function AddProperty() {
       completionYear: "",
       status: "",
       constructionProgress: "",
-      sectionScore:''
+      sectionScore: ''
     },
     regulatoryClearance: {
       reraApproved: "",
@@ -251,7 +251,7 @@ function AddProperty() {
       privateBankLoan: "",
       fresh: "",
       resale: "",
-      sectionScore:''
+      sectionScore: ''
     },
     layout: {
       numberOfBuildings: "",
@@ -268,7 +268,7 @@ function AddProperty() {
       greenDensityScore: "",
       constructionQuality: 0,
       interiorQuality: 0,
-      sectionScore:''
+      sectionScore: ''
     },
     unitsPlan: {
       averagePrice: "",
@@ -567,7 +567,7 @@ function AddProperty() {
         interiorQuality: 0,
       },
     },
-    published:false,
+    published: false,
     marketing: {
       tagLine: "",
       description: "",
@@ -578,21 +578,21 @@ function AddProperty() {
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
   };
-   function transformDocuments(documents) {
+  function transformDocuments(documents) {
     return documents.reduce((result, document) => {
       const { name, childSub } = document;
-     let camelCaseName = name.replace(/[\s_-](\w)/g, (_, char) => char.toUpperCase())
-     result[camelCaseName.charAt(0).toLowerCase() + camelCaseName.slice(1)] = childSub;
+      let camelCaseName = name.replace(/[\s_-](\w)/g, (_, char) => char.toUpperCase())
+      result[camelCaseName.charAt(0).toLowerCase() + camelCaseName.slice(1)] = childSub;
       // result[camelCaseName] = childSub;
       return result;
     }, {});
   }
-  const [selectOptions,setSelectOption]=useState({})
+  const [selectOptions, setSelectOption] = useState({})
 
 
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
 
-  moduleScoreCalc(e,firstKeyName,secondKeyName)
+    moduleScoreCalc(e, firstKeyName, secondKeyName)
     let totalRating = 70;
     let totalScored;
 
@@ -665,8 +665,8 @@ function AddProperty() {
   };
 
 
-  const moduleScoreCalc = (e, firstKeyName, secondKeyName) =>{
-    let totalRating ;
+  const moduleScoreCalc = (e, firstKeyName, secondKeyName) => {
+    let totalRating;
     let totalScored;
 
     switch (firstKeyName.toLowerCase()) {
@@ -741,8 +741,8 @@ function AddProperty() {
         "sectionScore": calc,
       },
     });
-return calc
-   
+    return calc
+
   }
 
   const handleChange = async (
@@ -772,7 +772,7 @@ return calc
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
     } else if (score === true) {
 
-    let module =  moduleScoreCalc(e,firstKeyName,secondKeyName)
+      let module = moduleScoreCalc(e, firstKeyName, secondKeyName)
       let totalRating = 70;
       let totalScored;
 
@@ -952,91 +952,91 @@ return calc
       setErrors(validationErrors);
       return false;
 
-    } 
-//     else if(publish && !error){
-//       const { publishError } = reraSchema.validate({reraApproved:form.regulatoryClearance.reraApproved,reraNumber:form.regulatoryClearance.reraNumber}, {
-//         abortEarly: false,
-//       });
-// if(!publishError){
-//   setForm({...form,published:true})
+    }
+    //     else if(publish && !error){
+    //       const { publishError } = reraSchema.validate({reraApproved:form.regulatoryClearance.reraApproved,reraNumber:form.regulatoryClearance.reraNumber}, {
+    //         abortEarly: false,
+    //       });
+    // if(!publishError){
+    //   setForm({...form,published:true})
 
-// }
-//     }
+    // }
+    //     }
     else {
       if (!editPage) {
         // Validation passed
-        if(publish){
-          const { error } = reraSchema.validate({reraApproved:form.regulatoryClearance.reraApproved,reraNumber:form.regulatoryClearance.reraNumber}, {
+        if (publish) {
+          const { error } = reraSchema.validate({ reraApproved: form.regulatoryClearance.reraApproved, reraNumber: form.regulatoryClearance.reraNumber }, {
             abortEarly: false,
           });
-    if(!error){
-      setForm({...form,published:true})
-      CreateProperty({...form,published:true})
-      .then((res) => {
-        openSnackbar(`Property Published successfully`, "success");
-        routerNavigation.push(`/admin/property-list`);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    }
-    else{
-      openSnackbar(`Please check the rera criteria`, "error");
-    }
+          if (!error) {
+            setForm({ ...form, published: true })
+            CreateProperty({ ...form, published: true })
+              .then((res) => {
+                openSnackbar(`Property Published successfully`, "success");
+                routerNavigation.push(`/admin/property-list`);
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+          }
+          else {
+            openSnackbar(`Please check the rera criteria`, "error");
+          }
         }
         CreateProperty({ ...form })
-        .then((res) => {
-          openSnackbar(`Property added successfully`, "success");
-          routerNavigation.push(`/admin/property-list`);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-       
-      } else {
-
-        if(publish){
-          const { error } = reraSchema.validate({reraApproved:form.regulatoryClearance.reraApproved,reraNumber:form.regulatoryClearance.reraNumber}, {
-            abortEarly: false,
-          });
-    if(!error){
-      setForm({...form,published:true})
-      EditProperty(detailsPropertyId,{...form,published:true})
-      .then((res) => {
-        openSnackbar(`Property Edited & Published successfully`, "success");
-        routerNavigation.push(`/admin/property-list`);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    }
-    else{
-      openSnackbar(`Please check the rera criteria`, "error");
-    }
-        }
-        else{
-          EditProperty(detailsPropertyId, { ...form })
           .then((res) => {
-            openSnackbar(`Property edited successfully`, "success");
+            openSnackbar(`Property added successfully`, "success");
             routerNavigation.push(`/admin/property-list`);
           })
           .catch((error) => {
             console.error('Error:', error);
           });
+
+      } else {
+
+        if (publish) {
+          const { error } = reraSchema.validate({ reraApproved: form.regulatoryClearance.reraApproved, reraNumber: form.regulatoryClearance.reraNumber }, {
+            abortEarly: false,
+          });
+          if (!error) {
+            setForm({ ...form, published: true })
+            EditProperty(detailsPropertyId, { ...form, published: true })
+              .then((res) => {
+                openSnackbar(`Property Edited & Published successfully`, "success");
+                routerNavigation.push(`/admin/property-list`);
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+          }
+          else {
+            openSnackbar(`Please check the rera criteria`, "error");
+          }
+        }
+        else {
+          EditProperty(detailsPropertyId, { ...form })
+            .then((res) => {
+              openSnackbar(`Property edited successfully`, "success");
+              routerNavigation.push(`/admin/property-list`);
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
         }
 
       }
     }
     return true;
   };
-  const handleNewObjChange = (e)=>{
+  const handleNewObjChange = (e) => {
     setNewObj(e.target.value)
   }
 
   return (
     <>
       <nav className={classes.demo2}>
-        <CustomAdminBreadScrumbs text={editPage?"Edit Property":"Add Property"} />
+        <CustomAdminBreadScrumbs text={editPage ? "Edit Property" : "Add Property"} />
         <Card>
           <NavTab
             value={activeState}
@@ -1047,88 +1047,84 @@ return calc
       </nav>
 
       <Container>
-        <div className="container">
-          <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-            <ProjectCard
-              errors={errors}
-              form={form}
-              selectOptions={selectOptions}
-              editPage={editPage}
-              handleNewObjChange={handleNewObjChange}
-              handleChange={handleChange}
-              isEdit={isEdit}
-            />
-            <RegulatoryCard
-              errors={errors}
-              form={form}
-              selectOptions={selectOptions}
-              handleChange={handleChange}
-              isEdit={isEdit}
-            />
-            <LandscapeCard
-              errors={errors}
-              form={form}
-              scoreChange={scoreChange}
-              selectOptions={selectOptions}
-              handleChange={handleChange}
-              isEdit={isEdit}
-            />
-            <FloorPlanCard
-              errors={errors}
-              form={form}
-              editForm={editForm}
-              handleChange={handleChange}
-              selectOptions={selectOptions}
-              handleUnitsPlan={handleUnitsPlan}
-              isEdit={isEdit}
-            />
-            <FacilitiesCard
-              errors={errors}
-              form={form}
-              isEdit={isEdit}
-              selectOptions={selectOptions}
-              handleChange={handleChange}
-            />
-            <LocationCard
-              errors={errors}
-              selectOptions={selectOptions}
-              form={form}
-              handleChange={handleChange}
-              isEdit={isEdit}
-            />
-            {/* <ResalePriceCard isEdit={isEdit} />
+        <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+          <ProjectCard
+            errors={errors}
+            form={form}
+            selectOptions={selectOptions}
+            editPage={editPage}
+            handleNewObjChange={handleNewObjChange}
+            handleChange={handleChange}
+            isEdit={isEdit}
+          />
+          <RegulatoryCard
+            errors={errors}
+            form={form}
+            selectOptions={selectOptions}
+            handleChange={handleChange}
+            isEdit={isEdit}
+          />
+          <LandscapeCard
+            errors={errors}
+            form={form}
+            scoreChange={scoreChange}
+            selectOptions={selectOptions}
+            handleChange={handleChange}
+            isEdit={isEdit}
+          />
+          <FloorPlanCard
+            errors={errors}
+            form={form}
+            editForm={editForm}
+            handleChange={handleChange}
+            selectOptions={selectOptions}
+            handleUnitsPlan={handleUnitsPlan}
+            isEdit={isEdit}
+          />
+          <FacilitiesCard
+            errors={errors}
+            form={form}
+            isEdit={isEdit}
+            selectOptions={selectOptions}
+            handleChange={handleChange}
+          />
+          <LocationCard
+            errors={errors}
+            selectOptions={selectOptions}
+            form={form}
+            handleChange={handleChange}
+            isEdit={isEdit}
+          />
+          {/* <ResalePriceCard isEdit={isEdit} />
                         <BuilderPriceCard isEdit={isEdit} /> */}
-            <InvestmentCard
-              errors={errors}
-              selectOptions={selectOptions}
-              form={form}
-              handleChange={handleChange}
-              isEdit={isEdit}
-            />
-            {/* {JSON.stringify(brokerList)} */}
-            <PropertyConsultantsCard
-              isEdit={isEdit}
-              form={form}
-              list={brokerList}
-              handleChange={handleChange}
-            />
-            <OverallAssessmentCard isEdit={isEdit} form={form} />
-            {/* <BankCard isEdit={isEdit} /> */}
-            <MarketingCard
-              errors={errors}
-              form={form}
-              handleChange={handleChange}
-              isEdit={isEdit}
-            />
-            <Grid item xs={12} sx={{ textAlign: "end" }}>
-              <CustomButton onClick={()=>validateForm(false)} variant="contained"
-                ButtonText={editPage ? "Update" : "Save"} />
-
-              <CustomButton onClick={()=>validateForm(true)} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
-
-            </Grid>
+          <InvestmentCard
+            errors={errors}
+            selectOptions={selectOptions}
+            form={form}
+            handleChange={handleChange}
+            isEdit={isEdit}
+          />
+          {/* {JSON.stringify(brokerList)} */}
+          <PropertyConsultantsCard
+            isEdit={isEdit}
+            form={form}
+            list={brokerList}
+            handleChange={handleChange}
+          />
+          <OverallAssessmentCard isEdit={isEdit} form={form} />
+          {/* <BankCard isEdit={isEdit} /> */}
+          <MarketingCard
+            errors={errors}
+            form={form}
+            handleChange={handleChange}
+            isEdit={isEdit}
+          />
+          <Grid item xs={12} sx={{ textAlign: "end" }}>
+            <CustomButton onClick={() => validateForm(false)} variant="contained"
+              ButtonText={editPage ? "Update" : "Save"} />
+            <CustomButton onClick={() => validateForm(true)} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
           </Grid>
-        </div>
+        </Grid>
       </Container>
     </>
   );

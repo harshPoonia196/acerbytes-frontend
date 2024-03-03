@@ -35,67 +35,67 @@ function UnitsPlanSection(props) {
     );
   };
 
-    return (
-        <Grid item xs={12} ref={refCallback} id='unitsPlan' >
-            <Card>
-                <Box sx={{ p: 2, display: 'flex' }}>
-                    <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
-                        Units plan
-                    </Typography>
-                    <Box sx={{ alignSelf: "center" }}>
-                        <Card
-                            sx={{
-                                width: "fit-content",
-                                backgroundColor: colors?.BLACK,
-                                borderRadius: "4px !important",
-                                m: 0,
-                                ml: "auto !important",
-                            }}
-                            onClick={() => router.push("/research")}
-                        >
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    fontWeight: 600,
-                                    width: "fit-content",
-                                    color: "white",
-                                    p: 0.5,
-                                    px: 1,
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                99
-                            </Typography>
-                        </Card>
-                    </Box>
-                </Box>
-                <Divider />
-                <Box sx={{ p: 2 }}>
-                    <Grid container spacing={2}>
-                        {unitsPlan?.planList.length && unitsPlan?.planList?.map((unit, index) => (
-                            <GridItemWithCard
-                                key={unit._id}
-                                xs={6}
-                                sm={3}
-                                boxStyles={{ backgroundColor: "none" }}
-                            >
-                                <Typography variant="subtitle1">{unit?.propertyLayout}</Typography>
-                                <img
-                                    width="100%"
-                                    alt=""
-                                    src="https://projectcdn.99acres.com/project_data/8d33f2/block1_1927/3D/5309_B1_1F1_3D.jpg"
-                                />
-                                <Typography variant="h5">{unit?.areaValue} {unit?.areaUnit}</Typography>
-                                <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                                    {unit?.bsp}
-                                </Typography>
-                            </GridItemWithCard>
-                        ))}
-                    </Grid>
-                </Box>
+  return (
+    <Grid item xs={12} ref={refCallback} id='unitsPlan' >
+      <Card>
+        <Box sx={{ p: 2, display: 'flex' }}>
+          <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
+            Units plan
+          </Typography>
+          <Box sx={{ alignSelf: "center" }}>
+            <Card
+              sx={{
+                width: "fit-content",
+                backgroundColor: colors?.BLACK,
+                borderRadius: "4px !important",
+                m: 0,
+                ml: "auto !important",
+              }}
+              onClick={() => router.push("/research")}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 600,
+                  width: "fit-content",
+                  color: "white",
+                  p: 0.5,
+                  px: 1,
+                  cursor: 'pointer'
+                }}
+              >
+                99
+              </Typography>
             </Card>
-        </Grid>
-    )
+          </Box>
+        </Box>
+        <Divider />
+        <Box sx={{ p: 2 }}>
+          <Grid container spacing={2}>
+            {unitsPlan?.planList.length && unitsPlan?.planList?.map((unit, index) => (
+              <GridItemWithCard
+                key={unit._id}
+                xs={6}
+                sm={3}
+                boxStyles={{ backgroundColor: "none" }}
+              >
+                <Typography variant="subtitle1">{unit?.propertyLayout}</Typography>
+                <img
+                  width="100%"
+                  alt=""
+                  src="https://projectcdn.99acres.com/project_data/8d33f2/block1_1927/3D/5309_B1_1F1_3D.jpg"
+                />
+                <Typography variant="h5">{unit?.areaValue} {unit?.areaUnit}</Typography>
+                <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                  {unit?.bsp}
+                </Typography>
+              </GridItemWithCard>
+            ))}
+          </Grid>
+        </Box>
+      </Card>
+    </Grid>
+  )
 }
 
 export default UnitsPlanSection;
