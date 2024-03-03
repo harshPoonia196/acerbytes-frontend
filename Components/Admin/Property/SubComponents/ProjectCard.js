@@ -16,7 +16,7 @@ import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompl
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 import colors from 'styles/theme/colors';
 
-function ProjectCard({ isEdit, form,editPage, handleChange, errors }) {
+function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions }) {
 
     const {
         builder,
@@ -89,7 +89,9 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors }) {
                             variant="outlined"
                             isEdit={isEdit}
                             value={builder}
-                            options={[
+                            options={
+                                selectOptions.builder ||
+                                [
                                 { label: "Birla", value: "Birla" }
                             ]}
                             error={errors?.["overview.builder"]}
@@ -124,7 +126,9 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors }) {
                             isEdit={isEdit}
                             value={projectCategory}
                             error={errors?.["overview.projectCategory"]}
-                            list={[
+                            list={
+                                selectOptions.category ||
+                                [
                                 { label: 'Residential', value: 'Residential' },
                                 { label: 'Commercial', value: 'Commercial' },
                             ]}
@@ -134,7 +138,10 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors }) {
                             label="Project type"
                             isEdit={isEdit}
                             value={projectType}
-                            list={[
+                            list={
+                                selectOptions.projectType 
+                                ||
+                                [
                                 { label: 'Flat', value: 'Flat' },
                                 { label: 'Shop', value: 'Shop' },
                                 { label: "Restaurant", value: "Restaurant" },
