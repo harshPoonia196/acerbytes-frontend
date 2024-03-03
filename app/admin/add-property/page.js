@@ -592,7 +592,7 @@ function AddProperty() {
 
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
 
-    moduleScoreCalc(e, firstKeyName, secondKeyName)
+    let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
     let totalRating = 70;
     let totalScored;
 
@@ -651,6 +651,7 @@ function AddProperty() {
       [firstKeyName]: {
         ...form[firstKeyName],
         [secondKeyName]: e.target.value,
+        ["sectionScore"]: moduleScore
       },
       overallAssessment: {
         ...form.overallAssessment,
@@ -734,13 +735,6 @@ function AddProperty() {
     }
 
     let calc = (totalScored / totalRating) * 100;
-    setForm({
-      ...form,
-      [firstKeyName]: {
-        ...form[firstKeyName],
-        "sectionScore": calc,
-      },
-    });
     return calc
 
   }
@@ -772,7 +766,8 @@ function AddProperty() {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
     } else if (score === true) {
 
-      let module = moduleScoreCalc(e, firstKeyName, secondKeyName)
+      let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
+
       let totalRating = 70;
       let totalScored;
 
@@ -833,6 +828,7 @@ function AddProperty() {
         [firstKeyName]: {
           ...form[firstKeyName],
           [secondKeyName]: e.target.value,
+          ["sectionScore"]: moduleScore
         },
         overallAssessment: {
           ...form.overallAssessment,

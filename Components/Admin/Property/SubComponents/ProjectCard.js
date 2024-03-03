@@ -74,6 +74,10 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors }) {
 
     }, [])
 
+    useEffect(() => {
+        getAllOptionDataList()
+    }, [])
+
     return (
         <>
             {editPage && <Grid item xs={12} id="project">
@@ -267,7 +271,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors }) {
                         />
 
                         {
-                            status === "under construction" &&
+                            status.toLowerCase() === "under construction" &&
                             <NewSelectTextFieldStructure
                                 label="Construction Progress"
                                 isEdit={isEdit}
