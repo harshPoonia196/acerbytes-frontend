@@ -10,6 +10,27 @@ function descendingComparator(a, b, orderBy) {
   return 0;
 }
 
+function toCamelCase(input) {
+  const words = input.split(/\s+/);
+  const camelCaseWords = words.map((word, index) => {
+    if (index === 0) {
+      return word.toLowerCase();
+    } else {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+  });
+  return camelCaseWords.join('');
+}
+
+function transformDocuments(documents) {
+  return documents.reduce((result, document) => {
+    const { name, childSub } = document;
+    const camelCaseName = toCamelCase(name);
+    result[camelCaseName] = childSub;
+    return result;
+  }, {});
+}
+
 function getComparator(order, orderBy) {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -68,4 +89,6 @@ export {
   formatDate,
   formatAmount,
   formatPoints,
+  toCamelCase,
+  transformDocuments
 };

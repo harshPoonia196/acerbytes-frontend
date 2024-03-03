@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import {
     Card,
     Typography,
@@ -8,7 +8,13 @@ import {
     IconButton,
     Rating,
 } from "@mui/material";
+
+import {
+transformDocuments
+  } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
+import { getAllOptions } from "api/Property.api";
+
 import { yearList } from "Components/Constants/index"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
@@ -16,7 +22,7 @@ import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompl
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 import colors from 'styles/theme/colors';
 
-function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions }) {
+function ProjectCard({ isEdit, form,editPage, handleChange, errors }) {
 
     const {
         builder,
@@ -39,8 +45,34 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions
           });
           return formattedDate
     }
-   
+
     
+      const [selectOptions,setSelectOption]=useState({})
+    const getAllOptionDataList = async () => {
+        try {
+          let res = await getAllOptions();
+          if (res.status === 200) {
+           let transform = transformDocuments(res.data.data)
+            setSelectOption({...transform})
+          }
+        } catch (error) {
+          console.log(error,'err')
+          // showToaterMessages(
+          //   error?.response?.data?.message ||
+          //   error?.message ||
+          //   "Error fetching state list",
+          //   "error"
+          // );
+        } 
+        // finally {
+        //   setLoading(false);
+        // }
+      };
+
+   useEffect(()=>{
+    getAllOptionDataList()
+   
+   },[]) 
    
     return (
         <>
@@ -90,10 +122,17 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions
                             isEdit={isEdit}
                             value={builder}
                             options={
-                                selectOptions.builder ||
+                                selectOptions.builder?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                }) ||
                                 [
-                                { label: "Birla", value: "Birla" }
-                            ]}
+                                    { label: "Birla", value: "Birla" }
+                                ]
+                            }
+                           
                             error={errors?.["overview.builder"]}
                             handleChange={(e, newValue) =>{
                             handleChange(newValue.value, "overview", "builder")}}
@@ -127,7 +166,12 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions
                             value={projectCategory}
                             error={errors?.["overview.projectCategory"]}
                             list={
-                                selectOptions.category ||
+                                selectOptions.category?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                }) ||
                                 [
                                 { label: 'Residential', value: 'Residential' },
                                 { label: 'Commercial', value: 'Commercial' },
@@ -139,7 +183,12 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions
                             isEdit={isEdit}
                             value={projectType}
                             list={
-                                selectOptions.projectType 
+                                selectOptions.projectType?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                }) 
                                 ||
                                 [
                                 { label: 'Flat', value: 'Flat' },
@@ -167,7 +216,15 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions
                             label="Launch"
                             isEdit={isEdit}
                             value={launchYear}
-                            list={yearList}
+                            list={
+                                selectOptions.launch?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                }) 
+                                ||
+                                yearList}
                             error={errors?.["overview.launchYear"]}
                             handleChange={(e) => handleChange(e, "overview", "launchYear")}
                         />
@@ -175,7 +232,15 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions
                             label="Completion"
                             isEdit={isEdit}
                             value={completionYear}
-                            list={yearList}
+                            list={
+                                selectOptions.completion?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                }) 
+                                
+                                ||yearList}
                             error={errors?.["overview.completionYear"]}
                             handleChange={(e) => handleChange(e, "overview", "completionYear")}
                         />
@@ -183,7 +248,14 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions
                             label="Status"
                             isEdit={isEdit}
                             value={status}
-                            list={[
+                            list={
+                                selectOptions.status?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                }) ||
+                                [
                                 { label: 'under construction', value: 'under construction' },
                                 { label: 'completed', value: 'completed' },
                                 { label: "Pre launch", value: "Pre launch" },
@@ -205,7 +277,10 @@ function ProjectCard({ isEdit, form,editPage, handleChange, errors,selectOptions
                                 label="Construction Progress"
                                 isEdit={isEdit}
                                 value={constructionProgress}
-                                list={[
+                                list={
+                                    
+                                
+                                    [
                                     { label: 'Delay', value: 'Delay' },
                                     { label: 'On time', value: 'On time' },
                                 ]}
