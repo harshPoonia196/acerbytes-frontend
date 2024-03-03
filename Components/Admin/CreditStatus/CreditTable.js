@@ -17,6 +17,7 @@ import {
   Menu,
   MenuItem,
   Button,
+  Typography,
 } from "@mui/material";
 
 import {
@@ -256,8 +257,8 @@ function CreditTable() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
+        error?.message ||
+        "Error creating order request",
         "error"
       );
     } finally {
@@ -335,8 +336,8 @@ function CreditTable() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
+        error?.message ||
+        "Error creating order request",
         "error"
       );
     } finally {
@@ -345,62 +346,63 @@ function CreditTable() {
     }
   };
 
-  return isLoading ? (
-    <Loading />
-  ) : (
-    <Box sx={{ width: "100%" }}>
+  return <Box sx={{ width: "100%" }}>
+    {isLoading &&
+      <Loading />}
+    <Box sx={{ display: 'flex', mb: 2 }}>
+      <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
+        Credit point status (Admin)
+      </Typography>
       <CustomButton
         variant="contained"
-        style={{ display: "flex", marginLeft: "auto" }}
-        align="right"
         onClick={() => setOpenAddCreditPoints(true)}
         startIcon={<Add />}
         ButtonText={"Add credit"}
       />
-
-      <AdminCreditPointsPopup
-        open={openAddCreditPoints}
-        handleClose={handleCloseAddCreditPopup}
-        handleSubmit={adminAssignPointsHandler}
-      />
-
-      <Card sx={{ mb: 2 }}>
-        <CustomSearchInput
-          label="Search"
-          variant="outlined"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-      </Card>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {creditPointList?.list?.map((row) => (
-              <RowStructure
-                row={row}
-                key={row.firstName}
-                adminAssignPointsHandler={adminAssignPointsHandler}
-              />
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-          component="div"
-          count={creditPointList.totalCount}
-          rowsPerPage={rowsPerPage}
-          page={page - 1}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
     </Box>
-  );
+
+    <AdminCreditPointsPopup
+      open={openAddCreditPoints}
+      handleClose={handleCloseAddCreditPopup}
+      handleSubmit={adminAssignPointsHandler}
+    />
+
+    <Card sx={{ mb: 2 }}>
+      <CustomSearchInput
+        label="Search"
+        variant="outlined"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+    </Card>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+        <EnhancedTableHead
+          order={order}
+          orderBy={orderBy}
+          onRequestSort={handleRequestSort}
+        />
+        <TableBody>
+          {creditPointList?.list?.map((row) => (
+            <RowStructure
+              row={row}
+              key={row.firstName}
+              adminAssignPointsHandler={adminAssignPointsHandler}
+            />
+          ))}
+        </TableBody>
+      </Table>
+      <TablePagination
+        rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+        component="div"
+        count={creditPointList.totalCount}
+        rowsPerPage={rowsPerPage}
+        page={page - 1}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </TableContainer>
+  </Box>
 }
 
 export default CreditTable;

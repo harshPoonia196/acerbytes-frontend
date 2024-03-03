@@ -9,8 +9,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
-import ImageSearchIcon from "@mui/icons-material/ImageSearch";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import HomeIcon from "@mui/icons-material/Home";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { useRouter } from "next/navigation";
