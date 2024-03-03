@@ -52,6 +52,7 @@ import {
 import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import Loader from "Components/CommonLayouts/Loading";
 
 const headCells = [
   {
@@ -302,8 +303,8 @@ function CustomTabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+        <Box sx={{ p: 2 }}>
+          {children}
         </Box>
       )}
     </div>
@@ -364,8 +365,8 @@ function TableView({
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
+        error?.message ||
+        "Error creating order request",
         "error"
       );
     } finally {
@@ -400,49 +401,45 @@ function TableView({
     getOrderRequestList(pageOptions);
   };
 
-  return isLoading ? (
-    <Loading />
-  ) : (
-    <>
-      <Card sx={{ mb: 2 }}>
-        <CustomSearchInput />
-      </Card>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-            isCompleted={status === ORDER_STATUS.COMPLETED}
-          />
-          <TableBody>
-            {orderRequests?.list?.map((row, index) => (
-              <RowStructure
-                row={row}
-                userDetails={userDetails}
-                key={index}
-                isCompleted={status === ORDER_STATUS.COMPLETED}
-                handleOrderRequest={handleOrderRequest}
-                salesPersons={salesPersons}
-              />
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          sx={{
-            overflow: "hidden",
-          }}
-          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-          component="div"
-          count={orderRequests.totalCount}
-          rowsPerPage={rowsPerPage}
-          page={page - 1}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+  return <>
+    <Card sx={{ mb: 2 }}>
+      <CustomSearchInput />
+    </Card>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+        <EnhancedTableHead
+          order={order}
+          orderBy={orderBy}
+          onRequestSort={handleRequestSort}
+          isCompleted={status === ORDER_STATUS.COMPLETED}
         />
-      </TableContainer>
-    </>
-  );
+        <TableBody>
+          {orderRequests?.list?.map((row, index) => (
+            <RowStructure
+              row={row}
+              userDetails={userDetails}
+              key={index}
+              isCompleted={status === ORDER_STATUS.COMPLETED}
+              handleOrderRequest={handleOrderRequest}
+              salesPersons={salesPersons}
+            />
+          ))}
+        </TableBody>
+      </Table>
+      <TablePagination
+        sx={{
+          overflow: "hidden",
+        }}
+        rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+        component="div"
+        count={orderRequests.totalCount}
+        rowsPerPage={rowsPerPage}
+        page={page - 1}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </TableContainer>
+  </>
 }
 
 function OrdersTable() {
@@ -524,8 +521,8 @@ function OrdersTable() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
+        error?.message ||
+        "Error creating order request",
         "error"
       );
     } finally {
@@ -567,8 +564,8 @@ function OrdersTable() {
       });
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
+        error?.message ||
+        "Error creating order request",
         "error"
       );
     } finally {
@@ -577,17 +574,21 @@ function OrdersTable() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <CustomButton
-        variant="contained"
-        style={{ display: "flex", marginLeft: "auto" }}
-        align="right"
-        onClick={() => setOpenAddCreditPoints(true)}
-        startIcon={<Add />}
-      
-        ButtonText={"Add request"}
-      />
-
+    <Box>
+      {isLoading && <Loader />}
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Orders request (Admin)
+        </Typography>
+        <CustomButton
+          variant="contained"
+          style={{ display: "flex", marginLeft: "auto" }}
+          align="right"
+          onClick={() => setOpenAddCreditPoints(true)}
+          startIcon={<Add />}
+          ButtonText={"Add request"}
+        />
+      </Box>
       <AdminCreditPointsPopup
         open={openAddCreditPoints}
         handleClose={handleCloseAddCreditPopup}

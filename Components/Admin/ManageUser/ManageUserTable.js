@@ -42,6 +42,7 @@ import { countryCodeFormating, matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { debounce } from "lodash";
 import { ToasterMessages } from "Components/Constants";
+import colors from "styles/theme/colors";
 
 const headCells = [
   {
@@ -146,7 +147,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
   return (
     <TableRow
       key={row.name}
-      style={row.isBlocked ? { backgroundColor: "#dcc4c4" } : null}
+      style={row.isBlocked ? { backgroundColor: colors.DISABLED } : null}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <TableCell>
@@ -282,8 +283,8 @@ function ManageUserTable({ searchText }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error get Users list",
+        error?.message ||
+        "Error get Users list",
         "error"
       );
     } finally {
@@ -364,8 +365,8 @@ function ManageUserTable({ searchText }) {
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-            error?.message ||
-            "Error update role",
+          error?.message ||
+          "Error update role",
           "error"
         );
       } finally {
@@ -401,8 +402,8 @@ function ManageUserTable({ searchText }) {
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-            error?.message ||
-            "Error update status",
+          error?.message ||
+          "Error update status",
           "error"
         );
       } finally {
@@ -430,7 +431,7 @@ function ManageUserTable({ searchText }) {
         open={statusConfirmationDialog.isOpen}
         handleAction={handleStatusDialogAction}
       />
-
+      {isLoading && <Loading />}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <EnhancedTableHead
@@ -439,26 +440,25 @@ function ManageUserTable({ searchText }) {
             onRequestSort={handleRequestSort}
           />
           <TableBody>
-            {isLoading ? (
-              <Loading />
-            ) : usersList?.list?.length > 0 ? (
-              usersList?.list?.map((row) => (
-                <RowStructure
-                  row={row}
-                  userDetails={userDetails}
-                  updateRole={updateRole}
-                  handleUpdateStatus={handleUpdateStatus}
-                />
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5}>
-                  <Typography variant="body1" align="center">
-                    No data found
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            )}
+            {usersList?.list?.length > 0 ?
+              (
+                usersList?.list?.map((row) => (
+                  <RowStructure
+                    row={row}
+                    userDetails={userDetails}
+                    updateRole={updateRole}
+                    handleUpdateStatus={handleUpdateStatus}
+                  />
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <Typography variant="body1" align="center">
+                      No data found
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
           </TableBody>
         </Table>
         <TablePagination

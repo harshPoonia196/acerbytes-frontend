@@ -15,7 +15,7 @@ const InputField = ({
 }) => (
   <Grid item xs={12} sm={halfSm ? 6 : 12}>
     <TextField
-    type={type}
+      type={type}
       name={name}
       value={value}
       onChange={handleChange}

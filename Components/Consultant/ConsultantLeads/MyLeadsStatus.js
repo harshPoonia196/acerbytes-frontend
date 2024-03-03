@@ -23,7 +23,7 @@ export default function MyLeadsStatus() {
                     </Card>
                 </Grid>
                 <Grid item xs={12}>
-                    <Card sx={{ mb: 2 }}>
+                    <Card sx={{ mb: 2, overflowX: 'auto', }}>
                         <ToggleButtonGroup
                             color="primary"
                             value={alignment}
@@ -32,12 +32,11 @@ export default function MyLeadsStatus() {
                             aria-label="Platform"
                             sx={{
                                 display: 'flex',
-                                overflowX: 'auto',
                             }}
                         >
                             <ToggleButton size='small' value="all" sx={{ flex: 1, border: 'none' }}>All</ToggleButton>
-                            <ToggleButton size='small' value="current" sx={{ flex: 1, border: 'none' }}>Current status&nbsp;(Completed)</ToggleButton>
-                            <ToggleButton size='small' value="next" sx={{ flex: 1, border: 'none' }}>Next action&nbsp;(Pending)</ToggleButton>
+                            <ToggleButton size='small' value="current" sx={{ flex: 1, border: 'none' }}>Current&nbsp;status (Completed)</ToggleButton>
+                            <ToggleButton size='small' value="next" sx={{ flex: 1, border: 'none' }}>Next&nbsp;action (Pending)</ToggleButton>
                         </ToggleButtonGroup>
                     </Card>
                 </Grid>
