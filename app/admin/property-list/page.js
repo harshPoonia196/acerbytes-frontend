@@ -6,6 +6,7 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import PropertyListTable from "Components/Admin/PropertyList/PropertyListTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
+import { DEBOUNCE_TIMER } from "Components/config/config";
 
 function PropertyList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,7 +16,7 @@ function PropertyList() {
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 500); 
+    }, DEBOUNCE_TIMER);
 
     return () => clearTimeout(timerId);
   }, [searchTerm]);
@@ -32,14 +33,14 @@ function PropertyList() {
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        
+
       />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
-           {count && count} Properties listed
+          {count && count} Properties listed
         </Typography>
         <Card sx={{ mb: 2 }}>
-          <CustomSearchInput value={searchTerm}  onChange={handleSearch} />
+          <CustomSearchInput value={searchTerm} onChange={handleSearch} />
         </Card>
         <PropertyListTable searchText={debouncedSearchTerm} setCount={setCount} />
       </Container>

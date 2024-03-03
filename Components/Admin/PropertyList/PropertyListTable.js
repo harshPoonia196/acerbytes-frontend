@@ -38,6 +38,7 @@ import {
   PAGINATION_LIMIT_OPTIONS,
 } from "Components/config/config";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
+import Loader from "Components/CommonLayouts/Loading";
 
 const headCells = [
   {
@@ -171,13 +172,13 @@ function RowStructure({ row, router, handleDelete }) {
         <Chip
           label={row.status}
           size="small"
-          onClick={() => {}}
+          onClick={() => { }}
           color={
             row.status === "Active"
               ? "success"
               : row.status === "Expired"
-              ? "error"
-              : "warning"
+                ? "error"
+                : "warning"
           }
         />
       </TableCell>
@@ -256,8 +257,8 @@ const PropertyListTable = ({ searchText, setCount }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -288,8 +289,8 @@ const PropertyListTable = ({ searchText, setCount }) => {
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-            error?.message ||
-            "Error deleting property",
+          error?.message ||
+          "Error deleting property",
           "error"
         );
       } finally {
@@ -359,32 +360,27 @@ const PropertyListTable = ({ searchText, setCount }) => {
   return (
     <>
       <TableContainer component={Paper}>
-        {isLoading ? (
-          <Stack sx={{ my: "1.5rem", alignItems: "center" }}>
-            <CircularProgress color="inherit" />
-          </Stack>
-        ) : (
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {propertyList?.map((row) => (
-                <RowStructure
-                  row={row}
-                  router={router}
-                  handleDelete={handleDelete}
-                />
-              ))}
-            </TableBody>
-          </Table>
-        )}
+        {isLoading && <Loader />}
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {propertyList?.map((row) => (
+              <RowStructure
+                row={row}
+                router={router}
+                handleDelete={handleDelete}
+              />
+            ))}
+          </TableBody>
+        </Table>
         <TablePagination sx={{
-        
-        overflow: 'hidden',
-      }}
+
+          overflow: 'hidden',
+        }}
           rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
           component="div"
           count={property?.totalCount}
