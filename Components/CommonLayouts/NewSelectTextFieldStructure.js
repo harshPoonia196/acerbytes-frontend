@@ -24,13 +24,16 @@ function NewSelectTextFieldStructure({
 }) {
   return (
     <Grid item xs={12} sm={full ? 12 : 6}>
-      <Box>
+      <Box sx={{ display: 'flex' }}>
         <Typography
           variant="subtitle2"
           sx={{ alignSelf: "center", color: colors.GRAY }}
         >
           {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
+        {showInfo && <span><Tooltip title={infoText}>
+          <InfoIcon sx={{ fontSize: '1rem', cursor: "pointer", ml: 1, color: colors.GRAY }} />
+        </Tooltip></span>}
       </Box>
       {isEdit ? (
         <TextField
@@ -40,14 +43,6 @@ function NewSelectTextFieldStructure({
           value={value && value}
           onChange={handleChange}
           error={error && error}
-          InputProps={
-            showInfo && {
-              startAdornment: <Tooltip title={infoText}>
-                <InputAdornment position="start">
-                  <InfoIcon sx={{ fontSize: 25, cursor: "pointer" }} />
-                </InputAdornment></Tooltip>,
-            }
-          }
           defaultValue=""
           fullWidth
           size="small"
