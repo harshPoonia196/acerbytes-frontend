@@ -347,8 +347,7 @@ function CreditTable() {
   };
 
   return <Box sx={{ width: "100%" }}>
-    {isLoading &&
-      <Loading />}
+    {isLoading && <Loading />}
     <Box sx={{ display: 'flex', mb: 2 }}>
       <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
         Credit point status (Admin)

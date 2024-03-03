@@ -8,6 +8,7 @@ import {
   Chip,
 } from "@mui/material";
 import colors from "styles/theme/colors";
+import { menuMaxHeight } from "utills/Constants";
 
 const top100Films = [{ label: "Mumbai" }];
 
@@ -64,6 +65,13 @@ const NewMultiSelectAutoCompleteInputStructure = ({
           renderInput={(params) => (
             <TextField {...params} size="small" fullWidth error={error} />
           )}
+          ListboxProps={
+            {
+              style: {
+                maxHeight: menuMaxHeight,
+              }
+            }
+          }
         />
       </Grid>
     </>
