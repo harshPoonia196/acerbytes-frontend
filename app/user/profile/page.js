@@ -596,8 +596,8 @@ function Profile() {
       ...userInfo,
       name: {
         ...userInfo.name,
-        firstName: info?.name?.firstName,
-        lastName: info?.name?.lastName,
+        firstName: profileInfo?.name?.firstName,
+        lastName: profileInfo?.name?.lastName,
       },
       phone: {
         ...userInfo.phone,
@@ -605,8 +605,8 @@ function Profile() {
         countryCode: info?.phone?.countryCode,
       },
     };
-
     localStorage.setItem("userDetails", JSON.stringify(userInfo));
+    window.dispatchEvent(new Event("storage"));
   };
 
   useEffect(() => {
