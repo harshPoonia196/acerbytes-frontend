@@ -14,6 +14,8 @@ import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
 import BankCard from "Components/Admin/Property/SubComponents/BankCard";
+import { getAllOptions, getAllProperty } from "api/Property.api";
+
 import {
   Schema,
   projectName,
@@ -211,6 +213,7 @@ function AddProperty() {
       getProp();
       setEditPage(true);
     }
+
     brokersList(10, 1);
     return () => {
       clearTimeout(unsetClickedRef.current);
@@ -236,6 +239,7 @@ function AddProperty() {
       completionYear: "",
       status: "",
       constructionProgress: "",
+      sectionScore:''
     },
     regulatoryClearance: {
       reraApproved: "",
@@ -247,6 +251,7 @@ function AddProperty() {
       privateBankLoan: "",
       fresh: "",
       resale: "",
+      sectionScore:''
     },
     layout: {
       numberOfBuildings: "",
@@ -263,6 +268,7 @@ function AddProperty() {
       greenDensityScore: "",
       constructionQuality: 0,
       interiorQuality: 0,
+      sectionScore:''
     },
     unitsPlan: {
       averagePrice: "",
@@ -568,261 +574,25 @@ function AddProperty() {
     },
   });
 
-  //   amenitiesData: {
-  //     Basic: {
-  //       Gym: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Yoga: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Swimming pool": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Club: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Fitness center": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       SPA: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //     },
-  //     Expected: {
-  //       Pool: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Yoga: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Party hall": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Indoor games": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Spa: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Clubhouse: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Jacuzzi: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Theatre: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Barbeque Lawn": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Jogging track": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Covered Sitting": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Garden: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Wi-fi": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //     },
-  //     Desired: {
-  //       Theatre: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Barbeque Lawn": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Jogging track": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Covered Sitting": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Garden: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Yoga: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       SPA: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Swimming pool": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Club: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //     },
-  //     Unique: {
-  //       Library: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Kids play area": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Back up": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Wi-fi": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Gas line": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Shopping mart": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //     },
-  //   },
-  //   location: {
-  //     state: "Andhra",
-  //     city: "",
-  //     sector: "",
-  //     area: "",
-  //     pinCode: "",
-  //     googleMapLink: "",
-  //     longitude: "",
-  //     latitude: "",
-  //     assesment: {
-  //       "Pick up / delivery": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       School: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Hospital: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Mall: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Super market": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Restaurants: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Railway: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Metro: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Bus stand": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Highway: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Offices: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Hotels: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Clubs: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Noise: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Safety: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Bus stops": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Train station": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       "Metro station": {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       University: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //       Parks: {
-  //         isApplicable: false,
-  //         rating: 0,
-  //       },
-  //     },
-  //   },
-  //   valueForMoney: {
-  //     appTillNow: 0,
-  //     expectedFurtherApp: 0,
-  //     forEndUse: 0,
-  //   },
-  //   consultants: [],
-  //   marketing: {
-  //     tagLine: "",
-  //     description: "",
-  //   },
-  // });
+
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
   };
-  const [cityOpts, setCityOpts] = React.useState([{city:"Bangalore",area:"Shivaji Nagar"}]);
+   function transformDocuments(documents) {
+    return documents.reduce((result, document) => {
+      const { name, childSub } = document;
+     let camelCaseName = name.replace(/[\s_-](\w)/g, (_, char) => char.toUpperCase())
+     result[camelCaseName.charAt(0).toLowerCase() + camelCaseName.slice(1)] = childSub;
+      // result[camelCaseName] = childSub;
+      return result;
+    }, {});
+  }
+  const [selectOptions,setSelectOption]=useState({})
+
 
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
+
+  moduleScoreCalc(e,firstKeyName,secondKeyName)
     let totalRating = 70;
     let totalScored;
 
@@ -894,6 +664,87 @@ function AddProperty() {
     });
   };
 
+
+  const moduleScoreCalc = (e, firstKeyName, secondKeyName) =>{
+    let totalRating ;
+    let totalScored;
+
+    switch (firstKeyName.toLowerCase()) {
+      case "overview":
+        totalRating = 10;
+        break;
+      case "regulatoryInfo":
+        totalRating = 35;
+        break;
+      case "layout":
+        totalRating = 20;
+        break;
+      default:
+        totalRating = 10;
+    }
+
+
+
+    function isNotAlphabet(char) {
+      return !/[a-zA-Z]/.test(char);
+    }
+    let incomingValue;
+    if (isNotAlphabet(e.target.value)) {
+      incomingValue = e.target.value;
+    } else {
+      switch (e.target.value.toLowerCase()) {
+        case "yes":
+          incomingValue = 5;
+          break;
+        case "no":
+          incomingValue = 4;
+          break;
+        case "dont know":
+          incomingValue = 3;
+          break;
+        case "don't know":
+          incomingValue = 3;
+          break;
+        case "on time":
+          incomingValue = 5;
+          break;
+        case "delay":
+          incomingValue = 3;
+          break;
+        default:
+          incomingValue = 0;
+      }
+    }
+
+    if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+      let difference =
+        form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
+      let compare =
+        form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
+      if (compare) {
+        totalScored =
+          form.overallAssessment.scoredRating + Math.abs(difference);
+      } else {
+        totalScored =
+          form.overallAssessment.scoredRating - Math.abs(difference);
+      }
+    } else {
+      totalScored =
+        form.overallAssessment.scoredRating + parseInt(incomingValue);
+    }
+
+    let calc = (totalScored / totalRating) * 100;
+    setForm({
+      ...form,
+      [firstKeyName]: {
+        ...form[firstKeyName],
+        "sectionScore": calc,
+      },
+    });
+return calc
+   
+  }
+
   const handleChange = async (
     e,
     firstKeyName,
@@ -920,6 +771,8 @@ function AddProperty() {
     } else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
     } else if (score === true) {
+
+    let module =  moduleScoreCalc(e,firstKeyName,secondKeyName)
       let totalRating = 70;
       let totalScored;
 
@@ -1199,6 +1052,7 @@ function AddProperty() {
             <ProjectCard
               errors={errors}
               form={form}
+              selectOptions={selectOptions}
               editPage={editPage}
               handleNewObjChange={handleNewObjChange}
               handleChange={handleChange}
@@ -1207,6 +1061,7 @@ function AddProperty() {
             <RegulatoryCard
               errors={errors}
               form={form}
+              selectOptions={selectOptions}
               handleChange={handleChange}
               isEdit={isEdit}
             />
@@ -1214,6 +1069,7 @@ function AddProperty() {
               errors={errors}
               form={form}
               scoreChange={scoreChange}
+              selectOptions={selectOptions}
               handleChange={handleChange}
               isEdit={isEdit}
             />
@@ -1222,6 +1078,7 @@ function AddProperty() {
               form={form}
               editForm={editForm}
               handleChange={handleChange}
+              selectOptions={selectOptions}
               handleUnitsPlan={handleUnitsPlan}
               isEdit={isEdit}
             />
@@ -1229,10 +1086,12 @@ function AddProperty() {
               errors={errors}
               form={form}
               isEdit={isEdit}
+              selectOptions={selectOptions}
               handleChange={handleChange}
             />
             <LocationCard
               errors={errors}
+              selectOptions={selectOptions}
               form={form}
               handleChange={handleChange}
               isEdit={isEdit}
@@ -1241,6 +1100,7 @@ function AddProperty() {
                         <BuilderPriceCard isEdit={isEdit} /> */}
             <InvestmentCard
               errors={errors}
+              selectOptions={selectOptions}
               form={form}
               handleChange={handleChange}
               isEdit={isEdit}

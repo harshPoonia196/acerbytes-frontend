@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import {
     Card,
     Typography,
@@ -8,6 +8,10 @@ import {
     IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { getAllOptions } from "api/Property.api";
+import {
+    transformDocuments
+      } from "utills/CommonFunction";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
@@ -25,7 +29,32 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
         resale,
     } = form.regulatoryClearance;
 
+      const [selectOptions,setSelectOption]=useState({})
+    const getAllOptionDataList = async () => {
+        try {
+          let res = await getAllOptions();
+          if (res.status === 200) {
+           let transform = transformDocuments(res.data.data)
+            setSelectOption({...transform})
+          }
+        } catch (error) {
+          console.log(error,'err')
+          // showToaterMessages(
+          //   error?.response?.data?.message ||
+          //   error?.message ||
+          //   "Error fetching state list",
+          //   "error"
+          // );
+        } 
+        // finally {
+        //   setLoading(false);
+        // }
+      };
 
+   useEffect(()=>{
+    getAllOptionDataList()
+   
+   },[]) 
     return (
         <Grid item xs={12} id="regulatory">
             <Card>
@@ -48,7 +77,15 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
                         label="RERA approved"
                         isEdit={isEdit}
                         value={reraApproved}
-                        list={[
+                        list={
+                            selectOptions.reraApproved?.map((item) => {
+                                return {
+                                    label: item,
+                                    value: item,
+                                };
+                            }) ||
+                            
+                            [
                             {label: "Yes", value: 'Yes'},
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
@@ -68,7 +105,14 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
                         label="CC"
                         isEdit={isEdit}
                         value={cc}
-                        list={[
+                        list={
+                            selectOptions.cc?.map((item) => {
+                                return {
+                                    label: item,
+                                    value: item,
+                                };
+                            }) ||
+                            [
                             {label: "Yes", value: 'Yes'},
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
@@ -80,7 +124,14 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
                         label="OC"
                         isEdit={isEdit}
                         value={oc}
-                        list={[
+                        list={
+                            selectOptions.oc?.map((item) => {
+                                return {
+                                    label: item,
+                                    value: item,
+                                };
+                            }) ||
+                            [
                             {label: "Yes", value: 'Yes'},
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
@@ -104,7 +155,14 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
                         label="Government Loan"
                         isEdit={isEdit}
                         value={governmentLoan}
-                        list={[
+                        list={
+                            selectOptions.governmentBankLoan?.map((item) => {
+                                return {
+                                    label: item,
+                                    value: item,
+                                };
+                            }) ||
+                            [
                             {label: "Yes", value: 'Yes'},
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
@@ -116,7 +174,15 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
                         label="Private Bank loan"
                         isEdit={isEdit}
                         value={privateBankLoan}
-                        list={[
+                        list={
+                            
+                            selectOptions.privateBankLoan?.map((item) => {
+                                return {
+                                    label: item,
+                                    value: item,
+                                };
+                            }) ||
+                            [
                             {label: "Yes", value: 'Yes'},
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
@@ -128,7 +194,14 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
                         label="Fresh"
                         isEdit={isEdit}
                         value={fresh}
-                        list={[
+                        list={
+                            selectOptions.freshSale?.map((item) => {
+                                return {
+                                    label: item,
+                                    value: item,
+                                };
+                            }) ||
+                            [
                             {label: "Yes", value: 'Yes'},
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},
@@ -140,7 +213,14 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
                         label="Resale"
                         isEdit={isEdit}
                         value={resale}
-                        list={[
+                        list={
+                            selectOptions.resale?.map((item) => {
+                                return {
+                                    label: item,
+                                    value: item,
+                                };
+                            }) ||
+                            [
                             {label: "Yes", value: 'Yes'},
                             {label: "No", value: 'No'},
                             {label: "Don't know", value: "Don't know"},

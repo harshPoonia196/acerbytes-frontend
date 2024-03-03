@@ -23,6 +23,7 @@ const overviewSchema = Joi.object({
     then: Joi.string().required(),
     otherwise: Joi.string().allow("").optional(),
   }),
+  sectionScore: Joi.number().allow(0)
 });
 
 export const unitPlanSchema = Joi.object({
@@ -87,6 +88,7 @@ const layoutSchema = Joi.object({
   }),
   constructionQuality: Joi.number().required().min(1),
   interiorQuality: Joi.number().required().min(1),
+  sectionScore: Joi.number().allow(0)
 });
 
 export const Schema = Joi.object({
@@ -105,6 +107,7 @@ export const Schema = Joi.object({
     privateBankLoan: Joi.string().required(),
     fresh: Joi.string().required(),
     resale: Joi.string().required(),
+    sectionScore: Joi.number().allow(0)
   }),
 
   layout: layoutSchema,
