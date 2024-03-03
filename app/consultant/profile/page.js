@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -142,8 +142,8 @@ function ConsultantProfile() {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+            error?.message ||
+            "Something went wrong!",
           "error"
         );
         return error;
@@ -193,14 +193,14 @@ function ConsultantProfile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-          ...(prev?.[firstKeyName] || {}),
-          [secondKeyName]: !thirdKeyName
-            ? value
-            : {
-              ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
-              [thirdKeyName]: value,
-            },
-        },
+            ...(prev?.[firstKeyName] || {}),
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
+                  [thirdKeyName]: value,
+                },
+          },
     }));
   };
   const handleAddTargetCustomer = () => {
@@ -286,7 +286,7 @@ function ConsultantProfile() {
 
   const [brokerProfileInfo, setBrokerProfileInfo] = React.useState({});
   const [userProfileInfo, setUserProfileInfo] = React.useState(null);
-  const [emailInvalid, setEmailInvalid] = useState(false);
+  const [errorInvalid, setErrorInvalid] = useState({});
 
   const initTargetCustomerValue = {
     selectState: "",
@@ -364,9 +364,9 @@ function ConsultantProfile() {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -416,14 +416,14 @@ function ConsultantProfile() {
       brokerProfileInfo?.alternateEmail &&
       !validateEmail(brokerProfileInfo?.alternateEmail)
     ) {
-      setEmailInvalid({
-        ...emailInvalid,
+      setErrorInvalid({
+        ...errorInvalid,
         alternateEmail: true,
       });
       return;
     } else {
-      setEmailInvalid({
-        ...emailInvalid,
+      setErrorInvalid({
+        ...errorInvalid,
         alternateEmail: false,
       });
     }
@@ -432,15 +432,28 @@ function ConsultantProfile() {
       brokerProfileInfo?.serviceDetails?.companyEmail &&
       !validateEmail(brokerProfileInfo?.serviceDetails?.companyEmail)
     ) {
-      setEmailInvalid({
-        ...emailInvalid,
+      setErrorInvalid({
+        ...errorInvalid,
         companyEmail: true,
       });
       return;
     } else {
-      setEmailInvalid({
-        ...emailInvalid,
+      setErrorInvalid({
+        ...errorInvalid,
         companyEmail: false,
+      });
+    }
+
+    if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
+      setErrorInvalid({
+        ...errorInvalid,
+        reraNumber: true,
+      });
+      return;
+    } else {
+      setErrorInvalid({
+        ...errorInvalid,
+        reraNumber: false,
       });
     }
 
@@ -479,8 +492,8 @@ function ConsultantProfile() {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -503,8 +516,8 @@ function ConsultantProfile() {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -523,9 +536,7 @@ function ConsultantProfile() {
 
   return (
     <>
-      {
-        (isLoading || mutate.isPending) && <Loader />
-      }
+      {(isLoading || mutate.isPending) && <Loader />}
       <nav className={classes.demo2}>
         <CustomConsultantBreadScrumbs text="Profile" />
         <Card>
@@ -582,7 +593,7 @@ function ConsultantProfile() {
                       <Typography variant="h6" sx={{ fontWeight: 900 }}>
                         {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
                       </Typography>
-                      <Typography variant='body2'>
+                      <Typography variant="body2">
                         {brokerProfileInfo?.email}
                       </Typography>
                     </Box>
@@ -602,9 +613,13 @@ function ConsultantProfile() {
                           fontSize="small"
                           sx={{ alignSelf: "center" }}
                         />
-                        <Typography variant="h6" sx={{ alignSelf: "center", color: colors.BLUE }}>
-                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${brokerProfileInfo?.phone?.number || ""
-                            }`}
+                        <Typography
+                          variant="h6"
+                          sx={{ alignSelf: "center", color: colors.BLUE }}
+                        >
+                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${
+                            brokerProfileInfo?.phone?.number || ""
+                          }`}
                         </Typography>
                       </a>
                     </Box>
@@ -621,7 +636,6 @@ function ConsultantProfile() {
                   >
                     Consultant details
                   </Typography>
-
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -663,7 +677,9 @@ function ConsultantProfile() {
                     value={brokerProfileInfo?.alternateEmail || ""}
                     handleChange={(e) => handleChange(e, "alternateEmail")}
                     isEdit={isEdit}
-                    error={emailInvalid.alternateEmail && emailInvalid.alternateEmail}
+                    error={
+                      errorInvalid.alternateEmail && errorInvalid.alternateEmail
+                    }
                   />
                   <NewToggleButtonStructure
                     isEdit={isEdit}
@@ -691,7 +707,6 @@ function ConsultantProfile() {
                   >
                     Service details
                   </Typography>
-
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -728,6 +743,7 @@ function ConsultantProfile() {
                       handleChange(e, "serviceDetails", "reraNumber")
                     }
                     name="reraNumber"
+                    error={errorInvalid.reraNumber}
                   />
                   <NewInputFieldStructure
                     label="Company email"
@@ -737,7 +753,9 @@ function ConsultantProfile() {
                     }
                     variant="outlined"
                     isEdit={isEdit}
-                    error={emailInvalid.companyEmail && emailInvalid.companyEmail}
+                    error={
+                      errorInvalid.companyEmail && errorInvalid.companyEmail
+                    }
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "companyEmail")
                     }
@@ -844,8 +862,9 @@ function ConsultantProfile() {
                           }
                           return (
                             <Chip
-                              key={`${targetArea.selectCity || ""}-${targetArea.selectArea || ""
-                                }-${index}`}
+                              key={`${targetArea.selectCity || ""}-${
+                                targetArea.selectArea || ""
+                              }-${index}`}
                               label={label}
                               size="small"
                               sx={{ ml: 1, mt: 1 }}
@@ -933,7 +952,6 @@ function ConsultantProfile() {
                   >
                     Setting
                   </Typography>
-
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -954,7 +972,6 @@ function ConsultantProfile() {
                     <Typography variant="body1">
                       Do Not Disturb (DND) Mode
                     </Typography>
-
                   </Grid>
 
                   <Grid
