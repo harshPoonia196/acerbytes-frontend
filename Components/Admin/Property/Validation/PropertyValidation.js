@@ -31,20 +31,19 @@ export const unitPlanSchema = Joi.object({
   propertyLayout: Joi.string().required(),
   name: Joi.string().required(),
   areaUnit: Joi.string().required(),
-  totalUnits: Joi.string().required(),
-  area: Joi.string().required(),
-  bsp: Joi.string().required(),
+  totalUnits: Joi.number().required(),
+  area: Joi.number().required(),
+  bsp: Joi.number().required(),
   applicableMonth: Joi.string().required(),
   applicableYear: Joi.string().required(),
 });
 export const reraSchema = Joi.object({
   reraApproved: Joi.string().valid('Yes').required(),
-  reraNumber: Joi.string().required(),
+  reraNumber: Joi.number().required(),
 })
 const layoutSchema = Joi.object({
   numberOfBuildings: Joi.number()
     .custom((value, helpers) => {
-      console.log(helpers.state.ancestors[1].overview, "helllppers");
       const projectType = helpers.state.ancestors[1].overview.projectType;
       const isFlatSelected = projectType.some(
         (option) => option.label === "Land"
@@ -77,9 +76,9 @@ const layoutSchema = Joi.object({
   unitDensityScore: Joi.string().allow("").optional(),
   totalUnits: Joi.number().required(),
   greenDensityScore: Joi.string().allow("").optional(),
-  area: Joi.string().required(),
+  area: Joi.number().required(),
   areaUnit: Joi.string().required(),
-  greenArea: Joi.string().allow("").optional(),
+  greenArea: Joi.number().allow("").optional(),
   unitDensity: Joi.number().required(),
   greenDensity: Joi.when("greenArea", {
     is: Joi.string().not("").required(),
@@ -95,10 +94,10 @@ export const Schema = Joi.object({
   overview: overviewSchema,
   regulatoryClearance: Joi.object().keys({
     reraApproved: Joi.string().required(),
-    reraNumber: Joi.string().when("reraApproved", {
+    reraNumber: Joi.number().when("reraApproved", {
       is: "Yes",
-      then: Joi.string().required(),
-      otherwise: Joi.string().allow("").optional(),
+      then: Joi.number().required(),
+      otherwise: Joi.number().allow("").optional(),
     }),
     cc: Joi.string().required(),
     oc: Joi.string().required(),
@@ -135,9 +134,9 @@ export const Schema = Joi.object({
           propertyLayout: Joi.string().required(),
           name: Joi.string().required(),
           areaUnit: Joi.string().required(),
-          totalUnits: Joi.string().required(),
-          area: Joi.string().required(),
-          bsp: Joi.string().required(),
+          totalUnits: Joi.number().required(),
+          area: Joi.number().required(),
+          bsp: Joi.number().required(),
           applicableMonth: Joi.string().required(),
           applicableYear: Joi.string().required(),
         })
@@ -195,10 +194,10 @@ export const Schema = Joi.object({
     city: Joi.string().required(),
     sector: Joi.string().required(),
     area: Joi.string().required(),
-    pinCode: Joi.string().required(),
+    pinCode: Joi.number().required(),
     googleMapLink: Joi.string().required(),
-    longitude: Joi.string().required(),
-    latitude: Joi.string().required(),
+    longitude: Joi.number().required(),
+    latitude: Joi.number().required(),
     assesment: Joi.object().pattern(
       /./,
       Joi.object().keys({

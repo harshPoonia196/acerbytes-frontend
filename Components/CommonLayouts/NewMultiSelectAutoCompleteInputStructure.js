@@ -10,7 +10,7 @@ import {
 import colors from "styles/theme/colors";
 import { menuMaxHeight } from "utills/Constants";
 
-const top100Films = [{ label: "Mumbai" }];
+const top100Films = [{ label: "Mumbai",value:"Mumbai" }];
 
 const NewMultiSelectAutoCompleteInputStructure = ({
   name,
@@ -48,8 +48,10 @@ const NewMultiSelectAutoCompleteInputStructure = ({
           value={value || []}
           fullWidth
           size="small"
-          getOptionLabel={(option) =>
-            brokerUse ? option.fullName : option.label
+          isOptionEqualToValue={(option, value) => brokerUse?option.fullName===value.fullName:option.value === value.value}
+          // getOptionLabel={(option)=> option.label}
+          getOptionLabel={(option) =>{
+           return brokerUse ? option.fullName : option.label}
           }
           renderTags={(value, getTagProps) =>
             value.length && value.map((option, index) => (
