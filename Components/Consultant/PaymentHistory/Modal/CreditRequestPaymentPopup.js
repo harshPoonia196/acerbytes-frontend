@@ -22,6 +22,7 @@ import { createOrderRequest, generateRandorOrderNumber } from "api/Broker.api";
 import { ToasterMessages } from "Components/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
+import { formatAmount, formatPoints } from "utills/CommonFunction";
 
 function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
   const router = useRouter();
@@ -60,8 +61,8 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error generating order number request",
+        error?.message ||
+        "Error generating order number request",
         "error"
       );
     } finally {
@@ -79,8 +80,8 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
+        error?.message ||
+        "Error creating order request",
         "error"
       );
     } finally {
@@ -129,7 +130,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
           </Box>
           <Typography variant="h3">
             <span style={{ fontSize: "1rem" }}>for</span>&nbsp;
-            {creditRequest?.point || 0}&nbsp;
+            {formatPoints(creditRequest?.point || 0)}&nbsp;
             <span style={{ fontSize: "1rem" }}>credits (points)</span>
           </Typography>
           <Typography variant="h6">
@@ -138,7 +139,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
           <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
             <Typography variant="h2" sx={{ fontWeight: 600 }}>
               <span style={{ fontSize: "1rem" }}>Rs&nbsp;</span>
-              {creditRequest?.amount || 0}
+              {formatAmount(creditRequest?.amount || 0)}
             </Typography>
             <Box sx={{ alignSelf: "center" }}>
               <Tooltip title="Copy">
@@ -182,7 +183,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
             <Typography variant="body2">
               Send screenshot to{" "}
               <Chip
-                onClick={() => {}}
+                onClick={() => { }}
                 icon={<WhatsAppIcon fontSize="small" />}
                 label="+9198799877"
                 size="small"
