@@ -94,6 +94,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={reraNumber}
+                        type={"number"}
                         error={errors?.["regulatoryClearance.reraNumber"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "reraNumber")}
                     />

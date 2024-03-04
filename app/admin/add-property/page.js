@@ -259,7 +259,7 @@ function AddProperty() {
       maxFloors: "",
       minFloors: "",
       totalUnits: "",
-      areaUnit: "",
+      areaUnit: "Acres",
       area: "",
       greenArea: "",
       unitDensity: "",

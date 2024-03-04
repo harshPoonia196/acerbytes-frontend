@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, TextField, Grid, Box } from "@mui/material";
 import colors from "styles/theme/colors";
+import { number } from "joi";
 
 const filterKeys = ["firstName", "lastName", "company", "city", "pinCode"];
 
@@ -63,6 +64,7 @@ const NewInputFieldStructure = ({
             variant={variant ? variant : "standard"}
             fullWidth
             value={value}
+            type={type}
             size="small"
             defaultValue={defaultValue}
             sx={sx}
@@ -75,6 +77,7 @@ const NewInputFieldStructure = ({
             name={name}
             value={value}
             disabled={disabled}
+            type={type}
             onChange={changeHandler}
             variant={variant ? variant : "standard"}
             fullWidth

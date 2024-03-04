@@ -80,6 +80,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
             label="No of buildings"
             name="numberOfBuildings"
             variant="outlined"
+            type={"number"}
             isEdit={isEdit}
             value={numberOfBuildings}
             error={errors?.["layout.numberOfBuildings"]}
@@ -119,6 +120,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
             name="maxFloors"
             variant="outlined"
             isEdit={isEdit}
+            type={"number"}
             value={maxFloors}
             error={errors?.["layout.maxFloors"]}
             handleChange={(e) => handleChange(e, "layout", "maxFloors")}
@@ -126,6 +128,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
           <NewInputFieldStructure
             label="Floors (Min)"
             name="minFloors"
+            type={"number"}
             variant="outlined"
             isEdit={isEdit}
             value={minFloors}
@@ -137,6 +140,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
             name="area"
             variant="outlined"
             isEdit={isEdit}
+            type={"number"}
             value={area}
             unitValue={areaUnit}
             error={errors?.["layout.area"]}
@@ -160,6 +164,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
           <NewInputFieldStructure
             label="Units (Total)"
             name="totalUnits"
+            type={"number"}
             variant="outlined"
             isEdit={isEdit}
             error={errors?.["layout.totalUnits"]}
@@ -179,6 +184,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
           <NewUnitAreaInputField
             label="Green area"
             name="greenArea"
+            type={"number"}
             variant="outlined"
             isEdit={isEdit}
             units={

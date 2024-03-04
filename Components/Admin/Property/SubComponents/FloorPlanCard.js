@@ -18,6 +18,10 @@ import {
   Fade,
   TableBody,
 } from "@mui/material";
+import {
+  transformDocuments
+} from "utills/CommonFunction";
+import { getAllOptions } from "api/Property.api";
 import InfoIcon from "@mui/icons-material/Info";
 import EditIcon from "@mui/icons-material/Edit";
 import { unitPlanSchema } from "Components/Admin/Property/Validation/PropertyValidation";
@@ -63,6 +67,8 @@ function FloorPlanCard({
 
   useEffect(() => {
     setUnit(layoutType);
+    getAllOptionDataList()
+
     setUnitType(projectType);
     const updatedPlanList = unitsPlan.planList.filter((plan) => {
       // Check if all fields in the plan object are empty
@@ -80,6 +86,30 @@ function FloorPlanCard({
     });
     setRows([...updatedPlanList]);
   }, [editForm]);
+
+
+  const [selectOptions, setSelectOption] = useState({})
+  const getAllOptionDataList = async () => {
+      try {
+          let res = await getAllOptions();
+          if (res.status === 200) {
+              let transform = transformDocuments(res.data.data)
+              setSelectOption({ ...transform })
+          }
+      } catch (error) {
+          console.log(error, 'err')
+          // showToaterMessages(
+          //   error?.response?.data?.message ||
+          //   error?.message ||
+          //   "Error fetching state list",
+          //   "error"
+          // );
+      }
+      // finally {
+      //   setLoading(false);
+      // }
+  };
+
 
   const style = {
     position: "absolute",
@@ -228,7 +258,7 @@ function FloorPlanCard({
         name: "",
         area: "",
         totalUnits: "",
-        areaUnit: "",
+        areaUnit: "Acres",
         bsp: "",
         applicableYear: "",
         applicableMonth: "",
@@ -320,14 +350,15 @@ function FloorPlanCard({
               name="areaUnit"
               infoText="Changing the unit leads to re enter the plan. The old entries will be removed"
               showInfo={true}
+              defaultValue={"Acres"}
               error={
                 localError?.["areaUnit"] ||
                 errors?.["unitsPlan.planList[0].areaUnit"]
               }
               isEdit={isEdit}
               list={[
-                { label: "acres", value: "acres" },
-                { label: "sqft", value: "sqft" },
+                { label: "Acres", value: "acres" },
+                { label: "Sqft", value: "sqft" },
               ]}
               value={selectedItem.areaUnit}
               handleChange={(e) => {
@@ -364,6 +395,7 @@ function FloorPlanCard({
               label="Area (Per Unit)"
               variant="outlined"
               isEdit={isEdit}
+              type={"number"}
               name="area"
               value={selectedItem.area}
               error={
@@ -377,6 +409,7 @@ function FloorPlanCard({
             <NewInputFieldStructure
               label="Base Selling Price (Per Unit)"
               variant="outlined"
+              type={"number"}
               isEdit={isEdit}
               name="bsp"
               error={localError?.["bsp"] || errors?.["unitsPlan.planList[0].bsp"]}
@@ -390,6 +423,7 @@ function FloorPlanCard({
               label="Total Units"
               variant="outlined"
               isEdit={isEdit}
+              type={"number"}
               name="totalUnits"
               value={selectedItem.totalUnits}
               error={
@@ -412,10 +446,17 @@ function FloorPlanCard({
                 errors?.["unitsPlan.planList[0].applicableYear"]
               }
               isEdit={isEdit}
-              list={[
-                { label: "2000", value: "2000" },
-                { label: "2001", value: "2001" },
-              ]}
+              list={
+                
+                selectOptions.launch?.map((item) => {
+                  return {
+                      label: item,
+                      value: item,
+                  };
+              })
+              
+            
+            }
               value={selectedItem.applicableYear}
               handleChange={(e) =>
                 setSelectedItem((prev) => ({
@@ -435,6 +476,16 @@ function FloorPlanCard({
               list={[
                 { label: "01", value: "01" },
                 { label: "02", value: "02" },
+                { label: "03", value: "03" },
+                { label: "04", value: "04" },
+                { label: "05", value: "05" },
+                { label: "06", value: "06" },
+                { label: "07", value: "07" },
+                { label: "08", value: "08" },
+                { label: "09", value: "09" },
+                { label: "10", value: "10" },
+                { label: "11", value: "11" },
+                { label: "12", value: "12" },
               ]}
               value={selectedItem.applicableMonth}
               handleChange={(e) =>
