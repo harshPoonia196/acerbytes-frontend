@@ -52,6 +52,7 @@ import {
 import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 const headCells = [
   {
@@ -407,40 +408,44 @@ function TableView({
       <Card sx={{ mb: 2 }}>
         <CustomSearchInput />
       </Card>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-            isCompleted={status === ORDER_STATUS.COMPLETED}
+      {orderRequests.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+              isCompleted={status === ORDER_STATUS.COMPLETED}
+            />
+            <TableBody>
+              {orderRequests?.list?.map((row, index) => (
+                <RowStructure
+                  row={row}
+                  userDetails={userDetails}
+                  key={index}
+                  isCompleted={status === ORDER_STATUS.COMPLETED}
+                  handleOrderRequest={handleOrderRequest}
+                  salesPersons={salesPersons}
+                />
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            sx={{
+              overflow: "hidden",
+            }}
+            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+            component="div"
+            count={orderRequests.totalCount}
+            rowsPerPage={rowsPerPage}
+            page={page - 1}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          <TableBody>
-            {orderRequests?.list?.map((row, index) => (
-              <RowStructure
-                row={row}
-                userDetails={userDetails}
-                key={index}
-                isCompleted={status === ORDER_STATUS.COMPLETED}
-                handleOrderRequest={handleOrderRequest}
-                salesPersons={salesPersons}
-              />
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          sx={{
-            overflow: "hidden",
-          }}
-          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-          component="div"
-          count={orderRequests.totalCount}
-          rowsPerPage={rowsPerPage}
-          page={page - 1}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
+        </TableContainer>
+      ) : (
+        <NoDataCard title={"No Data Found.."} />
+      )}
     </>
   );
 }
@@ -584,7 +589,6 @@ function OrdersTable() {
         align="right"
         onClick={() => setOpenAddCreditPoints(true)}
         startIcon={<Add />}
-      
         ButtonText={"Add request"}
       />
 

@@ -33,6 +33,7 @@ import { useRouter } from "next/navigation";
 import { getAllProperty, deleteProperty } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import {
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
@@ -358,7 +359,9 @@ const PropertyListTable = ({ searchText, setCount }) => {
 
   return (
     <>
-      <TableContainer component={Paper}>
+    {
+      propertyList.length > 0 ?(
+<TableContainer component={Paper}>
         {isLoading ? (
           <Stack sx={{ my: "1.5rem", alignItems: "center" }}>
             <CircularProgress color="inherit" />
@@ -394,6 +397,9 @@ const PropertyListTable = ({ searchText, setCount }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+      ):<NoDataCard title={"No Data  Found.."}/>
+    }
+      
 
       <ConfirmationDialog
         open={isDialogOpen}

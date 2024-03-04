@@ -19,6 +19,7 @@ import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
 import AddIcon from "@mui/icons-material/Add";
 import AddCreditPopup from "./Modal/AddCreditPopup";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 const rows = [
   {
@@ -203,32 +204,38 @@ function ManageConsultantTable() {
   );
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-        />
-        <TableBody>
-          {rows.map((row) => (
-            <RowStructure row={row} />
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        sx={{
-          overflow: "hidden",
-        }}
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </TableContainer>
+    <>
+      {rows.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {rows.map((row) => (
+                <RowStructure row={row} />
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            sx={{
+              overflow: "hidden",
+            }}
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>
+      ) : (
+        <NoDataCard title={"No Data Found.."} />
+      )}
+    </>
   );
 }
 

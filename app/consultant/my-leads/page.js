@@ -82,7 +82,7 @@ function MyLeads() {
           </ToggleButtonGroup>
         </Card>
         <Box sx={{ textAlign: 'end', mb: 2 }}>
-          <CustomButton variant="outlined" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add notes"} loading={loading} />
+          <CustomButton variant="outlined" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add notes"} loading={"loading"} />
         </Box>
         {alignment === "all" ? <MyLeadsTable /> : <MyLeadsStatus />}
       </Container>

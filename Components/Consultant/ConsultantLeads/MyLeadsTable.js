@@ -29,6 +29,7 @@ import { getBrokerLeads } from "api/Broker.api";
 import { reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 // const rows = [
 //   {
@@ -309,32 +310,36 @@ function MyLeadsTable() {
           <CustomSearchInput />
         </Card>
       </Grid>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
+      {
+        rowsPerPage.length >0 ? (
+          <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {rows.map((row) => (
+                <RowStructure row={row} key={row.firstName} />
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            sx={{
+              overflow: "hidden",
+            }}
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={totalCount}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          <TableBody>
-            {rows.map((row) => (
-              <RowStructure row={row} key={row.firstName} />
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          sx={{
-            overflow: "hidden",
-          }}
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={totalCount}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
+        </TableContainer>
+        ) :<NoDataCard title={"No Data Found.."} />    }
+     
     </>
   );
 }
