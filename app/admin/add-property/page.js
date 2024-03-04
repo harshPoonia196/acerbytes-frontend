@@ -883,17 +883,17 @@ function AddProperty() {
         }));
       }
     }
-    const { error } = Schema.validate(form, { abortEarly: false });
-    if (error) {
-      // console.log("🚀 ~ validateForm ~ error:", error.details)
-      const validationErrors = {};
-      error.details.forEach((detail) => {
-        validationErrors[detail?.context?.label] = detail?.message;
-      });
-      // Handle validation errors, e.g., display error messages
-      setErrors(validationErrors);
-      return false;
-    }
+    // const { error } = Schema.validate(form, { abortEarly: false });
+    // if (error) {
+    //   // console.log("🚀 ~ validateForm ~ error:", error.details)
+    //   const validationErrors = {};
+    //   error.details.forEach((detail) => {
+    //     validationErrors[detail?.context?.label] = detail?.message;
+    //   });
+    //   // Handle validation errors, e.g., display error messages
+    //   setErrors(validationErrors);
+    //   return false;
+    // }
   };
 
 
