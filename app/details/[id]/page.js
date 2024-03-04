@@ -107,14 +107,12 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([])
-  console.log(propertyData)
 
   const detailsGetProperty = async () => {
     try {
       setLoading(true);
       let res = await detailsProperty(`${detailsPropertyId}${brokerId ? `?brokerId=${brokerId}` : ''}`);
       if (res.status === 200) {
-        console.log(res.data?.data)
         setPropertyData(res.data?.data)
       }
     } catch (error) {

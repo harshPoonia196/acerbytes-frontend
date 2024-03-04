@@ -43,6 +43,14 @@ function transformDocuments(documents) {
   }, {});
 }
 
+function transformDocumentsLocation(documents) {
+  return documents.reduce((result, document) => {
+    const { city, area } = document;
+    result[city] = area;
+    return result;
+  }, {});
+}
+
 function getComparator(order, orderBy) {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -104,5 +112,6 @@ export {
   formatAmount,
   formatPoints,
   toCamelCase,
-  transformDocuments
+  transformDocuments,
+  transformDocumentsLocation,
 };
