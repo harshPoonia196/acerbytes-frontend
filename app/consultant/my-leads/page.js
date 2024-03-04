@@ -20,7 +20,7 @@ import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function MyLeads() {
-  
+
   const router = useRouter();
 
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
@@ -44,7 +44,7 @@ function MyLeads() {
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        
+
       />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>

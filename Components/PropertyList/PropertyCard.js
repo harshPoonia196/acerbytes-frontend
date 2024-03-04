@@ -93,7 +93,7 @@ function PropertyCard(props) {
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
             <Typography variant="caption">{propertyDetails?.unitsPlan?.planList.length && propertyDetails?.unitsPlan?.planList?.map(item => `${item.area} ${item.areaUnit}`).join(", ")}</Typography>
-            {/* <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr</Typography> */}
+            <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr(static)</Typography>
           </Grid>
           <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
             <Typography variant="caption">{propertyDetails?.layout?.totalUnits}</Typography>
@@ -116,6 +116,31 @@ function PropertyCard(props) {
           >
             <Typography variant="caption">{propertyDetails?.overview?.status}</Typography>
             <Typography variant="subtitle2">{propertyDetails?.overview?.launchYear} - {propertyDetails?.overview?.completionYear}</Typography>
+          </Grid>
+          <Grid item xs={8} sm={4} md={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Card
+              sx={{
+                width: "fit-content",
+                backgroundColor: colors?.BLACK,
+                // borderRadius: "4px !important",
+                m: 0,
+                ml: "auto !important",
+              }}
+              onClick={() => router.push("/research")}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 600,
+                  width: "fit-content",
+                  color: "white",
+                  p: 0.5,
+                  px: 1,
+                }}
+              >
+                99
+              </Typography>
+            </Card>
           </Grid>
           {/* <Grid
             item

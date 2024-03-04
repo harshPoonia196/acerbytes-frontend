@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
 function TopMenu(props) {
-    const {value, handleChange, list, topMenu} = props
+    const { value, handleChange, list, topMenu } = props
     const router = useRouter()
 
     return (
@@ -20,10 +20,10 @@ function TopMenu(props) {
                         variant="h2"
                         sx={{ fontWeight: "700 !important" }}
                     >
-                       {topMenu?.overview?.projectName}
+                        {topMenu?.overview?.projectName}
                     </Typography>
                     <Typography variant="h5" sx={{ alignSelf: "center" }}>
-                        {topMenu?.overview?.status} 
+                        {topMenu?.overview?.status}
                         {/* &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183;  */}
                         {topMenu?.location?.sector}, {topMenu?.location?.city}, {topMenu?.location?.state}
                     </Typography>

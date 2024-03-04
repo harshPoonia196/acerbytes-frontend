@@ -141,15 +141,15 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
                       onClick={() => handleViewReview(broker?.name)}
                       size="small"
                       variant="outlined"
-                    ButtonText={"View Reviews"}
+                      ButtonText={"View Reviews"}
                     />
                   ) : (
                     <CustomButton
                       onClick={handleDialogOpen}
                       size="small"
                       variant="outlined"
-                    ButtonText={"Rate your experience"}
-                      
+                      ButtonText={"Rate your experience"}
+
                     />
                   )}
                 </Box>
@@ -174,9 +174,8 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
       {broker?.phone?.number ? (
         <Box sx={{ position: "absolute", top: 8, right: 8 }}>
           <a
-            href={`tel:${
-              (broker?.phone?.countryCode || "") + (broker?.phone?.number || "")
-            }`}
+            href={`tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")
+              }`}
           >
             <IconButton>
               <CallIcon fontSize="small" />
@@ -229,8 +228,8 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
                   You wrote a Public review
                   {broker?.reviews?.createdAt
                     ? moment(broker?.reviews?.createdAt).format(
-                        " on DD MMM, YYYY"
-                      )
+                      " on DD MMM, YYYY"
+                    )
                     : ""}
                 </Typography>
                 <Typography variant="body2">

@@ -1,6 +1,6 @@
 export const PAGINATION_LIMIT = 10;
 export const PAGINATION_LIMIT_OPTIONS = [10, 25];
-export const DEBOUNCE_TIMER = 300;
+export const DEBOUNCE_TIMER = 500;
 
 export const ROLE_CONSTANTS = {
   superAdmin: "superAdmin",

@@ -96,7 +96,7 @@ export const interestedForLoan = [
 ];
 
 export const yearList = Array.from(
-  { length: 41 }, (_, index) =>   { return { label: index>9?`20${index}`:`200${index}`, value: index>9?`20${index}`:`200${index}` }})
+  { length: 41 }, (_, index) => { return { label: index > 9 ? `20${index}` : `200${index}`, value: index > 9 ? `20${index}` : `200${index}` } })
 
 export const addressType = [
   {
@@ -119,19 +119,19 @@ export const ToasterMessages = {
 
 export const BuyingCreditPoints = [
   {
-    amount: "25,000",
-    point: "25,000",
-    discount: "0",
+    amount: 25000,
+    point: 25000,
+    discount: 0,
   },
   {
-    amount: "40,000",
-    point: "50,000",
-    discount: "20",
+    amount: 40000,
+    point: 50000,
+    discount: 20,
   },
   {
-    amount: "70,000",
-    point: "1,00,000",
-    discount: "30",
+    amount: 70000,
+    point: 100000,
+    discount: 30,
   },
 ];
 

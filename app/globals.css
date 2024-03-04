@@ -134,26 +134,3 @@ html {
 .MuiStack-root .MuiTextField-root {
   min-width: 200px !important;
 }
-
-.dropdownfix{
-  top: 42px !important;
-  right: 12px;
-}
-
-.ChipStyling .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-f34qqq-MuiAutocomplete-root .MuiOutlinedInput-root{
-  padding-right: 0px;
-  width: 100%;
-  display: block;
-}
-.ChipStyling .css-f34qqq-MuiAutocomplete-root .MuiAutocomplete-tag{
-  display: flex;
-  width: max-content;
-}
-.ChipStyling .css-f34qqq-MuiAutocomplete-root .MuiOutlinedInput-root .MuiAutocomplete-endAdornment{
-  top: 0px;
-}
-
-.ChipStyling .css-wb57ya-MuiFormControl-root-MuiTextField-root{
-  height: 70px;
-  overflow: scroll;
-}

@@ -28,11 +28,6 @@ function BuilderPriceCard({ isEdit }) {
                     >
                         Builder price
                     </Typography>
-                    <Box>
-                        <IconButton>
-                            <EditIcon fontSize="small" />
-                        </IconButton>
-                    </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} columns={{ xs: 12, sm: 18 }} sx={{ p: 2 }}>
@@ -45,7 +40,7 @@ function BuilderPriceCard({ isEdit }) {
                     />
                     <DateTimeInputField label="When" variant='outlined' isEdit={isEdit} />
                     <Grid item xs={18} sx={{ textAlign: 'end' }}>
-                        <CustomButton variant='contained' ButtonText={"Add"}/>
+                        <CustomButton variant='contained' ButtonText={"Add"} />
                     </Grid>
                 </Grid>
             </Card>

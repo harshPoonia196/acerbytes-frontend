@@ -191,8 +191,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
             size="small"
             onClick={handleActivateClick}
             disabled={isLoading}
-
-            ButtonText={isLoading ? <Loader /> : 'Activate'}
+            ButtonText={isLoading ? 'Activating' : 'Activate'}
           />
           <Typography variant="subtitle2"
             sx={{ alignSelf: "center", color: colors.GRAY }}>

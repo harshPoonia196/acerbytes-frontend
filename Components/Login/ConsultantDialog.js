@@ -75,9 +75,9 @@ const ConsultantDialog = ({ loading, createUserFun, form, handleChange, showCons
             <DialogActions>
                 <CustomButton
                     onClick={createUserFun}
-                // color="primary"
-                
-                   ButtonText={"I'll do it later!"}
+                    // color="primary"
+
+                    ButtonText={"I'll do it later!"}
                 />
                 <CustomButton
                     onClick={handleSubmit}
@@ -85,6 +85,7 @@ const ConsultantDialog = ({ loading, createUserFun, form, handleChange, showCons
                     variant="contained"
                     loading={loading}
                     loadingText={"Submit"}
+                    ButtonText={'Submit'}
                 />
             </DialogActions>
         </Dialog>

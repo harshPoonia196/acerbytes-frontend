@@ -256,8 +256,8 @@ function MyLeadsTable() {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-            error?.message ||
-            "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
           "error"
         );
         return error;
@@ -304,7 +304,7 @@ function MyLeadsTable() {
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
+      {isLoading && <Loader />}
       <Grid item xs={12}>
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput />

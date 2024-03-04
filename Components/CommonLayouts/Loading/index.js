@@ -2,7 +2,9 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
-import {RotatingLines} from "react-loader-spinner"
+// import { RotatingLines } from "react-loader-spinner"
+import colors from "styles/theme/colors";
+import { CircularProgress } from "@mui/material";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -10,43 +12,28 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     top: "0",
     left: "0",
-    zIndex: 10000,
+    zIndex: 1000,
     width: "100vw",
     height: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.1)",
+    backgroundColor: "rgba(1,1,1,0.1)",
+    backdropFilter: "blur(2px)",
   },
   spinner: {
-    height: "15vh !important",
-    width: "15vh !important",
+    // height: "15vh !important",
+    // width: "15vh !important",
   },
 }));
 
-function Loader(props) {
-  const { isLoading } = props;
+function Loader() {
 
   const classes = useStyles();
   return (
-    <>
-      {isLoading ? (
-        <div className={clsx(classes.container)}>
-          <RotatingLines
-  visible={true}
-  height="48"
-  width="48"
-  strokeColor="black"
-  strokeWidth="5"
-  animationDuration="0.75"
-  ariaLabel="rotating-lines-loading"
- 
-  className={clsx(classes.spinner)}
-  />
-          
-        </div>
-      ) : null}
-    </>
+    <div className={clsx(classes.container)}>
+      <CircularProgress disableShrink sx={{ color: colors.BLACK }} />
+    </div>
   );
 }
 

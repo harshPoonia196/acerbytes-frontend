@@ -10,47 +10,65 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
-  TablePagination
+  TablePagination,
 } from "@mui/material";
 import PropertyCard from "Components/PropertyList/PropertyCard";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import React, { useEffect, useRef, useState } from "react";
-import { getAllOptionData, getAllProperty } from "api/Property.api";
+import {
+  getAllOptionData,
+  getAllOptions,
+  getAllProperty,
+  getLocations,
+} from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
 import {
+  DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
 } from "Components/config/config";
 import NewMultiSelectAutoCompleteInputStructure from "Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
-
+import colors from "styles/theme/colors";
+import {
+  transformDocuments,
+  transformDocumentsLocation,
+} from "utills/CommonFunction";
 
 function PropertyList() {
-
   const [alignment, setAlignment] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
 
-  const [property, setProperty] = useState([])
-  const [count, setCount] = useState([])
+  const [property, setProperty] = useState([]);
+  const [count, setCount] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
-  const [focus, setFocus] = useState(false)
+  const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
   const [selectedOptions, setSelectedOptions] = useState({});
-  const [propertyvalue, setPropertyvalue] = useState("")
-  const [buttonColor, setButtonColor] = useState("")
+  const [propertyvalue, setPropertyvalue] = useState("");
+  const [buttonColor, setButtonColor] = useState("");
 
-  const [selectOption, setSelectOption] = useState([]);
+  const [selectOption, setSelectOption] = useState({});
+
+  const [isDisablePropertyType, setIsDisablePropertyType] = useState(true);
+  const [isDisableLayoutType, setIsDisableLayoutType] = useState(true);
+  const [locationData, setLocationData] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  const [layoutTypeApplicable, setLayoutTypeApplicable] = useState([]);
+  const [locationDisable, setLocationDisable] = useState(true);
+  const [selectedCity, setSelectedCity] = useState([]);
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
-    setSearchTerm(term)
-    setFocus(true)
+    setSearchTerm(term);
+    setFocus(true);
   };
 
   const objectToQueryString = (obj) => {
@@ -63,14 +81,24 @@ function PropertyList() {
     return queryString;
   };
 
-  const getUserPropertyList = async (pageOptions, searchTerm, selectedOptions, alignment, propertyvalue) => {
+  const getUserPropertyList = async (
+    pageOptions,
+    searchTerm,
+    selectedOptions,
+    alignment,
+    propertyvalue
+  ) => {
     try {
-      let data = {}
-      Object.keys(selectedOptions).forEach(key => {
+      let data = {};
+      Object.keys(selectedOptions).forEach((key) => {
         const value = selectedOptions[key];
         if (Array.isArray(value) && value.length > 0) {
-          data[key] = value.map(option => option.value);
-        } else if (!Array.isArray(value) && value !== undefined && value !== null) {
+          data[key] = value.map((option) => option.value);
+        } else if (
+          !Array.isArray(value) &&
+          value !== undefined &&
+          value !== null
+        ) {
           // For single-select scenarios or when value is directly usable and not an empty selection
           // Check for non-array values that are not undefined or null, then wrap in an array
           data[key] = [value];
@@ -81,11 +109,11 @@ function PropertyList() {
         ...(searchTerm ? { search: searchTerm } : {}),
         ...(data ? { searchParams: JSON.stringify(data) } : {}),
         sortBy: alignment,
-        key: propertyvalue
+        key: propertyvalue,
       };
       if (Object.keys(data).length === 0) {
-        delete querParams['searchParams'];
-    }
+        delete querParams["searchParams"];
+      }
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
@@ -94,8 +122,8 @@ function PropertyList() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -105,19 +133,74 @@ function PropertyList() {
 
   const getAllOptionDataList = async () => {
     try {
-      let res = await getAllOptionData();
+      let res = await getAllOptions();
       if (res.status === 200) {
-        setSelectOption(res?.data?.data)
+        let transform = transformDocuments(res.data.data);
+        setSelectOption({ ...transform });
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getLocationsCall = async () => {
+    try {
+      let res = await getLocations();
+      if (res.status === 200) {
+        let transformLocation = transformDocumentsLocation(res.data.data);
+        setLocationData({ ...transformLocation });
+        setCities(Object.keys(transformLocation));
+      } else {
+        console.log("err");
+      }
+    } catch (err) {
+      openSnackbar("Error getting location  details", "error");
+    }
+  };
+
+  const handleOptionChange = (key, value) => {
+    // unitType
+    if (key === "city") {
+      setLocationDisable(false);
+      setSelectedCity(value);
+    } else if (key === "category") {
+      setIsDisablePropertyType(false);
+    } else if (key === "propertyType") {
+      setIsDisableLayoutType(false);
+      setLayoutTypeApplicable(value);
+    }
+    const updatedValue = (prevOptions) => {
+      const tempObje = { ...prevOptions };
+      if (key === "category") {
+        delete tempObje.propertyType;
+        delete tempObje.unitType;
+      } else if (key === "city") {
+        delete tempObje.location;
+      } else if (key === "propertyType") {
+        delete tempObje.unitType;
+      }
+      return {
+        ...tempObje,
+        [key]: value,
+      };
+    };
+    if (value) {
+      setSelectedOptions((prevOptions) => {
+        return updatedValue(prevOptions);
+      });
+    } else {
+      setSelectedOptions((prevOptions) => {
+        const newOptions = { ...prevOptions };
+        delete newOptions[key];
+        return newOptions;
+      });
     }
   };
 
@@ -132,25 +215,38 @@ function PropertyList() {
       page: currentPage,
     };
 
-    getUserPropertyList(pageOptions, debouncedSearchTerm, selectedOptions, alignment, propertyvalue)
+    getUserPropertyList(
+      pageOptions,
+      debouncedSearchTerm,
+      selectedOptions,
+      alignment,
+      propertyvalue
+    );
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [debouncedSearchTerm, currentPage, pageLimit, selectedOptions, alignment, propertyvalue]);
+  }, [
+    debouncedSearchTerm,
+    currentPage,
+    pageLimit,
+    selectedOptions,
+    alignment,
+    propertyvalue,
+  ]);
 
   useEffect(() => {
-    setCurrentPage(1)
+    setCurrentPage(1);
   }, [searchTerm, selectedOptions, alignment, propertyvalue]);
 
-
   useEffect(() => {
-    getAllOptionDataList()
+    getAllOptionDataList();
+    getLocationsCall();
   }, []);
 
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 500);
+    }, DEBOUNCE_TIMER);
 
     return () => clearTimeout(timerId);
   }, [searchTerm, selectedOptions]);
@@ -162,7 +258,13 @@ function PropertyList() {
       pageLimit,
       page,
     };
-    getUserPropertyList(pageOptions, searchTerm, selectedOptions, alignment, propertyvalue)
+    getUserPropertyList(
+      pageOptions,
+      searchTerm,
+      selectedOptions,
+      alignment,
+      propertyvalue
+    );
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -172,8 +274,13 @@ function PropertyList() {
       pageLimit,
       page: 1,
     };
-    getUserPropertyList(pageOptions, searchTerm, selectedOptions, alignment, propertyvalue)
-
+    getUserPropertyList(
+      pageOptions,
+      searchTerm,
+      selectedOptions,
+      alignment,
+      propertyvalue
+    );
   };
 
   const handleChange = (event, value) => {
@@ -185,8 +292,8 @@ function PropertyList() {
   };
 
   const handleChangeData = (event, value) => {
-    setButtonColor(value)
-    setPropertyvalue(value)
+    setButtonColor(value);
+    setPropertyvalue(value);
     if (value === "price" || value === "area" || value === "completion") {
       setAlignment(1);
     } else {
@@ -197,44 +304,31 @@ function PropertyList() {
   const handleChangeAllData = (event, value) => {
     const newAlignment = value === "dec" ? -1 : 1;
     setAlignment(newAlignment);
-    setButtonColor('')
+    setButtonColor("");
     const pageOptions = {
       pageLimit,
       page: 1,
     };
     setPropertyvalue("");
-    getUserPropertyList(pageOptions, debouncedSearchTerm, selectedOptions, newAlignment, propertyvalue);
-  };
-
-  const handleOptionChange = (key, value) => {
-    if(key === "location" || key === "city"){
-      value = value?.value
-    }
-    if (value) {
-      setSelectedOptions(prevOptions => ({
-        ...prevOptions,
-        [key]: value,
-      }));
-    } else {
-      setSelectedOptions(prevOptions => {
-        // delete prevOptions[key]
-        // return ({
-        //   ...prevOptions,
-        // })
-        const newOptions = { ...prevOptions };
-        delete newOptions[key];
-        return newOptions;
-      });
-    }
-
+    getUserPropertyList(
+      pageOptions,
+      debouncedSearchTerm,
+      selectedOptions,
+      newAlignment,
+      propertyvalue
+    );
   };
 
   return (
     <>
-      {isLoading ? <Loader /> : <>
+      <>
+        {isLoading && <Loader />}
         <Container maxWidth="lg">
           <Card sx={{ mb: 2 }}>
-            <Grid container sx={{ display: "flex", flexDirection: "row-reverse" }}>
+            <Grid
+              container
+              sx={{ display: "flex", flexDirection: "row-reverse" }}
+            >
               <Grid item xs={12} sm={6}>
                 <Card sx={{ boxShadow: "none" }}>
                   <iframe
@@ -257,28 +351,109 @@ function PropertyList() {
                   <Typography variant="h2">Noida</Typography>
                   <Typography variant="caption">
                     Noida's strategic location, robust infrastructure, and
-                    flourishing business environment have contributed to its status
-                    as a vibrant and attractive real estate destination in the NCR
-                    region.
+                    flourishing business environment have contributed to its
+                    status as a vibrant and attractive real estate destination
+                    in the NCR region.
                   </Typography>
                 </Card>
               </Grid>
             </Grid>
           </Card>
-          <Grid container spacing={2} columns={36} className="ChipStyling">
-            {/* commercial,residential */} {/*please delete this after done and same for all below*/}
-            <NewMultiSelectAutoCompleteInputStructure label="Category" list={selectOption?.category} handleChange={(event, value) => handleOptionChange("category", value)} value={selectedOptions.category || []} />
+          <Grid container spacing={2} columns={36}>
+            {/* commercial,residential */}{" "}
+            {/*please delete this after done and same for all below*/}
+            <NewAutoCompleteInputStructure
+              xs={18}
+              sm={12}
+              md={6}
+              label="Category"
+              list={selectOption?.projectCategory}
+              handleChange={(event, value) =>
+                handleOptionChange("category", value)
+              }
+              value={selectedOptions.projectCategory}
+            />
             {/* Flat,shop */}
-            <NewMultiSelectAutoCompleteInputStructure label="Property type" list={selectOption?.propertyType} handleChange={(event, value) => handleOptionChange("propertyType", value)} value={selectedOptions.propertyType || []} />
+            <NewAutoCompleteInputStructure
+              xs={18}
+              sm={12}
+              md={6}
+              label="Property type"
+              disabled={isDisablePropertyType}
+              list={
+                selectedOptions?.category === "Commercial"
+                  ? selectOption?.commercialProjectType
+                  : selectOption?.residentialProjectType
+              }
+              handleChange={(event, value) =>
+                handleOptionChange("propertyType", value)
+              }
+              value={
+                selectedOptions?.propertyType
+                  ? selectedOptions?.propertyType
+                  : ""
+              }
+            />
             {/* 1BHK, 2BHK */}
-            <NewMultiSelectAutoCompleteInputStructure label="Unit type" list={selectOption?.unitType} handleChange={(event, value) => handleOptionChange("unitType", value)} value={selectedOptions.unitType || []} />
+            <NewAutoCompleteInputStructure
+              xs={18}
+              sm={12}
+              md={6}
+              label="Layout type"
+              disabled={isDisableLayoutType}
+              list={
+                selectOption?.layoutTypeApplicable?.includes(
+                  selectedOptions?.propertyType
+                )
+                  ? selectOption.layoutType
+                  : ""
+              }
+              handleChange={(event, value) =>
+                handleOptionChange("unitType", value)
+              }
+              value={selectedOptions.unitType ? selectedOptions.unitType : ""}
+            />
             {/* Noida,gurgoan */}
-            <NewAutoCompleteInputStructure label="City" list={selectOption?.city} handleChange={(event, value) => handleOptionChange("city", value)} value={selectedOptions.city} />
+            <NewAutoCompleteInputStructure
+              xs={18}
+              sm={12}
+              md={6}
+              label="City"
+              list={cities}
+              handleChange={(event, value) => handleOptionChange("city", value)}
+              value={selectedOptions.city}
+            />
             {/* Sector/area */}
-            <NewAutoCompleteInputStructure label="Location" list={selectOption?.location} handleChange={(event, value) => handleOptionChange("location", value)} value={selectedOptions.location} />
-
-            <NewMultiSelectAutoCompleteInputStructure label="Status" list={selectOption?.status} handleChange={(event, value) => handleOptionChange("status", value)}  value={selectedOptions.status || []}  />
-            <Grid item xs={18} sx={{ alignSelf: "center" }}>
+            <NewAutoCompleteInputStructure
+              xs={18}
+              sm={12}
+              md={6}
+              label="Location"
+              disabled={locationDisable}
+              list={selectedCity ? locationData[selectedCity] : []}
+              handleChange={(event, value) =>
+                handleOptionChange("location", value)
+              }
+              value={selectedOptions.location ? selectedOptions.location : ""}
+            />
+            <NewAutoCompleteInputStructure
+              xs={18}
+              sm={12}
+              md={6}
+              label="Status"
+              list={selectOption?.status}
+              handleChange={(event, value) =>
+                handleOptionChange("status", value)
+              }
+              value={selectedOptions.status}
+            />
+            <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ alignSelf: "center", color: colors.GRAY }}
+              >
+                Sort by
+              </Typography>
               <ToggleButtonGroup
                 color="primary"
                 value={alignment}
@@ -288,21 +463,47 @@ function PropertyList() {
                 sx={{ display: "flex" }}
                 size="small"
               >
-                <ToggleButton value="score" selected={buttonColor === "score"} sx={{ flex: 1 }}>
-                  Score
+                <ToggleButton
+                  value="score"
+                  selected={buttonColor === "score"}
+                  sx={{ flex: 1 }}
+                >
+                  Score <ArrowUpwardIcon fontSize="small" />{" "}
+                  <ArrowDownwardIcon fontSize="small" />
                 </ToggleButton>
-                <ToggleButton value="price" selected={buttonColor === "price"} sx={{ flex: 1 }}>
-                  Price
+                <ToggleButton
+                  value="price"
+                  selected={buttonColor === "price"}
+                  sx={{ flex: 1 }}
+                >
+                  Price <ArrowUpwardIcon fontSize="small" />{" "}
+                  <ArrowDownwardIcon fontSize="small" />
                 </ToggleButton>
-                <ToggleButton value="area" selected={buttonColor === "area"} sx={{ flex: 1 }}>
-                  Area
+                <ToggleButton
+                  value="area"
+                  selected={buttonColor === "area"}
+                  sx={{ flex: 1 }}
+                >
+                  Area <ArrowUpwardIcon fontSize="small" />{" "}
+                  <ArrowDownwardIcon fontSize="small" />
                 </ToggleButton>
-                <ToggleButton value="completion" selected={buttonColor === "completion"} sx={{ flex: 1 }}>
-                  Completion
+                <ToggleButton
+                  value="completion"
+                  selected={buttonColor === "completion"}
+                  sx={{ flex: 1 }}
+                >
+                  Completion <ArrowUpwardIcon fontSize="small" />{" "}
+                  <ArrowDownwardIcon fontSize="small" />
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={18} sx={{ alignSelf: "center" }}>
+            <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ alignSelf: "center", color: colors.GRAY }}
+              >
+                Ascending / Descending
+              </Typography>
               <ToggleButtonGroup
                 color="primary"
                 value={alignment === 1 ? "asc" : "dec"}
@@ -324,32 +525,23 @@ function PropertyList() {
             </Grid>
             <Grid item xs={36}>
               <Card>
-                <CustomSearchInput value={searchTerm} onChange={handleSearch} ref={inputRef} autoFocus={focus} />
+                <CustomSearchInput
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  inputRef={inputRef}
+                  autoFocus={focus}
+                />
               </Card>
-            </Grid>
-            <Grid item xs={6} sm={3} sx={{ alignSelf: "center" }}>
-              <ToggleButtonGroup
-                color="primary"
-                value={alignment === 1 ? "asc" : "dec"}
-                exclusive
-                onChange={handleChangeAllData}
-                aria-label="Platform"
-                sx={{ display: "flex" }}
-                size="small"
-              >
-                <ToggleButton value="asc" sx={{ flex: 1 }}>
-                  <ArrowUpwardIcon fontSize="small" />
-                </ToggleButton>
-                <ToggleButton value="dec" sx={{ flex: 1 }}>
-                  <ArrowDownwardIcon fontSize="small" />
-                </ToggleButton>
-              </ToggleButtonGroup>
             </Grid>
             <Grid item xs={36}>
               <Grid container spacing={0.25}>
                 {property?.map((propertyDetails) => (
                   <Grid item xs={12}>
-                    <PropertyCard createdDate={propertyDetails?.created_at} isShortListPageCard={propertyDetails?.isFav} propertyDetails={propertyDetails} />
+                    <PropertyCard
+                      createdDate={propertyDetails?.created_at}
+                      isShortListPageCard={propertyDetails?.isFav}
+                      propertyDetails={propertyDetails}
+                    />
                   </Grid>
                 ))}
               </Grid>
@@ -364,11 +556,10 @@ function PropertyList() {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
-
             </Grid>
           </Grid>
         </Container>
-      </>}
+      </>
     </>
   );
 }

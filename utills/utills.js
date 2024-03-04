@@ -45,7 +45,7 @@ export const getGoogleId = () => {
   return "";
 };
 
-const publicRoutes = ["/login" , '/property-list' , '/all-brokers' , '/enquiries', '/details/:id', "/consultant/make-payment",
+const publicRoutes = ["/", "/login", '/property-list', '/all-brokers', '/enquiries', '/details/:id', "/consultant/make-payment",
   "/page-not-found", "/terms-and-condition", "/privacy", "/consultant/join-now"];
 
 const scopes = {
@@ -57,24 +57,24 @@ const scopes = {
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
   const isPublicRoute = publicRoutes.some(publicRoute => {
     if (publicRoute.includes("/:")) { // Handle dynamic routes
-        const baseRoute = publicRoute.split("/:")[0];
-        return url.startsWith(baseRoute);
+      const baseRoute = publicRoute.split("/:")[0];
+      return url.startsWith(baseRoute);
     }
     return url === publicRoute;
-});
+  });
 
-// if (!isLogged && !isPublicRoute) {
-//   redirectUser("/login");
-// }
-//   if (isLogged) {
-//     if (url.includes("/admin") && role !== "admin" && role !== "superAdmin") {
-//       redirectUser("/");
-//     } else if (url.includes("/user") && role !== "user") {
-//       redirectUser("/");
-//     } else if (url.includes("/consultant") && role !== "broker") {
-//       redirectUser("/");
-//     }
-//   }
+  if (!isLogged && !isPublicRoute) {
+    redirectUser("/login");
+  }
+  if (isLogged) {
+    if (url.includes("/admin") && role !== "admin" && role !== "superAdmin") {
+      redirectUser("/");
+    } else if (url.includes("/user") && role !== "user") {
+      redirectUser("/");
+    } else if (url.includes("/consultant") && role !== "broker") {
+      redirectUser("/");
+    }
+  }
 };
 
 export const matchUserRole = (actualRole, matchingRole) => {

@@ -6,7 +6,6 @@ const CustomButton = ({ loading, loadingText, ButtonText, disabled, onClick, sta
   <>
     {
       loading ?
-
         <LoadingButton
           loading={loading}
           loadingPosition="start"
@@ -21,8 +20,8 @@ const CustomButton = ({ loading, loadingText, ButtonText, disabled, onClick, sta
           onClick={onClick}
           disabled={disabled}
           {...props}>
-          {ButtonText}</Button>
-
+          {ButtonText}
+        </Button>
     }
   </>
 );

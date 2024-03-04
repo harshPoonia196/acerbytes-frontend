@@ -40,7 +40,7 @@ function PaymentHistory(props) {
       getBrokerPaymentHistory();
 
       // window.location?.pathname !== listOfPages.consultantPaymentHistory &&
-        getBrokerpointBalance();
+      getBrokerpointBalance();
     }
   }, [userDetails && Object.keys(userDetails).length, initialMount]);
   const { openSnackbar } = useSnackbar();
@@ -59,8 +59,8 @@ function PaymentHistory(props) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error payment history request",
+        error?.message ||
+        "Error payment history request",
         "error"
       );
     } finally {
@@ -77,8 +77,8 @@ function PaymentHistory(props) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error getbroker balance request",
+        error?.message ||
+        "Error getbroker balance request",
         "error"
       );
     }
@@ -95,7 +95,7 @@ function PaymentHistory(props) {
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        
+
       />
       <Box sx={{ backgroundColor: "white" }}>
         <Container>
@@ -113,9 +113,8 @@ function PaymentHistory(props) {
                   size="small"
                   variant="contained"
                   onClick={handleOpenAddCredit}
-                
-                    ButtonText={"Add credits "}/>
-                
+                  ButtonText={"Add credits "} />
+
               </Box>
             </Box>
           </Box>

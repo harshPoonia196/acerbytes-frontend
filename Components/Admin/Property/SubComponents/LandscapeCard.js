@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Typography,
@@ -8,6 +8,11 @@ import {
   Divider,
   Rating,
 } from "@mui/material";
+import { getAllOptions } from "api/Property.api";
+
+import {
+  transformDocuments
+} from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
@@ -31,6 +36,32 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
     constructionQuality,
   } = form.layout;
 
+  const [selectOptions, setSelectOption] = useState({})
+  const getAllOptionDataList = async () => {
+    try {
+      let res = await getAllOptions();
+      if (res.status === 200) {
+        let transform = transformDocuments(res.data.data)
+        setSelectOption({ ...transform })
+      }
+    } catch (error) {
+      console.log(error, 'err')
+      // showToaterMessages(
+      //   error?.response?.data?.message ||
+      //   error?.message ||
+      //   "Error fetching state list",
+      //   "error"
+      // );
+    }
+    // finally {
+    //   setLoading(false);
+    // }
+  };
+
+  useEffect(() => {
+    getAllOptionDataList()
+
+  }, [])
 
   return (
     <Grid item xs={12} id="landscape">
@@ -42,11 +73,6 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
           >
             Layout
           </Typography>
-          <Box>
-            <IconButton>
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Box>
         </Box>
         <Divider />
         <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -64,17 +90,25 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
             isEdit={isEdit}
             name="layoutType"
             value={layoutType}
-            list={[
-              { label: "1 BHK", value: "1 BHK" },
-              { label: "2 BHK", value: "2 BHK" },
-              { label: "3 BHK", value: "3 BHK" },
-              { label: "4 BHK", value: "4 BHK" },
-              { label: "5 BHK", value: "5 BHK" },
-              { label: "6 BHK", value: "6 BHK" },
-              { label: "7 BHK", value: "7 BHK" },
-              { label: "8 BHK", value: "8 BHK" },
-              { label: "9+ BHK", value: "9+ BHK" },
-            ]}
+            list={
+              selectOptions.layoutType?.map((item) => {
+                return {
+                  label: item,
+                  value: item,
+                };
+              })
+              ||
+              [
+                { label: "1 BHK", value: "1 BHK" },
+                { label: "2 BHK", value: "2 BHK" },
+                { label: "3 BHK", value: "3 BHK" },
+                { label: "4 BHK", value: "4 BHK" },
+                { label: "5 BHK", value: "5 BHK" },
+                { label: "6 BHK", value: "6 BHK" },
+                { label: "7 BHK", value: "7 BHK" },
+                { label: "8 BHK", value: "8 BHK" },
+                { label: "9+ BHK", value: "9+ BHK" },
+              ]}
             error={errors?.["layout.layoutType"]}
             handleChange={(e, newValue) =>
               handleChange(newValue, "layout", "layoutType")
@@ -113,7 +147,15 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
                 handleChange(e, "layout", "areaUnit");
               }
             }}
-            units={[{ label: "acres", value: "Acres" }]}
+            units={
+              selectOptions.areaUnit?.map((item) => {
+                return {
+                  label: item,
+                  value: item,
+                };
+              })
+              ||
+              [{ label: "acres", value: "Acres" }]}
           />
           <NewInputFieldStructure
             label="Units (Total)"
@@ -139,7 +181,16 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange }) {
             name="greenArea"
             variant="outlined"
             isEdit={isEdit}
-            units={[{ label: "acres", value: "Acres" }]}
+            units={
+
+              selectOptions.areaUnit?.map((item) => {
+                return {
+                  label: item,
+                  value: item,
+                };
+              })
+              ||
+              [{ label: "acres", value: "Acres" }]}
             unitValue={areaUnit}
             value={greenArea}
             error={errors?.["layout.greenArea"]}

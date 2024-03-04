@@ -13,6 +13,7 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { getAllfavouriteProperty } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
+import { DEBOUNCE_TIMER } from "Components/config/config";
 
 function ShortList() {
   const [alignment, setAlignment] = useState("asc");
@@ -28,7 +29,7 @@ function ShortList() {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
     setFocus(true)
-    
+
   };
 
   const objectToQueryString = (obj) => {
@@ -81,7 +82,7 @@ function ShortList() {
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 500); 
+    }, DEBOUNCE_TIMER);
 
     return () => clearTimeout(timerId);
   }, [searchTerm]);
@@ -92,38 +93,33 @@ function ShortList() {
   };
   return (
     <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <Box sx={{ background: 'white', borderBottom: '1px solid whitesmoke', boxShadow: '1px 2px 2px -2px gainsboro!important' }}>
-            <Container maxWidth='lg'>
-              <Typography variant='h3' sx={{ my: 2, ml: 2 }}>
-                My favourite Properties ({favouriteProperty?.length})
-              </Typography>
-              <Card>
-                <CustomSearchInput value={searchTerm}  onChange={handleSearch} ref={inputRef}  autoFocus={focus}/>
-              </Card>
-            </Container>
-          </Box>
-          <Container maxWidth="lg">
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Grid container spacing={0.25}>
-                  {favouriteProperty.map((property, index) => {
-                    return (
-                      <Grid item xs={12} sm={6} md={12}>
-                        <PropertyCard isShortListPageCard propertyDetails={property?.propertyData} createdDate={property?.created_at} />
-                      </Grid>
-                    )
-                  })}
-                </Grid>
-              </Grid>
-            </Grid>
-          </Container>
-        </>
-      )}
+      {isLoading && <Loading />}
 
+      <Box sx={{ background: 'white', borderBottom: '1px solid whitesmoke', boxShadow: '1px 2px 2px -2px gainsboro!important' }}>
+        <Container maxWidth='lg'>
+          <Typography variant='h3' sx={{ my: 2, ml: 2 }}>
+            My favourite Properties ({favouriteProperty?.length})
+          </Typography>
+          <Card>
+            <CustomSearchInput value={searchTerm} onChange={handleSearch} inputRef={inputRef} autoFocus={focus} />
+          </Card>
+        </Container>
+      </Box>
+      <Container maxWidth="lg">
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Grid container spacing={0.25}>
+              {favouriteProperty.map((property, index) => {
+                return (
+                  <Grid item xs={12} key={property._id}>
+                    <PropertyCard isShortListPageCard propertyDetails={property?.propertyData} createdDate={property?.created_at} />
+                  </Grid>
+                )
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
+      </Container>
     </>
   );
 }

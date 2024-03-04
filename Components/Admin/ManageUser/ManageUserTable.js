@@ -105,27 +105,60 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
     updateRole(event.target.value);
   };
 
+  const handleChangeRole = (value) => {
+    updateRole(value);
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <FormControl size="small" variant="standard">
-      <Select
-        labelId="dropdown-label"
-        id="dropdown"
-        value={role}
-        onChange={handleChange}
-        label="Select role"
-        disabled={
-          disabled ||
-          !(
-            matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin) ||
-            matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
-          )
-        }
+    <>
+      {/* <FormControl size="small" variant="standard">
+        <Select
+          labelId="dropdown-label"
+          id="dropdown"
+          value={role}
+          onChange={handleChange}
+          label="Select role"
+          disabled={
+            disabled ||
+            !(
+              matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin) ||
+              matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
+            )
+          }
+        >
+          {ROLES?.filter((rs) => rs.isVisible)?.map((rs) => {
+            return <MenuItem value={rs.value}>{rs.label}</MenuItem>;
+          })}
+        </Select>
+      </FormControl> */}
+      <Chip label={role} size="small" onClick={handleClick} sx={{ textTransform: 'capitalize' }} />
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
       >
         {ROLES?.filter((rs) => rs.isVisible)?.map((rs) => {
-          return <MenuItem value={rs.value}>{rs.label}</MenuItem>;
+          return <MenuItem onClick={(e) => {
+            handleChangeRole(rs.value)
+            handleClose()
+          }} value={rs.value} disabled={rs.value === role}>{rs.label}</MenuItem>;
         })}
-      </Select>
-    </FormControl>
+      </Menu>
+    </>
+
   );
 };
 
@@ -147,7 +180,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
   return (
     <TableRow
       key={row.name}
-      style={row.isBlocked ? { backgroundColor: "#dcc4c4" } : null}
+      // style={row.isBlocked ? { backgroundColor: colors.DISABLED } : null}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <TableCell>
@@ -158,12 +191,13 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
       </TableCell>
       <TableCell>{row.email}</TableCell>
       <TableCell>
-        <RoleViewer
-          role={row.role}
-          disabled={row.isBlocked}
-          userDetails={userDetails}
-          updateRole={(newRole) => updateRole(row.googleID, newRole)}
-        />
+        {row.isBlocked ? <DoNotDisturbAltIcon fontSize="small" sx={{ color: colors.ERROR }} /> :
+          <RoleViewer
+            role={row.role}
+            disabled={row.isBlocked}
+            userDetails={userDetails}
+            updateRole={(newRole) => updateRole(row.googleID, newRole)}
+          />}
       </TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton
@@ -266,7 +300,7 @@ function ManageUserTable({ searchText }) {
         firstName: searchText,
         lastName: searchText,
         role: searchText,
-        phone: Number(searchText),
+        phone: searchText,
         email: searchText,
       };
       setLoading(true);
@@ -283,8 +317,8 @@ function ManageUserTable({ searchText }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error get Users list",
+        error?.message ||
+        "Error get Users list",
         "error"
       );
     } finally {
@@ -365,8 +399,8 @@ function ManageUserTable({ searchText }) {
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-            error?.message ||
-            "Error update role",
+          error?.message ||
+          "Error update role",
           "error"
         );
       } finally {
@@ -402,8 +436,8 @@ function ManageUserTable({ searchText }) {
       } catch (error) {
         showToaterMessages(
           error?.response?.data?.message ||
-            error?.message ||
-            "Error update status",
+          error?.message ||
+          "Error update status",
           "error"
         );
       } finally {

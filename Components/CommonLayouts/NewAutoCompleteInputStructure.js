@@ -1,8 +1,7 @@
 import React from "react";
 import { Typography, TextField, Grid, Box, Autocomplete } from "@mui/material";
 import colors from "styles/theme/colors";
-
-const top100Films = [{ label: "Mumbai" }];
+import { menuMaxHeight } from "utills/Constants";
 
 const NewAutoCompleteInputStructure = ({
   handleChange,
@@ -14,10 +13,13 @@ const NewAutoCompleteInputStructure = ({
   options,
   error,
   isRequired,
-  list
+  disabled,
+  list,
+  xs,
+  sm, md
 }) => (
   <>
-    <Grid item xs={12} sm={6}>
+    <Grid item xs={xs ? xs : 12} sm={sm ? sm : 6} md={md ? md : 6}>
       <Box>
         <Typography
           variant='subtitle2'
@@ -30,16 +32,25 @@ const NewAutoCompleteInputStructure = ({
       <Autocomplete
         disablePortal
         error={error}
+        disableClearable
+        disabled={disabled}
         id="combo-box-demo"
         // Adding the below option creates issue in property form
         // getOptionLabel={(option) => option.label || ""}
         value={value}
-        options={list ||options}
+        options={list || options || []}
         fullWidth
         onChange={handleChange}
         renderInput={(params, index) => {
-         return <TextField key={index}  error={error} value={params.value} {...params} size="small" fullWidth />
+          return <TextField key={index} error={error} value={params.value} {...params} size="small" fullWidth />
         }}
+        ListboxProps={
+          {
+            style: {
+              maxHeight: menuMaxHeight,
+            }
+          }
+        }
       />
     </Grid>
   </>

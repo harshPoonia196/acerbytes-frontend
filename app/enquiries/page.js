@@ -213,13 +213,11 @@ export default function Enquiries() {
           return data?.map((enquiry) => {
             return {
               project: enquiry?.property?.overview?.projectName || "",
-              phone: `+${enquiry?.broker?.countryCode} ${
-                enquiry?.broker?.startNumber
-              }${
-                enquiry?.broker?.numberLength > 2
+              phone: `+${enquiry?.broker?.countryCode} ${enquiry?.broker?.startNumber
+                }${enquiry?.broker?.numberLength > 2
                   ? new Array(enquiry?.broker?.numberLength - 1).join("*")
                   : ""
-              }`,
+                }`,
               urgency: "Medium",
               price: enquiry?.property?.unitsPlan?.[0]?.bsp || "",
               enquired: enquiry?.leads?.length || 0,
@@ -236,8 +234,8 @@ export default function Enquiries() {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -248,7 +246,7 @@ export default function Enquiries() {
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
+      {isLoading && <Loader />}
       <Box sx={{ backgroundColor: "white" }}>
         <Container maxWidth="lg" sx={{ pb: "0 !important" }}>
           <Box sx={{ py: 4 }}>

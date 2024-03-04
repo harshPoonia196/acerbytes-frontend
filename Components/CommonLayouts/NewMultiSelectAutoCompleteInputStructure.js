@@ -8,8 +8,9 @@ import {
   Chip,
 } from "@mui/material";
 import colors from "styles/theme/colors";
+import { menuMaxHeight } from "utills/Constants";
 
-const top100Films = [{ label: "Mumbai" }];
+const top100Films = [{ label: "Mumbai",value:"Mumbai" }];
 
 const NewMultiSelectAutoCompleteInputStructure = ({
   name,
@@ -23,10 +24,12 @@ const NewMultiSelectAutoCompleteInputStructure = ({
   variant,
   isEdit,
   error,
+  xs,
+  sm, md
 }) => {
   return (
     <>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={xs ? xs : 12} sm={sm ? sm : 6} md={md ? md : 6}>
         <Box>
           <Typography
             variant="subtitle2"
@@ -45,8 +48,10 @@ const NewMultiSelectAutoCompleteInputStructure = ({
           value={value || []}
           fullWidth
           size="small"
-          getOptionLabel={(option) =>
-            brokerUse ? option.fullName : option.label
+          isOptionEqualToValue={(option, value) => brokerUse?option.fullName===value.fullName:option.value === value.value}
+          // getOptionLabel={(option)=> option.label}
+          getOptionLabel={(option) =>{
+           return brokerUse ? option.fullName : option.label}
           }
           renderTags={(value, getTagProps) =>
             value.length && value.map((option, index) => (
@@ -62,6 +67,13 @@ const NewMultiSelectAutoCompleteInputStructure = ({
           renderInput={(params) => (
             <TextField {...params} size="small" fullWidth error={error} />
           )}
+          ListboxProps={
+            {
+              style: {
+                maxHeight: menuMaxHeight,
+              }
+            }
+          }
         />
       </Grid>
     </>

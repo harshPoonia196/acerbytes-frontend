@@ -39,7 +39,6 @@ import { getBrokerProfile, updateBrokerProfile } from "api/BrokerProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId, validateEmail } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
-import PageLoader from "Components/Loader/PageLoader";
 import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
 import {
@@ -48,6 +47,7 @@ import {
   getAllStateList,
 } from "api/Util.api";
 import { countries, currencies } from "Components/config/config";
+import Loader from "Components/CommonLayouts/Loading";
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -142,8 +142,8 @@ function ConsultantProfile() {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-            error?.message ||
-            "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
           "error"
         );
         return error;
@@ -152,14 +152,30 @@ function ConsultantProfile() {
   );
 
   const onSuccess = (res) => {
+
+    let userInfo = JSON.parse(localStorage.getItem("userDetails"));
+    userInfo = {
+      ...userInfo,
+      name: {
+        ...userInfo.name,
+        firstName: brokerProfileInfo?.name?.firstName,
+        lastName: brokerProfileInfo?.name?.lastName,
+      },
+    };
+    localStorage.setItem("userDetails", JSON.stringify(userInfo));
+    window.dispatchEvent(new Event("storage"));
+
     setUserProfileInfo({
       name: brokerProfileInfo?.name || {},
       phone: brokerProfileInfo?.phone || {},
     });
+    
+
     openSnackbar(res?.data?.message || "Success!", "success");
   };
 
   const onError = (err) => {
+    console.log(err)
     openSnackbar(err?.response?.data?.message || "Error", "error");
   };
 
@@ -193,14 +209,14 @@ function ConsultantProfile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-            ...(prev?.[firstKeyName] || {}),
-            [secondKeyName]: !thirdKeyName
-              ? value
-              : {
-                  ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
-                  [thirdKeyName]: value,
-                },
-          },
+          ...(prev?.[firstKeyName] || {}),
+          [secondKeyName]: !thirdKeyName
+            ? value
+            : {
+              ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
+              [thirdKeyName]: value,
+            },
+        },
     }));
   };
   const handleAddTargetCustomer = () => {
@@ -286,7 +302,7 @@ function ConsultantProfile() {
 
   const [brokerProfileInfo, setBrokerProfileInfo] = React.useState({});
   const [userProfileInfo, setUserProfileInfo] = React.useState(null);
-  const [emailInvalid, setEmailInvalid] = useState(false);
+  const [errorInvalid, setErrorInvalid] = useState({});
 
   const initTargetCustomerValue = {
     selectState: "",
@@ -364,9 +380,9 @@ function ConsultantProfile() {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -416,14 +432,14 @@ function ConsultantProfile() {
       brokerProfileInfo?.alternateEmail &&
       !validateEmail(brokerProfileInfo?.alternateEmail)
     ) {
-      setEmailInvalid({
-        ...emailInvalid,
+      setErrorInvalid({
+        ...errorInvalid,
         alternateEmail: true,
       });
       return;
     } else {
-      setEmailInvalid({
-        ...emailInvalid,
+      setErrorInvalid({
+        ...errorInvalid,
         alternateEmail: false,
       });
     }
@@ -432,15 +448,28 @@ function ConsultantProfile() {
       brokerProfileInfo?.serviceDetails?.companyEmail &&
       !validateEmail(brokerProfileInfo?.serviceDetails?.companyEmail)
     ) {
-      setEmailInvalid({
-        ...emailInvalid,
+      setErrorInvalid({
+        ...errorInvalid,
         companyEmail: true,
       });
       return;
     } else {
-      setEmailInvalid({
-        ...emailInvalid,
+      setErrorInvalid({
+        ...errorInvalid,
         companyEmail: false,
+      });
+    }
+
+    if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
+      setErrorInvalid({
+        ...errorInvalid,
+        reraNumber: true,
+      });
+      return;
+    } else {
+      setErrorInvalid({
+        ...errorInvalid,
+        reraNumber: false,
       });
     }
 
@@ -479,8 +508,8 @@ function ConsultantProfile() {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -503,8 +532,8 @@ function ConsultantProfile() {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -523,7 +552,7 @@ function ConsultantProfile() {
 
   return (
     <>
-      <PageLoader isLoading={isLoading || mutate.isPending} />
+      {(isLoading || mutate.isPending) && <Loader />}
       <nav className={classes.demo2}>
         <CustomConsultantBreadScrumbs text="Profile" />
         <Card>
@@ -580,27 +609,32 @@ function ConsultantProfile() {
                       <Typography variant="h6" sx={{ fontWeight: 900 }}>
                         {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
                       </Typography>
+                      <Typography variant="body2">
+                        {brokerProfileInfo?.email}
+                      </Typography>
                     </Box>
                   ) : null}
                   {brokerProfileInfo?.phone?.number ? (
                     <Box>
                       <a
-                        href={`tel:${brokerProfileInfo?.phone?.number}`}
+                        href={`tel:${brokerProfileInfo?.phone?.countryCode}${brokerProfileInfo?.phone?.number}`}
                         style={{
                           display: "flex",
                           alignSelf: "center",
                           textDecoration: "none",
-                          color: "inherit",
+                          color: colors.BLUE,
                         }}
                       >
                         <CallIcon
                           fontSize="small"
                           sx={{ alignSelf: "center" }}
                         />
-                        <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                          {`${userProfileInfo?.phone?.countryCode || ""} ${
-                            userProfileInfo?.phone?.number || ""
-                          }`}
+                        <Typography
+                          variant="h6"
+                          sx={{ alignSelf: "center", color: colors.BLUE }}
+                        >
+                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${brokerProfileInfo?.phone?.number || ""
+                            }`}
                         </Typography>
                       </a>
                     </Box>
@@ -617,21 +651,17 @@ function ConsultantProfile() {
                   >
                     Consultant details
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                   <NewInputFieldStructure
-                  isRequired={true}
+                    isRequired={true}
                     label="First name"
                     variant="outlined"
                     value={brokerProfileInfo?.name?.firstName || ""}
                     handleChange={(e) => handleChange(e, "name", "firstName")}
                     isEdit={isEdit}
+                    name="firstName"
                   />
                   <NewInputFieldStructure
                     label="Last name"
@@ -640,9 +670,10 @@ function ConsultantProfile() {
                     value={brokerProfileInfo?.name?.lastName || ""}
                     handleChange={(e) => handleChange(e, "name", "lastName")}
                     isEdit={isEdit}
+                    name="lastName"
                   />
 
-                  <NewPhoneInputFieldStructure
+                  {/* <NewPhoneInputFieldStructure
                     variant="outlined"
                     label="Phone"
                     isRequired={true}
@@ -653,7 +684,7 @@ function ConsultantProfile() {
                     }
                     handleChange={(e) => handleChange(e, "phone", "number")}
                     isEdit={isEdit}
-                  />
+                  /> */}
                   <NewInputFieldStructure
                     label="Alternate Email"
                     isRequired={true}
@@ -662,9 +693,7 @@ function ConsultantProfile() {
                     handleChange={(e) => handleChange(e, "alternateEmail")}
                     isEdit={isEdit}
                     error={
-                      emailInvalid.alternateEmail
-                        ? "Invalid alternate email"
-                        : ""
+                      errorInvalid.alternateEmail && errorInvalid.alternateEmail
                     }
                   />
                   <NewToggleButtonStructure
@@ -693,11 +722,6 @@ function ConsultantProfile() {
                   >
                     Service details
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -714,7 +738,7 @@ function ConsultantProfile() {
                     }
                   />
                   <NewInputFieldStructure
-                   isRequired={true}
+                    isRequired={true}
                     label="Company"
                     value={brokerProfileInfo?.serviceDetails?.company || ""}
                     variant="outlined"
@@ -725,7 +749,7 @@ function ConsultantProfile() {
                   />
 
                   <NewInputFieldStructure
-                   isRequired={true}
+                    isRequired={true}
                     label="RERA number"
                     value={brokerProfileInfo?.serviceDetails?.reraNumber || ""}
                     variant="outlined"
@@ -734,24 +758,23 @@ function ConsultantProfile() {
                       handleChange(e, "serviceDetails", "reraNumber")
                     }
                     name="reraNumber"
+                    error={errorInvalid.reraNumber}
                   />
                   <NewInputFieldStructure
                     label="Company email"
-                    isRequired={true}
                     value={
                       brokerProfileInfo?.serviceDetails?.companyEmail || ""
                     }
                     variant="outlined"
                     isEdit={isEdit}
                     error={
-                      emailInvalid.companyEmail ? "Invalid company email" : ""
+                      errorInvalid.companyEmail && errorInvalid.companyEmail
                     }
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "companyEmail")
                     }
                   />
                   <NewPhoneInputFieldStructure
-                   isRequired={true}
                     variant="outlined"
                     label="Registerd phone"
                     value1={
@@ -792,11 +815,6 @@ function ConsultantProfile() {
                   >
                     Target Customers
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -857,9 +875,8 @@ function ConsultantProfile() {
                           }
                           return (
                             <Chip
-                              key={`${targetArea.selectCity || ""}-${
-                                targetArea.selectArea || ""
-                              }-${index}`}
+                              key={`${targetArea.selectCity || ""}-${targetArea.selectArea || ""
+                                }-${index}`}
                               label={label}
                               size="small"
                               sx={{ ml: 1, mt: 1 }}
@@ -897,11 +914,6 @@ function ConsultantProfile() {
                   >
                     Budget
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -952,11 +964,6 @@ function ConsultantProfile() {
                   >
                     Setting
                   </Typography>
-                  <Box>
-                    <IconButton>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -967,17 +974,16 @@ function ConsultantProfile() {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
                     }}
                   >
-                    <Typography variant="body1">
-                      Do Not Disturb (DND) Mode
-                    </Typography>
                     <Switch
                       checked={brokerProfileInfo?.dnd}
                       onChange={(e) => handleChange(e, "dnd")}
                       color="primary"
                     />
+                    <Typography variant="body1">
+                      Do Not Disturb (DND) Mode
+                    </Typography>
                   </Grid>
 
                   <Grid
@@ -987,12 +993,8 @@ function ConsultantProfile() {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
                     }}
                   >
-                    <Typography variant="body1">
-                      Receive WhatsApp Promotions
-                    </Typography>
                     <Switch
                       checked={brokerProfileInfo?.receiveWhatsappPromotion}
                       onChange={(e) =>
@@ -1000,6 +1002,9 @@ function ConsultantProfile() {
                       }
                       color="primary"
                     />
+                    <Typography variant="body1">
+                      Receive WhatsApp Promotions
+                    </Typography>
                   </Grid>
                 </Grid>
               </Card>
@@ -1010,8 +1015,6 @@ function ConsultantProfile() {
               position: "fixed",
               right: 16,
               bottom: 16,
-              display: { xs: "none", evmd: "flex" },
-              flexDirection: "column",
             }}
           >
             <Fab

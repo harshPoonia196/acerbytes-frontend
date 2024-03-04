@@ -15,6 +15,8 @@ export const companyName = 'AcreBytes'
 
 export const listOfPages = {
   home: '/',
+  login: '/login',
+  pageNotFound: '/page-not-found',
   commonPropertyList: "/property-list",
   commonAllBrokers: '/all-brokers',
   commonEnquiries: '/enquiries',
@@ -50,10 +52,17 @@ export const CommonMenuList = [
     route: listOfPages.commonAllBrokers,
     icon: <GroupIcon fontSize="small" />,
   },
+];
+export const ToBeRemoved = [
   {
-    label: "Leads panel",
+    label: "Leads panel tbr",
     route: listOfPages.commonEnquiries,
     icon: <TableRowsIcon fontSize="small" />,
+  },
+  {
+    label: "Page not found tbr",
+    route: listOfPages.pageNotFound,
+    icon: <CloseIcon fontSize="small" />,
   },
 ];
 

@@ -13,7 +13,7 @@ import colors from 'styles/theme/colors';
 
 function InvestmentCard({ isEdit, form, handleChange }) {
 
-    const {forEndUse, expectedFurtherApp, appTillNow} = form.valueForMoney
+    const { forEndUse, expectedFurtherApp, appTillNow } = form.valueForMoney
 
     return (
         <Grid item xs={12} id="investment">
@@ -25,11 +25,6 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                     >
                         Value for money
                     </Typography>
-                    <Box>
-                        <IconButton>
-                            <EditIcon fontSize="small" />
-                        </IconButton>
-                    </Box>
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -42,9 +37,9 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                                 Appreciation till now
                             </Typography>
                         </Box>
-                        <Rating value={appTillNow} onChange={(e)=> 
-                             handleChange(e, "valueForMoney", "appTillNow")                             
-                             } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={appTillNow} onChange={(e) =>
+                            handleChange(e, "valueForMoney", "appTillNow")
+                        } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
                         <Box>
@@ -55,7 +50,7 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                                 Expected further appreciation
                             </Typography>
                         </Box>
-                        <Rating value={expectedFurtherApp} onChange={(e)=>  handleChange(e, "valueForMoney", "expectedFurtherApp")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={expectedFurtherApp} onChange={(e) => handleChange(e, "valueForMoney", "expectedFurtherApp")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
                         <Box>
@@ -66,7 +61,7 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                                 For end use
                             </Typography>
                         </Box>
-                        <Rating value={forEndUse} onChange={(e)=>  handleChange(e, "valueForMoney", "forEndUse")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={forEndUse} onChange={(e) => handleChange(e, "valueForMoney", "forEndUse")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                 </Grid>
             </Card>

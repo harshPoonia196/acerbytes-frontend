@@ -50,8 +50,8 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
+        error?.message ||
+        "Error creating order request",
         "error"
       );
     } finally {
@@ -78,8 +78,8 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
+        error?.message ||
+        "Error creating order request",
         "error"
       );
     } finally {
@@ -97,8 +97,8 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error creating order request",
+        error?.message ||
+        "Error creating order request",
         "error"
       );
     } finally {
@@ -167,62 +167,59 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <Grid container spacing={2}>
-            <InputField
-              type="number"
-              name="approvedPayment"
-              label="Enter received payment"
-              handleChange={updateCreditInfo}
-            />
-            <InputField
-              type="number"
-              name="approvedPoints"
-              label="Enter assigned points"
-              handleChange={updateCreditInfo}
-            />
-            <NewAutoCompleteInputStructure
-              label="Select Consultant"
-              handleChange={(e, newValue) =>
-                updateCreditInfo({
-                  target: {
-                    name: "brokerGoogleID",
-                    value: newValue?.value ? newValue?.value : "",
-                  },
-                })
-              }
-              value={{
-                label: `${consultantInfo?.firstName} ${consultantInfo?.lastName}`,
-                value: creditInfo?.brokerGoogleID,
-              }}
-              list={consultantList?.map((rs) => {
-                return {
-                  label: `${rs.name?.firstName} ${rs.name?.lastName}`,
-                  value: rs._id,
-                };
-              })}
-            />
-            <NewAutoCompleteInputStructure
-              label="Select Sales person"
-              handleChange={(e, newValue) =>
-                updateCreditInfo({
-                  target: {
-                    name: "salesPerson",
-                    value: newValue?.value ? newValue?.value : "",
-                  },
-                })
-              }
-              list={salesPersons?.map((rs) => {
-                return {
-                  label: `${rs.name?.firstName} ${rs.name?.lastName}`,
-                  value: rs.googleID,
-                };
-              })}
-            />
-          </Grid>
-        )}
+        {isLoading && <Loading />}
+        <Grid container spacing={2}>
+          <InputField
+            type="number"
+            name="approvedPayment"
+            label="Enter received payment"
+            handleChange={updateCreditInfo}
+          />
+          <InputField
+            type="number"
+            name="approvedPoints"
+            label="Enter assigned points"
+            handleChange={updateCreditInfo}
+          />
+          <NewAutoCompleteInputStructure
+            label="Select Consultant"
+            handleChange={(e, newValue) =>
+              updateCreditInfo({
+                target: {
+                  name: "brokerGoogleID",
+                  value: newValue?.value ? newValue?.value : "",
+                },
+              })
+            }
+            value={{
+              label: consultantInfo?.firstName ? `${consultantInfo?.firstName} ${consultantInfo?.lastName}` : '',
+              value: creditInfo?.brokerGoogleID,
+            }}
+            list={consultantList?.map((rs) => {
+              return {
+                label: `${rs.name?.firstName} ${rs.name?.lastName}`,
+                value: rs._id,
+              };
+            })}
+          />
+          <NewAutoCompleteInputStructure
+            label="Select Sales person"
+            handleChange={(e, newValue) =>
+              updateCreditInfo({
+                target: {
+                  name: "salesPerson",
+                  value: newValue?.value ? newValue?.value : "",
+                },
+              })
+            }
+            list={salesPersons?.map((rs) => {
+              return {
+                label: `${rs.name?.firstName} ${rs.name?.lastName}`,
+                value: rs.googleID,
+              };
+            })}
+          />
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Box

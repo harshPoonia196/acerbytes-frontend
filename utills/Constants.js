@@ -10,6 +10,7 @@ import FiberManualRecord from "@mui/icons-material/FiberManualRecord";
 import colors from "styles/theme/colors";
 export const boxShadowTop = '-1px -2px 6px 2px gainsboro !important';
 export const boxShadowBottom = '1px 2px 2px -2px gainsboro !important';
+export const menuMaxHeight = 250;
 
 const listOfTabsInAddProperty = [
   {
@@ -71,13 +72,13 @@ const disablePersonalizeAdsOption = [
 
 const listOfProfileTab = [
   { label: "User details", value: "userDetails" },
-  { label: "Service details", value: "serviceDetails" },
+  { label: "Work details", value: "serviceDetails" },
   { label: "Interested cities", value: "interestedCities" },
-  { label: "Budget", value: "budget" },
+  { label: "Searching for", value: "budget" },
   // { label: 'Enquiries', value: 'enquiries' },
   // { label: 'Property Consultants', value: 'propertyConsultants' },
   { label: "Current address", value: "currentAddress" },
-  { label: "Setting", value: "setting" },
+  { label: "Settings", value: "setting" },
 ];
 
 const listOfConsultantProfileTab = [

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Card,
     Typography,
@@ -8,7 +8,13 @@ import {
     IconButton,
     Rating,
 } from "@mui/material";
+
+import {
+    transformDocuments
+} from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
+import { getAllOptions } from "api/Property.api";
+
 import { yearList } from "Components/Constants/index"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
@@ -16,7 +22,7 @@ import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompl
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 import colors from 'styles/theme/colors';
 
-function ProjectCard({ isEdit, form, handleChange, errors }) {
+function ProjectCard({ isEdit, form, editPage, handleChange, errors }) {
 
     const {
         builder,
@@ -30,42 +36,72 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
         constructionProgress,
     } = form.overview;
 
-    const formatDate = (dateString)=>{
+    const formatDate = (dateString) => {
         const dateObject = new Date(dateString);
         const formattedDate = dateObject.toLocaleString('en-US', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
-          });
-          return formattedDate
+        });
+        return formattedDate
     }
-   
-    
-   
+
+
+    const [selectOptions, setSelectOption] = useState({})
+    const getAllOptionDataList = async () => {
+        try {
+            let res = await getAllOptions();
+            if (res.status === 200) {
+                let transform = transformDocuments(res.data.data)
+                setSelectOption({ ...transform })
+            }
+        } catch (error) {
+            console.log(error, 'err')
+            // showToaterMessages(
+            //   error?.response?.data?.message ||
+            //   error?.message ||
+            //   "Error fetching state list",
+            //   "error"
+            // );
+        }
+        // finally {
+        //   setLoading(false);
+        // }
+    };
+
+    useEffect(() => {
+        getAllOptionDataList()
+
+    }, [])
+
+    useEffect(() => {
+        getAllOptionDataList()
+    }, [])
+
     return (
         <>
-            <Grid item xs={12} id="project">
+            {editPage && <Grid item xs={12} id="project">
                 <Card sx={{ p: 2 }}>
                     <Box sx={{ display: "flex" }}>
                         <Box sx={{ flex: 1 }}>
                             <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                              {builder+ " "+ projectName}
+                                {builder + " " + projectName}
                             </Typography>
                             <Typography variant="body1" sx={{ mt: 1 }}>
-                               {form.location.city}
+                                {form.location.city}
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
                             <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                                {form.published?"Active":"In Active"}
+                                {form.published ? "Active" : "In Active"}
                             </Typography>
                             <Typography variant="body1" sx={{ mt: 1 }}>
-                                {form.published?formatDate(form.publishedAt):'Awaitng action'}
+                                {form.published ? formatDate(form.publishedAt) : 'Awaitng action'}
                             </Typography>
                         </Box>
                     </Box>
                 </Card>
-            </Grid>
+            </Grid>}
             <Grid item xs={12}>
                 <Card>
                     <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -75,11 +111,6 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                         >
                             Overview
                         </Typography>
-                        <Box>
-                            <IconButton>
-                                <EditIcon fontSize="small" />
-                            </IconButton>
-                        </Box>
                     </Box>
                     <Divider />
                     <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
@@ -89,12 +120,21 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             variant="outlined"
                             isEdit={isEdit}
                             value={builder}
-                            options={[
-                                { label: "Birla", value: "Birla" }
-                            ]}
+                            options={
+                                selectOptions.builder?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                }) ||
+                                [
+                                    { label: "Birla", value: "Birla" }
+                                ]
+                            }
                             error={errors?.["overview.builder"]}
-                            handleChange={(e, newValue) =>{
-                            handleChange(newValue.value, "overview", "builder")}}
+                            handleChange={(e, newValue) => {
+                                handleChange(newValue.value, "overview", "builder")
+                            }}
                         />
                         <Grid item xs={6}>
                             <Box>
@@ -106,9 +146,9 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                                 </Typography>
                             </Box>
                             <Rating defaultValue={0}
-                            value={form.overview.builderScore}
-                             onChange={(e)=>handleChange(e,"overview","builderScore",undefined,undefined,undefined,undefined,undefined,undefined,true)} 
-                             precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                                value={form.overview.builderScore}
+                                onChange={(e) => handleChange(e, "overview", "builderScore", undefined, undefined, undefined, undefined, undefined, undefined, true)}
+                                precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                         </Grid>
                         <NewInputFieldStructure
                             label="Project name"
@@ -124,27 +164,42 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             isEdit={isEdit}
                             value={projectCategory}
                             error={errors?.["overview.projectCategory"]}
-                            list={[
-                                { label: 'Residential', value: 'Residential' },
-                                { label: 'Commercial', value: 'Commercial' },
-                            ]}
+                            list={
+                                selectOptions.category?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                }) ||
+                                [
+                                    { label: 'Residential', value: 'Residential' },
+                                    { label: 'Commercial', value: 'Commercial' },
+                                ]}
                             handleChange={(e) => handleChange(e, "overview", "projectCategory")}
                         />
                         <NewMultiSelectAutoCompleteInputStructure
                             label="Project type"
                             isEdit={isEdit}
                             value={projectType}
-                            list={[
-                                { label: 'Flat', value: 'Flat' },
-                                { label: 'Shop', value: 'Shop' },
-                                { label: "Restaurant", value: "Restaurant" },
-                                { label: "Pent house", value: "Pent house" },
-                                { label: "Flat", value: "Flat" },
-                                { label: "Land", value: "Land" },
-                                { label: "Retail space", value: "Retail space" },
-                                { label: "Studio apartment", value: "Studio apartment" },
-                                { label: "Food court", value: "Food court" }
-                            ]}
+                            list={
+                                selectOptions.projectType?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                })
+                                ||
+                                [
+                                    { label: 'Flat', value: 'Flat' },
+                                    { label: 'Shop', value: 'Shop' },
+                                    { label: "Restaurant", value: "Restaurant" },
+                                    { label: "Pent house", value: "Pent house" },
+                                    { label: "Flat", value: "Flat" },
+                                    { label: "Land", value: "Land" },
+                                    { label: "Retail space", value: "Retail space" },
+                                    { label: "Studio apartment", value: "Studio apartment" },
+                                    { label: "Food court", value: "Food court" }
+                                ]}
                             error={errors?.["overview.projectType"]}
                             handleChange={(e, newValue) => handleChange(newValue, "overview", "projectType")}
                         />
@@ -160,7 +215,15 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             label="Launch"
                             isEdit={isEdit}
                             value={launchYear}
-                            list={yearList}
+                            list={
+                                selectOptions.launch?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                })
+                                ||
+                                yearList}
                             error={errors?.["overview.launchYear"]}
                             handleChange={(e) => handleChange(e, "overview", "launchYear")}
                         />
@@ -168,7 +231,15 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             label="Completion"
                             isEdit={isEdit}
                             value={completionYear}
-                            list={yearList}
+                            list={
+                                selectOptions.completion?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                })
+
+                                || yearList}
                             error={errors?.["overview.completionYear"]}
                             handleChange={(e) => handleChange(e, "overview", "completionYear")}
                         />
@@ -176,34 +247,44 @@ function ProjectCard({ isEdit, form, handleChange, errors }) {
                             label="Status"
                             isEdit={isEdit}
                             value={status}
-                            list={[
-                                { label: 'under construction', value: 'under construction' },
-                                { label: 'completed', value: 'completed' },
-                                { label: "Pre launch", value: "Pre launch" },
-                                { label: "RERA approved", value: "rera approved" },
-                                { label: "Launch", value: "launch" },
-                                { label: "CC", value: "cc" },
-                                { label: "OC", value: "oc" },
-                                { label: "Delivered", value: "delivered" },
-                                { label: "Registeration", value: "registeration" },
-                                { label: "Resale", value: "resale" }
-                            ]}
+                            list={
+                                selectOptions.status?.map((item) => {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                    };
+                                }) ||
+                                [
+                                    { label: 'under construction', value: 'under construction' },
+                                    { label: 'completed', value: 'completed' },
+                                    { label: "Pre launch", value: "Pre launch" },
+                                    { label: "RERA approved", value: "rera approved" },
+                                    { label: "Launch", value: "launch" },
+                                    { label: "CC", value: "cc" },
+                                    { label: "OC", value: "oc" },
+                                    { label: "Delivered", value: "delivered" },
+                                    { label: "Registeration", value: "registeration" },
+                                    { label: "Resale", value: "resale" }
+                                ]}
                             error={errors?.["overview.status"]}
                             handleChange={(e) => handleChange(e, "overview", "status")}
                         />
 
                         {
-                            status === "under construction" &&
+                            status.toLowerCase() === "under construction" &&
                             <NewSelectTextFieldStructure
                                 label="Construction Progress"
                                 isEdit={isEdit}
                                 value={constructionProgress}
-                                list={[
-                                    { label: 'Delay', value: 'Delay' },
-                                    { label: 'On time', value: 'On time' },
-                                ]}
+                                list={
+
+
+                                    [
+                                        { label: 'Delay', value: 'Delay' },
+                                        { label: 'On time', value: 'On time' },
+                                    ]}
                                 error={errors?.["overview.constructionProgress"]}
-                                handleChange={(e)=>handleChange(e,"overview","constructionProgress",undefined,undefined,undefined,undefined,undefined,undefined,true)} 
+                                handleChange={(e) => handleChange(e, "overview", "constructionProgress", undefined, undefined, undefined, undefined, undefined, undefined, true)}
                             />
                         }
 

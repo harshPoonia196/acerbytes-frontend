@@ -1,5 +1,17 @@
 import moment from "moment";
 
+function capitalLizeName(text) {
+  let words = text?.split(" ");
+  // Capitalize the first letter of each word
+  let formattedName = words?.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+  // Join the words back into a string
+  return formattedName?.join(" ");
+}
+
+function upperCaseName(text) {
+  return text?.toUpperCase();
+}
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -8,6 +20,35 @@ function descendingComparator(a, b, orderBy) {
     return 1;
   }
   return 0;
+}
+
+function toCamelCase(input) {
+  const words = input.split(/\s+/);
+  const camelCaseWords = words.map((word, index) => {
+    if (index === 0) {
+      return word.toLowerCase();
+    } else {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+  });
+  return camelCaseWords.join('');
+}
+
+function transformDocuments(documents) {
+  return documents.reduce((result, document) => {
+    const { name, childSub } = document;
+    const camelCaseName = toCamelCase(name);
+    result[camelCaseName] = childSub;
+    return result;
+  }, {});
+}
+
+function transformDocumentsLocation(documents) {
+  return documents.reduce((result, document) => {
+    const { city, area } = document;
+    result[city] = area;
+    return result;
+  }, {});
 }
 
 function getComparator(order, orderBy) {
@@ -51,6 +92,7 @@ const formatAmount = (amount) => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
+    maximumFractionDigits: 0,
   }).format(amount);
 };
 
@@ -60,6 +102,8 @@ const formatPoints = (points) => {
 };
 
 export {
+  upperCaseName,
+  capitalLizeName,
   descendingComparator,
   getComparator,
   stableSort,
@@ -68,4 +112,7 @@ export {
   formatDate,
   formatAmount,
   formatPoints,
+  toCamelCase,
+  transformDocuments,
+  transformDocumentsLocation,
 };
