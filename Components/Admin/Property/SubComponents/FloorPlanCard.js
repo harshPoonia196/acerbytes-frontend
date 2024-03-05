@@ -23,7 +23,10 @@ import {
 } from "utills/CommonFunction";
 import { getAllOptions } from "api/Property.api";
 import InfoIcon from "@mui/icons-material/Info";
+import { useSnackbar } from "utills/SnackbarContext";
+
 import EditIcon from "@mui/icons-material/Edit";
+import { monthList } from "Components/Constants/index"
 import { unitPlanSchema } from "Components/Admin/Property/Validation/PropertyValidation";
 import DeleteIcon from "@mui/icons-material/Delete";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
@@ -48,6 +51,8 @@ function FloorPlanCard({
   const [unit, setUnit] = useState();
   const [localError, setLocalError] = useState();
   const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [editItem, setEditItem] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -64,6 +69,12 @@ function FloorPlanCard({
     applicableMonth: "",
   });
   const [isEditItem, setIsEditItem] = useState(false);
+
+  const { openSnackbar } = useSnackbar();
+
+    const showToaterMessages = (message, severity) => {
+      openSnackbar(message, severity);
+    };
 
   useEffect(() => {
     setUnit(layoutType);
@@ -98,16 +109,16 @@ function FloorPlanCard({
           }
       } catch (error) {
           console.log(error, 'err')
-          // showToaterMessages(
-          //   error?.response?.data?.message ||
-          //   error?.message ||
-          //   "Error fetching state list",
-          //   "error"
-          // );
+          showToaterMessages(
+            error?.response?.data?.message ||
+            error?.message ||
+            "Error fetching state list",
+            "error"
+          );
       }
-      // finally {
-      //   setLoading(false);
-      // }
+      finally {
+        setLoading(false);
+      }
   };
 
 
@@ -356,7 +367,14 @@ function FloorPlanCard({
                 errors?.["unitsPlan.planList[0].areaUnit"]
               }
               isEdit={isEdit}
-              list={[
+              list={
+                selectOptions.areaUnit?.map((item) => {
+                  return {
+                    label: item,
+                    value: item,
+                  };
+                })||
+                [
                 { label: "Acres", value: "acres" },
                 { label: "Sqft", value: "sqft" },
               ]}
@@ -473,20 +491,7 @@ function FloorPlanCard({
                 errors?.["unitsPlan.planList[0].applicableMonth"]
               }
               isEdit={isEdit}
-              list={[
-                { label: "01", value: "01" },
-                { label: "02", value: "02" },
-                { label: "03", value: "03" },
-                { label: "04", value: "04" },
-                { label: "05", value: "05" },
-                { label: "06", value: "06" },
-                { label: "07", value: "07" },
-                { label: "08", value: "08" },
-                { label: "09", value: "09" },
-                { label: "10", value: "10" },
-                { label: "11", value: "11" },
-                { label: "12", value: "12" },
-              ]}
+              list={monthList}
               value={selectedItem.applicableMonth}
               handleChange={(e) =>
                 setSelectedItem((prev) => ({

@@ -10,6 +10,8 @@ import {
     Divider,
     IconButton,
 } from "@mui/material";
+import { useSnackbar } from "utills/SnackbarContext";
+
 import {
     transformDocuments
   } from "utills/CommonFunction";
@@ -26,6 +28,14 @@ function LocationAssesmentCard({ isEdit, form, handleChange }) {
 
     const { location } = form
     const [selectOptions, setSelectOption] = useState({})
+    const [loading, setLoading] = useState(false);
+
+    const { openSnackbar } = useSnackbar();
+
+    const showToaterMessages = (message, severity) => {
+      openSnackbar(message, severity);
+    };
+
     const getAllOptionDataList = async () => {
       try {
         let res = await getAllOptions();
@@ -44,16 +54,16 @@ function LocationAssesmentCard({ isEdit, form, handleChange }) {
         }
       } catch (error) {
         console.log(error, 'err')
-        // showToaterMessages(
-        //   error?.response?.data?.message ||
-        //   error?.message ||
-        //   "Error fetching state list",
-        //   "error"
-        // );
+        showToaterMessages(
+          error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list",
+          "error"
+        );
       }
-      // finally {
-      //   setLoading(false);
-      // }
+      finally {
+        setLoading(false);
+      }
     };
   
     useEffect(() => {

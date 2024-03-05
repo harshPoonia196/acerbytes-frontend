@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 const noop = () => { };
 
+
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
     () => (callback ? throttle(callback, delay) : noop),
@@ -79,9 +80,9 @@ function AddProperty() {
   const routerNavigation = useRouter();
   const [editPage, setEditPage] = useState(false);
   const [brokerList, setBrokerList] = useState([]);
+  const [isLoading, setLoading] = useState(false);
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
-  const { openSnackbar } = useSnackbar();
 
   let itemsServer = listOfTabsInAddProperty.map((tab) => {
     const hash = tab.value;
@@ -208,7 +209,10 @@ function AddProperty() {
       console.log(err);
     }
   };
-
+  const { openSnackbar } = useSnackbar();
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
 
   const getAllOptionDataList = async () => {
     try {
@@ -216,7 +220,6 @@ function AddProperty() {
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data)
         let temp={}
-        console.log("trans",transform)
         transform["assessment"].map((thing) => {
           temp[thing] = {
               isApplicable: false,
@@ -235,16 +238,16 @@ function AddProperty() {
       }
     } catch (error) {
       console.log(error, 'err')
-      // showToaterMessages(
-      //   error?.response?.data?.message ||
-      //   error?.message ||
-      //   "Error fetching state list",
-      //   "error"
-      // );
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
     }
-    // finally {
-    //   setLoading(false);
-    // }
+    finally {
+      setLoading(false);
+    }
   };
   React.useEffect(() => {
     if (detailsPropertyId) {

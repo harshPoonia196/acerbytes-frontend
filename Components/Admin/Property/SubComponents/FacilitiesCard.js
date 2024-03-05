@@ -19,11 +19,21 @@ import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStruct
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
 import colors from 'styles/theme/colors';
+import { useSnackbar } from "utills/SnackbarContext";
 
 function FacilitiesCard({ isEdit, form, handleChange, handleRating }) {
 
 
     const [selectOptions, setSelectOption] = useState({})
+    const [loading, setLoading] = useState(false);
+
+    const { openSnackbar } = useSnackbar();
+
+    const showToaterMessages = (message, severity) => {
+      openSnackbar(message, severity);
+    };
+
+
     const getAllOptionDataList = async () => {
         try {
             let res = await getAllOptions();
@@ -46,17 +56,16 @@ function FacilitiesCard({ isEdit, form, handleChange, handleRating }) {
                 setSelectOption({ ...temp })
             }
         } catch (error) {
-            console.log(error, 'err')
-            // showToaterMessages(
-            //   error?.response?.data?.message ||
-            //   error?.message ||
-            //   "Error fetching state list",
-            //   "error"
-            // );
+            showToaterMessages(
+              error?.response?.data?.message ||
+              error?.message ||
+              "Error fetching state list",
+              "error"
+            );
         }
-        // finally {
-        //   setLoading(false);
-        // }
+        finally {
+          setLoading(false);
+        }
     };
 
     useEffect(() => {

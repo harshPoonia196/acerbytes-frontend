@@ -14,6 +14,7 @@ import {
 } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import { getAllOptions } from "api/Property.api";
+import { useSnackbar } from "utills/SnackbarContext";
 
 import { yearList } from "Components/Constants/index"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
@@ -46,7 +47,12 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors }) {
         return formattedDate
     }
 
+    // const { openSnackbar } = useSnackbar();
+    const [loading, setLoading] = useState(false);
 
+    const showToaterMessages = (message, severity) => {
+      openSnackbar(message, severity);
+    };
     const [selectOptions, setSelectOption] = useState({})
     const getAllOptionDataList = async () => {
         try {
@@ -57,16 +63,16 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors }) {
             }
         } catch (error) {
             console.log(error, 'err')
-            // showToaterMessages(
-            //   error?.response?.data?.message ||
-            //   error?.message ||
-            //   "Error fetching state list",
-            //   "error"
-            // );
+            showToaterMessages(
+              error?.response?.data?.message ||
+              error?.message ||
+              "Error fetching state list",
+              "error"
+            );
         }
-        // finally {
-        //   setLoading(false);
-        // }
+        finally {
+          setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -74,9 +80,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors }) {
 
     }, [])
 
-    useEffect(() => {
-        getAllOptionDataList()
-    }, [])
+
 
     return (
         <>
