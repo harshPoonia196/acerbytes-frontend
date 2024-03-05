@@ -41,6 +41,7 @@ function FloorPlanCard({
   editForm,
   handleChange,
   errors,
+  hide,
   handleUnitsPlan,
 }) {
   const { projectType } = form.overview;
@@ -325,7 +326,7 @@ function FloorPlanCard({
                 }))
               }
             />
-            <NewSelectTextFieldStructure
+            { !hide.includes("unitsPlanUnit") ? <NewSelectTextFieldStructure
               label="Unit"
               isEdit={isEdit}
               name="propertyLayout"
@@ -341,7 +342,24 @@ function FloorPlanCard({
                   propertyLayout: e.target.value,
                 }))
               }
-            />
+            />:
+            <NewInputFieldStructure
+            label="Unit"
+            variant="outlined"
+            isEdit={isEdit}
+            list={layoutType}
+            name="propertyLayout"
+            value={selectedItem.propertyLayout}
+            error={
+              localError?.["propertyLayout"] ||
+              errors?.["unitsPlan.planList[0].propertyLayout"]
+            }
+            handleChange={(e) =>
+              setSelectedItem((prev) => ({ ...prev, propertyLayout: e.target.value }))
+            }
+          />
+            
+            }
             <NewInputFieldStructure
               label="Name #"
               variant="outlined"

@@ -23,7 +23,7 @@ import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompl
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 import colors from 'styles/theme/colors';
 
-function ProjectCard({ isEdit, form, editPage, handleChange, errors }) {
+function ProjectCard({ isEdit, form, editPage, handleChange, errors,hide }) {
 
     const {
         builder,

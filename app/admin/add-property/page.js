@@ -634,7 +634,7 @@ function AddProperty() {
     }, {});
   }
   const [selectOptions, setSelectOption] = useState({})
-
+const [hide,setHide]=useState([])
 
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
 
@@ -949,6 +949,42 @@ function AddProperty() {
         }));
       }
     }
+
+    if(firstKeyName==="overview" && secondKeyName==="projectType"){
+      let lastValue = e[e.length - 1]?.value.toLowerCase()
+      let value= lastValue?.replace(/\s/g, '')
+      console.log(value,'eee')
+      switch (value) {
+        case "restaurant":
+          setHide([ 
+            "numberOfBuildings",
+           "layoutType",
+          "floors",
+          "greenArea", 
+          "greenDensity",
+          "unitsPlan"]) 
+          break;
+        case "shop":
+          setHide([ 
+            "numberOfBuildings",
+           "layoutType",
+          "floors",
+          "greenArea", 
+          "greenDensity",
+          "unitsPlan"]) 
+          break;
+        case "land":
+          setHide([ 
+            "numberOfBuildings",
+           "layoutType",
+          "floors",
+          "unitsPlanUnit"]) 
+          break;
+        default:
+        setHide([])
+      }
+    }
+
     // const { error } = Schema.validate(form, { abortEarly: false });
     // if (error) {
     //   // console.log("🚀 ~ validateForm ~ error:", error.details)
@@ -1113,6 +1149,7 @@ function AddProperty() {
           <ProjectCard
             errors={errors}
             form={form}
+            hide={hide}
             selectOptions={selectOptions}
             editPage={editPage}
             handleNewObjChange={handleNewObjChange}
@@ -1121,6 +1158,7 @@ function AddProperty() {
           />
           <RegulatoryCard
             errors={errors}
+            hide={hide}
             form={form}
             selectOptions={selectOptions}
             handleChange={handleChange}
@@ -1128,23 +1166,26 @@ function AddProperty() {
           />
           <LandscapeCard
             errors={errors}
+            hide={hide}
             form={form}
             scoreChange={scoreChange}
             selectOptions={selectOptions}
             handleChange={handleChange}
             isEdit={isEdit}
           />
-          <FloorPlanCard
+          { !hide.includes("unitsPlan")&& <FloorPlanCard
             errors={errors}
+            hide={hide}
             form={form}
             editForm={editForm}
             handleChange={handleChange}
             selectOptions={selectOptions}
             handleUnitsPlan={handleUnitsPlan}
             isEdit={isEdit}
-          />
+          />}
           <FacilitiesCard
             errors={errors}
+            hide={hide}
             form={form}
             isEdit={isEdit}
             selectOptions={selectOptions}
@@ -1152,6 +1193,7 @@ function AddProperty() {
           />
           <LocationCard
             errors={errors}
+            hide={hide}
             selectOptions={selectOptions}
             form={form}
             handleChange={handleChange}
@@ -1161,6 +1203,7 @@ function AddProperty() {
                         <BuilderPriceCard isEdit={isEdit} /> */}
           <InvestmentCard
             errors={errors}
+            hide={hide}
             selectOptions={selectOptions}
             form={form}
             moduleScoreCalc={moduleScoreCalc}
@@ -1171,13 +1214,15 @@ function AddProperty() {
           <PropertyConsultantsCard
             isEdit={isEdit}
             form={form}
+            hide={hide}
             list={brokerList}
             handleChange={handleChange}
           />
-          <OverallAssessmentCard isEdit={isEdit} form={form} />
+          <OverallAssessmentCard  hide={hide} isEdit={isEdit} form={form} />
           {/* <BankCard isEdit={isEdit} /> */}
           <MarketingCard
             errors={errors}
+            hide={hide}
             form={form}
             handleChange={handleChange}
             isEdit={isEdit}
