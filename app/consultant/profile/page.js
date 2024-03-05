@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -142,8 +142,8 @@ function ConsultantProfile() {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-            error?.message ||
-            "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
           "error"
         );
         return error;
@@ -152,14 +152,30 @@ function ConsultantProfile() {
   );
 
   const onSuccess = (res) => {
+
+    let userInfo = JSON.parse(localStorage.getItem("userDetails"));
+    userInfo = {
+      ...userInfo,
+      name: {
+        ...userInfo.name,
+        firstName: brokerProfileInfo?.name?.firstName,
+        lastName: brokerProfileInfo?.name?.lastName,
+      },
+    };
+    localStorage.setItem("userDetails", JSON.stringify(userInfo));
+    window.dispatchEvent(new Event("storage"));
+
     setUserProfileInfo({
       name: brokerProfileInfo?.name || {},
       phone: brokerProfileInfo?.phone || {},
     });
+    
+
     openSnackbar(res?.data?.message || "Success!", "success");
   };
 
   const onError = (err) => {
+    console.log(err)
     openSnackbar(err?.response?.data?.message || "Error", "error");
   };
 
@@ -193,14 +209,14 @@ function ConsultantProfile() {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-            ...(prev?.[firstKeyName] || {}),
-            [secondKeyName]: !thirdKeyName
-              ? value
-              : {
-                  ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
-                  [thirdKeyName]: value,
-                },
-          },
+          ...(prev?.[firstKeyName] || {}),
+          [secondKeyName]: !thirdKeyName
+            ? value
+            : {
+              ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
+              [thirdKeyName]: value,
+            },
+        },
     }));
   };
   const handleAddTargetCustomer = () => {
@@ -364,9 +380,9 @@ function ConsultantProfile() {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -492,8 +508,8 @@ function ConsultantProfile() {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -516,8 +532,8 @@ function ConsultantProfile() {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -617,9 +633,8 @@ function ConsultantProfile() {
                           variant="h6"
                           sx={{ alignSelf: "center", color: colors.BLUE }}
                         >
-                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${
-                            brokerProfileInfo?.phone?.number || ""
-                          }`}
+                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${brokerProfileInfo?.phone?.number || ""
+                            }`}
                         </Typography>
                       </a>
                     </Box>
@@ -860,9 +875,8 @@ function ConsultantProfile() {
                           }
                           return (
                             <Chip
-                              key={`${targetArea.selectCity || ""}-${
-                                targetArea.selectArea || ""
-                              }-${index}`}
+                              key={`${targetArea.selectCity || ""}-${targetArea.selectArea || ""
+                                }-${index}`}
                               label={label}
                               size="small"
                               sx={{ ml: 1, mt: 1 }}

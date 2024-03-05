@@ -467,10 +467,10 @@ export default function ClippedDrawer({ children }) {
               {userDetails && Object.keys(userDetails).length ? (
                 <Box>
                   <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, color: colors.BLUE, textTransform: 'capitalize' }}>
-                    {userDetails?.name?.firstName} {userDetails?.name?.lastName}
+                    {userDetails?.name?.firstName} <Typography sx={{marginLeft: "5px", color: colors.BLUE, textTransform: 'capitalize'}}>{userDetails?.name?.lastName}</Typography>
                   </Typography>
                   <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, color: colors.BLUE, textTransform: 'capitalize' }}>
-                    {userDetails?.name?.firstName}
+                    {userDetails?.name?.lastName}
                   </Typography>
                   <Box sx={{ alignSelf: "center" }}>
                     {userDetails?.role == ROLE_CONSTANTS.broker && (

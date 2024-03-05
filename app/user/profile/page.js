@@ -64,6 +64,7 @@ import { validateEmail } from "utills/utills";
 import { countries, currencies } from "Components/config/config";
 import colors from "styles/theme/colors";
 import Loader from "Components/CommonLayouts/Loading";
+import { capitalLizeName } from "utills/CommonFunction";
 
 const tabHeight = 116;
 
@@ -432,7 +433,10 @@ function Profile() {
   const classes = useStyles();
 
   const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
-    let value = thirdKeyName === "checked" ? e.target.checked : e.target.value;
+    var value = thirdKeyName === "checked" ? e.target.checked : e.target.value;
+    if (secondKeyName === 'firstName' || secondKeyName === 'lastName' || secondKeyName === 'serviceType') {
+      value = capitalLizeName(value)
+    }
     await setProfileInfo((prev) => ({
       ...prev,
       [firstKeyName]: !secondKeyName
@@ -596,8 +600,8 @@ function Profile() {
       ...userInfo,
       name: {
         ...userInfo.name,
-        firstName: info?.name?.firstName,
-        lastName: info?.name?.lastName,
+        firstName: profileInfo?.name?.firstName,
+        lastName: profileInfo?.name?.lastName,
       },
       phone: {
         ...userInfo.phone,
@@ -605,8 +609,8 @@ function Profile() {
         countryCode: info?.phone?.countryCode,
       },
     };
-
     localStorage.setItem("userDetails", JSON.stringify(userInfo));
+    window.dispatchEvent(new Event("storage"));
   };
 
   useEffect(() => {

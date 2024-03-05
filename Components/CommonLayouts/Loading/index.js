@@ -2,7 +2,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
-import { RotatingLines } from "react-loader-spinner"
+// import { RotatingLines } from "react-loader-spinner"
 import colors from "styles/theme/colors";
 import { CircularProgress } from "@mui/material";
 

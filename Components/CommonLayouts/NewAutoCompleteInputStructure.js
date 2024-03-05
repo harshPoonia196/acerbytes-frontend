@@ -13,6 +13,7 @@ const NewAutoCompleteInputStructure = ({
   options,
   error,
   isRequired,
+  disabled,
   list,
   xs,
   sm, md
@@ -32,6 +33,7 @@ const NewAutoCompleteInputStructure = ({
         disablePortal
         error={error}
         disableClearable
+        disabled={disabled}
         id="combo-box-demo"
         // Adding the below option creates issue in property form
         // getOptionLabel={(option) => option.label || ""}
