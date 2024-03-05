@@ -18,6 +18,7 @@ const NewInputFieldStructure = ({
   isRequired,
   error,
   isFull,
+  maxlength,
   defaultValue,
   ...props
 }) => {
@@ -41,7 +42,11 @@ const NewInputFieldStructure = ({
       };
       handleChange(updatedEvent);
     } else {
-      handleChange(event);
+      const numericValue = event.target.value.replace(/[^0-9]/g, '');
+
+      // Example: Limit to 6 characters
+      const truncatedValue = numericValue.slice(0, 6)
+      handleChange(truncatedValue);
     }
   };
 
