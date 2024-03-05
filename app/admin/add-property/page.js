@@ -481,6 +481,7 @@ function AddProperty() {
       state: "",
       city: "",
       sector: "",
+      sectionScore:"",
       area: "",
       pinCode: "",
       googleMapLink: "",
@@ -573,6 +574,7 @@ function AddProperty() {
       appTillNow: 0,
       expectedFurtherApp: 0,
       forEndUse: 0,
+      sectionScore:""
     },
     consultants: [],
     // consultants: [
@@ -707,7 +709,9 @@ function AddProperty() {
   };
 
 
-  const moduleScoreCalc = (e, firstKeyName, secondKeyName) => {
+
+
+  const moduleScoreCalc = (e, firstKeyName, secondKeyName,seperateCalc) => {
     let totalRating;
     let totalScored;
 
@@ -720,6 +724,12 @@ function AddProperty() {
         break;
       case "layout":
         totalRating = 20;
+        break;
+      case "location":
+        totalRating = 100;
+        break;
+      case "valueForMoney" :
+        totalRating = 15;
         break;
       default:
         totalRating = 10;
@@ -776,6 +786,18 @@ function AddProperty() {
     }
 
     let calc = (totalScored / totalRating) * 100;
+
+    if(seperateCalc){
+      setForm({
+        ...form,
+        [firstKeyName]: {
+          ...form[firstKeyName],
+          [secondKeyName]: e.target.value,
+          ["sectionScore"]: calc
+        }
+      });
+    }
+    
     return calc
 
   }
@@ -1138,6 +1160,7 @@ function AddProperty() {
             errors={errors}
             selectOptions={selectOptions}
             form={form}
+            moduleScoreCalc={moduleScoreCalc}
             handleChange={handleChange}
             isEdit={isEdit}
           />

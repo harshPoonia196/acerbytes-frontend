@@ -11,7 +11,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import colors from 'styles/theme/colors';
 
-function InvestmentCard({ isEdit, form, handleChange }) {
+function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
 
     const { forEndUse, expectedFurtherApp, appTillNow } = form.valueForMoney
 
@@ -38,7 +38,8 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                             </Typography>
                         </Box>
                         <Rating value={appTillNow} onChange={(e) =>
-                            handleChange(e, "valueForMoney", "appTillNow")
+                            // handleChange(e, "valueForMoney", "appTillNow")
+                            moduleScoreCalc(e, "valueForMoney", "appTillNow",true)
                         } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
@@ -50,7 +51,11 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                                 Expected further appreciation
                             </Typography>
                         </Box>
-                        <Rating value={expectedFurtherApp} onChange={(e) => handleChange(e, "valueForMoney", "expectedFurtherApp")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={expectedFurtherApp} onChange={(e) =>
+                            
+                            // handleChange(e, "valueForMoney", "expectedFurtherApp")
+                            moduleScoreCalc(e, "valueForMoney", "expectedFurtherApp",true)
+                            } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
                         <Box>
@@ -61,7 +66,11 @@ function InvestmentCard({ isEdit, form, handleChange }) {
                                 For end use
                             </Typography>
                         </Box>
-                        <Rating value={forEndUse} onChange={(e) => handleChange(e, "valueForMoney", "forEndUse")} name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        <Rating value={forEndUse} onChange={(e) => 
+                            {
+                            // handleChange(e, "valueForMoney", "forEndUse")
+                            moduleScoreCalc(e, "valueForMoney", "forEndUse",true)}
+                            } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                 </Grid>
             </Card>

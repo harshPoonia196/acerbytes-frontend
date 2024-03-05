@@ -198,6 +198,7 @@ export const Schema = Joi.object({
     googleMapLink: Joi.string().required(),
     longitude: Joi.number().required(),
     latitude: Joi.number().required(),
+    sectionScore: Joi.number().allow(""),
     assessment: Joi.object().pattern(
       /./,
       Joi.object().keys({
@@ -215,6 +216,7 @@ export const Schema = Joi.object({
       appTillNow: Joi.number().required().min(1),
       expectedFurtherApp: Joi.number().not(0).required(),
       forEndUse: Joi.number().not(0).required(),
+      sectionScore: Joi.number().allow("")
     })
     .required(),
   consultants: Joi.array()
