@@ -189,15 +189,15 @@ function AddProperty() {
         if (success) {
           let getValue = data.data.map((i) => {
             let u = {
-              name: i.fullName,
+              fullName: i.fullName.replace(/\b\w/g, (match) => match.toUpperCase()),
               type: "consultant",
               rating: i.rating,
               id: i._id,
             };
             return u;
           });
-          //   setBrokerList([...getValue]);
-          setBrokerList([...data.data]);
+            setBrokerList([...getValue]);
+          // setBrokerList([...data.data]);
           //   return data;
         } else {
           console.log("error");
@@ -214,7 +214,7 @@ function AddProperty() {
       setEditPage(true);
     }
 
-    brokersList(10, 1);
+    brokersList();
     return () => {
       clearTimeout(unsetClickedRef.current);
     };

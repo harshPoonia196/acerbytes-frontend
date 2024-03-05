@@ -14,11 +14,8 @@ export const reviewBroker = (data) => {
 };
 
 export const getBrokers = (limit, page, search) => {
-  return axiosInstance.get(
-    `/user/brokers?limit=${limit || 10}&page=${page || 0}&search=${
-      search || ""
-    }`
-  );
+  
+  return axiosInstance.get(`/admin/brokerList`)
 };
 
 export const submitEnquiry = (data) => {

@@ -45,7 +45,7 @@ function PropertyConsultantsCard({ isEdit, form, list, handleChange }) {
                 <Grid item xs={6} direction={"row"}>
                   <BrokerCard
                     broker={{
-                      name: item.fullName,
+                      fullName: item.fullName.toUpperCase(),
                       type: "Consultant",
                       stars: item.ratings,
                       clients: 432,
