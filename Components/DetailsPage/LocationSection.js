@@ -38,7 +38,7 @@ function LocationSection(props) {
                                     cursor: 'pointer'
                                 }}
                             >
-                                99
+                                {locationData?.sectionScore ? locationData?.sectionScore : "99"}
                             </Typography>
                         </Card>
                     </Box>

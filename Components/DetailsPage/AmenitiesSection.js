@@ -40,7 +40,7 @@ function AmenitiesSection(props) {
                                     cursor: 'pointer'
                                 }}
                             >
-                                99
+                                {amenitiesData?.sectionScore ? amenitiesData?.sectionScore : "99"}
                             </Typography>
                         </Card>
                     </Box>

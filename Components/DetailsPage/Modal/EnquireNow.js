@@ -43,7 +43,6 @@ function EnquireNow({ open, handleClose, handleAction, submitEnquiry }) {
     number: "",
   };
   const [formData, setFormData] = React.useState(initialState);
-  console.log(formData);
   React.useEffect(() => {
     let userDetail = getLoggedInUser();
     if (userDetail) {

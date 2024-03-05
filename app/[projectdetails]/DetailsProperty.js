@@ -14,7 +14,10 @@ import {
   Chip,
   Rating,
   Toolbar,
-  Avatar, Button, IconButton, Tooltip
+  Avatar,
+  Button,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -24,7 +27,7 @@ import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from "@mui/icons-material/Group";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
@@ -44,14 +47,18 @@ import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
-import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/Constants";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import {
+  listOfPropertyDetailsTab,
+  listOfTabsInAddProperty,
+} from "utills/Constants";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
 import { activeAdGet } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
 
 const tabHeight = 200;
 
@@ -63,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     zIndex: 100,
-    [theme.breakpoints?.up('sm')]: {
+    [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
   },
@@ -91,28 +98,30 @@ function useThrottledOnScroll(callback, delay) {
 const PropertyDetails = ({ params }) => {
   const { userDetails, isLogged } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams()
-  const name = searchParams.get('name')
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name");
 
   const linkIdData = params.projectdetails;
-  const parts = linkIdData.split('-');
+  const parts = linkIdData.split("-");
   const getId = parts[parts.length - 1];
 
   const [isLoading, setLoading] = useState(false);
-  const [propertyData, setPropertyData] = useState([])
+  const [propertyData, setPropertyData] = useState([]);
 
   const activeAdGetProperty = async () => {
     try {
       setLoading(true);
-      let res = await activeAdGet(`${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ''}`);
+      let res = await activeAdGet(
+        `${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ""}`
+      );
       if (res.status === 200) {
-        setPropertyData(res.data?.data)
+        setPropertyData(res.data?.data);
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -126,7 +135,7 @@ const PropertyDetails = ({ params }) => {
   };
 
   useEffect(() => {
-    activeAdGetProperty()
+    activeAdGetProperty();
   }, [userDetails]);
 
   const GridItemWithCard = (props) => {
@@ -229,11 +238,23 @@ const PropertyDetails = ({ params }) => {
     setOpenAlternateSignIn(false);
   };
 
+  const [consultantsViewAll, setConsultantsViewAll] = useState(false);
+
+  const handleOpenConsultantsViewAll = () => {
+    setConsultantsViewAll(true);
+  };
+
+  const handleCloseConsultantsViewAll = () => {
+    setConsultantsViewAll(false);
+  };
+
   const classes = useStyles();
 
   //All codes about scrolling
 
-  const [alignment, setAlignment] = React.useState(listOfTabsInAddProperty[0].value);
+  const [alignment, setAlignment] = React.useState(
+    listOfTabsInAddProperty[0].value
+  );
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -278,9 +299,9 @@ const PropertyDetails = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -328,7 +349,12 @@ const PropertyDetails = ({ params }) => {
     <>
       {isLoading && <Loader />}
       <nav className={classes.demo2}>
-        <TopMenu topMenu={propertyData[0]?.propertyData} value={activeState} handleChange={handleClick} list={itemsServer} />
+        <TopMenu
+          topMenu={propertyData[0]?.propertyData}
+          value={activeState}
+          handleChange={handleClick}
+          list={itemsServer}
+        />
       </nav>
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
@@ -337,7 +363,7 @@ const PropertyDetails = ({ params }) => {
             open={openEnquiryForm}
             handleClose={handleCloseEnquiryForm}
             handleAction={handleOpenVerifyPopup}
-            handleOpen={handleOpenEnquiryForm}
+            // handleOpen={handleOpenEnquiryForm}
           />
           <OtpVerify
             open={openOtpPopup}
@@ -350,42 +376,68 @@ const PropertyDetails = ({ params }) => {
             handleClose={handleCloseAlternateSignIn}
           />
 
-          <Grid container spacing={2} id='section-list'>
-            <ClearanceSection regulatoryClearanceData={propertyData[0]?.propertyData?.regulatoryClearance} />
-            <LandscapeSection layoutData={propertyData[0]?.propertyData?.layout} />
-            <UnitsPlanSection unitsPlan={propertyData[0]?.propertyData?.unitsPlan} />
-            <AmenitiesSection amenitiesData={propertyData[0]?.propertyData?.amenitiesData} />
-            <LocationSection locationData={propertyData[0]?.propertyData?.location} />
+          <Grid container spacing={2} id="section-list">
+            <ClearanceSection
+              regulatoryClearanceData={
+                propertyData[0]?.propertyData?.regulatoryClearance
+              }
+            />
+            <LandscapeSection
+              layoutData={propertyData[0]?.propertyData?.layout}
+            />
+            <UnitsPlanSection
+              unitsPlan={propertyData[0]?.propertyData?.unitsPlan}
+            />
+            <AmenitiesSection
+              amenitiesData={propertyData[0]?.propertyData?.amenitiesData}
+            />
+            <LocationSection
+              locationData={propertyData[0]?.propertyData?.location}
+            />
             {/* <PricingSection /> */}
             {/* <ResaleSection /> */}
-            <ValueForMoneySection valueForMoneyData={propertyData[0]?.propertyData?.valueForMoney} />
+            <ValueForMoneySection
+              valueForMoneyData={propertyData[0]?.propertyData?.valueForMoney}
+            />
             {/* <FloorPlanSection /> */}
             <Grid item xs={12} id="propertyConsultants">
               <Card sx={{ p: 2 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sx={{ display: 'flex' }}>
-                    <Box sx={{ flex: 1, alignSelf: 'center' }}>
-                      <Typography variant="h4">Contact verified consultants</Typography>
+                  <Grid item xs={12} sx={{ display: "flex" }}>
+                    <Box sx={{ flex: 1, alignSelf: "center" }}>
+                      <Typography variant="h4">
+                        Contact verified consultants
+                      </Typography>
                     </Box>
+                    <ConsultantsViewAll
+                      open={consultantsViewAll}
+                      handleClose={handleCloseConsultantsViewAll}
+                      propertyData={propertyData[0]?.propertyData?.consultants}
+                    ></ConsultantsViewAll>
                     <Box>
                       <Chip
                         label="View all"
                         icon={<GroupIcon fontSize="small" />}
                         size="small"
-                        onClick={() => { }}
-                        sx={{ fontSize: '0.875rem !important' }}
+                        onClick={handleOpenConsultantsViewAll}
+                        sx={{ fontSize: "0.875rem !important" }}
                       />
                     </Box>
                   </Grid>
-                  {propertyData[0]?.propertyData?.consultants?.map((broker) => (
-                    <Grid item xs={12} sm={6} key={broker?.name}>
-                      <BrokerCard broker={broker} noReview />
-                    </Grid>
-                  ))}
+                  {propertyData[0]?.propertyData?.consultants
+                    ?.slice(0, 2)
+                    .map((broker) => (
+                      <Grid item xs={12} sm={6} key={broker?.name}>
+                        <BrokerCard broker={broker} noReview />
+                      </Grid>
+                    ))}
 
                   <Grid item xs={12}>
-                    <Box sx={{ display: 'flex' }}>
-                      <Typography variant="body2" sx={{ flex: 1, alignSelf: 'center' }}>
+                    <Box sx={{ display: "flex" }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ flex: 1, alignSelf: "center" }}
+                      >
                         Are you a property consultant, let Customers reach you
                       </Typography>
                       <Chip
@@ -393,14 +445,22 @@ const PropertyDetails = ({ params }) => {
                         icon={<PersonAddIcon fontSize="small" />}
                         size="small"
                         sx={{ fontSize: "0.875rem" }}
-                        onClick={() => { }}
+                        onClick={() => {}}
                       />
                     </Box>
                   </Grid>
                 </Grid>
               </Card>
             </Grid>
-            <OverallAssesmentSection overallAssessment={propertyData[0]?.propertyData?.overallAssessment} />
+            <OverallAssesmentSection
+              overallAssessment={
+                propertyData[0]?.propertyData?.overallAssessment
+              }
+              open={openEnquiryForm}
+              handleClose={handleCloseEnquiryForm}
+              handleAction={handleOpenVerifyPopup}
+              handleOpenEnquiryForm={handleOpenEnquiryForm}
+            />
           </Grid>
 
           {/* Dont Touch this */}
@@ -414,68 +474,106 @@ const PropertyDetails = ({ params }) => {
               bottom: 0,
               width: "100%",
               display: { xs: "block", evmd: "none" },
-              background: 'whitesmoke',
-              boxShadow: '-1px -2px 6px 2px gainsboro !important'
+              background: "whitesmoke",
+              boxShadow: "-1px -2px 6px 2px gainsboro !important",
             }}
           >
-            <Box sx={{ mt: -1, ml: -1, display: 'flex', flexWrap: "wrap" }}>
-              <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<ThumbUpOffAltIcon />}>
+            <Box sx={{ mt: -1, ml: -1, display: "flex", flexWrap: "wrap" }}>
+              <Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={handleOpenEnquiryForm}
+                startIcon={<ThumbUpOffAltIcon />}
+              >
                 Like
               </Button>
-              <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}>
+              <Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={handleOpenEnquiryForm}
+                startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
+              >
                 Share
               </Button>
-              <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<WhatsAppIcon />}>
+
+              <Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={handleOpenEnquiryForm}
+                startIcon={<WhatsAppIcon />}
+              >
                 Contact
               </Button>
-              <Button sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<AssignmentIcon />}>
+              <Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={handleOpenEnquiryForm}
+                startIcon={<AssignmentIcon />}
+              >
                 Enquire
               </Button>
             </Box>
           </Card>
-          {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && (
-            <Box
-              sx={{
-                position: "fixed",
-                right: 16,
-                bottom: 16,
-                display: { xs: "none", evmd: "flex" },
-                flexDirection: "column",
-              }}
-            >
-              {
-                isLogged ? (
-                  <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                    {propertyData[0]?.isFav
-                      ? <ThumbUpIcon sx={{ color: '#276ef1', mr: 1 }} />
-                      : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                    }
+          {userDetails?.role !== "admin" &&
+            userDetails?.role !== "superAdmin" && (
+              <Box
+                sx={{
+                  position: "fixed",
+                  right: 16,
+                  bottom: 16,
+                  display: { xs: "none", evmd: "flex" },
+                  flexDirection: "column",
+                }}
+              >
+                {isLogged ? (
+                  <Fab
+                    variant="extended"
+                    sx={{ mb: 1, justifyContent: "flex-start" }}
+                  >
+                    {propertyData[0]?.isFav ? (
+                      <ThumbUpIcon sx={{ color: "#276ef1", mr: 1 }} />
+                    ) : (
+                      <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                    )}
                     Like
                   </Fab>
                 ) : (
-                  <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={() => router.push("/login")}>
+                  <Fab
+                    variant="extended"
+                    sx={{ mb: 1, justifyContent: "flex-start" }}
+                    onClick={() => router.push("/login")}
+                  >
                     <ThumbUpOffAltIcon sx={{ mr: 1 }} />
                     Like
                   </Fab>
                 )}
-              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
-                Share
-              </Fab>
-              <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                <WhatsAppIcon sx={{ mr: 1 }} />
-                Contact
-              </Fab>
-              <Fab
-                variant="extended"
-                sx={{ justifyContent: "flex-start" }}
-                onClick={handleOpenEnquiryForm}
-              >
-                <AssignmentIcon sx={{ mr: 1 }} />
-                Enquire
-              </Fab>
-            </Box>
-          )}
+                <Fab
+                  variant="extended"
+                  sx={{ mb: 1, justifyContent: "flex-start" }}
+                >
+                  <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
+                  Share
+                </Fab>
+                <a href={`https://wa.me/+919725555595`}>
+                  <Fab
+                    variant="extended"
+                    sx={{ mb: 1, justifyContent: "flex-start" }}
+                  >
+                    <WhatsAppIcon sx={{ mr: 1 }} />
+                    Contact
+                  </Fab>
+                </a>
+
+                <Fab
+                  variant="extended"
+                  sx={{ justifyContent: "flex-start" }}
+                  onClick={handleOpenEnquiryForm}
+                >
+                  <AssignmentIcon sx={{ mr: 1 }} />
+                  Enquire
+                </Fab>
+              </Box>
+            )}
         </Container>
       </Box>
     </>
