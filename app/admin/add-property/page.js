@@ -208,13 +208,54 @@ function AddProperty() {
       console.log(err);
     }
   };
+
+
+  const getAllOptionDataList = async () => {
+    try {
+      let res = await getAllOptions();
+      if (res.status === 200) {
+        let transform = transformDocuments(res.data.data)
+        let temp={}
+        console.log("trans",transform)
+        transform["assessment"].map((thing) => {
+          temp[thing] = {
+              isApplicable: false,
+              rating: 0
+          }
+
+      })
+      setForm((prevForm) => ({
+        ...prevForm,
+        location: {
+          ...prevForm.location,
+          assessment: temp,
+        },
+      }));
+        // setSelectOption({ ...temp })
+      }
+    } catch (error) {
+      console.log(error, 'err')
+      // showToaterMessages(
+      //   error?.response?.data?.message ||
+      //   error?.message ||
+      //   "Error fetching state list",
+      //   "error"
+      // );
+    }
+    // finally {
+    //   setLoading(false);
+    // }
+  };
   React.useEffect(() => {
     if (detailsPropertyId) {
       getProp();
       setEditPage(true);
     }
-
+    getAllOptionDataList()
     brokersList();
+
+// console.log(form)
+
     return () => {
       clearTimeout(unsetClickedRef.current);
     };
@@ -445,7 +486,7 @@ function AddProperty() {
       googleMapLink: "",
       longitude: "",
       latitude: "",
-      assesment: {
+      assessment: {
         "Pick up / delivery": {
           isApplicable: false,
           rating: 0,

@@ -42,11 +42,18 @@ const NewInputFieldStructure = ({
       };
       handleChange(updatedEvent);
     } else {
-      const numericValue = event.target.value.replace(/[^0-9]/g, '');
+      if (name == "pinCode") {
+        const numericValue = event.target.value.replace(/[^0-9]/g, '');
 
-      // Example: Limit to 6 characters
-      const truncatedValue = numericValue.slice(0, 6)
-      handleChange(truncatedValue);
+        // Example: Limit to 6 characters
+        const truncatedValue = numericValue.slice(0, 6)
+        handleChange(truncatedValue);
+      }
+      else{
+        handleChange(event);
+      }
+   
+ 
     }
   };
 
