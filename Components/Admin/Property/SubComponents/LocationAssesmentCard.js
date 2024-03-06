@@ -24,52 +24,10 @@ import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonSt
 import colors from 'styles/theme/colors';
 import { Assessment } from '@mui/icons-material';
 
-function LocationAssesmentCard({ isEdit, form, handleChange }) {
+function LocationAssesmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
 
     const { location } = form
-    const [selectOptions, setSelectOption] = useState({})
-    const [loading, setLoading] = useState(false);
 
-    const { openSnackbar } = useSnackbar();
-
-    const showToaterMessages = (message, severity) => {
-      openSnackbar(message, severity);
-    };
-
-    const getAllOptionDataList = async () => {
-      try {
-        let res = await getAllOptions();
-        if (res.status === 200) {
-          let transform = transformDocuments(res.data.data)
-          let temp={}
-          console.log("trans",transform)
-          transform["assessment"].map((thing) => {
-            temp[thing] = {
-                isApplicable: false,
-                rating: 0
-            }
-
-        })
-          setSelectOption({ ...temp })
-        }
-      } catch (error) {
-        console.log(error, 'err')
-        showToaterMessages(
-          error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
-          "error"
-        );
-      }
-      finally {
-        setLoading(false);
-      }
-    };
-  
-    useEffect(() => {
-      getAllOptionDataList()
-  
-    }, [])
     return (
         <Grid item xs={12} id="facilities">
             <Card>
@@ -100,7 +58,9 @@ function LocationAssesmentCard({ isEdit, form, handleChange }) {
                                         Object.keys(location?.[key])?.map(insideKey => {
                                             return <>
                                                 <Grid item xs={12} sm={6} sx={{ display: 'flex' }}>
-                                                    <Switch onChange={(e) => { handleChange(e, "location", "assessment", "checked", undefined, insideKey) }} checked={location?.["assessment"]?.[insideKey]?.isApplicable} />
+                                                    <Switch onChange={(e) => { 
+                                                      handleChange(e, "location", "assessment", "checked", undefined, insideKey)
+                                                       }} checked={location?.["assessment"]?.[insideKey]?.isApplicable} />
                                                     <Typography
                                                         variant="subtitle2"
                                                         sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
@@ -108,7 +68,10 @@ function LocationAssesmentCard({ isEdit, form, handleChange }) {
 
                                                         {insideKey}
                                                     </Typography>
-                                                    <Rating name="half-rating" defaultValue={0} precision={0.5} size='small' onChange={(e) => handleChange(e, "location", "assessment", "checked", undefined, insideKey, undefined, true)} sx={{ alignSelf: 'center' }} />
+                                                    <Rating disabled={!location?.["assessment"]?.[insideKey]?.isApplicable} name="half-rating" defaultValue={0} precision={0.5} size='small' onChange={(e) =>
+                                                      //  moduleScoreCalc(e, "location", "assessment",true)
+                                                      handleChange(e, "location", "assessment", "checked", undefined, insideKey, undefined, true)
+                                                      } sx={{ alignSelf: 'center' }} />
                                                 </Grid>
                                             </>
                                         })

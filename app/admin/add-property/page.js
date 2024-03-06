@@ -220,19 +220,37 @@ function AddProperty() {
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data)
         let temp={}
-        transform["assessment"].map((thing) => {
+        transform["assesment"].map((thing) => {
           temp[thing] = {
               isApplicable: false,
               rating: 0
           }
 
       })
+
+      const amenities = transform.amenities.reduce((acc, item) => {
+        acc[item] = {};
+        return acc;
+      }, {});
+
+      transform.amenities.map((item)=>{
+        transform[item.toLowerCase()].map((thing) => {
+          amenities[item][thing] = {
+                isApplicable: false,
+                rating: 0
+            }
+
+        })
+      })  
+
       setForm((prevForm) => ({
         ...prevForm,
         location: {
           ...prevForm.location,
           assessment: temp,
+          
         },
+        amenitiesData:{sectionScore:'',...amenities}
       }));
         // setSelectOption({ ...temp })
       }
@@ -335,150 +353,151 @@ function AddProperty() {
     },
 
     amenitiesData: {
-      Basic: {
-        Gym: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Yoga: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Swimming pool": {
-          isApplicable: false,
-          rating: 0,
-        },
-        Club: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Fitness center": {
-          isApplicable: false,
-          rating: 0,
-        },
-        SPA: {
-          isApplicable: false,
-          rating: 0,
-        },
-      },
-      Expected: {
-        Pool: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Yoga: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Party hall": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Indoor games": {
-          isApplicable: false,
-          rating: 0,
-        },
-        Spa: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Clubhouse: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Jacuzzi: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Theatre: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Barbeque Lawn": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Jogging track": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Covered Sitting": {
-          isApplicable: false,
-          rating: 0,
-        },
-        Garden: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Wi-fi": {
-          isApplicable: false,
-          rating: 0,
-        },
-      },
-      Desired: {
-        Theatre: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Barbeque Lawn": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Jogging track": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Covered Sitting": {
-          isApplicable: false,
-          rating: 0,
-        },
-        Garden: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Yoga: {
-          isApplicable: false,
-          rating: 0,
-        },
-        SPA: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Swimming pool": {
-          isApplicable: false,
-          rating: 0,
-        },
-        Club: {
-          isApplicable: false,
-          rating: 0,
-        },
-      },
-      Unique: {
-        Library: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Kids play area": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Back up": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Wi-fi": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Gas line": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Shopping mart": {
-          isApplicable: false,
-          rating: 0,
-        },
-      },
+      // sectionScore:"",
+      // Basic: {
+      //   Gym: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Yoga: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Swimming pool": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Club: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Fitness center": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   SPA: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      // },
+      // Expected: {
+      //   Pool: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Yoga: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Party hall": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Indoor games": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Spa: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Clubhouse: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Jacuzzi: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Theatre: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Barbeque Lawn": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Jogging track": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Covered Sitting": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Garden: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Wi-fi": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      // },
+      // Desired: {
+      //   Theatre: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Barbeque Lawn": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Jogging track": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Covered Sitting": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Garden: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Yoga: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   SPA: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Swimming pool": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Club: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      // },
+      // Unique: {
+      //   Library: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Kids play area": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Back up": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Wi-fi": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Gas line": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Shopping mart": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      // },
     },
     location: {
       state: "",
@@ -491,86 +510,86 @@ function AddProperty() {
       longitude: "",
       latitude: "",
       assessment: {
-        "Pick up / delivery": {
-          isApplicable: false,
-          rating: 0,
-        },
-        School: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Hospital: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Mall: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Super market": {
-          isApplicable: false,
-          rating: 0,
-        },
-        Restaurants: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Railway: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Metro: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Bus stand": {
-          isApplicable: false,
-          rating: 0,
-        },
-        Highway: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Offices: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Hotels: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Clubs: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Noise: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Safety: {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Bus stops": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Train station": {
-          isApplicable: false,
-          rating: 0,
-        },
-        "Metro station": {
-          isApplicable: false,
-          rating: 0,
-        },
-        University: {
-          isApplicable: false,
-          rating: 0,
-        },
-        Parks: {
-          isApplicable: false,
-          rating: 0,
-        },
+      //   "Pick up / delivery": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   School: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Hospital: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Mall: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Super market": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Restaurants: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Railway: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Metro: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Bus stand": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Highway: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Offices: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Hotels: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Clubs: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Noise: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Safety: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Bus stops": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Train station": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   "Metro station": {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   University: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
+      //   Parks: {
+      //     isApplicable: false,
+      //     rating: 0,
+      //   },
       },
     },
     valueForMoney: {
@@ -752,19 +771,19 @@ const [hide,setHide]=useState([])
           incomingValue = 5;
           break;
         case "no":
-          incomingValue = 4;
+          incomingValue = 0;
           break;
         case "dont know":
-          incomingValue = 3;
+          incomingValue = 0;
           break;
         case "don't know":
-          incomingValue = 3;
+          incomingValue = 0;
           break;
         case "on time":
           incomingValue = 5;
           break;
         case "delay":
-          incomingValue = 3;
+          incomingValue = 0;
           break;
         default:
           incomingValue = 0;
@@ -834,7 +853,7 @@ const [hide,setHide]=useState([])
 
       let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
 
-      let totalRating = 70;
+      let totalRating = form.overview.status ==="underconstruction"? 70:65;
       let totalScored;
 
       function isNotAlphabet(char) {
@@ -849,19 +868,21 @@ const [hide,setHide]=useState([])
             incomingValue = 5;
             break;
           case "no":
-            incomingValue = 4;
+            incomingValue = 0;
             break;
           case "dont know":
-            incomingValue = 3;
+            incomingValue = 0;
+            totalRating = totalRating-5
             break;
           case "don't know":
-            incomingValue = 3;
+            incomingValue = 0;
+            totalRating = totalRating-5
             break;
           case "on time":
             incomingValue = 5;
             break;
           case "delay":
-            incomingValue = 3;
+            incomingValue = 0;
             break;
           default:
             incomingValue = 0;
@@ -919,6 +940,8 @@ const [hide,setHide]=useState([])
               ...updatedForm[firstKeyName][secondKeyName][autoFillField],
               rating: e.target.value,
             };
+           let locationAssesment = moduleScoreCalc(e,firstKeyName,secondKeyName)
+           updatedForm[firstKeyName]["sectionScore"] = locationAssesment
           } else {
             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
               ...updatedForm[firstKeyName][secondKeyName][autoFillField],
@@ -953,7 +976,6 @@ const [hide,setHide]=useState([])
     if(firstKeyName==="overview" && secondKeyName==="projectType"){
       let lastValue = e[e.length - 1]?.value.toLowerCase()
       let value= lastValue?.replace(/\s/g, '')
-      console.log(value,'eee')
       switch (value) {
         case "restaurant":
           setHide([ 
@@ -1145,7 +1167,8 @@ const [hide,setHide]=useState([])
       </nav>
 
       <Container>
-        <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+
+       { isLoading===false &&<Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
           <ProjectCard
             errors={errors}
             form={form}
@@ -1196,6 +1219,7 @@ const [hide,setHide]=useState([])
             hide={hide}
             selectOptions={selectOptions}
             form={form}
+            moduleScoreCalc={moduleScoreCalc}
             handleChange={handleChange}
             isEdit={isEdit}
           />
@@ -1232,7 +1256,7 @@ const [hide,setHide]=useState([])
               ButtonText={editPage ? "Update" : "Save"} />
             <CustomButton onClick={() => validateForm(true)} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
           </Grid>
-        </Grid>
+        </Grid>}
       </Container>
     </>
   );

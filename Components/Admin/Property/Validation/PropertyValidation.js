@@ -144,6 +144,7 @@ export const Schema = Joi.object({
   }),
 
   amenitiesData: Joi.object().keys({
+    sectionScore:Joi.number().allow(""),
     Basic: Joi.object().pattern(
       /./,
       Joi.object().keys({
