@@ -58,7 +58,7 @@ const layoutSchema = Joi.object({
       is: Joi.array()
         .items(
           Joi.object({
-            label: Joi.string().valid("Land","Shop","Restaurant").required(),
+             label: Joi.string().valid("Land","Shop","Restaurant").required(),
             value: Joi.string().valid("Land","Shop","Restaurant").required(),
           })
         )
@@ -264,21 +264,21 @@ export const Schema = Joi.object({
     maxPriceRange: Joi.number().allow(""),
     uniqueLayouts: Joi.array().items(Joi.string()),
     planList: Joi.array()
-      .min(1)
+      // .min(1)
       .items(
         Joi.object({
-          propertyType: Joi.string().required(),
-          propertyLayout: Joi.string().required(),
-          name: Joi.string().required(),
-          areaUnit: Joi.string().required(),
-          totalUnits: Joi.number().required(),
-          area: Joi.number().required(),
-          bsp: Joi.number().required(),
-          applicableMonth: Joi.string().required(),
-          applicableYear: Joi.string().required(),
+          propertyType: Joi.string().optional().allow(""),
+          propertyLayout: Joi.string().optional().allow(""),
+          name: Joi.string().optional().allow(""),
+          areaUnit: Joi.string().optional().allow(""),
+          totalUnits: Joi.number().optional().allow(""),
+          area: Joi.number().optional().allow(""),
+          bsp: Joi.number().optional().allow(""),
+          applicableMonth: Joi.string().optional().allow(""),
+          applicableYear: Joi.string().optional().allow(""),
         })
       ),
-  }),
+  }).optional(),
 
   amenitiesData: Joi.object().keys({
     sectionScore:Joi.number().allow(""),
