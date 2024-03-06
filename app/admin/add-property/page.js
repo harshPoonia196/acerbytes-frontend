@@ -834,7 +834,7 @@ const [hide,setHide]=useState([])
 
       let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
 
-      let totalRating = 70;
+      let totalRating = form.overview.status ==="underconstruction"? 70:65;
       let totalScored;
 
       function isNotAlphabet(char) {
@@ -849,19 +849,21 @@ const [hide,setHide]=useState([])
             incomingValue = 5;
             break;
           case "no":
-            incomingValue = 4;
+            incomingValue = 0;
             break;
           case "dont know":
-            incomingValue = 3;
+            incomingValue = 0;
+            totalRating = totalRating-5
             break;
           case "don't know":
-            incomingValue = 3;
+            incomingValue = 0;
+            totalRating = totalRating-5
             break;
           case "on time":
             incomingValue = 5;
             break;
           case "delay":
-            incomingValue = 3;
+            incomingValue = 0;
             break;
           default:
             incomingValue = 0;
@@ -953,7 +955,6 @@ const [hide,setHide]=useState([])
     if(firstKeyName==="overview" && secondKeyName==="projectType"){
       let lastValue = e[e.length - 1]?.value.toLowerCase()
       let value= lastValue?.replace(/\s/g, '')
-      console.log(value,'eee')
       switch (value) {
         case "restaurant":
           setHide([ 
