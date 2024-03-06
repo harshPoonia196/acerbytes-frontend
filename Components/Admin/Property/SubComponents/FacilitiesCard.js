@@ -106,7 +106,7 @@ function FacilitiesCard({ isEdit, form, handleChange, handleRating }) {
                                                 >
                                                     {insideKey}
                                                 </Typography>
-                                                <Rating value={amenitiesData?.[key]?.[insideKey]?.rating} name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e) => handleChange(e, "amenitiesData", key, "checked", undefined, insideKey, undefined, true)} />
+                                                <Rating disabled={!amenitiesData?.[key]?.[insideKey]?.isApplicable} value={amenitiesData?.[key]?.[insideKey]?.rating} name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e) => handleChange(e, "amenitiesData", key, "checked", undefined, insideKey, undefined, true)} />
                                             </Grid>
                                         </>
                                     })

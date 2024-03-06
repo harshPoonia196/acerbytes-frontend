@@ -335,6 +335,7 @@ function AddProperty() {
     },
 
     amenitiesData: {
+      sectionScore:"",
       Basic: {
         Gym: {
           isApplicable: false,
@@ -752,19 +753,19 @@ const [hide,setHide]=useState([])
           incomingValue = 5;
           break;
         case "no":
-          incomingValue = 4;
+          incomingValue = 0;
           break;
         case "dont know":
-          incomingValue = 3;
+          incomingValue = 0;
           break;
         case "don't know":
-          incomingValue = 3;
+          incomingValue = 0;
           break;
         case "on time":
           incomingValue = 5;
           break;
         case "delay":
-          incomingValue = 3;
+          incomingValue = 0;
           break;
         default:
           incomingValue = 0;
@@ -921,6 +922,8 @@ const [hide,setHide]=useState([])
               ...updatedForm[firstKeyName][secondKeyName][autoFillField],
               rating: e.target.value,
             };
+           let locationAssesment = moduleScoreCalc(e,firstKeyName,secondKeyName)
+           updatedForm[firstKeyName]["sectionScore"] = locationAssesment
           } else {
             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
               ...updatedForm[firstKeyName][secondKeyName][autoFillField],
@@ -1197,6 +1200,7 @@ const [hide,setHide]=useState([])
             hide={hide}
             selectOptions={selectOptions}
             form={form}
+            moduleScoreCalc={moduleScoreCalc}
             handleChange={handleChange}
             isEdit={isEdit}
           />
