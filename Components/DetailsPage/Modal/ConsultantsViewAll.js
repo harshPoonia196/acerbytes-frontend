@@ -1,0 +1,60 @@
+import {
+  Grid,
+  DialogActions,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Typography,
+  Box,
+  List,
+} from "@mui/material";
+import BrokerCard from "Components/BrokersPage/BrokerCard";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+
+function ConsultantsViewAll({ open, handleClose, propertyData }) {
+  return (
+    <Dialog
+      sx={{
+        "& .MuiDialog-paper": {
+          borderRadius: "8px !important",
+          maxHeight: "500px",
+          maxWidth: "100%",
+        },
+      }}
+      open={open}
+      onClose={handleClose}
+    >
+      <DialogTitle onClose={handleClose}>
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
+          All Consultants
+        </Typography>
+      </DialogTitle>
+      <DialogContent>
+        <List
+          dense
+          sx={{ width: "100%", minWidth: 550, bgcolor: "background.paper" }}
+        >
+          {propertyData?.map((broker) => (
+            <Grid item xs={12} sm={12} key={broker?.name}>
+              <BrokerCard broker={broker} noReview />
+            </Grid>
+          ))}
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Box sx={{ textAlign: "end" }}>
+          <CustomButton
+            //   startIcon={<DoneIcon fontSize="small" />}
+            variant="contained"
+            onClick={() => {
+              handleClose();
+            }}
+            ButtonText={"Close"}
+          />
+        </Box>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+export default ConsultantsViewAll;

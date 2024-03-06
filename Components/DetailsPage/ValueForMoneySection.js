@@ -37,7 +37,7 @@ function ValueForMoneySection(props) {
                                     cursor: 'pointer'
                                 }}
                             >
-                                99
+                            {valueForMoneyData?.sectionScore ? valueForMoneyData?.sectionScore : "00"}
                             </Typography>
                         </Card>
                     </Box>

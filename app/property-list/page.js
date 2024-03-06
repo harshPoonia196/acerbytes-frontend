@@ -34,9 +34,11 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import colors from "styles/theme/colors";
 import {
+  objectToQueryString,
   transformDocuments,
   transformDocumentsLocation,
 } from "utills/CommonFunction";
+import { debounce } from "lodash";
 
 function PropertyList() {
   const [alignment, setAlignment] = useState(1);
@@ -47,20 +49,17 @@ function PropertyList() {
   const [count, setCount] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+  const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [propertyvalue, setPropertyvalue] = useState("");
   const [buttonColor, setButtonColor] = useState("");
-
   const [selectOption, setSelectOption] = useState({});
-
   const [isDisablePropertyType, setIsDisablePropertyType] = useState(true);
   const [isDisableLayoutType, setIsDisableLayoutType] = useState(true);
   const [locationData, setLocationData] = useState([]);
   const [cities, setCities] = useState([]);
-
   const [layoutTypeApplicable, setLayoutTypeApplicable] = useState([]);
   const [locationDisable, setLocationDisable] = useState(true);
   const [selectedCity, setSelectedCity] = useState([]);
@@ -71,16 +70,6 @@ function PropertyList() {
     setFocus(true);
   };
 
-  const objectToQueryString = (obj) => {
-    const queryString = Object.keys(obj)
-      .map(
-        (key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`
-      )
-      .join("&");
-
-    return queryString;
-  };
-
   const getUserPropertyList = async (
     pageOptions,
     searchTerm,
@@ -89,6 +78,7 @@ function PropertyList() {
     propertyvalue
   ) => {
     try {
+      setLoading(true);
       let data = {};
       Object.keys(selectedOptions).forEach((key) => {
         const value = selectedOptions[key];
@@ -209,7 +199,7 @@ function PropertyList() {
     openSnackbar(message, severity);
   };
 
-  useEffect(() => {
+  function performSearch() {
     const pageOptions = {
       pageLimit,
       page: currentPage,
@@ -217,17 +207,36 @@ function PropertyList() {
 
     getUserPropertyList(
       pageOptions,
-      debouncedSearchTerm,
+      searchTerm,
       selectedOptions,
       alignment,
       propertyvalue
     );
+  }
+
+  useEffect(() => {
+    // const pageOptions = {
+    //   pageLimit,
+    //   page: currentPage,
+    // };
+
+    // getUserPropertyList(
+    //   pageOptions,
+    //   searchTerm,
+    //   selectedOptions,
+    //   alignment,
+    //   propertyvalue
+    // );
     if (inputRef.current) {
       inputRef.current.focus();
     }
+    debouncedSearch();
+    return () => {
+      debouncedSearch.cancel();
+    };
   }, [
-    debouncedSearchTerm,
     currentPage,
+    searchTerm,
     pageLimit,
     selectedOptions,
     alignment,
@@ -242,14 +251,6 @@ function PropertyList() {
     getAllOptionDataList();
     getLocationsCall();
   }, []);
-
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, DEBOUNCE_TIMER);
-
-    return () => clearTimeout(timerId);
-  }, [searchTerm, selectedOptions]);
 
   const handleChangePage = (event, newPage) => {
     const page = newPage + 1;
@@ -312,7 +313,7 @@ function PropertyList() {
     setPropertyvalue("");
     getUserPropertyList(
       pageOptions,
-      debouncedSearchTerm,
+      searchTerm,
       selectedOptions,
       newAlignment,
       propertyvalue
