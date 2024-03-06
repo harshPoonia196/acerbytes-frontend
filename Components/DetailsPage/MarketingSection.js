@@ -141,7 +141,7 @@ function MarketingSection(props) {
                                         cursor: 'pointer'
                                     }}
                                 >
-                                  {alloverviewData?.sectionScore ? alloverviewData?.sectionScore.toFixed(2)  : '99'}
+                                  {alloverviewData?.sectionScore ? alloverviewData?.sectionScore.toFixed(2)  : '00'}
                                 </Typography>
                             </Card>
                         </Box>

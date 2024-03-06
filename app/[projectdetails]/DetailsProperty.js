@@ -53,7 +53,7 @@ import {
 } from "utills/Constants";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
-import { activeAdGet } from "api/Property.api";
+import { activeAdGet, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
@@ -122,6 +122,27 @@ const PropertyDetails = ({ params }) => {
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlefavClick = async () => {
+    const adData = {
+      propertyId: propertyData[0]?.property_id,
+    };
+    try {
+      const response = await favPropertyCreate(adData);
+      if (response.status == 200) {
+        activeAdGetProperty();
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error generating fav Property",
         "error"
       );
     } finally {
@@ -529,6 +550,7 @@ const PropertyDetails = ({ params }) => {
                   <Fab
                     variant="extended"
                     sx={{ mb: 1, justifyContent: "flex-start" }}
+                    onClick={handlefavClick}
                   >
                     {propertyData[0]?.isFav ? (
                       <ThumbUpIcon sx={{ color: "#276ef1", mr: 1 }} />

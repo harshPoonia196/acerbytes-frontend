@@ -56,7 +56,7 @@ function OverallAssesmentSection({
               >
                 {overallAssessment?.sectionScore
                   ? overallAssessment?.sectionScore
-                  : "99"}
+                  : "00"}
               </Typography>
             </Card>
           </Box>

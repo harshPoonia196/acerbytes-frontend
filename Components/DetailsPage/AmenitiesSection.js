@@ -7,7 +7,7 @@ import colors from 'styles/theme/colors'
 function AmenitiesSection(props) {
     const { refCallback, amenitiesData } = props
     if (!amenitiesData) {
-        return <div></div>;
+        return null;
     }
     const router = useRouter()
 
@@ -40,7 +40,7 @@ function AmenitiesSection(props) {
                                     cursor: 'pointer'
                                 }}
                             >
-                                {amenitiesData?.sectionScore ? amenitiesData?.sectionScore : "99"}
+                                {amenitiesData?.sectionScore ? amenitiesData?.sectionScore : "00"}
                             </Typography>
                         </Card>
                     </Box>
@@ -55,16 +55,19 @@ function AmenitiesSection(props) {
                                 </Grid>
 
                                 {Object.entries(amenities).map(([amenityName, amenityDetails]) => {
-                                    return (
-                                        <NewKeyValuePairStructure
-                                            key={amenityName}
-                                            label={amenityName}
-                                            value={amenityDetails?.rating}
-                                            middleValue={category}
-                                            isRating={amenityDetails?.isApplicable}
-                                            isRatingReadOnly
-                                        />
-                                    );
+                                     if (amenityDetails?.isApplicable) {
+                                        return (
+                                            <NewKeyValuePairStructure
+                                                key={amenityName}
+                                                label={amenityName}
+                                                value={amenityDetails?.rating}
+                                                middleValue={category}
+                                                isRating={amenityDetails?.isApplicable}
+                                                isRatingReadOnly
+                                            />
+                                        );
+                                    }
+                                    return null;
                                 })}
                             </React.Fragment>
                         );

@@ -19,14 +19,6 @@ function PropertyCard(props) {
   const { propertyDetails, isShortListPageCard, createdDate } = props
   const router = useRouter();
 
-  const processLayoutType = (layoutType) => {
-    if (layoutType.length > 0 && typeof layoutType[0] === 'object') {
-      return layoutType.map(type => type.value).join(", ");
-    } else {
-      return layoutType.join(", ");
-    }
-  };
-
   const formattedCreatedAt = createdDate && format(new Date(createdDate), 'dd-MM-yyyy \'at\' HH:mm aaa')
 
   return (
@@ -93,7 +85,7 @@ function PropertyCard(props) {
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
             <Typography variant="caption">{propertyDetails?.unitsPlan?.planList.length && propertyDetails?.unitsPlan?.planList?.map(item => `${item.area} ${item.areaUnit}`).join(", ")}</Typography>
-            <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr(static)</Typography>
+           { propertyDetails?.unitsPlan?.minPriceRange &&  <Typography variant="subtitle2">₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹ {propertyDetails?.unitsPlan?.maxPriceRange} Cr</Typography>}
           </Grid>
           <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
             <Typography variant="caption">{propertyDetails?.layout?.totalUnits}</Typography>
@@ -101,7 +93,7 @@ function PropertyCard(props) {
           </Grid>
           <Grid item xs={8} sm={4} md={2} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
             <Typography variant="caption">
-              {processLayoutType(propertyDetails?.layout?.layoutType)}
+              {propertyDetails?.unitsPlan?.uniqueLayouts.length && propertyDetails?.unitsPlan?.uniqueLayouts?.map(item => item).join(", ")}
             </Typography>
             {/* <Typography variant="caption">{propertyDetails?.layout?.layoutType.join(", ")} */}
             {/* </Typography> */}
@@ -138,7 +130,7 @@ function PropertyCard(props) {
                   px: 1,
                 }}
               >
-                99
+                {propertyDetails?.regulatoryClearance?.sectionScore ? propertyDetails?.regulatoryClearance?.sectionScore.toFixed(2) : "00"}
               </Typography>
             </Card>
           </Grid>
