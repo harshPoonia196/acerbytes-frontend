@@ -27,49 +27,7 @@ import { Assessment } from '@mui/icons-material';
 function LocationAssesmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
 
     const { location } = form
-    const [selectOptions, setSelectOption] = useState({})
-    const [loading, setLoading] = useState(false);
 
-    const { openSnackbar } = useSnackbar();
-
-    const showToaterMessages = (message, severity) => {
-      openSnackbar(message, severity);
-    };
-
-    const getAllOptionDataList = async () => {
-      try {
-        let res = await getAllOptions();
-        if (res.status === 200) {
-          let transform = transformDocuments(res.data.data)
-          let temp={}
-          console.log("trans",transform)
-          transform["assessment"].map((thing) => {
-            temp[thing] = {
-                isApplicable: false,
-                rating: 0
-            }
-
-        })
-          setSelectOption({ ...temp })
-        }
-      } catch (error) {
-        console.log(error, 'err')
-        showToaterMessages(
-          error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
-          "error"
-        );
-      }
-      finally {
-        setLoading(false);
-      }
-    };
-  
-    useEffect(() => {
-      getAllOptionDataList()
-  
-    }, [])
     return (
         <Grid item xs={12} id="facilities">
             <Card>
