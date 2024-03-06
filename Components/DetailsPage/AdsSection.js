@@ -9,24 +9,12 @@ import { useSearchParams } from 'next/navigation';
 import { useSnackbar } from 'utills/SnackbarContext';
 import { ToasterMessages } from "Components/Constants";
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
+import { formatDateAndDaysRemaining } from 'utills/CommonFunction';
 
 function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant, SinglePropertyId, propertyData, id }) {
     const brokerData = SinglePropertyId?.brokerData
     const locationData = propertyData?.location;
-
-    let formatDateAndDaysRemaining = (expiryDate) => {
-        const expiry = new Date(expiryDate);
-        const now = new Date();
-        const daysRemaining = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
-
-        const day = expiry.getDate();
-        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const nth = (d) => ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d - 20) % 10 < 1 ? d % 10 : 0] || "th";
-        const formattedDate = `${day}${nth(day)} ${monthNames[expiry.getMonth()]}`;
-
-        return `${formattedDate} (${daysRemaining} days remaining)`;
-    };
-
+    
     const constructPropertyUrl = (property) => {
         const overview = property?.overview;
         const location = property?.location;
