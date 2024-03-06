@@ -84,20 +84,18 @@ function PropertyCard(props) {
             md={2.5}
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
-            <Typography variant="caption">{propertyDetails?.unitsPlan?.planList.length && propertyDetails?.unitsPlan?.planList?.map(item => `${item.area} ${item.areaUnit}`).join(", ")}</Typography>
-           { propertyDetails?.unitsPlan?.minPriceRange &&  <Typography variant="subtitle2">₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹ {propertyDetails?.unitsPlan?.maxPriceRange} Cr</Typography>}
+            <Typography variant="caption">{propertyDetails?.unitsPlan?.averagePrice + '/' + propertyDetails?.unitsPlan?.planList[0]?.areaUnit}</Typography>
+            {propertyDetails?.unitsPlan?.minPriceRange && <Typography variant="subtitle2">₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹ {propertyDetails?.unitsPlan?.maxPriceRange} Cr</Typography>}
           </Grid>
           <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
-            <Typography variant="caption">{propertyDetails?.layout?.totalUnits}</Typography>
+            <Typography variant="caption">{propertyDetails?.layout?.totalUnits} Units</Typography>
             <Typography variant="subtitle2">{propertyDetails?.layout?.area}</Typography>
           </Grid>
           <Grid item xs={8} sm={4} md={2} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
             <Typography variant="caption">
-              {propertyDetails?.unitsPlan?.uniqueLayouts.length && propertyDetails?.unitsPlan?.uniqueLayouts?.map(item => item).join(", ")}
+              {propertyDetails?.unitsPlan?.uniqueLayouts.length} layouts
             </Typography>
-            {/* <Typography variant="caption">{propertyDetails?.layout?.layoutType.join(", ")} */}
-            {/* </Typography> */}
-            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.planList.length && propertyDetails?.unitsPlan?.planList?.map(item => item.propertyLayout).join(", ")}</Typography>
+            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.uniqueLayouts.length && propertyDetails?.unitsPlan?.uniqueLayouts?.map(item => item).join(", ")}</Typography>
           </Grid>
           <Grid
             item
