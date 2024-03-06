@@ -12,6 +12,8 @@ import { getAllOptions } from "api/Property.api";
 import {
     transformDocuments
 } from "utills/CommonFunction";
+import { useSnackbar } from "utills/SnackbarContext";
+
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
@@ -29,6 +31,15 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
         resale,
     } = form.regulatoryClearance;
 
+    const { openSnackbar } = useSnackbar();
+
+    const showToaterMessages = (message, severity) => {
+      openSnackbar(message, severity);
+    };
+
+    const [loading, setLoading] = useState(false);
+
+
     const [selectOptions, setSelectOption] = useState({})
     const getAllOptionDataList = async () => {
         try {
@@ -39,16 +50,16 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
             }
         } catch (error) {
             console.log(error, 'err')
-            // showToaterMessages(
-            //   error?.response?.data?.message ||
-            //   error?.message ||
-            //   "Error fetching state list",
-            //   "error"
-            // );
+            showToaterMessages(
+              error?.response?.data?.message ||
+              error?.message ||
+              "Error fetching state list",
+              "error"
+            );
         }
-        // finally {
-        //   setLoading(false);
-        // }
+        finally {
+          setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -94,6 +105,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={reraNumber}
+                        type={"number"}
                         error={errors?.["regulatoryClearance.reraNumber"]}
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "reraNumber")}
                     />

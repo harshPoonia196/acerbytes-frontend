@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, TextField, Grid, Box } from "@mui/material";
 import colors from "styles/theme/colors";
+import { number } from "joi";
 
 const filterKeys = ["firstName", "lastName", "company", "city", "pinCode"];
 
@@ -17,6 +18,7 @@ const NewInputFieldStructure = ({
   isRequired,
   error,
   isFull,
+  maxlength,
   defaultValue,
   ...props
 }) => {
@@ -40,7 +42,18 @@ const NewInputFieldStructure = ({
       };
       handleChange(updatedEvent);
     } else {
-      handleChange(event);
+      if (name == "pinCode") {
+        const numericValue = event.target.value.replace(/[^0-9]/g, '');
+
+        // Example: Limit to 6 characters
+        const truncatedValue = numericValue.slice(0, 6)
+        handleChange(truncatedValue);
+      }
+      else{
+        handleChange(event);
+      }
+   
+ 
     }
   };
 
@@ -63,6 +76,7 @@ const NewInputFieldStructure = ({
             variant={variant ? variant : "standard"}
             fullWidth
             value={value}
+            type={type}
             size="small"
             defaultValue={defaultValue}
             sx={sx}
@@ -75,6 +89,7 @@ const NewInputFieldStructure = ({
             name={name}
             value={value}
             disabled={disabled}
+            type={type}
             onChange={changeHandler}
             variant={variant ? variant : "standard"}
             fullWidth

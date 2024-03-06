@@ -57,6 +57,7 @@ const NewUnitAreaInputField = ({
             onChange={(e)=>handleChange(e,"textField")}
             variant={variant ? variant : "standard"}
             fullWidth
+            type={type}
             value={value}
             size="small"
             InputProps={{
@@ -65,7 +66,7 @@ const NewUnitAreaInputField = ({
                   <TextField
                     select
                     onChange={(e)=>handleChange(e,"unit")}
-                    defaultValue=""
+                    defaultValue="Acres"
                     value={unitValue||''}
                     variant="standard"
                     InputProps={{

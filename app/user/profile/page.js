@@ -1223,6 +1223,7 @@ function Profile() {
                 <NewInputFieldStructure
                   label="Pincode"
                   variant="outlined"
+                  type={"number"}
                   value={profileInfo?.currentAddress?.pinCode}
                   isEdit={isEdit}
                   handleChange={(e) =>

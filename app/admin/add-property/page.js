@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 const noop = () => { };
 
+
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
     () => (callback ? throttle(callback, delay) : noop),
@@ -79,9 +80,9 @@ function AddProperty() {
   const routerNavigation = useRouter();
   const [editPage, setEditPage] = useState(false);
   const [brokerList, setBrokerList] = useState([]);
+  const [isLoading, setLoading] = useState(false);
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
-  const { openSnackbar } = useSnackbar();
 
   let itemsServer = listOfTabsInAddProperty.map((tab) => {
     const hash = tab.value;
@@ -189,15 +190,15 @@ function AddProperty() {
         if (success) {
           let getValue = data.data.map((i) => {
             let u = {
-              name: i.fullName,
+              fullName: i.fullName.replace(/\b\w/g, (match) => match.toUpperCase()),
               type: "consultant",
               rating: i.rating,
               id: i._id,
             };
             return u;
           });
-          //   setBrokerList([...getValue]);
-          setBrokerList([...data.data]);
+            setBrokerList([...getValue]);
+          // setBrokerList([...data.data]);
           //   return data;
         } else {
           console.log("error");
@@ -208,13 +209,56 @@ function AddProperty() {
       console.log(err);
     }
   };
+  const { openSnackbar } = useSnackbar();
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
+  const getAllOptionDataList = async () => {
+    try {
+      let res = await getAllOptions();
+      if (res.status === 200) {
+        let transform = transformDocuments(res.data.data)
+        let temp={}
+        transform["assessment"].map((thing) => {
+          temp[thing] = {
+              isApplicable: false,
+              rating: 0
+          }
+
+      })
+      setForm((prevForm) => ({
+        ...prevForm,
+        location: {
+          ...prevForm.location,
+          assessment: temp,
+        },
+      }));
+        // setSelectOption({ ...temp })
+      }
+    } catch (error) {
+      console.log(error, 'err')
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    }
+    finally {
+      setLoading(false);
+    }
+  };
   React.useEffect(() => {
     if (detailsPropertyId) {
       getProp();
       setEditPage(true);
     }
+    getAllOptionDataList()
+    brokersList();
 
-    brokersList(10, 1);
+// console.log(form)
+
     return () => {
       clearTimeout(unsetClickedRef.current);
     };
@@ -259,7 +303,7 @@ function AddProperty() {
       maxFloors: "",
       minFloors: "",
       totalUnits: "",
-      areaUnit: "",
+      areaUnit: "Acres",
       area: "",
       greenArea: "",
       unitDensity: "",
@@ -440,12 +484,13 @@ function AddProperty() {
       state: "",
       city: "",
       sector: "",
+      sectionScore:"",
       area: "",
       pinCode: "",
       googleMapLink: "",
       longitude: "",
       latitude: "",
-      assesment: {
+      assessment: {
         "Pick up / delivery": {
           isApplicable: false,
           rating: 0,
@@ -532,6 +577,7 @@ function AddProperty() {
       appTillNow: 0,
       expectedFurtherApp: 0,
       forEndUse: 0,
+      sectionScore:""
     },
     consultants: [],
     // consultants: [
@@ -588,7 +634,7 @@ function AddProperty() {
     }, {});
   }
   const [selectOptions, setSelectOption] = useState({})
-
+const [hide,setHide]=useState([])
 
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
 
@@ -666,7 +712,9 @@ function AddProperty() {
   };
 
 
-  const moduleScoreCalc = (e, firstKeyName, secondKeyName) => {
+
+
+  const moduleScoreCalc = (e, firstKeyName, secondKeyName,seperateCalc) => {
     let totalRating;
     let totalScored;
 
@@ -679,6 +727,12 @@ function AddProperty() {
         break;
       case "layout":
         totalRating = 20;
+        break;
+      case "location":
+        totalRating = 100;
+        break;
+      case "valueForMoney" :
+        totalRating = 15;
         break;
       default:
         totalRating = 10;
@@ -735,6 +789,18 @@ function AddProperty() {
     }
 
     let calc = (totalScored / totalRating) * 100;
+
+    if(seperateCalc){
+      setForm({
+        ...form,
+        [firstKeyName]: {
+          ...form[firstKeyName],
+          [secondKeyName]: e.target.value,
+          ["sectionScore"]: calc
+        }
+      });
+    }
+    
     return calc
 
   }
@@ -883,6 +949,42 @@ function AddProperty() {
         }));
       }
     }
+
+    if(firstKeyName==="overview" && secondKeyName==="projectType"){
+      let lastValue = e[e.length - 1]?.value.toLowerCase()
+      let value= lastValue?.replace(/\s/g, '')
+      console.log(value,'eee')
+      switch (value) {
+        case "restaurant":
+          setHide([ 
+            "numberOfBuildings",
+           "layoutType",
+          "floors",
+          "greenArea", 
+          "greenDensity",
+          "unitsPlan"]) 
+          break;
+        case "shop":
+          setHide([ 
+            "numberOfBuildings",
+           "layoutType",
+          "floors",
+          "greenArea", 
+          "greenDensity",
+          "unitsPlan"]) 
+          break;
+        case "land":
+          setHide([ 
+            "numberOfBuildings",
+           "layoutType",
+          "floors",
+          "unitsPlanUnit"]) 
+          break;
+        default:
+        setHide([])
+      }
+    }
+
     // const { error } = Schema.validate(form, { abortEarly: false });
     // if (error) {
     //   // console.log("🚀 ~ validateForm ~ error:", error.details)
@@ -1047,6 +1149,7 @@ function AddProperty() {
           <ProjectCard
             errors={errors}
             form={form}
+            hide={hide}
             selectOptions={selectOptions}
             editPage={editPage}
             handleNewObjChange={handleNewObjChange}
@@ -1055,6 +1158,7 @@ function AddProperty() {
           />
           <RegulatoryCard
             errors={errors}
+            hide={hide}
             form={form}
             selectOptions={selectOptions}
             handleChange={handleChange}
@@ -1062,23 +1166,26 @@ function AddProperty() {
           />
           <LandscapeCard
             errors={errors}
+            hide={hide}
             form={form}
             scoreChange={scoreChange}
             selectOptions={selectOptions}
             handleChange={handleChange}
             isEdit={isEdit}
           />
-          <FloorPlanCard
+          { !hide.includes("unitsPlan")&& <FloorPlanCard
             errors={errors}
+            hide={hide}
             form={form}
             editForm={editForm}
             handleChange={handleChange}
             selectOptions={selectOptions}
             handleUnitsPlan={handleUnitsPlan}
             isEdit={isEdit}
-          />
+          />}
           <FacilitiesCard
             errors={errors}
+            hide={hide}
             form={form}
             isEdit={isEdit}
             selectOptions={selectOptions}
@@ -1086,6 +1193,7 @@ function AddProperty() {
           />
           <LocationCard
             errors={errors}
+            hide={hide}
             selectOptions={selectOptions}
             form={form}
             handleChange={handleChange}
@@ -1095,8 +1203,10 @@ function AddProperty() {
                         <BuilderPriceCard isEdit={isEdit} /> */}
           <InvestmentCard
             errors={errors}
+            hide={hide}
             selectOptions={selectOptions}
             form={form}
+            moduleScoreCalc={moduleScoreCalc}
             handleChange={handleChange}
             isEdit={isEdit}
           />
@@ -1104,13 +1214,15 @@ function AddProperty() {
           <PropertyConsultantsCard
             isEdit={isEdit}
             form={form}
+            hide={hide}
             list={brokerList}
             handleChange={handleChange}
           />
-          <OverallAssessmentCard isEdit={isEdit} form={form} />
+          <OverallAssessmentCard  hide={hide} isEdit={isEdit} form={form} />
           {/* <BankCard isEdit={isEdit} /> */}
           <MarketingCard
             errors={errors}
+            hide={hide}
             form={form}
             handleChange={handleChange}
             isEdit={isEdit}
