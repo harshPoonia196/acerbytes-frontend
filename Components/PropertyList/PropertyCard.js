@@ -93,7 +93,7 @@ function PropertyCard(props) {
           </Grid>
           <Grid item xs={8} sm={4} md={2} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
             <Typography variant="caption">
-              {propertyDetails?.unitsPlan?.uniqueLayouts.length} layouts
+              {propertyDetails?.unitsPlan?.uniqueLayouts.length  === 1 ? `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layout` : `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layouts`}
             </Typography>
             <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.uniqueLayouts.length && propertyDetails?.unitsPlan?.uniqueLayouts?.map(item => item).join(", ")}</Typography>
           </Grid>
@@ -128,7 +128,7 @@ function PropertyCard(props) {
                   px: 1,
                 }}
               >
-                {propertyDetails?.regulatoryClearance?.sectionScore ? propertyDetails?.regulatoryClearance?.sectionScore.toFixed(2) : "00"}
+                {propertyDetails?.overallAssessment?.score ? propertyDetails?.overallAssessment?.score.toFixed(2) : "00ff"}
               </Typography>
             </Card>
           </Grid>
