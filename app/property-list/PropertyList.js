@@ -520,6 +520,8 @@ function PropertyList({params}) {
                   width: "fit-content",
                   color: "white",
                   marginTop: "20px",
+                  padding: "8px 26px !important",
+                  fontSize: "15px",
                   backgroundColor: colors?.BLACK,
                   "&:hover": {
                     backgroundColor: colors?.BLACK,
