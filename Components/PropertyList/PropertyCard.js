@@ -128,7 +128,7 @@ function PropertyCard(props) {
                   px: 1,
                 }}
               >
-                {propertyDetails?.overallAssessment?.score ? propertyDetails?.overallAssessment?.score.toFixed(2) : "00ff"}
+                {propertyDetails?.overallAssessment?.score ? propertyDetails?.overallAssessment?.score.toFixed(2) : "00"}
               </Typography>
             </Card>
           </Grid>
