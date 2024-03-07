@@ -460,7 +460,7 @@ function PropertyList({params}) {
               handleChange={(event, value) =>
                 handleOptionChange("status", value)
               }
-              value={selectedOptions.status}
+              value={selectedOptions.status ? selectedOptions.status : ""}
             />
             <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
               <Typography
