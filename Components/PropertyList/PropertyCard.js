@@ -116,7 +116,8 @@ function PropertyCard(props) {
                 m: 0,
                 ml: "auto !important",
               }}
-              onClick={() => router.push("/research")}
+              // onClick={() => router.push("/research")}
+              onClick={() => router.push(`/details/${propertyDetails._id}`)}
             >
               <Typography
                 variant="h6"
@@ -128,7 +129,7 @@ function PropertyCard(props) {
                   px: 1,
                 }}
               >
-                {propertyDetails?.overallAssessment?.score ? propertyDetails?.overallAssessment?.score.toFixed(2) : "00"}
+                {propertyDetails?.overallAssessment?.score ? propertyDetails?.overallAssessment?.score.toFixed() : "00"}
               </Typography>
             </Card>
           </Grid>

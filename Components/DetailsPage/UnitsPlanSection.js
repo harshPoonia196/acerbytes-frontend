@@ -63,7 +63,7 @@ function UnitsPlanSection(props) {
                   cursor: 'pointer'
                 }}
               >
-                {unitsPlan?.sectionScore ? unitsPlan?.sectionScore.toFixed(2)  : "00"}
+                {unitsPlan?.sectionScore ? unitsPlan?.sectionScore.toFixed() : "00"}
               </Typography>
             </Card>
           </Box>

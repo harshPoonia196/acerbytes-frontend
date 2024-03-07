@@ -38,7 +38,7 @@ function ClearanceSection(props) {
                                     cursor: 'pointer'
                                 }}
                             >
-                            {regulatoryClearanceData?.sectionScore ? regulatoryClearanceData?.sectionScore.toFixed(2) : "00"}
+                            {regulatoryClearanceData?.sectionScore ? regulatoryClearanceData?.sectionScore.toFixed() : "00"}
                             </Typography>
                         </Card>
                     </Box>
