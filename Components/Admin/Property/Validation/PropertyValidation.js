@@ -260,9 +260,9 @@ export const Schema = Joi.object({
   //     applicableYear: Joi.string().required(),
   //   })
   unitsPlan: Joi.object({
-    averagePrice: Joi.number().allow(""),
-    minPriceRange: Joi.number().allow(""),
-    maxPriceRange: Joi.number().allow(""),
+    averagePrice: Joi.number().allow(null,""),
+    minPriceRange: Joi.number().allow(null,""),
+    maxPriceRange: Joi.number().allow(null,""),
     uniqueLayouts: Joi.array().items(Joi.string()),
     planList: Joi.array()
       // .min(1)
