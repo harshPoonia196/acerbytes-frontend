@@ -46,6 +46,7 @@ import {
 import AddCreditPointsPopup from "./Modal/AddCreditPointsPopup";
 import { useAuth } from "utills/AuthContext";
 import {
+  DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
 } from "Components/config/config";
@@ -53,6 +54,7 @@ import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import Loader from "Components/CommonLayouts/Loading";
+import { debounce } from "lodash";
 
 const headCells = [
   {
@@ -337,24 +339,39 @@ function TableView({
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [salesPersons, setSalesPersons] = React.useState([]);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER); // Adjust the debounce delay as needed
 
+  function performSearch() {
+    const pageOptions = {
+      pageLimit: rowsPerPage,
+      page,
+    };
+    getOrderRequestList(pageOptions, searchTerm);
+  }
   React.useEffect(() => {
     // This block will run only on initial mount
     if (initialMount) {
       setInitialMount(false);
       return;
     }
-
     if (userDetails && Object.keys(userDetails).length) {
-      const pageOptions = {
-        pageLimit: rowsPerPage,
-        page,
-      };
-      getOrderRequestList(pageOptions);
       getSalesPersonsList();
     }
-  }, [userDetails && Object.keys(userDetails).length, initialMount]);
+    debouncedSearch();
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [
+    userDetails && Object.keys(userDetails).length,
+    initialMount,
+    searchTerm,
+  ]);
 
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
   const getSalesPersonsList = async () => {
     try {
       setLoading(true);
@@ -387,7 +404,7 @@ function TableView({
       pageLimit: rowsPerPage,
       page,
     };
-    getOrderRequestList(pageOptions);
+    getOrderRequestList(pageOptions,searchTerm);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -398,12 +415,12 @@ function TableView({
       pageLimit,
       page: 1,
     };
-    getOrderRequestList(pageOptions);
+    getOrderRequestList(pageOptions,searchTerm);
   };
 
   return <>
     <Card sx={{ mb: 2 }}>
-      <CustomSearchInput />
+    <CustomSearchInput value={searchTerm} onChange={handleSearch} />
     </Card>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -458,21 +475,21 @@ function OrdersTable() {
     openSnackbar(message, severity);
   };
 
-  React.useEffect(() => {
-    // This block will run only on initial mount
-    if (initialMount) {
-      setInitialMount(false);
-      return;
-    }
+  // React.useEffect(() => {
+  //   // This block will run only on initial mount
+  //   if (initialMount) {
+  //     setInitialMount(false);
+  //     return;
+  //   }
 
-    if (userDetails && Object.keys(userDetails).length) {
-      const pageOptions = {
-        pageLimit: rowsPerPage,
-        page,
-      };
-      getOrderRequestList(pageOptions);
-    }
-  }, [userDetails && Object.keys(userDetails).length, initialMount, value]);
+  //   if (userDetails && Object.keys(userDetails).length) {
+  //     const pageOptions = {
+  //       pageLimit: rowsPerPage,
+  //       page,
+  //     };
+  //     getOrderRequestList(pageOptions);
+  //   }
+  // }, [userDetails && Object.keys(userDetails).length, initialMount, value]);
   const handleCloseAddCreditPopup = () => {
     setOpenAddCreditPoints(false);
   };
@@ -534,7 +551,7 @@ function OrdersTable() {
   const orderStatusListing =
     value == 0 ? ORDER_STATUS.PENDING : ORDER_STATUS.COMPLETED;
 
-  const getOrderRequestList = async (queryParams) => {
+  const getOrderRequestList = async (queryParams, searchText) => {
     try {
       setLoading(true);
       setOrderRequests({});
@@ -542,6 +559,7 @@ function OrdersTable() {
         objectToQueryString({
           status: orderStatusListing,
           ...queryParams,
+          ...(searchText ? { search: searchText } : {}),
         })
       );
 
