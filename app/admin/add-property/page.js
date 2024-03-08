@@ -338,17 +338,17 @@ function AddProperty() {
       maxPriceRange: "",
       uniqueLayouts: [],
       planList: [
-        {
-          propertyType: "",
-          propertyLayout: "",
-          name: "",
-          areaUnit: "",
-          totalUnits: "",
-          area: "",
-          bsp: "",
-          applicableMonth: "",
-          applicableYear: "",
-        },
+        // {
+        //   propertyType: "",
+        //   propertyLayout: "",
+        //   name: "",
+        //   areaUnit: "",
+        //   totalUnits: "",
+        //   area: "",
+        //   bsp: "",
+        //   applicableMonth: "",
+        //   applicableYear: "",
+        // },
       ],
     },
 
