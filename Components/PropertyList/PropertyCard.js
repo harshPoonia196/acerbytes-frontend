@@ -10,39 +10,51 @@ import {
   Chip,
   Divider,
 } from "@mui/material";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 function PropertyCard(props) {
-  const { propertyDetails, isShortListPageCard, createdDate } = props
+  const { propertyDetails, isShortListPageCard, createdDate } = props;
   const router = useRouter();
 
-  const formattedCreatedAt = createdDate && format(new Date(createdDate), 'dd-MM-yyyy \'at\' HH:mm aaa')
+  const formattedCreatedAt =
+    createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' HH:mm aaa");
 
   return (
     <Card>
       <CardActionArea sx={{ p: 2 }}>
         <Grid container spacing={2} columns={16}>
           <Grid item xs={13.5} sm={8} md={4}>
-            <Box sx={{ display: 'flex' }} onClick={() => router.push(`/details/${propertyDetails?._id}`)}>
+            <Box
+              sx={{ display: "flex" }}
+              onClick={() => router.push(`/details/${propertyDetails?._id}`)}
+            >
               <CardMedia
                 component="img"
                 alt="green iguana"
                 sx={{
                   width: 80,
-                  borderRadius: "8px", mr: 2
+                  borderRadius: "8px",
+                  mr: 2,
                 }}
                 image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
               />
-              <Box sx={{ flex: 1 }} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
-                <Typography variant="caption">{propertyDetails?.overview?.builder}</Typography>
-                <Typography variant="subtitle2">{propertyDetails?.overview?.projectName}</Typography>
+              <Box
+                sx={{ flex: 1 }}
+                onClick={() => router.push(`/details/${propertyDetails._id}`)}
+              >
+                <Typography variant="caption">
+                  {propertyDetails?.overview?.builder}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {propertyDetails?.overview?.projectName}
+                </Typography>
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={2.5} sx={{ display: { xs: 'block', sm: 'none' } }}>
+          <Grid item xs={2.5} sx={{ display: { xs: "block", sm: "none" } }}>
             <Card
               sx={{
                 width: "fit-content",
@@ -74,8 +86,12 @@ function PropertyCard(props) {
             md={2}
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
-            <Typography variant="caption">{propertyDetails?.location?.area}</Typography>
-            <Typography variant="subtitle2">{propertyDetails?.location?.sector}</Typography>
+            <Typography variant="caption">
+              {propertyDetails?.location?.area}
+            </Typography>
+            <Typography variant="subtitle2">
+              {propertyDetails?.location?.sector}
+            </Typography>
           </Grid>
           <Grid
             item
@@ -84,18 +100,39 @@ function PropertyCard(props) {
             md={2.5}
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
-            <Typography variant="caption">{propertyDetails?.unitsPlan?.averagePrice + '/' + propertyDetails?.unitsPlan?.planList[0]?.areaUnit}</Typography>
-            {propertyDetails?.unitsPlan?.minPriceRange && <Typography variant="subtitle2">₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹ {propertyDetails?.unitsPlan?.maxPriceRange} Cr</Typography>}
+            {(propertyDetails?.unitsPlan?.averagePrice ||
+              propertyDetails?.unitsPlan?.planList[0]?.areaUnit) && (
+              <Typography variant="caption">
+                {propertyDetails?.unitsPlan?.averagePrice +
+                  "/" +
+                  propertyDetails?.unitsPlan?.planList[0]?.areaUnit}
+              </Typography>
+            )}
+            {(propertyDetails?.unitsPlan?.minPriceRange ||
+              propertyDetails?.unitsPlan?.maxPriceRange) && (
+              <Typography variant="subtitle2">
+                ₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹{" "}
+                {propertyDetails?.unitsPlan?.maxPriceRange} Cr
+              </Typography>
+            )}
           </Grid>
-          <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
-            <Typography variant="caption">{propertyDetails?.layout?.totalUnits} Units</Typography>
-            <Typography variant="subtitle2">{propertyDetails?.layout?.area}</Typography>
-          </Grid>
-          <Grid item xs={8} sm={4} md={2} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
+          <Grid
+            item
+            xs={8}
+            sm={4}
+            md={1.5}
+            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+          >
             <Typography variant="caption">
-              {propertyDetails?.unitsPlan?.uniqueLayouts.length  === 1 ? `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layout` : `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layouts`}
+              {propertyDetails?.layout?.totalUnits} Units
             </Typography>
-            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.uniqueLayouts.length && propertyDetails?.unitsPlan?.uniqueLayouts?.map(item => item).join(", ")}</Typography>
+            <Typography variant="subtitle2">{`${
+              propertyDetails?.layout?.area
+            } ${
+              propertyDetails?.layout?.areaUnit
+                ? "/" + propertyDetails?.layout?.areaUnit
+                : ""
+            }`}</Typography>
           </Grid>
           <Grid
             item
@@ -104,10 +141,40 @@ function PropertyCard(props) {
             md={2}
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
-            <Typography variant="caption">{propertyDetails?.overview?.status}</Typography>
-            <Typography variant="subtitle2">{propertyDetails?.overview?.launchYear} - {propertyDetails?.overview?.completionYear}</Typography>
+            <Typography variant="caption">
+              {propertyDetails?.unitsPlan?.uniqueLayouts.length === 1
+                ? `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layout`
+                : `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layouts`}
+            </Typography>
+            <Typography variant="subtitle2">
+              {propertyDetails?.unitsPlan?.uniqueLayouts.length &&
+                propertyDetails?.unitsPlan?.uniqueLayouts
+                  ?.map((item) => item)
+                  .join(", ")}
+            </Typography>
           </Grid>
-          <Grid item xs={8} sm={4} md={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Grid
+            item
+            xs={8}
+            sm={4}
+            md={2}
+            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+          >
+            <Typography variant="caption">
+              {propertyDetails?.overview?.status}
+            </Typography>
+            <Typography variant="subtitle2">
+              {propertyDetails?.overview?.launchYear} -{" "}
+              {propertyDetails?.overview?.completionYear}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={8}
+            sm={4}
+            md={2}
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
             <Card
               sx={{
                 width: "fit-content",
@@ -129,7 +196,9 @@ function PropertyCard(props) {
                   px: 1,
                 }}
               >
-                {propertyDetails?.overallAssessment?.score ? propertyDetails?.overallAssessment?.score.toFixed() : "00"}
+                {propertyDetails?.overallAssessment?.score
+                  ? propertyDetails?.overallAssessment?.score.toFixed()
+                  : "00"}
               </Typography>
             </Card>
           </Grid>
@@ -174,12 +243,12 @@ function PropertyCard(props) {
       {isShortListPageCard && (
         <CardActions sx={{ textAlign: "end" }}>
           <Chip
-            icon={<ThumbUpIcon style={{ color: '#276ef1', mr: 1 }} />}
+            icon={<ThumbUpIcon style={{ color: "#276ef1", mr: 1 }} />}
             // label="Liked on 23-09-2023 at 09:30 AM"
             label={`Liked on ${formattedCreatedAt}`}
-            onClick={() => { }}
+            onClick={() => {}}
             size="small"
-            sx={{ fontSize: '0.75rem' }}
+            sx={{ fontSize: "0.75rem" }}
           />
         </CardActions>
       )}
