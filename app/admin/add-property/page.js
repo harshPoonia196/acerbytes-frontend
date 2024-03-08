@@ -176,14 +176,21 @@ function AddProperty() {
         let data = removeIds(res.data?.data);
         delete data.__v;
         handleUIHide(data.overview.projectType)
-        setEditForm(true);
-
-    
+        setEditForm(true);    
         setForm({ ...data });
       }
-    } catch (error) {
-      console.log("see", error);
-    }
+    } 
+   catch (error) {
+    showToaterMessages(
+      error?.response?.data?.message ||
+      error?.message ||
+      "Error fetching state list",
+      "error"
+    );
+  }
+  finally {
+    setLoading(false);
+  }
   };
   const brokersList = async (rowsPerPage, page, search) => {
     try {
@@ -275,7 +282,10 @@ function AddProperty() {
       getProp();
       setEditPage(true);
     }
-    getAllOptionDataList()
+    else{
+      getAllOptionDataList()
+    }
+
     brokersList();
 
 // console.log(form)
