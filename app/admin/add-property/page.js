@@ -175,7 +175,10 @@ function AddProperty() {
       if (res.status === 200) {
         let data = removeIds(res.data?.data);
         delete data.__v;
+        handleUIHide(data.overview.projectType)
         setEditForm(true);
+
+    
         setForm({ ...data });
       }
     } catch (error) {
@@ -824,6 +827,42 @@ const [hide,setHide]=useState([])
 
   }
 
+const handleUIHide=(e)=>{
+
+  let lastValue = e[e.length - 1]?.value.toLowerCase()
+  let value= lastValue?.replace(/\s/g, '')
+  console.log(e,value,'enna')
+  switch (value) {
+    case "restaurant":
+      setHide([ 
+        "numberOfBuildings",
+       "layoutType",
+      "floors",
+      "greenArea", 
+      "greenDensity",
+      "unitsPlan"]) 
+      break;
+    case "shop":
+      setHide([ 
+        "numberOfBuildings",
+       "layoutType",
+      "floors",
+      "greenArea", 
+      "greenDensity",
+      "unitsPlan"]) 
+      break;
+    case "land":
+      setHide([ 
+        "numberOfBuildings",
+       "layoutType",
+      "floors",
+      "unitsPlanUnit"]) 
+      break;
+    default:
+    setHide([])
+  }
+}
+
   const handleChange = async (
     e,
     firstKeyName,
@@ -974,37 +1013,7 @@ const [hide,setHide]=useState([])
     }
 
     if(firstKeyName==="overview" && secondKeyName==="projectType"){
-      let lastValue = e[e.length - 1]?.value.toLowerCase()
-      let value= lastValue?.replace(/\s/g, '')
-      switch (value) {
-        case "restaurant":
-          setHide([ 
-            "numberOfBuildings",
-           "layoutType",
-          "floors",
-          "greenArea", 
-          "greenDensity",
-          "unitsPlan"]) 
-          break;
-        case "shop":
-          setHide([ 
-            "numberOfBuildings",
-           "layoutType",
-          "floors",
-          "greenArea", 
-          "greenDensity",
-          "unitsPlan"]) 
-          break;
-        case "land":
-          setHide([ 
-            "numberOfBuildings",
-           "layoutType",
-          "floors",
-          "unitsPlanUnit"]) 
-          break;
-        default:
-        setHide([])
-      }
+      let hideValue=handleUIHide(e)
     }
 
     // const { error } = Schema.validate(form, { abortEarly: false });
