@@ -475,21 +475,6 @@ function OrdersTable() {
     openSnackbar(message, severity);
   };
 
-  // React.useEffect(() => {
-  //   // This block will run only on initial mount
-  //   if (initialMount) {
-  //     setInitialMount(false);
-  //     return;
-  //   }
-
-  //   if (userDetails && Object.keys(userDetails).length) {
-  //     const pageOptions = {
-  //       pageLimit: rowsPerPage,
-  //       page,
-  //     };
-  //     getOrderRequestList(pageOptions);
-  //   }
-  // }, [userDetails && Object.keys(userDetails).length, initialMount, value]);
   const handleCloseAddCreditPopup = () => {
     setOpenAddCreditPoints(false);
   };
