@@ -349,7 +349,6 @@ function AddProperty() {
       averagePrice: "",
       minPriceRange: "",
       maxPriceRange: "",
-      priceUnit:"",
       uniqueLayouts: [],
       planList: [
         // {
@@ -842,7 +841,6 @@ const handleUIHide=(e)=>{
 
   let lastValue = e[e.length - 1]?.value.toLowerCase()
   let value= lastValue?.replace(/\s/g, '')
-  console.log(e,value,'enna')
   switch (value) {
     case "restaurant":
       setHide([ 
