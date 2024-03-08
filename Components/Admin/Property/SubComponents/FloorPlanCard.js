@@ -64,6 +64,7 @@ function FloorPlanCard({
     name: "",
     area: "",
     totalUnits: "",
+    priceUnit:"Crore",
     areaUnit: "",
     bsp: "",
     applicableYear: "",
@@ -223,6 +224,7 @@ function FloorPlanCard({
         area: "",
         areaUnit: "",
         totalUnits: "",
+        priceUnit:"Crore",
         bsp: "",
         applicableYear: "",
         applicableMonth: "",
@@ -270,6 +272,7 @@ function FloorPlanCard({
         name: "",
         area: "",
         totalUnits: "",
+        priceUnit:"Crore",
         areaUnit: "Acres",
         bsp: "",
         applicableYear: "",
@@ -326,7 +329,8 @@ function FloorPlanCard({
                 }))
               }
             />
-            { !hide.includes("unitsPlanUnit") ? <NewSelectTextFieldStructure
+            { !hide.includes("unitsPlanUnit") ?
+             <NewSelectTextFieldStructure
               label="Unit"
               isEdit={isEdit}
               name="propertyLayout"
@@ -342,7 +346,8 @@ function FloorPlanCard({
                   propertyLayout: e.target.value,
                 }))
               }
-            />:
+            />
+            :
             <NewInputFieldStructure
             label="Unit"
             variant="outlined"
@@ -452,6 +457,40 @@ function FloorPlanCard({
               value={selectedItem.bsp}
               handleChange={(e) =>
                 setSelectedItem((prev) => ({ ...prev, bsp: e.target.value }))
+              }
+            />
+
+<NewSelectTextFieldStructure
+              label="Unit of Price"
+              name="priceUnit"
+              error={
+                localError?.["priceUnit"] ||
+                errors?.["unitsPlan.planList[0].priceUnit"]
+              }
+              isEdit={isEdit}
+              list={
+                selectOptions.priceUnit?.map((item) => {
+                  return {
+                    label: item,
+                    value: item,
+                  };
+                })
+              
+                ||
+                [
+                  { label: "Crore", value: "Crore" },
+                  { label: "Lakh", value: "Lakh" },
+                ]
+              }
+              
+            
+            
+              value={selectedItem.priceUnit}
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({
+                  ...prev,
+                  priceUnit: e.target.value,
+                }))
               }
             />
 

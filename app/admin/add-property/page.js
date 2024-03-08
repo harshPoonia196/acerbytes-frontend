@@ -349,6 +349,7 @@ function AddProperty() {
       averagePrice: "",
       minPriceRange: "",
       maxPriceRange: "",
+      priceUnit:"",
       uniqueLayouts: [],
       planList: [
         // {
