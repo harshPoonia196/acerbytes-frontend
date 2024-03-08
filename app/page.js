@@ -109,7 +109,7 @@ export default function Home() {
                 <CardActionArea
                   sx={{ p: 2, textAlign: "center" }}
                   onClick={() => {
-                    router.push(listOfPages.commonPropertyList);
+                    router.push(listOfPages.commonPropertyList + "/Noida");
                   }}
                 >
                   <Typography variant="h3">Noida</Typography>
@@ -122,7 +122,7 @@ export default function Home() {
                 <CardActionArea
                   sx={{ p: 2, textAlign: "center" }}
                   onClick={() => {
-                    router.push(listOfPages.commonPropertyList);
+                    router.push(listOfPages.commonPropertyList + "/Gurgaon");
                   }}
                 >
                   <Typography variant="h3">Gurgaon</Typography>
@@ -135,7 +135,7 @@ export default function Home() {
                 <CardActionArea
                   sx={{ p: 2, textAlign: "center" }}
                   onClick={() => {
-                    router.push(listOfPages.commonPropertyList);
+                    router.push(listOfPages.commonPropertyList + "/Mumbai");
                   }}
                 >
                   <Typography variant="h3">Mumbai</Typography>
@@ -148,7 +148,7 @@ export default function Home() {
                 <CardActionArea
                   sx={{ p: 2, textAlign: "center" }}
                   onClick={() => {
-                    router.push(listOfPages.commonPropertyList);
+                    router.push(listOfPages.commonPropertyList + "/Pune");
                   }}
                 >
                   <Typography variant="h3">Pune</Typography>

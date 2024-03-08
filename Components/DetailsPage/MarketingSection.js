@@ -58,7 +58,7 @@ function MarketingSection(props) {
                         <Grid container spacing={1}>
                             <Grid item xs={6}>
                                 <Typography variant='h2'>
-                                    9.8<Typography variant='h6' component='span'> / 10</Typography>
+                                {alloverviewData?.sectionScore ?  alloverviewData?.sectionScore / 10 : "8"} <Typography variant='h6' component='span'> / 10</Typography>
                                 </Typography>
                                 <Typography variant='h6'>
                                     Property
@@ -66,7 +66,7 @@ function MarketingSection(props) {
                             </Grid>
                             <Grid item xs={6}>
                                 <Typography variant='h2'>
-                                    8.8<Typography variant='h6' component='span'> / 10</Typography>
+                                {overviewData?.layout?.sectionScore ?  overviewData?.layout?.sectionScore / 10 : "6"}<Typography variant='h6' component='span'> / 10</Typography>
                                 </Typography>
                                 <Typography variant='h6'>
                                     Layout and amenities
@@ -141,7 +141,7 @@ function MarketingSection(props) {
                                         cursor: 'pointer'
                                     }}
                                 >
-                                    99
+                                  {alloverviewData?.sectionScore ? alloverviewData?.sectionScore.toFixed()  : '00'}
                                 </Typography>
                             </Card>
                         </Box>

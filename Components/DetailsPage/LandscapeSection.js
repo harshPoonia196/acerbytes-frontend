@@ -38,7 +38,7 @@ function LandscapeSection(props) {
                                     cursor: 'pointer'
                                 }}
                             >
-                                99
+                                {layoutData?.sectionScore ? layoutData?.sectionScore.toFixed()  : "00"}
                             </Typography>
                         </Card>
                     </Box>

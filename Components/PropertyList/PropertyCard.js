@@ -19,14 +19,6 @@ function PropertyCard(props) {
   const { propertyDetails, isShortListPageCard, createdDate } = props
   const router = useRouter();
 
-  const processLayoutType = (layoutType) => {
-    if (layoutType.length > 0 && typeof layoutType[0] === 'object') {
-      return layoutType.map(type => type.value).join(", ");
-    } else {
-      return layoutType.join(", ");
-    }
-  };
-
   const formattedCreatedAt = createdDate && format(new Date(createdDate), 'dd-MM-yyyy \'at\' HH:mm aaa')
 
   return (
@@ -92,20 +84,18 @@ function PropertyCard(props) {
             md={2.5}
             onClick={() => router.push(`/details/${propertyDetails._id}`)}
           >
-            <Typography variant="caption">{propertyDetails?.unitsPlan?.planList.length && propertyDetails?.unitsPlan?.planList?.map(item => `${item.area} ${item.areaUnit}`).join(", ")}</Typography>
-            <Typography variant="subtitle2">₹ 2.7 Cr - ₹ 6.5 Cr(static)</Typography>
+            <Typography variant="caption">{propertyDetails?.unitsPlan?.averagePrice + '/' + propertyDetails?.unitsPlan?.planList[0]?.areaUnit}</Typography>
+            {propertyDetails?.unitsPlan?.minPriceRange && <Typography variant="subtitle2">₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹ {propertyDetails?.unitsPlan?.maxPriceRange} Cr</Typography>}
           </Grid>
           <Grid item xs={8} sm={4} md={1.5} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
-            <Typography variant="caption">{propertyDetails?.layout?.totalUnits}</Typography>
+            <Typography variant="caption">{propertyDetails?.layout?.totalUnits} Units</Typography>
             <Typography variant="subtitle2">{propertyDetails?.layout?.area}</Typography>
           </Grid>
           <Grid item xs={8} sm={4} md={2} onClick={() => router.push(`/details/${propertyDetails._id}`)}>
             <Typography variant="caption">
-              {processLayoutType(propertyDetails?.layout?.layoutType)}
+              {propertyDetails?.unitsPlan?.uniqueLayouts.length  === 1 ? `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layout` : `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layouts`}
             </Typography>
-            {/* <Typography variant="caption">{propertyDetails?.layout?.layoutType.join(", ")} */}
-            {/* </Typography> */}
-            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.planList.length && propertyDetails?.unitsPlan?.planList?.map(item => item.propertyLayout).join(", ")}</Typography>
+            <Typography variant="subtitle2">{propertyDetails?.unitsPlan?.uniqueLayouts.length && propertyDetails?.unitsPlan?.uniqueLayouts?.map(item => item).join(", ")}</Typography>
           </Grid>
           <Grid
             item
@@ -126,7 +116,8 @@ function PropertyCard(props) {
                 m: 0,
                 ml: "auto !important",
               }}
-              onClick={() => router.push("/research")}
+              // onClick={() => router.push("/research")}
+              onClick={() => router.push(`/details/${propertyDetails._id}`)}
             >
               <Typography
                 variant="h6"
@@ -138,7 +129,7 @@ function PropertyCard(props) {
                   px: 1,
                 }}
               >
-                99
+                {propertyDetails?.overallAssessment?.score ? propertyDetails?.overallAssessment?.score.toFixed() : "00"}
               </Typography>
             </Card>
           </Grid>
