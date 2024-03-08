@@ -32,13 +32,10 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
   };
 
   React.useEffect(() => {
-    if (open) {
-      getSalesPersonsList();
-      getConsultantList();
-      generateOrderNumber();
-      setCreditInfo({});
-    }
-  }, [open == true]);
+    getSalesPersonsList();
+    getConsultantList();
+    generateOrderNumber();
+  }, [open]);
 
   const getSalesPersonsList = async () => {
     try {
@@ -63,6 +60,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
     try {
       setLoading(true);
       const response = await generateRandorOrderNumber();
+      const isReset = true;
       if (response.status == 200) {
         const randomNumber = response?.data?.data;
         updateCreditInfo({
@@ -73,7 +71,8 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
                 ? randomNumber.toUpperCase()
                 : "",
           },
-        });
+        },
+        isReset);
       }
     } catch (error) {
       showToaterMessages(
@@ -106,17 +105,24 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
     }
   };
 
-  const updateCreditInfo = (event) => {
+  const updateCreditInfo = (event, isReset) => {
     const key = event.target.name;
     const value = event.target.value;
     console.log({
       key,
       value,
     });
-    setCreditInfo({
-      ...creditInfo,
-      [key]: value,
-    });
+    if (isReset) {
+      setCreditInfo({
+        brokerGoogleID: brokerId || "",
+        [key]: value,
+      });
+    } else {
+      setCreditInfo({
+        ...creditInfo,
+        [key]: value,
+      });
+    }
   };
 
   const saveHandler = () => {
@@ -152,6 +158,10 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
     (rs) => rs._id == creditInfo.brokerGoogleID
   )?.name;
 
+  const salesPersonInfo = salesPersons?.find(
+    (rs) => rs.googleID == creditInfo.salesPerson
+  )?.name;
+
   return (
     <Dialog
       sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
@@ -172,12 +182,14 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
           <InputField
             type="number"
             name="approvedPayment"
+            value={creditInfo.approvedPayment}
             label="Enter received payment"
             handleChange={updateCreditInfo}
           />
           <InputField
             type="number"
             name="approvedPoints"
+            value={creditInfo.approvedPoints}
             label="Enter assigned points"
             handleChange={updateCreditInfo}
           />
@@ -212,6 +224,12 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
                 },
               })
             }
+            value={{
+              label: salesPersonInfo?.firstName
+                ? `${salesPersonInfo?.firstName} ${salesPersonInfo?.lastName}`
+                : "",
+              value: creditInfo?.salesPerson,
+            }}
             list={salesPersons?.map((rs) => {
               return {
                 label: `${rs.name?.firstName} ${rs.name?.lastName}`,
