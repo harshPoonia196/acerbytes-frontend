@@ -35,8 +35,10 @@ import {
   transformDocumentsLocation,
 } from "utills/CommonFunction";
 import { debounce } from "lodash";
+import { useAuth } from "utills/AuthContext";
 
-function PropertyList({params}) {
+function PropertyList({ params }) {
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [alignment, setAlignment] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
@@ -48,7 +50,7 @@ function PropertyList({params}) {
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
-  const [selectedOptions, setSelectedOptions] = useState(params?.location ? {city : params.location} : {});
+  const [selectedOptions, setSelectedOptions] = useState(params?.location ? { city: params.location } : {});
   const [propertyvalue, setPropertyvalue] = useState("");
   const [selectOption, setSelectOption] = useState({});
   const [isDisablePropertyType, setIsDisablePropertyType] = useState(true);
@@ -59,7 +61,6 @@ function PropertyList({params}) {
   const [locationDisable, setLocationDisable] = useState(true);
   const [selectedCity, setSelectedCity] = useState(params?.location ? [params.location] : []);
 
-  
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
@@ -97,6 +98,9 @@ function PropertyList({params}) {
         sortBy: alignment,
         key: propertyvalue,
       };
+      if (userDetails?._id) {
+        querParams.brokerId = userDetails?._id
+      }
       if (Object.keys(data).length === 0) {
         delete querParams["searchParams"];
       }
@@ -108,8 +112,8 @@ function PropertyList({params}) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -127,8 +131,8 @@ function PropertyList({params}) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -294,9 +298,9 @@ function PropertyList({params}) {
 
   const handleChangeData = (event, value) => {
     setPropertyvalue(value);
-    if(value !== propertyvalue) {
-        setAlignment(-1);
-    }else{
+    if (value !== propertyvalue) {
+      setAlignment(-1);
+    } else {
       if (alignment == 1) {
         setAlignment(-1);
       } else {
@@ -307,11 +311,11 @@ function PropertyList({params}) {
 
   function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
-}
+  }
 
 
   return (
@@ -467,7 +471,7 @@ function PropertyList({params}) {
                   value="score"
                   selected={propertyvalue === "score"}
                   sx={{ flex: 1, justifyContent: "space-around" }}
-                  
+
                 >
                   Score {propertyvalue === "score" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
                 </ToggleButton>
@@ -476,24 +480,24 @@ function PropertyList({params}) {
                   selected={propertyvalue === "price"}
                   sx={{ flex: 1, justifyContent: "space-around" }}
                 >
-                   Price  {propertyvalue === "price" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
-                
+                  Price  {propertyvalue === "price" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+
                 </ToggleButton>
                 <ToggleButton
                   value="area"
                   selected={propertyvalue === "area"}
                   sx={{ flex: 1, justifyContent: "space-around" }}
                 >
-                     Area  {propertyvalue === "area" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
-                
+                  Area  {propertyvalue === "area" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+
                 </ToggleButton>
                 <ToggleButton
                   value="completion"
                   selected={propertyvalue === "completion"}
                   sx={{ flex: 1, justifyContent: "space-around" }}
                 >
-                     Completion  {propertyvalue === "completion" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
-               
+                  Completion  {propertyvalue === "completion" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
