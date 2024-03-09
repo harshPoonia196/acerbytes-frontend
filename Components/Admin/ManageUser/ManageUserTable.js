@@ -42,8 +42,7 @@ import { countryCodeFormating, matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { debounce } from "lodash";
 import { ToasterMessages } from "Components/Constants";
-import colors from "styles/theme/colors";
-import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 const headCells = [
   {
@@ -467,16 +466,16 @@ function ManageUserTable({ searchText }) {
         handleAction={handleStatusDialogAction}
       />
       {isLoading && <Loading />}
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {usersList?.list?.length > 0 ?
-              (
+      {
+        usersList?.list?.length > 0 ? (<TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {
                 usersList?.list?.map((row) => (
                   <RowStructure
                     row={row}
@@ -485,30 +484,24 @@ function ManageUserTable({ searchText }) {
                     handleUpdateStatus={handleUpdateStatus}
                   />
                 ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={5}>
-                    <Typography variant="body1" align="center">
-                      No data found
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              )}
-          </TableBody>
-        </Table>
-        <TablePagination
-          sx={{
-            overflow: "hidden",
-          }}
-          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-          component="div"
-          count={usersList?.totalCount}
-          rowsPerPage={pageLimit}
-          page={currentPage - 1}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
+              }
+            </TableBody>
+          </Table>
+          <TablePagination
+            sx={{
+              overflow: "hidden",
+            }}
+            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+            component="div"
+            count={usersList?.totalCount}
+            rowsPerPage={pageLimit}
+            page={currentPage - 1}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>) : <NoDataCard title={"No data found"} />
+      }
+
     </>
   );
 }

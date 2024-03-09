@@ -33,6 +33,7 @@ import { useRouter } from "next/navigation";
 import { getAllProperty, deleteProperty } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import {
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
@@ -359,37 +360,41 @@ const PropertyListTable = ({ searchText, setCount }) => {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        {isLoading && <Loader />}
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {propertyList?.map((row) => (
-              <RowStructure
-                row={row}
-                router={router}
-                handleDelete={handleDelete}
+      {isLoading && <Loader />}
+      {
+        propertyList.length > 0 ? (
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+              <EnhancedTableHead
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
               />
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination sx={{
+              <TableBody>
+                {propertyList?.map((row) => (
+                  <RowStructure
+                    row={row}
+                    router={router}
+                    handleDelete={handleDelete}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+            <TablePagination sx={{
 
-          overflow: 'hidden',
-        }}
-          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-          component="div"
-          count={property?.totalCount}
-          rowsPerPage={pageLimit}
-          page={currentPage - 1}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
+              overflow: 'hidden',
+            }}
+              rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+              component="div"
+              count={property?.totalCount}
+              rowsPerPage={pageLimit}
+              page={currentPage - 1}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableContainer>
+        ) : <NoDataCard title={"No data found"} />
+      }
 
       <ConfirmationDialog
         open={isDialogOpen}
