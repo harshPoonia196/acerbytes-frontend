@@ -185,6 +185,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors,hide }) {
                             label="Project type"
                             isEdit={isEdit}
                             value={projectType}
+                            disabled={form.overview.projectCategory.length<=0 || form.overview.projectCategory ===undefined}
                             list={
                                 selectOptions[`${form.overview.projectCategory.toLowerCase()}ProjectType`]?.map((item) => {
                                     return {

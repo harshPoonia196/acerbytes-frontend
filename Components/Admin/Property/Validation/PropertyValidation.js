@@ -232,9 +232,9 @@ export const Schema = Joi.object({
   overview: overviewSchema,
   regulatoryClearance: Joi.object().keys({
     reraApproved: Joi.string().required(),
-    reraNumber: Joi.number().when("reraApproved", {
+    reraNumber: Joi.string().when("reraApproved", {
       is: "Yes",
-      then: Joi.number().required(),
+      then: Joi.string().required(),
       otherwise: Joi.string().pattern(/^[a-zA-Z0-9!@#$%^&*()-_+=<>?/\\:;'"[]{},.|]*$/).allow(""),
     }),
     cc: Joi.string().required(),
