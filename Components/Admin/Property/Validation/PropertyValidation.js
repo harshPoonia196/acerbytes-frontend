@@ -46,14 +46,14 @@ const layoutSchema = Joi.object({
   numberOfBuildings: Joi.number()
     .custom((value, helpers) => {
       const projectType = helpers.state.ancestors[1].overview.projectType;
-      const isFlatSelected = projectType.some(
-        (option) => option.label === "Land"
-      );
-      if (isFlatSelected) {
-        return helpers.error("layout.numberOfBuildings.custom");
-      }
+      // const isFlatSelected = projectType.some(
+      //   (option) => option.label === "Land"
+      // );
+      // if (isFlatSelected) {
+      //   return helpers.error("layout.numberOfBuildings.custom");
+      // }
 
-      return value;
+      // return value;
     })
     .when(Joi.ref("...overview.projectType"), {
       is: Joi.array()
@@ -71,14 +71,14 @@ const layoutSchema = Joi.object({
   layoutType: Joi.array()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
-    const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
-    );
-    if (isFlatSelected) {
-      return helpers.error("layout.numberOfBuildings.custom");
-    }
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
 
-    return value;
+    // return value;
   })
   .when(Joi.ref("...overview.projectType"), {
     is: Joi.array()
@@ -104,14 +104,14 @@ const layoutSchema = Joi.object({
   maxFloors: Joi.number()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
-    const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
-    );
-    if (isFlatSelected) {
-      return helpers.error("layout.numberOfBuildings.custom");
-    }
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
 
-    return value;
+    // return value;
   })
   .when(Joi.ref("...overview.projectType"), {
     is: Joi.array()
@@ -123,19 +123,19 @@ const layoutSchema = Joi.object({
       )
       .required(),
     then: Joi.number().allow(""),
-    otherwise:  Joi.number().max(34).required(),
+    otherwise:  Joi.number().min(24).max(34).required(),
   }),
   minFloors: Joi.number()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
-    const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
-    );
-    if (isFlatSelected) {
-      return helpers.error("layout.numberOfBuildings.custom");
-    }
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
 
-    return value;
+    // return value;
   })
   .when(Joi.ref("...overview.projectType"), {
     is: Joi.array()
@@ -147,7 +147,7 @@ const layoutSchema = Joi.object({
       )
       .required(),
     then: Joi.number().allow(""),
-    otherwise:  Joi.number().min(24).required(),
+    otherwise:  Joi.number().min(24).max(34).required(),
   }),
     //   "numberOfBuildings",
   //   "layoutType",
@@ -164,14 +164,14 @@ const layoutSchema = Joi.object({
   greenArea: Joi.number()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
-    const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
-    );
-    if (isFlatSelected) {
-      return helpers.error("layout.numberOfBuildings.custom");
-    }
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
 
-    return value;
+    // return value;
   })
   .when(Joi.ref("...overview.projectType"), {
     is: Joi.array()
@@ -188,14 +188,14 @@ const layoutSchema = Joi.object({
   greenDensity: Joi.number()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
-    const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
-    );
-    if (isFlatSelected) {
-      return helpers.error("layout.numberOfBuildings.custom");
-    }
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
 
-    return value;
+    // return value;
   })
   .when(Joi.ref("...overview.projectType"), {
     is: Joi.array()
