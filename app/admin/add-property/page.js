@@ -1040,7 +1040,8 @@ const handleUIHide=(e)=>{
 
 
   const validateForm = (publish) => {
-    const { error } = Schema.validate(form, { abortEarly: false });
+    const { error } = Schema?.validate(form, { abortEarly: false });
+   
     let store = [
       "constructionQuality",
       "interiorQuality",
