@@ -10,9 +10,13 @@ export const getAllProperty = (queryParams) => {
   );
 };
 
-export const deleteProperty = (propertyId) => {
-  return axiosInstance.delete(`property/delete/${propertyId}`);
+export const getCities = () => {
+  return axiosInstance.get(`category/get-cities`);
 };
+
+export const deleteProperty= (propertyId) =>{
+  return axiosInstance.delete(`property/delete/${propertyId}`);
+}
 
 export const detailsProperty = (detailsPropertyId) => {
   return axiosInstance.get(`property/getProperty/${detailsPropertyId}`);

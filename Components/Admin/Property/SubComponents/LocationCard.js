@@ -19,7 +19,7 @@ import { getLocations } from 'api/Property.api';
 import { useSnackbar } from "utills/SnackbarContext";
 
 
-function LocationCard({ isEdit, form, handleChange, errors, selectOptions,moduleScoreCalc }) {
+function LocationCard({ isEdit, form, handleChange, errors, selectOptions,moduleScoreCalc,cities }) {
     const { openSnackbar } = useSnackbar()
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
 
@@ -66,7 +66,16 @@ function LocationCard({ isEdit, form, handleChange, errors, selectOptions,module
                         isEdit={isEdit}
                         value={state}
 
-                        list={[{ label: "Kashmir", value: "Kashmir" }, { label: "Punjab", value: "Punjab" }, { label: "Tamil Nadu", value: "TamilNadu" }]}
+                        list={
+                            Object.keys(cities).map((item) => {
+                                return {
+                                    label: item,
+                                    value: item,
+                                };
+                            })
+                            
+                            ||
+                            [{ label: "Kashmir", value: "Kashmir" }, { label: "Punjab", value: "Punjab" }, { label: "Tamil Nadu", value: "TamilNadu" }]}
                         error={errors?.["location.state"]}
                         handleChange={(e) => handleChange(e, "location", "state")}
                     />
@@ -81,8 +90,16 @@ function LocationCard({ isEdit, form, handleChange, errors, selectOptions,module
                     <NewAutocompleteAddOptionToList
                         label="City"
                         value={city}
+                        disabled={state == undefined||state ==""}
                         error={errors?.["location.city"]}
-                        options={opts}
+                        options={
+                            cities[state]?.map((item) => {
+                                return {
+                                    label: item,
+                                    city: item,
+                                };
+                            })
+                        }
                         handleChange={(e) => handleChange(e, "location", "city")}
                     />
 

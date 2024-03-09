@@ -12,6 +12,7 @@ const NewAutocompleteAddOptionToList = ({
   value,
   sx,
   variant,
+  disabled,
   isEdit,
   options,
   error,
@@ -60,6 +61,7 @@ const NewAutocompleteAddOptionToList = ({
           selectOnFocus
           clearOnBlur
           handleHomeEndKeys
+          disabled={disabled}
           id="free-solo-with-text-demo"
           options={options}
           getOptionLabel={(option) => {
