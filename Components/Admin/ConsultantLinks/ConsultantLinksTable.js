@@ -108,7 +108,6 @@ function EnhancedTableHead(props) {
 
   return (
     <>
-      {/* {rows?.length > 0 ? ( */}
       <TableHead>
         <TableRow>
           {headCells.map((headCell) => (
@@ -137,9 +136,6 @@ function EnhancedTableHead(props) {
           <TableCell>Action</TableCell>
         </TableRow>
       </TableHead>
-      {/* ) : ( */}
-      {/* <NoDataCard title={""} /> */}
-      {/* )} */}
     </>
   );
 }

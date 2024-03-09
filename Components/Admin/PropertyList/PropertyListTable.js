@@ -360,47 +360,41 @@ const PropertyListTable = ({ searchText, setCount }) => {
 
   return (
     <>
-    {
-      propertyList.length > 0 ?(
-<TableContainer component={Paper}>
-        {isLoading ? (
-          <Stack sx={{ my: "1.5rem", alignItems: "center" }}>
-            <CircularProgress color="inherit" />
-          </Stack>
-        ) : (
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {propertyList?.map((row) => (
-                <RowStructure
-                  row={row}
-                  router={router}
-                  handleDelete={handleDelete}
-                />
-              ))}
-            </TableBody>
-          </Table>
-        )}
-        <TablePagination sx={{
+      {isLoading && <Loader />}
+      {
+        propertyList.length > 0 ? (
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+              <EnhancedTableHead
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+              />
+              <TableBody>
+                {propertyList?.map((row) => (
+                  <RowStructure
+                    row={row}
+                    router={router}
+                    handleDelete={handleDelete}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+            <TablePagination sx={{
 
-          overflow: 'hidden',
-        }}
-          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-          component="div"
-          count={property?.totalCount}
-          rowsPerPage={pageLimit}
-          page={currentPage - 1}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
-      ):<NoDataCard title={"No Data  Found.."}/>
-    }
-      
+              overflow: 'hidden',
+            }}
+              rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+              component="div"
+              count={property?.totalCount}
+              rowsPerPage={pageLimit}
+              page={currentPage - 1}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableContainer>
+        ) : <NoDataCard title={"No data found"} />
+      }
 
       <ConfirmationDialog
         open={isDialogOpen}

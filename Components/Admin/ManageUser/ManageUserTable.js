@@ -465,6 +465,7 @@ function ManageUserTable({ searchText }) {
         open={statusConfirmationDialog.isOpen}
         handleAction={handleStatusDialogAction}
       />
+      {isLoading && <Loading />}
       {
         usersList?.list?.length > 0 ? (<TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -474,9 +475,7 @@ function ManageUserTable({ searchText }) {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {isLoading ? (
-                <Loading />
-              ) : (
+              {
                 usersList?.list?.map((row) => (
                   <RowStructure
                     row={row}
@@ -485,7 +484,7 @@ function ManageUserTable({ searchText }) {
                     handleUpdateStatus={handleUpdateStatus}
                   />
                 ))
-              )}
+              }
             </TableBody>
           </Table>
           <TablePagination
@@ -500,7 +499,7 @@ function ManageUserTable({ searchText }) {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        </TableContainer>) : <NoDataCard title={"No Data Found..."} />
+        </TableContainer>) : <NoDataCard title={"No data found"} />
       }
 
     </>

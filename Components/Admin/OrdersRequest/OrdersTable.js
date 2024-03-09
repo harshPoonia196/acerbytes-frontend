@@ -583,6 +583,7 @@ function OrdersTable() {
 
   return (
     <Box sx={{ width: "100%" }}>
+      {isLoading && <Loader />}
       <CustomButton
         variant="contained"
         style={{ display: "flex", marginLeft: "auto" }}
