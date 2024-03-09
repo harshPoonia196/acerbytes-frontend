@@ -32,6 +32,7 @@ import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketin
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
 import Avatar from "@mui/material/Avatar";
 import EditIcon from "@mui/icons-material/Edit";
+import { CircularProgress } from '@mui/material';
 
 
 import {
@@ -55,10 +56,12 @@ import {
   getAllCitiesList,
   getAllCountriesList,
   getAllStateList,
+  updateProfileImage,
+  uploadImage,
 } from "api/Util.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
-import { listOfProfileTab } from "utills/Constants";
+import { FILE_TYPES, listOfProfileTab } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { validateEmail } from "utills/utills";
 import { countries, currencies } from "Components/config/config";
@@ -197,6 +200,7 @@ function Profile() {
   const [isEdit, setIsEdit] = useState(true);
 
   const [activeState, setActiveState] = React.useState("userDetails");
+  const [isUploading, setUploading] = React.useState(false);
 
   let itemsServer = listOfProfileTab.map((tab) => {
     const hash = tab.value;
@@ -619,6 +623,60 @@ function Profile() {
     setLoading(false);
   }, []);
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type && FILE_TYPES.includes(file.type)) {
+      hanldeFileUploading(file);
+    }
+  };
+
+  const hanldeFileUploading = async (selectedFile) => {
+    if (!selectedFile) {
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      const response = await uploadImage(formData);
+      if (response.data.status == 200) {
+        const imageResponse = await updateProfileImage(userDetails.googleID, response.data.data.Location);
+        if (imageResponse?.data?.status == 200) {
+          updateOnLocalStorage(response.data.data.Location);
+          openSnackbar(
+            response.data.message,
+            "success"
+          );
+        }
+      }
+    } catch (error) {
+      console.log("error: ", error);
+      openSnackbar(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state of india list",
+        "error"
+      );
+    } finally {
+      setUploading(false);
+    }
+
+  }
+
+  const updateOnLocalStorage = (imageUrl) => {
+    let userInfo = JSON.parse(localStorage.getItem("userDetails"));
+    userInfo = {
+      ...userInfo,
+      googleDetails: {
+        ...userInfo.googleDetails,
+        profilePicture: imageUrl,
+      },
+    };
+    localStorage.setItem("userDetails", JSON.stringify(userInfo));
+    window.dispatchEvent(new Event("storage"));
+  };
+
   return (
     <>
       {isLoading && (
@@ -650,14 +708,14 @@ function Profile() {
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ flex: 1, display: 'flex', gap: 2 }}>
                   <Box>
-                    <UploadMarketingImage
+                    {/* <UploadMarketingImage
                       open={isUploadPopupOpen}
                       image={image}
                       setImage={setImage}
                       onClose={handleCloseUploadPopup}
                       changeImage={handleImageSelect}
                       removeImage={handleImageRemove}
-                    />
+                    /> */}
                     {/* Avatar and file input */}
                     <label
                       htmlFor="avatar-input"
@@ -670,6 +728,11 @@ function Profile() {
                           height: "3rem",
                         }}
                       >
+                        {isUploading ?
+                        <div className="profilepic__loader">
+                          <CircularProgress size={24} />
+                        </div> :
+                        <>
                         <Avatar
                           sx={{
                             width: "3rem",
@@ -677,6 +740,7 @@ function Profile() {
                             height: "3rem",
                             cursor: "pointer",
                           }}
+                          src={userDetails?.googleDetails?.profilePicture ? userDetails.googleDetails.profilePicture : null}
                           className="profilepic__image"
                           onClick={(e) => {
                             // Trigger the file input click when Avatar is clicked
@@ -689,12 +753,15 @@ function Profile() {
                           <EditIcon fontSize="small" />
                           <p className="profilepic__text">Edit</p>
                         </div>
+                        </>}
                       </ProfilePic>
                     </label>
                     <input
                       id="avatar-input"
                       type="file"
-                      onChange={handleImageSelect}
+                      disabled={isUploading}
+                      // onChange={handleImageSelect}
+                      onChange={handleFileChange}
                       accept="image/x-png,image/gif,image/jpeg"
                       hidden
                     />

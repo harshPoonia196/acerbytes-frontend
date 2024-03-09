@@ -73,3 +73,18 @@ export const getAllCitiesList = (access_token, name) => {
 export const getEnquiries = () => {
   return axiosInstance.get(`/higheruser/getLeads`);
 };
+
+
+export const uploadImage = (data) => {
+  return axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/general/upload`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const updateProfileImage = (id, imageUrl) => {
+  return axiosInstance.post(`/higheruser/updateProfile/${id}`, {
+    imageUrl
+  });
+};
