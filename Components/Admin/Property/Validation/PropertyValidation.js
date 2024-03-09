@@ -416,6 +416,7 @@ export const Schema = Joi.object({
   createdAt:Joi.date(),
 
   marketing: Joi.object().keys({
+    image: Joi.string().allow(""),
     tagLine: Joi.string().required(),
     description: Joi.string().required(),
   }),
