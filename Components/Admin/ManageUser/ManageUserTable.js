@@ -43,6 +43,8 @@ import { useAuth } from "utills/AuthContext";
 import { debounce } from "lodash";
 import { ToasterMessages } from "Components/Constants";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import colors from "styles/theme/colors";
+import DoNotDisturbAltIcon from '@mui/icons-material'
 
 const headCells = [
   {
@@ -180,7 +182,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
   return (
     <TableRow
       key={row.name}
-      // style={row.isBlocked ? { backgroundColor: colors.DISABLED } : null}
+      style={row.isBlocked ? { backgroundColor: colors.DISABLED } : null}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <TableCell>
