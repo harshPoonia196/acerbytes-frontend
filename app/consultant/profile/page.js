@@ -15,6 +15,7 @@ import {
   Fab,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { CircularProgress } from '@mui/material';
 import CallIcon from "@mui/icons-material/Call";
 import SaveIcon from "@mui/icons-material/Save";
 import Avatar from "@mui/material/Avatar";
@@ -34,7 +35,7 @@ import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
-import { listOfConsultantProfileTab, reactQueryKey } from "utills/Constants";
+import { FILE_TYPES, listOfConsultantProfileTab, reactQueryKey } from "utills/Constants";
 import { getBrokerProfile, updateBrokerProfile } from "api/BrokerProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId, validateEmail } from "utills/utills";
@@ -45,9 +46,13 @@ import {
   getAccessToken,
   getAllCitiesList,
   getAllStateList,
+  updateProfileImage,
+  uploadImage,
 } from "api/Util.api";
 import { countries, currencies } from "Components/config/config";
 import Loader from "Components/CommonLayouts/Loading";
+import { useAuth } from "utills/AuthContext";
+
 const tabHeight = 116;
 
 const useStyles = makeStyles((theme) => ({
@@ -85,11 +90,14 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 function ConsultantProfile() {
+  const [isUploading, setUploading] = useState(false);
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
   const [image, setImage] = useState("");
   const [cropData, setCropData] = useState("");
   const [cropper, setCropper] = useState(false);
   const [enableCropper, setEnableCropper] = useState(false);
+  const { userDetails } =
+    useAuth();
 
   const handleOpenUploadPopup = () => {
     setIsUploadPopupOpen(true);
@@ -169,7 +177,7 @@ function ConsultantProfile() {
       name: brokerProfileInfo?.name || {},
       phone: brokerProfileInfo?.phone || {},
     });
-    
+
 
     openSnackbar(res?.data?.message || "Success!", "success");
   };
@@ -550,6 +558,60 @@ function ConsultantProfile() {
     }
   }, [targetCustomer?.selectState]);
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type && FILE_TYPES.includes(file.type)) {
+      hanldeFileUploading(file);
+    }
+  };
+
+  const hanldeFileUploading = async (selectedFile) => {
+    if (!selectedFile) {
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      const response = await uploadImage(formData);
+      if (response.data.status == 200) {
+        const imageResponse = await updateProfileImage(userDetails.googleID, response.data.data.Location);
+        if (imageResponse?.data?.status == 200) {
+          updateOnLocalStorage(response.data.data.Location);
+          openSnackbar(
+            response.data.message,
+            "success"
+          );
+        }
+      }
+    } catch (error) {
+      console.log("error: ", error);
+      openSnackbar(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state of india list",
+        "error"
+      );
+    } finally {
+      setUploading(false);
+    }
+
+  }
+
+  const updateOnLocalStorage = (imageUrl) => {
+    let userInfo = JSON.parse(localStorage.getItem("userDetails"));
+    userInfo = {
+      ...userInfo,
+      googleDetails: {
+        ...userInfo.googleDetails,
+        profilePicture: imageUrl,
+      },
+    };
+    localStorage.setItem("userDetails", JSON.stringify(userInfo));
+    window.dispatchEvent(new Event("storage"));
+  };
+
   return (
     <>
       {(isLoading || mutate.isPending) && <Loader />}
@@ -583,25 +645,40 @@ function ConsultantProfile() {
                         height: "3rem",
                       }}
                     >
-                      <Avatar
-                        sx={{
-                          width: "3rem",
-                          position: "static",
-                          height: "3rem",
-                          cursor: "pointer",
-                        }}
-                        className="profilepic__image"
-                        onClick={(e) => {
-                          // Trigger the file input click when Avatar is clicked
-                          document.getElementById("avatar-input").click();
-                        }}
-                      >
-                        {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
-                      </Avatar>
-                      <div className="profilepic__content">
-                        <EditIcon fontSize="small" />
-                        <p className="profilepic__text">Edit</p>
-                      </div>
+                      {isUploading ?
+                        <div className="profilepic__loader">
+                          <CircularProgress size={24} />
+                        </div> :
+                        <>
+                          <Avatar
+                            sx={{
+                              width: "3rem",
+                              position: "static",
+                              height: "3rem",
+                              cursor: "pointer",
+                            }}
+                            src={userDetails?.googleDetails?.profilePicture ? userDetails.googleDetails.profilePicture : null}
+                            className="profilepic__image"
+                            onClick={(e) => {
+                              // Trigger the file input click when Avatar is clicked
+                              document.getElementById("avatar-input").click();
+                            }}
+                          >
+                            {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+                          </Avatar>
+                          <div className="profilepic__content">
+                            <EditIcon fontSize="small" />
+                            <p className="profilepic__text">Edit</p>
+                          </div>
+                        </>}
+                      <input
+                        type="file"
+                        disabled={isUploading}
+                        id="avatar-input"
+                        accept=".png, .jpeg, .jpg"
+                        onChange={handleFileChange}
+                        style={{ display: 'none' }}
+                      />
                     </ProfilePic>
                   </label>
                   {userProfileInfo?.name ? (

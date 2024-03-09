@@ -11,6 +11,7 @@ import colors from "styles/theme/colors";
 export const boxShadowTop = '-1px -2px 6px 2px gainsboro !important';
 export const boxShadowBottom = '1px 2px 2px -2px gainsboro !important';
 export const menuMaxHeight = 250;
+export const FILE_TYPES = ["image/png", "image/jpeg","image/jpg"];
 
 const listOfTabsInAddProperty = [
   {
