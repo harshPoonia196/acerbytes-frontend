@@ -2,16 +2,13 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import { Card } from "@mui/material";
 
-const NoDataCard = ({ title}) => {
+const NoDataCard = ({ title }) => {
   return (
-    <Box sx={{ backgroundColor: "white" }}>
-      <Container maxWidth="lg">
-        <Box sx={{ py: 4, textAlign:"center"}}>
-          {title && <Typography variant="h6">{title}</Typography>}
-        </Box>
-      </Container>
-    </Box>
+    <Card sx={{ p: 2 }}>
+      {title ? <Typography variant="h6">{title}</Typography> : <Typography variant="h6">No data found</Typography>}
+    </Card>
   );
 };
 

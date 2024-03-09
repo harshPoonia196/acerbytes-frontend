@@ -78,14 +78,14 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
 };
 
 export const matchUserRole = (actualRole, matchingRole) => {
-  // return actualRole === matchingRole;
-  return true
+  return actualRole === matchingRole;
+  // return true
 };
 
 export const authRole = (authorizedRole) => {
   let userDetail = getLoggedInUser();
-  // return authorizedRole === userDetail?.role;
-  return true
+  return authorizedRole === userDetail?.role;
+  // return true
 };
 
 export const countryCodeFormating = (code = "") => {

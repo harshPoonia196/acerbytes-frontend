@@ -245,39 +245,39 @@ function EnquiriesTable() {
       {isLoading ? <Loader /> : null}
       {
 
-rows.length > 0 ? (
-  <TableContainer component={Paper}>
-  <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-    <EnhancedTableHead
-      order={order}
-      orderBy={orderBy}
-      onRequestSort={handleRequestSort}
-    />
-    <TableBody>
-      {rows.map((row) => (
-        <RowStructure row={row} key={row.firstName} />
-      ))}
-    </TableBody>
-  </Table>
-  <TablePagination
-    sx={{
-      overflow: "hidden",
-    }}
-    rowsPerPageOptions={[5, 10, 25]}
-    component="div"
-    count={totalCount}
-    rowsPerPage={rowsPerPage}
-    page={page}
-    onPageChange={handleChangePage}
-    onRowsPerPageChange={handleChangeRowsPerPage}
-  />
-</TableContainer>
-):
+        rows.length > 0 ? (
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+              <EnhancedTableHead
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+              />
+              <TableBody>
+                {rows.map((row) => (
+                  <RowStructure row={row} key={row.firstName} />
+                ))}
+              </TableBody>
+            </Table>
+            <TablePagination
+              sx={{
+                overflow: "hidden",
+              }}
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={totalCount}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableContainer>
+        ) :
 
-<NoDataCard title={"No Data Found.."} />
+          <NoDataCard title={"No data found"} />
 
       }
-     
+
     </>
   );
 }

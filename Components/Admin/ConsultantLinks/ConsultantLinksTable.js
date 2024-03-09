@@ -22,7 +22,6 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
-import { Tienne } from "next/font/google";
 
 const rows = [
   {
@@ -110,36 +109,36 @@ function EnhancedTableHead(props) {
   return (
     <>
       {/* {rows?.length > 0 ? ( */}
-        <TableHead>
-          <TableRow>
-            {headCells.map((headCell) => (
-              <TableCell
-                key={headCell.id}
-                align={headCell.numeric ? "right" : "left"}
-                padding={headCell.disablePadding ? "none" : "normal"}
-                sortDirection={orderBy === headCell.id ? order : false}
+      <TableHead>
+        <TableRow>
+          {headCells.map((headCell) => (
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? "right" : "left"}
+              padding={headCell.disablePadding ? "none" : "normal"}
+              sortDirection={orderBy === headCell.id ? order : false}
+            >
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
               >
-                <TableSortLabel
-                  active={orderBy === headCell.id}
-                  direction={orderBy === headCell.id ? order : "asc"}
-                  onClick={createSortHandler(headCell.id)}
-                >
-                  {headCell.label}
-                  {orderBy === headCell.id ? (
-                    <Box component="span" sx={visuallyHidden}>
-                      {order === "desc"
-                        ? "sorted descending"
-                        : "sorted ascending"}
-                    </Box>
-                  ) : null}
-                </TableSortLabel>
-              </TableCell>
-            ))}
-            <TableCell>Action</TableCell>
-          </TableRow>
-        </TableHead>
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc"
+                      ? "sorted descending"
+                      : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          ))}
+          <TableCell>Action</TableCell>
+        </TableRow>
+      </TableHead>
       {/* ) : ( */}
-        {/* <NoDataCard title={""} /> */}
+      {/* <NoDataCard title={""} /> */}
       {/* )} */}
     </>
   );
@@ -175,13 +174,13 @@ function RowStructure({ row }) {
         <Chip
           label={row.status}
           size="small"
-          onClick={() => {}}
+          onClick={() => { }}
           color={
             row.status === "Active"
               ? "success"
               : row.status === "Expired"
-              ? "error"
-              : "warning"
+                ? "error"
+                : "warning"
           }
         />
       </TableCell>
@@ -241,7 +240,7 @@ function ConsultantLinksTable() {
 
   return (
     <>
-      {rows.length >0 ? (
+      {rows.length > 0 ? (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <EnhancedTableHead
@@ -269,7 +268,7 @@ function ConsultantLinksTable() {
           />
         </TableContainer>
       ) : (
-        <NoDataCard title={"No Data Found.."} />
+        <NoDataCard title={"No data found"} />
       )}
     </>
   );

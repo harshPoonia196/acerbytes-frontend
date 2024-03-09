@@ -459,7 +459,7 @@ function TableView({
         />
       </TableContainer>
     ) : (
-      <NoDataCard title={"No Data Found.."} />
+      <NoDataCard title={"No data found"} />
     )}
   </>;
 }

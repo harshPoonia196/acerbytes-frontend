@@ -367,46 +367,45 @@ function CreditTable() {
       handleSubmit={adminAssignPointsHandler}
     />
 
-      <Card sx={{ mb: 2 }}>
-        <CustomSearchInput
-          label="Search"
-          variant="outlined"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-      </Card>
-      {
-        creditPointList.length > 0 ?(<TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {creditPointList?.list?.map((row) => (
-                <RowStructure
-                  row={row}
-                  key={row.firstName}
-                  adminAssignPointsHandler={adminAssignPointsHandler}
-                />
-              ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-            component="div"
-            count={creditPointList.totalCount}
-            rowsPerPage={rowsPerPage}
-            page={page - 1}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+    <Card sx={{ mb: 2 }}>
+      <CustomSearchInput
+        label="Search"
+        variant="outlined"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+    </Card>
+    {
+      creditPointList.length > 0 ? (<TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
           />
-        </TableContainer>) :<NoDataCard title={"No Data Found.."}/>
-      }
-      
-    </Box>
-  );
+          <TableBody>
+            {creditPointList?.list?.map((row) => (
+              <RowStructure
+                row={row}
+                key={row.firstName}
+                adminAssignPointsHandler={adminAssignPointsHandler}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+          component="div"
+          count={creditPointList.totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>) : <NoDataCard title={"No data found"} />
+    }
+
+  </Box>
 }
 
 export default CreditTable;
