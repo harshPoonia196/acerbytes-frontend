@@ -235,7 +235,7 @@ export const Schema = Joi.object({
     reraNumber: Joi.number().when("reraApproved", {
       is: "Yes",
       then: Joi.number().required(),
-      otherwise: Joi.number().allow("").optional(),
+      otherwise: Joi.string().pattern(/^[a-zA-Z0-9!@#$%^&*()-_+=<>?/\\:;'"[]{},.|]*$/).allow(""),
     }),
     cc: Joi.string().required(),
     oc: Joi.string().required(),
