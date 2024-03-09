@@ -14,7 +14,7 @@ import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
 import BankCard from "Components/Admin/Property/SubComponents/BankCard";
-import { getAllOptions, getAllProperty } from "api/Property.api";
+import { getAllOptions, getAllProperty,getCities } from "api/Property.api";
 
 import {
   Schema,
@@ -77,6 +77,7 @@ function useThrottledOnScroll(callback, delay) {
 
 function AddProperty() {
   const router = useSearchParams();
+  const [cities,setCities]=useState([]) 
   const routerNavigation = useRouter();
   const [editPage, setEditPage] = useState(false);
   const [brokerList, setBrokerList] = useState([]);
@@ -224,6 +225,29 @@ function AddProperty() {
     openSnackbar(message, severity);
   };
 
+const getCitiesList=async()=>{
+  try{
+    let res = await getCities();
+    if (res.status == 200) {
+      delete res.data.data[0]._id
+setCities(res.data.data[0])
+    }
+  }
+  catch (error) {
+    showToaterMessages(
+      error?.response?.data?.message ||
+      error?.message ||
+      "Error fetching state list",
+      "error"
+    );
+  }
+  finally {
+    setLoading(false);
+  }
+ 
+
+}
+
   const getAllOptionDataList = async () => {
     try {
       let res = await getAllOptions();
@@ -285,7 +309,7 @@ function AddProperty() {
     else{
       getAllOptionDataList()
     }
-
+    getCitiesList();
     brokersList();
 
 // console.log(form)
@@ -1236,6 +1260,7 @@ const handleUIHide=(e)=>{
           <LocationCard
             errors={errors}
             hide={hide}
+            cities={cities}
             selectOptions={selectOptions}
             form={form}
             moduleScoreCalc={moduleScoreCalc}
