@@ -64,6 +64,7 @@ import { getLoggedInUser } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
+import { toCamelCase } from "utills/CommonFunction";
 
 const tabHeight = 200;
 
@@ -122,6 +123,7 @@ const PropertyDetailsPage = ({ params }) => {
         `${detailsPropertyId}${brokerId ? `?brokerId=${brokerId}` : ""}`
       );
       if (res.status === 200) {
+        shuffle(res.data?.data?.consultants)
         setPropertyData(res.data?.data);
       }
     } catch (error) {
@@ -404,6 +406,14 @@ const PropertyDetailsPage = ({ params }) => {
     }
   }, []);
 
+  const shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
   return (
     <>
       {isLoading && <Loader />}
@@ -502,7 +512,7 @@ const PropertyDetailsPage = ({ params }) => {
                       />
                     </Box>
                   </Grid>
-                  {propertyData?.consultants?.slice(0, 2).map((broker) => (
+                  {propertyData?.consultants?.length > 0 && propertyData?.consultants?.slice(0, 2).map((broker) => (
                     <Grid item xs={12} sm={6} key={broker?.name}>
                       <BrokerCard broker={broker} noReview />
                     </Grid>

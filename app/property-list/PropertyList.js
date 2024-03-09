@@ -50,7 +50,6 @@ function PropertyList({params}) {
   const inputRef = useRef(null);
   const [selectedOptions, setSelectedOptions] = useState(params?.location ? {city : params.location} : {});
   const [propertyvalue, setPropertyvalue] = useState("");
-  const [buttonColor, setButtonColor] = useState("");
   const [selectOption, setSelectOption] = useState({});
   const [isDisablePropertyType, setIsDisablePropertyType] = useState(true);
   const [isDisableLayoutType, setIsDisableLayoutType] = useState(true);
@@ -200,7 +199,6 @@ function PropertyList({params}) {
     setIsDisableLayoutType(true);
     setLocationDisable(true);
     setSelectedCity([]);
-    setButtonColor('')
   };
 
   const { openSnackbar } = useSnackbar();
@@ -293,41 +291,28 @@ function PropertyList({params}) {
     );
   };
 
-  const handleChange = (event, value) => {
-    if (value === "dec") {
-      setAlignment(-1);
-    } else {
-      setAlignment(1);
-    }
-  };
 
   const handleChangeData = (event, value) => {
-    setButtonColor(value);
     setPropertyvalue(value);
-    if (alignment == 1) {
-      setAlignment(-1);
-    } else {
-      setAlignment(1);
+    if(value !== propertyvalue) {
+        setAlignment(-1);
+    }else{
+      if (alignment == 1) {
+        setAlignment(-1);
+      } else {
+        setAlignment(1);
+      }
     }
   };
 
-  const handleChangeAllData = (event, value) => {
-    const newAlignment = value === "dec" ? -1 : 1;
-    setAlignment(newAlignment);
-    setButtonColor("");
-    const pageOptions = {
-      pageLimit,
-      page: 1,
-    };
-    setPropertyvalue("");
-    getUserPropertyList(
-      pageOptions,
-      searchTerm,
-      selectedOptions,
-      newAlignment,
-      propertyvalue
-    );
-  };
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
 
   return (
     <>
@@ -480,35 +465,34 @@ function PropertyList({params}) {
               >
                 <ToggleButton
                   value="score"
-                  selected={buttonColor === "score"}
+                  selected={propertyvalue === "score"}
                   sx={{ flex: 1 }}
                 >
-                  Score <ArrowUpwardIcon fontSize="small" />{" "}
-                  <ArrowDownwardIcon fontSize="small" />
+                  Score {propertyvalue === "score" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
                 </ToggleButton>
                 <ToggleButton
                   value="price"
-                  selected={buttonColor === "price"}
+                  selected={propertyvalue === "price"}
                   sx={{ flex: 1 }}
                 >
-                  Price <ArrowUpwardIcon fontSize="small" />{" "}
-                  <ArrowDownwardIcon fontSize="small" />
+                   Price  {propertyvalue === "price" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+                
                 </ToggleButton>
                 <ToggleButton
                   value="area"
-                  selected={buttonColor === "area"}
+                  selected={propertyvalue === "area"}
                   sx={{ flex: 1 }}
                 >
-                  Area <ArrowUpwardIcon fontSize="small" />{" "}
-                  <ArrowDownwardIcon fontSize="small" />
+                     Area  {propertyvalue === "area" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+                
                 </ToggleButton>
                 <ToggleButton
                   value="completion"
-                  selected={buttonColor === "completion"}
+                  selected={propertyvalue === "completion"}
                   sx={{ flex: 1 }}
                 >
-                  Completion <ArrowUpwardIcon fontSize="small" />{" "}
-                  <ArrowDownwardIcon fontSize="small" />
+                     Completion  {propertyvalue === "completion" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+               
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
