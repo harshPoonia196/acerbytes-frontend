@@ -1229,7 +1229,8 @@ function Profile() {
                   handleChange={(e) =>
                     handleChange(e, "currentAddress", "pinCode")
                   }
-                  name="pinCode"
+                  id={"pinCode"}
+                  name={"pinCode"}
                 />
               </Grid>
             </Card>

@@ -17,6 +17,7 @@ const NewInputFieldStructure = ({
   disabled = false,
   isRequired,
   error,
+  id,
   isFull,
   maxlength,
   defaultValue,
@@ -42,7 +43,7 @@ const NewInputFieldStructure = ({
       };
       handleChange(updatedEvent);
     } else {
-      if (name == "pinCode") {
+      if (label == "Pincode") {
         const numericValue = event.target.value.replace(/[^0-9]/g, '');
 
         // Example: Limit to 6 characters
@@ -73,6 +74,7 @@ const NewInputFieldStructure = ({
             name={name}
             onChange={handleChange}
             disabled={disabled}
+            id={name}
             variant={variant ? variant : "standard"}
             fullWidth
             value={value}
@@ -90,6 +92,7 @@ const NewInputFieldStructure = ({
             value={value}
             disabled={disabled}
             type={type}
+            id={name}
             onChange={changeHandler}
             variant={variant ? variant : "standard"}
             fullWidth
