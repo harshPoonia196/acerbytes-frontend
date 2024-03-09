@@ -7,7 +7,6 @@ import colors from "styles/theme/colors";
 function UnitsPlanSection(props) {
   const { refCallback, unitsPlan } = props;
   const router = useRouter();
-
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
     return (
@@ -64,7 +63,7 @@ function UnitsPlanSection(props) {
                   cursor: 'pointer'
                 }}
               >
-                99
+                {unitsPlan?.sectionScore ? unitsPlan?.sectionScore.toFixed() : "00"}
               </Typography>
             </Card>
           </Box>

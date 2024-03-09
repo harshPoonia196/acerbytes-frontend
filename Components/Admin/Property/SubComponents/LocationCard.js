@@ -19,7 +19,7 @@ import { getLocations } from 'api/Property.api';
 import { useSnackbar } from "utills/SnackbarContext";
 
 
-function LocationCard({ isEdit, form, handleChange, errors, selectOptions }) {
+function LocationCard({ isEdit, form, handleChange, errors, selectOptions,moduleScoreCalc }) {
     const { openSnackbar } = useSnackbar()
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
 
@@ -107,6 +107,7 @@ function LocationCard({ isEdit, form, handleChange, errors, selectOptions }) {
                         variant="outlined"
                         isEdit={isEdit}
                         value={pinCode}
+                        type={"number"}
                         error={errors?.["location.pinCode"]}
                         handleChange={(e) => handleChange(e, "location", "pinCode")}
                     />
@@ -122,6 +123,7 @@ function LocationCard({ isEdit, form, handleChange, errors, selectOptions }) {
                         label="Geo longitude"
                         variant="outlined"
                         isEdit={isEdit}
+                        type={"number"}
                         value={longitude}
                         error={errors?.["location.longitude"]}
                         handleChange={(e) => handleChange(e, "location", "longitude")}
@@ -130,6 +132,7 @@ function LocationCard({ isEdit, form, handleChange, errors, selectOptions }) {
                         label="Geo latitude"
                         variant="outlined"
                         isEdit={isEdit}
+                        type={"number"}
                         value={latitude}
                         error={errors?.["location.latitude"]}
                         handleChange={(e) => handleChange(e, "location", "latitude")}
@@ -137,7 +140,7 @@ function LocationCard({ isEdit, form, handleChange, errors, selectOptions }) {
                 </Grid>
             </Card>
 
-            <LocationAssesmentCard errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
+            <LocationAssesmentCard moduleScoreCalc={moduleScoreCalc} errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
         </Grid>
     )
 }

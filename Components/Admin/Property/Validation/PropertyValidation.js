@@ -32,6 +32,7 @@ export const unitPlanSchema = Joi.object({
   name: Joi.string().required(),
   areaUnit: Joi.string().required(),
   totalUnits: Joi.number().required(),
+  priceUnit:Joi.string().required(),
   area: Joi.number().required(),
   bsp: Joi.number().required(),
   applicableMonth: Joi.string().required(),
@@ -45,46 +46,183 @@ const layoutSchema = Joi.object({
   numberOfBuildings: Joi.number()
     .custom((value, helpers) => {
       const projectType = helpers.state.ancestors[1].overview.projectType;
-      const isFlatSelected = projectType.some(
-        (option) => option.label === "Land"
-      );
-      if (isFlatSelected) {
-        return helpers.error("layout.numberOfBuildings.custom");
-      }
+      // const isFlatSelected = projectType.some(
+      //   (option) => option.label === "Land"
+      // );
+      // if (isFlatSelected) {
+      //   return helpers.error("layout.numberOfBuildings.custom");
+      // }
 
-      return value;
+      // return value;
     })
     .when(Joi.ref("...overview.projectType"), {
       is: Joi.array()
         .items(
           Joi.object({
-            label: Joi.string().valid("Land").required(),
-            value: Joi.string().valid("Land").required(),
+             label: Joi.string().valid("Land","Shop","Restaurant").required(),
+            value: Joi.string().valid("Land","Shop","Restaurant").required(),
           })
         )
         .required(),
       then: Joi.number().allow("").optional(),
       otherwise: Joi.number().required(),
     }),
-  layoutType: Joi.array().when(Joi.ref("...overview.projectCategory"), {
-    is: Joi.string().valid("Commercial"),
+
+  layoutType: Joi.array()
+  .custom((value, helpers) => {
+    const projectType = helpers.state.ancestors[1].overview.projectType;
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
+
+    // return value;
+  })
+  .when(Joi.ref("...overview.projectType"), {
+    is: Joi.array()
+      .items(
+        Joi.object({
+          label: Joi.string().valid("Land","Shop","Restaurant").required(),
+          value: Joi.string().valid("Land","Shop","Restaurant").required(),
+        })
+      )
+      .required(),
     then: Joi.array().allow(),
     otherwise: Joi.array().min(1).items(Joi.object()).required(),
   }),
-  maxFloors: Joi.number().max(34).required(),
-  minFloors: Joi.number().min(24).required(),
+  // layoutType: Joi.array().when(Joi.ref("...overview.projectCategory"), {
+  //   is: Joi.string().valid("Commercial"),
+  //   then: Joi.array().allow(),
+  //   otherwise: Joi.array().min(1).items(Joi.object()).required(),
+  // }),
+
+
+  // maxFloors: Joi.number().max(34).required(),
+  // minFloors: Joi.number().min(24).required(),
+  maxFloors: Joi.number()
+  .custom((value, helpers) => {
+    const projectType = helpers.state.ancestors[1].overview.projectType;
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
+
+    // return value;
+  })
+  .when(Joi.ref("...overview.projectType"), {
+    is: Joi.array()
+      .items(
+        Joi.object({
+          label: Joi.string().valid("Land","Shop","Restaurant").required(),
+          value: Joi.string().valid("Land","Shop","Restaurant").required(),
+        })
+      )
+      .required(),
+    then: Joi.number().allow(""),
+    otherwise:  Joi.number().min(24).max(34).required(),
+  }),
+  minFloors: Joi.number()
+  .custom((value, helpers) => {
+    const projectType = helpers.state.ancestors[1].overview.projectType;
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
+
+    // return value;
+  })
+  .when(Joi.ref("...overview.projectType"), {
+    is: Joi.array()
+      .items(
+        Joi.object({
+          label: Joi.string().valid("Land","Shop","Restaurant").required(),
+          value: Joi.string().valid("Land","Shop","Restaurant").required(),
+        })
+      )
+      .required(),
+    then: Joi.number().allow(""),
+    otherwise:  Joi.number().min(24).max(34).required(),
+  }),
+    //   "numberOfBuildings",
+  //   "layoutType",
+  //  "floors",
+  //  "greenArea", 
+  //  "greenDensity",
+  //  "unitsPlan"
   unitDensityScore: Joi.string().allow("").optional(),
   totalUnits: Joi.number().required(),
   greenDensityScore: Joi.string().allow("").optional(),
   area: Joi.number().required(),
   areaUnit: Joi.string().required(),
-  greenArea: Joi.number().allow("").optional(),
-  unitDensity: Joi.number().required(),
-  greenDensity: Joi.when("greenArea", {
-    is: Joi.string().not("").required(),
-    then: Joi.number().required(),
-    otherwise: Joi.number().optional(),
+
+  greenArea: Joi.number()
+  .custom((value, helpers) => {
+    const projectType = helpers.state.ancestors[1].overview.projectType;
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
+
+    // return value;
+  })
+  .when(Joi.ref("...overview.projectType"), {
+    is: Joi.array()
+      .items(
+        Joi.object({
+          label: Joi.string().valid("Land","Shop","Restaurant").required(),
+          value: Joi.string().valid("Land","Shop","Restaurant").required(),
+        })
+      )
+      .required(),
+    then: Joi.number().allow(""),
+    otherwise:  Joi.number().allow("").optional(),
+  }), 
+  greenDensity: Joi.number()
+  .custom((value, helpers) => {
+    const projectType = helpers.state.ancestors[1].overview.projectType;
+    // const isFlatSelected = projectType.some(
+    //   (option) => option.label === "Land"
+    // );
+    // if (isFlatSelected) {
+    //   return helpers.error("layout.numberOfBuildings.custom");
+    // }
+
+    // return value;
+  })
+  .when(Joi.ref("...overview.projectType"), {
+    is: Joi.array()
+      .items(
+        Joi.object({
+          label: Joi.string().valid("Land","Shop","Restaurant").required(),
+          value: Joi.string().valid("Land","Shop","Restaurant").required(),
+        })
+      )
+      .required(),
+    then: Joi.number().allow(""),
+    otherwise:  Joi.when("greenArea", {
+      is: Joi.string().not("").required(),
+      then: Joi.number().required(),
+      otherwise: Joi.number().optional(),
+    }),
   }),
+
+
+  // greenArea: Joi.number().allow("").optional(),
+  unitDensity: Joi.number().required(),
+
+  // greenDensity: Joi.when("greenArea", {
+  //   is: Joi.string().not("").required(),
+  //   then: Joi.number().required(),
+  //   otherwise: Joi.number().optional(),
+  // }),
   constructionQuality: Joi.number().required().min(1),
   interiorQuality: Joi.number().required().min(1),
   sectionScore: Joi.number().allow("")
@@ -122,28 +260,30 @@ export const Schema = Joi.object({
   //     applicableYear: Joi.string().required(),
   //   })
   unitsPlan: Joi.object({
-    averagePrice: Joi.number().allow(""),
-    minPriceRange: Joi.number().allow(""),
-    maxPriceRange: Joi.number().allow(""),
+    averagePrice: Joi.number().allow(null,""),
+    minPriceRange: Joi.number().allow(null,""),
+    maxPriceRange: Joi.number().allow(null,""),
     uniqueLayouts: Joi.array().items(Joi.string()),
     planList: Joi.array()
-      .min(1)
+      // .min(1)
       .items(
         Joi.object({
-          propertyType: Joi.string().required(),
-          propertyLayout: Joi.string().required(),
-          name: Joi.string().required(),
-          areaUnit: Joi.string().required(),
-          totalUnits: Joi.number().required(),
-          area: Joi.number().required(),
-          bsp: Joi.number().required(),
-          applicableMonth: Joi.string().required(),
-          applicableYear: Joi.string().required(),
+          propertyType: Joi.string().optional().allow(""),
+          propertyLayout: Joi.string().optional().allow(""),
+          name: Joi.string().optional().allow(""),
+          priceUnit:Joi.string().allow(""),
+          areaUnit: Joi.string().optional().allow(""),
+          totalUnits: Joi.number().optional().allow(""),
+          area: Joi.number().optional().allow(""),
+          bsp: Joi.number().optional().allow(""),
+          applicableMonth: Joi.string().optional().allow(""),
+          applicableYear: Joi.string().optional().allow(""),
         })
       ),
-  }),
+  }).optional(),
 
   amenitiesData: Joi.object().keys({
+    sectionScore:Joi.number().allow(""),
     Basic: Joi.object().pattern(
       /./,
       Joi.object().keys({
@@ -198,7 +338,8 @@ export const Schema = Joi.object({
     googleMapLink: Joi.string().required(),
     longitude: Joi.number().required(),
     latitude: Joi.number().required(),
-    assesment: Joi.object().pattern(
+    sectionScore: Joi.number().allow(null,""),
+    assessment: Joi.object().pattern(
       /./,
       Joi.object().keys({
         isApplicable: Joi.boolean().required(),
@@ -215,6 +356,7 @@ export const Schema = Joi.object({
       appTillNow: Joi.number().required().min(1),
       expectedFurtherApp: Joi.number().not(0).required(),
       forEndUse: Joi.number().not(0).required(),
+      sectionScore: Joi.number().allow("")
     })
     .required(),
   consultants: Joi.array()

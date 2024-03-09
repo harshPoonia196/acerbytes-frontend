@@ -14,7 +14,10 @@ import {
   Chip,
   Rating,
   Toolbar,
-  Avatar, Button, IconButton, Tooltip
+  Avatar,
+  Button,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -24,8 +27,8 @@ import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import GroupIcon from '@mui/icons-material/Group';
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import GroupIcon from "@mui/icons-material/Group";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
@@ -47,8 +50,11 @@ import { useRouter } from "next/navigation";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import AdsSection from "Components/DetailsPage/AdsSection";
-import { listOfPropertyDetailsTab, listOfTabsInAddProperty } from "utills/Constants";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import {
+  listOfPropertyDetailsTab,
+  listOfTabsInAddProperty,
+} from "utills/Constants";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
 import { detailsProperty, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
@@ -57,6 +63,7 @@ import { isEnquired, submitEnquiry } from "api/UserProfile.api";
 import { getLoggedInUser } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
+import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
 
 const tabHeight = 200;
 
@@ -68,13 +75,13 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     zIndex: 100,
-    [theme.breakpoints?.up('sm')]: {
+    [theme.breakpoints?.up("sm")]: {
       top: 64,
     },
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -94,32 +101,34 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 const PropertyDetailsPage = ({ params }) => {
-  const searchParams = useSearchParams()
-  const name = searchParams.get('name')
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name");
   const { isLogged } = useAuth();
   const router = useRouter();
 
-  const storedUserDataString = localStorage.getItem('userDetails');
+  const storedUserDataString = localStorage.getItem("userDetails");
   const storedUserData = JSON.parse(storedUserDataString);
   const role = storedUserData?.role;
   const brokerId = storedUserData?._id;
-  const detailsPropertyId = params.id
+  const detailsPropertyId = params.id;
 
   const [isLoading, setLoading] = useState(false);
-  const [propertyData, setPropertyData] = useState([])
+  const [propertyData, setPropertyData] = useState([]);
 
   const detailsGetProperty = async () => {
     try {
       setLoading(true);
-      let res = await detailsProperty(`${detailsPropertyId}${brokerId ? `?brokerId=${brokerId}` : ''}`);
+      let res = await detailsProperty(
+        `${detailsPropertyId}${brokerId ? `?brokerId=${brokerId}` : ""}`
+      );
       if (res.status === 200) {
-        setPropertyData(res.data?.data)
+        setPropertyData(res.data?.data);
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -130,7 +139,7 @@ const PropertyDetailsPage = ({ params }) => {
   const handlefavClick = async () => {
     const adData = {
       propertyId: detailsPropertyId,
-    }
+    };
     try {
       const response = await favPropertyCreate(adData);
       if (response.status == 200) {
@@ -139,15 +148,14 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error generating fav Property",
+          error?.message ||
+          "Error generating fav Property",
         "error"
       );
     } finally {
       setLoading(false);
     }
-
-  }
+  };
 
   const { openSnackbar } = useSnackbar();
   const showToaterMessages = (message, severity) => {
@@ -155,7 +163,7 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   useEffect(() => {
-    detailsGetProperty()
+    detailsGetProperty();
   }, []);
 
   const GridItemWithCard = (props) => {
@@ -258,31 +266,43 @@ const PropertyDetailsPage = ({ params }) => {
     setOpenAlternateSignIn(false);
   };
 
-  const [disablePersonalizeAds, setDisablePersonalizeAds] = useState(false)
+  const [disablePersonalizeAds, setDisablePersonalizeAds] = useState(false);
 
   const handleOpenPersonalizeAds = () => {
-    setDisablePersonalizeAds(true)
-  }
+    setDisablePersonalizeAds(true);
+  };
 
   const handleClosePersonalizeAds = () => {
-    setDisablePersonalizeAds(false)
-  }
+    setDisablePersonalizeAds(false);
+  };
 
-  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false)
+  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
 
   const handleOpenActivateAdsPopup = () => {
-    setActivateAdsPopupState(true)
-  }
+    setActivateAdsPopupState(true);
+  };
 
   const handleCloseActivateAdsPopup = () => {
-    setActivateAdsPopupState(false)
-  }
+    setActivateAdsPopupState(false);
+  };
+
+  const [consultantsViewAll, setConsultantsViewAll] = useState(false);
+
+  const handleOpenConsultantsViewAll = () => {
+    setConsultantsViewAll(true);
+  };
+
+  const handleCloseConsultantsViewAll = () => {
+    setConsultantsViewAll(false);
+  };
 
   const classes = useStyles();
 
   //All codes about scrolling
 
-  const [alignment, setAlignment] = React.useState(listOfTabsInAddProperty[0].value);
+  const [alignment, setAlignment] = React.useState(
+    listOfTabsInAddProperty[0].value
+  );
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -327,9 +347,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -373,42 +393,57 @@ const PropertyDetailsPage = ({ params }) => {
   );
 
   const divRef = useRef(null);
-  const [heightOfFooter, setHeightOfFooter] = useState(0)
+  const [heightOfFooter, setHeightOfFooter] = useState(0);
 
   useEffect(() => {
     // Access the div element and get its height
     if (divRef.current) {
       const divHeight = divRef.current.clientHeight;
-      setHeightOfFooter(divHeight)
+      setHeightOfFooter(divHeight);
       console.log("Height of the div:", divHeight);
     }
   }, []);
 
   return (
-
     <>
       {isLoading && <Loader />}
-      <ActivateAdsPopup SinglePropertyId={propertyData} detailsGetProperty={detailsGetProperty} open={activateAdsPopupState} handleClose={handleCloseActivateAdsPopup} />
-      <DisableActivateAdsPopup open={disablePersonalizeAds} handleOpen={handleOpenPersonalizeAds} handleClose={handleClosePersonalizeAds} />
+      <ActivateAdsPopup
+        SinglePropertyId={propertyData}
+        detailsGetProperty={detailsGetProperty}
+        open={activateAdsPopupState}
+        handleClose={handleCloseActivateAdsPopup}
+      />
+      <DisableActivateAdsPopup
+        open={disablePersonalizeAds}
+        handleOpen={handleOpenPersonalizeAds}
+        handleClose={handleClosePersonalizeAds}
+      />
 
-      {
-        role === 'broker' && !propertyData.isActiveAd ? (
-          <AdsSection handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} isConsultant />
-        ) : (
-          null
-        )
-      }
+      {role === "broker" && !propertyData.isActiveAd ? (
+        <AdsSection
+          handleOpenPersonalizeAds={handleOpenPersonalizeAds}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+          isConsultant
+        />
+      ) : null}
 
-      {
-        (role !== 'admin' && role !== 'superAdmin') && propertyData.isActiveAd ? (
-          <AdsSection SinglePropertyId={propertyData?.propertyBroker[0]} propertyData={propertyData} id={propertyData?.propertyBroker?.[0]?._id} handleOpenPersonalizeAds={handleOpenPersonalizeAds} handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} />
-        ) : (
-          null
-        )
-      }
+      {role !== "admin" && role !== "superAdmin" && propertyData.isActiveAd ? (
+        <AdsSection
+          SinglePropertyId={propertyData?.propertyBroker[0]}
+          propertyData={propertyData}
+          id={propertyData?.propertyBroker?.[0]?._id}
+          handleOpenPersonalizeAds={handleOpenPersonalizeAds}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+        />
+      ) : null}
 
       <nav className={classes.demo2}>
-        <TopMenu topMenu={propertyData} value={activeState} handleChange={handleClick} list={itemsServer} />
+        <TopMenu
+          topMenu={propertyData}
+          value={activeState}
+          handleChange={handleClick}
+          list={itemsServer}
+        />
       </nav>
       <Box>
         <MarketingSection overviewData={propertyData} />
@@ -417,7 +452,6 @@ const PropertyDetailsPage = ({ params }) => {
             open={openEnquiryForm}
             handleClose={handleCloseEnquiryForm}
             handleAction={handleOpenVerifyPopup}
-            handleOpen={handleOpenEnquiryForm}
           />
           <OtpVerify
             open={openOtpPopup}
@@ -430,43 +464,55 @@ const PropertyDetailsPage = ({ params }) => {
             handleClose={handleCloseAlternateSignIn}
           />
 
-          <Grid container spacing={2} id='section-list'>
-            <ClearanceSection regulatoryClearanceData={propertyData?.regulatoryClearance} />
+          <Grid container spacing={2} id="section-list">
+            <ClearanceSection
+              regulatoryClearanceData={propertyData?.regulatoryClearance}
+            />
             <LandscapeSection layoutData={propertyData?.layout} />
             <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
             <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
             <LocationSection locationData={propertyData?.location} />
             {/* <PricingSection /> */}
             {/* <ResaleSection /> */}
-            <ValueForMoneySection valueForMoneyData={propertyData?.valueForMoney} />
+            <ValueForMoneySection
+              valueForMoneyData={propertyData?.valueForMoney}
+            />
             {/* <FloorPlanSection /> */}
             <Grid item xs={12} id="propertyConsultants">
               <Card sx={{ p: 2 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sx={{ display: 'flex' }}>
-                    <Box sx={{ flex: 1, alignSelf: 'center' }}>
-                      <Typography variant="h4">Contact verified consultants</Typography>
+                  <Grid item xs={12} sx={{ display: "flex" }}>
+                    <Box sx={{ flex: 1, alignSelf: "center" }}>
+                      <Typography variant="h4">
+                        Contact verified consultants
+                      </Typography>
                     </Box>
                     <Box>
+                      <ConsultantsViewAll
+                        open={consultantsViewAll}
+                        handleClose={handleCloseConsultantsViewAll}
+                        propertyData={propertyData?.consultants}
+                      ></ConsultantsViewAll>
                       <Chip
                         label="View all"
                         icon={<GroupIcon fontSize="small" />}
                         size="small"
-                        onClick={() => { }}
-                        sx={{ fontSize: '0.875rem !important' }}
+                        onClick={handleOpenConsultantsViewAll}
+                        sx={{ fontSize: "0.875rem !important" }}
                       />
                     </Box>
                   </Grid>
-
-                  {propertyData?.consultants?.map((broker) => (
+                  {propertyData?.consultants?.slice(0, 2).map((broker) => (
                     <Grid item xs={12} sm={6} key={broker?.name}>
                       <BrokerCard broker={broker} noReview />
                     </Grid>
                   ))}
-
                   <Grid item xs={12}>
-                    <Box sx={{ display: 'flex' }}>
-                      <Typography variant="body2" sx={{ flex: 1, alignSelf: 'center' }}>
+                    <Box sx={{ display: "flex" }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ flex: 1, alignSelf: "center" }}
+                      >
                         Are you a property consultant, let Customers reach you
                       </Typography>
                       <Chip
@@ -474,19 +520,29 @@ const PropertyDetailsPage = ({ params }) => {
                         icon={<PersonAddIcon fontSize="small" />}
                         size="small"
                         sx={{ fontSize: "0.875rem" }}
-                        onClick={() => { }}
+                        onClick={() => {}}
                       />
                     </Box>
                   </Grid>
                 </Grid>
               </Card>
             </Grid>
-            <OverallAssesmentSection overallAssessment={propertyData?.overallAssessment} />
+            <OverallAssesmentSection
+              overallAssessment={propertyData?.overallAssessment}
+              handleOpenEnquiryForm={handleOpenEnquiryForm}
+              open={openEnquiryForm}
+              handleClose={handleCloseEnquiryForm}
+              handleAction={handleOpenVerifyPopup}
+            />
           </Grid>
 
           {/* Dont Touch this */}
-          <Toolbar sx={{ display: { xs: "flex", evmd: "none" }, height: heightOfFooter }} />
-
+          <Toolbar
+            sx={{
+              display: { xs: "flex", evmd: "none" },
+              height: heightOfFooter,
+            }}
+          />
 
           {role !== "admin" && role !== "superAdmin" && (
             <>
@@ -498,30 +554,65 @@ const PropertyDetailsPage = ({ params }) => {
                   bottom: 0,
                   width: "100%",
                   display: { xs: "block", evmd: "none" },
-                  background: 'whitesmoke',
-                  boxShadow: '-1px -2px 6px 2px gainsboro !important'
+                  background: "whitesmoke",
+                  boxShadow: "-1px -2px 6px 2px gainsboro !important",
                 }}
                 ref={divRef}
               >
-                <Box sx={{ mt: -1, ml: -1, display: 'flex', flexWrap: "wrap" }}>
-                  {
-                    isLogged ? <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handlefavClick} startIcon={
-                      propertyData?.isFav
-                        ? <ThumbUpIcon sx={{ color: colors.BLUE, }} />
-                        : <ThumbUpOffAltIcon />}>
-                      Like
-                    </Button> : <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={() => router.push(listOfPages.login)} startIcon={<ThumbUpOffAltIcon />}>
+                <Box sx={{ mt: -1, ml: -1, display: "flex", flexWrap: "wrap" }}>
+                  {isLogged ? (
+                    <Button
+                      size="small"
+                      sx={{ mt: 1, ml: 1 }}
+                      variant="outlined"
+                      onClick={handlefavClick}
+                      startIcon={
+                        propertyData?.isFav ? (
+                          <ThumbUpIcon sx={{ color: colors.BLUE }} />
+                        ) : (
+                          <ThumbUpOffAltIcon />
+                        )
+                      }
+                    >
                       Like
                     </Button>
-                  }
+                  ) : (
+                    <Button
+                      size="small"
+                      sx={{ mt: 1, ml: 1 }}
+                      variant="outlined"
+                      onClick={() => router.push(listOfPages.login)}
+                      startIcon={<ThumbUpOffAltIcon />}
+                    >
+                      Like
+                    </Button>
+                  )}
 
-                  <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}>
+                  <Button
+                    size="small"
+                    sx={{ mt: 1, ml: 1 }}
+                    variant="outlined"
+                    onClick={handleOpenEnquiryForm}
+                    startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
+                  >
                     Share
                   </Button>
-                  <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<WhatsAppIcon />}>
+                  <Button
+                    size="small"
+                    sx={{ mt: 1, ml: 1 }}
+                    variant="outlined"
+                    onClick={handleOpenEnquiryForm}
+                    startIcon={<WhatsAppIcon />}
+                  >
                     Contact
                   </Button>
-                  <Button size="small" sx={{ mt: 1, ml: 1 }} variant="outlined" onClick={handleOpenEnquiryForm} startIcon={<AssignmentIcon />}>
+                  <Button
+                    size="small"
+                    sx={{ mt: 1, ml: 1 }}
+                    variant="outlined"
+                    onClick={handleOpenEnquiryForm}
+                    startIcon={<AssignmentIcon />}
+                  >
                     Enquire
                   </Button>
                 </Box>
@@ -535,29 +626,46 @@ const PropertyDetailsPage = ({ params }) => {
                   flexDirection: "column",
                 }}
               >
-                {
-                  isLogged ? (
-                    <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={handlefavClick}>
-                      {propertyData?.isFav
-                        ? <ThumbUpIcon sx={{ color: colors.BLUE, mr: 1 }} />
-                        : <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                      }
-                      Like
-                    </Fab>
-                  ) : (
-                    <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }} onClick={() => router.push(listOfPages.login)}>
+                {isLogged ? (
+                  <Fab
+                    variant="extended"
+                    sx={{ mb: 1, justifyContent: "flex-start" }}
+                    onClick={handlefavClick}
+                  >
+                    {propertyData?.isFav ? (
+                      <ThumbUpIcon sx={{ color: colors.BLUE, mr: 1 }} />
+                    ) : (
                       <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                      Like
-                    </Fab>
-                  )}
-                <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
+                    )}
+                    Like
+                  </Fab>
+                ) : (
+                  <Fab
+                    variant="extended"
+                    sx={{ mb: 1, justifyContent: "flex-start" }}
+                    onClick={() => router.push(listOfPages.login)}
+                  >
+                    <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                    Like
+                  </Fab>
+                )}
+                <Fab
+                  variant="extended"
+                  sx={{ mb: 1, justifyContent: "flex-start" }}
+                >
                   <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
                   Share
                 </Fab>
-                <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
-                  <WhatsAppIcon sx={{ mr: 1 }} />
-                  Contact
-                </Fab>
+                <a href={`https://wa.me/+919725555595`}>
+                  <Fab
+                    variant="extended"
+                    sx={{ mb: 1, justifyContent: "flex-start" }}
+                  >
+                    <WhatsAppIcon sx={{ mr: 1 }} />
+                    Contact
+                  </Fab>
+                </a>
+
                 <Fab
                   variant="extended"
                   sx={{ justifyContent: "flex-start" }}
@@ -571,9 +679,7 @@ const PropertyDetailsPage = ({ params }) => {
           )}
         </Container>
       </Box>
-
     </>
-
   );
 };
 

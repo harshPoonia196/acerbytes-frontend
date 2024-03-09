@@ -46,6 +46,7 @@ import {
 import AddCreditPointsPopup from "./Modal/AddCreditPointsPopup";
 import { useAuth } from "utills/AuthContext";
 import {
+  DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
 } from "Components/config/config";
@@ -53,6 +54,8 @@ import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import Loader from "Components/CommonLayouts/Loading";
+import { debounce } from "lodash";
 
 const headCells = [
   {
@@ -337,24 +340,39 @@ function TableView({
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [salesPersons, setSalesPersons] = React.useState([]);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER); // Adjust the debounce delay as needed
 
+  function performSearch() {
+    const pageOptions = {
+      pageLimit: rowsPerPage,
+      page,
+    };
+    getOrderRequestList(pageOptions, searchTerm);
+  }
   React.useEffect(() => {
     // This block will run only on initial mount
     if (initialMount) {
       setInitialMount(false);
       return;
     }
-
     if (userDetails && Object.keys(userDetails).length) {
-      const pageOptions = {
-        pageLimit: rowsPerPage,
-        page,
-      };
-      getOrderRequestList(pageOptions);
       getSalesPersonsList();
     }
-  }, [userDetails && Object.keys(userDetails).length, initialMount]);
+    debouncedSearch();
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [
+    userDetails && Object.keys(userDetails).length,
+    initialMount,
+    searchTerm,
+  ]);
 
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
   const getSalesPersonsList = async () => {
     try {
       setLoading(true);
@@ -387,7 +405,7 @@ function TableView({
       pageLimit: rowsPerPage,
       page,
     };
-    getOrderRequestList(pageOptions);
+    getOrderRequestList(pageOptions, searchTerm);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -398,56 +416,52 @@ function TableView({
       pageLimit,
       page: 1,
     };
-    getOrderRequestList(pageOptions);
+    getOrderRequestList(pageOptions, searchTerm);
   };
 
-  return isLoading ? (
-    <Loading />
-  ) : (
-    <>
-      <Card sx={{ mb: 2 }}>
-        <CustomSearchInput />
-      </Card>
-      {orderRequests.length > 0 ? (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              isCompleted={status === ORDER_STATUS.COMPLETED}
-            />
-            <TableBody>
-              {orderRequests?.list?.map((row, index) => (
-                <RowStructure
-                  row={row}
-                  userDetails={userDetails}
-                  key={index}
-                  isCompleted={status === ORDER_STATUS.COMPLETED}
-                  handleOrderRequest={handleOrderRequest}
-                  salesPersons={salesPersons}
-                />
-              ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            sx={{
-              overflow: "hidden",
-            }}
-            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-            component="div"
-            count={orderRequests.totalCount}
-            rowsPerPage={rowsPerPage}
-            page={page - 1}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+  return <>
+    <Card sx={{ mb: 2 }}>
+      <CustomSearchInput value={searchTerm} onChange={handleSearch} />
+    </Card>
+    {orderRequests.length > 0 ? (
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+            isCompleted={status === ORDER_STATUS.COMPLETED}
           />
-        </TableContainer>
-      ) : (
-        <NoDataCard title={"No Data Found.."} />
-      )}
-    </>
-  );
+          <TableBody>
+            {orderRequests?.list?.map((row, index) => (
+              <RowStructure
+                row={row}
+                userDetails={userDetails}
+                key={index}
+                isCompleted={status === ORDER_STATUS.COMPLETED}
+                handleOrderRequest={handleOrderRequest}
+                salesPersons={salesPersons}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          sx={{
+            overflow: "hidden",
+          }}
+          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+          component="div"
+          count={orderRequests.totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+    ) : (
+      <NoDataCard title={"No Data Found.."} />
+    )}
+  </>;
 }
 
 function OrdersTable() {
@@ -466,21 +480,6 @@ function OrdersTable() {
     openSnackbar(message, severity);
   };
 
-  React.useEffect(() => {
-    // This block will run only on initial mount
-    if (initialMount) {
-      setInitialMount(false);
-      return;
-    }
-
-    if (userDetails && Object.keys(userDetails).length) {
-      const pageOptions = {
-        pageLimit: rowsPerPage,
-        page,
-      };
-      getOrderRequestList(pageOptions);
-    }
-  }, [userDetails && Object.keys(userDetails).length, initialMount, value]);
   const handleCloseAddCreditPopup = () => {
     setOpenAddCreditPoints(false);
   };
@@ -542,7 +541,7 @@ function OrdersTable() {
   const orderStatusListing =
     value == 0 ? ORDER_STATUS.PENDING : ORDER_STATUS.COMPLETED;
 
-  const getOrderRequestList = async (queryParams) => {
+  const getOrderRequestList = async (queryParams, searchText) => {
     try {
       setLoading(true);
       setOrderRequests({});
@@ -550,6 +549,7 @@ function OrdersTable() {
         objectToQueryString({
           status: orderStatusListing,
           ...queryParams,
+          ...(searchText ? { search: searchText } : {}),
         })
       );
 

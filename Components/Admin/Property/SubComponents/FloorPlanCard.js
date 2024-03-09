@@ -18,8 +18,15 @@ import {
   Fade,
   TableBody,
 } from "@mui/material";
+import {
+  transformDocuments
+} from "utills/CommonFunction";
+import { getAllOptions } from "api/Property.api";
 import InfoIcon from "@mui/icons-material/Info";
+import { useSnackbar } from "utills/SnackbarContext";
+
 import EditIcon from "@mui/icons-material/Edit";
+import { monthList } from "Components/Constants/index"
 import { unitPlanSchema } from "Components/Admin/Property/Validation/PropertyValidation";
 import DeleteIcon from "@mui/icons-material/Delete";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
@@ -34,6 +41,7 @@ function FloorPlanCard({
   editForm,
   handleChange,
   errors,
+  hide,
   handleUnitsPlan,
 }) {
   const { projectType } = form.overview;
@@ -44,6 +52,8 @@ function FloorPlanCard({
   const [unit, setUnit] = useState();
   const [localError, setLocalError] = useState();
   const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [editItem, setEditItem] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -54,6 +64,7 @@ function FloorPlanCard({
     name: "",
     area: "",
     totalUnits: "",
+    priceUnit:"Crore",
     areaUnit: "",
     bsp: "",
     applicableYear: "",
@@ -61,8 +72,16 @@ function FloorPlanCard({
   });
   const [isEditItem, setIsEditItem] = useState(false);
 
+  const { openSnackbar } = useSnackbar();
+
+    const showToaterMessages = (message, severity) => {
+      openSnackbar(message, severity);
+    };
+
   useEffect(() => {
     setUnit(layoutType);
+    getAllOptionDataList()
+
     setUnitType(projectType);
     const updatedPlanList = unitsPlan.planList.filter((plan) => {
       // Check if all fields in the plan object are empty
@@ -80,6 +99,30 @@ function FloorPlanCard({
     });
     setRows([...updatedPlanList]);
   }, [editForm]);
+
+
+  const [selectOptions, setSelectOption] = useState({})
+  const getAllOptionDataList = async () => {
+      try {
+          let res = await getAllOptions();
+          if (res.status === 200) {
+              let transform = transformDocuments(res.data.data)
+              setSelectOption({ ...transform })
+          }
+      } catch (error) {
+          console.log(error, 'err')
+          showToaterMessages(
+            error?.response?.data?.message ||
+            error?.message ||
+            "Error fetching state list",
+            "error"
+          );
+      }
+      finally {
+        setLoading(false);
+      }
+  };
+
 
   const style = {
     position: "absolute",
@@ -181,6 +224,7 @@ function FloorPlanCard({
         area: "",
         areaUnit: "",
         totalUnits: "",
+        priceUnit:"Crore",
         bsp: "",
         applicableYear: "",
         applicableMonth: "",
@@ -228,7 +272,8 @@ function FloorPlanCard({
         name: "",
         area: "",
         totalUnits: "",
-        areaUnit: "",
+        priceUnit:"Crore",
+        areaUnit: "Acres",
         bsp: "",
         applicableYear: "",
         applicableMonth: "",
@@ -284,7 +329,8 @@ function FloorPlanCard({
                 }))
               }
             />
-            <NewSelectTextFieldStructure
+            { !hide.includes("unitsPlanUnit") ?
+             <NewSelectTextFieldStructure
               label="Unit"
               isEdit={isEdit}
               name="propertyLayout"
@@ -301,6 +347,24 @@ function FloorPlanCard({
                 }))
               }
             />
+            :
+            <NewInputFieldStructure
+            label="Unit"
+            variant="outlined"
+            isEdit={isEdit}
+            list={layoutType}
+            name="propertyLayout"
+            value={selectedItem.propertyLayout}
+            error={
+              localError?.["propertyLayout"] ||
+              errors?.["unitsPlan.planList[0].propertyLayout"]
+            }
+            handleChange={(e) =>
+              setSelectedItem((prev) => ({ ...prev, propertyLayout: e.target.value }))
+            }
+          />
+            
+            }
             <NewInputFieldStructure
               label="Name #"
               variant="outlined"
@@ -320,14 +384,22 @@ function FloorPlanCard({
               name="areaUnit"
               infoText="Changing the unit leads to re enter the plan. The old entries will be removed"
               showInfo={true}
+              defaultValue={"Acres"}
               error={
                 localError?.["areaUnit"] ||
                 errors?.["unitsPlan.planList[0].areaUnit"]
               }
               isEdit={isEdit}
-              list={[
-                { label: "acres", value: "acres" },
-                { label: "sqft", value: "sqft" },
+              list={
+                selectOptions.areaUnit?.map((item) => {
+                  return {
+                    label: item,
+                    value: item,
+                  };
+                })||
+                [
+                { label: "Acres", value: "acres" },
+                { label: "Sqft", value: "sqft" },
               ]}
               value={selectedItem.areaUnit}
               handleChange={(e) => {
@@ -364,6 +436,7 @@ function FloorPlanCard({
               label="Area (Per Unit)"
               variant="outlined"
               isEdit={isEdit}
+              type={"number"}
               name="area"
               value={selectedItem.area}
               error={
@@ -377,6 +450,7 @@ function FloorPlanCard({
             <NewInputFieldStructure
               label="Base Selling Price (Per Unit)"
               variant="outlined"
+              type={"number"}
               isEdit={isEdit}
               name="bsp"
               error={localError?.["bsp"] || errors?.["unitsPlan.planList[0].bsp"]}
@@ -386,10 +460,45 @@ function FloorPlanCard({
               }
             />
 
+<NewSelectTextFieldStructure
+              label="Unit of Price"
+              name="priceUnit"
+              error={
+                localError?.["priceUnit"] ||
+                errors?.["unitsPlan.planList[0].priceUnit"]
+              }
+              isEdit={isEdit}
+              list={
+                selectOptions.priceUnit?.map((item) => {
+                  return {
+                    label: item,
+                    value: item,
+                  };
+                })
+              
+                ||
+                [
+                  { label: "Crore", value: "Crore" },
+                  { label: "Lakh", value: "Lakh" },
+                ]
+              }
+              
+            
+            
+              value={selectedItem.priceUnit}
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({
+                  ...prev,
+                  priceUnit: e.target.value,
+                }))
+              }
+            />
+
             <NewInputFieldStructure
               label="Total Units"
               variant="outlined"
               isEdit={isEdit}
+              type={"number"}
               name="totalUnits"
               value={selectedItem.totalUnits}
               error={
@@ -412,10 +521,17 @@ function FloorPlanCard({
                 errors?.["unitsPlan.planList[0].applicableYear"]
               }
               isEdit={isEdit}
-              list={[
-                { label: "2000", value: "2000" },
-                { label: "2001", value: "2001" },
-              ]}
+              list={
+                
+                selectOptions.launch?.map((item) => {
+                  return {
+                      label: item,
+                      value: item,
+                  };
+              })
+              
+            
+            }
               value={selectedItem.applicableYear}
               handleChange={(e) =>
                 setSelectedItem((prev) => ({
@@ -432,10 +548,7 @@ function FloorPlanCard({
                 errors?.["unitsPlan.planList[0].applicableMonth"]
               }
               isEdit={isEdit}
-              list={[
-                { label: "01", value: "01" },
-                { label: "02", value: "02" },
-              ]}
+              list={monthList}
               value={selectedItem.applicableMonth}
               handleChange={(e) =>
                 setSelectedItem((prev) => ({

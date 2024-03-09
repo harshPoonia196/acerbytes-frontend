@@ -1223,12 +1223,14 @@ function Profile() {
                 <NewInputFieldStructure
                   label="Pincode"
                   variant="outlined"
+                  type={"number"}
                   value={profileInfo?.currentAddress?.pinCode}
                   isEdit={isEdit}
                   handleChange={(e) =>
                     handleChange(e, "currentAddress", "pinCode")
                   }
-                  name="pinCode"
+                  id={"pinCode"}
+                  name={"pinCode"}
                 />
               </Grid>
             </Card>
