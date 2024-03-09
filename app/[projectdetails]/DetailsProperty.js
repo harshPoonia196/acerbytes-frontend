@@ -115,6 +115,7 @@ const PropertyDetails = ({ params }) => {
         `${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ""}`
       );
       if (res.status === 200) {
+        shuffle(res.data?.data[0].propertyData?.consultants)
         setPropertyData(res.data?.data);
       }
     } catch (error) {
@@ -365,6 +366,13 @@ const PropertyDetails = ({ params }) => {
     []
   );
 
+  const shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
 
   return (
     <>
@@ -445,7 +453,7 @@ const PropertyDetails = ({ params }) => {
                       />
                     </Box>
                   </Grid>
-                  {propertyData[0]?.propertyData?.consultants
+                  {propertyData[0]?.propertyData?.consultants.length > 0 && propertyData[0]?.propertyData?.consultants
                     ?.slice(0, 2)
                     .map((broker) => (
                       <Grid item xs={12} sm={6} key={broker?.name}>
