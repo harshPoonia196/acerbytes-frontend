@@ -466,14 +466,15 @@ function PropertyList({params}) {
                 <ToggleButton
                   value="score"
                   selected={propertyvalue === "score"}
-                  sx={{ flex: 1 }}
+                  sx={{ flex: 1, justifyContent: "space-around" }}
+                  
                 >
                   Score {propertyvalue === "score" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
                 </ToggleButton>
                 <ToggleButton
                   value="price"
                   selected={propertyvalue === "price"}
-                  sx={{ flex: 1 }}
+                  sx={{ flex: 1, justifyContent: "space-around" }}
                 >
                    Price  {propertyvalue === "price" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
                 
@@ -481,7 +482,7 @@ function PropertyList({params}) {
                 <ToggleButton
                   value="area"
                   selected={propertyvalue === "area"}
-                  sx={{ flex: 1 }}
+                  sx={{ flex: 1, justifyContent: "space-around" }}
                 >
                      Area  {propertyvalue === "area" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
                 
@@ -489,7 +490,7 @@ function PropertyList({params}) {
                 <ToggleButton
                   value="completion"
                   selected={propertyvalue === "completion"}
-                  sx={{ flex: 1 }}
+                  sx={{ flex: 1, justifyContent: "space-around" }}
                 >
                      Completion  {propertyvalue === "completion" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
                
