@@ -44,7 +44,7 @@ import { debounce } from "lodash";
 import { ToasterMessages } from "Components/Constants";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import colors from "styles/theme/colors";
-import DoNotDisturbAltIcon from '@mui/icons-material'
+import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt'
 
 const headCells = [
   {

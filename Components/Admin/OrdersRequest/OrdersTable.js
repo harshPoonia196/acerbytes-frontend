@@ -17,6 +17,8 @@ import {
   MenuItem,
   Button,
   Card,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import React from "react";
@@ -485,7 +487,8 @@ function OrdersTable() {
   };
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    if (newValue !== null)
+      setValue(newValue);
   };
 
   const adminAssignPointsHandler = ({
@@ -599,52 +602,63 @@ function OrdersTable() {
         handleSubmit={adminAssignPointsHandler}
       />
 
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
+      <Card sx={{ my: 2 }}>
+        <ToggleButtonGroup
+          color="primary"
           value={value}
+          exclusive
+          aria-label="Platform"
+          sx={{ display: "flex" }}
           onChange={handleChange}
-          aria-label="basic tabs example"
         >
-          <Tab label="Pending" {...a11yProps(0)} />
-          <Tab label="Completed" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
-      <CustomTabPanel value={value} index={0}>
-        <TableView
-          status={ORDER_STATUS.PENDING}
-          userDetails={userDetails}
-          isLoading={isLoading}
-          setLoading={setLoading}
-          setPage={setPage}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          handleOrderRequest={handleOrderRequest}
-          showToaterMessages={showToaterMessages}
-          setRowsPerPage={setRowsPerPage}
-          initialMount={initialMount}
-          orderRequests={orderRequests}
-          setInitialMount={setInitialMount}
-          getOrderRequestList={getOrderRequestList}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <TableView
-          status={ORDER_STATUS.COMPLETED}
-          userDetails={userDetails}
-          isLoading={isLoading}
-          setLoading={setLoading}
-          setRowsPerPage={setRowsPerPage}
-          setPage={setPage}
-          page={page}
-          orderRequests={orderRequests}
-          rowsPerPage={rowsPerPage}
-          handleOrderRequest={handleOrderRequest}
-          showToaterMessages={showToaterMessages}
-          getOrderRequestList={getOrderRequestList}
-          initialMount={initialMount}
-          setInitialMount={setInitialMount}
-        />
-      </CustomTabPanel>
+          <ToggleButton
+            size="small"
+            value={0}
+            sx={{ flex: 1, border: "none" }}
+          >
+            Pending
+          </ToggleButton>
+          <ToggleButton
+            size="small"
+            value={1}
+            sx={{ flex: 1, border: "none" }}
+          >
+            Completed
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Card>
+
+      {value == 0 ? <TableView
+        status={ORDER_STATUS.PENDING}
+        userDetails={userDetails}
+        isLoading={isLoading}
+        setLoading={setLoading}
+        setPage={setPage}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        handleOrderRequest={handleOrderRequest}
+        showToaterMessages={showToaterMessages}
+        setRowsPerPage={setRowsPerPage}
+        initialMount={initialMount}
+        orderRequests={orderRequests}
+        setInitialMount={setInitialMount}
+        getOrderRequestList={getOrderRequestList}
+      /> : <TableView
+        status={ORDER_STATUS.COMPLETED}
+        userDetails={userDetails}
+        isLoading={isLoading}
+        setLoading={setLoading}
+        setRowsPerPage={setRowsPerPage}
+        setPage={setPage}
+        page={page}
+        orderRequests={orderRequests}
+        rowsPerPage={rowsPerPage}
+        handleOrderRequest={handleOrderRequest}
+        showToaterMessages={showToaterMessages}
+        getOrderRequestList={getOrderRequestList}
+        initialMount={initialMount}
+        setInitialMount={setInitialMount}
+      />}
     </Box>
   );
 }
