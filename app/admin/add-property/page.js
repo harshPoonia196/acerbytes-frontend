@@ -370,9 +370,9 @@ setCities(res.data.data[0])
       sectionScore: ''
     },
     unitsPlan: {
-      averagePrice: "",
-      minPriceRange: "",
-      maxPriceRange: "",
+      averagePrice: 0,
+      minPriceRange: 0,
+      maxPriceRange: 0,
       uniqueLayouts: [],
       planList: [
         // {
@@ -671,6 +671,7 @@ setCities(res.data.data[0])
     },
     published: false,
     marketing: {
+      image:"",
       tagLine: "",
       description: "",
     },
@@ -1022,7 +1023,14 @@ const handleUIHide=(e)=>{
           }
           return updatedForm;
         });
-      } else {
+      } 
+      else if(firstKeyName==="marketing" && secondKeyName==="image"){
+setForm({
+  ...form,marketing:{...form.marketing,image:e}
+})
+      }
+      else {
+        console.log('inva',e,firstKeyName,secondKeyName)
         let value = e?.target
           ? thirdKeyName === "checked"
             ? e.target.checked

@@ -8,12 +8,15 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material'
+import { useSnackbar } from "utills/SnackbarContext";
+
 import {
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
 } from '@mui/material'
+import { uploadImage } from "api/Util.api";
 import DeleteIcon from '@mui/icons-material/Delete'
 import Cropper from 'react-cropper'
 import { styled } from '@mui/material/styles'
@@ -41,12 +44,18 @@ const useStyles = makeStyles((theme) => ({
 const UploadMarketingImage = ({
     open,
     handleClose,
-    image, changeImage, setImage, removeImage
+    image, changeImage, setImage, removeImage,handleChange
 }) => {
+    const { openSnackbar } = useSnackbar();
     const classes = useStyles()
     const [cropData, setCropData] = useState('')
     const [cropper, setCropper] = useState(false)
     const [enableCropper, setEnableCropper] = useState(false)
+
+
+    const showToaterMessages = (message, severity) => {
+        openSnackbar(message, severity);
+      };
 
     const handleImageSelect = (e) => {
         e.preventDefault()
@@ -63,18 +72,37 @@ const UploadMarketingImage = ({
         reader.readAsDataURL(files[0])
     }
 
-    const getCropData = (e) => {
+    const getCropData = async (e) => {
         e.preventDefault()
         if (typeof cropper !== 'undefined') {
             setCropData(cropper.getCroppedCanvas().toDataURL())
         }
+        const blob = await fetch(cropper.getCroppedCanvas().toDataURL()).then(response => response.blob())
+        const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+        uploadDocument(file)
     }
 
-    const uploadDocument = (cropDataIn) => {
+    const uploadDocument = async(cropDataIn) => {
+
+
         let payload = {
             image: cropDataIn,
         }
-
+        try{
+            let response = await uploadImage(payload)
+            if (response.data.status == 200) {
+                handleChange(response.data.data.Location,"marketing","image")
+                handleClose()
+            }
+        }
+        catch (error) {
+            showToaterMessages(
+              error?.response?.data?.message ||
+              error?.message ||
+              "Error fetching state list",
+              "error"
+            );
+          }
 
     }
 
