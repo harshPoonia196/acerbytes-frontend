@@ -72,6 +72,7 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
     } else if (url.includes("/user") && role !== "user") {
       redirectUser("/");
     } else if (url.includes("/consultant") && role !== "broker") {
+      console.log(url, isLogged)
       redirectUser("/");
     }
   }
