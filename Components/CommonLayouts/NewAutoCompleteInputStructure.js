@@ -16,7 +16,8 @@ const NewAutoCompleteInputStructure = ({
   disabled,
   list,
   xs,
-  sm, md
+  sm, md,
+  clearable
 }) => (
   <>
     <Grid item xs={xs ? xs : 12} sm={sm ? sm : 6} md={md ? md : 6}>
@@ -32,7 +33,7 @@ const NewAutoCompleteInputStructure = ({
       <Autocomplete
         disablePortal
         error={error}
-        disableClearable
+        disableClearable={clearable && value ? false : true}
         disabled={disabled}
         id="combo-box-demo"
         // Adding the below option creates issue in property form
