@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import colors from "styles/theme/colors";
-import { currencies } from "Components/config/config";
+import { currencies } from "utills/Constants";
 
 const NewCurrencyInputField = ({
   name1,

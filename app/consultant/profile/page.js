@@ -49,7 +49,7 @@ import {
   updateProfileImage,
   uploadImage,
 } from "api/Util.api";
-import { countries, currencies } from "Components/config/config";
+import { currencies, countries } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import { useAuth } from "utills/AuthContext";
 
