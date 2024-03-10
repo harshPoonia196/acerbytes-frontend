@@ -6,7 +6,7 @@ import colors from 'styles/theme/colors';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import { useSnackbar } from 'utills/SnackbarContext';
-import { ToasterMessages } from "Components/Constants";
+import { ToasterMessages } from 'utills/Constants';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import { formatDateAndDaysRemaining } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
@@ -15,7 +15,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
     const { userDetails } = useAuth();
     const brokerData = SinglePropertyId?.brokerData
     const locationData = propertyData?.location;
-    
+
     const constructPropertyUrl = (property) => {
         const overview = property?.overview;
         const location = property?.location;

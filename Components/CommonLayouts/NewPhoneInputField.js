@@ -1,6 +1,6 @@
 import React from "react";
 import { TextField, Grid, InputAdornment, MenuItem } from "@mui/material";
-import { countries } from "Components/config/config";
+import { countries } from "utills/Constants";
 
 const filterKeys = ["phone"];
 

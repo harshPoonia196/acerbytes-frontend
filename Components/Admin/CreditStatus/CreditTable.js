@@ -36,10 +36,9 @@ import {
   DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
-} from "Components/config/config";
+} from "utills/Constants";
 import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
-import { ORDER_STATUS, ToasterMessages } from "Components/Constants";
 import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
@@ -48,6 +47,7 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { debounce } from "lodash";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import { ORDER_STATUS, ToasterMessages } from "utills/Constants";
 
 const headCells = [
   {

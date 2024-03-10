@@ -25,7 +25,7 @@ import {
   DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
-} from "Components/config/config";
+} from "utills/Constants";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import colors from "styles/theme/colors";

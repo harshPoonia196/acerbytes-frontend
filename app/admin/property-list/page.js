@@ -6,7 +6,7 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import PropertyListTable from "Components/Admin/PropertyList/PropertyListTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
-import { DEBOUNCE_TIMER } from "Components/config/config";
+import { DEBOUNCE_TIMER } from "utills/Constants";
 
 function PropertyList() {
   const [searchTerm, setSearchTerm] = useState("");

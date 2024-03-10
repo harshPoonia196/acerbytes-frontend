@@ -36,7 +36,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import { ORDER_STATUS, ToasterMessages } from "Components/Constants";
+import { ToasterMessages } from "utills/Constants";
 import Loading from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import {
@@ -51,13 +51,14 @@ import {
   DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
-} from "Components/config/config";
+} from "utills/Constants";
 import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import Loader from "Components/CommonLayouts/Loading";
 import { debounce } from "lodash";
+import { ORDER_STATUS } from "utills/Constants";
 
 const headCells = [
   {
