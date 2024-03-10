@@ -102,19 +102,19 @@ function PropertyCard(props) {
           >
             {(propertyDetails?.unitsPlan?.averagePrice ||
               propertyDetails?.unitsPlan?.planList[0]?.areaUnit) && (
-              <Typography variant="caption">
-                {propertyDetails?.unitsPlan?.averagePrice +
-                  "/" +
-                  propertyDetails?.unitsPlan?.planList[0]?.areaUnit}
-              </Typography>
-            )}
+                <Typography variant="caption">
+                  {propertyDetails?.unitsPlan?.averagePrice +
+                    "/" +
+                    propertyDetails?.unitsPlan?.planList[0]?.areaUnit}
+                </Typography>
+              )}
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
-              <Typography variant="subtitle2">
-                ₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹{" "}
-                {propertyDetails?.unitsPlan?.maxPriceRange} Cr
-              </Typography>
-            )}
+                <Typography variant="subtitle2">
+                  ₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹{" "}
+                  {propertyDetails?.unitsPlan?.maxPriceRange} Cr
+                </Typography>
+              )}
           </Grid>
           <Grid
             item
@@ -126,13 +126,11 @@ function PropertyCard(props) {
             <Typography variant="caption">
               {propertyDetails?.layout?.totalUnits} Units
             </Typography>
-            <Typography variant="subtitle2">{`${
-              propertyDetails?.layout?.area
-            } ${
-              propertyDetails?.layout?.areaUnit
-                ? "/" + propertyDetails?.layout?.areaUnit
+            <Typography variant="subtitle2">{`${propertyDetails?.layout?.area
+              } ${propertyDetails?.layout?.areaUnit
+                ? propertyDetails?.layout?.areaUnit
                 : ""
-            }`}</Typography>
+              }`}</Typography>
           </Grid>
           <Grid
             item
@@ -246,7 +244,7 @@ function PropertyCard(props) {
             icon={<ThumbUpIcon style={{ color: "#276ef1", mr: 1 }} />}
             // label="Liked on 23-09-2023 at 09:30 AM"
             label={`Liked on ${formattedCreatedAt}`}
-            onClick={() => {}}
+            onClick={() => { }}
             size="small"
             sx={{ fontSize: "0.75rem" }}
           />

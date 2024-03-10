@@ -17,6 +17,8 @@ import {
   MenuItem,
   Button,
   Card,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import React from "react";
@@ -34,7 +36,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import { ORDER_STATUS, ToasterMessages } from "Components/Constants";
+import { ToasterMessages } from "utills/Constants";
 import Loading from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import {
@@ -49,12 +51,14 @@ import {
   DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
-} from "Components/config/config";
+} from "utills/Constants";
 import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import Loader from "Components/CommonLayouts/Loading";
 import { debounce } from "lodash";
+import { ORDER_STATUS } from "utills/Constants";
 
 const headCells = [
   {
@@ -404,7 +408,7 @@ function TableView({
       pageLimit: rowsPerPage,
       page,
     };
-    getOrderRequestList(pageOptions,searchTerm);
+    getOrderRequestList(pageOptions, searchTerm);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -415,48 +419,52 @@ function TableView({
       pageLimit,
       page: 1,
     };
-    getOrderRequestList(pageOptions,searchTerm);
+    getOrderRequestList(pageOptions, searchTerm);
   };
 
   return <>
     <Card sx={{ mb: 2 }}>
-    <CustomSearchInput value={searchTerm} onChange={handleSearch} />
+      <CustomSearchInput value={searchTerm} onChange={handleSearch} />
     </Card>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-          isCompleted={status === ORDER_STATUS.COMPLETED}
+    {orderRequests.length > 0 ? (
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+            isCompleted={status === ORDER_STATUS.COMPLETED}
+          />
+          <TableBody>
+            {orderRequests?.list?.map((row, index) => (
+              <RowStructure
+                row={row}
+                userDetails={userDetails}
+                key={index}
+                isCompleted={status === ORDER_STATUS.COMPLETED}
+                handleOrderRequest={handleOrderRequest}
+                salesPersons={salesPersons}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          sx={{
+            overflow: "hidden",
+          }}
+          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+          component="div"
+          count={orderRequests.totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        <TableBody>
-          {orderRequests?.list?.map((row, index) => (
-            <RowStructure
-              row={row}
-              userDetails={userDetails}
-              key={index}
-              isCompleted={status === ORDER_STATUS.COMPLETED}
-              handleOrderRequest={handleOrderRequest}
-              salesPersons={salesPersons}
-            />
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        sx={{
-          overflow: "hidden",
-        }}
-        rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-        component="div"
-        count={orderRequests.totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page - 1}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </TableContainer>
-  </>
+      </TableContainer>
+    ) : (
+      <NoDataCard title={"No data found"} />
+    )}
+  </>;
 }
 
 function OrdersTable() {
@@ -480,7 +488,8 @@ function OrdersTable() {
   };
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    if (newValue !== null)
+      setValue(newValue);
   };
 
   const adminAssignPointsHandler = ({
@@ -577,73 +586,80 @@ function OrdersTable() {
   };
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       {isLoading && <Loader />}
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Orders request (Admin)
-        </Typography>
-        <CustomButton
-          variant="contained"
-          style={{ display: "flex", marginLeft: "auto" }}
-          align="right"
-          onClick={() => setOpenAddCreditPoints(true)}
-          startIcon={<Add />}
-          ButtonText={"Add request"}
-        />
-      </Box>
+      <CustomButton
+        variant="contained"
+        style={{ display: "flex", marginLeft: "auto" }}
+        align="right"
+        onClick={() => setOpenAddCreditPoints(true)}
+        startIcon={<Add />}
+        ButtonText={"Add request"}
+      />
+
       <AdminCreditPointsPopup
         open={openAddCreditPoints}
         handleClose={handleCloseAddCreditPopup}
         handleSubmit={adminAssignPointsHandler}
       />
 
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
+      <Card sx={{ my: 2 }}>
+        <ToggleButtonGroup
+          color="primary"
           value={value}
+          exclusive
+          aria-label="Platform"
+          sx={{ display: "flex" }}
           onChange={handleChange}
-          aria-label="basic tabs example"
         >
-          <Tab label="Pending" {...a11yProps(0)} />
-          <Tab label="Completed" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
-      <CustomTabPanel value={value} index={0}>
-        <TableView
-          status={ORDER_STATUS.PENDING}
-          userDetails={userDetails}
-          isLoading={isLoading}
-          setLoading={setLoading}
-          setPage={setPage}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          handleOrderRequest={handleOrderRequest}
-          showToaterMessages={showToaterMessages}
-          setRowsPerPage={setRowsPerPage}
-          initialMount={initialMount}
-          orderRequests={orderRequests}
-          setInitialMount={setInitialMount}
-          getOrderRequestList={getOrderRequestList}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <TableView
-          status={ORDER_STATUS.COMPLETED}
-          userDetails={userDetails}
-          isLoading={isLoading}
-          setLoading={setLoading}
-          setRowsPerPage={setRowsPerPage}
-          setPage={setPage}
-          page={page}
-          orderRequests={orderRequests}
-          rowsPerPage={rowsPerPage}
-          handleOrderRequest={handleOrderRequest}
-          showToaterMessages={showToaterMessages}
-          getOrderRequestList={getOrderRequestList}
-          initialMount={initialMount}
-          setInitialMount={setInitialMount}
-        />
-      </CustomTabPanel>
+          <ToggleButton
+            size="small"
+            value={0}
+            sx={{ flex: 1, border: "none" }}
+          >
+            Pending
+          </ToggleButton>
+          <ToggleButton
+            size="small"
+            value={1}
+            sx={{ flex: 1, border: "none" }}
+          >
+            Completed
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Card>
+
+      {value == 0 ? <TableView
+        status={ORDER_STATUS.PENDING}
+        userDetails={userDetails}
+        isLoading={isLoading}
+        setLoading={setLoading}
+        setPage={setPage}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        handleOrderRequest={handleOrderRequest}
+        showToaterMessages={showToaterMessages}
+        setRowsPerPage={setRowsPerPage}
+        initialMount={initialMount}
+        orderRequests={orderRequests}
+        setInitialMount={setInitialMount}
+        getOrderRequestList={getOrderRequestList}
+      /> : <TableView
+        status={ORDER_STATUS.COMPLETED}
+        userDetails={userDetails}
+        isLoading={isLoading}
+        setLoading={setLoading}
+        setRowsPerPage={setRowsPerPage}
+        setPage={setPage}
+        page={page}
+        orderRequests={orderRequests}
+        rowsPerPage={rowsPerPage}
+        handleOrderRequest={handleOrderRequest}
+        showToaterMessages={showToaterMessages}
+        getOrderRequestList={getOrderRequestList}
+        initialMount={initialMount}
+        setInitialMount={setInitialMount}
+      />}
     </Box>
   );
 }

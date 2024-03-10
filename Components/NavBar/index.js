@@ -55,7 +55,7 @@ import colors from "styles/theme/colors";
 import { checkTokenAPI } from "api/Auth.api";
 import { useAuth } from "utills/AuthContext";
 import { getBrokerBalance } from "api/Broker.api";
-import { ROLE_CONSTANTS } from "Components/config/config";
+import { ROLE_CONSTANTS } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
@@ -467,7 +467,7 @@ export default function ClippedDrawer({ children }) {
               {userDetails && Object.keys(userDetails).length ? (
                 <Box>
                   <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, color: colors.BLUE, textTransform: 'capitalize' }}>
-                    {userDetails?.name?.firstName} <Typography sx={{marginLeft: "5px", color: colors.BLUE, textTransform: 'capitalize'}}>{userDetails?.name?.lastName}</Typography>
+                    {userDetails?.name?.firstName} <Typography sx={{ marginLeft: "5px", color: colors.BLUE, textTransform: 'capitalize' }}>{userDetails?.name?.lastName}</Typography>
                   </Typography>
                   <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, color: colors.BLUE, textTransform: 'capitalize' }}>
                     {userDetails?.name?.lastName}

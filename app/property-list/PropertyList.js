@@ -25,7 +25,7 @@ import {
   DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
-} from "Components/config/config";
+} from "utills/Constants";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import colors from "styles/theme/colors";
@@ -35,8 +35,11 @@ import {
   transformDocumentsLocation,
 } from "utills/CommonFunction";
 import { debounce } from "lodash";
+import { useAuth } from "utills/AuthContext";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
-function PropertyList({params}) {
+function PropertyList({ params }) {
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [alignment, setAlignment] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
@@ -48,9 +51,8 @@ function PropertyList({params}) {
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
-  const [selectedOptions, setSelectedOptions] = useState(params?.location ? {city : params.location} : {});
+  const [selectedOptions, setSelectedOptions] = useState(params?.location ? { city: params.location } : {});
   const [propertyvalue, setPropertyvalue] = useState("");
-  const [buttonColor, setButtonColor] = useState("");
   const [selectOption, setSelectOption] = useState({});
   const [isDisablePropertyType, setIsDisablePropertyType] = useState(true);
   const [isDisableLayoutType, setIsDisableLayoutType] = useState(true);
@@ -60,7 +62,6 @@ function PropertyList({params}) {
   const [locationDisable, setLocationDisable] = useState(true);
   const [selectedCity, setSelectedCity] = useState(params?.location ? [params.location] : []);
 
-  
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
@@ -98,6 +99,9 @@ function PropertyList({params}) {
         sortBy: alignment,
         key: propertyvalue,
       };
+      if (userDetails?._id) {
+        querParams.brokerId = userDetails?._id
+      }
       if (Object.keys(data).length === 0) {
         delete querParams["searchParams"];
       }
@@ -109,8 +113,8 @@ function PropertyList({params}) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -128,8 +132,8 @@ function PropertyList({params}) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -200,7 +204,6 @@ function PropertyList({params}) {
     setIsDisableLayoutType(true);
     setLocationDisable(true);
     setSelectedCity([]);
-    setButtonColor('')
   };
 
   const { openSnackbar } = useSnackbar();
@@ -293,41 +296,28 @@ function PropertyList({params}) {
     );
   };
 
-  const handleChange = (event, value) => {
-    if (value === "dec") {
-      setAlignment(-1);
-    } else {
-      setAlignment(1);
-    }
-  };
 
   const handleChangeData = (event, value) => {
-    setButtonColor(value);
     setPropertyvalue(value);
-    if (alignment == 1) {
+    if (value !== propertyvalue) {
       setAlignment(-1);
     } else {
-      setAlignment(1);
+      if (alignment == 1) {
+        setAlignment(-1);
+      } else {
+        setAlignment(1);
+      }
     }
   };
 
-  const handleChangeAllData = (event, value) => {
-    const newAlignment = value === "dec" ? -1 : 1;
-    setAlignment(newAlignment);
-    setButtonColor("");
-    const pageOptions = {
-      pageLimit,
-      page: 1,
-    };
-    setPropertyvalue("");
-    getUserPropertyList(
-      pageOptions,
-      searchTerm,
-      selectedOptions,
-      newAlignment,
-      propertyvalue
-    );
-  };
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
 
   return (
     <>
@@ -387,6 +377,7 @@ function PropertyList({params}) {
                 handleOptionChange("category", value)
               }
               value={selectedOptions.category ? selectedOptions.category : ""}
+              clearable
             />
             {/* Flat,shop */}
             <NewAutoCompleteInputStructure
@@ -408,6 +399,7 @@ function PropertyList({params}) {
                   ? selectedOptions?.propertyType
                   : ""
               }
+              clearable
             />
             {/* 1BHK, 2BHK */}
             <NewAutoCompleteInputStructure
@@ -427,6 +419,7 @@ function PropertyList({params}) {
                 handleOptionChange("unitType", value)
               }
               value={selectedOptions.unitType ? selectedOptions.unitType : ""}
+              clearable
             />
             {/* Noida,gurgoan */}
             <NewAutoCompleteInputStructure
@@ -437,6 +430,7 @@ function PropertyList({params}) {
               list={cities}
               handleChange={(event, value) => handleOptionChange("city", value)}
               value={selectedOptions.city ? selectedOptions.city : ""}
+              clearable
             />
             {/* Sector/area */}
             <NewAutoCompleteInputStructure
@@ -450,6 +444,7 @@ function PropertyList({params}) {
                 handleOptionChange("location", value)
               }
               value={selectedOptions.location ? selectedOptions.location : ""}
+              clearable
             />
             <NewAutoCompleteInputStructure
               xs={18}
@@ -461,6 +456,7 @@ function PropertyList({params}) {
                 handleOptionChange("status", value)
               }
               value={selectedOptions.status ? selectedOptions.status : ""}
+              clearable
             />
             <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
               <Typography
@@ -480,35 +476,35 @@ function PropertyList({params}) {
               >
                 <ToggleButton
                   value="score"
-                  selected={buttonColor === "score"}
-                  sx={{ flex: 1 }}
+                  selected={propertyvalue === "score"}
+                  sx={{ flex: 1, justifyContent: "space-around" }}
+
                 >
-                  Score <ArrowUpwardIcon fontSize="small" />{" "}
-                  <ArrowDownwardIcon fontSize="small" />
+                  Score {propertyvalue === "score" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
                 </ToggleButton>
                 <ToggleButton
                   value="price"
-                  selected={buttonColor === "price"}
-                  sx={{ flex: 1 }}
+                  selected={propertyvalue === "price"}
+                  sx={{ flex: 1, justifyContent: "space-around" }}
                 >
-                  Price <ArrowUpwardIcon fontSize="small" />{" "}
-                  <ArrowDownwardIcon fontSize="small" />
+                  Price  {propertyvalue === "price" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+
                 </ToggleButton>
                 <ToggleButton
                   value="area"
-                  selected={buttonColor === "area"}
-                  sx={{ flex: 1 }}
+                  selected={propertyvalue === "area"}
+                  sx={{ flex: 1, justifyContent: "space-around" }}
                 >
-                  Area <ArrowUpwardIcon fontSize="small" />{" "}
-                  <ArrowDownwardIcon fontSize="small" />
+                  Area  {propertyvalue === "area" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+
                 </ToggleButton>
                 <ToggleButton
                   value="completion"
-                  selected={buttonColor === "completion"}
-                  sx={{ flex: 1 }}
+                  selected={propertyvalue === "completion"}
+                  sx={{ flex: 1, justifyContent: "space-around" }}
                 >
-                  Completion <ArrowUpwardIcon fontSize="small" />{" "}
-                  <ArrowDownwardIcon fontSize="small" />
+                  Completion  {propertyvalue === "completion" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
@@ -544,25 +540,24 @@ function PropertyList({params}) {
               </Card>
             </Grid>
             <Grid item xs={36}>
-              <Grid container spacing={0.25}>
-                {count?.totalCount === 0 ? (
-                  <Card sx={{ m: 2, p: 2, textAlign: "center", width: "100%" }}>
-                    <Typography variant="subtitle1">
-                      Data not available.
-                    </Typography>
-                  </Card>
+              {
+                count?.totalCount === 0 ? (
+                  <NoDataCard />
                 ) : (
-                  property?.map((propertyDetails) => (
-                    <Grid item xs={12}>
-                      <PropertyCard
-                        createdDate={propertyDetails?.created_at}
-                        isShortListPageCard={propertyDetails?.isFav}
-                        propertyDetails={propertyDetails}
-                      />
-                    </Grid>
-                  ))
-                )}
-              </Grid>
+                  <Grid container spacing={0.25}>
+                    {property?.map((propertyDetails) => (
+                      <Grid item xs={12}>
+                        <PropertyCard
+                          createdDate={propertyDetails?.created_at}
+                          isShortListPageCard={propertyDetails?.isFav}
+                          propertyDetails={propertyDetails}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                )
+              }
+
             </Grid>
             <Grid sx={{ marginLeft: "auto", marginRight: "0" }}>
               <TablePagination

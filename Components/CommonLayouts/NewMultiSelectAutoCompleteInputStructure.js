@@ -19,6 +19,7 @@ const NewMultiSelectAutoCompleteInputStructure = ({
   type,
   value,
   list,
+  disabled,
   sx,
   brokerUse = false,
   variant,
@@ -42,6 +43,7 @@ const NewMultiSelectAutoCompleteInputStructure = ({
         <Autocomplete
           multiple
           disablePortal
+          disabled={disabled}
           id="combo-box-demo"
           onChange={handleChange}
           options={list || top100Films}

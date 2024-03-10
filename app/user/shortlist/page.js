@@ -13,7 +13,7 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { getAllfavouriteProperty } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
-import { DEBOUNCE_TIMER } from "Components/config/config";
+import { DEBOUNCE_TIMER } from "utills/Constants";
 
 function ShortList() {
   const [alignment, setAlignment] = useState("asc");

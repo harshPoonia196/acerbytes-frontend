@@ -19,6 +19,7 @@ import {
   TableBody,
 } from "@mui/material";
 import {
+  monthList,
   transformDocuments
 } from "utills/CommonFunction";
 import { getAllOptions } from "api/Property.api";
@@ -26,7 +27,6 @@ import InfoIcon from "@mui/icons-material/Info";
 import { useSnackbar } from "utills/SnackbarContext";
 
 import EditIcon from "@mui/icons-material/Edit";
-import { monthList } from "Components/Constants/index"
 import { unitPlanSchema } from "Components/Admin/Property/Validation/PropertyValidation";
 import DeleteIcon from "@mui/icons-material/Delete";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
@@ -64,7 +64,7 @@ function FloorPlanCard({
     name: "",
     area: "",
     totalUnits: "",
-    priceUnit:"Crore",
+    priceUnit: "Crore",
     areaUnit: "",
     bsp: "",
     applicableYear: "",
@@ -74,9 +74,9 @@ function FloorPlanCard({
 
   const { openSnackbar } = useSnackbar();
 
-    const showToaterMessages = (message, severity) => {
-      openSnackbar(message, severity);
-    };
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
 
   useEffect(() => {
     setUnit(layoutType);
@@ -103,24 +103,24 @@ function FloorPlanCard({
 
   const [selectOptions, setSelectOption] = useState({})
   const getAllOptionDataList = async () => {
-      try {
-          let res = await getAllOptions();
-          if (res.status === 200) {
-              let transform = transformDocuments(res.data.data)
-              setSelectOption({ ...transform })
-          }
-      } catch (error) {
-          console.log(error, 'err')
-          showToaterMessages(
-            error?.response?.data?.message ||
-            error?.message ||
-            "Error fetching state list",
-            "error"
-          );
+    try {
+      let res = await getAllOptions();
+      if (res.status === 200) {
+        let transform = transformDocuments(res.data.data)
+        setSelectOption({ ...transform })
       }
-      finally {
-        setLoading(false);
-      }
+    } catch (error) {
+      console.log(error, 'err')
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    }
+    finally {
+      setLoading(false);
+    }
   };
 
 
@@ -224,7 +224,7 @@ function FloorPlanCard({
         area: "",
         areaUnit: "",
         totalUnits: "",
-        priceUnit:"Crore",
+        priceUnit: "Crore",
         bsp: "",
         applicableYear: "",
         applicableMonth: "",
@@ -272,7 +272,7 @@ function FloorPlanCard({
         name: "",
         area: "",
         totalUnits: "",
-        priceUnit:"Crore",
+        priceUnit: "Crore",
         areaUnit: "Acres",
         bsp: "",
         applicableYear: "",
@@ -329,41 +329,41 @@ function FloorPlanCard({
                 }))
               }
             />
-            { !hide.includes("unitsPlanUnit") ?
-             <NewSelectTextFieldStructure
-              label="Unit"
-              isEdit={isEdit}
-              name="propertyLayout"
-              list={layoutType}
-              error={
-                localError?.["propertyLayout"] ||
-                errors?.["unitsPlan.planList[0].propertyLayout"]
-              }
-              value={selectedItem.propertyLayout}
-              handleChange={(e) =>
-                setSelectedItem((prev) => ({
-                  ...prev,
-                  propertyLayout: e.target.value,
-                }))
-              }
-            />
-            :
-            <NewInputFieldStructure
-            label="Unit"
-            variant="outlined"
-            isEdit={isEdit}
-            list={layoutType}
-            name="propertyLayout"
-            value={selectedItem.propertyLayout}
-            error={
-              localError?.["propertyLayout"] ||
-              errors?.["unitsPlan.planList[0].propertyLayout"]
-            }
-            handleChange={(e) =>
-              setSelectedItem((prev) => ({ ...prev, propertyLayout: e.target.value }))
-            }
-          />
-            
+            {!hide.includes("unitsPlanUnit") ?
+              <NewSelectTextFieldStructure
+                label="Unit"
+                isEdit={isEdit}
+                name="propertyLayout"
+                list={layoutType}
+                error={
+                  localError?.["propertyLayout"] ||
+                  errors?.["unitsPlan.planList[0].propertyLayout"]
+                }
+                value={selectedItem.propertyLayout}
+                handleChange={(e) =>
+                  setSelectedItem((prev) => ({
+                    ...prev,
+                    propertyLayout: e.target.value,
+                  }))
+                }
+              />
+              :
+              <NewInputFieldStructure
+                label="Unit"
+                variant="outlined"
+                isEdit={isEdit}
+                list={layoutType}
+                name="propertyLayout"
+                value={selectedItem.propertyLayout}
+                error={
+                  localError?.["propertyLayout"] ||
+                  errors?.["unitsPlan.planList[0].propertyLayout"]
+                }
+                handleChange={(e) =>
+                  setSelectedItem((prev) => ({ ...prev, propertyLayout: e.target.value }))
+                }
+              />
+
             }
             <NewInputFieldStructure
               label="Name #"
@@ -396,11 +396,11 @@ function FloorPlanCard({
                     label: item,
                     value: item,
                   };
-                })||
+                }) ||
                 [
-                { label: "Acres", value: "acres" },
-                { label: "Sqft", value: "sqft" },
-              ]}
+                  { label: "Acres", value: "acres" },
+                  { label: "Sqft", value: "sqft" },
+                ]}
               value={selectedItem.areaUnit}
               handleChange={(e) => {
                 if (rows.length >= 1) {
@@ -460,7 +460,7 @@ function FloorPlanCard({
               }
             />
 
-<NewSelectTextFieldStructure
+            <NewSelectTextFieldStructure
               label="Unit of Price"
               name="priceUnit"
               error={
@@ -475,16 +475,16 @@ function FloorPlanCard({
                     value: item,
                   };
                 })
-              
+
                 ||
                 [
                   { label: "Crore", value: "Crore" },
                   { label: "Lakh", value: "Lakh" },
                 ]
               }
-              
-            
-            
+
+
+
               value={selectedItem.priceUnit}
               handleChange={(e) =>
                 setSelectedItem((prev) => ({
@@ -522,16 +522,16 @@ function FloorPlanCard({
               }
               isEdit={isEdit}
               list={
-                
+
                 selectOptions.launch?.map((item) => {
                   return {
-                      label: item,
-                      value: item,
+                    label: item,
+                    value: item,
                   };
-              })
-              
-            
-            }
+                })
+
+
+              }
               value={selectedItem.applicableYear}
               handleChange={(e) =>
                 setSelectedItem((prev) => ({

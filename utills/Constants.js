@@ -11,6 +11,211 @@ import colors from "styles/theme/colors";
 export const boxShadowTop = '-1px -2px 6px 2px gainsboro !important';
 export const boxShadowBottom = '1px 2px 2px -2px gainsboro !important';
 export const menuMaxHeight = 250;
+export const FILE_TYPES = ["image/png", "image/jpeg", "image/jpg"];
+
+export const PAGINATION_LIMIT = 10;
+export const PAGINATION_LIMIT_OPTIONS = [10, 25];
+export const DEBOUNCE_TIMER = 500;
+
+export const ROLE_CONSTANTS = {
+  superAdmin: "superAdmin",
+  admin: "admin",
+  user: "user",
+  broker: "broker",
+};
+
+export const ROLES = [
+  {
+    label: "Super Admin",
+    value: "superAdmin",
+    isVisible: false,
+  },
+  {
+    label: "Admin",
+    value: "admin",
+    isVisible: true,
+  },
+  {
+    label: "User",
+    value: "user",
+    isVisible: true,
+  },
+  {
+    label: "Broker",
+    value: "broker",
+    isVisible: true,
+  },
+];
+
+export const countries = [
+  {
+    value: "91",
+    label: "+91",
+  },
+  {
+    value: "92",
+    label: "+92",
+  },
+  {
+    value: "9528",
+    label: "+9528",
+  },
+  {
+    value: "1",
+    label: "+1",
+  },
+];
+
+export const currencies = [
+  {
+    value: "₹INR",
+    label: "₹",
+  },
+  {
+    value: "USD",
+    label: "$",
+  },
+];
+
+export const ToasterMessages = {
+  PROFILE_UPDATE_SUCCESS: "Profile updated succesfully!",
+  ORDER_REQUESTED_SUCCESS: "Order requested succesfully!",
+  ORDER_COMPLETED_SUCCESS: "Order completed succesfully!",
+  LINK_COPIED_SUCCESS: "Link copied to clipboard succesfully!",
+  ROLE_UPDATE_SUCCESS: "Role updated succesfully!",
+};
+
+export const BuyingCreditPoints = [
+  {
+    amount: 25000,
+    point: 25000,
+    discount: 0,
+  },
+  {
+    amount: 40000,
+    point: 50000,
+    discount: 20,
+  },
+  {
+    amount: 70000,
+    point: 100000,
+    discount: 30,
+  },
+];
+
+export const ORDER_STATUS = {
+  PENDING: "PENDING",
+  COMPLETED: "COMPLETED",
+  REJECTED: "REJECTED",
+};
+
+export const interestedForLoan = [
+  {
+    label: "Yes",
+    value: "YES",
+  },
+  {
+    label: "No",
+    value: "NO",
+  },
+];
+
+export const addressType = [
+  {
+    label: "Owned",
+    value: "OWNED",
+  },
+  {
+    label: "Rented",
+    value: "RENTED",
+  },
+];
+
+export const demographic = [
+  {
+    label: "Family",
+    value: "FAMILY",
+  },
+  {
+    label: "Single",
+    value: "SINGLE",
+  },
+];
+
+export const purpose = [
+  {
+    label: "Buyer",
+    value: "BUYER",
+  },
+  {
+    label: "Investor",
+    value: "INVESTOR",
+  },
+  {
+    label: "Both",
+    value: "BOTH",
+  },
+];
+
+export const purchase = [
+  {
+    label: "First",
+    value: "FIRST",
+  },
+  {
+    label: "Second",
+    value: "SECOND",
+  },
+  {
+    label: "Third",
+    value: "THIRD",
+  },
+];
+
+export const exploringAs = [
+  {
+    label: "Active",
+    value: "ACTIVE",
+  },
+  {
+    label: "Passive",
+    value: "PASSIVE",
+  },
+  {
+    label: "Urgent",
+    value: "URGENT",
+  },
+  {
+    label: "NA",
+    value: "NA",
+  },
+];
+
+export const SERVICE_TYPE = [
+  {
+    label: "Private",
+    value: "private",
+  },
+  {
+    label: "Government",
+    value: "government",
+  },
+  {
+    label: "Business Owner",
+    value: "businessOwner",
+  },
+];
+
+export const FAMILY = [
+  {
+    label: "Single",
+    value: "single",
+  },
+  {
+    label: "Married",
+    value: "married",
+  },
+];
 
 const listOfTabsInAddProperty = [
   {

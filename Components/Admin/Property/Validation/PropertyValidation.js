@@ -47,7 +47,7 @@ const layoutSchema = Joi.object({
     .custom((value, helpers) => {
       const projectType = helpers.state.ancestors[1].overview.projectType;
       const isFlatSelected = projectType.some(
-        (option) => option.label === "Land"
+        (option) => option.label === "Lands"
       );
       if (isFlatSelected) {
         return helpers.error("layout.numberOfBuildings.custom");
@@ -72,7 +72,7 @@ const layoutSchema = Joi.object({
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
     const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
+      (option) => option.label === "Lands"
     );
     if (isFlatSelected) {
       return helpers.error("layout.numberOfBuildings.custom");
@@ -105,7 +105,7 @@ const layoutSchema = Joi.object({
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
     const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
+      (option) => option.label === "Lands"
     );
     if (isFlatSelected) {
       return helpers.error("layout.numberOfBuildings.custom");
@@ -123,13 +123,13 @@ const layoutSchema = Joi.object({
       )
       .required(),
     then: Joi.number().allow(""),
-    otherwise:  Joi.number().max(34).required(),
+    otherwise:  Joi.number().min(24).max(34).required(),
   }),
   minFloors: Joi.number()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
     const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
+      (option) => option.label === "Lands"
     );
     if (isFlatSelected) {
       return helpers.error("layout.numberOfBuildings.custom");
@@ -147,7 +147,7 @@ const layoutSchema = Joi.object({
       )
       .required(),
     then: Joi.number().allow(""),
-    otherwise:  Joi.number().min(24).required(),
+    otherwise:  Joi.number().min(24).max(34).required(),
   }),
     //   "numberOfBuildings",
   //   "layoutType",
@@ -165,7 +165,7 @@ const layoutSchema = Joi.object({
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
     const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
+      (option) => option.label === "Lands"
     );
     if (isFlatSelected) {
       return helpers.error("layout.numberOfBuildings.custom");
@@ -189,7 +189,7 @@ const layoutSchema = Joi.object({
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
     const isFlatSelected = projectType.some(
-      (option) => option.label === "Land"
+      (option) => option.label === "Lands"
     );
     if (isFlatSelected) {
       return helpers.error("layout.numberOfBuildings.custom");
@@ -232,10 +232,10 @@ export const Schema = Joi.object({
   overview: overviewSchema,
   regulatoryClearance: Joi.object().keys({
     reraApproved: Joi.string().required(),
-    reraNumber: Joi.number().when("reraApproved", {
+    reraNumber: Joi.string().when("reraApproved", {
       is: "Yes",
-      then: Joi.number().required(),
-      otherwise: Joi.number().allow("").optional(),
+      then: Joi.string().required(),
+      otherwise: Joi.string().pattern(/^[a-zA-Z0-9!@#$%^&*()-_+=<>?/\\:;'"[]{},.|]*$/).allow(""),
     }),
     cc: Joi.string().required(),
     oc: Joi.string().required(),
@@ -265,7 +265,6 @@ export const Schema = Joi.object({
     maxPriceRange: Joi.number().allow(null,""),
     uniqueLayouts: Joi.array().items(Joi.string()),
     planList: Joi.array()
-      // .min(1)
       .items(
         Joi.object({
           propertyType: Joi.string().optional().allow(""),
@@ -338,7 +337,7 @@ export const Schema = Joi.object({
     googleMapLink: Joi.string().required(),
     longitude: Joi.number().required(),
     latitude: Joi.number().required(),
-    sectionScore: Joi.number().allow(""),
+    sectionScore: Joi.number().allow(null,""),
     assessment: Joi.object().pattern(
       /./,
       Joi.object().keys({
@@ -417,6 +416,7 @@ export const Schema = Joi.object({
   createdAt:Joi.date(),
 
   marketing: Joi.object().keys({
+    image: Joi.string().allow(""),
     tagLine: Joi.string().required(),
     description: Joi.string().required(),
   }),

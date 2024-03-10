@@ -12,6 +12,8 @@ import {
     Button
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { useSnackbar } from "utills/SnackbarContext";
+
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure';
@@ -42,6 +44,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
     const [enableCropper, setEnableCropper] = useState(false)
 
     const handleImageSelect = (e) => {
+        console.log('hereimage')
         e.preventDefault()
         let files
         if (e.dataTransfer) {
@@ -52,9 +55,12 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
         const reader = new FileReader()
         reader.onload = () => {
             setImage(reader.result)
+            console.log(reader.result,'ree')
         }
         reader.readAsDataURL(files[0])
+        console.log(files[0],'filess')
         handleOpenUploadPopup()
+
     }
 
     const handleImageRemove = () => {
@@ -64,7 +70,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
 
     return (
         <Grid item xs={12} id="marketing">
-            <UploadMarketingImage open={isUploadPopupOpen} image={image} setImage={setImage} onClose={handleCloseUploadPopup} changeImage={handleImageSelect} removeImage={handleImageRemove} />
+            <UploadMarketingImage open={isUploadPopupOpen} image={image} setImage={setImage} onClose={handleCloseUploadPopup} handleClose={handleCloseUploadPopup} changeImage={handleImageSelect} handleChange={handleChange} removeImage={handleImageRemove} />
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
@@ -79,22 +85,23 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                     <Grid item xs={12}>
                         <Card sx={{ display: 'flex', p: 2 }}>
                             <Typography sx={{ flex: 1, alignSelf: 'center' }}>Upload</Typography>
-                            <CustomButton
+                            {/* <CustomButton
                                 variant="contained"
                                 component="label"
+                                // onClick={handleImageSelect}
                                 sx={{ textTransform: 'uppercase' }}
                                 startIcon={<AttachFileIcon />}
                                 ButtonText={"Attach"}
-                            >
+                            > */}
 
                                 <input
                                     id="contained-button-file"
                                     type="file"
                                     onChange={handleImageSelect}
                                     accept="image/x-png,image/gif,image/jpeg"
-                                    hidden
+                                    // hidden
                                 />
-                            </CustomButton>
+                            {/* </CustomButton> */}
                         </Card>
                     </Grid>
                     <NewInputFieldStructure

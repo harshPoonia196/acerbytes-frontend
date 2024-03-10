@@ -5,16 +5,17 @@ import { Close } from '@mui/icons-material';
 import colors from 'styles/theme/colors';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AddLinkIcon from '@mui/icons-material/AddLink';
-import { useSearchParams } from 'next/navigation';
 import { useSnackbar } from 'utills/SnackbarContext';
-import { ToasterMessages } from "Components/Constants";
+import { ToasterMessages } from 'utills/Constants';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import { formatDateAndDaysRemaining } from 'utills/CommonFunction';
+import { useAuth } from 'utills/AuthContext';
 
 function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant, SinglePropertyId, propertyData, id }) {
+    const { userDetails } = useAuth();
     const brokerData = SinglePropertyId?.brokerData
     const locationData = propertyData?.location;
-    
+
     const constructPropertyUrl = (property) => {
         const overview = property?.overview;
         const location = property?.location;
@@ -43,7 +44,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
 
     const propertyUrl = constructPropertyUrl(propertyData)
 
-    const name = brokerData?.name?.firstName && brokerData?.name?.lastName ? `${brokerData.name.firstName}  ${brokerData.name.lastName}` : "Test Patel"
+    const name = brokerData?.name?.firstName && brokerData?.name?.lastName ? `${brokerData.name.firstName}  ${brokerData?.name?.lastName}` : `${userDetails?.name?.firstName}  ${userDetails?.name?.lastName}`
     const city = locationData?.city ? locationData.city : "Godrejforest"
     const sector = locationData?.sector ? locationData.sector : "Sector"
     const pinCode = locationData?.pinCode ? locationData.pinCode : "132"

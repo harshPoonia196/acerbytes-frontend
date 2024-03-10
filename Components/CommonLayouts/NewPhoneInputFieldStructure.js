@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 import colors from "styles/theme/colors";
-import { countries } from "Components/config/config";
+import { countries } from "utills/Constants";
 
 function NewPhoneInputFieldStructure({
   name1,
@@ -53,7 +53,7 @@ function NewPhoneInputFieldStructure({
           variant="subtitle2"
           sx={{ alignSelf: "center", color: colors.GRAY }}
         >
-         {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
+          {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
       </Box>
       {isEdit ? (

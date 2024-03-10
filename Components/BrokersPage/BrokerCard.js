@@ -77,6 +77,10 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
 
   const precision = 0.5;
 
+  const titleCase = (string) => {
+    return string ? string.replace(/^\w/, c =>c.toUpperCase()) : string
+  }
+
   return (
     <Card sx={{ position: "relative" }}>
       <Box sx={{ display: "flex", p: 2 }}>
@@ -87,14 +91,14 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
         />
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">
-            {broker?.fullName}
+            {titleCase(broker?.fullName)}
             <DoneIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
             <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
           </Typography>
           <Typography variant="body2">
             {broker?.currentAddress?.city || ""}{" "}
             {broker?.currentAddress?.city ? <>&#183;</> : ""}{" "}
-            {broker?.type || "Consultant"}
+            {titleCase(broker?.type) || "Consultant"}
           </Typography>
           <Box
             sx={{

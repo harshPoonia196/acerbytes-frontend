@@ -64,6 +64,7 @@ import { getLoggedInUser } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
+import { toCamelCase } from "utills/CommonFunction";
 
 const tabHeight = 200;
 
@@ -81,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -122,13 +123,14 @@ const PropertyDetailsPage = ({ params }) => {
         `${detailsPropertyId}${brokerId ? `?brokerId=${brokerId}` : ""}`
       );
       if (res.status === 200) {
+        shuffle(res.data?.data?.consultants)
         setPropertyData(res.data?.data);
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -148,8 +150,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error generating fav Property",
+        error?.message ||
+        "Error generating fav Property",
         "error"
       );
     } finally {
@@ -347,9 +349,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -404,6 +406,14 @@ const PropertyDetailsPage = ({ params }) => {
     }
   }, []);
 
+  const shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
   return (
     <>
       {isLoading && <Loader />}
@@ -424,6 +434,7 @@ const PropertyDetailsPage = ({ params }) => {
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
           handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
           isConsultant
+          propertyData={propertyData}
         />
       ) : null}
 
@@ -502,7 +513,7 @@ const PropertyDetailsPage = ({ params }) => {
                       />
                     </Box>
                   </Grid>
-                  {propertyData?.consultants?.slice(0, 2).map((broker) => (
+                  {propertyData?.consultants?.length > 0 && propertyData?.consultants?.slice(0, 2).map((broker) => (
                     <Grid item xs={12} sm={6} key={broker?.name}>
                       <BrokerCard broker={broker} noReview />
                     </Grid>
@@ -520,7 +531,7 @@ const PropertyDetailsPage = ({ params }) => {
                         icon={<PersonAddIcon fontSize="small" />}
                         size="small"
                         sx={{ fontSize: "0.875rem" }}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </Box>
                   </Grid>

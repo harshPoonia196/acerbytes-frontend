@@ -10,20 +10,19 @@ import {
 } from "@mui/material";
 
 import {
-    transformDocuments
+    transformDocuments, yearList
 } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import { getAllOptions } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 
-import { yearList } from "Components/Constants/index"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompleteInputStructure';
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 import colors from 'styles/theme/colors';
 
-function ProjectCard({ isEdit, form, editPage, handleChange, errors,hide }) {
+function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide }) {
 
     const {
         builder,
@@ -51,7 +50,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors,hide }) {
     const [loading, setLoading] = useState(false);
 
     const showToaterMessages = (message, severity) => {
-      openSnackbar(message, severity);
+        openSnackbar(message, severity);
     };
     const [selectOptions, setSelectOption] = useState({})
     const getAllOptionDataList = async () => {
@@ -64,14 +63,14 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors,hide }) {
         } catch (error) {
             console.log(error, 'err')
             showToaterMessages(
-              error?.response?.data?.message ||
-              error?.message ||
-              "Error fetching state list",
-              "error"
+                error?.response?.data?.message ||
+                error?.message ||
+                "Error fetching state list",
+                "error"
             );
         }
         finally {
-          setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -185,8 +184,9 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors,hide }) {
                             label="Project type"
                             isEdit={isEdit}
                             value={projectType}
+                            disabled={form.overview.projectCategory.length <= 0 || form.overview.projectCategory === undefined}
                             list={
-                                selectOptions.projectType?.map((item) => {
+                                selectOptions[`${form.overview.projectCategory.toLowerCase()}ProjectType`]?.map((item) => {
                                     return {
                                         label: item,
                                         value: item,

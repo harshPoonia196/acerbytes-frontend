@@ -36,10 +36,9 @@ import {
   DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
-} from "Components/config/config";
+} from "utills/Constants";
 import { Add } from "@mui/icons-material";
 import AdminCreditPointsPopup from "../CreditPointPopup/CreditPointPopup";
-import { ORDER_STATUS, ToasterMessages } from "Components/Constants";
 import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
@@ -47,6 +46,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { debounce } from "lodash";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import { ORDER_STATUS, ToasterMessages } from "utills/Constants";
 
 const headCells = [
   {
@@ -374,33 +375,36 @@ function CreditTable() {
         onChange={handleSearch}
       />
     </Card>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
+    {
+      creditPointList.length > 0 ? (<TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {creditPointList?.list?.map((row) => (
+              <RowStructure
+                row={row}
+                key={row.firstName}
+                adminAssignPointsHandler={adminAssignPointsHandler}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+          component="div"
+          count={creditPointList.totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        <TableBody>
-          {creditPointList?.list?.map((row) => (
-            <RowStructure
-              row={row}
-              key={row.firstName}
-              adminAssignPointsHandler={adminAssignPointsHandler}
-            />
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-        component="div"
-        count={creditPointList.totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page - 1}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </TableContainer>
+      </TableContainer>) : <NoDataCard title={"No data found"} />
+    }
+
   </Box>
 }
 
