@@ -12,12 +12,12 @@ import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { createUserAPI, sendOtpAPI, signInAPI, signInAuthenticationAPI, verifyOtpAPI } from "api/Auth.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
-import { countries } from "Components/config/config";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { countries } from "utills/Constants";
 
 function JoinNow() {
   const router = useRouter();
