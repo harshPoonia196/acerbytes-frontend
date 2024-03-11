@@ -115,19 +115,24 @@ const UploadMarketingImage = ({
                         <div style={{ width: '100%', textAlign: 'center', maxHeight: 400 }}>
                             <Cropper
                                 style={{ width: '100%' }}
-                                initialAspectRatio={1}
-                                aspectRatio={1}
+                                initialAspectRatio={3/2}
+                                aspectRatio={3/2}
                                 preview=".img-preview"
                                 src={image}
                                 // ref={imageRef}
                                 autoCropArea={1}
                                 viewMode={1}
                                 guides={true}
-                                minCropBoxHeight={10}
-                                minCropBoxWidth={10}
                                 background={false}
+                                zoomable={false}
+                                cropBoxMovable={true}
+                                cropBoxResizable={false}
                                 responsive={true}
-                                checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+                                scalable={false}
+                                dragMode={'none'}
+                                zoomOnTouch={false}
+                                zoomOnWheel={false}
+                                checkOrientation={false}
                                 onInitialized={(instance) => {
                                     setCropper(instance)
                                 }}
