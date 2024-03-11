@@ -96,7 +96,7 @@ function OverallAssesmentSection({
               />
             </a>
           )}
-          {userDetails?.role !== "admin" && userDetails?.role !== "broker" && (<Chip
+          {userDetails?.role !== "admin" && (<Chip
             icon={<AssignmentIcon />}
             label="Enquire now"
             size="small"
