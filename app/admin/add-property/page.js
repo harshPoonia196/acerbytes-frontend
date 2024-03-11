@@ -845,7 +845,7 @@ const [hide,setHide]=useState([])
         form.overallAssessment.scoredRating + parseInt(incomingValue);
     }
 
-    let calc = (totalScored / totalRating) * 100;
+    let calc = (totalScored / totalRating) * 10;
 
     if(seperateCalc){
       setForm({
