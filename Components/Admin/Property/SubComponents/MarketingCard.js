@@ -26,8 +26,8 @@ import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 
 function MarketingCard({ isEdit, errors, form, handleChange }) {
 
-    const { tagLine, description } = form.marketing
-
+    const { tagLine, description,image } = form.marketing
+    const { openSnackbar } = useSnackbar();
     const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false)
 
     const handleOpenUploadPopup = () => {
@@ -38,13 +38,12 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
         setIsUploadPopupOpen(false)
     }
 
-    const [image, setImage] = useState('')
+    const [selectedImage, setImage] = useState('')
     const [cropData, setCropData] = useState('')
     const [cropper, setCropper] = useState(false)
     const [enableCropper, setEnableCropper] = useState(false)
 
     const handleImageSelect = (e) => {
-        console.log('hereimage')
         e.preventDefault()
         let files
         if (e.dataTransfer) {
@@ -53,12 +52,27 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
             files = e.target.files
         }
         const reader = new FileReader()
-        reader.onload = () => {
+        reader.onload = (ev) => {
+            const img = new Image();
+            img.src = ev.target.result;
+            const width = img.width;
+            const height = img.height;
+  
+            // Check if the image is landscape and has the required dimensions
+            function isAspectRatio(width, height, aspectRatio) {
+                const [aspectRatioWidth, aspectRatioHeight] = aspectRatio.split(':').map(Number);
+                return width * aspectRatioHeight === height * aspectRatioWidth;
+            }
+            // if (isAspectRatio(width, height, '3:2')) {
             setImage(reader.result)
-            console.log(reader.result,'ree')
+        
+            // } else {
+            //     openSnackbar('Selected image must be in landscape form',"error");
+            // }
+
+
         }
         reader.readAsDataURL(files[0])
-        console.log(files[0],'filess')
         handleOpenUploadPopup()
 
     }
@@ -70,7 +84,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
 
     return (
         <Grid item xs={12} id="marketing">
-            <UploadMarketingImage open={isUploadPopupOpen} image={image} setImage={setImage} onClose={handleCloseUploadPopup} handleClose={handleCloseUploadPopup} changeImage={handleImageSelect} handleChange={handleChange} removeImage={handleImageRemove} />
+            <UploadMarketingImage open={isUploadPopupOpen} image={selectedImage} setImage={setImage} onClose={handleCloseUploadPopup} handleClose={handleCloseUploadPopup} changeImage={handleImageSelect} handleChange={handleChange} removeImage={handleImageRemove} />
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
@@ -85,23 +99,36 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                     <Grid item xs={12}>
                         <Card sx={{ display: 'flex', p: 2 }}>
                             <Typography sx={{ flex: 1, alignSelf: 'center' }}>Upload</Typography>
-                            {/* <CustomButton
-                                variant="contained"
-                                component="label"
-                                // onClick={handleImageSelect}
-                                sx={{ textTransform: 'uppercase' }}
-                                startIcon={<AttachFileIcon />}
-                                ButtonText={"Attach"}
-                            > */}
+                    
 
+                            <>
                                 <input
                                     id="contained-button-file"
                                     type="file"
                                     onChange={handleImageSelect}
                                     accept="image/x-png,image/gif,image/jpeg"
-                                    // hidden
+                                    style={{ display: 'none' }}
                                 />
-                            {/* </CustomButton> */}
+                                <div style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "flex-end",
+                                    padding: "10px"
+                                }}>
+
+                                    <label htmlFor="contained-button-file">
+                                        <Button
+                                            variant="contained"
+                                            component="span"
+                                            startIcon={<AttachFileIcon />}
+                                        >
+                                            Attach File
+                                        </Button>
+                                    </label>
+                                    <Typography sx={{ flex: 1, alignSelf: 'center', marginTop: "5px" }}>{selectedImage ? selectedImage : image}</Typography>
+                                </div>
+                            </>
+
                         </Card>
                     </Grid>
                     <NewInputFieldStructure
