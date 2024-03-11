@@ -53,23 +53,8 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
         }
         const reader = new FileReader()
         reader.onload = (ev) => {
-            const img = new Image();
-            img.src = ev.target.result;
-            const width = img.width;
-            const height = img.height;
   
-            // Check if the image is landscape and has the required dimensions
-            function isAspectRatio(width, height, aspectRatio) {
-                const [aspectRatioWidth, aspectRatioHeight] = aspectRatio.split(':').map(Number);
-                return width * aspectRatioHeight === height * aspectRatioWidth;
-            }
-            // if (isAspectRatio(width, height, '3:2')) {
             setImage(reader.result)
-        
-            // } else {
-            //     openSnackbar('Selected image must be in landscape form',"error");
-            // }
-
 
         }
         reader.readAsDataURL(files[0])
