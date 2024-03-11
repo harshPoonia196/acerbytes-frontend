@@ -29,7 +29,7 @@ function AmenitiesSection(props) {
                             }}
                             onClick={() => router.push("/research")}
                         >
-                            <Typography
+                            {/* <Typography
                                 variant="h6"
                                 sx={{
                                     fontWeight: 600,
@@ -41,7 +41,7 @@ function AmenitiesSection(props) {
                                 }}
                             >
                                 {amenitiesData?.sectionScore ? amenitiesData?.sectionScore : "00"}
-                            </Typography>
+                            </Typography> */}
                         </Card>
                     </Box>
                 </Box>
@@ -55,7 +55,7 @@ function AmenitiesSection(props) {
                                 </Grid>
 
                                 {Object.entries(amenities).map(([amenityName, amenityDetails]) => {
-                                     if (amenityDetails?.isApplicable) {
+                                    if (amenityDetails?.isApplicable) {
                                         return (
                                             <NewKeyValuePairStructure
                                                 key={amenityName}
