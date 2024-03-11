@@ -51,7 +51,7 @@ function UnitsPlanSection(props) {
               }}
               onClick={() => router.push("/research")}
             >
-              <Typography
+              {/* <Typography
                 variant="h6"
                 sx={{
                   fontWeight: 600,
@@ -63,7 +63,7 @@ function UnitsPlanSection(props) {
                 }}
               >
                 {unitsPlan?.sectionScore ? unitsPlan?.sectionScore.toFixed() : "00"}
-              </Typography>
+              </Typography> */}
             </Card>
           </Box>
         </Box>
