@@ -96,12 +96,12 @@ function OverallAssesmentSection({
               />
             </a>
           )}
-          <Chip
+          {userDetails?.role !== "admin" && (<Chip
             icon={<AssignmentIcon />}
             label="Enquire now"
             size="small"
             onClick={handleOpenEnquiryForm}
-          />
+          />)}
         </Box>
         <EnquireNow
           open={open}
