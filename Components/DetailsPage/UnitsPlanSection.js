@@ -1,6 +1,5 @@
 import React from "react";
 import { Grid, Card, Typography, Box, Divider, Rating } from "@mui/material";
-import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
 
@@ -79,11 +78,6 @@ function UnitsPlanSection(props) {
                 boxStyles={{ backgroundColor: "none" }}
               >
                 <Typography variant="subtitle1">{unit?.propertyLayout}</Typography>
-                {/* <img
-                  width="100%"
-                  alt=""
-                  src="https://projectcdn.99acres.com/project_data/8d33f2/block1_1927/3D/5309_B1_1F1_3D.jpg"
-                /> */}
                 <Typography variant="h5">{unit?.areaValue} {unit?.areaUnit}</Typography>
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
                   {unit?.bsp}

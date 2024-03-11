@@ -85,7 +85,6 @@ function OverallAssesmentSection({
             Our authorized professional consultants help you decide whether to
             buy as Investor / End user. Contact us now
           </Typography>
-          {console.log(userDetails?.role)}
           {userDetails?.role !== "admin" && userDetails?.role !== "broker" && (
             <a href={`https://wa.me/+919725555595`}>
               <Chip

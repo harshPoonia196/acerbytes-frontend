@@ -1,4 +1,4 @@
-import { Box, Button, Card, Chip, Divider, IconButton, Rating, Tooltip, Typography } from '@mui/material'
+import { Box, Card, Chip, Divider, IconButton, Rating, Typography } from '@mui/material'
 import StarIcon from "@mui/icons-material/Star";
 import React from 'react'
 import { Close } from '@mui/icons-material';
@@ -23,14 +23,8 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
 
         const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
         let projectType;
-        if (Array.isArray(overview?.projectType) && overview?.projectType.length > 0) {
-            if (typeof overview.projectType[0] === 'object') {
-                projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
-            } else if (typeof overview.projectType[0] === 'string') {
-                projectType = overview.projectType.map(type => type.trim().replace(/\s+/g, '-')).join("-");
-            }
-        } else {
-            projectType = 'type';
+        if (overview?.projectType?.length > 0) {
+            projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
         }
         const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
         const sector = (location?.sector.trim() ?? 'sector').replace(/\s+/g, '-');
