@@ -6,16 +6,16 @@ import colors from 'styles/theme/colors';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import { useSnackbar } from 'utills/SnackbarContext';
-import { ToasterMessages } from 'utills/Constants';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import { formatDateAndDaysRemaining } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
+import { ToasterMessages } from 'utills/Constants';
 
 function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant, SinglePropertyId, propertyData, id }) {
     const { userDetails } = useAuth();
     const brokerData = SinglePropertyId?.brokerData
     const locationData = propertyData?.location;
-
+    
     const constructPropertyUrl = (property) => {
         const overview = property?.overview;
         const location = property?.location;
@@ -52,7 +52,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
 
     const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
         ? `${brokerData.phone.countryCode} ${brokerData.phone.number}`
-        : "9322153996667";
+        : "+ 91 97995 55555";
     const description = SinglePropertyId?.description ? `${SinglePropertyId.description}` : "Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on";
 
     const copyToClipboard = (text) => {

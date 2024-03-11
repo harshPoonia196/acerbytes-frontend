@@ -9,6 +9,7 @@ function MarketingSection(props) {
 
     const alloverviewData = overviewData?.overview
     const AllLocationData = overviewData?.location
+    console.log(AllLocationData?.googleMapLink, "googleMapLink")
 
     const myDivRef = useRef(null);
 
@@ -32,9 +33,11 @@ function MarketingSection(props) {
                 height: { xs: '50vh', sm: '70vh' },
                 position: 'relative',
             }} id='project'>
-                <Box sx={{
+                <Box 
+                style={{ backgroundImage: `url(${overviewData?.marketing?.image})` }}
+                sx={{
                     flex: 1,
-                    backgroundImage: 'URL(https://lh3.googleusercontent.com/p/AF1QipN7N4JlL5zR8A0bTIa1uYmWuu4RKhGVmxiv9lhB=s1360-w1360-h1020)',
+                    // backgroundImage: 'URL(https://lh3.googleusercontent.com/p/AF1QipN7N4JlL5zR8A0bTIa1uYmWuu4RKhGVmxiv9lhB=s1360-w1360-h1020)',
                     backgroundPosition: 'center center',
                     // backgroundRepeat: 'no-repeat'
                     backgroundSize: 'cover',
@@ -93,7 +96,7 @@ function MarketingSection(props) {
                     </Box>
                     <Box sx={{ display: { xs: "none", evmd: 'block' } }}>
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
+                            src={AllLocationData?.googleMapLink}
                             style={{ border: 0 }}
                             height="100%"
                             width={width}
@@ -106,7 +109,8 @@ function MarketingSection(props) {
                 <Card sx={{ display: { xs: 'block', evmd: 'none' }, mb: 2 }}>
                     <Box>
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
+                            src={AllLocationData?.googleMapLink}
+                            // src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
                             style={{ border: 0 }}
                             height="100%"
                             width={'100%'}

@@ -45,7 +45,7 @@ import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSect
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
@@ -103,6 +103,7 @@ function useThrottledOnScroll(callback, delay) {
 
 const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams();
+  const url = new URL(window.location.href);
   const name = searchParams.get("name");
   const { isLogged } = useAuth();
   const router = useRouter();
@@ -660,13 +661,15 @@ const PropertyDetailsPage = ({ params }) => {
                     Like
                   </Fab>
                 )}
+                <a href={`https://web.whatsapp.com/send?text=${url?.href ? url.href : ""}`} target="_blank" data-action="share/whatsapp/share">
                 <Fab
                   variant="extended"
-                  sx={{ mb: 1, justifyContent: "flex-start" }}
+                  sx={{ mb: 1, justifyContent: "flex-start", width: "100%" }}
                 >
                   <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
                   Share
                 </Fab>
+                </a>
                 <a href={`https://wa.me/+919725555595`}>
                   <Fab
                     variant="extended"

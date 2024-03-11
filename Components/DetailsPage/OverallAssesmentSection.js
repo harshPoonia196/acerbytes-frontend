@@ -14,6 +14,7 @@ import colors from "styles/theme/colors";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EnquireNow from "./Modal/EnquireNow";
+import { useAuth } from "utills/AuthContext";
 
 function OverallAssesmentSection({
   refCallback,
@@ -23,6 +24,7 @@ function OverallAssesmentSection({
   handleClose,
   handleAction,
 }) {
+  const { userDetails } = useAuth();
   const router = useRouter();
 
   return (
@@ -83,19 +85,22 @@ function OverallAssesmentSection({
             Our authorized professional consultants help you decide whether to
             buy as Investor / End user. Contact us now
           </Typography>
-          <a href={`https://wa.me/+919725555595`}>
-            <Chip
-              icon={<WhatsAppIcon />}
-              label="Contact us on Whatsapp"
-              size="small"
-              sx={{ mr: 2 }}
-              // onClick={() => {}}
-            />
-           </a>
+          {console.log(userDetails?.role)}
+          {userDetails?.role !== "admin" && userDetails?.role !== "broker" && (
+            <a href={`https://wa.me/+919725555595`}>
+              <Chip
+                icon={<WhatsAppIcon />}
+                label="Contact us on Whatsapp"
+                size="small"
+                sx={{ mr: 2 }}
+                // onClick={() => {}}
+              />
+            </a>
+          )}
           <Chip
             icon={<AssignmentIcon />}
             label="Enquire now"
-            size="small"  
+            size="small"
             onClick={handleOpenEnquiryForm}
           />
         </Box>
