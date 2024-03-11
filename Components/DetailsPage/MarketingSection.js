@@ -80,7 +80,7 @@ function MarketingSection(props) {
               {`${AllLocationData?.city}, ${AllLocationData?.state}`}
             </Typography>
             <Typography variant="h1">
-              77
+              {overviewData?.overallAssessment?.score ? overviewData?.overallAssessment?.score.toFixed() : "48"}
               <Typography variant="h6" component="span">
                 {" "}
                 / 100

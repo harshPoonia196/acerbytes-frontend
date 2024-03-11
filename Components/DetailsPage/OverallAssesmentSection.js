@@ -56,8 +56,8 @@ function OverallAssesmentSection({
                   cursor: "pointer",
                 }}
               >
-                {overallAssessment?.sectionScore
-                  ? overallAssessment?.sectionScore
+                {overallAssessment?.score
+                  ? overallAssessment?.score.toFixed()
                   : "00"}
               </Typography>
             </Card>
