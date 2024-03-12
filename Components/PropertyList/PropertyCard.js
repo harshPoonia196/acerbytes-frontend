@@ -1,7 +1,6 @@
 import {
   Card,
   CardMedia,
-  CardContent,
   Typography,
   Box,
   Grid,
@@ -40,7 +39,7 @@ function PropertyCard(props) {
 const propertyUrl = constructPropertyUrl(propertyDetails)
 
   const formattedCreatedAt =
-    createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' HH:mm aaa");
+    createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' hh:mm aaa");
 
   return (
     <Card>

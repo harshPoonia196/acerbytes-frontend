@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Button,
   Grid,
   DialogActions,
   Dialog,
@@ -21,8 +20,9 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { ToasterMessages } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { listOfPages } from "Components/NavBar/Links";
 
-function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetProperty }) {
+function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetProperty, brokerBalance, propertyUrl}) {
 
   const router = useRouter();
   const tempList = [
@@ -58,13 +58,20 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
   const validateForm = () => {
     const newErrors = {};
 
+    const titleWords = formData.title.trim().split(/\s+/);
+    const descriptionWords = formData.description.trim().split(/\s+/);
     if (!formData.title) {
       newErrors.title = 'Title is required.';
+    } else if (titleWords.length !== 10) { // Check if title exactly has 10 words
+      newErrors.title = 'Title must be exactly 10 words.';
     }
 
     if (!formData.description) {
       newErrors.description = 'Description is required.';
+    }else if(descriptionWords.length !== 50){
+      newErrors.description = 'Description must be exactly 50 words.';
     }
+
     if (!formData.duration) {
       newErrors.duration = 'Duration is required.';
     }
@@ -132,8 +139,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
                 startIcon={<PaymentIcon fontSize="small" />}
                 variant="outlined"
                 size="small"
-                ButtonText={"35,000"}
-
+                ButtonText={brokerBalance ? brokerBalance: "35000"}
               />
               <Typography variant="subtitle2"
                 sx={{ alignSelf: "center", color: colors.GRAY }}>
@@ -145,10 +151,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
                 startIcon={<AddCardIcon fontSize="small" />}
                 variant="outlined"
                 size="small"
-                onClick={() => {
-                  handleClose();
-                }}
-
+                onClick={() => router.push(listOfPages.consultantPaymentHistory)}
                 ButtonText={"Add"}
               />
             </Box>
@@ -157,7 +160,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       </DialogTitle>
       <DialogContent sx={{ minWidth: 300, }}>
         <Grid container spacing={2}>
-          <NewInputFieldStructure label={'Your personalized link to share'} isEdit={false} value={'https://dsjdjusdi.com'}
+          <NewInputFieldStructure label={'Your personalized link to share'} isEdit={true} value={propertyUrl ? propertyUrl : ""}
           />
           <NewInputFieldStructure label='Title (10 words)' isFull
             name="title"
