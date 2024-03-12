@@ -18,7 +18,7 @@ import colors from "styles/theme/colors";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import { activeadCreate } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
-import { ToasterMessages } from "Components/Constants";
+import { ToasterMessages } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 

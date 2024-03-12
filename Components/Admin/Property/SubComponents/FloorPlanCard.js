@@ -20,14 +20,15 @@ import {
 } from "@mui/material";
 import {
   transformDocuments,
-  formatNumber
+  formatNumber,
+  monthList,
 } from "utills/CommonFunction";
 import { getAllOptions } from "api/Property.api";
 import InfoIcon from "@mui/icons-material/Info";
 import { useSnackbar } from "utills/SnackbarContext";
 
 import EditIcon from "@mui/icons-material/Edit";
-import { monthList } from "Components/Constants/index"
+// import { monthList } from "Components/Constants/index"
 import { unitsPlanSchemaWithoutLayout,unitsPlanSchemaWithLayout } from "Components/Admin/Property/Validation/PropertyValidation";
 import DeleteIcon from "@mui/icons-material/Delete";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
@@ -77,9 +78,9 @@ function FloorPlanCard({
 
   const { openSnackbar } = useSnackbar();
 
-    const showToaterMessages = (message, severity) => {
-      openSnackbar(message, severity);
-    };
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
 
   useEffect(() => {
     setUnit(layoutType);
@@ -105,24 +106,24 @@ function FloorPlanCard({
 
   const [selectOptions, setSelectOption] = useState({})
   const getAllOptionDataList = async () => {
-      try {
-          let res = await getAllOptions();
-          if (res.status === 200) {
-              let transform = transformDocuments(res.data.data)
-              setSelectOption({ ...transform })
-          }
-      } catch (error) {
-          console.log(error, 'err')
-          showToaterMessages(
-            error?.response?.data?.message ||
-            error?.message ||
-            "Error fetching state list",
-            "error"
-          );
+    try {
+      let res = await getAllOptions();
+      if (res.status === 200) {
+        let transform = transformDocuments(res.data.data)
+        setSelectOption({ ...transform })
       }
-      finally {
-        setLoading(false);
-      }
+    } catch (error) {
+      console.log(error, 'err')
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    }
+    finally {
+      setLoading(false);
+    }
   };
 
 
@@ -433,11 +434,11 @@ else if(fieldName==='width'){
                     label: item,
                     value: item,
                   };
-                })||
+                }) ||
                 [
-                { label: "Acres", value: "acres" },
-                { label: "Sqft", value: "sqft" },
-              ]}
+                  { label: "Acres", value: "acres" },
+                  { label: "Sqft", value: "sqft" },
+                ]}
               value={selectedItem.areaUnit}
               handleChange={(e) => {
                 if (rows.length >= 1) {
@@ -553,16 +554,16 @@ else if(fieldName==='width'){
               }
               isEdit={isEdit}
               list={
-                
+
                 selectOptions.launch?.map((item) => {
                   return {
-                      label: item,
-                      value: item,
+                    label: item,
+                    value: item,
                   };
-              })
-              
-            
-            }
+                })
+
+
+              }
               value={selectedItem.applicableYear}
               handleChange={(e) =>
                 setSelectedItem((prev) => ({

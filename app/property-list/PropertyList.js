@@ -25,7 +25,7 @@ import {
   DEBOUNCE_TIMER,
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
-} from "Components/config/config";
+} from "utills/Constants";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import colors from "styles/theme/colors";
@@ -36,6 +36,7 @@ import {
 } from "utills/CommonFunction";
 import { debounce } from "lodash";
 import { useAuth } from "utills/AuthContext";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 function PropertyList({ params }) {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -376,6 +377,7 @@ function PropertyList({ params }) {
                 handleOptionChange("category", value)
               }
               value={selectedOptions.category ? selectedOptions.category : ""}
+              clearable
             />
             {/* Flat,shop */}
             <NewAutoCompleteInputStructure
@@ -397,6 +399,7 @@ function PropertyList({ params }) {
                   ? selectedOptions?.propertyType
                   : ""
               }
+              clearable
             />
             {/* 1BHK, 2BHK */}
             <NewAutoCompleteInputStructure
@@ -416,6 +419,7 @@ function PropertyList({ params }) {
                 handleOptionChange("unitType", value)
               }
               value={selectedOptions.unitType ? selectedOptions.unitType : ""}
+              clearable
             />
             {/* Noida,gurgoan */}
             <NewAutoCompleteInputStructure
@@ -426,6 +430,7 @@ function PropertyList({ params }) {
               list={cities}
               handleChange={(event, value) => handleOptionChange("city", value)}
               value={selectedOptions.city ? selectedOptions.city : ""}
+              clearable
             />
             {/* Sector/area */}
             <NewAutoCompleteInputStructure
@@ -439,6 +444,7 @@ function PropertyList({ params }) {
                 handleOptionChange("location", value)
               }
               value={selectedOptions.location ? selectedOptions.location : ""}
+              clearable
             />
             <NewAutoCompleteInputStructure
               xs={18}
@@ -450,6 +456,7 @@ function PropertyList({ params }) {
                 handleOptionChange("status", value)
               }
               value={selectedOptions.status ? selectedOptions.status : ""}
+              clearable
             />
             <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
               <Typography
@@ -533,25 +540,24 @@ function PropertyList({ params }) {
               </Card>
             </Grid>
             <Grid item xs={36}>
-              <Grid container spacing={0.25}>
-                {count?.totalCount === 0 ? (
-                  <Card sx={{ m: 2, p: 2, textAlign: "center", width: "100%" }}>
-                    <Typography variant="subtitle1">
-                      Data not available.
-                    </Typography>
-                  </Card>
+              {
+                count?.totalCount === 0 ? (
+                  <NoDataCard />
                 ) : (
-                  property?.map((propertyDetails) => (
-                    <Grid item xs={12}>
-                      <PropertyCard
-                        createdDate={propertyDetails?.created_at}
-                        isShortListPageCard={propertyDetails?.isFav}
-                        propertyDetails={propertyDetails}
-                      />
-                    </Grid>
-                  ))
-                )}
-              </Grid>
+                  <Grid container spacing={0.25}>
+                    {property?.map((propertyDetails) => (
+                      <Grid item xs={12}>
+                        <PropertyCard
+                          createdDate={propertyDetails?.created_at}
+                          isShortListPageCard={propertyDetails?.isFav}
+                          propertyDetails={propertyDetails}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                )
+              }
+
             </Grid>
             <Grid sx={{ marginLeft: "auto", marginRight: "0" }}>
               <TablePagination

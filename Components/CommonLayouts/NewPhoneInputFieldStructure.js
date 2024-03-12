@@ -9,12 +9,13 @@ import {
 } from "@mui/material";
 
 import colors from "styles/theme/colors";
-import { countries } from "Components/config/config";
+import { countries } from "utills/Constants";
 
 function NewPhoneInputFieldStructure({
   name1,
   name2,
   handleChange,
+  countryCodeOptions,
   handleSelect,
   label,
   type,
@@ -53,7 +54,7 @@ function NewPhoneInputFieldStructure({
           variant="subtitle2"
           sx={{ alignSelf: "center", color: colors.GRAY }}
         >
-         {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
+          {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
       </Box>
       {isEdit ? (
@@ -82,11 +83,21 @@ function NewPhoneInputFieldStructure({
                   }}
                   disabled={disabled}
                 >
-                  {countryCode.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
+                  {(countryCodeOptions || countryCode).map((option) => {
+                    if (option.label) {
+                      return (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      )
+                    } else {
+                      return (
+                        <MenuItem key={option} value={option}>
+                          +{option}
+                        </MenuItem>
+                      )
+                    }
+                  })}
                 </TextField>
               </InputAdornment>
             ),
