@@ -56,6 +56,7 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
                 alt={propertyDetails?.marketing?.tagLine}
                 sx={{
                   width: 80,
+                  height: 54,
                   borderRadius: "8px",
                   mr: 2,
                 }}
