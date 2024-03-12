@@ -402,7 +402,7 @@ function Profile() {
 
   const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
     var value = thirdKeyName === "checked" ? e.target.checked : e.target.value;
-    if (secondKeyName === 'firstName' || secondKeyName === 'lastName' || secondKeyName === 'serviceType') {
+    if (secondKeyName === 'firstName' || secondKeyName === 'lastName' || secondKeyName === 'company') {
       value = capitalLizeName(value)
     }
     await setProfileInfo((prev) => ({
