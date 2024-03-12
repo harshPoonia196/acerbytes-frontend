@@ -26,7 +26,7 @@ const overviewSchema = Joi.object({
   sectionScore: Joi.number().allow("")
 });
 
-export const unitPlanSchema = Joi.object({
+export const unitsPlanSchemaWithLayout = Joi.object({
   propertyType: Joi.string().required(),
   propertyLayout: Joi.string().required(),
   name: Joi.string().required(),
@@ -35,6 +35,24 @@ export const unitPlanSchema = Joi.object({
   priceUnit:Joi.string().required(),
   area: Joi.number().required(),
   bsp: Joi.number().required(),
+  totalPrice:Joi.number().allow(null,""),
+  applicableMonth: Joi.string().required(),
+  width:Joi.number().optional().allow(null,""),
+length:Joi.number().optional().allow(null,""),
+  applicableYear: Joi.string().required(),
+});
+export const unitsPlanSchemaWithoutLayout = Joi.object({
+  propertyType: Joi.string().required(),
+  propertyLayout: Joi.string().optional().allow(""),
+  name: Joi.string().required(),
+  areaUnit: Joi.string().required(),
+  totalUnits: Joi.number().required(),
+  priceUnit:Joi.string().required(),
+  area: Joi.number().required(),
+  bsp: Joi.number().required(),
+  totalPrice:Joi.number().allow(null,""),
+width:Joi.number().required(),
+length:Joi.number().required(),
   applicableMonth: Joi.string().required(),
   applicableYear: Joi.string().required(),
 });
@@ -272,6 +290,9 @@ export const Schema = Joi.object({
           name: Joi.string().optional().allow(""),
           priceUnit:Joi.string().allow(""),
           areaUnit: Joi.string().optional().allow(""),
+          width:Joi.number().optional().allow(""),
+          length:Joi.number().optional().allow(""),
+          totalPrice:Joi.number().allow(null,""),
           totalUnits: Joi.number().optional().allow(""),
           area: Joi.number().optional().allow(""),
           bsp: Joi.number().optional().allow(""),
@@ -414,7 +435,7 @@ export const Schema = Joi.object({
   published:Joi.boolean(),
   publishedAt:Joi.date(),
   createdAt:Joi.date(),
-
+  modifiedAt:Joi.date(),
   marketing: Joi.object().keys({
     image: Joi.string().allow(""),
     tagLine: Joi.string().required(),
