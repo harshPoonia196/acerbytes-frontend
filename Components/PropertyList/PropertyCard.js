@@ -53,13 +53,13 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
             >
               <CardMedia
                 component="img"
-                alt="green iguana"
+                alt={propertyDetails?.marketing?.tagLine}
                 sx={{
                   width: 80,
                   borderRadius: "8px",
                   mr: 2,
                 }}
-                image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
+                image={propertyDetails?.marketing?.image}
               />
               <Box
                 sx={{ flex: 1 }}

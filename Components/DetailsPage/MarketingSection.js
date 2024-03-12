@@ -9,8 +9,6 @@ import {
 import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
 import React, { useRef, useState } from "react";
 import colors from "styles/theme/colors";
-import Map, { GeolocateControl } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 
 function MarketingSection(props) {
   const { overviewData } = props;
@@ -29,6 +27,13 @@ function MarketingSection(props) {
   //         console.log('Width of the div:', width, 'pixels');
   //     }
   // }, []);
+
+  const  extractUrl = (htmlString) => {
+    const matches = htmlString?.match(/src="([^"]+)"/);
+    return matches ? matches[1] : null;
+  }
+
+  const mapUrl = extractUrl(AllLocationData?.googleMapLink);
 
   return (
     <>
@@ -80,7 +85,9 @@ function MarketingSection(props) {
               {`${AllLocationData?.city}, ${AllLocationData?.state}`}
             </Typography>
             <Typography variant="h1">
-              {overviewData?.overallAssessment?.score ? overviewData?.overallAssessment?.score.toFixed() : "48"}
+              {overviewData?.overallAssessment?.score
+                ? overviewData?.overallAssessment?.score.toFixed()
+                : "48"}
               <Typography variant="h6" component="span">
                 {" "}
                 / 100
@@ -138,29 +145,14 @@ function MarketingSection(props) {
             </Grid>
           </Box>
           <Box sx={{ display: { xs: "none", evmd: "block" } }}>
-            {/* <iframe
-                            src={AllLocationData?.googleMapLink}
-                            style={{ border: 0 }}
-                            height="100%"
-                            width={width}
-                            loading="lazy"
-                        /> */}
-            <Map
-              mapboxAccessToken="MAPBOX_TOKEN"
-              initialViewState={{
-                longitude: AllLocationData?.longitude,
-                latitude: AllLocationData?.latitude,
-                zoom: 3.5,
-              }}
-              mapStyle="mapbox://styles/mapbox/streets-v11"
-              style={{ border: 0, width: "100%", height: "100%" }}
-            >
-              <GeolocateControl
-                positionOptions={{ enableHighAccuracy: true }}
-                trackUserLocation={true}
-                style={{ border: 0, width: "100%", height: "100%" }}
-              />
-            </Map>
+            <iframe
+              src={mapUrl}
+              style={{ border: 0 }}
+              height="100%"
+              width={width}
+              loading="lazy"
+            />
+            
           </Box>
         </Card>
       </Card>
@@ -168,8 +160,7 @@ function MarketingSection(props) {
         <Card sx={{ display: { xs: "block", evmd: "none" }, mb: 2 }}>
           <Box>
             <iframe
-              src={AllLocationData?.googleMapLink}
-              // src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
+              src={mapUrl}
               style={{ border: 0 }}
               height="100%"
               width={"100%"}

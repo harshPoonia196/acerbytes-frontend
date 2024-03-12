@@ -19,6 +19,7 @@ function ConsultantsViewAll({ open, handleClose, propertyData }) {
           borderRadius: "8px !important",
           maxHeight: "500px",
           maxWidth: "100%",
+          overflowY: "scroll"
         },
       }}
       open={open}
@@ -29,10 +30,10 @@ function ConsultantsViewAll({ open, handleClose, propertyData }) {
           All Consultants
         </Typography>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{maxWidth: "100%", width: "100%", overflowY: "scroll"}}>
         <List
           dense
-          sx={{ width: "100%", minWidth: 550, bgcolor: "background.paper" }}
+          sx={{ width: "100%", minWidth: 550, bgcolor: "background.paper", maxWidth: "100%", }}
         >
           {propertyData?.map((broker) => (
             <Grid item xs={12} sm={12} key={broker?.name}>

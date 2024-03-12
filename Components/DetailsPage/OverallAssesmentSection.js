@@ -85,18 +85,7 @@ function OverallAssesmentSection({
             Our authorized professional consultants help you decide whether to
             buy as Investor / End user. Contact us now
           </Typography>
-          {userDetails?.role !== "admin" && userDetails?.role !== "broker" && (
-            <a href={`https://wa.me/+919725555595`}>
-              <Chip
-                icon={<WhatsAppIcon />}
-                label="Contact us on Whatsapp"
-                size="small"
-                sx={{ mr: 2 }}
-                // onClick={() => {}}
-              />
-            </a>
-          )}
-          {userDetails?.role !== "admin" && (<Chip
+          {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && (<Chip
             icon={<AssignmentIcon />}
             label="Enquire now"
             size="small"
