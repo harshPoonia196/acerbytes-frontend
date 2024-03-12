@@ -93,7 +93,7 @@ const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams();
   const url = new URL(window.location.href);
   const name = searchParams.get("name");
-  const { isLogged, userDetails } = useAuth();
+  const { isLogged, userDetails, brokerBalance } = useAuth();
   const router = useRouter();
 
   // Split the id string into an array of parts based on the hyphen delimiter
@@ -267,9 +267,11 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
+  const [propertyUrl, setPropertyUrl] = useState('');
 
-  const handleOpenActivateAdsPopup = () => {
+  const handleOpenActivateAdsPopup = (ActiveUrl) => {
     setActivateAdsPopupState(true);
+    setPropertyUrl(ActiveUrl)
   };
 
   const handleCloseActivateAdsPopup = () => {
@@ -410,6 +412,8 @@ const PropertyDetailsPage = ({ params }) => {
         detailsGetProperty={detailsGetProperty}
         open={activateAdsPopupState}
         handleClose={handleCloseActivateAdsPopup}
+        brokerBalance={brokerBalance}
+        propertyUrl={propertyUrl}
       />
       <DisableActivateAdsPopup
         open={disablePersonalizeAds}
@@ -425,14 +429,13 @@ const PropertyDetailsPage = ({ params }) => {
           propertyData={propertyData}
         />
       ) : null}
-
       {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && propertyData.isActiveAd ? (
         <AdsSection
           SinglePropertyId={propertyData?.propertyBroker[0]}
           propertyData={propertyData}
           id={propertyData?.propertyBroker?.[0]?._id}
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
-          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} 
         />
       ) : null}
 

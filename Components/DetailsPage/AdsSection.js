@@ -46,7 +46,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
 
     const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
         ? `${brokerData.phone.countryCode} ${brokerData.phone.number}`
-        : "+ 91 97995 55555";
+        : `${userDetails?.phone?.countryCode}  ${userDetails?.phone?.number}`
     const description = SinglePropertyId?.description ? `${SinglePropertyId.description}` : "Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on";
 
     const copyToClipboard = (text) => {
@@ -83,7 +83,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
                             <Box sx={{ alignSelf: 'center' }}>
-                                <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} ButtonText={isConsultant ? 'Activate my link' : <>Extend</>} />
+                                <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} ButtonText={isConsultant ? 'Activate my link' : <>Extend</>} />
                                 <IconButton onClick={handleOpenPersonalizeAds}>
                                     <Close fontSize='small' />
                                 </IconButton>
@@ -99,7 +99,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
-                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={handleOpenActivateAdsPopup} ButtonText={"Extend"} />
+                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={()=> handleOpenActivateAdsPopup(propertyUrl)} ButtonText={"Extend"} />
                         </Box>
                     </Box>
             }

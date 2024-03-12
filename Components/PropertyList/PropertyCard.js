@@ -1,7 +1,6 @@
 import {
   Card,
   CardMedia,
-  CardContent,
   Typography,
   Box,
   Grid,
@@ -40,7 +39,7 @@ function PropertyCard(props) {
 const propertyUrl = constructPropertyUrl(propertyDetails)
 
   const formattedCreatedAt =
-    createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' HH:mm aaa");
+    createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' hh:mm aaa");
 
   return (
     <Card>
@@ -53,13 +52,14 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
             >
               <CardMedia
                 component="img"
-                alt="green iguana"
+                alt={propertyDetails?.marketing?.tagLine}
                 sx={{
                   width: 80,
+                  height: 54,
                   borderRadius: "8px",
                   mr: 2,
                 }}
-                image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
+                image={propertyDetails?.marketing?.image}
               />
               <Box
                 sx={{ flex: 1 }}
