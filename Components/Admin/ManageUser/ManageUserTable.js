@@ -29,19 +29,18 @@ import {
   updateUserStatus,
 } from "api/ManageUser.api";
 import { useSnackbar } from "utills/SnackbarContext";
-import {
-  DEBOUNCE_TIMER,
-  PAGINATION_LIMIT,
-  PAGINATION_LIMIT_OPTIONS,
-  ROLES,
-  ROLE_CONSTANTS,
-} from "Components/config/config";
 import Loading from "Components/CommonLayouts/Loading";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 import { countryCodeFormating, matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { debounce } from "lodash";
-import { ToasterMessages } from "Components/Constants";
+import {
+  DEBOUNCE_TIMER,
+  PAGINATION_LIMIT,
+  PAGINATION_LIMIT_OPTIONS,
+  ROLES,
+  ROLE_CONSTANTS, ToasterMessages
+} from "utills/Constants";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import colors from "styles/theme/colors";
 import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt'

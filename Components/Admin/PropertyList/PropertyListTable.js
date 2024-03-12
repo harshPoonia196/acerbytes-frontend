@@ -37,7 +37,7 @@ import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import {
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
-} from "Components/config/config";
+} from "utills/Constants";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 import Loader from "Components/CommonLayouts/Loading";
 

@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }) => {
     isLogged,
     login,
     logout,
+    isLoggedIn,
     setBrokerPoints,
     brokerBalance,
   };

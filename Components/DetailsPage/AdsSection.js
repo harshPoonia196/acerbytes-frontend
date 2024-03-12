@@ -1,4 +1,4 @@
-import { Box, Button, Card, Chip, Divider, IconButton, Rating, Tooltip, Typography } from '@mui/material'
+import { Box, Card, Chip, Divider, IconButton, Rating, Typography } from '@mui/material'
 import StarIcon from "@mui/icons-material/Star";
 import React from 'react'
 import { Close } from '@mui/icons-material';
@@ -6,10 +6,10 @@ import colors from 'styles/theme/colors';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import { useSnackbar } from 'utills/SnackbarContext';
-import { ToasterMessages } from "Components/Constants";
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import { formatDateAndDaysRemaining } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
+import { ToasterMessages } from 'utills/Constants';
 
 function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant, SinglePropertyId, propertyData, id }) {
     const { userDetails } = useAuth();
@@ -23,14 +23,8 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
 
         const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
         let projectType;
-        if (Array.isArray(overview?.projectType) && overview?.projectType.length > 0) {
-            if (typeof overview.projectType[0] === 'object') {
-                projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
-            } else if (typeof overview.projectType[0] === 'string') {
-                projectType = overview.projectType.map(type => type.trim().replace(/\s+/g, '-')).join("-");
-            }
-        } else {
-            projectType = 'type';
+        if (overview?.projectType?.length > 0) {
+            projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
         }
         const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
         const sector = (location?.sector.trim() ?? 'sector').replace(/\s+/g, '-');
@@ -52,7 +46,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
 
     const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
         ? `${brokerData.phone.countryCode} ${brokerData.phone.number}`
-        : "9322153996667";
+        : "+ 91 97995 55555";
     const description = SinglePropertyId?.description ? `${SinglePropertyId.description}` : "Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on";
 
     const copyToClipboard = (text) => {

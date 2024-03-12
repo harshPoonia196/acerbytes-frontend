@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 import colors from "styles/theme/colors";
-import { countries } from "Components/config/config";
+import { countries } from "utills/Constants";
 
 function NewPhoneInputFieldStructure({
   name1,

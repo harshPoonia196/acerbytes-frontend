@@ -40,7 +40,7 @@ export const unitPlanSchema = Joi.object({
 });
 export const reraSchema = Joi.object({
   reraApproved: Joi.string().valid('Yes').required(),
-  reraNumber: Joi.number().required(),
+  reraNumber: Joi.string().pattern(/^[a-zA-Z0-9!@#$%^&*()-_+=<>?/\\:;'"[]{},.|]*$/).required(),
 })
 const layoutSchema = Joi.object({
   numberOfBuildings: Joi.number()

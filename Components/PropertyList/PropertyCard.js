@@ -18,6 +18,26 @@ import { format } from "date-fns";
 function PropertyCard(props) {
   const { propertyDetails, isShortListPageCard, createdDate } = props;
   const router = useRouter();
+  const constructPropertyUrl = (propertyDetailsData) => {
+    const overview = propertyDetailsData?.overview;
+    const location = propertyDetailsData?.location;
+
+    const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+    let projectType;
+    if (overview?.projectType?.length > 0) {
+        projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+    }else{
+      projectType = 'type';
+    }
+    const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
+    const sector = (location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-');
+    const area = (location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '');
+    const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+
+    return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetails._id}`;
+};
+
+const propertyUrl = constructPropertyUrl(propertyDetails)
 
   const formattedCreatedAt =
     createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' HH:mm aaa");
@@ -29,7 +49,7 @@ function PropertyCard(props) {
           <Grid item xs={13.5} sm={8} md={4}>
             <Box
               sx={{ display: "flex" }}
-              onClick={() => router.push(`/details/${propertyDetails?._id}`)}
+              onClick={() => router.push(`/details/${propertyUrl}`)}
             >
               <CardMedia
                 component="img"
@@ -43,7 +63,7 @@ function PropertyCard(props) {
               />
               <Box
                 sx={{ flex: 1 }}
-                onClick={() => router.push(`/details/${propertyDetails._id}`)}
+                onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
                   {propertyDetails?.overview?.builder}
@@ -84,7 +104,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
               {propertyDetails?.location?.area}
@@ -98,7 +118,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2.5}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             {(propertyDetails?.unitsPlan?.averagePrice ||
               propertyDetails?.unitsPlan?.planList[0]?.areaUnit) && (
@@ -121,7 +141,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={1.5}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
               {propertyDetails?.layout?.totalUnits} Units
@@ -137,7 +157,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
               {propertyDetails?.unitsPlan?.uniqueLayouts.length === 1
@@ -156,7 +176,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
               {propertyDetails?.overview?.status}
@@ -182,7 +202,7 @@ function PropertyCard(props) {
                 ml: "auto !important",
               }}
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyDetails._id}`)}
+              onClick={() => router.push(`/details/${propertyUrl}`)}
             >
               <Typography
                 variant="h6"

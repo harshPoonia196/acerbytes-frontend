@@ -115,6 +115,16 @@ const formatPoints = (points) => {
   return numericAmount.toLocaleString("en-IN");
 };
 
+const yearList = Array.from(
+  { length: 41 }, (_, index) => { return { label: index > 9 ? `20${index}` : `200${index}`, value: index > 9 ? `20${index}` : `200${index}` } })
+
+const monthList = Array.from({ length: 12 }, (_, index) => {
+  return {
+    label: (index + 1).toString().padStart(2, '0'),
+    value: (index + 1).toString().padStart(2, '0'),
+  }
+});
+
 export {
   upperCaseName,
   capitalLizeName,
@@ -130,4 +140,6 @@ export {
   transformDocuments,
   transformDocumentsLocation,
   formatDateAndDaysRemaining,
+  yearList,
+  monthList
 };

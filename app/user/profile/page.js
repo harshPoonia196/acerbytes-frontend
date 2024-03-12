@@ -34,18 +34,6 @@ import Avatar from "@mui/material/Avatar";
 import EditIcon from "@mui/icons-material/Edit";
 import { CircularProgress } from '@mui/material';
 
-
-import {
-  FAMILY,
-  SERVICE_TYPE,
-  ToasterMessages,
-  addressType,
-  demographic,
-  exploringAs,
-  interestedForLoan,
-  purchase,
-  purpose,
-} from "Components/Constants";
 import {
   getUserProfileByGoogleId,
   updateUserProfile,
@@ -60,11 +48,14 @@ import {
   uploadImage,
 } from "api/Util.api";
 import { useSnackbar } from "utills/SnackbarContext";
-import { LoadingButton } from "@mui/lab";
-import { FILE_TYPES, listOfProfileTab } from "utills/Constants";
+import {
+  FILE_TYPES, SERVICE_TYPE, listOfProfileTab, FAMILY, exploringAs,
+  purpose, purchase, demographic, interestedForLoan, addressType,
+  ToasterMessages
+} from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { validateEmail } from "utills/utills";
-import { COUNTRY_NAME, countries, currencies } from "Components/config/config";
+import { currencies, COUNTRY_NAME, countries } from "utills/Constants";
 import colors from "styles/theme/colors";
 import Loader from "Components/CommonLayouts/Loading";
 import { capitalLizeName } from "utills/CommonFunction";

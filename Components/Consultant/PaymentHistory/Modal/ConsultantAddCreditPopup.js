@@ -14,7 +14,7 @@ import React, { useState } from "react";
 import CreditRequestPaymentPopup from "./CreditRequestPaymentPopup";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { companyName } from "Components/NavBar/Links";
-import { BuyingCreditPoints } from "Components/Constants";
+import { BuyingCreditPoints } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { formatAmount, formatPoints } from "utills/CommonFunction";
 
