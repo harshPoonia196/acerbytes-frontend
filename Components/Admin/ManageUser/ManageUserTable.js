@@ -151,8 +151,8 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        {ROLES?.filter((rs) => rs.isVisible)?.map((rs) => {
-          return <MenuItem onClick={(e) => {
+        {ROLES?.filter((rs) => rs.isVisible)?.map((rs, index) => {
+          return <MenuItem key={index} onClick={(e) => {
             handleChangeRole(rs.value)
             handleClose()
           }} value={rs.value} disabled={rs.value === role}>{rs.label}</MenuItem>;
@@ -194,6 +194,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
       <TableCell>
         {row.isBlocked ? <DoNotDisturbAltIcon fontSize="small" sx={{ color: colors.ERROR }} /> :
           <RoleViewer
+            key={row._id}
             role={row.role}
             disabled={row.isBlocked}
             userDetails={userDetails}
@@ -202,6 +203,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
       </TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton
+          onClick={handleClick}
           disabled={
             !(
               matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
@@ -210,7 +212,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
           }
           sx={{ fontSize: "1rem !important" }}
         >
-          <MoreVertIcon onClick={handleClick} fontSize="1rem" />
+          <MoreVertIcon fontSize="1rem" />
         </IconButton>
         <Menu
           id="basic-menu"
@@ -236,7 +238,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
   );
 }
 
-function ManageUserTable({ searchText }) {
+function ManageUserTable({ searchText, onDashboardDataUpdate }) {
   const { userDetails } = useAuth();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
@@ -313,6 +315,10 @@ function ManageUserTable({ searchText }) {
           totalPages: response?.data?.totalPages,
           nextPage: response?.data?.nextPage,
           prevPage: response?.data?.prevPage,
+        });
+        onDashboardDataUpdate({
+          countInfo: response?.data?.dashboardInfo || {},
+          userDetails
         });
       }
     } catch (error) {
@@ -477,8 +483,9 @@ function ManageUserTable({ searchText }) {
             />
             <TableBody>
               {
-                usersList?.list?.map((row) => (
+                usersList?.list?.map((row, index) => (
                   <RowStructure
+                    key={index}
                     row={row}
                     userDetails={userDetails}
                     updateRole={updateRole}
