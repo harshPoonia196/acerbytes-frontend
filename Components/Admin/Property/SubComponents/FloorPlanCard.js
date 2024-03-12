@@ -19,15 +19,17 @@ import {
   TableBody,
 } from "@mui/material";
 import {
+  transformDocuments,
+  formatNumber,
   monthList,
-  transformDocuments
 } from "utills/CommonFunction";
 import { getAllOptions } from "api/Property.api";
 import InfoIcon from "@mui/icons-material/Info";
 import { useSnackbar } from "utills/SnackbarContext";
 
 import EditIcon from "@mui/icons-material/Edit";
-import { unitPlanSchema } from "Components/Admin/Property/Validation/PropertyValidation";
+// import { monthList } from "Components/Constants/index"
+import { unitsPlanSchemaWithoutLayout,unitsPlanSchemaWithLayout } from "Components/Admin/Property/Validation/PropertyValidation";
 import DeleteIcon from "@mui/icons-material/Delete";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewUnitAreaInputField from "Components/CommonLayouts/NewUnitAreaInputField";
@@ -57,6 +59,7 @@ function FloorPlanCard({
   const [editItem, setEditItem] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
+  const [totalPriceCalc,setTotalPriceCalc]=useState(0);
   const handleClose = () => setOpen(false);
   const [selectedItem, setSelectedItem] = useState({
     propertyType: "",
@@ -64,8 +67,9 @@ function FloorPlanCard({
     name: "",
     area: "",
     totalUnits: "",
-    priceUnit: "Crore",
-    areaUnit: "",
+    totalPrice:"",
+    priceUnit:"Crore",
+    areaUnit: "Sqft",
     bsp: "",
     applicableYear: "",
     applicableMonth: "",
@@ -81,7 +85,6 @@ function FloorPlanCard({
   useEffect(() => {
     setUnit(layoutType);
     getAllOptionDataList()
-
     setUnitType(projectType);
     const updatedPlanList = unitsPlan.planList.filter((plan) => {
       // Check if all fields in the plan object are empty
@@ -148,16 +151,23 @@ function FloorPlanCard({
     } else if (edit) {
       let getSum = 0;
       rows.map((one) => {
-        getSum += parseInt(one.bsp);
+        getSum += parseInt(one.totalPrice);
       });
       let averagePriceSum = getSum / rows.length;
-      const bspValues = rows
-        .map((item) => parseFloat(item.bsp))
+      const totalPriceValues = rows
+        .map((item) => parseFloat(item.totalPrice))
         .filter((value) => !isNaN(value));
-      const minPriceRange = Math.min(...bspValues);
-      const maxPriceRange = Math.max(...bspValues);
+      const minPriceRange = Math.min(...totalPriceValues);
+      const maxPriceRange = Math.max(...totalPriceValues);
       const uniquePropertyLayoutsSet = new Set(
-        rows.map((item) => item.propertyLayout)
+        rows.map((item) =>{ 
+        if(item.propertyLayout!==""){
+          return item.propertyLayout
+        }
+        else {
+          return null
+        }
+    }).filter((layout) => layout !== null)
       );
       const uniqueLayouts = Array.from(uniquePropertyLayoutsSet);
       return {
@@ -169,19 +179,26 @@ function FloorPlanCard({
     } else {
       let getSum = 0;
       rows.map((one) => {
-        getSum += parseInt(one.bsp);
+        getSum += parseInt(one.totalPrice);
       });
       let averagePriceSum =
-        (getSum + parseInt(selectedItem.bsp)) / (rows.length + 1);
+        (getSum + parseInt(selectedItem.totalPrice)) / (rows.length + 1);
       let averagePriceDecrease =
-        (getSum - parseInt(selectedItem.bsp)) / (rows.length + 1);
-      const bspValues = valueArr
-        .map((item) => parseFloat(item.bsp))
+        (getSum - parseInt(selectedItem.totalPrice)) / (rows.length + 1);
+      const totalPriceValues = valueArr
+        .map((item) => parseFloat(item.totalPrice))
         .filter((value) => !isNaN(value));
-      const minPriceRange = Math.min(...bspValues);
-      const maxPriceRange = Math.max(...bspValues);
+      const minPriceRange = Math.min(...totalPriceValues);
+      const maxPriceRange = Math.max(...totalPriceValues);
       const uniquePropertyLayoutsSet = new Set(
-        valueArr.map((item) => item.propertyLayout)
+        valueArr.map((item) =>{ 
+          if(item.propertyLayout!==""){
+            return item.propertyLayout
+          }
+          else {
+            return null
+          }
+      }).filter((layout) => layout !== null)
       );
       const uniqueLayouts = Array.from(uniquePropertyLayoutsSet);
 
@@ -194,26 +211,16 @@ function FloorPlanCard({
     }
   };
   const addFloorPlan = () => {
-    if (
-      selectedItem.propertyType &&
-      selectedItem.propertyLayout &&
-      selectedItem.name &&
-      selectedItem.area &&
-      selectedItem.bsp &&
-      selectedItem.applicableMonth &&
-      selectedItem.applicableYear
-    ) {
-      //    const isObjectPresent = rows.some(item =>
-      //     Object.entries(selectedItem).every(([key, value]) => item[key] === value)
-      //   );
-      //   if(isObjectPresent){
 
-      //   }
-      //   else{
-      //     let temp = [...rows,selectedItem]
-      //     setRows((prevRows) => [...prevRows, selectedItem]);
-      //   }
-      // handleChange(undefined,"unitsPlan",undefined,undefined,undefined,undefined,undefined,undefined,[...rows,selectedItem])
+    let validationSchema = ["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
+    const { error } = validationSchema?.validate(selectedItem, {
+      abortEarly: false,
+    });
+
+
+    if (
+      !error
+    ) {
 
       let calculation = overallCalc(rows, selectedItem, true);
       setRows((prevRows) => [...prevRows, selectedItem]);
@@ -223,20 +230,21 @@ function FloorPlanCard({
         name: "",
         area: "",
         areaUnit: "",
+        priceUnit:"",
+        width:"",
+        length:"",
         totalUnits: "",
-        priceUnit: "Crore",
+        totalPrice:"",
+        priceUnit:"Crore",
         bsp: "",
         applicableYear: "",
         applicableMonth: "",
       });
       handleUnitsPlan({ ...calculation, planList: [...rows, selectedItem] });
-      // handleChange(undefined,"unitsPlan",undefined,undefined,undefined,undefined,undefined,undefined,{...calculation,planList:[...rows,selectedItem]})
-    } else {
-      const { error } = unitPlanSchema.validate(selectedItem, {
-        abortEarly: false,
-      });
-      if (error) {
-        // console.log("🚀 ~ validateForm ~ error:", error.details)
+    } 
+    else {
+     
+        console.log("🚀 ~ validateForm ~ error:", error.details)
         const validationErrors = {};
         error.details.forEach((detail) => {
           validationErrors[detail?.context?.label] = detail?.message;
@@ -244,9 +252,20 @@ function FloorPlanCard({
         // Handle validation errors, e.g., display error messages
         setLocalError(validationErrors);
         return false;
-      }
     }
   };
+
+
+  const handleCalculation=(e,fieldName)=>{
+
+if(fieldName==='length'){
+  setSelectedItem((prev) => ({ ...prev, length: e.target.value }))
+}
+else if(fieldName==='width'){
+  setSelectedItem((prev) => ({ ...prev, width: e.target.value, area:prev.length * e.target.value }))
+}
+
+  }
 
   const editFloorPlan = () => {
     if (editItem >= 0) {
@@ -261,9 +280,6 @@ function FloorPlanCard({
         ...calculation,
         planList: [
           ...arr,
-          // ...prevRows.slice(0, editItem),
-          // selectedItem,
-          // ...prevRows.slice(editItem + 1),
         ],
       });
       setSelectedItem({
@@ -271,9 +287,12 @@ function FloorPlanCard({
         propertyLayout: "",
         name: "",
         area: "",
+        width:'',
+        length:'',
         totalUnits: "",
-        priceUnit: "Crore",
-        areaUnit: "Acres",
+        totalPrice:'',
+        priceUnit:"",
+        areaUnit: "",
         bsp: "",
         applicableYear: "",
         applicableMonth: "",
@@ -329,41 +348,61 @@ function FloorPlanCard({
                 }))
               }
             />
-            {!hide.includes("unitsPlanUnit") ?
-              <NewSelectTextFieldStructure
-                label="Unit"
-                isEdit={isEdit}
-                name="propertyLayout"
-                list={layoutType}
-                error={
-                  localError?.["propertyLayout"] ||
-                  errors?.["unitsPlan.planList[0].propertyLayout"]
-                }
-                value={selectedItem.propertyLayout}
-                handleChange={(e) =>
-                  setSelectedItem((prev) => ({
-                    ...prev,
-                    propertyLayout: e.target.value,
-                  }))
-                }
-              />
-              :
+            { !["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase())?
+             <NewSelectTextFieldStructure
+              label="Unit"
+              isEdit={isEdit}
+              name="propertyLayout"
+              list={layoutType}
+              error={
+                localError?.["propertyLayout"] ||
+                errors?.["unitsPlan.planList[0].propertyLayout"]
+              }
+              value={selectedItem.propertyLayout}
+              handleChange={(e) =>
+                setSelectedItem((prev) => ({
+                  ...prev,
+                  propertyLayout: e.target.value,
+                }))
+              }
+            />
+            :
+            <>
               <NewInputFieldStructure
-                label="Unit"
-                variant="outlined"
-                isEdit={isEdit}
-                list={layoutType}
-                name="propertyLayout"
-                value={selectedItem.propertyLayout}
-                error={
-                  localError?.["propertyLayout"] ||
-                  errors?.["unitsPlan.planList[0].propertyLayout"]
-                }
-                handleChange={(e) =>
-                  setSelectedItem((prev) => ({ ...prev, propertyLayout: e.target.value }))
-                }
-              />
-
+            label="Length"
+            variant="outlined"
+            isEdit={isEdit}
+            list={layoutType}
+            name="length"
+            value={selectedItem.length}
+            error={
+              localError?.["length"] ||
+              errors?.["unitsPlan.planList[0].length"]
+            }
+            handleChange={
+             (e)=> handleCalculation(e,'length')
+              // (e) =>
+              // setSelectedItem((prev) => ({ ...prev, length: e.target.value }))
+            }
+          />
+            <NewInputFieldStructure
+            label="Width"
+            variant="outlined"
+            isEdit={isEdit}
+            list={layoutType}
+            name="width"
+            value={selectedItem.width}
+            error={
+              localError?.["width"] ||
+              errors?.["unitsPlan.planList[0].width"]
+            }
+            handleChange={(e) =>
+              handleCalculation(e,"width")
+            }
+          />
+            </>
+          
+            
             }
             <NewInputFieldStructure
               label="Name #"
@@ -433,11 +472,12 @@ function FloorPlanCard({
             />
 
             <NewInputFieldStructure
-              label="Area (Per Unit)"
+              label={`Area (Per unit)`}
               variant="outlined"
               isEdit={isEdit}
               type={"number"}
               name="area"
+              disabled={["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase())}
               value={selectedItem.area}
               error={
                 localError?.["area"] || errors?.["unitsPlan.planList[0].area"]
@@ -448,53 +488,21 @@ function FloorPlanCard({
             />
 
             <NewInputFieldStructure
-              label="Base Selling Price (Per Unit)"
+              label = {`Base Selling Price  (Per ${selectedItem.areaUnit})`}
               variant="outlined"
               type={"number"}
               isEdit={isEdit}
               name="bsp"
               error={localError?.["bsp"] || errors?.["unitsPlan.planList[0].bsp"]}
               value={selectedItem.bsp}
-              handleChange={(e) =>
+              handleChange={(e) =>{
+                
                 setSelectedItem((prev) => ({ ...prev, bsp: e.target.value }))
-              }
+              }}
             />
 
-            <NewSelectTextFieldStructure
-              label="Unit of Price"
-              name="priceUnit"
-              error={
-                localError?.["priceUnit"] ||
-                errors?.["unitsPlan.planList[0].priceUnit"]
-              }
-              isEdit={isEdit}
-              list={
-                selectOptions.priceUnit?.map((item) => {
-                  return {
-                    label: item,
-                    value: item,
-                  };
-                })
 
-                ||
-                [
-                  { label: "Crore", value: "Crore" },
-                  { label: "Lakh", value: "Lakh" },
-                ]
-              }
-
-
-
-              value={selectedItem.priceUnit}
-              handleChange={(e) =>
-                setSelectedItem((prev) => ({
-                  ...prev,
-                  priceUnit: e.target.value,
-                }))
-              }
-            />
-
-            <NewInputFieldStructure
+<NewInputFieldStructure
               label="Total Units"
               variant="outlined"
               isEdit={isEdit}
@@ -505,13 +513,38 @@ function FloorPlanCard({
                 localError?.["totalUnits"] ||
                 errors?.["unitsPlan.planList[0].totalUnits"]
               }
-              handleChange={(e) =>
+              handleChange={(e) =>{
+                let totalPriceCalc = e.target.value*selectedItem.area*selectedItem.bsp
+                
                 setSelectedItem((prev) => ({
                   ...prev,
                   totalUnits: e.target.value,
+                  totalPrice:totalPriceCalc,
+                  priceUnit:formatNumber(totalPriceCalc)
                 }))
-              }
+              }}
             />
+
+
+
+       <NewInputFieldStructure
+            label="Total Price"
+            variant="outlined"
+            isEdit={isEdit}
+            list={layoutType}
+            disabled={true}
+            name="length"
+            value={selectedItem.totalPrice}
+            error={
+              localError?.["propertyLayout"] ||
+              errors?.["unitsPlan.planList[0].propertyLayout"]
+            }
+            // handleChange={
+            //  (e)=> handleCalculation(e,'length')
+            //   // (e) =>
+            //   // setSelectedItem((prev) => ({ ...prev, length: e.target.value }))
+            // }
+          />    
 
             <NewSelectTextFieldStructure
               label="Applicable Year"
@@ -604,6 +637,7 @@ function FloorPlanCard({
               <TableCell align="left" >Area</TableCell>
               <TableCell align="left" >Area Unit</TableCell>
               <TableCell align="left" >Base Selling Price</TableCell>
+              <TableCell align="left" >Total Price</TableCell>
               <TableCell align="left" >Applicable Year</TableCell>
               <TableCell align="left" >Applicable Month</TableCell>
               <TableCell align="left" >Edit</TableCell>
@@ -620,13 +654,13 @@ function FloorPlanCard({
                     {row.propertyType}
                   </TableCell>
                 )}
-                {row.propertyLayout && (
+                {row.propertyLayout ? (
                   <TableCell align="left">{row.propertyLayout}</TableCell>
-                )}
+                ):"-"}
                 {row.name ? (
                   <TableCell align="left">{row.name}</TableCell>
                 ) : (
-                  ""
+                  "-"
                 )}
                 {row.area !== "" ? (
                   <TableCell align="left">{row.area}</TableCell>
@@ -642,22 +676,27 @@ function FloorPlanCard({
                     {row.areaUnit ? row.areaUnit : " "}
                   </TableCell>
                 ) : (
-                  ""
+                  "-"
                 )}
                 {row.bsp ? (
                   <TableCell align="left">{row.bsp}</TableCell>
                 ) : (
-                  ""
+                  "-"
+                )}
+                  {row.totalPrice ? (
+                  <TableCell align="center">{row.totalPrice}</TableCell>
+                ) : (
+                  "-"
                 )}
                 {row.applicableYear ? (
                   <TableCell align="left">{row.applicableYear}</TableCell>
                 ) : (
-                  ""
+                  "-"
                 )}
                 {row.applicableMonth ? (
                   <TableCell align="left">{row.applicableMonth}</TableCell>
                 ) : (
-                  ""
+                  "-"
                 )}
                 {row.propertyType ? (
                   <TableCell align="left" sx={{ py: 0 }}>
@@ -672,7 +711,7 @@ function FloorPlanCard({
                     </IconButton>
                   </TableCell>
                 ) : (
-                  ""
+                  "-"
                 )}
                 {row.propertyType ? (
                   <TableCell align="left" sx={{ py: 0 }}>
@@ -681,7 +720,7 @@ function FloorPlanCard({
                     </IconButton>
                   </TableCell>
                 ) : (
-                  ""
+                  "-"
                 )}
               </TableRow>
             ))}

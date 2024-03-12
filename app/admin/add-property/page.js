@@ -374,6 +374,7 @@ setCities(res.data.data[0])
       minPriceRange: 0,
       maxPriceRange: 0,
       uniqueLayouts: [],
+      totalPrice:0,
       planList: [
         // {
         //   propertyType: "",
@@ -390,151 +391,6 @@ setCities(res.data.data[0])
     },
 
     amenitiesData: {
-      // sectionScore:"",
-      // Basic: {
-      //   Gym: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Yoga: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Swimming pool": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Club: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Fitness center": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   SPA: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      // },
-      // Expected: {
-      //   Pool: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Yoga: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Party hall": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Indoor games": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Spa: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Clubhouse: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Jacuzzi: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Theatre: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Barbeque Lawn": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Jogging track": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Covered Sitting": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Garden: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Wi-fi": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      // },
-      // Desired: {
-      //   Theatre: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Barbeque Lawn": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Jogging track": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Covered Sitting": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Garden: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Yoga: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   SPA: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Swimming pool": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Club: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      // },
-      // Unique: {
-      //   Library: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Kids play area": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Back up": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Wi-fi": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Gas line": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Shopping mart": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      // },
     },
     location: {
       state: "",
@@ -547,86 +403,6 @@ setCities(res.data.data[0])
       longitude: "",
       latitude: "",
       assessment: {
-      //   "Pick up / delivery": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   School: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Hospital: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Mall: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Super market": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Restaurants: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Railway: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Metro: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Bus stand": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Highway: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Offices: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Hotels: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Clubs: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Noise: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Safety: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Bus stops": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Train station": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Metro station": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   University: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Parks: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
       },
     },
     valueForMoney: {
@@ -636,17 +412,6 @@ setCities(res.data.data[0])
       sectionScore:""
     },
     consultants: [],
-    // consultants: [
-    //     {
-    //         id: "",
-    //         name: "",
-    //         profilePic: "",
-    //         rating: 0,
-    //         ratingTag: "",
-    //         clientsServed: 0,
-    //         number: ""
-    //     }
-    // ],
     overallAssessment: {
       score: 0,
       scoredRating: 0,
@@ -874,7 +639,7 @@ const handleUIHide=(e)=>{
       "floors",
       "greenArea", 
       "greenDensity",
-      "unitsPlan"]) 
+      ]) 
       break;
     case "shop":
       setHide([ 
@@ -883,7 +648,7 @@ const handleUIHide=(e)=>{
       "floors",
       "greenArea", 
       "greenDensity",
-      "unitsPlan"]) 
+      ]) 
       break;
     case "land":
       setHide([ 
@@ -1247,7 +1012,8 @@ setForm({
             handleChange={handleChange}
             isEdit={isEdit}
           />
-          { !hide.includes("unitsPlan")&& <FloorPlanCard
+          { !hide.includes("unitsPlan")
+          && <FloorPlanCard
             errors={errors}
             hide={hide}
             form={form}

@@ -43,6 +43,29 @@ function transformDocuments(documents) {
   }, {});
 }
 
+function formatNumber(number) {
+  // Check if the number is greater than or equal to one crore
+  if (number >= 10000000) {
+    const crore = Math.floor(number / 10000000);
+    return `crore`;
+  }
+  // Check if the number is greater than or equal to one lakh
+  else if (number >= 100000) {
+    const lakh = Math.floor(number / 100000);
+    return `lakh`;
+  }
+  // Check if the number is greater than or equal to one thousand
+  else if (number >= 1000) {
+    const thousand = Math.floor(number / 1000);
+    return `thousand`;
+  }
+  // // Less than one thousand
+  // else {
+  //   return `${number}`;
+  // }
+}
+
+
 function transformDocumentsLocation(documents) {
   return documents.reduce((result, document) => {
     const { city, area } = document;
@@ -136,6 +159,7 @@ export {
   formatDate,
   formatAmount,
   formatPoints,
+  formatNumber,
   toCamelCase,
   transformDocuments,
   transformDocumentsLocation,
