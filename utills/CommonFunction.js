@@ -103,7 +103,7 @@ let formatDateAndDaysRemaining = (expiryDate) => {
 
 const formatAmount = (amount) => {
   // const numericAmount = Number(amount.replace(/,/g, ''));
-  const numericAmount = Number(String(points).replace(/,/g, ''));
+  const numericAmount = Number(String(amount).replace(/,/g, ''));
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
