@@ -217,7 +217,7 @@ function RowStructure({
         assignedPoints,
         receivedPayment
       )
-        .toFixed(2)
+        .toFixed(0)
         .toString(),
       approvedPayment: receivedPayment,
       approvedPoints: assignedPoints,
@@ -255,8 +255,8 @@ function RowStructure({
         <TableCell>
           {row?.brokerId?.phone?.countryCode} {row?.brokerId?.phone?.number}
         </TableCell>
-        <TableCell>{row.amount}</TableCell>
-        <TableCell>{row.points}</TableCell>
+        <TableCell>{formatAmount(row.amount)}</TableCell>
+        <TableCell>{formatPoints(row.points)}</TableCell>
         <TableCell>{row?.standardDiscount}%</TableCell>
         {isCompleted && <TableCell>{row?.approvedDiscount}%</TableCell>}
         {isCompleted && (
@@ -426,7 +426,7 @@ function TableView({
     <Card sx={{ mb: 2 }}>
       <CustomSearchInput value={searchTerm} onChange={handleSearch} />
     </Card>
-    {orderRequests.length > 0 ? (
+    {orderRequests?.list?.length > 0 ? (
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <EnhancedTableHead
@@ -509,7 +509,7 @@ function OrdersTable() {
         approvedPoints,
         approvedPayment
       )
-        .toFixed(2)
+        .toFixed(0)
         .toString(),
       approvedPayment: approvedPayment,
       approvedPoints: approvedPoints,

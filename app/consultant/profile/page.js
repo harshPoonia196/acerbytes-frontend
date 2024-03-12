@@ -52,6 +52,7 @@ import {
 import { currencies, countries } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import { useAuth } from "utills/AuthContext";
+import { getAllOptions, getCities } from "api/Property.api";
 
 const tabHeight = 116;
 
@@ -132,6 +133,8 @@ function ConsultantProfile() {
   const { openSnackbar } = useSnackbar();
 
   const [stateOptions, setStateOptions] = useState([]);
+  const [allStateAndCityInfo, setAllStateAndCityInfo] = useState({});
+  const [allDropdownOptions, setAllDropdownOptions] = useState([]);
   const [cityOptions, setCityOptions] = useState([]);
 
   const { data, isLoading, error } = useQueries(
@@ -499,19 +502,25 @@ function ConsultantProfile() {
 
   const classes = useStyles();
 
-  const getAllStateOfIndia = async () => {
+  const getDropdownOptions = async () => {
     try {
-      const res = await getAccessToken();
-      if (res.auth_token) {
-        const response = await getAllStateList(res.auth_token, "India");
-        if (response) {
-          setStateOptions(
-            response?.map((stateDetail) => ({
-              label: stateDetail?.state_name || "",
-              value: stateDetail?.state_name || "",
-            })) || []
-          );
-        }
+      const response = await getCities();
+      if (response?.data?.data?.[0]) {
+        setAllStateAndCityInfo(response?.data?.data?.[0]);
+        setStateOptions(
+          Object.keys(response?.data?.data?.[0])?.filter(rs => rs !== "_id")?.map((stateDetail) => {
+            return {
+              label: stateDetail || "",
+              value: stateDetail || "",
+            }
+          }) || []
+        );
+      }
+
+
+      const allOptionsResponse = await getAllOptions();
+      if (allOptionsResponse?.data?.data?.length > 0) {
+        setAllDropdownOptions(allOptionsResponse?.data?.data);
       }
     } catch (error) {
       openSnackbar(
@@ -525,17 +534,14 @@ function ConsultantProfile() {
 
   const getInterestedCities = async (stateName) => {
     try {
-      const res = await getAccessToken();
-      if (res.auth_token) {
-        const response = await getAllCitiesList(res.auth_token, stateName);
-        if (response) {
-          setCityOptions(
-            response?.map((cityDetails) => ({
-              label: cityDetails?.city_name || "",
-              value: cityDetails?.city_name || "",
-            })) || []
-          );
-        }
+      if (stateName) {
+        const stateInfo = allStateAndCityInfo[stateName];
+        setCityOptions(
+          stateInfo?.map((cityDetails) => ({
+            label: cityDetails || "",
+            value: cityDetails || "",
+          })) || []
+        );
       }
     } catch (error) {
       openSnackbar(
@@ -548,7 +554,7 @@ function ConsultantProfile() {
   };
 
   React.useEffect(() => {
-    getAllStateOfIndia();
+    getDropdownOptions();
   }, []);
 
   React.useEffect(() => {
@@ -806,10 +812,7 @@ function ConsultantProfile() {
                     label="Service type"
                     value={brokerProfileInfo?.serviceDetails?.serviceType || ""}
                     isEdit={isEdit}
-                    list={[
-                      { label: "Type1", value: "type1" },
-                      { label: "Type2", value: "type2" },
-                    ]}
+                    list={allDropdownOptions?.find(rs => rs.name == "Service Type")?.childSub || []}
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "serviceType")
                     }
@@ -854,6 +857,7 @@ function ConsultantProfile() {
                   <NewPhoneInputFieldStructure
                     variant="outlined"
                     label="Registerd phone"
+                    countryCodeOptions={allDropdownOptions?.find(rs => rs.name == "Country code")?.childSub || []}
                     value1={
                       brokerProfileInfo?.serviceDetails?.registeredPhone
                         ?.countryCode || ""
@@ -998,6 +1002,7 @@ function ConsultantProfile() {
                     label="Minimum"
                     variant="outlined"
                     isEdit={isEdit}
+                    currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                     value1={
                       brokerProfileInfo?.budget?.minimumBudget?.unit || ""
                     }
@@ -1014,6 +1019,7 @@ function ConsultantProfile() {
                   <NewCurrencyInputField
                     label="Maximum"
                     variant="outlined"
+                    currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                     isEdit={isEdit}
                     value1={
                       brokerProfileInfo?.budget?.maximumBudget?.unit || ""

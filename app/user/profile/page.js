@@ -55,10 +55,11 @@ import {
 } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { validateEmail } from "utills/utills";
-import { currencies, countries } from "utills/Constants";
+import { currencies, COUNTRY_NAME, countries } from "utills/Constants";
 import colors from "styles/theme/colors";
 import Loader from "Components/CommonLayouts/Loading";
 import { capitalLizeName } from "utills/CommonFunction";
+import { getAllOptions, getCities } from "api/Property.api";
 
 const tabHeight = 116;
 
@@ -102,9 +103,9 @@ function useThrottledOnScroll(callback, delay) {
 function Profile() {
   const { userDetails, isLogged } = useAuth();
   const [isLoading, setLoading] = useState(false);
-  const [countryList, setCountryList] = useState([]);
-  const [allStateList, setAllStatesList] = useState([]);
   const [interestedStatesList, setInterestedStatesList] = useState([]);
+  const [allStateAndCityInfo, setAllStateAndCityInfo] = useState({});
+  const [allDropdownOptions, setAllDropdownOptions] = useState([]);
   const [interestedCitiesList, setInterestedCitiesList] = useState([]);
   const [selectInterestedState, setInterestedState] = useState("");
   const [selectInterestedCity, setInterestedCity] = useState("");
@@ -112,7 +113,6 @@ function Profile() {
   const [emailInvalid, setEmailInvalid] = useState(false);
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
   const [image, setImage] = useState("");
-
 
   const handleOpenUploadPopup = () => {
     setIsUploadPopupOpen(true);
@@ -183,7 +183,7 @@ function Profile() {
       addressLine2: "",
       city: "",
       state: "",
-      country: "",
+      country: COUNTRY_NAME,
       pinCode: "",
     },
   });
@@ -282,8 +282,7 @@ function Profile() {
   );
 
   React.useEffect(() => {
-    getAllStateOfIndia();
-    getAllCountryList();
+    getDropdownOptions();
   }, []);
 
   React.useEffect(() => {
@@ -316,7 +315,10 @@ function Profile() {
                   currencies[0]?.value,
               },
             },
-            currentAddress: dataPlayload?.currentAddress,
+            currentAddress: {
+              ...dataPlayload?.currentAddress,
+              country: COUNTRY_NAME
+            },
             interestedCities: dataPlayload?.interestedCities || [],
             name: dataPlayload?.name,
             phone: dataPlayload?.phone,
@@ -331,9 +333,6 @@ function Profile() {
             email: dataPlayload?.email,
           });
 
-          if (dataPlayload?.currentAddress?.country) {
-            getStatListByName(dataPlayload?.currentAddress?.country);
-          }
         }
       } catch (error) {
         showToaterMessages(
@@ -349,52 +348,24 @@ function Profile() {
     }
   };
 
-  const getAllCountryList = async () => {
+  const getDropdownOptions = async () => {
     try {
-      const res = await getAccessToken();
-      if (res.auth_token) {
-        const response = await getAllCountriesList(res.auth_token);
-        if (response) {
-          setCountryList(response);
-        }
+      const response = await getCities();
+      if (response?.data?.data?.[0]) {
+        setAllStateAndCityInfo(response?.data?.data?.[0]);
+        setInterestedStatesList(
+          Object.keys(response?.data?.data?.[0])?.filter(rs => rs !== "_id")?.map((stateDetail) => {
+            return {
+              label: stateDetail || "",
+              value: stateDetail || "",
+            }
+          }) || []
+        );
       }
-    } catch (error) {
-      showToaterMessages(
-        error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching country list",
-        "error"
-      );
-    }
-  };
 
-  const getStatListByName = async (stateName) => {
-    try {
-      const res = await getAccessToken();
-      if (res.auth_token) {
-        const response = await getAllStateList(res.auth_token, stateName);
-        if (response) {
-          setAllStatesList(response);
-        }
-      }
-    } catch (error) {
-      showToaterMessages(
-        error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
-        "error"
-      );
-    }
-  };
-
-  const getAllStateOfIndia = async () => {
-    try {
-      const res = await getAccessToken();
-      if (res.auth_token) {
-        const response = await getAllStateList(res.auth_token, "India");
-        if (response) {
-          setInterestedStatesList(response);
-        }
+      const allOptionsResponse = await getAllOptions();
+      if (allOptionsResponse?.data?.data?.length > 0) {
+        setAllDropdownOptions(allOptionsResponse?.data?.data);
       }
     } catch (error) {
       showToaterMessages(
@@ -408,12 +379,14 @@ function Profile() {
 
   const getInterestedCities = async (stateName) => {
     try {
-      const res = await getAccessToken();
-      if (res.auth_token) {
-        const response = await getAllCitiesList(res.auth_token, stateName);
-        if (response) {
-          setInterestedCitiesList(response);
-        }
+      if (stateName) {
+        const stateInfo = allStateAndCityInfo[stateName];
+        setInterestedCitiesList(
+          stateInfo?.map((cityDetails) => ({
+            label: cityDetails || "",
+            value: cityDetails || "",
+          })) || []
+        );
       }
     } catch (error) {
       showToaterMessages(
@@ -486,9 +459,6 @@ function Profile() {
       },
     });
 
-    if (event.target.name == "country") {
-      getStatListByName(event.target.value);
-    }
   };
 
   const handleChangeInteresetCitiesDetails = (key, value) => {
@@ -879,7 +849,7 @@ function Profile() {
                     handleChange(e, "serviceDetails", "serviceType")
                   }
                   name={"serviceType"}
-                  list={SERVICE_TYPE}
+                  list={allDropdownOptions?.find(rs => rs.name == "Service Type")?.childSub || []}
                   value={profileInfo?.serviceDetails?.serviceType}
                 />
                 <NewInputFieldStructure
@@ -900,7 +870,7 @@ function Profile() {
                   }
                   name={"family"}
                   value={profileInfo?.serviceDetails?.family}
-                  list={FAMILY}
+                  list={allDropdownOptions?.find(rs => rs.name == "Family")?.childSub || []}
                 />
               </Grid>
             </Card>
@@ -934,12 +904,7 @@ function Profile() {
                     label: selectInterestedState,
                     value: selectInterestedState,
                   }}
-                  list={interestedStatesList?.map((rs) => {
-                    return {
-                      label: rs.state_name,
-                      value: rs.state_name,
-                    };
-                  })}
+                  list={interestedStatesList}
                 />
 
                 {isEdit ? (
@@ -957,12 +922,7 @@ function Profile() {
                         label: selectInterestedCity,
                         value: selectInterestedCity,
                       }}
-                      list={interestedCitiesList?.map((rs) => {
-                        return {
-                          label: rs.city_name,
-                          value: rs.city_name,
-                        };
-                      })}
+                      list={interestedCitiesList}
                     />
                     <NewInputFieldStructure
                       label="Area"
@@ -1040,6 +1000,7 @@ function Profile() {
                   isEdit={isEdit}
                   name1={"unit"}
                   name2={"value"}
+                  currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                   value1={profileInfo?.budget?.minimumBudget?.unit}
                   value2={profileInfo?.budget?.minimumBudget?.value}
                   handleChange={(e) =>
@@ -1054,6 +1015,7 @@ function Profile() {
                   variant="outlined"
                   isEdit={isEdit}
                   value1={profileInfo?.budget?.maximumBudget?.unit}
+                  currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                   value2={profileInfo?.budget?.maximumBudget?.value}
                   handleChange={(e) =>
                     handleChange(e, "budget", "maximumBudget", "value")
@@ -1232,21 +1194,8 @@ function Profile() {
                 />
                 <NewAutoCompleteInputStructure
                   label="Country"
+                  disabled={true}
                   value={profileInfo?.currentAddress?.country}
-                  handleChange={(e, newValue) =>
-                    handleChangeCurrentAddress({
-                      target: {
-                        name: "country",
-                        value: newValue.value,
-                      },
-                    })
-                  }
-                  list={countryList?.map((rs) => {
-                    return {
-                      label: rs.country_name,
-                      value: rs.country_name,
-                    };
-                  })}
                 />
                 <NewAutoCompleteInputStructure
                   label="State"
@@ -1259,12 +1208,7 @@ function Profile() {
                       },
                     })
                   }
-                  list={allStateList?.map((rs) => {
-                    return {
-                      label: rs.state_name,
-                      value: rs.state_name,
-                    };
-                  })}
+                  list={interestedStatesList}
                 />
 
                 <NewInputFieldStructure
