@@ -61,3 +61,6 @@ export const currencies = [
     label: "$",
   },
 ];
+
+
+export const COUNTRY_NAME = "India";

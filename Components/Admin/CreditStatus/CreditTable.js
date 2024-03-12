@@ -376,7 +376,7 @@ function CreditTable() {
       />
     </Card>
     {
-      creditPointList.length > 0 ? (<TableContainer component={Paper}>
+      creditPointList?.list?.length > 0 ? (<TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <EnhancedTableHead
             order={order}

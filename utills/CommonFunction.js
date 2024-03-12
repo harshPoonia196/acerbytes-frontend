@@ -102,16 +102,17 @@ let formatDateAndDaysRemaining = (expiryDate) => {
 };
 
 const formatAmount = (amount) => {
+  const numericAmount = Number(amount.replace(/,/g, ''));
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 0,
-  }).format(amount);
+  }).format(numericAmount);
 };
 
 const formatPoints = (points) => {
-  const formattingValue = typeof points === Number ? points : Number(points);
-  return formattingValue.toLocaleString("en-IN");
+  const numericAmount = Number(points.replace(/,/g, ''));
+  return numericAmount.toLocaleString("en-IN");
 };
 
 export {

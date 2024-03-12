@@ -5,6 +5,7 @@ import Tooltip from '@mui/material/Tooltip';
 import InputAdornment from '@mui/material/InputAdornment';
 import InfoIcon from '@mui/icons-material/Info';
 import { menuMaxHeight } from "utills/Constants";
+import { capitalLizeName } from "utills/CommonFunction";
 
 function NewSelectTextFieldStructure({
   value,
@@ -64,11 +65,21 @@ function NewSelectTextFieldStructure({
           }}
         >
           {list ? (
-            list?.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))
+            list?.map((option) => {
+              if(option.label){
+                return (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                )
+              }else{
+                return (
+                  <MenuItem key={option} value={option}>
+                    {capitalLizeName(option)}
+                  </MenuItem>
+                )
+              }
+            })
           ) : (
             <MenuItem key="No data" value="No data" disabled>
               No data

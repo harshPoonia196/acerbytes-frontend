@@ -15,6 +15,7 @@ const NewCurrencyInputField = ({
   name2,
   handleChange,
   handleSelect,
+  currentOptions,
   label,
   type,
   value1,
@@ -72,11 +73,21 @@ const NewCurrencyInputField = ({
                     disableUnderline: true,
                   }}
                 >
-                  {currencies.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
+                  {(currentOptions || currencies).map((option) => {
+                    if (option.label) {
+                      return (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      )
+                    } else {
+                      return (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      )
+                    }
+                  })}
                 </TextField>
               </InputAdornment>
             ),
