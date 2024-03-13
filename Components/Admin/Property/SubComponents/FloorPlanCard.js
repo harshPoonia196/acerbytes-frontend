@@ -656,7 +656,10 @@ else if(fieldName==='width'){
                 )}
                 {row.propertyLayout ? (
                   <TableCell align="left">{row.propertyLayout}</TableCell>
-                ):"-"}
+                )
+                :
+                <TableCell align="left">{row.width && row.length?`${row.width}x${row.length}`:'-'}</TableCell>
+               }
                 {row.name ? (
                   <TableCell align="left">{row.name}</TableCell>
                 ) : (

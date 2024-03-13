@@ -68,7 +68,7 @@ function LocationAssesmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
 
                                                         {insideKey}
                                                     </Typography>
-                                                    <Rating disabled={!location?.["assessment"]?.[insideKey]?.isApplicable} value={location?.["assessment"]?.[insideKey]?.rating} name="half-rating" defaultValue={0} precision={0.5} size='small' onChange={(e) =>
+                                                    <Rating disabled={!location?.["assessment"]?.[insideKey]?.isApplicable} value={location?.["assessment"]?.[insideKey]?.rating} name={insideKey} id={insideKey} defaultValue={0} precision={0.5} size='small' onChange={(e) =>
                                                       //  moduleScoreCalc(e, "location", "assessment",true)
                                                       handleChange(e, "location", "assessment", "checked", undefined, insideKey, undefined, true)
                                                       } sx={{ alignSelf: 'center' }} />

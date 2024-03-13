@@ -43,7 +43,7 @@ function FacilitiesCard({ isEdit, form, handleChange, handleRating }) {
                         Object?.keys(amenitiesData)?.map(key => {
                             return <>
                                 <Grid item xs={12}>
-                                    <Typography variant="h6">{key!=='sectionScore'&& key}</Typography>
+                                    <Typography variant="h6">{(key!=='sectionScore' && key!=='pointsGained')?key:''}</Typography>
                                 </Grid>
 
                                 {
@@ -57,7 +57,7 @@ function FacilitiesCard({ isEdit, form, handleChange, handleRating }) {
                                                 >
                                                     {insideKey}
                                                 </Typography>
-                                                <Rating disabled={!amenitiesData?.[key]?.[insideKey]?.isApplicable} value={amenitiesData?.[key]?.[insideKey]?.rating} name="half-rating" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e) => handleChange(e, "amenitiesData", key, "checked", undefined, insideKey, undefined, true)} />
+                                                <Rating disabled={!amenitiesData?.[key]?.[insideKey]?.isApplicable} value={amenitiesData?.[key]?.[insideKey]?.rating} name={insideKey} defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center' }} onChange={(e) => handleChange(e, "amenitiesData", key, "checked", undefined, insideKey, undefined, true)} />
                                             </Grid>
                                         </>
                                     })
