@@ -35,12 +35,11 @@ import {
   transformDocumentsLocation,
 } from "utills/CommonFunction";
 import { debounce } from "lodash";
-import { useAuth } from "utills/AuthContext";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 function PropertyList({ params }) {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-  const [alignment, setAlignment] = useState(1);
+  const [alignment, setAlignment] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
 
@@ -309,14 +308,6 @@ function PropertyList({ params }) {
       }
     }
   };
-
-  function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
 
 
   return (

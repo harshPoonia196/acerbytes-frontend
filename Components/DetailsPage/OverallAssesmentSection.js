@@ -5,14 +5,11 @@ import {
   Typography,
   Box,
   Divider,
-  Rating,
   Chip,
 } from "@mui/material";
-import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EnquireNow from "./Modal/EnquireNow";
 import { useAuth } from "utills/AuthContext";
 

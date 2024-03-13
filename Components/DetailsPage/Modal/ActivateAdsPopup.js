@@ -62,14 +62,14 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
     const descriptionWords = formData.description.trim().split(/\s+/);
     if (!formData.title) {
       newErrors.title = 'Title is required.';
-    } else if (titleWords.length !== 10) { // Check if title exactly has 10 words
-      newErrors.title = 'Title must be exactly 10 words.';
+    } else if (titleWords.length !== 10) { // Check if title max to has 10 words
+      newErrors.title = 'Title must be max up to 10 words.';
     }
 
     if (!formData.description) {
       newErrors.description = 'Description is required.';
     }else if(descriptionWords.length !== 50){
-      newErrors.description = 'Description must be exactly 50 words.';
+      newErrors.description = 'Description must be max up to 50 words.';
     }
 
     if (!formData.duration) {

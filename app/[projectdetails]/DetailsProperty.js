@@ -59,6 +59,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
+import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
 
 const tabHeight = 200;
 
@@ -377,6 +378,7 @@ const PropertyDetails = ({ params }) => {
   return (
     <>
       {isLoading && <Loader />}
+        <UserDetailsAd  AllPropertyData={propertyData[0]}/>
       <nav className={classes.demo2}>
         <TopMenu
           topMenu={propertyData[0]?.propertyData}
