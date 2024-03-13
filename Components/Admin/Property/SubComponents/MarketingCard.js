@@ -11,6 +11,8 @@ import {
     IconButton,
     Button
 } from "@mui/material";
+import Image from 'next/image'
+
 import EditIcon from "@mui/icons-material/Edit";
 import { useSnackbar } from "utills/SnackbarContext";
 
@@ -82,7 +84,24 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <Grid item xs={12}>
+                    {image && 
+               <Box
+               component="img"
+               sx={{
+                 height: 233,
+                 width: 350,
+                 maxHeight: { xs: 233, md: 167 },
+                 maxWidth: { xs: 350, md: 250 },
+               }}
+               alt="The Property image"
+               src={image}
+             />
+    }
                         <Card sx={{ display: 'flex', p: 2 }}>
+
+             
+                            <>
+                         
                             <Typography sx={{ flex: 1, alignSelf: 'center' }}>Upload</Typography>
                     
 
@@ -110,10 +129,10 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                                             Attach File
                                         </Button>
                                     </label>
-                                    <Typography sx={{ flex: 1, alignSelf: 'center', marginTop: "5px" }}>{selectedImage ? selectedImage : image}</Typography>
+                                    {/* <Typography sx={{ flex: 1, alignSelf: 'center', marginTop: "5px" }}>{selectedImage ? selectedImage : image}</Typography> */}
                                 </div>
                             </>
-
+                            </>
                         </Card>
                     </Grid>
                     <NewInputFieldStructure
