@@ -22,7 +22,7 @@ import Loader from "Components/CommonLayouts/Loading";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { listOfPages } from "Components/NavBar/Links";
 
-function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetProperty, brokerBalance, propertyUrl}) {
+function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetProperty, brokerBalance, propertyUrl }) {
 
   const router = useRouter();
   const tempList = [
@@ -62,14 +62,14 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
     const descriptionWords = formData.description.trim().split(/\s+/);
     if (!formData.title) {
       newErrors.title = 'Title is required.';
-    } else if (titleWords.length !== 10) { // Check if title exactly has 10 words
-      newErrors.title = 'Title must be exactly 10 words.';
+    } else if (titleWords.length >= 10) { // Check if title max to has 10 words
+      newErrors.title = 'Title must be max up to 10 words.';
     }
 
     if (!formData.description) {
       newErrors.description = 'Description is required.';
-    }else if(descriptionWords.length !== 50){
-      newErrors.description = 'Description must be exactly 50 words.';
+    } else if (descriptionWords.length >= 50) {
+      newErrors.description = 'Description must be max up to 50 words.';
     }
 
     if (!formData.duration) {
@@ -139,7 +139,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
                 startIcon={<PaymentIcon fontSize="small" />}
                 variant="outlined"
                 size="small"
-                ButtonText={brokerBalance ? brokerBalance: "35000"}
+                ButtonText={brokerBalance ? brokerBalance : "35000"}
               />
               <Typography variant="subtitle2"
                 sx={{ alignSelf: "center", color: colors.GRAY }}>

@@ -154,7 +154,7 @@ const PropertyDetailsPage = ({ params }) => {
 
   useEffect(() => {
     detailsGetProperty();
-  }, []);
+  }, [userDetails._id]);
 
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
