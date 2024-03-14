@@ -40,7 +40,7 @@ function LocationSection(props) {
                   cursor: "pointer",
                 }}
               >
-                {locationData?.sectionScore ? locationData?.sectionScore : "00"}
+                {locationData?.sectionScore ? locationData?.sectionScore.toFixed() : "00"}
               </Typography>
             </Card>
           </Box>
@@ -57,6 +57,7 @@ function LocationSection(props) {
                       label={items}
                       value={value.rating}
                       isRating={value.isApplicable}
+                      isRatingReadOnly
                     />
                   );
                 }

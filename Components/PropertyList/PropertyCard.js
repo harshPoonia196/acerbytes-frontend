@@ -41,6 +41,13 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
   const formattedCreatedAt =
     createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' hh:mm aaa");
 
+    const  numDifferentiation = (value) => {
+      const val = Math.abs(value)
+      if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`
+      if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`
+      return value;
+    }
+
   return (
     <Card>
       <CardActionArea sx={{ p: 2 }}>
@@ -131,8 +138,8 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
                 <Typography variant="subtitle2">
-                  ₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹{" "}
-                  {propertyDetails?.unitsPlan?.maxPriceRange} Cr
+                  ₹ {numDifferentiation(propertyDetails?.unitsPlan?.minPriceRange)} - ₹{" "}
+                  {numDifferentiation(propertyDetails?.unitsPlan?.maxPriceRange)}
                 </Typography>
               )}
           </Grid>
@@ -160,14 +167,16 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
-              {propertyDetails?.unitsPlan?.uniqueLayouts.length === 1
-                ? `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layout`
-                : `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layouts`}
+              {(propertyDetails?.unitsPlan?.uniqueLayouts?.length || propertyDetails?.unitsPlan?.planList?.length) === 1
+                ? `${propertyDetails?.unitsPlan?.uniqueLayouts?.length || propertyDetails?.unitsPlan?.planList?.length} layout`
+                : `${propertyDetails?.unitsPlan?.uniqueLayouts?.length || propertyDetails?.unitsPlan?.planList?.length} layouts`}
             </Typography>
             <Typography variant="subtitle2">
-              {propertyDetails?.unitsPlan?.uniqueLayouts.length &&
+              {propertyDetails?.unitsPlan?.uniqueLayouts.length ?
                 propertyDetails?.unitsPlan?.uniqueLayouts
                   ?.map((item) => item)
+                  .join(", ") : propertyDetails?.unitsPlan?.planList
+                  ?.map((item) => `${item?.width}*${item?.length}`)
                   .join(", ")}
             </Typography>
           </Grid>
