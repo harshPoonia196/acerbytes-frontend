@@ -94,7 +94,6 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">
             {titleCase(broker?.fullName)}
-            <DoneIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
             <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
           </Typography>
           <Typography variant="body2">

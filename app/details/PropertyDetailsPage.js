@@ -102,7 +102,15 @@ const PropertyDetailsPage = ({ params }) => {
   const detailsPropertyId = paramsId;
 
   const [isLoading, setLoading] = useState(false);
-  const [propertyData, setPropertyData] = useState([]);
+  const [propertyData, setPropertyData] = useState({});
+
+  const shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
   const detailsGetProperty = async () => {
     try {
@@ -111,8 +119,8 @@ const PropertyDetailsPage = ({ params }) => {
         `${detailsPropertyId}${userDetails._id ? `?brokerId=${userDetails._id}` : ""}`
       );
       if (res.status === 200) {
-        shuffle(res.data?.data?.consultants)
-        setPropertyData(res.data?.data);
+        const data = {...res.data?.data, consultants: shuffle(res.data?.data?.consultants)}
+        setPropertyData({...data});
       }
     } catch (error) {
       showToaterMessages(
@@ -396,14 +404,7 @@ const PropertyDetailsPage = ({ params }) => {
     }
   }, []);
 
-  const shuffle = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
+ 
   return (
     <>
       {isLoading && <Loader />}
