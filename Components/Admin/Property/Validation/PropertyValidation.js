@@ -33,7 +33,7 @@ export const unitsPlanSchemaWithLayout = Joi.object({
   name: Joi.string().required(),
   areaUnit: Joi.string().required(),
   totalUnits: Joi.number().required(),
-  priceUnit:Joi.string().required(),
+  priceUnit:Joi.string().allow(""),
   area: Joi.number().required(),
   bsp: Joi.number().required(),
   totalPrice:Joi.number().allow(null,""),
