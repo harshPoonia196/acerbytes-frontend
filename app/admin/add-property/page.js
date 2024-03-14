@@ -81,8 +81,8 @@ function AddProperty() {
   const routerNavigation = useRouter();
   const [editPage, setEditPage] = useState(false);
   const [brokerList, setBrokerList] = useState([]);
-  const [amentiesStars,setAmentiesStar]=useState(0);
-  const [locationStars,setLocationStars]=useState(0);
+  const [amentiesStars,setAmentiesStar]=useState([]);
+  const [locationStars,setLocationStars]=useState([]);
   const [isLoading, setLoading] = useState(false);
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
@@ -290,8 +290,7 @@ setCities(res.data.data[0])
       };
 
       let amentiesSatrCount = sumItems({sectionScore:'',pointsGained:0,...amenities},['sectionScore', 'pointsGained'])
-      setAmentiesStar(amentiesSatrCount*5)
-      setLocationStars(Object.keys(temp).length*5)
+  
       setForm((prevForm) => ({
         ...prevForm,
         location: {
@@ -562,7 +561,7 @@ const [hide,setHide]=useState([])
   const moduleScoreCalc = (e, firstKeyName, secondKeyName,seperateCalc,thirdKeyName) => {
     let totalRating;
     let totalScored;
-    console.log(firstKeyName,'firstt')
+
     switch (firstKeyName.toLowerCase()) {
       case "overview":
         totalRating = 10;
@@ -574,13 +573,13 @@ const [hide,setHide]=useState([])
         totalRating = 20;
         break;
       case "location":
-        totalRating = 100;
+        totalRating = locationStars.length*5;
         break;
       case "valueformoney" :
-        totalRating = locationStars;
+        totalRating = 15;
         break;
         case "amenitiesdata" :
-        totalRating = +amentiesStars;
+        totalRating = +amentiesStars.length*5;
         break;
       default:
         totalRating = 10;
@@ -633,6 +632,7 @@ const [hide,setHide]=useState([])
     } 
 
     else if(secondKeyName==="assessment" || firstKeyName==="amenitiesData"){
+
       let difference =
       +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(incomingValue);
     let compare =
@@ -665,7 +665,6 @@ const [hide,setHide]=useState([])
     // }
 
     let calc = (totalScored / totalRating) * 10;
-
     if(seperateCalc){
       setForm({
         ...form,
@@ -840,6 +839,13 @@ console.log('ischecked',thirdKeyName)
             };
   
           } else {
+            if(secondKeyName==="assessment" && (!locationStars.includes(autoFillField))){
+                setLocationStars([...locationStars,autoFillField])
+              }
+              else if(firstKeyName==="amenitiesData" && (!amentiesStars.includes(autoFillField))){
+              setAmentiesStar([...amentiesStars,autoFillField])
+              }
+          
             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
               ...updatedForm[firstKeyName][secondKeyName][autoFillField],
               isApplicable: e.target.checked,

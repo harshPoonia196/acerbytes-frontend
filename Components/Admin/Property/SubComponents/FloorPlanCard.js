@@ -482,9 +482,21 @@ else if(fieldName==='width'){
               error={
                 localError?.["area"] || errors?.["unitsPlan.planList[0].area"]
               }
-              handleChange={(e) =>
-                setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
+              handleChange={(e) =>{
+                if(selectedItem.bsp && selectedItem.totalUnits){
+                  let calc=selectedItem.totalUnits*selectedItem.bsp*e.target.value
+                  setSelectedItem((prev) => ({ ...prev,
+                    area: e.target.value,
+                    totalPrice:calc,
+                    priceUnit:formatNumber(totalPriceCalc)
+                  }))
+                }
+                else{
+                  setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
+
+                }
               }
+            }
             />
 
             <NewInputFieldStructure
@@ -496,8 +508,18 @@ else if(fieldName==='width'){
               error={localError?.["bsp"] || errors?.["unitsPlan.planList[0].bsp"]}
               value={selectedItem.bsp}
               handleChange={(e) =>{
-                
-                setSelectedItem((prev) => ({ ...prev, bsp: e.target.value }))
+                if(selectedItem.area && selectedItem.totalUnits){
+                  let calc=selectedItem.totalUnits*selectedItem.area*e.target.value
+                  setSelectedItem((prev) => ({ ...prev,
+                    bsp: e.target.value,
+                    totalPrice:calc,
+                    priceUnit:formatNumber(totalPriceCalc)
+                  }))
+                }
+                else{
+                  setSelectedItem((prev) => ({ ...prev, bsp: e.target.value }))
+
+                }
               }}
             />
 
