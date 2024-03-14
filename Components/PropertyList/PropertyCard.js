@@ -42,9 +42,11 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
     createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' hh:mm aaa");
 
     const  numDifferentiation = (value) => {
+      console.log(value)
       const val = Math.abs(value)
       if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`
       if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`
+      if (val >= 1000) return `${(value / 1000).toFixed(2)}k`
       return value;
     }
 
