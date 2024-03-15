@@ -691,7 +691,7 @@ const [hide,setHide]=useState([])
     // }
 
     let calc = (totalScored / totalRating) * 10;
-    if(seperateCalc){
+    if(seperateCalc && firstKeyName !=="valueForMoney"){
       setForm({
         ...form,
         [firstKeyName]: {
@@ -701,6 +701,27 @@ const [hide,setHide]=useState([])
           ["pointsGained"]:totalScored
         }
       });
+    }
+    else if(seperateCalc && firstKeyName ==="valueForMoney"){
+      setForm({
+        ...form,
+        [firstKeyName]: {
+          ...form[firstKeyName],
+          [secondKeyName]: e.target.value,
+          ["sectionScore"]: calc,
+          ["pointsGained"]:totalScored
+        },
+         overallAssessment: {
+        ...form.overallAssessment,
+        score: Math.floor(calc),
+        scoredRating: totalScored,
+        rated: {
+          ...form.overallAssessment.rated,
+          [secondKeyName]: parseInt(incomingValue),
+        },
+      },
+      });
+     
     }
     
     return {calc,totalScored}
