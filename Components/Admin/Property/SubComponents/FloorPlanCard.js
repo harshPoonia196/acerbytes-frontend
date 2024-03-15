@@ -485,10 +485,11 @@ else if(fieldName==='width'){
               handleChange={(e) =>{
                 if(selectedItem.bsp && selectedItem.totalUnits){
                   let calc=selectedItem.totalUnits*selectedItem.bsp*e.target.value
+                  let priceUnitValue = formatNumber(totalPriceCalc)
                   setSelectedItem((prev) => ({ ...prev,
                     area: e.target.value,
                     totalPrice:calc,
-                    priceUnit:formatNumber(totalPriceCalc)
+                    priceUnit:priceUnitValue
                   }))
                 }
                 else{
@@ -510,10 +511,11 @@ else if(fieldName==='width'){
               handleChange={(e) =>{
                 if(selectedItem.area && selectedItem.totalUnits){
                   let calc=selectedItem.totalUnits*selectedItem.area*e.target.value
+                  let priceUnitValue = formatNumber(totalPriceCalc)
                   setSelectedItem((prev) => ({ ...prev,
                     bsp: e.target.value,
                     totalPrice:calc,
-                    priceUnit:formatNumber(totalPriceCalc)
+                    priceUnit:priceUnitValue
                   }))
                 }
                 else{
@@ -537,12 +539,12 @@ else if(fieldName==='width'){
               }
               handleChange={(e) =>{
                 let totalPriceCalc = e.target.value*selectedItem.area*selectedItem.bsp
-                
+                let priceUnitValue = formatNumber(totalPriceCalc)
                 setSelectedItem((prev) => ({
                   ...prev,
                   totalUnits: e.target.value,
                   totalPrice:totalPriceCalc,
-                  priceUnit:formatNumber(totalPriceCalc)
+                  priceUnit:priceUnitValue
                 }))
               }}
             />

@@ -24,7 +24,7 @@ const overviewSchema = Joi.object({
     otherwise: Joi.string().allow("").optional(),
   }),
   sectionScore: Joi.number().allow(""),
-  pointsGained:Joi.number().allow("")
+  pointsGained:Joi.number().allow(null,"")
 });
 
 export const unitsPlanSchemaWithLayout = Joi.object({
@@ -245,7 +245,7 @@ const layoutSchema = Joi.object({
   constructionQuality: Joi.number().required().min(1),
   interiorQuality: Joi.number().required().min(1),
   sectionScore: Joi.number().allow(""),
-  pointsGained:Joi.number().allow("")
+  pointsGained:Joi.number().allow(null,"")
 });
 
 export const Schema = Joi.object({
@@ -265,7 +265,7 @@ export const Schema = Joi.object({
     fresh: Joi.string().required(),
     resale: Joi.string().required(),
     sectionScore: Joi.number().allow(""),
-    pointsGained:Joi.number().allow("")
+    pointsGained:Joi.number().allow(null,"")
   }),
 
   layout: layoutSchema,
@@ -307,7 +307,7 @@ export const Schema = Joi.object({
 
   amenitiesData: Joi.object().keys({
     sectionScore:Joi.number().allow(""),
-    pointsGained:Joi.number().allow(""),
+    pointsGained:Joi.number().allow(null,""),
     Basic: Joi.object().pattern(
       /./,
       Joi.object().keys({
@@ -363,7 +363,7 @@ export const Schema = Joi.object({
     longitude: Joi.number().required(),
     latitude: Joi.number().required(),
     sectionScore: Joi.number().allow(null,""),
-    pointsGained:Joi.number().allow(""),
+    pointsGained:Joi.number().allow(null,""),
     assessment: Joi.object().pattern(
       /./,
       Joi.object().keys({
@@ -382,7 +382,7 @@ export const Schema = Joi.object({
       expectedFurtherApp: Joi.number().not(0).required(),
       forEndUse: Joi.number().not(0).required(),
       sectionScore: Joi.number().allow(""),
-      pointsGained:Joi.number().allow("")
+      pointsGained:Joi.number().allow(null,"")
     })
     .required(),
   consultants: Joi.array()
