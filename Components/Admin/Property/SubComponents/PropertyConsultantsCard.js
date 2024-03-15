@@ -48,6 +48,7 @@ function PropertyConsultantsCard({ isEdit, form, list, handleChange }) {
                       fullName: item.fullName.toUpperCase(),
                       type: "Consultant",
                       stars: item.ratings,
+                      phone:item.phone,
                       clients: 432,
                     }}
                     noReview
