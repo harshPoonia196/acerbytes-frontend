@@ -23,7 +23,7 @@ const overviewSchema = Joi.object({
     then: Joi.string().required(),
     otherwise: Joi.string().allow("").optional(),
   }),
-  sectionScore: Joi.number().allow(""),
+  sectionScore: Joi.number().allow(null,""),
   pointsGained:Joi.number().allow(null,"")
 });
 
@@ -244,7 +244,7 @@ const layoutSchema = Joi.object({
   // }),
   constructionQuality: Joi.number().required().min(1),
   interiorQuality: Joi.number().required().min(1),
-  sectionScore: Joi.number().allow(""),
+  sectionScore: Joi.number().allow(null,""),
   pointsGained:Joi.number().allow(null,"")
 });
 

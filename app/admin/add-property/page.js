@@ -544,7 +544,8 @@ const [hide,setHide]=useState([])
       [firstKeyName]: {
         ...form[firstKeyName],
         [secondKeyName]: e.target.value,
-        ["sectionScore"]: moduleScore.calc
+        ["sectionScore"]: moduleScore.calc,
+        ["pointGained"]:moduleScore.totalScored
       },
       overallAssessment: {
         ...form.overallAssessment,
@@ -589,7 +590,32 @@ const [hide,setHide]=useState([])
     }
 
 
-
+    function chechAlpahbeValues(value){
+      let returnValue=0
+      switch (value.toLowerCase()) {
+        case "yes":
+          returnValue = 5;
+          break;
+        case "no":
+          returnValue = 0;
+          break;
+        case "dont know":
+          returnValue = 0;
+          break;
+        case "don't know":
+          returnValue = 0;
+          break;
+        case "on time":
+          returnValue = 5;
+          break;
+        case "delay":
+          returnValue = 0;
+          break;
+        default:
+          returnValue = 0;
+      }
+      return returnValue
+    }
     function isNotAlphabet(char) {
       return !/[a-zA-Z]/.test(char);
     }
@@ -597,28 +623,10 @@ const [hide,setHide]=useState([])
     if (isNotAlphabet(e.target.value)) {
       incomingValue = e.target.value;
     } else {
-      switch (e.target.value.toLowerCase()) {
-        case "yes":
-          incomingValue = 5;
-          break;
-        case "no":
-          incomingValue = 0;
-          break;
-        case "dont know":
-          incomingValue = 0;
-          break;
-        case "don't know":
-          incomingValue = 0;
-          break;
-        case "on time":
-          incomingValue = 5;
-          break;
-        case "delay":
-          incomingValue = 0;
-          break;
-        default:
-          incomingValue = 0;
-      }
+     
+     let val=  chechAlpahbeValues(e.target.value)
+     incomingValue=val
+    
     }
     if (form.overallAssessment.rated?.[secondKeyName] > 0) {
       let difference =
@@ -649,7 +657,22 @@ const [hide,setHide]=useState([])
     }
     }
     
+    else if(firstKeyName==="regulatoryClearance"){
+      let difference =
+      chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) - parseInt(incomingValue);
+    let compare =
+    chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) < parseInt(incomingValue);
+    if (compare) {
+      totalScored =
+      +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
+    } else {
+      totalScored =
+      +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
+    }
+    }
+
     else {
+     
       let difference =
       +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
     let compare =
@@ -810,7 +833,8 @@ const handleUIHide=(e)=>{
         [firstKeyName]: {
           ...form[firstKeyName],
           [secondKeyName]: e.target.value,
-          ["sectionScore"]: moduleScore.calc
+          ["sectionScore"]: moduleScore.calc,
+          ["pointsGained"]:moduleScore.totalScored
         },
         overallAssessment: {
           ...form.overallAssessment,
