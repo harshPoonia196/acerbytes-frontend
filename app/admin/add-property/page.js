@@ -545,7 +545,7 @@ const [hide,setHide]=useState([])
         ...form[firstKeyName],
         [secondKeyName]: e.target.value,
         ["sectionScore"]: moduleScore.calc,
-        ["pointGained"]:moduleScore.totalScored
+        ["pointsGained"]:moduleScore.totalScored
       },
       overallAssessment: {
         ...form.overallAssessment,
