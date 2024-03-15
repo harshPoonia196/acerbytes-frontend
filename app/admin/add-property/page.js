@@ -202,14 +202,17 @@ function AddProperty() {
         const { success, data, message } = response.data;
         if (success) {
           let getValue = data.data.map((i) => {
+          
             let u = {
               fullName: i.fullName.replace(/\b\w/g, (match) => match.toUpperCase()),
               type: "consultant",
+              phone:i.phone,
               rating: i.rating,
               id: i._id,
             };
             return u;
           });
+         
             setBrokerList([...getValue]);
           // setBrokerList([...data.data]);
           //   return data;
@@ -821,7 +824,6 @@ const handleUIHide=(e)=>{
       });
     } else {
       if (thirdKeyName === "checked") {
-console.log('ischecked',thirdKeyName)
         setForm((prevForm) => {
           const updatedForm = { ...prevForm };
           if (
@@ -851,7 +853,6 @@ console.log('ischecked',thirdKeyName)
               isApplicable: e.target.checked,
             };
           }
-          console.log(updatedForm,'updates')
           return updatedForm;
         });
       } 
