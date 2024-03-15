@@ -448,7 +448,6 @@ setCities(res.data.data[0])
         privateBankLoan: 0,
         resale: 0,
         area: 0,
-
         unitsDensity: 0,
         greenDensity: 0,
         unitsDensityScore: 0,
@@ -691,7 +690,7 @@ const [hide,setHide]=useState([])
     // }
 
     let calc = (totalScored / totalRating) * 10;
-    if(seperateCalc && firstKeyName !=="valueForMoney"){
+    if(seperateCalc){
       setForm({
         ...form,
         [firstKeyName]: {
@@ -701,27 +700,6 @@ const [hide,setHide]=useState([])
           ["pointsGained"]:totalScored
         }
       });
-    }
-    else if(seperateCalc && firstKeyName ==="valueForMoney"){
-      setForm({
-        ...form,
-        [firstKeyName]: {
-          ...form[firstKeyName],
-          [secondKeyName]: e.target.value,
-          ["sectionScore"]: calc,
-          ["pointsGained"]:totalScored
-        },
-         overallAssessment: {
-        ...form.overallAssessment,
-        score: Math.floor(calc),
-        scoredRating: totalScored,
-        rated: {
-          ...form.overallAssessment.rated,
-          [secondKeyName]: parseInt(incomingValue),
-        },
-      },
-      });
-     
     }
     
     return {calc,totalScored}
