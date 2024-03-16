@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import {
   transformDocuments,
+  formatNumberWithCommas,
   formatNumber,
   monthList,
 } from "utills/CommonFunction";
@@ -269,6 +270,12 @@ else if(fieldName==='width'){
 
   const editFloorPlan = () => {
     if (editItem >= 0) {
+      let validationSchema = ["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
+    const { error } = validationSchema?.validate(selectedItem, {
+      abortEarly: false,
+    });
+
+    if(!error){
       let arr = [
         ...rows.slice(0, editItem),
         selectedItem,
@@ -299,7 +306,20 @@ else if(fieldName==='width'){
       });
       setIsEditItem(false);
       setEditItem(false);
+      setLocalError({});
     }
+    else {
+      console.log("🚀 ~ validateForm ~ error:", error.details)
+      const validationErrors = {};
+      error.details.forEach((detail) => {
+        validationErrors[detail?.context?.label] = detail?.message;
+      });
+      // Handle validation errors, e.g., display error messages
+      setLocalError(validationErrors);
+      return false;
+  }
+    }
+  
   };
 
   const deleteFloorPlan = (index) => {
@@ -485,7 +505,8 @@ else if(fieldName==='width'){
               handleChange={(e) =>{
                 if(selectedItem.bsp && selectedItem.totalUnits){
                   let calc=selectedItem.totalUnits*selectedItem.bsp*e.target.value
-                  let priceUnitValue = formatNumber(totalPriceCalc)
+                  let priceUnitValue = formatNumber(calc)
+                  let finalValue = formatNumberWithCommas(calc)
                   setSelectedItem((prev) => ({ ...prev,
                     area: e.target.value,
                     totalPrice:calc,
@@ -511,7 +532,8 @@ else if(fieldName==='width'){
               handleChange={(e) =>{
                 if(selectedItem.area && selectedItem.totalUnits){
                   let calc=selectedItem.totalUnits*selectedItem.area*e.target.value
-                  let priceUnitValue = formatNumber(totalPriceCalc)
+                  let priceUnitValue = formatNumber(calc)
+                  let finalValue = formatNumberWithCommas(calc)
                   setSelectedItem((prev) => ({ ...prev,
                     bsp: e.target.value,
                     totalPrice:calc,
@@ -540,6 +562,7 @@ else if(fieldName==='width'){
               handleChange={(e) =>{
                 let totalPriceCalc = e.target.value*selectedItem.area*selectedItem.bsp
                 let priceUnitValue = formatNumber(totalPriceCalc)
+                let finalValue = formatNumberWithCommas(totalPriceCalc)
                 setSelectedItem((prev) => ({
                   ...prev,
                   totalUnits: e.target.value,
@@ -558,7 +581,8 @@ else if(fieldName==='width'){
             list={layoutType}
             disabled={true}
             name="length"
-            value={selectedItem.totalPrice}
+            // let finalValue = formatNumberWithCommas(calc)
+            value={formatNumberWithCommas(selectedItem.totalPrice)}
             error={
               localError?.["propertyLayout"] ||
               errors?.["unitsPlan.planList[0].propertyLayout"]

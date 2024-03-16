@@ -81,8 +81,11 @@ function AddProperty() {
   const routerNavigation = useRouter();
   const [editPage, setEditPage] = useState(false);
   const [brokerList, setBrokerList] = useState([]);
+  const [amentiesStarsScore,setAmentiesStarScore]=useState([]);
   const [amentiesStars,setAmentiesStar]=useState([]);
   const [locationStars,setLocationStars]=useState([]);
+  const[totalRating,setTotalRating]=useState(80)
+  const [locationStarsScore,setLocationStarsScore]=useState([]);
   const [isLoading, setLoading] = useState(false);
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
@@ -306,7 +309,6 @@ setCities(res.data.data[0])
         // setSelectOption({ ...temp })
       }
     } catch (error) {
-      console.log(error, 'err')
       showToaterMessages(
         error?.response?.data?.message ||
         error?.message ||
@@ -329,7 +331,6 @@ setCities(res.data.data[0])
     getCitiesList();
     brokersList();
 
-// console.log(form)
 
     return () => {
       clearTimeout(unsetClickedRef.current);
@@ -448,6 +449,11 @@ setCities(res.data.data[0])
         privateBankLoan: 0,
         resale: 0,
         area: 0,
+        assessment:[],
+        amenities:[],
+        appTillNow: 0,
+        expectedFurtherApp: 0,
+        forEndUse: 0,
         unitsDensity: 0,
         greenDensity: 0,
         unitsDensityScore: 0,
@@ -483,7 +489,8 @@ const [hide,setHide]=useState([])
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
 
     let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
-    let totalRating = 70;
+    // totalRating=totalRating
+    // let totalRating = form.overview.status ==="underconstruction"? 75:80;
     let totalScored;
 
     function isNotAlphabet(char) {
@@ -562,30 +569,30 @@ const [hide,setHide]=useState([])
 
 
   const moduleScoreCalc = (e, firstKeyName, secondKeyName,seperateCalc,thirdKeyName) => {
-    let totalRating;
+    let totalRatingModule;
     let totalScored;
 
     switch (firstKeyName.toLowerCase()) {
       case "overview":
-        totalRating = 10;
+        totalRatingModule = 10;
         break;
       case "regulatoryinfo":
-        totalRating = 35;
+        totalRatingModule = 35;
         break;
       case "layout":
-        totalRating = 20;
+        totalRatingModule = 20;
         break;
       case "location":
-        totalRating = locationStars.length*5;
+        totalRatingModule = locationStars.length*5;
         break;
       case "valueformoney" :
-        totalRating = 15;
+        totalRatingModule = 15;
         break;
         case "amenitiesdata" :
-        totalRating = +amentiesStars.length*5;
+          totalRatingModule = +amentiesStars.length*5;
         break;
       default:
-        totalRating = 10;
+        totalRatingModule = 10;
     }
 
 
@@ -689,7 +696,7 @@ const [hide,setHide]=useState([])
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
 
-    let calc = (totalScored / totalRating) * 10;
+    let calc = (totalScored / totalRatingModule) * 10;
     if(seperateCalc){
       setForm({
         ...form,
@@ -706,8 +713,12 @@ const [hide,setHide]=useState([])
 
   }
 
-const handleUIHide=(e)=>{
+const handleUIHide=(e,firstKeyName,secondKeyName)=>{
 
+if(form?.[firstKeyName][secondKeyName].some(item => item.value.toLowerCase() !== 'land')){
+ setHide([]) 
+}
+else{
   let lastValue = e[e.length - 1]?.value.toLowerCase()
   let value= lastValue?.replace(/\s/g, '')
   switch (value) {
@@ -741,6 +752,21 @@ const handleUIHide=(e)=>{
   }
 }
 
+}
+
+const handleCategoryHide = (e)=>{
+if(e.target.value.toLowerCase()==="commercial"){
+setHide([ 
+  "numberOfBuildings",
+ "layoutType",
+"floors",
+"greenArea", 
+"greenDensityScore",
+"greenDensity",
+])
+}
+}
+
   const handleChange = async (
     e,
     firstKeyName,
@@ -769,8 +795,8 @@ const handleUIHide=(e)=>{
     } else if (score === true) {
 
       let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
-
-      let totalRating = form.overview.status ==="underconstruction"? 70:65;
+      let total = totalRating
+      // let totalRating = form.overview.status ==="underconstruction"? 75:80;
       let totalScored;
 
       function isNotAlphabet(char) {
@@ -789,11 +815,13 @@ const handleUIHide=(e)=>{
             break;
           case "dont know":
             incomingValue = 0;
-            totalRating = totalRating-5
+            total = totalRating - 5
+              setTotalRating(total)
             break;
           case "don't know":
             incomingValue = 0;
-            totalRating = totalRating-5
+            total = totalRating - 5
+             setTotalRating(total)
             break;
           case "on time":
             incomingValue = 5;
@@ -806,7 +834,29 @@ const handleUIHide=(e)=>{
         }
       }
 
-      if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+if (firstKeyName==="location" || firstKeyName === "amenitiesData"){
+  if (form.overallAssessment.rated?.[firstKeyName].length > 0) {
+    let difference =
+      form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] -
+      parseInt(incomingValue);
+    let compare =
+      form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] <
+      parseInt(incomingValue);
+    if (compare) {
+      totalScored =
+        form.overallAssessment.scoredRating + Math.abs(difference);
+    } else {
+      totalScored =
+        form.overallAssessment.scoredRating - Math.abs(difference);
+    }
+  } else {
+    totalScored =
+      form.overallAssessment.scoredRating + parseInt(incomingValue);
+  } 
+}
+
+
+      else if (form.overallAssessment.rated?.[secondKeyName] > 0) {
         let difference =
           form.overallAssessment.rated?.[secondKeyName] -
           parseInt(incomingValue);
@@ -825,7 +875,10 @@ const handleUIHide=(e)=>{
           form.overallAssessment.scoredRating + parseInt(incomingValue);
       }
 
-      let calc = (totalScored / totalRating) * 100;
+if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()==="don't know"){
+  totalScored -= 5
+}
+      let calc = (totalScored / total) * 100;
 
       setForm({
         ...form,
@@ -854,14 +907,39 @@ const handleUIHide=(e)=>{
             updatedForm[firstKeyName][secondKeyName] &&
             isRating
           ) {
+            if (firstKeyName === 'location' || firstKeyName === "amenitiesData") {
+              let getCalc = amentieScoreCalc(e, firstKeyName, secondKeyName, autoFillField)
 
-            let locationAssesment = moduleScoreCalc(e,firstKeyName,secondKeyName)
-            updatedForm[firstKeyName]["sectionScore"] = locationAssesment.calc
-            updatedForm[firstKeyName]["pointsGained"] = locationAssesment.totalScored
-            updatedForm[firstKeyName][secondKeyName][autoFillField] = {
-              ...updatedForm[firstKeyName][secondKeyName][autoFillField],
-              rating: e.target.value,
-            };
+              let locationAssesment = moduleScoreCalc(e, firstKeyName, secondKeyName)
+
+              updatedForm[firstKeyName]["sectionScore"] = locationAssesment.calc
+              updatedForm[firstKeyName]["pointsGained"] = locationAssesment.totalScored
+              updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                rating: e.target.value,
+              };
+              updatedForm["overallAssessment"]= {
+                ...form.overallAssessment,
+                score: Math.floor(getCalc.calc),
+                scoredRating: getCalc.totalScored,
+                // rated: {
+                //   ...form.overallAssessment.rated,
+                //   [secondKeyName]: parseInt(incomingValue),
+                // },
+              }
+            }
+            else {
+              let locationAssesment = moduleScoreCalc(e, firstKeyName, secondKeyName)
+
+              updatedForm[firstKeyName]["sectionScore"] = locationAssesment.calc
+              updatedForm[firstKeyName]["pointsGained"] = locationAssesment.totalScored
+              updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                rating: e.target.value,
+              };
+            }
+          
+       
   
           } else {
             if(secondKeyName==="assessment" && (!locationStars.includes(autoFillField))){
@@ -893,7 +971,14 @@ setForm({
           if(secondKeyName==="maxFloors" || secondKeyName === "minFloors"){
             value=+value
           }
-        await setForm((prev) => ({
+        if (secondKeyName === "projectCategory" && form?.[firstKeyName][secondKeyName].toLowerCase() !== e.target.value.toLowerCase()) {
+          setForm((prev) => ({
+            ...prev,
+            [firstKeyName]: { ...form?.[firstKeyName], projectCategory: e.target.value, projectType: [] }
+          }))
+          handleCategoryHide(e)
+        } 
+        setForm((prev) => ({
           ...prev,
           [firstKeyName]: !secondKeyName
             ? value
@@ -911,9 +996,15 @@ setForm({
     }
 
     if(firstKeyName==="overview" && secondKeyName==="projectType"){
-      let hideValue=handleUIHide(e)
+      let hideValue=handleUIHide(e,firstKeyName,secondKeyName)
     }
-
+    if(firstKeyName==="overview" && secondKeyName==="status" && e.target.value.toLowerCase() ==="underconstruction"){
+      let total = totalRating + 5
+      setTotalRating(total)
+    }
+// if(firstKeyName==="overview" && secondKeyName==="projectCategory"){
+//           handleCategoryHide(e)
+// }
     // const { error } = Schema.validate(form, { abortEarly: false });
     // if (error) {
     //   // console.log("🚀 ~ validateForm ~ error:", error.details)
@@ -927,6 +1018,48 @@ setForm({
     // }
   };
 
+  let amentieScoreCalc=(e,firstKeyName,secondKeyName,autoFillField)=>{
+    // let totalRating = form.overview.status ==="underconstruction"? 75:80;
+    let total = totalRating
+    let totalScored;
+    let checkField = firstKeyName === "location" ? locationStarsScore :amentiesStarsScore
+    const findItemByKey = (array, searchKey) => {
+      return array.find(item => Object.keys(item)[0] === searchKey);
+    };
+    const foundItem = findItemByKey(checkField, autoFillField);
+    if (foundItem) {
+      let difference =
+      foundItem?.[autoFillField] -
+        parseInt(e.target.value);
+      let compare =
+      foundItem?.[autoFillField] <
+        parseInt(e.target.value);
+      if (compare) {
+        totalScored =
+          form.overallAssessment.scoredRating + Math.abs(difference);
+      } else {
+        totalScored =
+          form.overallAssessment.scoredRating - Math.abs(difference);
+      }
+    } 
+    else {
+      let fieldName = autoFillField
+      if(firstKeyName==="amenitiesData"){
+      
+        setAmentiesStarScore([...amentiesStarsScore,{[fieldName]:e.target.value}])
+      }
+      else{
+       setLocationStarsScore([...locationStarsScore,{[fieldName]:e.target.value}]) 
+      }
+     total = totalRating + 5
+     setTotalRating(total)
+      totalScored =
+      form.overallAssessment.scoredRating + parseInt(e.target.value)
+    } 
+    let calc = (totalScored / total) * 100;
+
+    return {calc,totalScored}
+  }
 
   const validateForm = (publish) => {
     const { error } = Schema?.validate(form, { abortEarly: false });
@@ -1140,6 +1273,7 @@ setForm({
             hide={hide}
             selectOptions={selectOptions}
             form={form}
+            scoreChange={scoreChange}
             moduleScoreCalc={moduleScoreCalc}
             handleChange={handleChange}
             isEdit={isEdit}

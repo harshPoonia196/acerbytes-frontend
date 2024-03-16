@@ -15,8 +15,14 @@ const overviewSchema = Joi.object({
     )
     .required(),
   phase: Joi.string().allow("").optional(),
-  launchYear: Joi.string().allow(""),
-  completionYear: Joi.string().min(1).required(),
+  launchYear: Joi.number().allow(""),
+  completionYear: Joi.number().when('launchYear', {
+    is: Joi.exist(),
+    then: Joi.number()
+      .greater(Joi.ref('launchYear'))
+      .allow(Joi.ref('launchYear'))
+      .message('Completion year must be greater than or equal to launch year')
+  }),
   status: Joi.string().required(),
   constructionProgress: Joi.string().when("status", {
     is: "under construction",
@@ -422,6 +428,9 @@ export const Schema = Joi.object({
       reraApproved: Joi.number().allow(0),
       cc: Joi.number().allow(0),
       oc: Joi.number().allow(0),
+      appTillNow: Joi.number().allow(0),
+      expectedFurtherApp: Joi.number().allow(0),
+      forEndUse: Joi.number().allow(0),
       authorityRegisteration: Joi.number().allow(0),
       governmentBankLoan: Joi.number().allow(0),
       privateBankLoan: Joi.number().allow(0),
@@ -443,7 +452,7 @@ export const Schema = Joi.object({
   createdAt:Joi.date(),
   modifiedAt:Joi.date(),
   marketing: Joi.object().keys({
-    image: Joi.string().allow(""),
+    image: Joi.string().required(),
     tagLine: Joi.string().required(),
     description: Joi.string().required(),
   }),

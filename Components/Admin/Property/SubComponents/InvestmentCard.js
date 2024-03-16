@@ -11,7 +11,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import colors from 'styles/theme/colors';
 
-function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
+function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc,scoreChange }) {
 
     const { forEndUse, expectedFurtherApp, appTillNow } = form.valueForMoney
 
@@ -38,8 +38,7 @@ function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
                             </Typography>
                         </Box>
                         <Rating value={appTillNow} onChange={(e) =>
-                            // handleChange(e, "valueForMoney", "appTillNow")
-                            moduleScoreCalc(e, "valueForMoney", "appTillNow",true)
+                            scoreChange(e, "valueForMoney", "appTillNow")
                         } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
@@ -52,9 +51,7 @@ function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
                             </Typography>
                         </Box>
                         <Rating value={expectedFurtherApp} onChange={(e) =>
-                            
-                            // handleChange(e, "valueForMoney", "expectedFurtherApp")
-                            moduleScoreCalc(e, "valueForMoney", "expectedFurtherApp",true)
+                               scoreChange(e, "valueForMoney", "expectedFurtherApp")
                             } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
@@ -68,8 +65,8 @@ function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
                         </Box>
                         <Rating value={forEndUse} onChange={(e) => 
                             {
-                            // handleChange(e, "valueForMoney", "forEndUse")
-                            moduleScoreCalc(e, "valueForMoney", "forEndUse",true)}
+                                scoreChange(e, "valueForMoney", "forEndUse")
+                        }
                             } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                 </Grid>
