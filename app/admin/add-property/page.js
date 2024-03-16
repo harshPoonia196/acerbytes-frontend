@@ -448,7 +448,6 @@ setCities(res.data.data[0])
         privateBankLoan: 0,
         resale: 0,
         area: 0,
-
         unitsDensity: 0,
         greenDensity: 0,
         unitsDensityScore: 0,
@@ -545,7 +544,7 @@ const [hide,setHide]=useState([])
         ...form[firstKeyName],
         [secondKeyName]: e.target.value,
         ["sectionScore"]: moduleScore.calc,
-        ["pointGained"]:moduleScore.totalScored
+        ["pointsGained"]:moduleScore.totalScored
       },
       overallAssessment: {
         ...form.overallAssessment,
