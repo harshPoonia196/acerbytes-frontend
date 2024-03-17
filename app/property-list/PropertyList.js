@@ -13,6 +13,7 @@ import {
 import PropertyCard from "Components/PropertyList/PropertyCard";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useRef, useState } from "react";
 import {
   getAllOptions,
@@ -499,22 +500,19 @@ function PropertyList({ params }) {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
+            <Grid item xs={36} sm={18} sx={{ textAlign: 'end', alignSelf: 'end' }}>
               <Button
                 variant="h6"
                 sx={{
                   fontWeight: 600,
-                  width: "fit-content",
                   color: "white",
-                  marginTop: "20px",
-                  padding: "8px 26px !important",
-                  fontSize: "15px",
                   backgroundColor: colors?.BLACK,
                   "&:hover": {
                     backgroundColor: colors?.BLACK,
                     boxShadow: "none",
                   },
                 }}
+                startIcon={<CloseIcon />}
                 onClick={handleReset}
               >
                 Reset

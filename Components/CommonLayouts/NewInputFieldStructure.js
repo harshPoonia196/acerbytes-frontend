@@ -50,11 +50,11 @@ const NewInputFieldStructure = ({
         const truncatedValue = numericValue.slice(0, 6)
         handleChange(truncatedValue);
       }
-      else{
+      else {
         handleChange(event);
       }
-   
- 
+
+
     }
   };
 
@@ -66,7 +66,7 @@ const NewInputFieldStructure = ({
             variant="subtitle2"
             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
           >
-           {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
+            {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
           </Typography>
         </Box>
         {isEdit === undefined ? (
@@ -102,7 +102,7 @@ const NewInputFieldStructure = ({
             {...props}
           />
         ) : (
-          <Typography variant="subtitle1">Value</Typography>
+          <Typography variant="subtitle1">{value}</Typography>
         )}
       </Grid>
     </>

@@ -30,7 +30,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 
 import EditIcon from "@mui/icons-material/Edit";
 // import { monthList } from "Components/Constants/index"
-import { unitsPlanSchemaWithoutLayout,unitsPlanSchemaWithLayout } from "Components/Admin/Property/Validation/PropertyValidation";
+import { unitsPlanSchemaWithoutLayout, unitsPlanSchemaWithLayout } from "Components/Admin/Property/Validation/PropertyValidation";
 import DeleteIcon from "@mui/icons-material/Delete";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewUnitAreaInputField from "Components/CommonLayouts/NewUnitAreaInputField";
@@ -60,7 +60,7 @@ function FloorPlanCard({
   const [editItem, setEditItem] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const [totalPriceCalc,setTotalPriceCalc]=useState(0);
+  const [totalPriceCalc, setTotalPriceCalc] = useState(0);
   const handleClose = () => setOpen(false);
   const [selectedItem, setSelectedItem] = useState({
     propertyType: "",
@@ -68,8 +68,8 @@ function FloorPlanCard({
     name: "",
     area: "",
     totalUnits: "",
-    totalPrice:"",
-    priceUnit:"Crore",
+    totalPrice: "",
+    priceUnit: "Crore",
     areaUnit: "Sqft",
     bsp: "",
     applicableYear: "",
@@ -161,14 +161,14 @@ function FloorPlanCard({
       const minPriceRange = Math.min(...totalPriceValues);
       const maxPriceRange = Math.max(...totalPriceValues);
       const uniquePropertyLayoutsSet = new Set(
-        rows.map((item) =>{ 
-        if(item.propertyLayout!==""){
-          return item.propertyLayout
-        }
-        else {
-          return null
-        }
-    }).filter((layout) => layout !== null)
+        rows.map((item) => {
+          if (item.propertyLayout !== "") {
+            return item.propertyLayout
+          }
+          else {
+            return null
+          }
+        }).filter((layout) => layout !== null)
       );
       const uniqueLayouts = Array.from(uniquePropertyLayoutsSet);
       return {
@@ -192,14 +192,14 @@ function FloorPlanCard({
       const minPriceRange = Math.min(...totalPriceValues);
       const maxPriceRange = Math.max(...totalPriceValues);
       const uniquePropertyLayoutsSet = new Set(
-        valueArr.map((item) =>{ 
-          if(item.propertyLayout!==""){
+        valueArr.map((item) => {
+          if (item.propertyLayout !== "") {
             return item.propertyLayout
           }
           else {
             return null
           }
-      }).filter((layout) => layout !== null)
+        }).filter((layout) => layout !== null)
       );
       const uniqueLayouts = Array.from(uniquePropertyLayoutsSet);
 
@@ -213,7 +213,7 @@ function FloorPlanCard({
   };
   const addFloorPlan = () => {
 
-    let validationSchema = ["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
+    let validationSchema = ["shop", "land", "restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
     const { error } = validationSchema?.validate(selectedItem, {
       abortEarly: false,
     });
@@ -231,84 +231,20 @@ function FloorPlanCard({
         name: "",
         area: "",
         areaUnit: "",
-        priceUnit:"",
-        width:"",
-        length:"",
+        priceUnit: "",
+        width: "",
+        length: "",
         totalUnits: "",
-        totalPrice:"",
-        priceUnit:"Crore",
+        totalPrice: "",
+        priceUnit: "Crore",
         bsp: "",
         applicableYear: "",
         applicableMonth: "",
       });
       handleUnitsPlan({ ...calculation, planList: [...rows, selectedItem] });
-    } 
-    else {
-     
-        console.log("🚀 ~ validateForm ~ error:", error.details)
-        const validationErrors = {};
-        error.details.forEach((detail) => {
-          validationErrors[detail?.context?.label] = detail?.message;
-        });
-        // Handle validation errors, e.g., display error messages
-        setLocalError(validationErrors);
-        return false;
-    }
-  };
-
-
-  const handleCalculation=(e,fieldName)=>{
-
-if(fieldName==='length'){
-  setSelectedItem((prev) => ({ ...prev, length: e.target.value }))
-}
-else if(fieldName==='width'){
-  setSelectedItem((prev) => ({ ...prev, width: e.target.value, area:prev.length * e.target.value }))
-}
-
-  }
-
-  const editFloorPlan = () => {
-    if (editItem >= 0) {
-      let validationSchema = ["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
-    const { error } = validationSchema?.validate(selectedItem, {
-      abortEarly: false,
-    });
-
-    if(!error){
-      let arr = [
-        ...rows.slice(0, editItem),
-        selectedItem,
-        ...rows.slice(editItem + 1),
-      ];
-      setRows((prevRows) => [...arr]);
-      let calculation = overallCalc(arr, selectedItem, true, true);
-      handleUnitsPlan({
-        ...calculation,
-        planList: [
-          ...arr,
-        ],
-      });
-      setSelectedItem({
-        propertyType: "",
-        propertyLayout: "",
-        name: "",
-        area: "",
-        width:'',
-        length:'',
-        totalUnits: "",
-        totalPrice:'',
-        priceUnit:"",
-        areaUnit: "",
-        bsp: "",
-        applicableYear: "",
-        applicableMonth: "",
-      });
-      setIsEditItem(false);
-      setEditItem(false);
-      setLocalError({});
     }
     else {
+
       console.log("🚀 ~ validateForm ~ error:", error.details)
       const validationErrors = {};
       error.details.forEach((detail) => {
@@ -317,9 +253,73 @@ else if(fieldName==='width'){
       // Handle validation errors, e.g., display error messages
       setLocalError(validationErrors);
       return false;
-  }
     }
-  
+  };
+
+
+  const handleCalculation = (e, fieldName) => {
+
+    if (fieldName === 'length') {
+      setSelectedItem((prev) => ({ ...prev, length: e.target.value }))
+    }
+    else if (fieldName === 'width') {
+      setSelectedItem((prev) => ({ ...prev, width: e.target.value, area: prev.length * e.target.value }))
+    }
+
+  }
+
+  const editFloorPlan = () => {
+    if (editItem >= 0) {
+      let validationSchema = ["shop", "land", "restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
+      const { error } = validationSchema?.validate(selectedItem, {
+        abortEarly: false,
+      });
+
+      if (!error) {
+        let arr = [
+          ...rows.slice(0, editItem),
+          selectedItem,
+          ...rows.slice(editItem + 1),
+        ];
+        setRows((prevRows) => [...arr]);
+        let calculation = overallCalc(arr, selectedItem, true, true);
+        handleUnitsPlan({
+          ...calculation,
+          planList: [
+            ...arr,
+          ],
+        });
+        setSelectedItem({
+          propertyType: "",
+          propertyLayout: "",
+          name: "",
+          area: "",
+          width: '',
+          length: '',
+          totalUnits: "",
+          totalPrice: '',
+          priceUnit: "",
+          areaUnit: "",
+          bsp: "",
+          applicableYear: "",
+          applicableMonth: "",
+        });
+        setIsEditItem(false);
+        setEditItem(false);
+        setLocalError({});
+      }
+      else {
+        console.log("🚀 ~ validateForm ~ error:", error.details)
+        const validationErrors = {};
+        error.details.forEach((detail) => {
+          validationErrors[detail?.context?.label] = detail?.message;
+        });
+        // Handle validation errors, e.g., display error messages
+        setLocalError(validationErrors);
+        return false;
+      }
+    }
+
   };
 
   const deleteFloorPlan = (index) => {
@@ -330,6 +330,40 @@ else if(fieldName==='width'){
     handleUnitsPlan({ ...calculation, planList: [...remainingItems] });
     setRows((prevRows) => prevRows.filter((_, i) => i !== index));
   };
+
+
+  const handleUnitArea = (e, type) => {
+    if (type === 'textField') {
+      setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
+    } else {
+      if (rows.length >= 1) {
+        let check = rows.every(
+          (obj) => obj["areaUnit"] !== e.target.value
+        );
+        if (check) {
+          let changeUnit = rows.map((item) => {
+            return { ...item, area: "", areaUnit: e.target.value };
+          });
+          setRows(changeUnit);
+          handleOpen();
+          setSelectedItem((prev) => ({
+            ...prev,
+            areaUnit: e.target.value,
+          }));
+        } else {
+          setSelectedItem((prev) => ({
+            ...prev,
+            areaUnit: e.target.value,
+          }));
+        }
+      } else {
+        setSelectedItem((prev) => ({
+          ...prev,
+          areaUnit: e.target.value,
+        }));
+      }
+    }
+  }
 
   return (
     <Grid item xs={12} id="floorplans">
@@ -368,61 +402,61 @@ else if(fieldName==='width'){
                 }))
               }
             />
-            { !["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase())?
-             <NewSelectTextFieldStructure
-              label="Unit"
-              isEdit={isEdit}
-              name="propertyLayout"
-              list={layoutType}
-              error={
-                localError?.["propertyLayout"] ||
-                errors?.["unitsPlan.planList[0].propertyLayout"]
-              }
-              value={selectedItem.propertyLayout}
-              handleChange={(e) =>
-                setSelectedItem((prev) => ({
-                  ...prev,
-                  propertyLayout: e.target.value,
-                }))
-              }
-            />
-            :
-            <>
-              <NewInputFieldStructure
-            label="Length"
-            variant="outlined"
-            isEdit={isEdit}
-            list={layoutType}
-            name="length"
-            value={selectedItem.length}
-            error={
-              localError?.["length"] ||
-              errors?.["unitsPlan.planList[0].length"]
-            }
-            handleChange={
-             (e)=> handleCalculation(e,'length')
-              // (e) =>
-              // setSelectedItem((prev) => ({ ...prev, length: e.target.value }))
-            }
-          />
-            <NewInputFieldStructure
-            label="Width"
-            variant="outlined"
-            isEdit={isEdit}
-            list={layoutType}
-            name="width"
-            value={selectedItem.width}
-            error={
-              localError?.["width"] ||
-              errors?.["unitsPlan.planList[0].width"]
-            }
-            handleChange={(e) =>
-              handleCalculation(e,"width")
-            }
-          />
-            </>
-          
-            
+            {!["shop", "land", "restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase()) ?
+              <NewSelectTextFieldStructure
+                label="Unit"
+                isEdit={isEdit}
+                name="propertyLayout"
+                list={layoutType}
+                error={
+                  localError?.["propertyLayout"] ||
+                  errors?.["unitsPlan.planList[0].propertyLayout"]
+                }
+                value={selectedItem.propertyLayout}
+                handleChange={(e) =>
+                  setSelectedItem((prev) => ({
+                    ...prev,
+                    propertyLayout: e.target.value,
+                  }))
+                }
+              />
+              :
+              <>
+                <NewInputFieldStructure
+                  label="Length"
+                  variant="outlined"
+                  isEdit={isEdit}
+                  list={layoutType}
+                  name="length"
+                  value={selectedItem.length}
+                  error={
+                    localError?.["length"] ||
+                    errors?.["unitsPlan.planList[0].length"]
+                  }
+                  handleChange={
+                    (e) => handleCalculation(e, 'length')
+                    // (e) =>
+                    // setSelectedItem((prev) => ({ ...prev, length: e.target.value }))
+                  }
+                />
+                <NewInputFieldStructure
+                  label="Width"
+                  variant="outlined"
+                  isEdit={isEdit}
+                  list={layoutType}
+                  name="width"
+                  value={selectedItem.width}
+                  error={
+                    localError?.["width"] ||
+                    errors?.["unitsPlan.planList[0].width"]
+                  }
+                  handleChange={(e) =>
+                    handleCalculation(e, "width")
+                  }
+                />
+              </>
+
+
             }
             <NewInputFieldStructure
               label="Name #"
@@ -438,18 +472,13 @@ else if(fieldName==='width'){
               }
             />
 
-            <NewSelectTextFieldStructure
-              label="Area Unit"
-              name="areaUnit"
-              infoText="Changing the unit leads to re enter the plan. The old entries will be removed"
-              showInfo={true}
-              defaultValue={"Acres"}
-              error={
-                localError?.["areaUnit"] ||
-                errors?.["unitsPlan.planList[0].areaUnit"]
-              }
+            <NewUnitAreaInputField
+              label="Area (Per Unit)"
+              name="area"
+              type={"number"}
+              variant="outlined"
               isEdit={isEdit}
-              list={
+              units={
                 selectOptions.areaUnit?.map((item) => {
                   return {
                     label: item,
@@ -460,87 +489,34 @@ else if(fieldName==='width'){
                   { label: "Acres", value: "acres" },
                   { label: "Sqft", value: "sqft" },
                 ]}
-              value={selectedItem.areaUnit}
-              handleChange={(e) => {
-                if (rows.length >= 1) {
-                  let check = rows.every(
-                    (obj) => obj["areaUnit"] !== e.target.value
-                  );
-                  if (check) {
-                    let changeUnit = rows.map((item) => {
-                      return { ...item, area: "", areaUnit: e.target.value };
-                    });
-                    setRows(changeUnit);
-                    handleOpen();
-                    setSelectedItem((prev) => ({
-                      ...prev,
-                      areaUnit: e.target.value,
-                    }));
-                  } else {
-                    setSelectedItem((prev) => ({
-                      ...prev,
-                      areaUnit: e.target.value,
-                    }));
-                  }
-                } else {
-                  setSelectedItem((prev) => ({
-                    ...prev,
-                    areaUnit: e.target.value,
-                  }));
-                }
-              }}
-            />
-
-            <NewInputFieldStructure
-              label={`Area (Per unit)`}
-              variant="outlined"
-              isEdit={isEdit}
-              type={"number"}
-              name="area"
-              disabled={["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase())}
+              unitValue={selectedItem.areaUnit}
               value={selectedItem.area}
-              error={
-                localError?.["area"] || errors?.["unitsPlan.planList[0].area"]
-              }
-              handleChange={(e) =>{
-                if(selectedItem.bsp && selectedItem.totalUnits){
-                  let calc=selectedItem.totalUnits*selectedItem.bsp*e.target.value
-                  let priceUnitValue = formatNumber(calc)
-                  let finalValue = formatNumberWithCommas(calc)
-                  setSelectedItem((prev) => ({ ...prev,
-                    area: e.target.value,
-                    totalPrice:calc,
-                    priceUnit:priceUnitValue
-                  }))
-                }
-                else{
-                  setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
-
-                }
-              }
-            }
+              error={localError?.["area"] || errors?.["unitsPlan.planList[0].area"] || localError?.["areaUnit"] ||
+                errors?.["unitsPlan.planList[0].areaUnit"]}
+              handleChange={handleUnitArea}
             />
 
             <NewInputFieldStructure
-              label = {`Base Selling Price  (Per ${selectedItem.areaUnit})`}
+              label={`Base Selling Price  (Per ${selectedItem.areaUnit})`}
               variant="outlined"
               type={"number"}
               isEdit={isEdit}
               name="bsp"
               error={localError?.["bsp"] || errors?.["unitsPlan.planList[0].bsp"]}
               value={selectedItem.bsp}
-              handleChange={(e) =>{
-                if(selectedItem.area && selectedItem.totalUnits){
-                  let calc=selectedItem.totalUnits*selectedItem.area*e.target.value
+              handleChange={(e) => {
+                if (selectedItem.area && selectedItem.totalUnits) {
+                  let calc = selectedItem.totalUnits * selectedItem.area * e.target.value
                   let priceUnitValue = formatNumber(calc)
                   let finalValue = formatNumberWithCommas(calc)
-                  setSelectedItem((prev) => ({ ...prev,
+                  setSelectedItem((prev) => ({
+                    ...prev,
                     bsp: e.target.value,
-                    totalPrice:calc,
-                    priceUnit:priceUnitValue
+                    totalPrice: calc,
+                    priceUnit: priceUnitValue
                   }))
                 }
-                else{
+                else {
                   setSelectedItem((prev) => ({ ...prev, bsp: e.target.value }))
 
                 }
@@ -548,7 +524,7 @@ else if(fieldName==='width'){
             />
 
 
-<NewInputFieldStructure
+            <NewInputFieldStructure
               label="Total Units"
               variant="outlined"
               isEdit={isEdit}
@@ -559,40 +535,40 @@ else if(fieldName==='width'){
                 localError?.["totalUnits"] ||
                 errors?.["unitsPlan.planList[0].totalUnits"]
               }
-              handleChange={(e) =>{
-                let totalPriceCalc = e.target.value*selectedItem.area*selectedItem.bsp
+              handleChange={(e) => {
+                let totalPriceCalc = e.target.value * selectedItem.area * selectedItem.bsp
                 let priceUnitValue = formatNumber(totalPriceCalc)
                 let finalValue = formatNumberWithCommas(totalPriceCalc)
                 setSelectedItem((prev) => ({
                   ...prev,
                   totalUnits: e.target.value,
-                  totalPrice:totalPriceCalc,
-                  priceUnit:priceUnitValue
+                  totalPrice: totalPriceCalc,
+                  priceUnit: priceUnitValue
                 }))
               }}
             />
 
 
 
-       <NewInputFieldStructure
-            label="Total Price"
-            variant="outlined"
-            isEdit={isEdit}
-            list={layoutType}
-            disabled={true}
-            name="length"
-            // let finalValue = formatNumberWithCommas(calc)
-            value={formatNumberWithCommas(selectedItem.totalPrice)}
-            error={
-              localError?.["propertyLayout"] ||
-              errors?.["unitsPlan.planList[0].propertyLayout"]
-            }
+            <NewInputFieldStructure
+              label="Total Price"
+              variant="outlined"
+              isEdit={isEdit}
+              list={layoutType}
+              disabled={true}
+              name="length"
+              // let finalValue = formatNumberWithCommas(calc)
+              value={formatNumberWithCommas(selectedItem.totalPrice)}
+              error={
+                localError?.["propertyLayout"] ||
+                errors?.["unitsPlan.planList[0].propertyLayout"]
+              }
             // handleChange={
             //  (e)=> handleCalculation(e,'length')
             //   // (e) =>
             //   // setSelectedItem((prev) => ({ ...prev, length: e.target.value }))
             // }
-          />    
+            />
 
             <NewSelectTextFieldStructure
               label="Applicable Year"
@@ -705,9 +681,9 @@ else if(fieldName==='width'){
                 {row.propertyLayout ? (
                   <TableCell align="left">{row.propertyLayout}</TableCell>
                 )
-                :
-                <TableCell align="left">{row.width && row.length?`${row.width}x${row.length}`:'-'}</TableCell>
-               }
+                  :
+                  <TableCell align="left">{row.width && row.length ? `${row.width}x${row.length}` : '-'}</TableCell>
+                }
                 {row.name ? (
                   <TableCell align="left">{row.name}</TableCell>
                 ) : (
@@ -734,7 +710,7 @@ else if(fieldName==='width'){
                 ) : (
                   "-"
                 )}
-                  {row.totalPrice ? (
+                {row.totalPrice ? (
                   <TableCell align="center">{row.totalPrice}</TableCell>
                 ) : (
                   "-"
