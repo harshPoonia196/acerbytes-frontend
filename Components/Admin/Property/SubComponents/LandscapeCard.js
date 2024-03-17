@@ -260,7 +260,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
             error={errors?.["layout.greenDensity"]}
             handleChange={(e) => handleChange(e, "layout", "greenDensity")}
           />}
-          <Grid item xs={12} sm={6}>
+          {!hide.includes("greenDensityScore")  && <Grid item xs={12} sm={6}>
             <Box>
               <Typography
                 variant="subtitle2"
@@ -269,7 +269,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
                 Score
               </Typography>
             </Box>
-            <Rating
+           <Rating
               onChange={(e) => scoreChange(e, "layout", "greenDensityScore")}
               defaultValue={0}
               precision={0.5}
@@ -277,7 +277,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
               size="small"
               sx={{ alignSelf: "center", mt: 1 }}
             />
-          </Grid>
+          </Grid>}
           <Grid item xs={6}>
             <Box>
               <Typography

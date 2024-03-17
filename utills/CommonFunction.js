@@ -140,6 +140,57 @@ const formatPoints = (points) => {
   return numericAmount.toLocaleString("en-IN");
 };
 
+
+function formatNumberWithCommas(number) {
+  // Convert the number to a string for easier manipulation
+  let numberString = String(number);
+
+  // Check if the number is negative and remove the negative sign temporarily
+  let isNegative = false;
+  if (numberString[0] === '-') {
+    isNegative = true;
+    numberString = numberString.slice(1);
+  }
+
+  // Separate the number into groups based on units
+  let crores = '';
+  let lakhs = '';
+  let tenThousands = '';
+  let thousands = '';
+  let hundreds = '';
+
+  if (numberString.length > 7) {
+    crores = numberString.slice(0, -7);
+    lakhs = numberString.slice(-7, -5);
+    tenThousands = numberString.slice(-5, -3);
+    thousands = numberString.slice(-3);
+  } else if (numberString.length > 5) {
+    lakhs = numberString.slice(0, -5);
+    tenThousands = numberString.slice(-5, -3);
+    thousands = numberString.slice(-3);
+  } else if (numberString.length > 3) {
+    tenThousands = numberString.slice(0, -3);
+    thousands = numberString.slice(-3);
+  } else {
+    hundreds = numberString;
+  }
+
+  // Add commas to separate units
+  crores = crores ? crores + ',' : '';
+  lakhs = lakhs ? lakhs + ',' : '';
+  tenThousands = tenThousands ? tenThousands + ',' : '';
+  thousands = thousands ? thousands + ',' : '';
+  hundreds = hundreds ? hundreds + ',' : '';
+
+  // Combine the formatted parts and add back the negative sign if needed
+  let formattedNumber = crores + lakhs + tenThousands + thousands + hundreds;
+  if (isNegative) {
+    formattedNumber = '-' + formattedNumber;
+  }
+  let finalValue = formattedNumber.replace(/,$/, '')
+  return finalValue;
+}
+
 const yearList = Array.from(
   { length: 41 }, (_, index) => { return { label: index > 9 ? `20${index}` : `200${index}`, value: index > 9 ? `20${index}` : `200${index}` } })
 
@@ -164,6 +215,7 @@ export {
   formatNumber,
   toCamelCase,
   transformDocuments,
+  formatNumberWithCommas,
   transformDocumentsLocation,
   formatDateAndDaysRemaining,
   yearList,
