@@ -292,6 +292,40 @@ function FloorPlanCard({
     setRows((prevRows) => prevRows.filter((_, i) => i !== index));
   };
 
+
+  const handleUnitArea = (e, type) => {
+    if (type === 'textField') {
+      setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
+    } else {
+      if (rows.length >= 1) {
+        let check = rows.every(
+          (obj) => obj["areaUnit"] !== e.target.value
+        );
+        if (check) {
+          let changeUnit = rows.map((item) => {
+            return { ...item, area: "", areaUnit: e.target.value };
+          });
+          setRows(changeUnit);
+          handleOpen();
+          setSelectedItem((prev) => ({
+            ...prev,
+            areaUnit: e.target.value,
+          }));
+        } else {
+          setSelectedItem((prev) => ({
+            ...prev,
+            areaUnit: e.target.value,
+          }));
+        }
+      } else {
+        setSelectedItem((prev) => ({
+          ...prev,
+          areaUnit: e.target.value,
+        }));
+      }
+    }
+  }
+
   return (
     <Grid item xs={12} id="floorplans">
       <Card>
@@ -379,18 +413,13 @@ function FloorPlanCard({
               }
             />
 
-            <NewSelectTextFieldStructure
-              label="Area Unit"
-              name="areaUnit"
-              infoText="Changing the unit leads to re enter the plan. The old entries will be removed"
-              showInfo={true}
-              defaultValue={"Acres"}
-              error={
-                localError?.["areaUnit"] ||
-                errors?.["unitsPlan.planList[0].areaUnit"]
-              }
+            <NewUnitAreaInputField
+              label="Area (Per Unit)"
+              name="area"
+              type={"number"}
+              variant="outlined"
               isEdit={isEdit}
-              list={
+              units={
                 selectOptions.areaUnit?.map((item) => {
                   return {
                     label: item,
@@ -401,50 +430,11 @@ function FloorPlanCard({
                   { label: "Acres", value: "acres" },
                   { label: "Sqft", value: "sqft" },
                 ]}
-              value={selectedItem.areaUnit}
-              handleChange={(e) => {
-                if (rows.length >= 1) {
-                  let check = rows.every(
-                    (obj) => obj["areaUnit"] !== e.target.value
-                  );
-                  if (check) {
-                    let changeUnit = rows.map((item) => {
-                      return { ...item, area: "", areaUnit: e.target.value };
-                    });
-                    setRows(changeUnit);
-                    handleOpen();
-                    setSelectedItem((prev) => ({
-                      ...prev,
-                      areaUnit: e.target.value,
-                    }));
-                  } else {
-                    setSelectedItem((prev) => ({
-                      ...prev,
-                      areaUnit: e.target.value,
-                    }));
-                  }
-                } else {
-                  setSelectedItem((prev) => ({
-                    ...prev,
-                    areaUnit: e.target.value,
-                  }));
-                }
-              }}
-            />
-
-            <NewInputFieldStructure
-              label="Area (Per Unit)"
-              variant="outlined"
-              isEdit={isEdit}
-              type={"number"}
-              name="area"
+              unitValue={selectedItem.areaUnit}
               value={selectedItem.area}
-              error={
-                localError?.["area"] || errors?.["unitsPlan.planList[0].area"]
-              }
-              handleChange={(e) =>
-                setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
-              }
+              error={localError?.["area"] || errors?.["unitsPlan.planList[0].area"] || localError?.["areaUnit"] ||
+                errors?.["unitsPlan.planList[0].areaUnit"]}
+              handleChange={handleUnitArea}
             />
 
             <NewInputFieldStructure

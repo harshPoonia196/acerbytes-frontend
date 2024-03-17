@@ -32,7 +32,7 @@ export default function NotFound() {
           contact us for more information
         </Typography>
       </Card>
-      <Card sx={{ mt: 2 }}>
+      <Card sx={{ mt: 2, p: 2 }}>
         <Card sx={{ mb: 2 }}>
           <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }} onClick={() => { history.push(listOfPages.home) }}>
             <HomeIcon />

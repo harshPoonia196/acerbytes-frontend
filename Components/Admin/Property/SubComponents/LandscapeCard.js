@@ -21,7 +21,7 @@ import NewUnitAreaInputField from "../../../CommonLayouts/NewUnitAreaInputField"
 import colors from "styles/theme/colors";
 import NewMultiSelectAutoCompleteInputStructure from "Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure";
 
-function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide }) {
+function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide }) {
   const {
     numberOfBuildings,
     maxFloors,
@@ -42,9 +42,9 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
 
   const { openSnackbar } = useSnackbar();
 
-    const showToaterMessages = (message, severity) => {
-      openSnackbar(message, severity);
-    };
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
   const getAllOptionDataList = async () => {
     try {
       let res = await getAllOptions();
@@ -84,7 +84,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
         </Box>
         <Divider />
         <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-         { !hide.includes("numberOfBuildings") && <NewInputFieldStructure
+          {!hide.includes("numberOfBuildings") && <NewInputFieldStructure
             label="No of buildings"
             name="numberOfBuildings"
             variant="outlined"
@@ -93,8 +93,8 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
             value={numberOfBuildings}
             error={errors?.["layout.numberOfBuildings"]}
             handleChange={(e) => handleChange(e, "layout", "numberOfBuildings")}
-          /> }
-         { !hide.includes("layoutType") && <NewMultiSelectAutoCompleteInputStructure
+          />}
+          {!hide.includes("layoutType") && <NewMultiSelectAutoCompleteInputStructure
             label="Layout type"
             isEdit={isEdit}
             name="layoutType"
@@ -123,7 +123,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
               handleChange(newValue, "layout", "layoutType")
             }
           />}
-          { !hide.includes("floors") && <NewInputFieldStructure
+          {!hide.includes("floors") && <NewInputFieldStructure
             label="Floors (Max)"
             name="maxFloors"
             variant="outlined"
@@ -133,7 +133,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
             error={errors?.["layout.maxFloors"]}
             handleChange={(e) => handleChange(e, "layout", "maxFloors")}
           />}
-          { !hide.includes("floors") && <NewInputFieldStructure
+          {!hide.includes("floors") && <NewInputFieldStructure
             label="Floors (Min)"
             name="minFloors"
             type={"number"}
@@ -221,7 +221,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
             }
           />}
           <Grid item xs={0} sm={6}></Grid>
-          {!hide.includes("unitDensity") &&<NewInputFieldStructure
+          {!hide.includes("unitDensity") && <NewInputFieldStructure
             label="Unit density"
             name="unitDensity"
             variant="outlined"
@@ -230,6 +230,14 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
             value={unitDensity}
             error={errors?.["layout.unitDensity"]}
             handleChange={(e) => handleChange(e, "layout", "unitDensity")}
+            InputProps={{
+              sx: {
+                '&.Mui-disabled': {
+                  backgroundColor: '#f0f0f0',
+                  color: '#808080',
+                },
+              },
+            }}
           />}
           <Grid item xs={12} sm={6}>
             <Box>
@@ -249,7 +257,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
               sx={{ alignSelf: "center", mt: 1 }}
             />
           </Grid>
-          {!hide.includes("greenDensity") &&<NewInputFieldStructure
+          {!hide.includes("greenDensity") && <NewInputFieldStructure
             label="Green density"
             name="greenDensity"
             variant="outlined"
@@ -258,6 +266,14 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
             value={greenDensity}
             error={errors?.["layout.greenDensity"]}
             handleChange={(e) => handleChange(e, "layout", "greenDensity")}
+            InputProps={{
+              sx: {
+                '&.Mui-disabled': {
+                  backgroundColor: '#f0f0f0',
+                  color: '#808080',
+                },
+              },
+            }}
           />}
           <Grid item xs={12} sm={6}>
             <Box>
