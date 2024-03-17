@@ -81,6 +81,11 @@ function AddProperty() {
   const routerNavigation = useRouter();
   const [editPage, setEditPage] = useState(false);
   const [brokerList, setBrokerList] = useState([]);
+  const [amentiesStarsScore,setAmentiesStarScore]=useState([]);
+  const [amentiesStars,setAmentiesStar]=useState([]);
+  const [locationStars,setLocationStars]=useState([]);
+  const[totalRating,setTotalRating]=useState(80)
+  const [locationStarsScore,setLocationStarsScore]=useState([]);
   const [isLoading, setLoading] = useState(false);
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
@@ -200,14 +205,17 @@ function AddProperty() {
         const { success, data, message } = response.data;
         if (success) {
           let getValue = data.data.map((i) => {
+          
             let u = {
               fullName: i.fullName.replace(/\b\w/g, (match) => match.toUpperCase()),
               type: "consultant",
+              phone:i.phone,
               rating: i.rating,
               id: i._id,
             };
             return u;
           });
+         
             setBrokerList([...getValue]);
           // setBrokerList([...data.data]);
           //   return data;
@@ -277,6 +285,18 @@ setCities(res.data.data[0])
         })
       })  
 
+      const sumItems = (obj, excludedFields) => {
+        let sum = 0;
+        for (let key in obj) {
+          if (!excludedFields.includes(key) && typeof obj[key] === 'object') {
+            sum += Object.keys(obj[key]).length;
+          }
+        }
+        return sum;
+      };
+
+      let amentiesSatrCount = sumItems({sectionScore:'',pointsGained:0,...amenities},['sectionScore', 'pointsGained'])
+  
       setForm((prevForm) => ({
         ...prevForm,
         location: {
@@ -284,12 +304,11 @@ setCities(res.data.data[0])
           assessment: temp,
           
         },
-        amenitiesData:{sectionScore:'',...amenities}
+        amenitiesData:{sectionScore:'',pointsGained:0,...amenities}
       }));
         // setSelectOption({ ...temp })
       }
     } catch (error) {
-      console.log(error, 'err')
       showToaterMessages(
         error?.response?.data?.message ||
         error?.message ||
@@ -312,7 +331,6 @@ setCities(res.data.data[0])
     getCitiesList();
     brokersList();
 
-// console.log(form)
 
     return () => {
       clearTimeout(unsetClickedRef.current);
@@ -338,7 +356,8 @@ setCities(res.data.data[0])
       completionYear: "",
       status: "",
       constructionProgress: "",
-      sectionScore: ''
+      sectionScore: '',
+      pointsGained:0
     },
     regulatoryClearance: {
       reraApproved: "",
@@ -350,7 +369,8 @@ setCities(res.data.data[0])
       privateBankLoan: "",
       fresh: "",
       resale: "",
-      sectionScore: ''
+      sectionScore: '',
+      pointsGained:0
     },
     layout: {
       numberOfBuildings: "",
@@ -367,13 +387,15 @@ setCities(res.data.data[0])
       greenDensityScore: "",
       constructionQuality: 0,
       interiorQuality: 0,
-      sectionScore: ''
+      sectionScore: '',
+      pointsGained:0
     },
     unitsPlan: {
       averagePrice: 0,
       minPriceRange: 0,
       maxPriceRange: 0,
       uniqueLayouts: [],
+      totalPrice:0,
       planList: [
         // {
         //   propertyType: "",
@@ -390,263 +412,29 @@ setCities(res.data.data[0])
     },
 
     amenitiesData: {
-      // sectionScore:"",
-      // Basic: {
-      //   Gym: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Yoga: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Swimming pool": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Club: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Fitness center": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   SPA: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      // },
-      // Expected: {
-      //   Pool: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Yoga: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Party hall": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Indoor games": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Spa: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Clubhouse: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Jacuzzi: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Theatre: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Barbeque Lawn": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Jogging track": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Covered Sitting": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Garden: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Wi-fi": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      // },
-      // Desired: {
-      //   Theatre: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Barbeque Lawn": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Jogging track": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Covered Sitting": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Garden: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Yoga: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   SPA: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Swimming pool": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Club: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      // },
-      // Unique: {
-      //   Library: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Kids play area": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Back up": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Wi-fi": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Gas line": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Shopping mart": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      // },
     },
     location: {
       state: "",
       city: "",
       sector: "",
       sectionScore:"",
+      pointsGained:0,
       area: "",
       pinCode: "",
       googleMapLink: "",
       longitude: "",
       latitude: "",
       assessment: {
-      //   "Pick up / delivery": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   School: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Hospital: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Mall: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Super market": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Restaurants: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Railway: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Metro: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Bus stand": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Highway: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Offices: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Hotels: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Clubs: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Noise: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Safety: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Bus stops": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Train station": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   "Metro station": {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   University: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
-      //   Parks: {
-      //     isApplicable: false,
-      //     rating: 0,
-      //   },
       },
     },
     valueForMoney: {
       appTillNow: 0,
       expectedFurtherApp: 0,
       forEndUse: 0,
+      pointsGained:0,
       sectionScore:""
     },
     consultants: [],
-    // consultants: [
-    //     {
-    //         id: "",
-    //         name: "",
-    //         profilePic: "",
-    //         rating: 0,
-    //         ratingTag: "",
-    //         clientsServed: 0,
-    //         number: ""
-    //     }
-    // ],
     overallAssessment: {
       score: 0,
       scoredRating: 0,
@@ -661,6 +449,9 @@ setCities(res.data.data[0])
         privateBankLoan: 0,
         resale: 0,
         area: 0,
+        appTillNow: 0,
+        expectedFurtherApp: 0,
+        forEndUse: 0,
         unitsDensity: 0,
         greenDensity: 0,
         unitsDensityScore: 0,
@@ -696,7 +487,8 @@ const [hide,setHide]=useState([])
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
 
     let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
-    let totalRating = 70;
+    // totalRating=totalRating
+    // let totalRating = form.overview.status ==="underconstruction"? 75:80;
     let totalScored;
 
     function isNotAlphabet(char) {
@@ -742,7 +534,9 @@ const [hide,setHide]=useState([])
         totalScored =
           form.overallAssessment.scoredRating - Math.abs(difference);
       }
-    } else {
+    } 
+  
+    else {
       totalScored =
         form.overallAssessment.scoredRating + parseInt(incomingValue);
     }
@@ -754,7 +548,8 @@ const [hide,setHide]=useState([])
       [firstKeyName]: {
         ...form[firstKeyName],
         [secondKeyName]: e.target.value,
-        ["sectionScore"]: moduleScore
+        ["sectionScore"]: moduleScore.calc,
+        ["pointsGained"]:moduleScore.totalScored
       },
       overallAssessment: {
         ...form.overallAssessment,
@@ -771,32 +566,60 @@ const [hide,setHide]=useState([])
 
 
 
-  const moduleScoreCalc = (e, firstKeyName, secondKeyName,seperateCalc) => {
-    let totalRating;
+  const moduleScoreCalc = (e, firstKeyName, secondKeyName,seperateCalc,thirdKeyName) => {
+    let totalRatingModule;
     let totalScored;
 
     switch (firstKeyName.toLowerCase()) {
       case "overview":
-        totalRating = 10;
+        totalRatingModule = 10;
         break;
-      case "regulatoryInfo":
-        totalRating = 35;
+      case "regulatoryinfo":
+        totalRatingModule = 35;
         break;
       case "layout":
-        totalRating = 20;
+        totalRatingModule = 20;
         break;
       case "location":
-        totalRating = 100;
+        totalRatingModule = locationStars.length*5;
         break;
-      case "valueForMoney" :
-        totalRating = 15;
+      case "valueformoney" :
+        totalRatingModule = 15;
+        break;
+        case "amenitiesdata" :
+          totalRatingModule = +amentiesStars.length*5;
         break;
       default:
-        totalRating = 10;
+        totalRatingModule = 10;
     }
 
 
-
+    function chechAlpahbeValues(value){
+      let returnValue=0
+      switch (value.toLowerCase()) {
+        case "yes":
+          returnValue = 5;
+          break;
+        case "no":
+          returnValue = 0;
+          break;
+        case "dont know":
+          returnValue = 0;
+          break;
+        case "don't know":
+          returnValue = 0;
+          break;
+        case "on time":
+          returnValue = 5;
+          break;
+        case "delay":
+          returnValue = 0;
+          break;
+        default:
+          returnValue = 0;
+      }
+      return returnValue
+    }
     function isNotAlphabet(char) {
       return !/[a-zA-Z]/.test(char);
     }
@@ -804,30 +627,11 @@ const [hide,setHide]=useState([])
     if (isNotAlphabet(e.target.value)) {
       incomingValue = e.target.value;
     } else {
-      switch (e.target.value.toLowerCase()) {
-        case "yes":
-          incomingValue = 5;
-          break;
-        case "no":
-          incomingValue = 0;
-          break;
-        case "dont know":
-          incomingValue = 0;
-          break;
-        case "don't know":
-          incomingValue = 0;
-          break;
-        case "on time":
-          incomingValue = 5;
-          break;
-        case "delay":
-          incomingValue = 0;
-          break;
-        default:
-          incomingValue = 0;
-      }
+     
+     let val=  chechAlpahbeValues(e.target.value)
+     incomingValue=val
+    
     }
-
     if (form.overallAssessment.rated?.[secondKeyName] > 0) {
       let difference =
         form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
@@ -840,30 +644,79 @@ const [hide,setHide]=useState([])
         totalScored =
           form.overallAssessment.scoredRating - Math.abs(difference);
       }
+    } 
+
+    else if(secondKeyName==="assessment" || firstKeyName==="amenitiesData"){
+
+      let difference =
+      +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(incomingValue);
+    let compare =
+    form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(incomingValue);
+    if (compare) {
+      totalScored =
+      +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
     } else {
       totalScored =
-        form.overallAssessment.scoredRating + parseInt(incomingValue);
+      +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
+    }
+    }
+    
+    else if(firstKeyName==="regulatoryClearance"){
+      let difference =
+      chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) - parseInt(incomingValue);
+    let compare =
+    chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) < parseInt(incomingValue);
+    if (compare) {
+      totalScored =
+      +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
+    } else {
+      totalScored =
+      +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
+    }
     }
 
-    let calc = (totalScored / totalRating) * 100;
+    else {
+     
+      let difference =
+      +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
+    let compare =
+    form?.[firstKeyName]?.[secondKeyName] < parseInt(incomingValue);
+    if (compare) {
+      totalScored =
+      +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
+    } else {
+      totalScored =
+      +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
+    }
+    }
+    // else {
+    //   totalScored =
+    //     form.overallAssessment.scoredRating + parseInt(incomingValue);
+    // }
 
+    let calc = (totalScored / totalRatingModule) * 10;
     if(seperateCalc){
       setForm({
         ...form,
         [firstKeyName]: {
           ...form[firstKeyName],
           [secondKeyName]: e.target.value,
-          ["sectionScore"]: calc
+          ["sectionScore"]: calc,
+          ["pointsGained"]:totalScored
         }
       });
     }
     
-    return calc
+    return {calc,totalScored}
 
   }
 
-const handleUIHide=(e)=>{
+const handleUIHide=(e,firstKeyName,secondKeyName)=>{
 
+if(form?.[firstKeyName][secondKeyName].some(item => item.value.toLowerCase() !== 'land')){
+ setHide([]) 
+}
+else{
   let lastValue = e[e.length - 1]?.value.toLowerCase()
   let value= lastValue?.replace(/\s/g, '')
   switch (value) {
@@ -874,7 +727,7 @@ const handleUIHide=(e)=>{
       "floors",
       "greenArea", 
       "greenDensity",
-      "unitsPlan"]) 
+      ]) 
       break;
     case "shop":
       setHide([ 
@@ -883,7 +736,7 @@ const handleUIHide=(e)=>{
       "floors",
       "greenArea", 
       "greenDensity",
-      "unitsPlan"]) 
+      ]) 
       break;
     case "land":
       setHide([ 
@@ -895,6 +748,21 @@ const handleUIHide=(e)=>{
     default:
     setHide([])
   }
+}
+
+}
+
+const handleCategoryHide = (e)=>{
+if(e.target.value.toLowerCase()==="commercial"){
+setHide([ 
+  "numberOfBuildings",
+ "layoutType",
+"floors",
+"greenArea", 
+"greenDensityScore",
+"greenDensity",
+])
+}
 }
 
   const handleChange = async (
@@ -925,8 +793,8 @@ const handleUIHide=(e)=>{
     } else if (score === true) {
 
       let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
-
-      let totalRating = form.overview.status ==="underconstruction"? 70:65;
+      let total = totalRating
+      // let totalRating = form.overview.status ==="underconstruction"? 75:80;
       let totalScored;
 
       function isNotAlphabet(char) {
@@ -945,11 +813,13 @@ const handleUIHide=(e)=>{
             break;
           case "dont know":
             incomingValue = 0;
-            totalRating = totalRating-5
+            total = totalRating - 5
+              setTotalRating(total)
             break;
           case "don't know":
             incomingValue = 0;
-            totalRating = totalRating-5
+            total = totalRating - 5
+             setTotalRating(total)
             break;
           case "on time":
             incomingValue = 5;
@@ -962,7 +832,29 @@ const handleUIHide=(e)=>{
         }
       }
 
-      if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+if (firstKeyName==="location" || firstKeyName === "amenitiesData"){
+  if (form.overallAssessment.rated?.[firstKeyName].length > 0) {
+    let difference =
+      form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] -
+      parseInt(incomingValue);
+    let compare =
+      form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] <
+      parseInt(incomingValue);
+    if (compare) {
+      totalScored =
+        form.overallAssessment.scoredRating + Math.abs(difference);
+    } else {
+      totalScored =
+        form.overallAssessment.scoredRating - Math.abs(difference);
+    }
+  } else {
+    totalScored =
+      form.overallAssessment.scoredRating + parseInt(incomingValue);
+  } 
+}
+
+
+      else if (form.overallAssessment.rated?.[secondKeyName] > 0) {
         let difference =
           form.overallAssessment.rated?.[secondKeyName] -
           parseInt(incomingValue);
@@ -981,14 +873,18 @@ const handleUIHide=(e)=>{
           form.overallAssessment.scoredRating + parseInt(incomingValue);
       }
 
-      let calc = (totalScored / totalRating) * 100;
+if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()==="don't know"){
+  totalScored -= 5
+}
+      let calc = (totalScored / total) * 100;
 
       setForm({
         ...form,
         [firstKeyName]: {
           ...form[firstKeyName],
           [secondKeyName]: e.target.value,
-          ["sectionScore"]: moduleScore
+          ["sectionScore"]: moduleScore.calc,
+          ["pointsGained"]:moduleScore.totalScored
         },
         overallAssessment: {
           ...form.overallAssessment,
@@ -1009,13 +905,48 @@ const handleUIHide=(e)=>{
             updatedForm[firstKeyName][secondKeyName] &&
             isRating
           ) {
-            updatedForm[firstKeyName][secondKeyName][autoFillField] = {
-              ...updatedForm[firstKeyName][secondKeyName][autoFillField],
-              rating: e.target.value,
-            };
-           let locationAssesment = moduleScoreCalc(e,firstKeyName,secondKeyName)
-           updatedForm[firstKeyName]["sectionScore"] = locationAssesment
+            if (firstKeyName === 'location' || firstKeyName === "amenitiesData") {
+              let getCalc = amentieScoreCalc(e, firstKeyName, secondKeyName, autoFillField)
+
+              let locationAssesment = moduleScoreCalc(e, firstKeyName, secondKeyName)
+
+              updatedForm[firstKeyName]["sectionScore"] = locationAssesment.calc
+              updatedForm[firstKeyName]["pointsGained"] = locationAssesment.totalScored
+              updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                rating: e.target.value,
+              };
+              updatedForm["overallAssessment"]= {
+                ...form.overallAssessment,
+                score: Math.floor(getCalc.calc),
+                scoredRating: getCalc.totalScored,
+                // rated: {
+                //   ...form.overallAssessment.rated,
+                //   [secondKeyName]: parseInt(incomingValue),
+                // },
+              }
+            }
+            else {
+              let locationAssesment = moduleScoreCalc(e, firstKeyName, secondKeyName)
+
+              updatedForm[firstKeyName]["sectionScore"] = locationAssesment.calc
+              updatedForm[firstKeyName]["pointsGained"] = locationAssesment.totalScored
+              updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                rating: e.target.value,
+              };
+            }
+          
+       
+  
           } else {
+            if(secondKeyName==="assessment" && (!locationStars.includes(autoFillField))){
+                setLocationStars([...locationStars,autoFillField])
+              }
+              else if(firstKeyName==="amenitiesData" && (!amentiesStars.includes(autoFillField))){
+              setAmentiesStar([...amentiesStars,autoFillField])
+              }
+          
             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
               ...updatedForm[firstKeyName][secondKeyName][autoFillField],
               isApplicable: e.target.checked,
@@ -1030,13 +961,22 @@ setForm({
 })
       }
       else {
-        console.log('inva',e,firstKeyName,secondKeyName)
         let value = e?.target
           ? thirdKeyName === "checked"
             ? e.target.checked
             : e.target.value
           : e;
-        await setForm((prev) => ({
+          if(secondKeyName==="maxFloors" || secondKeyName === "minFloors"){
+            value=+value
+          }
+        if (secondKeyName === "projectCategory" && form?.[firstKeyName][secondKeyName].toLowerCase() !== e.target.value.toLowerCase()) {
+          setForm((prev) => ({
+            ...prev,
+            [firstKeyName]: { ...form?.[firstKeyName], projectCategory: e.target.value, projectType: [] }
+          }))
+          handleCategoryHide(e)
+        } 
+        setForm((prev) => ({
           ...prev,
           [firstKeyName]: !secondKeyName
             ? value
@@ -1054,9 +994,15 @@ setForm({
     }
 
     if(firstKeyName==="overview" && secondKeyName==="projectType"){
-      let hideValue=handleUIHide(e)
+      let hideValue=handleUIHide(e,firstKeyName,secondKeyName)
     }
-
+    if(firstKeyName==="overview" && secondKeyName==="status" && e.target.value.toLowerCase() ==="underconstruction"){
+      let total = totalRating + 5
+      setTotalRating(total)
+    }
+// if(firstKeyName==="overview" && secondKeyName==="projectCategory"){
+//           handleCategoryHide(e)
+// }
     // const { error } = Schema.validate(form, { abortEarly: false });
     // if (error) {
     //   // console.log("🚀 ~ validateForm ~ error:", error.details)
@@ -1070,6 +1016,48 @@ setForm({
     // }
   };
 
+  let amentieScoreCalc=(e,firstKeyName,secondKeyName,autoFillField)=>{
+    // let totalRating = form.overview.status ==="underconstruction"? 75:80;
+    let total = totalRating
+    let totalScored;
+    let checkField = firstKeyName === "location" ? locationStarsScore :amentiesStarsScore
+    const findItemByKey = (array, searchKey) => {
+      return array.find(item => Object.keys(item)[0] === searchKey);
+    };
+    const foundItem = findItemByKey(checkField, autoFillField);
+    if (foundItem) {
+      let difference =
+      foundItem?.[autoFillField] -
+        parseInt(e.target.value);
+      let compare =
+      foundItem?.[autoFillField] <
+        parseInt(e.target.value);
+      if (compare) {
+        totalScored =
+          form.overallAssessment.scoredRating + Math.abs(difference);
+      } else {
+        totalScored =
+          form.overallAssessment.scoredRating - Math.abs(difference);
+      }
+    } 
+    else {
+      let fieldName = autoFillField
+      if(firstKeyName==="amenitiesData"){
+      
+        setAmentiesStarScore([...amentiesStarsScore,{[fieldName]:e.target.value}])
+      }
+      else{
+       setLocationStarsScore([...locationStarsScore,{[fieldName]:e.target.value}]) 
+      }
+     total = totalRating + 5
+     setTotalRating(total)
+      totalScored =
+      form.overallAssessment.scoredRating + parseInt(e.target.value)
+    } 
+    let calc = (totalScored / total) * 100;
+
+    return {calc,totalScored}
+  }
 
   const validateForm = (publish) => {
     const { error } = Schema?.validate(form, { abortEarly: false });
@@ -1247,7 +1235,8 @@ setForm({
             handleChange={handleChange}
             isEdit={isEdit}
           />
-          { !hide.includes("unitsPlan")&& <FloorPlanCard
+          { !hide.includes("unitsPlan")
+          && <FloorPlanCard
             errors={errors}
             hide={hide}
             form={form}
@@ -1282,6 +1271,7 @@ setForm({
             hide={hide}
             selectOptions={selectOptions}
             form={form}
+            scoreChange={scoreChange}
             moduleScoreCalc={moduleScoreCalc}
             handleChange={handleChange}
             isEdit={isEdit}

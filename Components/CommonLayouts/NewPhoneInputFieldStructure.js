@@ -15,6 +15,7 @@ function NewPhoneInputFieldStructure({
   name1,
   name2,
   handleChange,
+  countryCodeOptions,
   handleSelect,
   label,
   type,
@@ -82,11 +83,21 @@ function NewPhoneInputFieldStructure({
                   }}
                   disabled={disabled}
                 >
-                  {countryCode.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
+                  {(countryCodeOptions || countryCode).map((option) => {
+                    if (option.label) {
+                      return (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      )
+                    } else {
+                      return (
+                        <MenuItem key={option} value={option}>
+                          +{option}
+                        </MenuItem>
+                      )
+                    }
+                  })}
                 </TextField>
               </InputAdornment>
             ),

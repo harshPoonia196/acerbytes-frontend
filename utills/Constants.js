@@ -77,6 +77,8 @@ export const currencies = [
   },
 ];
 
+export const COUNTRY_NAME = "India";
+
 export const ToasterMessages = {
   PROFILE_UPDATE_SUCCESS: "Profile updated succesfully!",
   ORDER_REQUESTED_SUCCESS: "Order requested succesfully!",

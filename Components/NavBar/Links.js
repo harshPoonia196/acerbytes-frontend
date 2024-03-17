@@ -39,6 +39,7 @@ export const listOfPages = {
   adminManageUser: '/admin/manage-user',
   adminManageConsultant: '/admin/manage-consultant',
   adminConsultantLinks: '/admin/consultant-links',
+  adminUpdateProfileLinks: '/admin/updateProfile',
 };
 
 export const CommonMenuList = [

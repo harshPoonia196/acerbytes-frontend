@@ -15,32 +15,57 @@ const overviewSchema = Joi.object({
     )
     .required(),
   phase: Joi.string().allow("").optional(),
-  launchYear: Joi.string().allow(""),
-  completionYear: Joi.string().min(1).required(),
+  launchYear: Joi.number().allow(""),
+  completionYear: Joi.number().when('launchYear', {
+    is: Joi.exist(),
+    then: Joi.number()
+      .greater(Joi.ref('launchYear'))
+      .allow(Joi.ref('launchYear'))
+      .message('Completion year must be greater than or equal to launch year')
+  }),
   status: Joi.string().required(),
   constructionProgress: Joi.string().when("status", {
     is: "under construction",
     then: Joi.string().required(),
     otherwise: Joi.string().allow("").optional(),
   }),
-  sectionScore: Joi.number().allow("")
+  sectionScore: Joi.number().allow(null,""),
+  pointsGained:Joi.number().allow(null,"")
 });
 
-export const unitPlanSchema = Joi.object({
+export const unitsPlanSchemaWithLayout = Joi.object({
   propertyType: Joi.string().required(),
   propertyLayout: Joi.string().required(),
+  name: Joi.string().required(),
+  areaUnit: Joi.string().required(),
+  totalUnits: Joi.number().required(),
+  priceUnit:Joi.string().allow(""),
+  area: Joi.number().required(),
+  bsp: Joi.number().required(),
+  totalPrice:Joi.number().allow(null,""),
+  applicableMonth: Joi.string().required(),
+  width:Joi.number().optional().allow(null,""),
+length:Joi.number().optional().allow(null,""),
+  applicableYear: Joi.string().required(),
+});
+export const unitsPlanSchemaWithoutLayout = Joi.object({
+  propertyType: Joi.string().required(),
+  propertyLayout: Joi.string().optional().allow(""),
   name: Joi.string().required(),
   areaUnit: Joi.string().required(),
   totalUnits: Joi.number().required(),
   priceUnit:Joi.string().required(),
   area: Joi.number().required(),
   bsp: Joi.number().required(),
+  totalPrice:Joi.number().allow(null,""),
+width:Joi.number().required(),
+length:Joi.number().required(),
   applicableMonth: Joi.string().required(),
   applicableYear: Joi.string().required(),
 });
 export const reraSchema = Joi.object({
   reraApproved: Joi.string().valid('Yes').required(),
-  reraNumber: Joi.number().required(),
+  reraNumber: Joi.string().pattern(/^[a-zA-Z0-9!@#$%^&*()-_+=<>?/\\:;'"[]{},.|]*$/).required(),
 })
 const layoutSchema = Joi.object({
   numberOfBuildings: Joi.number()
@@ -123,7 +148,7 @@ const layoutSchema = Joi.object({
       )
       .required(),
     then: Joi.number().allow(""),
-    otherwise:  Joi.number().min(24).max(34).required(),
+    otherwise:  Joi.number().required().min(0).precision(2)
   }),
   minFloors: Joi.number()
   .custom((value, helpers) => {
@@ -147,7 +172,7 @@ const layoutSchema = Joi.object({
       )
       .required(),
     then: Joi.number().allow(""),
-    otherwise:  Joi.number().min(24).max(34).required(),
+    otherwise: Joi.number().required().less(Joi.ref('maxFloors')).precision(2),
   }),
     //   "numberOfBuildings",
   //   "layoutType",
@@ -225,7 +250,8 @@ const layoutSchema = Joi.object({
   // }),
   constructionQuality: Joi.number().required().min(1),
   interiorQuality: Joi.number().required().min(1),
-  sectionScore: Joi.number().allow("")
+  sectionScore: Joi.number().allow(null,""),
+  pointsGained:Joi.number().allow(null,"")
 });
 
 export const Schema = Joi.object({
@@ -244,7 +270,8 @@ export const Schema = Joi.object({
     privateBankLoan: Joi.string().required(),
     fresh: Joi.string().required(),
     resale: Joi.string().required(),
-    sectionScore: Joi.number().allow("")
+    sectionScore: Joi.number().allow(""),
+    pointsGained:Joi.number().allow(null,"")
   }),
 
   layout: layoutSchema,
@@ -272,6 +299,9 @@ export const Schema = Joi.object({
           name: Joi.string().optional().allow(""),
           priceUnit:Joi.string().allow(""),
           areaUnit: Joi.string().optional().allow(""),
+          width:Joi.number().optional().allow(""),
+          length:Joi.number().optional().allow(""),
+          totalPrice:Joi.number().allow(null,""),
           totalUnits: Joi.number().optional().allow(""),
           area: Joi.number().optional().allow(""),
           bsp: Joi.number().optional().allow(""),
@@ -283,6 +313,7 @@ export const Schema = Joi.object({
 
   amenitiesData: Joi.object().keys({
     sectionScore:Joi.number().allow(""),
+    pointsGained:Joi.number().allow(null,""),
     Basic: Joi.object().pattern(
       /./,
       Joi.object().keys({
@@ -338,6 +369,7 @@ export const Schema = Joi.object({
     longitude: Joi.number().required(),
     latitude: Joi.number().required(),
     sectionScore: Joi.number().allow(null,""),
+    pointsGained:Joi.number().allow(null,""),
     assessment: Joi.object().pattern(
       /./,
       Joi.object().keys({
@@ -355,7 +387,8 @@ export const Schema = Joi.object({
       appTillNow: Joi.number().required().min(1),
       expectedFurtherApp: Joi.number().not(0).required(),
       forEndUse: Joi.number().not(0).required(),
-      sectionScore: Joi.number().allow("")
+      sectionScore: Joi.number().allow(""),
+      pointsGained:Joi.number().allow(null,"")
     })
     .required(),
   consultants: Joi.array()
@@ -395,6 +428,9 @@ export const Schema = Joi.object({
       reraApproved: Joi.number().allow(0),
       cc: Joi.number().allow(0),
       oc: Joi.number().allow(0),
+      appTillNow: Joi.number().allow(0),
+      expectedFurtherApp: Joi.number().allow(0),
+      forEndUse: Joi.number().allow(0),
       authorityRegisteration: Joi.number().allow(0),
       governmentBankLoan: Joi.number().allow(0),
       privateBankLoan: Joi.number().allow(0),
@@ -414,9 +450,9 @@ export const Schema = Joi.object({
   published:Joi.boolean(),
   publishedAt:Joi.date(),
   createdAt:Joi.date(),
-
+  modifiedAt:Joi.date(),
   marketing: Joi.object().keys({
-    image: Joi.string().allow(""),
+    image: Joi.string().required(),
     tagLine: Joi.string().required(),
     description: Joi.string().required(),
   }),

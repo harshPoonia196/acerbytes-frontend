@@ -7,7 +7,6 @@ import {
   Box,
   Rating,
   IconButton,
-  Button,
   Grid,
   Divider,
 } from "@mui/material";
@@ -21,6 +20,8 @@ import ShieldIcon from "@mui/icons-material/Shield";
 import RemoveModeratorIcon from "@mui/icons-material/RemoveModerator";
 import moment from "moment";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { useAuth } from "utills/AuthContext";
+import { listOfPages } from "Components/NavBar/Links";
 
 const labels = (rating) => {
   if (rating <= 0.5) {
@@ -64,6 +65,7 @@ const labels = (rating) => {
 
 function BrokerCard({ broker, type, noReview, updateBroker }) {
   const [openDialog, setOpenDialog] = useState(false);
+  const { userDetails, isLogged } = useAuth();
 
   const router = useRouter();
 
@@ -92,7 +94,6 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">
             {titleCase(broker?.fullName)}
-            <DoneIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
             <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
           </Typography>
           <Typography variant="body2">
@@ -153,7 +154,6 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
                       size="small"
                       variant="outlined"
                       ButtonText={"Rate your experience"}
-
                     />
                   )}
                 </Box>
@@ -175,7 +175,7 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
           </Box>
         </Box>
       </Box>
-      {broker?.phone?.number ? (
+      {/* {broker?.phone?.number ? (
         <Box sx={{ position: "absolute", top: 8, right: 8 }}>
           <a
             href={`tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")
@@ -186,7 +186,27 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
             </IconButton>
           </a>
         </Box>
-      ) : null}
+      ) : null} */}
+      {isLogged ? (
+        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+          <a
+            href={`tel:${
+              (userDetails?.phone?.countryCode || "") +
+              (userDetails?.phone?.number || "")
+            }`}
+          >
+            <IconButton>
+              <CallIcon fontSize="small" />
+            </IconButton>
+          </a>
+        </Box>
+      ) : (
+        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+          <IconButton onClick={() => router.push(listOfPages.login)}>
+            <CallIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      )}
       <Divider />
       {!noReview && (
         <Grid container spacing={1} sx={{ p: 2 }}>
@@ -232,8 +252,8 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
                   You wrote a Public review
                   {broker?.reviews?.createdAt
                     ? moment(broker?.reviews?.createdAt).format(
-                      " on DD MMM, YYYY"
-                    )
+                        " on DD MMM, YYYY"
+                      )
                     : ""}
                 </Typography>
                 <Typography variant="body2">

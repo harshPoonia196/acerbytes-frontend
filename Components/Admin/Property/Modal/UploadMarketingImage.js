@@ -48,6 +48,8 @@ const UploadMarketingImage = ({
 }) => {
     const { openSnackbar } = useSnackbar();
     const classes = useStyles()
+    const [loading, setLoading] = useState(false);
+
     const [cropData, setCropData] = useState('')
     const [cropper, setCropper] = useState(false)
     const [enableCropper, setEnableCropper] = useState(false)
@@ -89,6 +91,7 @@ const UploadMarketingImage = ({
             image: cropDataIn,
         }
         try{
+            setLoading(true);
             let response = await uploadImage(payload)
             if (response.data.status == 200) {
                 handleChange(response.data.data.Location,"marketing","image")
@@ -103,6 +106,9 @@ const UploadMarketingImage = ({
               "error"
             );
           }
+          finally {
+            setLoading(false);
+          }
 
     }
 
@@ -115,19 +121,24 @@ const UploadMarketingImage = ({
                         <div style={{ width: '100%', textAlign: 'center', maxHeight: 400 }}>
                             <Cropper
                                 style={{ width: '100%' }}
-                                initialAspectRatio={1}
-                                aspectRatio={1}
+                                initialAspectRatio={3/3}
+                                aspectRatio={3/3}
                                 preview=".img-preview"
                                 src={image}
                                 // ref={imageRef}
                                 autoCropArea={1}
                                 viewMode={1}
                                 guides={true}
-                                minCropBoxHeight={10}
-                                minCropBoxWidth={10}
                                 background={false}
+                                zoomable={false}
+                                cropBoxMovable={true}
+                                cropBoxResizable={false}
                                 responsive={true}
-                                checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+                                scalable={false}
+                                dragMode={'none'}
+                                zoomOnTouch={false}
+                                zoomOnWheel={false}
+                                checkOrientation={false}
                                 onInitialized={(instance) => {
                                     setCropper(instance)
                                 }}
@@ -169,13 +180,13 @@ const UploadMarketingImage = ({
                 </Box>
                 <LoadingButton
                     onClick={getCropData}
-                    // loading={isUploadingImage}
+                    loading={loading}
                     loadingPosition="start"
                     startIcon={<UploadIcon />}
                     variant="contained"
                     size='small'
                 >
-                    Upload
+                    Uploads
                 </LoadingButton>
             </DialogActions>
         </Dialog >

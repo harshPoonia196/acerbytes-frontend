@@ -44,6 +44,8 @@ import {
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import colors from "styles/theme/colors";
 import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt'
+import { useRouter } from "next/navigation";
+import { listOfPages } from "Components/NavBar/Links";
 
 const headCells = [
   {
@@ -151,8 +153,8 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        {ROLES?.filter((rs) => rs.isVisible)?.map((rs) => {
-          return <MenuItem onClick={(e) => {
+        {ROLES?.filter((rs) => rs.isVisible)?.map((rs, index) => {
+          return <MenuItem key={index} onClick={(e) => {
             handleChangeRole(rs.value)
             handleClose()
           }} value={rs.value} disabled={rs.value === role}>{rs.label}</MenuItem>;
@@ -163,7 +165,7 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
   );
 };
 
-function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
+function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -177,6 +179,13 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
     handleClose();
     handleUpdateStatus(googleID, status);
   };
+
+  const editProfile = (googleID, role) => {
+    if (role == ROLE_CONSTANTS.user) {
+      router.push(listOfPages.adminUpdateProfileLinks + `/${googleID}`);
+    }
+    handleClose();
+  }
 
   return (
     <TableRow
@@ -194,6 +203,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
       <TableCell>
         {row.isBlocked ? <DoNotDisturbAltIcon fontSize="small" sx={{ color: colors.ERROR }} /> :
           <RoleViewer
+            key={row._id}
             role={row.role}
             disabled={row.isBlocked}
             userDetails={userDetails}
@@ -202,6 +212,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
       </TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton
+          onClick={handleClick}
           disabled={
             !(
               matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
@@ -210,7 +221,7 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
           }
           sx={{ fontSize: "1rem !important" }}
         >
-          <MoreVertIcon onClick={handleClick} fontSize="1rem" />
+          <MoreVertIcon fontSize="1rem" />
         </IconButton>
         <Menu
           id="basic-menu"
@@ -230,13 +241,17 @@ function RowStructure({ row, userDetails, updateRole, handleUpdateStatus }) {
               Block
             </MenuItem>
           )}
+          {(!row.isBlocked && row.role == ROLE_CONSTANTS.user) && <MenuItem onClick={() => editProfile(row.googleID, row.role)} >
+            Edit Profile
+          </MenuItem>}
         </Menu>
       </TableCell>
     </TableRow>
   );
 }
 
-function ManageUserTable({ searchText }) {
+function ManageUserTable({ searchText, onDashboardDataUpdate }) {
+  const router = useRouter();
   const { userDetails } = useAuth();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
@@ -313,6 +328,10 @@ function ManageUserTable({ searchText }) {
           totalPages: response?.data?.totalPages,
           nextPage: response?.data?.nextPage,
           prevPage: response?.data?.prevPage,
+        });
+        onDashboardDataUpdate({
+          countInfo: response?.data?.dashboardInfo || {},
+          userDetails
         });
       }
     } catch (error) {
@@ -477,9 +496,11 @@ function ManageUserTable({ searchText }) {
             />
             <TableBody>
               {
-                usersList?.list?.map((row) => (
+                usersList?.list?.map((row, index) => (
                   <RowStructure
+                    key={index}
                     row={row}
+                    router={router}
                     userDetails={userDetails}
                     updateRole={updateRole}
                     handleUpdateStatus={handleUpdateStatus}

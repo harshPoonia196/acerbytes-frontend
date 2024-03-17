@@ -4,20 +4,11 @@ import {
   Container,
   Typography,
   Card,
-  CardContent,
-  CardMedia,
   Grid,
-  Divider,
-  Tabs,
-  Tab,
   Box,
   Chip,
-  Rating,
   Toolbar,
-  Avatar,
   Button,
-  IconButton,
-  Tooltip,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -27,6 +18,7 @@ import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import GroupIcon from "@mui/icons-material/Group";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
@@ -42,24 +34,25 @@ import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
 // import ResaleSection from "Components/DetailsPage/ResaleSection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
-// import { useSearchParams } from 'next/navigation'
-// import { useRouter } from 'next/router';
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { makeStyles, withStyles } from "@mui/styles";
+import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
+import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
+import {useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
+import AdsSection from "Components/DetailsPage/AdsSection";
 import {
   listOfPropertyDetailsTab,
   listOfTabsInAddProperty,
 } from "utills/Constants";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
-import { activeAdGet, favPropertyCreate } from "api/Property.api";
+import { detailsProperty, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
 
 const tabHeight = 200;
 
@@ -96,34 +89,44 @@ function useThrottledOnScroll(callback, delay) {
   }, [throttledCallback]);
 }
 
-const PropertyDetails = ({ params }) => {
-  const { userDetails, isLogged } = useAuth();
-  const router = useRouter();
+const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams();
+  const url = new URL(window.location.href);
   const name = searchParams.get("name");
+  const { isLogged, userDetails, brokerBalance } = useAuth();
+  const router = useRouter();
 
-  const linkIdData = params.projectdetails;
-  const parts = linkIdData.split("-");
-  const getId = parts[parts.length - 1];
+  // Split the id string into an array of parts based on the hyphen delimiter
+  const parts = params.id.split('-');
+  const paramsId = parts[parts.length - 1];
+  const detailsPropertyId = paramsId;
 
   const [isLoading, setLoading] = useState(false);
-  const [propertyData, setPropertyData] = useState([]);
+  const [propertyData, setPropertyData] = useState({});
 
-  const activeAdGetProperty = async () => {
+  const shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const detailsGetProperty = async () => {
     try {
       setLoading(true);
-      let res = await activeAdGet(
-        `${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ""}`
+      let res = await detailsProperty(
+        `${detailsPropertyId}${userDetails._id ? `?brokerId=${userDetails._id}` : ""}`
       );
       if (res.status === 200) {
-        shuffle(res.data?.data[0].propertyData?.consultants)
-        setPropertyData(res.data?.data);
+        const data = {...res.data?.data, consultants: shuffle(res.data?.data?.consultants)}
+        setPropertyData({...data});
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -133,18 +136,18 @@ const PropertyDetails = ({ params }) => {
 
   const handlefavClick = async () => {
     const adData = {
-      propertyId: propertyData[0]?.property_id,
+      propertyId: detailsPropertyId,
     };
     try {
       const response = await favPropertyCreate(adData);
       if (response.status == 200) {
-        activeAdGetProperty();
+        detailsGetProperty();
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error generating fav Property",
+        error?.message ||
+        "Error generating fav Property",
         "error"
       );
     } finally {
@@ -158,8 +161,8 @@ const PropertyDetails = ({ params }) => {
   };
 
   useEffect(() => {
-    activeAdGetProperty();
-  }, [userDetails]);
+    detailsGetProperty();
+  }, [userDetails._id]);
 
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
@@ -261,6 +264,28 @@ const PropertyDetails = ({ params }) => {
     setOpenAlternateSignIn(false);
   };
 
+  const [disablePersonalizeAds, setDisablePersonalizeAds] = useState(false);
+
+  const handleOpenPersonalizeAds = () => {
+    setDisablePersonalizeAds(true);
+  };
+
+  const handleClosePersonalizeAds = () => {
+    setDisablePersonalizeAds(false);
+  };
+
+  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
+  const [propertyUrl, setPropertyUrl] = useState('');
+
+  const handleOpenActivateAdsPopup = (ActiveUrl) => {
+    setActivateAdsPopupState(true);
+    setPropertyUrl(ActiveUrl)
+  };
+
+  const handleCloseActivateAdsPopup = () => {
+    setActivateAdsPopupState(false);
+  };
+
   const [consultantsViewAll, setConsultantsViewAll] = useState(false);
 
   const handleOpenConsultantsViewAll = () => {
@@ -322,9 +347,9 @@ const PropertyDetails = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -367,34 +392,69 @@ const PropertyDetails = ({ params }) => {
     []
   );
 
-  const shuffle = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
+  const divRef = useRef(null);
+  const [heightOfFooter, setHeightOfFooter] = useState(0);
 
+  useEffect(() => {
+    // Access the div element and get its height
+    if (divRef.current) {
+      const divHeight = divRef.current.clientHeight;
+      setHeightOfFooter(divHeight);
+      console.log("Height of the div:", divHeight);
+    }
+  }, []);
+
+ 
   return (
     <>
       {isLoading && <Loader />}
-        <UserDetailsAd  AllPropertyData={propertyData[0]}/>
+      <ActivateAdsPopup
+        SinglePropertyId={propertyData}
+        detailsGetProperty={detailsGetProperty}
+        open={activateAdsPopupState}
+        handleClose={handleCloseActivateAdsPopup}
+        brokerBalance={brokerBalance}
+        propertyUrl={propertyUrl}
+      />
+      <DisableActivateAdsPopup
+        open={disablePersonalizeAds}
+        handleOpen={handleOpenPersonalizeAds}
+        handleClose={handleClosePersonalizeAds}
+      />
+
+      {userDetails?.role === "broker" && !propertyData.isActiveAd ? (
+        <AdsSection
+          handleOpenPersonalizeAds={handleOpenPersonalizeAds}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+          isConsultant
+          propertyData={propertyData}
+        />
+      ) : null}
+      {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && propertyData.isActiveAd ? (
+        <AdsSection
+          SinglePropertyId={propertyData?.propertyBroker[0]}
+          propertyData={propertyData}
+          id={propertyData?.propertyBroker?.[0]?._id}
+          handleOpenPersonalizeAds={handleOpenPersonalizeAds}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} 
+        />
+      ) : null}
+
       <nav className={classes.demo2}>
         <TopMenu
-          topMenu={propertyData[0]?.propertyData}
+          topMenu={propertyData}
           value={activeState}
           handleChange={handleClick}
           list={itemsServer}
         />
       </nav>
       <Box>
-        <MarketingSection overviewData={propertyData[0]?.propertyData} />
+        <MarketingSection overviewData={propertyData} />
         <Container maxWidth="evmd">
           <EnquireNow
             open={openEnquiryForm}
             handleClose={handleCloseEnquiryForm}
             handleAction={handleOpenVerifyPopup}
-            // handleOpen={handleOpenEnquiryForm}
           />
           <OtpVerify
             open={openOtpPopup}
@@ -409,26 +469,16 @@ const PropertyDetails = ({ params }) => {
 
           <Grid container spacing={2} id="section-list">
             <ClearanceSection
-              regulatoryClearanceData={
-                propertyData[0]?.propertyData?.regulatoryClearance
-              }
+              regulatoryClearanceData={propertyData?.regulatoryClearance}
             />
-            <LandscapeSection
-              layoutData={propertyData[0]?.propertyData?.layout}
-            />
-            <UnitsPlanSection
-              unitsPlan={propertyData[0]?.propertyData?.unitsPlan}
-            />
-            <AmenitiesSection
-              amenitiesData={propertyData[0]?.propertyData?.amenitiesData}
-            />
-            <LocationSection
-              locationData={propertyData[0]?.propertyData?.location}
-            />
+            <LandscapeSection layoutData={propertyData?.layout} />
+            <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
+            <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
+            <LocationSection locationData={propertyData?.location} />
             {/* <PricingSection /> */}
             {/* <ResaleSection /> */}
             <ValueForMoneySection
-              valueForMoneyData={propertyData[0]?.propertyData?.valueForMoney}
+              valueForMoneyData={propertyData?.valueForMoney}
             />
             {/* <FloorPlanSection /> */}
             <Grid item xs={12} id="propertyConsultants">
@@ -440,12 +490,12 @@ const PropertyDetails = ({ params }) => {
                         Contact verified consultants
                       </Typography>
                     </Box>
-                    <ConsultantsViewAll
-                      open={consultantsViewAll}
-                      handleClose={handleCloseConsultantsViewAll}
-                      propertyData={propertyData[0]?.propertyData?.consultants}
-                    ></ConsultantsViewAll>
                     <Box>
+                      <ConsultantsViewAll
+                        open={consultantsViewAll}
+                        handleClose={handleCloseConsultantsViewAll}
+                        propertyData={propertyData?.consultants}
+                      ></ConsultantsViewAll>
                       <Chip
                         label="View all"
                         icon={<GroupIcon fontSize="small" />}
@@ -455,14 +505,11 @@ const PropertyDetails = ({ params }) => {
                       />
                     </Box>
                   </Grid>
-                  {propertyData[0]?.propertyData?.consultants.length > 0 && propertyData[0]?.propertyData?.consultants
-                    ?.slice(0, 2)
-                    .map((broker) => (
-                      <Grid item xs={12} sm={6} key={broker?.name}>
-                        <BrokerCard broker={broker} noReview />
-                      </Grid>
-                    ))}
-
+                  {propertyData?.consultants?.length > 0 && propertyData?.consultants?.slice(0, 2).map((broker) => (
+                    <Grid item xs={12} sm={6} key={broker?.name}>
+                      <BrokerCard broker={broker} noReview />
+                    </Grid>
+                  ))}
                   <Grid item xs={12}>
                     <Box sx={{ display: "flex" }}>
                       <Typography
@@ -476,7 +523,7 @@ const PropertyDetails = ({ params }) => {
                         icon={<PersonAddIcon fontSize="small" />}
                         size="small"
                         sx={{ fontSize: "0.875rem" }}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </Box>
                   </Grid>
@@ -484,69 +531,95 @@ const PropertyDetails = ({ params }) => {
               </Card>
             </Grid>
             <OverallAssesmentSection
-              overallAssessment={
-                propertyData[0]?.propertyData?.overallAssessment
-              }
+              overallAssessment={propertyData?.overallAssessment}
+              handleOpenEnquiryForm={handleOpenEnquiryForm}
               open={openEnquiryForm}
               handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}
-              handleOpenEnquiryForm={handleOpenEnquiryForm}
             />
           </Grid>
 
           {/* Dont Touch this */}
-          <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
-
-          <Card
+          <Toolbar
             sx={{
-              p: 2,
-              position: "fixed",
-              left: 0,
-              bottom: 0,
-              width: "100%",
-              display: { xs: "block", evmd: "none" },
-              background: "whitesmoke",
-              boxShadow: "-1px -2px 6px 2px gainsboro !important",
+              display: { xs: "flex", evmd: "none" },
+              height: heightOfFooter,
             }}
-          >
-            <Box sx={{ mt: -1, ml: -1, display: "flex", flexWrap: "wrap" }}>
-              <Button
-                sx={{ mt: 1, ml: 1 }}
-                variant="outlined"
-                onClick={handleOpenEnquiryForm}
-                startIcon={<ThumbUpOffAltIcon />}
-              >
-                Like
-              </Button>
-              <Button
-                sx={{ mt: 1, ml: 1 }}
-                variant="outlined"
-                onClick={handleOpenEnquiryForm}
-                startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
-              >
-                Share
-              </Button>
+          />
 
-              <Button
-                sx={{ mt: 1, ml: 1 }}
-                variant="outlined"
-                onClick={handleOpenEnquiryForm}
-                startIcon={<WhatsAppIcon />}
+          {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && (
+            <>
+              <Card
+                sx={{
+                  p: 2,
+                  position: "fixed",
+                  left: 0,
+                  bottom: 0,
+                  width: "100%",
+                  display: { xs: "block", evmd: "none" },
+                  background: "whitesmoke",
+                  boxShadow: "-1px -2px 6px 2px gainsboro !important",
+                }}
+                ref={divRef}
               >
-                Contact
-              </Button>
-              <Button
-                sx={{ mt: 1, ml: 1 }}
-                variant="outlined"
-                onClick={handleOpenEnquiryForm}
-                startIcon={<AssignmentIcon />}
-              >
-                Enquire
-              </Button>
-            </Box>
-          </Card>
-          {userDetails?.role !== "admin" &&
-            userDetails?.role !== "superAdmin" && (
+                <Box sx={{ mt: -1, ml: -1, display: "flex", flexWrap: "wrap" }}>
+                  {isLogged ? (
+                    <Button
+                      size="small"
+                      sx={{ mt: 1, ml: 1 }}
+                      variant="outlined"
+                      onClick={handlefavClick}
+                      startIcon={
+                        propertyData?.isFav ? (
+                          <ThumbUpIcon sx={{ color: colors.BLUE }} />
+                        ) : (
+                          <ThumbUpOffAltIcon />
+                        )
+                      }
+                    >
+                      Like
+                    </Button>
+                  ) : (
+                    <Button
+                      size="small"
+                      sx={{ mt: 1, ml: 1 }}
+                      variant="outlined"
+                      onClick={() => router.push(listOfPages.login)}
+                      startIcon={<ThumbUpOffAltIcon />}
+                    >
+                      Like
+                    </Button>
+                  )}
+
+                  <Button
+                    size="small"
+                    sx={{ mt: 1, ml: 1 }}
+                    variant="outlined"
+                    onClick={handleOpenEnquiryForm}
+                    startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
+                  >
+                    Share
+                  </Button>
+                  <Button
+                    size="small"
+                    sx={{ mt: 1, ml: 1 }}
+                    variant="outlined"
+                    onClick={handleOpenEnquiryForm}
+                    startIcon={<WhatsAppIcon />}
+                  >
+                    Contact
+                  </Button>
+                  <Button
+                    size="small"
+                    sx={{ mt: 1, ml: 1 }}
+                    variant="outlined"
+                    onClick={handleOpenEnquiryForm}
+                    startIcon={<AssignmentIcon />}
+                  >
+                    Enquire
+                  </Button>
+                </Box>
+              </Card>
               <Box
                 sx={{
                   position: "fixed",
@@ -562,8 +635,8 @@ const PropertyDetails = ({ params }) => {
                     sx={{ mb: 1, justifyContent: "flex-start" }}
                     onClick={handlefavClick}
                   >
-                    {propertyData[0]?.isFav ? (
-                      <ThumbUpIcon sx={{ color: "#276ef1", mr: 1 }} />
+                    {propertyData?.isFav ? (
+                      <ThumbUpIcon sx={{ color: colors.BLUE, mr: 1 }} />
                     ) : (
                       <ThumbUpOffAltIcon sx={{ mr: 1 }} />
                     )}
@@ -573,19 +646,21 @@ const PropertyDetails = ({ params }) => {
                   <Fab
                     variant="extended"
                     sx={{ mb: 1, justifyContent: "flex-start" }}
-                    onClick={() => router.push("/login")}
+                    onClick={() => router.push(listOfPages.login)}
                   >
                     <ThumbUpOffAltIcon sx={{ mr: 1 }} />
                     Like
                   </Fab>
                 )}
+                <a href={`https://web.whatsapp.com/send?text=${url?.href ? url.href : ""}`} target="_blank" data-action="share/whatsapp/share">
                 <Fab
                   variant="extended"
-                  sx={{ mb: 1, justifyContent: "flex-start" }}
+                  sx={{ mb: 1, justifyContent: "flex-start", width: "100%" }}
                 >
                   <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
                   Share
                 </Fab>
+                </a>
                 <a href={`https://wa.me/+919725555595`}>
                   <Fab
                     variant="extended"
@@ -605,11 +680,12 @@ const PropertyDetails = ({ params }) => {
                   Enquire
                 </Fab>
               </Box>
-            )}
+            </>
+          )}
         </Container>
       </Box>
     </>
   );
 };
 
-export default PropertyDetails;
+export default PropertyDetailsPage;

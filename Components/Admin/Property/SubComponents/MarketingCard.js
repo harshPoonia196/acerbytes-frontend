@@ -11,6 +11,8 @@ import {
     IconButton,
     Button
 } from "@mui/material";
+import Image from 'next/image'
+
 import EditIcon from "@mui/icons-material/Edit";
 import { useSnackbar } from "utills/SnackbarContext";
 
@@ -26,8 +28,8 @@ import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 
 function MarketingCard({ isEdit, errors, form, handleChange }) {
 
-    const { tagLine, description } = form.marketing
-
+    const { tagLine, description,image } = form.marketing
+    const { openSnackbar } = useSnackbar();
     const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false)
 
     const handleOpenUploadPopup = () => {
@@ -38,13 +40,12 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
         setIsUploadPopupOpen(false)
     }
 
-    const [image, setImage] = useState('')
+    const [selectedImage, setImage] = useState('')
     const [cropData, setCropData] = useState('')
     const [cropper, setCropper] = useState(false)
     const [enableCropper, setEnableCropper] = useState(false)
 
     const handleImageSelect = (e) => {
-        console.log('hereimage')
         e.preventDefault()
         let files
         if (e.dataTransfer) {
@@ -53,12 +54,12 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
             files = e.target.files
         }
         const reader = new FileReader()
-        reader.onload = () => {
+        reader.onload = (ev) => {
+  
             setImage(reader.result)
-            console.log(reader.result,'ree')
+
         }
         reader.readAsDataURL(files[0])
-        console.log(files[0],'filess')
         handleOpenUploadPopup()
 
     }
@@ -70,7 +71,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
 
     return (
         <Grid item xs={12} id="marketing">
-            <UploadMarketingImage open={isUploadPopupOpen} image={image} setImage={setImage} onClose={handleCloseUploadPopup} handleClose={handleCloseUploadPopup} changeImage={handleImageSelect} handleChange={handleChange} removeImage={handleImageRemove} />
+            <UploadMarketingImage open={isUploadPopupOpen} image={selectedImage} setImage={setImage} onClose={handleCloseUploadPopup} handleClose={handleCloseUploadPopup} changeImage={handleImageSelect} handleChange={handleChange} removeImage={handleImageRemove} />
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
@@ -83,25 +84,55 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <Grid item xs={12}>
+                    {image && 
+               <Box
+               component="img"
+               sx={{
+                 height: 233,
+                 width: 350,
+                 maxHeight: { xs: 233, md: 167 },
+                 maxWidth: { xs: 350, md: 250 },
+               }}
+               alt="The Property image"
+               src={image}
+             />
+    }
                         <Card sx={{ display: 'flex', p: 2 }}>
-                            <Typography sx={{ flex: 1, alignSelf: 'center' }}>Upload</Typography>
-                            {/* <CustomButton
-                                variant="contained"
-                                component="label"
-                                // onClick={handleImageSelect}
-                                sx={{ textTransform: 'uppercase' }}
-                                startIcon={<AttachFileIcon />}
-                                ButtonText={"Attach"}
-                            > */}
 
+             
+                            <>
+                         
+                            <Typography sx={{ flex: 1, alignSelf: 'center' }}>Upload</Typography>
+                    
+
+                            <>
                                 <input
                                     id="contained-button-file"
                                     type="file"
                                     onChange={handleImageSelect}
                                     accept="image/x-png,image/gif,image/jpeg"
-                                    // hidden
+                                    style={{ display: 'none' }}
                                 />
-                            {/* </CustomButton> */}
+                                <div style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "flex-end",
+                                    padding: "10px"
+                                }}>
+
+                                    <label htmlFor="contained-button-file">
+                                        <Button
+                                            variant="contained"
+                                            component="span"
+                                            startIcon={<AttachFileIcon />}
+                                        >
+                                            Attach File
+                                        </Button>
+                                    </label>
+                                    {/* <Typography sx={{ flex: 1, alignSelf: 'center', marginTop: "5px" }}>{selectedImage ? selectedImage : image}</Typography> */}
+                                </div>
+                            </>
+                            </>
                         </Card>
                     </Grid>
                     <NewInputFieldStructure

@@ -1,7 +1,6 @@
 import {
   Card,
   CardMedia,
-  CardContent,
   Typography,
   Box,
   Grid,
@@ -18,9 +17,37 @@ import { format } from "date-fns";
 function PropertyCard(props) {
   const { propertyDetails, isShortListPageCard, createdDate } = props;
   const router = useRouter();
+  const constructPropertyUrl = (propertyDetailsData) => {
+    const overview = propertyDetailsData?.overview;
+    const location = propertyDetailsData?.location;
+
+    const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+    let projectType;
+    if (overview?.projectType?.length > 0) {
+        projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+    }else{
+      projectType = 'type';
+    }
+    const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
+    const sector = (location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-');
+    const area = (location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '');
+    const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+
+    return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetails._id}`;
+};
+
+const propertyUrl = constructPropertyUrl(propertyDetails)
 
   const formattedCreatedAt =
-    createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' HH:mm aaa");
+    createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' hh:mm aaa");
+
+    const  numDifferentiation = (value) => {
+      const val = Math.abs(value)
+      if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`
+      if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`
+      if (val >= 1000) return `${(value / 1000).toFixed(2)}k`
+      return value;
+    }
 
   return (
     <Card>
@@ -29,21 +56,22 @@ function PropertyCard(props) {
           <Grid item xs={13.5} sm={8} md={4}>
             <Box
               sx={{ display: "flex" }}
-              onClick={() => router.push(`/details/${propertyDetails?._id}`)}
+              onClick={() => router.push(`/details/${propertyUrl}`)}
             >
               <CardMedia
                 component="img"
-                alt="green iguana"
+                alt={propertyDetails?.marketing?.tagLine}
                 sx={{
                   width: 80,
+                  height: 54,
                   borderRadius: "8px",
                   mr: 2,
                 }}
-                image="https://www.county107.com/campaign/upload/gallery/BANNER1-desktop.jpg"
+                image={propertyDetails?.marketing?.image}
               />
               <Box
                 sx={{ flex: 1 }}
-                onClick={() => router.push(`/details/${propertyDetails._id}`)}
+                onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
                   {propertyDetails?.overview?.builder}
@@ -84,7 +112,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
               {propertyDetails?.location?.area}
@@ -98,7 +126,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2.5}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             {(propertyDetails?.unitsPlan?.averagePrice ||
               propertyDetails?.unitsPlan?.planList[0]?.areaUnit) && (
@@ -111,8 +139,8 @@ function PropertyCard(props) {
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
                 <Typography variant="subtitle2">
-                  ₹ {propertyDetails?.unitsPlan?.minPriceRange} Cr - ₹{" "}
-                  {propertyDetails?.unitsPlan?.maxPriceRange} Cr
+                  ₹ {numDifferentiation(propertyDetails?.unitsPlan?.minPriceRange)} - ₹{" "}
+                  {numDifferentiation(propertyDetails?.unitsPlan?.maxPriceRange)}
                 </Typography>
               )}
           </Grid>
@@ -121,7 +149,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={1.5}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
               {propertyDetails?.layout?.totalUnits} Units
@@ -137,17 +165,19 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
-              {propertyDetails?.unitsPlan?.uniqueLayouts.length === 1
-                ? `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layout`
-                : `${propertyDetails?.unitsPlan?.uniqueLayouts.length} layouts`}
+              {(propertyDetails?.unitsPlan?.uniqueLayouts?.length || propertyDetails?.unitsPlan?.planList?.length) === 1
+                ? `${propertyDetails?.unitsPlan?.uniqueLayouts?.length || propertyDetails?.unitsPlan?.planList?.length} layout`
+                : `${propertyDetails?.unitsPlan?.uniqueLayouts?.length || propertyDetails?.unitsPlan?.planList?.length} layouts`}
             </Typography>
             <Typography variant="subtitle2">
-              {propertyDetails?.unitsPlan?.uniqueLayouts.length &&
+              {propertyDetails?.unitsPlan?.uniqueLayouts.length ?
                 propertyDetails?.unitsPlan?.uniqueLayouts
                   ?.map((item) => item)
+                  .join(", ") : propertyDetails?.unitsPlan?.planList
+                  ?.map((item) => `${item?.width}*${item?.length}`)
                   .join(", ")}
             </Typography>
           </Grid>
@@ -156,7 +186,7 @@ function PropertyCard(props) {
             xs={8}
             sm={4}
             md={2}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
               {propertyDetails?.overview?.status}
@@ -182,7 +212,7 @@ function PropertyCard(props) {
                 ml: "auto !important",
               }}
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyDetails._id}`)}
+              onClick={() => router.push(`/details/${propertyUrl}`)}
             >
               <Typography
                 variant="h6"

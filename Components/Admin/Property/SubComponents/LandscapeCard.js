@@ -124,16 +124,6 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide }
             }
           />}
           {!hide.includes("floors") && <NewInputFieldStructure
-            label="Floors (Max)"
-            name="maxFloors"
-            variant="outlined"
-            isEdit={isEdit}
-            type={"number"}
-            value={maxFloors}
-            error={errors?.["layout.maxFloors"]}
-            handleChange={(e) => handleChange(e, "layout", "maxFloors")}
-          />}
-          {!hide.includes("floors") && <NewInputFieldStructure
             label="Floors (Min)"
             name="minFloors"
             type={"number"}
@@ -143,6 +133,17 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide }
             error={errors?.["layout.minFloors"]}
             handleChange={(e) => handleChange(e, "layout", "minFloors")}
           />}
+          {!hide.includes("floors") && <NewInputFieldStructure
+            label="Floors (Max)"
+            name="maxFloors"
+            variant="outlined"
+            isEdit={isEdit}
+            type={"number"}
+            value={maxFloors}
+            error={errors?.["layout.maxFloors"]}
+            handleChange={(e) => handleChange(e, "layout", "maxFloors")}
+          />}
+
           {!hide.includes("area") && <NewUnitAreaInputField
             label="Area"
             name="area"
@@ -275,7 +276,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide }
               },
             }}
           />}
-          <Grid item xs={12} sm={6}>
+          {!hide.includes("greenDensityScore") && <Grid item xs={12} sm={6}>
             <Box>
               <Typography
                 variant="subtitle2"
@@ -292,7 +293,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide }
               size="small"
               sx={{ alignSelf: "center", mt: 1 }}
             />
-          </Grid>
+          </Grid>}
           <Grid item xs={6}>
             <Box>
               <Typography

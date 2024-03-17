@@ -43,6 +43,29 @@ function transformDocuments(documents) {
   }, {});
 }
 
+function formatNumber(number) {
+  // Check if the number is greater than or equal to one crore
+  if (number >= 10000000) {
+    const crore = Math.floor(number / 10000000);
+    return `crore`;
+  }
+  // Check if the number is greater than or equal to one lakh
+  else if (number >= 100000) {
+    const lakh = Math.floor(number / 100000);
+    return `lakh`;
+  }
+  // Check if the number is greater than or equal to one thousand
+  else if (number >= 1000) {
+    const thousand = Math.floor(number / 1000);
+    return `thousand`;
+  }
+  // // Less than one thousand
+  // else {
+  //   return `${number}`;
+  // }
+}
+
+
 function transformDocumentsLocation(documents) {
   return documents.reduce((result, document) => {
     const { city, area } = document;
@@ -102,17 +125,71 @@ let formatDateAndDaysRemaining = (expiryDate) => {
 };
 
 const formatAmount = (amount) => {
+  // const numericAmount = Number(amount.replace(/,/g, ''));
+  const numericAmount = Number(String(amount).replace(/,/g, ''));
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 0,
-  }).format(amount);
+  }).format(numericAmount);
 };
 
 const formatPoints = (points) => {
-  const formattingValue = typeof points === Number ? points : Number(points);
-  return formattingValue.toLocaleString("en-IN");
+  // const numericAmount = Number(points?.replace(/,/g, ''));
+  const numericAmount = Number(String(points).replace(/,/g, ''));
+  return numericAmount.toLocaleString("en-IN");
 };
+
+
+function formatNumberWithCommas(number) {
+  // Convert the number to a string for easier manipulation
+  let numberString = String(number);
+
+  // Check if the number is negative and remove the negative sign temporarily
+  let isNegative = false;
+  if (numberString[0] === '-') {
+    isNegative = true;
+    numberString = numberString.slice(1);
+  }
+
+  // Separate the number into groups based on units
+  let crores = '';
+  let lakhs = '';
+  let tenThousands = '';
+  let thousands = '';
+  let hundreds = '';
+
+  if (numberString.length > 7) {
+    crores = numberString.slice(0, -7);
+    lakhs = numberString.slice(-7, -5);
+    tenThousands = numberString.slice(-5, -3);
+    thousands = numberString.slice(-3);
+  } else if (numberString.length > 5) {
+    lakhs = numberString.slice(0, -5);
+    tenThousands = numberString.slice(-5, -3);
+    thousands = numberString.slice(-3);
+  } else if (numberString.length > 3) {
+    tenThousands = numberString.slice(0, -3);
+    thousands = numberString.slice(-3);
+  } else {
+    hundreds = numberString;
+  }
+
+  // Add commas to separate units
+  crores = crores ? crores + ',' : '';
+  lakhs = lakhs ? lakhs + ',' : '';
+  tenThousands = tenThousands ? tenThousands + ',' : '';
+  thousands = thousands ? thousands + ',' : '';
+  hundreds = hundreds ? hundreds + ',' : '';
+
+  // Combine the formatted parts and add back the negative sign if needed
+  let formattedNumber = crores + lakhs + tenThousands + thousands + hundreds;
+  if (isNegative) {
+    formattedNumber = '-' + formattedNumber;
+  }
+  let finalValue = formattedNumber.replace(/,$/, '')
+  return finalValue;
+}
 
 const yearList = Array.from(
   { length: 41 }, (_, index) => { return { label: index > 9 ? `20${index}` : `200${index}`, value: index > 9 ? `20${index}` : `200${index}` } })
@@ -135,8 +212,10 @@ export {
   formatDate,
   formatAmount,
   formatPoints,
+  formatNumber,
   toCamelCase,
   transformDocuments,
+  formatNumberWithCommas,
   transformDocumentsLocation,
   formatDateAndDaysRemaining,
   yearList,
