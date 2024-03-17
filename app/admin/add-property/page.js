@@ -449,8 +449,6 @@ setCities(res.data.data[0])
         privateBankLoan: 0,
         resale: 0,
         area: 0,
-        assessment:[],
-        amenities:[],
         appTillNow: 0,
         expectedFurtherApp: 0,
         forEndUse: 0,
