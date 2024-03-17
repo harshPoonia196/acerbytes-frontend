@@ -231,6 +231,15 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
           MenuListProps={{
             "aria-labelledby": "basic-button",
           }}
+          transformOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          sx={{
+            '& .MuiList-root': {
+              padding: '0px',
+            },
+          }}
         >
           {row.isBlocked ? (
             <MenuItem onClick={() => updateStatus(row.googleID, false)}>

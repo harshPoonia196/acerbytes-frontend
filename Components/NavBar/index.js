@@ -67,7 +67,7 @@ export default function ClippedDrawer({ children }) {
   const pathname = usePathname();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { userDetails, isLogged, logout,isLoggedIn, setBrokerPoints, brokerBalance } =
+  const { userDetails, isLogged, logout, isLoggedIn, setBrokerPoints, brokerBalance } =
     useAuth();
 
   React.useEffect(() => {
@@ -169,7 +169,7 @@ export default function ClippedDrawer({ children }) {
         </MenuItem>
       )}
       {isLogged ? (
-        <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
+        <MenuItem onClick={() => logoutUser()}>Log out</MenuItem>
       ) : null}
     </Menu>
   );
