@@ -159,7 +159,7 @@ function RowStructure({ row }) {
         open={openUpdatePopup}
         handleClose={handleCloseUpdatePopup}
         isUserSelected
-      />
+      />  
       <TableCell>{row?.fullName}</TableCell>
       <TableCell>{row?.property?.location?.city}</TableCell>
       <TableCell>

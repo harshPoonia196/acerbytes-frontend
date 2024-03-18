@@ -35,6 +35,16 @@ function MarketingSection(props) {
 
   const mapUrl = extractUrl(AllLocationData?.googleMapLink);
 
+  const categorizeScore = (score) => {
+    if (score >= 0 && score <= 20) return 'Poor';
+    if (score >= 21 && score <= 40) return 'Average';
+    if (score >= 41 && score <= 60) return 'Good';
+    if (score >= 61 && score <= 80) return 'Very good';
+    if (score >= 81 && score <= 90) return 'Excellent';
+    if (score >= 91 && score <= 100) return 'Outstanding';
+    return 'invalid';
+  };
+
   return (
     <>
       <Card
@@ -89,12 +99,11 @@ function MarketingSection(props) {
                 ? overviewData?.overallAssessment?.score.toFixed()
                 : "48"}
               <Typography variant="h6" component="span">
-                {" "}
-                / 100
+                  / 100
               </Typography>
             </Typography>
             <Typography variant="h4" sx={{ mb: 2 }}>
-              Excellent
+              {categorizeScore(overviewData?.overallAssessment?.score)}
             </Typography>
             <Grid container spacing={1}>
               <Grid item xs={6}>

@@ -518,13 +518,17 @@ const PropertyDetailsPage = ({ params }) => {
                       >
                         Are you a property consultant, let Customers reach you
                       </Typography>
-                      <Chip
-                        label="Yes, show me here !"
-                        icon={<PersonAddIcon fontSize="small" />}
-                        size="small"
-                        sx={{ fontSize: "0.875rem" }}
-                        onClick={() => { }}
-                      />
+                      {userDetails?.role === "broker" && (
+                        <a href={`https://wa.me/+919818690582`}>
+                          <Chip
+                            label="Yes, show me here !"
+                            icon={<PersonAddIcon fontSize="small" />}
+                            size="small"
+                            sx={{ fontSize: "0.875rem" }}
+                            onClick={() => { }}
+                          />
+                        </a>
+                      )}
                     </Box>
                   </Grid>
                 </Grid>
@@ -532,6 +536,7 @@ const PropertyDetailsPage = ({ params }) => {
             </Grid>
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
+              AllPropertyData={propertyData}
               handleOpenEnquiryForm={handleOpenEnquiryForm}
               open={openEnquiryForm}
               handleClose={handleCloseEnquiryForm}

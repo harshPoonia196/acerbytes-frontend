@@ -20,6 +20,7 @@ function OverallAssesmentSection({
   open,
   handleClose,
   handleAction,
+  AllPropertyData,
 }) {
   const { userDetails } = useAuth();
   const router = useRouter();
@@ -63,9 +64,11 @@ function OverallAssesmentSection({
         <Divider />
 
         <Box sx={{ p: 2, textAlign: "center" }}>
-          <Typography variant="body1">
-            Godrej Woods project has scored
-          </Typography>
+          {AllPropertyData?.overview?.projectName && (
+            <Typography variant="body1">
+              {AllPropertyData?.overview?.projectName} project has scored
+            </Typography>
+          )}
           <Box
             sx={{
               display: "flex",
@@ -82,12 +85,15 @@ function OverallAssesmentSection({
             Our authorized professional consultants help you decide whether to
             buy as Investor / End user. Contact us now
           </Typography>
-          {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && (<Chip
-            icon={<AssignmentIcon />}
-            label="Enquire now"
-            size="small"
-            onClick={handleOpenEnquiryForm}
-          />)}
+          {userDetails?.role !== "admin" &&
+            userDetails?.role !== "superAdmin" && (
+              <Chip
+                icon={<AssignmentIcon />}
+                label="Enquire now"
+                size="small"
+                onClick={handleOpenEnquiryForm}
+              />
+            )}
         </Box>
         <EnquireNow
           open={open}
