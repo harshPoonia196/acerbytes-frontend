@@ -148,6 +148,7 @@ function FloorPlanCard({
         maxPriceRange: 0,
         minPriceRange: 0,
         averagePrice: 0,
+        totalAreaSqft:0
       };
     } else if (edit) {
       let getSum = 0;
@@ -170,11 +171,30 @@ function FloorPlanCard({
         }
     }).filter((layout) => layout !== null)
       );
+
+
+   
+      let totalArea
+      const filteredArray = rows.filter(obj =>{
+        return  !Object.keys(selectedItem).every(key => obj[key] === selectedItem[key])
+      });
+      if( rows.every(obj => obj.areaUnit.toLocaleLowerCase() === 'acres')){
+        let areaCount = [...filteredArray,selectedItem].reduce((acc, obj) => parseInt(acc) + parseInt(obj.area), 0) 
+        const sqftPerAcre = 43560
+        totalArea = areaCount * sqftPerAcre
+         } 
+         else{
+         
+          totalArea = [...filteredArray,selectedItem].reduce((acc, obj) => parseInt(acc) + parseInt(obj.area), 0)    
+        }
+
       const uniqueLayouts = Array.from(uniquePropertyLayoutsSet);
+
       return {
         uniqueLayouts,
         maxPriceRange,
         minPriceRange,
+        totalAreaSqft:totalArea,
         averagePrice: averagePriceSum,
       };
     } else {
@@ -202,11 +222,22 @@ function FloorPlanCard({
       }).filter((layout) => layout !== null)
       );
       const uniqueLayouts = Array.from(uniquePropertyLayoutsSet);
+      let totalArea;
+    if( [...rows,selectedItem].every(obj => obj.areaUnit.toLocaleLowerCase() === 'acres')){
+     let areaCount =  [...rows,selectedItem].reduce((acc, obj) => parseInt(acc) + parseInt(obj.area), 0)
+     console.log(areaCount,'dddoo')
+     const sqftPerAcre = 43560
+     totalArea = areaCount * sqftPerAcre
+      } 
+      else{
+        totalArea = [...rows,selectedItem].reduce((acc, obj) => parseInt(acc) + parseInt(obj.area), 0)
+      }
 
       return {
         uniqueLayouts,
         maxPriceRange,
         minPriceRange,
+        totalAreaSqft:totalArea,
         averagePrice: sum ? averagePriceSum : averagePriceDecrease,
       };
     }

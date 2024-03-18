@@ -186,7 +186,8 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
                 undefined,
                 true,
                 "unitDensity",
-                e.target.value / area
+                area ? (e.target.value / area).toFixed(2) : (e.target.value / 1).toFixed(2)
+              
               )
             }
           />}
@@ -217,7 +218,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange,hide })
                 undefined,
                 true,
                 "greenDensity",
-                area ? e.target.value / area : e.target.value / 1
+                area ? (e.target.value / area).toFixed(2) : (e.target.value / 1).toFixed(2)
               )
             }
           />}
