@@ -425,6 +425,7 @@ else if(fieldName==='width'){
             isEdit={isEdit}
             list={layoutType}
             name="length"
+            type={"number"}
             value={selectedItem.length}
             error={
               localError?.["length"] ||
@@ -442,6 +443,7 @@ else if(fieldName==='width'){
             isEdit={isEdit}
             list={layoutType}
             name="width"
+            type={"number"}
             value={selectedItem.width}
             error={
               localError?.["width"] ||
