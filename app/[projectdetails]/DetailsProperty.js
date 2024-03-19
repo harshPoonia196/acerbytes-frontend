@@ -16,18 +16,14 @@ import {
   Toolbar,
   Avatar,
   Button,
-  IconButton,
-  Tooltip,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import Fab from "@mui/material/Fab";
-import React, { useState, useEffect, useRef } from "react";
-import BrokerCard from "Components/BrokersPage/BrokerCard";
+import React, { useState, useEffect } from "react";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import GroupIcon from "@mui/icons-material/Group";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
@@ -51,15 +47,13 @@ import {
   listOfPropertyDetailsTab,
   listOfTabsInAddProperty,
 } from "utills/Constants";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import colors from "styles/theme/colors";
 import { activeAdGet, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
 import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
+import { submitEnquiry } from "api/UserProfile.api";
 
 const tabHeight = 200;
 
@@ -224,13 +218,15 @@ const PropertyDetails = ({ params }) => {
   };
 
   const [amenitiesTabs, setAmenitiesTab] = React.useState(0);
-
+  const param = useParams();
+  const [brokerContact, setBrokerContact] = React.useState(null);
   const handleAmenitiesTabChange = (event, newValue) => {
     setAmenitiesTab(newValue);
   };
 
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
+  const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] = React.useState(false);
 
   const handleOpenEnquiryForm = () => {
     setOpenEnquiryForm(true);
@@ -241,6 +237,29 @@ const PropertyDetails = ({ params }) => {
   };
 
   const [openOtpPopup, setOpenOtpPopup] = useState(false);
+
+  const handleSubmitEnquiry = async (data) => {
+    try {
+      const response = await submitEnquiry(data);
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+          setBrokerContact({});
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
 
   const handleOpenVerifyPopup = () => {
     setOpenOtpPopup(true);
@@ -372,12 +391,12 @@ const PropertyDetails = ({ params }) => {
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
         <Container maxWidth="evmd">
-          <EnquireNow
+          {openEnquiryForm && <EnquireNow
             open={openEnquiryForm}
             handleClose={handleCloseEnquiryForm}
             handleAction={handleOpenVerifyPopup}
-            // handleOpen={handleOpenEnquiryForm}
-          />
+            submitEnquiry={handleSubmitEnquiry}
+          />}
           <OtpVerify
             open={openOtpPopup}
             handleClose={handleCloseVerifyPopup}
@@ -418,10 +437,11 @@ const PropertyDetails = ({ params }) => {
                 propertyData[0]?.propertyData?.overallAssessment
               }
               AllPropertyData={propertyData[0]?.propertyData}
-              open={openEnquiryForm}
-              handleClose={handleCloseEnquiryForm}
+              handleSubmitEnquiry={handleSubmitEnquiry}
+              handleOpenEnquiryForm={()=> setOverallAssesmentOpenEnquiryForm(true)}
+              open={OverallAssesmentOpenEnquiryForm}
+              handleClose={()=> setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
-              handleOpenEnquiryForm={handleOpenEnquiryForm}
             />
           </Grid>
 
