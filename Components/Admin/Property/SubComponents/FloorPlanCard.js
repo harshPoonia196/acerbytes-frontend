@@ -273,6 +273,7 @@ function FloorPlanCard({
         applicableMonth: "",
       });
       handleUnitsPlan({ ...calculation, planList: [...rows, selectedItem] });
+      setLocalError({});
     } 
     else {
      
