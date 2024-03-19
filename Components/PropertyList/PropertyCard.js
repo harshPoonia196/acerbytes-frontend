@@ -13,6 +13,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { useMemo } from "react";
 
 function PropertyCard(props) {
   const { propertyDetails, isShortListPageCard, createdDate } = props;
@@ -48,6 +49,14 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
       if (val >= 1000) return `${(value / 1000).toFixed(2)}k`
       return value;
     }
+    const layoutCount = useMemo(()=> {
+      return propertyDetails?.unitsPlan?.uniqueLayouts?.length + propertyDetails?.unitsPlan?.planList?.filter(item=> !item.propertyLayout)?.length 
+    }, [propertyDetails])
+
+    const layoutData = useMemo(()=> {
+      const withoutUniqueLayout = [...propertyDetails?.unitsPlan?.planList.filter(item=> !item.propertyLayout)]?.map((item) => `${item?.width}*${item?.length}`)
+      return [...propertyDetails?.unitsPlan?.uniqueLayouts, ...withoutUniqueLayout]
+    }, [propertyDetails])
 
   return (
     <Card>
@@ -131,7 +140,7 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
             {(propertyDetails?.unitsPlan?.averagePrice ||
               propertyDetails?.unitsPlan?.planList[0]?.areaUnit) && (
                 <Typography variant="caption">
-                  {propertyDetails?.unitsPlan?.averagePrice +
+                  {propertyDetails?.unitsPlan?.averagePrice.toLocaleString() +
                     "/" +
                     propertyDetails?.unitsPlan?.planList[0]?.areaUnit}
                 </Typography>
@@ -168,17 +177,12 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
-              {(propertyDetails?.unitsPlan?.uniqueLayouts?.length || propertyDetails?.unitsPlan?.planList?.length) === 1
-                ? `${propertyDetails?.unitsPlan?.uniqueLayouts?.length || propertyDetails?.unitsPlan?.planList?.length} layout`
-                : `${propertyDetails?.unitsPlan?.uniqueLayouts?.length || propertyDetails?.unitsPlan?.planList?.length} layouts`}
+              {(layoutCount) === 1
+                ? `${layoutCount} layout`
+                : `${layoutCount} layouts`}
             </Typography>
             <Typography variant="subtitle2">
-              {propertyDetails?.unitsPlan?.uniqueLayouts.length ?
-                propertyDetails?.unitsPlan?.uniqueLayouts
-                  ?.map((item) => item)
-                  .join(", ") : propertyDetails?.unitsPlan?.planList
-                  ?.map((item) => `${item?.width}*${item?.length}`)
-                  .join(", ")}
+              {layoutData.join(", ")}
             </Typography>
           </Grid>
           <Grid

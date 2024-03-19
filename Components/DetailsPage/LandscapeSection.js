@@ -55,8 +55,8 @@ function LandscapeSection(props) {
                     <NewKeyValuePairStructure label="Green area" value={layoutData?.greenArea && `${parseFloat(layoutData?.greenArea).toFixed(2)} ${layoutData?.areaUnit || ''}`} />
                     <NewKeyValuePairStructure label="Unit density (Unit/Area)" value={`${layoutData?.unitDensity && parseFloat(layoutData?.unitDensity).toFixed(2)}`}  />
                     <NewKeyValuePairStructure label="Green density" value={layoutData?.greenDensity && parseFloat(layoutData?.greenDensity).toFixed(2)} />
-                    <NewKeyValuePairStructure label="Construction quality" value={layoutData?.constructionQuality} />
-                    <NewKeyValuePairStructure label="Interior quality" value={layoutData?.interiorQuality} />
+                    <NewKeyValuePairStructure label="Construction quality" value={layoutData?.constructionQuality} isRating={true} isRatingReadOnly/>
+                    <NewKeyValuePairStructure label="Interior quality" value={layoutData?.interiorQuality} isRating={true} isRatingReadOnly />
                 </Grid>
             </Card>
         </Grid>

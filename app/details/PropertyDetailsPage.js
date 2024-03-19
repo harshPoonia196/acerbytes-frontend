@@ -597,7 +597,7 @@ const PropertyDetailsPage = ({ params }) => {
             }}
           />
 
-          {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && (
+          {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin"  && userDetails?.role !== "broker"  && (
             <>
               <Card
                 sx={{
