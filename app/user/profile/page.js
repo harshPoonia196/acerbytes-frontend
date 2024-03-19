@@ -100,7 +100,7 @@ function useThrottledOnScroll(callback, delay) {
   }, [throttledCallback]);
 }
 
-function Profile() {
+function Profile({ id, isAdminUpdate }) {
   const { userDetails, isLogged } = useAuth();
   const [isLoading, setLoading] = useState(false);
   const [interestedStatesList, setInterestedStatesList] = useState([]);
@@ -295,7 +295,8 @@ function Profile() {
     if (isLogged && userDetails?._id) {
       try {
         setLoading(true);
-        const res = await getUserProfileByGoogleId(userDetails?.googleID);
+        const userId = isAdminUpdate? id:  userDetails?.googleID;
+        const res = await getUserProfileByGoogleId(userId);
         if (res.status === 200) {
           const dataPlayload = res?.data?.data;
           setProfileInfo({
@@ -402,7 +403,7 @@ function Profile() {
 
   const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
     var value = thirdKeyName === "checked" ? e.target.checked : e.target.value;
-    if (secondKeyName === 'firstName' || secondKeyName === 'lastName' || secondKeyName === 'serviceType') {
+    if (secondKeyName === 'firstName' || secondKeyName === 'lastName' || secondKeyName === 'company') {
       value = capitalLizeName(value)
     }
     await setProfileInfo((prev) => ({
@@ -542,7 +543,9 @@ function Profile() {
           profileInfo
         );
         if (response.status == 200) {
-          updateDetailsonLocalStorage(profileInfo);
+          if(!isAdminUpdate){
+            updateDetailsonLocalStorage(profileInfo);
+          }
           showToaterMessages(ToasterMessages.PROFILE_UPDATE_SUCCESS, "success");
         }
       }
@@ -602,7 +605,8 @@ function Profile() {
       formData.append('image', selectedFile);
       const response = await uploadImage(formData);
       if (response.data.status == 200) {
-        const imageResponse = await updateProfileImage(userDetails.googleID, response.data.data.Location);
+        const userId = isAdminUpdate ? id: userDetails.googleID;
+        const imageResponse = await updateProfileImage(userId, response.data.data.Location);
         if (imageResponse?.data?.status == 200) {
           updateOnLocalStorage(response.data.data.Location);
           openSnackbar(
@@ -664,10 +668,10 @@ function Profile() {
               Save
             </LoadingButton>
           </Grid> */}
-          <Grid item xs={12} id="userDetails">
+          {!isAdminUpdate &&<Grid item xs={12} id="userDetails">
             <Card sx={{ p: 2 }}>
-              <Box sx={{ display: "flex" }}>
-                <Box sx={{ flex: 1, display: 'flex', gap: 2 }}>
+            <Box sx={{ display: "flex" }}>
+              <Box sx={{ flex: 1, display: 'flex', gap: 2 }}>
                   <Box>
                     {/* <UploadMarketingImage
                       open={isUploadPopupOpen}
@@ -762,7 +766,7 @@ function Profile() {
                 Mumbai
               </Typography> */}
             </Card>
-          </Grid>
+          </Grid>}
           <Grid item xs={12}>
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -785,6 +789,7 @@ function Profile() {
                   label="First name"
                   variant="outlined"
                   isEdit={isEdit}
+                  disabled={isAdminUpdate}
                   // handleChange={handleChangeName}
                   handleChange={(e) => handleChange(e, "name", "firstName")}
                   name={"firstName"}
@@ -794,6 +799,7 @@ function Profile() {
                   label="Last name"
                   variant="outlined"
                   isEdit={isEdit}
+                  disabled={isAdminUpdate}
                   isRequired={true}
                   handleChange={(e) => handleChange(e, "name", "lastName")}
                   name={"lastName"}
@@ -817,6 +823,7 @@ function Profile() {
                   label="Alternate Email"
                   variant="outlined"
                   isEdit={isEdit}
+                  disabled={isAdminUpdate}
                   handleChange={(e) => handleChange(e, "alternateEmail")}
                   name={"alternateEmail"}
                   value={profileInfo?.alternateEmail}

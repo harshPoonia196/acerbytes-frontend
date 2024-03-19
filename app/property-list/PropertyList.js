@@ -13,6 +13,7 @@ import {
 import PropertyCard from "Components/PropertyList/PropertyCard";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useRef, useState } from "react";
 import {
   getAllOptions,
@@ -35,12 +36,11 @@ import {
   transformDocumentsLocation,
 } from "utills/CommonFunction";
 import { debounce } from "lodash";
-import { useAuth } from "utills/AuthContext";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 function PropertyList({ params }) {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-  const [alignment, setAlignment] = useState(1);
+  const [alignment, setAlignment] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
 
@@ -51,7 +51,7 @@ function PropertyList({ params }) {
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
-  const [selectedOptions, setSelectedOptions] = useState(params?.location ? { city: params.location } : {});
+  const [selectedOptions, setSelectedOptions] = useState(params.location ? { city: decodeURIComponent(params.location) } : {});
   const [propertyvalue, setPropertyvalue] = useState("");
   const [selectOption, setSelectOption] = useState({});
   const [isDisablePropertyType, setIsDisablePropertyType] = useState(true);
@@ -60,7 +60,7 @@ function PropertyList({ params }) {
   const [cities, setCities] = useState([]);
   const [layoutTypeApplicable, setLayoutTypeApplicable] = useState([]);
   const [locationDisable, setLocationDisable] = useState(true);
-  const [selectedCity, setSelectedCity] = useState(params?.location ? [params.location] : []);
+  const [selectedCity, setSelectedCity] = useState(params.location ? [ decodeURIComponent(params.location)] : []);
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
@@ -310,14 +310,6 @@ function PropertyList({ params }) {
     }
   };
 
-  function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
 
   return (
     <>
@@ -325,7 +317,7 @@ function PropertyList({ params }) {
         {isLoading && <Loader />}
         <Container maxWidth="lg">
           <Card sx={{ mb: 2 }}>
-            {params?.location ? (
+            {params.location ? (
               <Grid
                 container
                 sx={{ display: "flex", flexDirection: "row-reverse" }}
@@ -350,7 +342,7 @@ function PropertyList({ params }) {
                       boxShadow: "none",
                     }}
                   >
-                    <Typography variant="h2">{params?.location}</Typography>
+                    <Typography variant="h2">{decodeURIComponent(params.location)}</Typography>
                     <Typography variant="caption">
                       Noida's strategic location, robust infrastructure, and
                       flourishing business environment have contributed to its
@@ -508,22 +500,19 @@ function PropertyList({ params }) {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
+            <Grid item xs={36} sm={18} sx={{ textAlign: 'end', alignSelf: 'end' }}>
               <Button
                 variant="h6"
                 sx={{
                   fontWeight: 600,
-                  width: "fit-content",
                   color: "white",
-                  marginTop: "20px",
-                  padding: "8px 26px !important",
-                  fontSize: "15px",
                   backgroundColor: colors?.BLACK,
                   "&:hover": {
                     backgroundColor: colors?.BLACK,
                     boxShadow: "none",
                   },
                 }}
+                startIcon={<CloseIcon />}
                 onClick={handleReset}
               >
                 Reset

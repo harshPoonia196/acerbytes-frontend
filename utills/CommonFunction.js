@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import moment from "moment";
 
 function capitalLizeName(text) {
@@ -111,6 +112,10 @@ const formatDate = (dateString) => {
   return moment(dateString).format("Do MMMM, YYYY");
 };
 
+const formattedCreatedAt  = (dateString) => {
+  return format(new Date(dateString), "dd-MM-yyyy 'at' hh:mm aaa");
+};
+
 let formatDateAndDaysRemaining = (expiryDate) => {
   const expiry = new Date(expiryDate);
   const now = new Date();
@@ -125,7 +130,8 @@ let formatDateAndDaysRemaining = (expiryDate) => {
 };
 
 const formatAmount = (amount) => {
-  const numericAmount = Number(amount.replace(/,/g, ''));
+  // const numericAmount = Number(amount.replace(/,/g, ''));
+  const numericAmount = Number(String(amount).replace(/,/g, ''));
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -134,7 +140,8 @@ const formatAmount = (amount) => {
 };
 
 const formatPoints = (points) => {
-  const numericAmount = Number(points.replace(/,/g, ''));
+  // const numericAmount = Number(points?.replace(/,/g, ''));
+  const numericAmount = Number(String(points).replace(/,/g, ''));
   return numericAmount.toLocaleString("en-IN");
 };
 
@@ -216,6 +223,7 @@ export {
   formatNumberWithCommas,
   transformDocumentsLocation,
   formatDateAndDaysRemaining,
+  formattedCreatedAt,
   yearList,
   monthList
 };

@@ -8,21 +8,28 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 function ManageUser() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [dashboardInfo, setDashboardInfo] = useState({});
+  const [userDetails, setUserDetails] = useState({});
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
   };
 
+  const handleDashboardDataUpdate = ({ countInfo, userDetails }) => {
+    setDashboardInfo(countInfo);
+    setUserDetails(userDetails || {});
+  }
+
   return (
     <>
 
       <CustomAdminBreadScrumbs text='Manage user' />
 
-      {/* <InfoBox
-        title="Anand Gupta(Admin)"
-        subtitle="3,344 property consultant links are currently active"
-      /> */}
+      <InfoBox
+        title={Object.keys(userDetails).length > 0 ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}(${userDetails?.role})` : ""}
+        subtitle={Object.keys(dashboardInfo).length > 0 ? `Admins: ${dashboardInfo.noOfAdmin}, Brokers: ${dashboardInfo.noOfBroker}, Users: ${dashboardInfo.noOfUsers}` : ''}
+      />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
           Manage User
@@ -35,7 +42,7 @@ function ManageUser() {
             onChange={handleSearch}
           />
         </Card>
-        <ManageUserTable searchText={searchTerm} />
+        <ManageUserTable searchText={searchTerm} onDashboardDataUpdate={handleDashboardDataUpdate} />
 
       </Container>
     </>

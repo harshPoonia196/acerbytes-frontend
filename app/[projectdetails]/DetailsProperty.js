@@ -59,6 +59,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
+import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
 
 const tabHeight = 200;
 
@@ -115,7 +116,6 @@ const PropertyDetails = ({ params }) => {
         `${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ""}`
       );
       if (res.status === 200) {
-        shuffle(res.data?.data[0].propertyData?.consultants)
         setPropertyData(res.data?.data);
       }
     } catch (error) {
@@ -260,16 +260,6 @@ const PropertyDetails = ({ params }) => {
     setOpenAlternateSignIn(false);
   };
 
-  const [consultantsViewAll, setConsultantsViewAll] = useState(false);
-
-  const handleOpenConsultantsViewAll = () => {
-    setConsultantsViewAll(true);
-  };
-
-  const handleCloseConsultantsViewAll = () => {
-    setConsultantsViewAll(false);
-  };
-
   const classes = useStyles();
 
   //All codes about scrolling
@@ -366,17 +356,11 @@ const PropertyDetails = ({ params }) => {
     []
   );
 
-  const shuffle = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
 
   return (
     <>
       {isLoading && <Loader />}
+        <UserDetailsAd  AllPropertyData={propertyData[0]}/>
       <nav className={classes.demo2}>
         <TopMenu
           topMenu={propertyData[0]?.propertyData}
@@ -429,62 +413,11 @@ const PropertyDetails = ({ params }) => {
               valueForMoneyData={propertyData[0]?.propertyData?.valueForMoney}
             />
             {/* <FloorPlanSection /> */}
-            <Grid item xs={12} id="propertyConsultants">
-              <Card sx={{ p: 2 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sx={{ display: "flex" }}>
-                    <Box sx={{ flex: 1, alignSelf: "center" }}>
-                      <Typography variant="h4">
-                        Contact verified consultants
-                      </Typography>
-                    </Box>
-                    <ConsultantsViewAll
-                      open={consultantsViewAll}
-                      handleClose={handleCloseConsultantsViewAll}
-                      propertyData={propertyData[0]?.propertyData?.consultants}
-                    ></ConsultantsViewAll>
-                    <Box>
-                      <Chip
-                        label="View all"
-                        icon={<GroupIcon fontSize="small" />}
-                        size="small"
-                        onClick={handleOpenConsultantsViewAll}
-                        sx={{ fontSize: "0.875rem !important" }}
-                      />
-                    </Box>
-                  </Grid>
-                  {propertyData[0]?.propertyData?.consultants.length > 0 && propertyData[0]?.propertyData?.consultants
-                    ?.slice(0, 2)
-                    .map((broker) => (
-                      <Grid item xs={12} sm={6} key={broker?.name}>
-                        <BrokerCard broker={broker} noReview />
-                      </Grid>
-                    ))}
-
-                  <Grid item xs={12}>
-                    <Box sx={{ display: "flex" }}>
-                      <Typography
-                        variant="body2"
-                        sx={{ flex: 1, alignSelf: "center" }}
-                      >
-                        Are you a property consultant, let Customers reach you
-                      </Typography>
-                      <Chip
-                        label="Yes, show me here !"
-                        icon={<PersonAddIcon fontSize="small" />}
-                        size="small"
-                        sx={{ fontSize: "0.875rem" }}
-                        onClick={() => {}}
-                      />
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Grid>
             <OverallAssesmentSection
               overallAssessment={
                 propertyData[0]?.propertyData?.overallAssessment
               }
+              AllPropertyData={propertyData[0]?.propertyData}
               open={openEnquiryForm}
               handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}

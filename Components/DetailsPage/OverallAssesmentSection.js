@@ -5,14 +5,11 @@ import {
   Typography,
   Box,
   Divider,
-  Rating,
   Chip,
 } from "@mui/material";
-import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EnquireNow from "./Modal/EnquireNow";
 import { useAuth } from "utills/AuthContext";
 
@@ -23,6 +20,7 @@ function OverallAssesmentSection({
   open,
   handleClose,
   handleAction,
+  AllPropertyData,
 }) {
   const { userDetails } = useAuth();
   const router = useRouter();
@@ -66,9 +64,11 @@ function OverallAssesmentSection({
         <Divider />
 
         <Box sx={{ p: 2, textAlign: "center" }}>
-          <Typography variant="body1">
-            Godrej Woods project has scored
-          </Typography>
+          {AllPropertyData?.overview?.projectName && (
+            <Typography variant="body1">
+              {AllPropertyData?.overview?.projectName} project has scored
+            </Typography>
+          )}
           <Box
             sx={{
               display: "flex",
@@ -85,23 +85,15 @@ function OverallAssesmentSection({
             Our authorized professional consultants help you decide whether to
             buy as Investor / End user. Contact us now
           </Typography>
-          {userDetails?.role !== "admin" && userDetails?.role !== "broker" && (
-            <a href={`https://wa.me/+919725555595`}>
+          {userDetails?.role !== "admin" &&
+            userDetails?.role !== "superAdmin" && (
               <Chip
-                icon={<WhatsAppIcon />}
-                label="Contact us on Whatsapp"
+                icon={<AssignmentIcon />}
+                label="Enquire now"
                 size="small"
-                sx={{ mr: 2 }}
-                // onClick={() => {}}
+                onClick={handleOpenEnquiryForm}
               />
-            </a>
-          )}
-          {userDetails?.role !== "admin" && (<Chip
-            icon={<AssignmentIcon />}
-            label="Enquire now"
-            size="small"
-            onClick={handleOpenEnquiryForm}
-          />)}
+            )}
         </Box>
         <EnquireNow
           open={open}

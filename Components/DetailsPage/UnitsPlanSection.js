@@ -77,7 +77,7 @@ function UnitsPlanSection(props) {
                 sm={3}
                 boxStyles={{ backgroundColor: "none" }}
               >
-                <Typography variant="subtitle1">{unit?.propertyLayout}</Typography>
+                <Typography variant="subtitle1">{unit?.propertyLayout ? unit?.propertyLayout : `${unit?.width}*${unit?.length}`}</Typography>
                 <Typography variant="h5">{unit?.areaValue} {unit?.areaUnit}</Typography>
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
                   {unit?.bsp}

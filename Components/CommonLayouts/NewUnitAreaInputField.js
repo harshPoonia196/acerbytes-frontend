@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import colors from "styles/theme/colors";
+import InfoIcon from '@mui/icons-material/Info';
 
 const unit = [
   {
@@ -35,6 +36,9 @@ const NewUnitAreaInputField = ({
   isPrice,
   unitValue,
   units,
+  showInfo = false,
+  infoText = "Info",
+  helperText = "",
   ...props
 }) => {
 
@@ -42,19 +46,22 @@ const NewUnitAreaInputField = ({
 
   return (
     <Grid item xs={12} sm={6}>
-      <Box>
+      <Box sx={{ display: 'flex' }}>
         <Typography
           variant="subtitle2"
           sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
         >
           {label}
         </Typography>
+        {showInfo && <span><Tooltip title={infoText}>
+          <InfoIcon sx={{ fontSize: '1rem', cursor: "pointer", ml: 1, color: colors.GRAY }} />
+        </Tooltip></span>}
       </Box>
       {
         isEdit ?
           <TextField
             name={name}
-            onChange={(e)=>handleChange(e,"textField")}
+            onChange={(e) => handleChange(e, "textField")}
             variant={variant ? variant : "standard"}
             fullWidth
             type={type}
@@ -65,9 +72,9 @@ const NewUnitAreaInputField = ({
                 <InputAdornment position="start">
                   <TextField
                     select
-                    onChange={(e)=>handleChange(e,"unit")}
+                    onChange={(e) => handleChange(e, "unit")}
                     defaultValue="Acres"
-                    value={unitValue||''}
+                    value={unitValue || ''}
                     variant="standard"
                     InputProps={{
                       disableUnderline: true,
@@ -89,7 +96,7 @@ const NewUnitAreaInputField = ({
             {...props}
           /> : <Typography variant="subtitle1">Value</Typography>
       }
-    </Grid>
+    </Grid >
   );
 }
 

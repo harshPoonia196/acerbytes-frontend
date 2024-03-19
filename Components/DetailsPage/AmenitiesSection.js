@@ -47,14 +47,10 @@ function AmenitiesSection(props) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    {Object.entries(amenitiesData).map(([category, amenities]) => {
+                    {Object.entries(amenitiesData ?? {}).map(([category, amenities]) => {
                         return (
                             <React.Fragment key={category}>
-                                <Grid item xs={12}>
-                                    <Typography variant="h6">{category}</Typography>
-                                </Grid>
-
-                                {Object.entries(amenities).map(([amenityName, amenityDetails]) => {
+                                {Object.entries(amenities ?? {}).map(([amenityName, amenityDetails]) => {
                                     if (amenityDetails?.isApplicable) {
                                         return (
                                             <NewKeyValuePairStructure

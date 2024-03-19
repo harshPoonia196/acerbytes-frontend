@@ -93,7 +93,7 @@ const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams();
   const url = new URL(window.location.href);
   const name = searchParams.get("name");
-  const { isLogged, userDetails } = useAuth();
+  const { isLogged, userDetails, brokerBalance } = useAuth();
   const router = useRouter();
 
   // Split the id string into an array of parts based on the hyphen delimiter
@@ -102,7 +102,15 @@ const PropertyDetailsPage = ({ params }) => {
   const detailsPropertyId = paramsId;
 
   const [isLoading, setLoading] = useState(false);
-  const [propertyData, setPropertyData] = useState([]);
+  const [propertyData, setPropertyData] = useState({});
+
+  const shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
   const detailsGetProperty = async () => {
     try {
@@ -111,8 +119,8 @@ const PropertyDetailsPage = ({ params }) => {
         `${detailsPropertyId}${userDetails._id ? `?brokerId=${userDetails._id}` : ""}`
       );
       if (res.status === 200) {
-        shuffle(res.data?.data?.consultants)
-        setPropertyData(res.data?.data);
+        const data = {...res.data?.data, consultants: shuffle(res.data?.data?.consultants)}
+        setPropertyData({...data});
       }
     } catch (error) {
       showToaterMessages(
@@ -154,7 +162,7 @@ const PropertyDetailsPage = ({ params }) => {
 
   useEffect(() => {
     detailsGetProperty();
-  }, []);
+  }, [userDetails._id]);
 
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
@@ -267,9 +275,11 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
+  const [propertyUrl, setPropertyUrl] = useState('');
 
-  const handleOpenActivateAdsPopup = () => {
+  const handleOpenActivateAdsPopup = (ActiveUrl) => {
     setActivateAdsPopupState(true);
+    setPropertyUrl(ActiveUrl)
   };
 
   const handleCloseActivateAdsPopup = () => {
@@ -394,14 +404,7 @@ const PropertyDetailsPage = ({ params }) => {
     }
   }, []);
 
-  const shuffle = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
+ 
   return (
     <>
       {isLoading && <Loader />}
@@ -410,6 +413,8 @@ const PropertyDetailsPage = ({ params }) => {
         detailsGetProperty={detailsGetProperty}
         open={activateAdsPopupState}
         handleClose={handleCloseActivateAdsPopup}
+        brokerBalance={brokerBalance}
+        propertyUrl={propertyUrl}
       />
       <DisableActivateAdsPopup
         open={disablePersonalizeAds}
@@ -425,14 +430,13 @@ const PropertyDetailsPage = ({ params }) => {
           propertyData={propertyData}
         />
       ) : null}
-
       {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && propertyData.isActiveAd ? (
         <AdsSection
           SinglePropertyId={propertyData?.propertyBroker[0]}
           propertyData={propertyData}
           id={propertyData?.propertyBroker?.[0]?._id}
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
-          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} 
         />
       ) : null}
 
@@ -514,13 +518,17 @@ const PropertyDetailsPage = ({ params }) => {
                       >
                         Are you a property consultant, let Customers reach you
                       </Typography>
-                      <Chip
-                        label="Yes, show me here !"
-                        icon={<PersonAddIcon fontSize="small" />}
-                        size="small"
-                        sx={{ fontSize: "0.875rem" }}
-                        onClick={() => { }}
-                      />
+                      {userDetails?.role === "broker" && (
+                        <a href={`https://wa.me/+919818690582`}>
+                          <Chip
+                            label="Yes, show me here !"
+                            icon={<PersonAddIcon fontSize="small" />}
+                            size="small"
+                            sx={{ fontSize: "0.875rem" }}
+                            onClick={() => { }}
+                          />
+                        </a>
+                      )}
                     </Box>
                   </Grid>
                 </Grid>
@@ -528,6 +536,7 @@ const PropertyDetailsPage = ({ params }) => {
             </Grid>
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
+              AllPropertyData={propertyData}
               handleOpenEnquiryForm={handleOpenEnquiryForm}
               open={openEnquiryForm}
               handleClose={handleCloseEnquiryForm}
