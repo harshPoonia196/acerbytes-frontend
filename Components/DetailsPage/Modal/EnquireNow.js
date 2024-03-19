@@ -25,18 +25,26 @@ import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputF
 import { enquiryFormKey, propertyRedirectKey } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
-function EnquireNow({ open, handleClose, handleAction, submitEnquiry }) {
+function EnquireNow(props) {
+  const { open, handleClose, handleAction, submitEnquiry } = props
   const router = useRouter();
 
   const token = isLoggedIn();
 
   const param = useParams();
+  
+  const  paramData = (paramValue) =>{
+    if (paramValue) {
+      const parts = paramValue.split("-");
+      if (parts.length > 0) {
+        return parts[parts.length - 1];
+      }
+    }
+    return ""; // Default value if not found
+  }
 
   const initialState = {
-    adId:
-      param?.projectdetails?.split("-")?.[
-        param?.projectdetails?.split("-")?.length - 1
-      ] || "",
+    adId: paramData(param?.projectdetails) || paramData(param?.id),
     firstName: "",
     lastName: "",
     countryCode: "91",

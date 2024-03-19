@@ -24,7 +24,6 @@ import React, {
 } from "react";
 import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { visuallyHidden } from "@mui/utils";
 import { formattedCreatedAt, getComparator, stableSort } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
@@ -101,6 +100,14 @@ function EnhancedTableHead(props) {
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
+              sx={{
+                '&:hover .MuiTableSortLabel-icon': {
+                  opacity: 0,
+                },
+                '&.Mui-active .MuiTableSortLabel-icon': {
+                  opacity: 0,
+                },
+              }}
             >
               {headCell.label}
               {orderBy === headCell.id ? (

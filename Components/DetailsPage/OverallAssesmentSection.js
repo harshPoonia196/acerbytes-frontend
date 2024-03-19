@@ -18,6 +18,7 @@ function OverallAssesmentSection({
   overallAssessment,
   handleOpenEnquiryForm,
   open,
+  handleSubmitEnquiry,
   handleClose,
   handleAction,
   AllPropertyData,
@@ -86,7 +87,7 @@ function OverallAssesmentSection({
             buy as Investor / End user. Contact us now
           </Typography>
           {userDetails?.role !== "admin" &&
-            userDetails?.role !== "superAdmin" && (
+            userDetails?.role !== "superAdmin" && userDetails?.role !== "broker" && (
               <Chip
                 icon={<AssignmentIcon />}
                 label="Enquire now"
@@ -95,11 +96,12 @@ function OverallAssesmentSection({
               />
             )}
         </Box>
-        <EnquireNow
+        {open && <EnquireNow
           open={open}
           handleClose={handleClose}
           handleAction={handleAction}
-        />
+          submitEnquiry={handleSubmitEnquiry}
+        />}
         <Divider />
         <Box sx={{ p: 1, display: "flex" }}>
           <Chip label="Disclaimer" size="small" />
