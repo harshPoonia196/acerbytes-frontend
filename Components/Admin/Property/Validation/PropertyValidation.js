@@ -45,7 +45,7 @@ export const unitsPlanSchemaWithLayout = Joi.object({
   totalPrice:Joi.number().allow(null,""),
   applicableMonth: Joi.string().required(),
   width:Joi.number().optional().allow(null,""),
-length:Joi.number().optional().allow(null,""),
+  length:Joi.number().optional().allow(null,""),
   applicableYear: Joi.string().required(),
 });
 export const unitsPlanSchemaWithoutLayout = Joi.object({
@@ -58,8 +58,8 @@ export const unitsPlanSchemaWithoutLayout = Joi.object({
   area: Joi.number().required(),
   bsp: Joi.number().required(),
   totalPrice:Joi.number().allow(null,""),
-width:Joi.number().required(),
-length:Joi.number().required(),
+  width:Joi.number().required(),
+  length:Joi.number().required(),
   applicableMonth: Joi.string().required(),
   applicableYear: Joi.string().required(),
 });
@@ -290,6 +290,7 @@ export const Schema = Joi.object({
     averagePrice: Joi.number().allow(null,""),
     minPriceRange: Joi.number().allow(null,""),
     maxPriceRange: Joi.number().allow(null,""),
+    totalAreaSqft:Joi.number().allow(null,""),
     uniqueLayouts: Joi.array().items(Joi.string()),
     planList: Joi.array()
       .items(
@@ -303,7 +304,7 @@ export const Schema = Joi.object({
           length:Joi.number().optional().allow(""),
           totalPrice:Joi.number().allow(null,""),
           totalUnits: Joi.number().optional().allow(""),
-          area: Joi.number().optional().allow(""),
+          area: Joi.number().required(),
           bsp: Joi.number().optional().allow(""),
           applicableMonth: Joi.string().optional().allow(""),
           applicableYear: Joi.string().optional().allow(""),

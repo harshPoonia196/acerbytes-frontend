@@ -186,7 +186,7 @@ const UploadMarketingImage = ({
                     variant="contained"
                     size='small'
                 >
-                    Uploads
+                    Upload
                 </LoadingButton>
             </DialogActions>
         </Dialog >

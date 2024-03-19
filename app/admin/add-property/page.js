@@ -181,7 +181,7 @@ function AddProperty() {
       if (res.status === 200) {
         let data = removeIds(res.data?.data);
         delete data.__v;
-        handleUIHide(data.overview.projectType)
+        handleUIHide(data.overview.projectType,"overview","projectType")
         setEditForm(true);    
         setForm({ ...data });
       }
@@ -395,6 +395,7 @@ setCities(res.data.data[0])
       minPriceRange: 0,
       maxPriceRange: 0,
       uniqueLayouts: [],
+      totalAreaSqft:0,
       totalPrice:0,
       planList: [
         // {
@@ -712,7 +713,6 @@ const [hide,setHide]=useState([])
   }
 
 const handleUIHide=(e,firstKeyName,secondKeyName)=>{
-
 if(form?.[firstKeyName][secondKeyName].some(item => item.value.toLowerCase() !== 'land')){
  setHide([]) 
 }
@@ -1000,20 +1000,6 @@ setForm({
       let total = totalRating + 5
       setTotalRating(total)
     }
-// if(firstKeyName==="overview" && secondKeyName==="projectCategory"){
-//           handleCategoryHide(e)
-// }
-    // const { error } = Schema.validate(form, { abortEarly: false });
-    // if (error) {
-    //   // console.log("🚀 ~ validateForm ~ error:", error.details)
-    //   const validationErrors = {};
-    //   error.details.forEach((detail) => {
-    //     validationErrors[detail?.context?.label] = detail?.message;
-    //   });
-    //   // Handle validation errors, e.g., display error messages
-    //   setErrors(validationErrors);
-    //   return false;
-    // }
   };
 
   let amentieScoreCalc=(e,firstKeyName,secondKeyName,autoFillField)=>{
@@ -1095,7 +1081,22 @@ setForm({
         } else {
           label = item.context.key;
         }
-
+switch (label.toLowerCase()) {
+  case "constructionquality":
+    label = "Construction Quality";
+    break;
+  case "interiorquality":
+    label = "Interior Quality";
+    break;
+  case "apptillnow":
+    label = "App Till Now";
+    break;
+  case "forenduse":
+    label = "For End Use";
+    break;
+    default:
+      label ;
+}
         openSnackbar(`Ratings needs to be provided for ${label}`, "error");
       }
     });
@@ -1143,7 +1144,8 @@ setForm({
             openSnackbar(`Please check the rera criteria`, "error");
           }
         }
-        CreateProperty({ ...form })
+        else{
+          CreateProperty({ ...form })
           .then((res) => {
             openSnackbar(`Property added successfully`, "success");
             routerNavigation.push(`/admin/property-list`);
@@ -1151,6 +1153,8 @@ setForm({
           .catch((error) => {
             console.error('Error:', error);
           });
+        }
+       
 
       } else {
 
