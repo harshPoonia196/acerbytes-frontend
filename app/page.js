@@ -121,8 +121,8 @@ export default function Home() {
           </Box>
         </Box>
         <Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sx={{ textAlign: "center" }}>
+          <Grid container spacing={2} sx={{ justifyContent: "center" }}>
+            <Grid item xs={12} sx={{ textAlign: "center", justifyContent: "center" }}>
               <Typography
                 variant="h5"
                 sx={{ textTransform: "uppercase", color: colors.BLUE }}
