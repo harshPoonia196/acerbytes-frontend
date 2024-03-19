@@ -713,8 +713,17 @@ const [hide,setHide]=useState([])
   }
 
 const handleUIHide=(e,firstKeyName,secondKeyName)=>{
-if(form?.[firstKeyName][secondKeyName].some(item => item.value.toLowerCase() !== 'land')){
+if(form?.[firstKeyName][secondKeyName].some(item => item.value.toLowerCase() !== 'land' && form?.[firstKeyName].projectCategory.toLowerCase()!=="commercial")){
  setHide([]) 
+}
+else if(form?.[firstKeyName].projectCategory.toLowerCase()==="commercial"){
+  setHide([ 
+    "numberOfBuildings",
+   "layoutType",
+  "floors",
+  "greenArea", 
+  "greenDensity",
+  ]) 
 }
 else{
   let lastValue = e[e.length - 1]?.value.toLowerCase()
@@ -738,6 +747,15 @@ else{
       "greenDensity",
       ]) 
       break;
+      case "foodcourt":
+        setHide([ 
+          "numberOfBuildings",
+         "layoutType",
+        "floors",
+        "greenArea", 
+        "greenDensity",
+        ]) 
+        break;
     case "land":
       setHide([ 
         "numberOfBuildings",
