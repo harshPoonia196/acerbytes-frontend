@@ -58,3 +58,7 @@ export const getLocations = ()=>{
 export const propertyByCity = ()=>{
   return axiosInstance.get(`/category/propertyByCity`)
 }
+
+export const managePublishData = (propertyId, publishStatus) => {
+  return axiosInstance.put(`/property/managePublish/${propertyId}/${publishStatus}`);
+};

@@ -29,7 +29,7 @@ import { formattedCreatedAt, getComparator, stableSort } from "utills/CommonFunc
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
-import { getAllProperty, deleteProperty } from "api/Property.api";
+import { getAllProperty, deleteProperty, managePublishData } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
@@ -124,7 +124,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, router, handleDelete }) {
+function RowStructure({ row, router, handleDelete, managePublishActive }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEdit = (id) => {
     router.push(`/admin/add-property?id=${id}`);
@@ -178,16 +178,9 @@ function RowStructure({ row, router, handleDelete }) {
       </TableCell>
       <TableCell>
         <Chip
-          label={row.status}
+          label={row.published ? "Publish" : "Draft"}
           size="small"
-          onClick={() => { }}
-          color={
-            row.status === "Active"
-              ? "success"
-              : row.status === "Expired"
-                ? "error"
-                : "warning"
-          }
+          color={row.published ? "success" : "error"}
         />
       </TableCell>
       <TableCell sx={{ py: 0 }}>
@@ -203,8 +196,14 @@ function RowStructure({ row, router, handleDelete }) {
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-          <MenuItem onClick={handleClose}>Publish</MenuItem>
+          <MenuItem
+            onClick={() => {
+              managePublishActive(row.id, !row.published);
+              handleClose();
+            }}
+          >
+            {row.published ? "Draft" : "Publish"}
+          </MenuItem>
         </Menu>
       </TableCell>
     </TableRow>
@@ -234,7 +233,8 @@ const PropertyListTable = ({ searchText, setCount }) => {
       area: item.location?.area,
       sector: item.location?.sector,
       status: item.overview?.status,
-      modifiedData: item?.modifiedAt
+      modifiedData: item?.modifiedAt,
+      published: item?.published
     }));
   };
 
@@ -311,6 +311,27 @@ const PropertyListTable = ({ searchText, setCount }) => {
     }
   };
 
+
+  const managePublishActive = async (propertyId, publishStatus) => {
+      try {
+        setLoading(true);
+        let response = await managePublishData(propertyId, publishStatus);
+        if (response.status === 200) {
+          getAllPropertyList()
+        }
+      } catch (error) {
+        showToaterMessages(
+          error?.response?.data?.message ||
+          error?.message ||
+          "Error deleting property",
+          "error"
+        );
+      } finally {
+        setLoading(false);
+      }
+     
+  };
+
   useEffect(() => {
     const pageOptions = {
       pageLimit,
@@ -384,6 +405,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
                     row={row}
                     router={router}
                     handleDelete={handleDelete}
+                    managePublishActive={managePublishActive}
                   />
                 ))}
               </TableBody>
