@@ -261,7 +261,7 @@ function FloorPlanCard({
         propertyLayout: "",
         name: "",
         area: "",
-        areaUnit: "",
+        areaUnit: "Sqft",
         priceUnit:"",
         width:"",
         length:"",
@@ -330,7 +330,7 @@ else if(fieldName==='width'){
         totalUnits: "",
         totalPrice:'',
         priceUnit:"",
-        areaUnit: "",
+        areaUnit: "Sqft",
         bsp: "",
         applicableYear: "",
         applicableMonth: "",
@@ -768,7 +768,7 @@ else if(fieldName==='width'){
                   "-"
                 )}
                   {row.totalPrice ? (
-                  <TableCell align="center">{row.totalPrice}</TableCell>
+                  <TableCell align="center">{formatNumberWithCommas(row.totalPrice)}</TableCell>
                 ) : (
                   "-"
                 )}
