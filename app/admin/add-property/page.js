@@ -89,7 +89,7 @@ function AddProperty() {
   const [isLoading, setLoading] = useState(false);
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
-
+ 
   let itemsServer = listOfTabsInAddProperty.map((tab) => {
     const hash = tab.value;
     return {
@@ -175,6 +175,37 @@ function AddProperty() {
     return obj;
   }
 
+
+  const countLocationAssessmentItems = (data) => {
+    const items = [];
+  
+    Object.entries(data.location.assessment).forEach(([name, item]) => {
+      if (item.rating > 0 && item.isApplicable) {
+        items.push({ name, rating: item.rating });
+      }
+    });
+  
+    return items;
+  };
+  
+  // Function to count items with ratings > 0 and isApplicable true in amenities data
+  const countAmenitiesDataItems = (data) => {
+    const items = [];
+  
+    Object.values(data.amenitiesData).forEach(section => {
+      Object.entries(section).forEach(([name, item]) => {
+        if (item.rating > 0 && item.isApplicable) {
+          items.push({ name, rating: item.rating });
+        }
+      });
+    });
+  
+    return items;
+  };
+
+ 
+
+
   let getProp = async () => {
     try {
       let res = await detailsProperty(detailsPropertyId);
@@ -183,6 +214,28 @@ function AddProperty() {
         delete data.__v;
         handleUIHide(data.overview.projectType,"overview","projectType")
         setEditForm(true);    
+
+
+        
+       let countLocationItems = countLocationAssessmentItems(data)
+       let AmentiesCount =countAmenitiesDataItems(data)
+       let updateTotalCount=0
+        if(AmentiesCount.length > 0){
+         let count =  AmentiesCount.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
+         let names = AmentiesCount.map(item => item.name)
+         updateTotalCount+=(AmentiesCount.length*5)
+          // setTotalRating(totalRating+count)
+          setAmentiesStarScore([...amentiesStarsScore,...names])
+        }
+if(countLocationItems.length>0){
+  let count =  countLocationItems.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
+  let names = countLocationItems.map(item => item.name)
+
+  //  setTotalRating(totalRating+count)
+  updateTotalCount+=(countLocationItems.length*5)
+   setLocationStarsScore([...locationStarsScore,...names])
+}
+setTotalRating(totalRating+updateTotalCount)
         setForm({ ...data });
       }
     } 
@@ -324,6 +377,7 @@ setCities(res.data.data[0])
     if (detailsPropertyId) {
       getProp();
       setEditPage(true);
+
     }
     else{
       getAllOptionDataList()
@@ -543,7 +597,6 @@ const [hide,setHide]=useState([])
     }
 
     let calc = (totalScored / totalRating) * 100;
-
     setForm({
       ...form,
       [firstKeyName]: {
