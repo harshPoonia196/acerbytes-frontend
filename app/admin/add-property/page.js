@@ -1160,7 +1160,10 @@ switch (label.toLowerCase()) {
     label = "Interior Quality";
     break;
   case "apptillnow":
-    label = "App Till Now";
+    label = "Appreciation till now";
+    break;
+    case "expectedFurtherApp":
+    label = "Expected further appreciation";
     break;
   case "forenduse":
     label = "For End Use";
