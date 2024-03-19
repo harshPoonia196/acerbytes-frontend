@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import moment from "moment";
 
 function capitalLizeName(text) {
@@ -111,6 +112,10 @@ const formatDate = (dateString) => {
   return moment(dateString).format("Do MMMM, YYYY");
 };
 
+const formattedCreatedAt  = (dateString) => {
+  return format(new Date(dateString), "dd-MM-yyyy 'at' hh:mm aaa");
+};
+
 let formatDateAndDaysRemaining = (expiryDate) => {
   const expiry = new Date(expiryDate);
   const now = new Date();
@@ -218,6 +223,7 @@ export {
   formatNumberWithCommas,
   transformDocumentsLocation,
   formatDateAndDaysRemaining,
+  formattedCreatedAt,
   yearList,
   monthList
 };

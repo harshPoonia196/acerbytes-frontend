@@ -7,11 +7,16 @@ import PropertyListTable from "Components/Admin/PropertyList/PropertyListTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import { DEBOUNCE_TIMER } from "utills/Constants";
+import { useAuth } from "utills/AuthContext";
+import { capitalLizeName } from "utills/CommonFunction";
 
 function PropertyList() {
+  const { userDetails } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [count, setCount] = useState(0);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+
+  const name = userDetails?.name?.firstName && userDetails?.name?.lastName ? `${userDetails.name.firstName} ${userDetails.name.lastName}` : "";
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -31,9 +36,8 @@ function PropertyList() {
 
       <CustomAdminBreadScrumbs text='Property list' />
       <InfoBox
-        title="Anand Gupta(Admin)"
-        subtitle="3,344 property consultant links are currently active"
-
+        title={`${capitalLizeName(name)} (${capitalLizeName(userDetails?.role)})`}
+        subtitle={`${count && count} property consultant links are currently active`}
       />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>

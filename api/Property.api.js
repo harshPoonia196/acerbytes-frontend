@@ -55,3 +55,6 @@ export const getLocations = ()=>{
   return axiosInstance.get(`/category/get-locations`)
 }
 
+export const propertyByCity = ()=>{
+  return axiosInstance.get(`/category/propertyByCity`)
+}

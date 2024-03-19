@@ -26,7 +26,7 @@ import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { visuallyHidden } from "@mui/utils";
-import { getComparator, stableSort } from "utills/CommonFunction";
+import { formattedCreatedAt, getComparator, stableSort } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
@@ -167,7 +167,7 @@ function RowStructure({ row, router, handleDelete }) {
         </IconButton>
       </TableCell>
       <TableCell>
-        <Chip label={row.lastModified} size="small" />
+        <Chip label={formattedCreatedAt(row?.modifiedData)} size="small" />
       </TableCell>
       <TableCell>
         <Chip
@@ -227,6 +227,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
       area: item.location?.area,
       sector: item.location?.sector,
       status: item.overview?.status,
+      modifiedData: item?.modifiedAt
     }));
   };
 

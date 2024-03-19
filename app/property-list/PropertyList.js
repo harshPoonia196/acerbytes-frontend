@@ -51,7 +51,7 @@ function PropertyList({ params }) {
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
-  const [selectedOptions, setSelectedOptions] = useState(params?.location ? { city: params.location } : {});
+  const [selectedOptions, setSelectedOptions] = useState( decodeURIComponent(params.location) ? { city: decodeURIComponent(params.location) } : {});
   const [propertyvalue, setPropertyvalue] = useState("");
   const [selectOption, setSelectOption] = useState({});
   const [isDisablePropertyType, setIsDisablePropertyType] = useState(true);
@@ -60,7 +60,7 @@ function PropertyList({ params }) {
   const [cities, setCities] = useState([]);
   const [layoutTypeApplicable, setLayoutTypeApplicable] = useState([]);
   const [locationDisable, setLocationDisable] = useState(true);
-  const [selectedCity, setSelectedCity] = useState(params?.location ? [params.location] : []);
+  const [selectedCity, setSelectedCity] = useState( decodeURIComponent(params.location) ? [ decodeURIComponent(params.location)] : []);
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
@@ -317,7 +317,7 @@ function PropertyList({ params }) {
         {isLoading && <Loader />}
         <Container maxWidth="lg">
           <Card sx={{ mb: 2 }}>
-            {params?.location ? (
+            { decodeURIComponent(params.location) ? (
               <Grid
                 container
                 sx={{ display: "flex", flexDirection: "row-reverse" }}
@@ -342,7 +342,7 @@ function PropertyList({ params }) {
                       boxShadow: "none",
                     }}
                   >
-                    <Typography variant="h2">{params?.location}</Typography>
+                    <Typography variant="h2">{decodeURIComponent(params.location)}</Typography>
                     <Typography variant="caption">
                       Noida's strategic location, robust infrastructure, and
                       flourishing business environment have contributed to its

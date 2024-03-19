@@ -21,6 +21,7 @@ const NewInputFieldStructure = ({
   isFull,
   maxlength,
   defaultValue,
+  isMultiline = false,
   ...props
 }) => {
   const changeHandler = (event) => {
@@ -82,6 +83,7 @@ const NewInputFieldStructure = ({
             size="small"
             defaultValue={defaultValue}
             sx={sx}
+            multiline={isMultiline}
             error={error && error}
             {...props}
           />
@@ -97,6 +99,7 @@ const NewInputFieldStructure = ({
             variant={variant ? variant : "standard"}
             fullWidth
             size="small"
+            multiline={isMultiline}
             defaultValue={defaultValue}
             sx={sx}
             {...props}

@@ -13,12 +13,36 @@ import colors from "styles/theme/colors";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import Footer from "Components/Footer";
 import { listOfPages } from "Components/NavBar/Links";
-import React from "react";
+import React, { useState } from "react";
 import { clearItem, getItem } from "utills/utills";
 import { propertyRedirectKey } from "utills/Constants";
+import { propertyByCity } from "api/Property.api";
+import Loader from "Components/CommonLayouts/Loading";
 
 export default function Home() {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [cityRoute, setCityRoute] = useState([]);
+
+  const getAllPropertyByCity = async () => {
+    try {
+      setLoading(true);
+      let res = await propertyByCity();
+      if (res.status === 200) {
+        setCityRoute(res?.data?.data);
+      } else {
+        console.log("err");
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list", "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   React.useEffect(() => {
     let isRedirect = getItem(propertyRedirectKey);
@@ -26,10 +50,12 @@ export default function Home() {
       clearItem(propertyRedirectKey);
       router.push(isRedirect);
     }
+    getAllPropertyByCity()
   }, []);
 
   return (
     <>
+     {isLoading && <Loader />}
       <Container maxWidth="lg">
         <Box
           sx={{
@@ -104,58 +130,22 @@ export default function Home() {
                 data research for selective properties in
               </Typography>
             </Grid>
-            <Grid item xs={6} sm={4} md={3}>
-              <Card>
-                <CardActionArea
-                  sx={{ p: 2, textAlign: "center" }}
-                  onClick={() => {
-                    router.push(listOfPages.commonPropertyList + "/Noida");
-                  }}
-                >
-                  <Typography variant="h3">Noida</Typography>
-                  <Typography variant="h6">2 Properties</Typography>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item xs={6} sm={4} md={3}>
-              <Card>
-                <CardActionArea
-                  sx={{ p: 2, textAlign: "center" }}
-                  onClick={() => {
-                    router.push(listOfPages.commonPropertyList + "/Gurgaon");
-                  }}
-                >
-                  <Typography variant="h3">Gurgaon</Typography>
-                  <Typography variant="h6">2 Properties</Typography>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item xs={6} sm={4} md={3}>
-              <Card>
-                <CardActionArea
-                  sx={{ p: 2, textAlign: "center" }}
-                  onClick={() => {
-                    router.push(listOfPages.commonPropertyList + "/Mumbai");
-                  }}
-                >
-                  <Typography variant="h3">Mumbai</Typography>
-                  <Typography variant="h6">2 Properties</Typography>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item xs={6} sm={4} md={3}>
-              <Card>
-                <CardActionArea
-                  sx={{ p: 2, textAlign: "center" }}
-                  onClick={() => {
-                    router.push(listOfPages.commonPropertyList + "/Pune");
-                  }}
-                >
-                  <Typography variant="h3">Pune</Typography>
-                  <Typography variant="h6">2 Properties</Typography>
-                </CardActionArea>
-              </Card>
-            </Grid>
+            {cityRoute?.map((city) => (
+              <Grid item xs={6} sm={4} md={3} key={city?.city}>
+                <Card>
+                  <CardActionArea
+                    sx={{ p: 2, textAlign: "center" }}
+                    onClick={() => {
+                      const cityPath = city?.city.replace(/\s+/g, ''); 
+                      router.push(listOfPages.commonPropertyList + `/${city?.city}`);
+                    }}
+                  >
+                    <Typography variant="h3">{city?.city}</Typography>
+                    <Typography variant="h6">{city?.propertyCount} Properties</Typography>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))} 
           </Grid>
         </Box>
       </Container>

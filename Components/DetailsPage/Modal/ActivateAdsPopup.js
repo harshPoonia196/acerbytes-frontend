@@ -160,7 +160,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       </DialogTitle>
       <DialogContent sx={{ minWidth: 300, }}>
         <Grid container spacing={2}>
-          <NewInputFieldStructure label={'Your personalized link to share'} isEdit={true} value={propertyUrl ? propertyUrl : ""}
+          <NewInputFieldStructure isFull  isMultiline={true} label={'Your personalized link to share'} isEdit={true} value={propertyUrl ? propertyUrl : ""}
           />
           <NewInputFieldStructure label='Title (10 words)' isFull
             name="title"

@@ -43,6 +43,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
     const sector = locationData?.sector ? locationData.sector : "Sector"
     const pinCode = locationData?.pinCode ? locationData.pinCode : "132"
     const state = locationData?.state ? locationData.state : "Noida"
+    const projectName = propertyData?.overview?.projectName ? propertyData?.overview?.projectName : ""
 
     const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
         ? `${brokerData.phone.countryCode} ${brokerData.phone.number}`
@@ -120,7 +121,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                                     />
                                 }
                             />
-                            ) for {city} &#183; {sector} &#183; {pinCode} &#183; {state}
+                            ) for {projectName} &#183; {city} &#183; {sector} &#183; {pinCode} &#183; {state}
                         </Typography>
                     </Box>
                     <Box sx={{ alignSelf: { xs: "end", sm: 'center' } }}>
