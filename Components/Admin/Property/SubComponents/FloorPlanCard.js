@@ -581,7 +581,7 @@ else if(fieldName==='width'){
             />
 
 
-<NewInputFieldStructure
+             <NewInputFieldStructure
               label="Total Units"
               variant="outlined"
               isEdit={isEdit}
@@ -763,7 +763,7 @@ else if(fieldName==='width'){
                   "-"
                 )}
                 {row.bsp ? (
-                  <TableCell align="left">{row.bsp}</TableCell>
+                  <TableCell align="left">{formatNumberWithCommas(row.bsp)}</TableCell>
                 ) : (
                   "-"
                 )}
