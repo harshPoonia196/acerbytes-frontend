@@ -14,7 +14,7 @@ import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
 import BankCard from "Components/Admin/Property/SubComponents/BankCard";
-import { getAllOptions, getAllProperty,getCities } from "api/Property.api";
+import { getAllOptions ,getCities } from "api/Property.api";
 
 import {
   Schema,

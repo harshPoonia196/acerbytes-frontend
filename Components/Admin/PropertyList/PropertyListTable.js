@@ -212,6 +212,7 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
 
 const PropertyListTable = ({ searchText, setCount }) => {
   const router = useRouter();
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -247,7 +248,6 @@ const PropertyListTable = ({ searchText, setCount }) => {
 
     return queryString;
   };
-
   const getAllPropertyList = async (pageOptions, searchText) => {
     try {
       setLoading(true);
@@ -255,7 +255,9 @@ const PropertyListTable = ({ searchText, setCount }) => {
         ...pageOptions,
         ...(searchText ? { search: searchText } : {}),
       };
-
+      if (userDetails?.role) {
+        querParams.role = userDetails?.role
+      }
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         let transformedData = transformData(res.data?.data || []);

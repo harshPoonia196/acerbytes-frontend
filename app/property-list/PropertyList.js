@@ -98,6 +98,7 @@ function PropertyList({ params }) {
         ...(data ? { searchParams: JSON.stringify(data) } : {}),
         sortBy: alignment,
         key: propertyvalue,
+        role: userDetails?.role ? userDetails?.role : " "
       };
       if (userDetails?._id) {
         querParams.brokerId = userDetails?._id
