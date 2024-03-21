@@ -128,7 +128,13 @@ function Login() {
             setLoading(false);
             openSnackbar("You are blocked", "warning");
             return;
-          } else {
+          } else if (!userDetails?.isApproved) {
+            setLoading(false);
+            openSnackbar("Please try after some time approval is pending", "warning");
+            return;
+          } 
+          
+          else {
             login(userDetails, token);
             router.push("/");
             return;
@@ -243,7 +249,10 @@ function Login() {
         if (userDetails?.isBlocked) {
           openSnackbar("You are blocked", "warning");
           return;
-        } else {
+        }else if (!userDetails?.isApproved){
+          openSnackbar("Please try after some time approval is pending", "warning");
+          return;
+        }else {
           login(userDetails, token);
           router.push("/");
         }
