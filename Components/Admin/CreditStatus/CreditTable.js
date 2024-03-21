@@ -48,6 +48,7 @@ import { debounce } from "lodash";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { ORDER_STATUS, ToasterMessages } from "utills/Constants";
+import { countryCodeFormating } from "utills/utills";
 
 const headCells = [
   {
@@ -153,7 +154,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           {row?.brokerDetails?.name?.lastName}
         </TableCell>
         <TableCell>
-          {row?.brokerDetails?.phone?.countryCode}{" "}
+          {countryCodeFormating(row?.brokerDetails?.phone?.countryCode)}{" "}
           {row?.brokerDetails?.phone?.number}
         </TableCell>
         <TableCell>{formatDate(row.createdAt)}</TableCell>
@@ -236,14 +237,14 @@ function CreditTable() {
     };
   }, [userDetails && Object.keys(userDetails).length, searchTerm, initialMount]);
 
-  const getCreditPointList = async (queryParams, searchTerm) => {
+  const getCreditPointList = async (queryParams, searchTerms = searchTerm) => {
     try {
       setLoading(true);
       const response = await getCreditPointStatusList(
         objectToQueryString({
           ...queryParams,
-          firstName: searchTerm,
-          lastName: searchTerm,
+          firstName: searchTerms,
+          lastName: searchTerms,
         })
       );
       if (response.status == 200) {

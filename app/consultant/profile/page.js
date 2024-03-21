@@ -438,51 +438,34 @@ function ConsultantProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    let error = { ...errorInvalid }, isError = false;
     if (
       brokerProfileInfo?.alternateEmail &&
       !validateEmail(brokerProfileInfo?.alternateEmail)
     ) {
-      setErrorInvalid({
-        ...errorInvalid,
-        alternateEmail: true,
-      });
-      return;
+      error['alternateEmail'] = true;
     } else {
-      setErrorInvalid({
-        ...errorInvalid,
-        alternateEmail: false,
-      });
+      error['alternateEmail'] = false;
     }
 
     if (
       brokerProfileInfo?.serviceDetails?.companyEmail &&
       !validateEmail(brokerProfileInfo?.serviceDetails?.companyEmail)
     ) {
-      setErrorInvalid({
-        ...errorInvalid,
-        companyEmail: true,
-      });
-      return;
+      error['companyEmail'] = true;
     } else {
-      setErrorInvalid({
-        ...errorInvalid,
-        companyEmail: false,
-      });
+      error['companyEmail'] = false;
     }
 
     if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
-      setErrorInvalid({
-        ...errorInvalid,
-        reraNumber: true,
-      });
-      return;
+      error['reraNumber'] = true;
     } else {
-      setErrorInvalid({
-        ...errorInvalid,
-        reraNumber: false,
-      });
+      error['reraNumber'] = false;
     }
+
+    setErrorInvalid({
+      ...error,
+    });
 
     const requestBody = {
       name: brokerProfileInfo?.name,
@@ -776,7 +759,7 @@ function ConsultantProfile() {
                     handleChange={(e) => handleChange(e, "alternateEmail")}
                     isEdit={isEdit}
                     error={
-                      errorInvalid.alternateEmail && errorInvalid.alternateEmail
+                      errorInvalid.alternateEmail || false
                     }
                   />
                   <NewToggleButtonStructure

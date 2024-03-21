@@ -28,7 +28,7 @@ function ManageUser() {
 
       <InfoBox
         title={Object.keys(userDetails).length > 0 ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}(${userDetails?.role})` : ""}
-        subtitle={Object.keys(dashboardInfo).length > 0 ? `Admins: ${dashboardInfo.noOfAdmin}, Brokers: ${dashboardInfo.noOfBroker}, Users: ${dashboardInfo.noOfUsers}` : ''}
+        subtitle={Object.keys(dashboardInfo).length > 0 ? `${dashboardInfo?.noOfSuperAdmins ? `Super admins: ${dashboardInfo.noOfSuperAdmins}`: ``} Admins: ${dashboardInfo.noOfAdmin}, Brokers: ${dashboardInfo.noOfBroker}, Users: ${dashboardInfo.noOfUsers}` : ''}
       />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
