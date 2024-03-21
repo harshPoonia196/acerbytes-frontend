@@ -7,9 +7,9 @@ export async function generateMetadata({ params }) {
   const product = await fetch(`${baseUrl}/category/get-locations`).then((res) => res.json())
   const cityMatch = product.data.find((dataItem) => dataItem.city.toLowerCase() ===  decodeURIComponent(params.location)?.toLowerCase());
 
-  if(!cityMatch){
-    notFound()
-  }
+  // if(!cityMatch){
+  //   notFound()
+  // }
 
 }
 

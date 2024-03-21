@@ -135,8 +135,7 @@ export default function Home() {
                 <Card>
                   <CardActionArea
                     sx={{ p: 2, textAlign: "center" }}
-                    onClick={() => {
-                      const cityPath = city?.city.replace(/\s+/g, ''); 
+                    onClick={() => { 
                       router.push(listOfPages.commonPropertyList + `/${city?.city}`);
                     }}
                   >
