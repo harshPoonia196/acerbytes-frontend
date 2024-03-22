@@ -1159,6 +1159,7 @@ switch (label.toLowerCase()) {
   case "interiorquality":
     label = "Interior Quality";
     break;
+    
   case "apptillnow":
     label = "Appreciation till now";
     break;
@@ -1215,7 +1216,7 @@ switch (label.toLowerCase()) {
               });
           }
           else {
-            openSnackbar(`Please check the rera criteria`, "error");
+            openSnackbar(`Please check the RERA Approval`, "error");
           }
         }
         else{
