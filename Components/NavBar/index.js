@@ -158,7 +158,7 @@ export default function ClippedDrawer({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {userDetails.role !== "admin" && (
+      {userDetails.role === "broker" && (
         <MenuItem
           onClick={() => {
             router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
@@ -289,7 +289,7 @@ export default function ClippedDrawer({ children }) {
           }
 
           {
-            (authRole("admin") || authRole("superAdmin")) && (
+            (authRole("admin") || authRole("superAdmin") || authRole("sales") || authRole("customerSupport")) && (
               <>
                 <List
                   subheader={
@@ -299,7 +299,9 @@ export default function ClippedDrawer({ children }) {
                   }
                 >
                   {AdminMenuList.map((item, index) => (
+                    <>
                     <DrawerListItem key={item.label} item={item} />
+                    </>
                   ))}
                 </List>
               </>

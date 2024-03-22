@@ -24,6 +24,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
 import {
+  UserApprove,
   getUsersList,
   updateUserRole,
   updateUserStatus,
@@ -31,7 +32,7 @@ import {
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
-import { countryCodeFormating, matchUserRole } from "utills/utills";
+import { countryCodeFormating, logoutUser, matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { debounce } from "lodash";
 import {
@@ -46,6 +47,9 @@ import colors from "styles/theme/colors";
 import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt'
 import { useRouter } from "next/navigation";
 import { listOfPages } from "Components/NavBar/Links";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import RoleConfirmationDialog from "Components/CommonLayouts/RoleConfirmationDialog";
 
 const headCells = [
   {
@@ -67,7 +71,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } = props;
+  const { order, orderBy, onRequestSort, userDetails, selectedTabValue } = props;
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -98,6 +102,7 @@ function EnhancedTableHead(props) {
           </TableCell>
         ))}
         <TableCell>Action</TableCell>
+        {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{textAlign: "center"}}>Approval Request</TableCell>}
       </TableRow>
     </TableHead>
   );
@@ -165,7 +170,7 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
   );
 };
 
-function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus }) {
+function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus, selectedTabValue, UserApproveupdateStatus}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -179,6 +184,11 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
     handleClose();
     handleUpdateStatus(googleID, status);
   };
+
+  const UserApproveupdate = (userId, isApproved, row) => {
+    handleClose();
+    UserApproveupdateStatus(userId, isApproved, row);
+  }; 
 
   const editProfile = (googleID, role) => {
     if (role == ROLE_CONSTANTS.user) {
@@ -255,11 +265,15 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
           </MenuItem>}
         </Menu>
       </TableCell>
+      {(userDetails.role == 'superAdmin' && selectedTabValue == 1) &&<TableCell sx={{justifyContent: "center", display: "flex", gap: "12px"}}>
+        <CheckCircleIcon onClick={() => UserApproveupdate(row.googleID, true, row)} sx={{ color: colors.SUCCESS }}/>
+        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false, row)} sx={{ color: colors.ERROR }}/>
+      </TableCell>}
     </TableRow>
   );
 }
 
-function ManageUserTable({ searchText, onDashboardDataUpdate }) {
+function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }) {
   const router = useRouter();
   const { userDetails } = useAuth();
   const [order, setOrder] = React.useState("asc");
@@ -280,6 +294,12 @@ function ManageUserTable({ searchText, onDashboardDataUpdate }) {
       data: {},
     });
 
+    const [userApproveStatusConfirmationDialog, setuserApproveStatusConfirmationDialog] =
+    React.useState({
+      isOpen: false,
+      data: {},
+    });
+
   const { openSnackbar } = useSnackbar();
 
   const showToaterMessages = (message, severity) => {
@@ -295,6 +315,7 @@ function ManageUserTable({ searchText, onDashboardDataUpdate }) {
   }
 
   React.useEffect(() => {
+    setUsersList([])
     // This block will run only on initial mount
     if (initialMount) {
       setInitialMount(false);
@@ -306,7 +327,7 @@ function ManageUserTable({ searchText, onDashboardDataUpdate }) {
     return () => {
       debouncedSearch.cancel();
     };
-  }, [searchText, initialMount]);
+  }, [searchText, initialMount, selectedTabValue, currentPage]);
 
   const objectToQueryString = (obj) => {
     const queryString = Object.keys(obj)
@@ -327,7 +348,11 @@ function ManageUserTable({ searchText, onDashboardDataUpdate }) {
         role: searchText,
         phone: searchText,
         email: searchText,
-      };
+        isApproved: selectedTabValue == 0 ? true : false
+      };  
+      if(userDetails.role === "admin"){
+        delete querParams?.isApproved
+      }
       setLoading(true);
       const response = await getUsersList(objectToQueryString(querParams));
       if (response.status == 200) {
@@ -402,6 +427,19 @@ function ManageUserTable({ searchText, onDashboardDataUpdate }) {
     });
   };
 
+  const UserApproveupdateStatus = async (userId, isApproved, row) => {
+    setuserApproveStatusConfirmationDialog({
+      isOpen: true,
+      data: {
+        userId: userId,
+        isApproved,
+        row
+      },
+    });
+  };
+
+  
+
   const handleDialogAction = async (action) => {
     if (action) {
       // Call api
@@ -443,6 +481,53 @@ function ManageUserTable({ searchText, onDashboardDataUpdate }) {
     }
   };
 
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedTabValue]);
+
+
+  const handleDialogActionUserApprove = async (action) => {
+    if (action) {
+      // Call api
+      try {
+        const payload = {
+          isApproved: userApproveStatusConfirmationDialog.data.isApproved,
+          role: userApproveStatusConfirmationDialog.data.row.role,
+          userId: userApproveStatusConfirmationDialog.data.userId,
+        };
+        setuserApproveStatusConfirmationDialog({
+          isOpen: false,
+          data: {},
+        });
+        setLoading(true);
+        const response = await UserApprove(payload);
+        if (response.status == 200) {
+          const pageOptions = {
+            pageLimit,
+            page: currentPage,
+          };
+          getAllUsersList(pageOptions, searchText);
+          showToaterMessages(response?.data?.message,
+            "success"
+          );
+        }
+      } catch (error) {
+        showToaterMessages(
+          error?.response?.data?.message ||
+          error?.message ||
+          "Error update role",
+          "error"
+        );
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setuserApproveStatusConfirmationDialog({
+        isOpen: false,
+        data: {},
+      });
+    }
+  };
   const handleStatusDialogAction = async (action) => {
     if (action) {
       // Call api
@@ -494,6 +579,14 @@ function ManageUserTable({ searchText, onDashboardDataUpdate }) {
         open={statusConfirmationDialog.isOpen}
         handleAction={handleStatusDialogAction}
       />
+      <RoleConfirmationDialog
+        id="ringtone-menu"
+        keepMounted
+        open={userApproveStatusConfirmationDialog.isOpen}
+        handleAction={handleDialogActionUserApprove}
+        setuserApproveStatusConfirmationDialog={setuserApproveStatusConfirmationDialog}
+        selectedRowData={userApproveStatusConfirmationDialog}
+      />
       {isLoading && <Loading />}
       {
         usersList?.list?.length > 0 ? (<TableContainer component={Paper}>
@@ -502,6 +595,8 @@ function ManageUserTable({ searchText, onDashboardDataUpdate }) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
+              userDetails={userDetails}
+              selectedTabValue={selectedTabValue}
             />
             <TableBody>
               {
@@ -513,6 +608,9 @@ function ManageUserTable({ searchText, onDashboardDataUpdate }) {
                     userDetails={userDetails}
                     updateRole={updateRole}
                     handleUpdateStatus={handleUpdateStatus}
+                    UserApproveupdateStatus={UserApproveupdateStatus}
+                    selectedTabValue={selectedTabValue}
+                    setUsersList={setUsersList}
                   />
                 ))
               }

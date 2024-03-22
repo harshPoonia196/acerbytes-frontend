@@ -134,3 +134,12 @@ html {
 .MuiStack-root .MuiTextField-root {
   min-width: 200px !important;
 }
+
+.role-select {
+  width: 170px;
+  height: 36px;
+  margin-top: 0px !important;
+}
+.role-select .MuiInputBase-root {
+  margin-top: 0px ;
+}

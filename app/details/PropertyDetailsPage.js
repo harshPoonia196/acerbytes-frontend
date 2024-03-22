@@ -472,7 +472,7 @@ const PropertyDetailsPage = ({ params }) => {
           propertyData={propertyData}
         />
       ) : null}
-      {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && propertyData.isActiveAd ? (
+      {userDetails?.role === "broker" && propertyData.isActiveAd ? (
         <AdsSection
           SinglePropertyId={propertyData?.propertyBroker[0]}
           propertyData={propertyData}
@@ -597,7 +597,7 @@ const PropertyDetailsPage = ({ params }) => {
             }}
           />
 
-          {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin"  && userDetails?.role !== "broker"  && (
+          {userDetails?.role === "user" && (
             <>
               <Card
                 sx={{

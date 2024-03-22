@@ -496,8 +496,7 @@ const PropertyDetails = ({ params }) => {
               </Button>
             </Box>
           </Card>
-          {userDetails?.role !== "admin" &&
-            userDetails?.role !== "superAdmin" && userDetails?.role !== "broker"  &&(
+          {userDetails?.role === "user" && (
               <Box
                 sx={{
                   position: "fixed",

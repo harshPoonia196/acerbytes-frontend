@@ -14,8 +14,10 @@ import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { useMemo } from "react";
+import { useAuth } from "utills/AuthContext";
 
 function PropertyCard(props) {
+  const { userDetails } = useAuth();
   const { propertyDetails, isShortListPageCard, createdDate } = props;
   const router = useRouter();
   const constructPropertyUrl = (propertyDetailsData) => {
@@ -271,8 +273,8 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
           </Grid> */}
         </Grid>
       </CardActionArea>
-      {isShortListPageCard && <Divider />}
-      {isShortListPageCard && (
+      {userDetails.role === "user" && isShortListPageCard && <Divider />}
+      {userDetails.role === "user" && isShortListPageCard && (
         <CardActions sx={{ textAlign: "end" }}>
           <Chip
             icon={<ThumbUpIcon style={{ color: "#276ef1", mr: 1 }} />}
