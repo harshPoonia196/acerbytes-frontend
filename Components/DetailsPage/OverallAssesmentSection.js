@@ -86,8 +86,7 @@ function OverallAssesmentSection({
             Our authorized professional consultants help you decide whether to
             buy as Investor / End user. Contact us now
           </Typography>
-          {userDetails?.role !== "admin" &&
-            userDetails?.role !== "superAdmin" && userDetails?.role !== "broker" && (
+          {userDetails?.role === "user" && (
               <Chip
                 icon={<AssignmentIcon />}
                 label="Enquire now"

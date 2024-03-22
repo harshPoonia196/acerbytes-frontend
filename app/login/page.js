@@ -130,7 +130,7 @@ function Login() {
             return;
           } else if (!userDetails?.isApproved) {
             setLoading(false);
-            openSnackbar("Please try after some time approval is pending", "warning");
+            openSnackbar("Please try again after some time because permission is still waiting.", "warning");
             return;
           } 
           
@@ -250,7 +250,7 @@ function Login() {
           openSnackbar("You are blocked", "warning");
           return;
         }else if (!userDetails?.isApproved){
-          openSnackbar("Please try after some time approval is pending", "warning");
+          openSnackbar("Please try again after some time because permission is still waiting.", "warning");
           return;
         }else {
           login(userDetails, token);

@@ -27,6 +27,18 @@ function ManageUser() {
       setValue(newValue);
   };
 
+  const generateSubtitle = () => {
+    let subtitle = "";
+    if (Object.keys(dashboardInfo).length > 0) {
+      if (value === 0) { 
+        subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Super admins: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Admins: ${dashboardInfo.noOfAdmin}, Brokers: ${dashboardInfo.noOfBroker}, Users: ${dashboardInfo.noOfUsers}`;
+      } else if (value === 1) { 
+        subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Pending approval: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Pending approval : ${dashboardInfo.noOfAdmin}`;
+      }
+    }
+    return subtitle;
+  };
+
   return (
     <>
 
@@ -34,7 +46,7 @@ function ManageUser() {
 
       <InfoBox
         title={Object.keys(userDetails).length > 0 ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}(${userDetails?.role})` : ""}
-        subtitle={Object.keys(dashboardInfo).length > 0 ? `${dashboardInfo?.noOfSuperAdmins ? `Super admins: ${dashboardInfo.noOfSuperAdmins}`: ``} Admins: ${dashboardInfo.noOfAdmin}, Brokers: ${dashboardInfo.noOfBroker}, Users: ${dashboardInfo.noOfUsers}` : ''}
+        subtitle={generateSubtitle()}
       />
       <Container>
        {userDetails?.role === "superAdmin" ?

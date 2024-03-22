@@ -32,7 +32,7 @@ import {
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
-import { countryCodeFormating, matchUserRole } from "utills/utills";
+import { countryCodeFormating, logoutUser, matchUserRole } from "utills/utills";
 import { useAuth } from "utills/AuthContext";
 import { debounce } from "lodash";
 import {
@@ -49,6 +49,7 @@ import { useRouter } from "next/navigation";
 import { listOfPages } from "Components/NavBar/Links";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import RoleConfirmationDialog from "Components/CommonLayouts/RoleConfirmationDialog";
 
 const headCells = [
   {
@@ -184,9 +185,9 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
     handleUpdateStatus(googleID, status);
   };
 
-  const UserApproveupdate = (userId, isApproved) => {
+  const UserApproveupdate = (userId, isApproved, row) => {
     handleClose();
-    UserApproveupdateStatus(userId, isApproved);
+    UserApproveupdateStatus(userId, isApproved, row);
   }; 
 
   const editProfile = (googleID, role) => {
@@ -265,8 +266,8 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
         </Menu>
       </TableCell>
       {(userDetails.role == 'superAdmin' && selectedTabValue == 1) &&<TableCell sx={{justifyContent: "center", display: "flex", gap: "12px"}}>
-        <CheckCircleIcon onClick={() => UserApproveupdate(row.googleID, true)} sx={{ color: colors.SUCCESS }}/>
-        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false)} sx={{ color: colors.ERROR }}/>
+        <CheckCircleIcon onClick={() => UserApproveupdate(row.googleID, true, row)} sx={{ color: colors.SUCCESS }}/>
+        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false, row)} sx={{ color: colors.ERROR }}/>
       </TableCell>}
     </TableRow>
   );
@@ -426,12 +427,13 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
     });
   };
 
-  const UserApproveupdateStatus = async (userId, isApproved) => {
+  const UserApproveupdateStatus = async (userId, isApproved, row) => {
     setuserApproveStatusConfirmationDialog({
       isOpen: true,
       data: {
         userId: userId,
         isApproved,
+        row
       },
     });
   };
@@ -488,12 +490,15 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
     if (action) {
       // Call api
       try {
-        const payload = userApproveStatusConfirmationDialog.data;
+        const payload = {
+          isApproved: userApproveStatusConfirmationDialog.data.isApproved,
+          role: userApproveStatusConfirmationDialog.data.row.role,
+          userId: userApproveStatusConfirmationDialog.data.userId,
+        };
         setuserApproveStatusConfirmationDialog({
           isOpen: false,
           data: {},
         });
-
         setLoading(true);
         const response = await UserApprove(payload);
         if (response.status == 200) {
@@ -502,8 +507,7 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
             page: currentPage,
           };
           getAllUsersList(pageOptions, searchText);
-          showToaterMessages(
-            ToasterMessages.ROLE_UPDATE_SUCCESS,
+          showToaterMessages(response?.data?.message,
             "success"
           );
         }
@@ -575,11 +579,13 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
         open={statusConfirmationDialog.isOpen}
         handleAction={handleStatusDialogAction}
       />
-      <ConfirmationDialog
+      <RoleConfirmationDialog
         id="ringtone-menu"
         keepMounted
         open={userApproveStatusConfirmationDialog.isOpen}
         handleAction={handleDialogActionUserApprove}
+        setuserApproveStatusConfirmationDialog={setuserApproveStatusConfirmationDialog}
+        selectedRowData={userApproveStatusConfirmationDialog}
       />
       {isLoading && <Loading />}
       {
@@ -604,6 +610,7 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
                     handleUpdateStatus={handleUpdateStatus}
                     UserApproveupdateStatus={UserApproveupdateStatus}
                     selectedTabValue={selectedTabValue}
+                    setUsersList={setUsersList}
                   />
                 ))
               }
