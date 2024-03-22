@@ -42,6 +42,7 @@ import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import AdsSection from "Components/DetailsPage/AdsSection";
 import {
+  enquiryFormKey,
   listOfPropertyDetailsTab,
   listOfTabsInAddProperty,
 } from "utills/Constants";
@@ -53,8 +54,8 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { getLoggedInUser } from "utills/utills";
-import { isEnquired, submitEnquiry } from "api/UserProfile.api";
+import { getItem, getLoggedInUser } from "utills/utills";
+import { isEnquired, submitEnquiry, submitEnquiryUnauth } from "api/UserProfile.api";
 
 const tabHeight = 200;
 
@@ -72,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -99,7 +100,7 @@ const PropertyDetailsPage = ({ params }) => {
   const router = useRouter();
 
   // Split the id string into an array of parts based on the hyphen delimiter
-  const parts = params.id.split('-');
+  const parts = params.id.split("-");
   const paramsId = parts[parts.length - 1];
   const detailsPropertyId = paramsId;
 
@@ -112,23 +113,28 @@ const PropertyDetailsPage = ({ params }) => {
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
-  }
+  };
 
   const detailsGetProperty = async () => {
     try {
       setLoading(true);
       let res = await detailsProperty(
-        `${detailsPropertyId}${userDetails._id ? `?brokerId=${userDetails._id}` : ""}`
+        `${detailsPropertyId}${
+          userDetails._id ? `?brokerId=${userDetails._id}` : ""
+        }`
       );
       if (res.status === 200) {
-        const data = {...res.data?.data, consultants: shuffle(res.data?.data?.consultants)}
-        setPropertyData({...data});
+        const data = {
+          ...res.data?.data,
+          consultants: shuffle(res.data?.data?.consultants),
+        };
+        setPropertyData({ ...data });
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -148,8 +154,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error generating fav Property",
+          error?.message ||
+          "Error generating fav Property",
         "error"
       );
     } finally {
@@ -235,10 +241,10 @@ const PropertyDetailsPage = ({ params }) => {
     setAmenitiesTab(newValue);
   };
 
-
   const [brokerContact, setBrokerContact] = React.useState(null);
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
-  const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] = React.useState(false);
+  const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
+    React.useState(false);
 
   const handleOpenEnquiryForm = () => {
     setOpenEnquiryForm(true);
@@ -252,7 +258,37 @@ const PropertyDetailsPage = ({ params }) => {
 
   const handleSubmitEnquiry = async (data) => {
     try {
-      const response = await submitEnquiry(data);
+      const response = await submitEnquiry({
+        ...data,
+        propertyId: detailsPropertyId,
+      });
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+          // hasEnquired();
+          setBrokerContact({});
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
+  const handleSubmitEnquiryUnauth = async (data) => {
+    try {
+      const response = await submitEnquiryUnauth({
+        ...data,
+        propertyId: detailsPropertyId,
+      });
       if (response.status == 200) {
         const { success, message } = response.data;
         if (success) {
@@ -303,11 +339,11 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
-  const [propertyUrl, setPropertyUrl] = useState('');
+  const [propertyUrl, setPropertyUrl] = useState("");
 
   const handleOpenActivateAdsPopup = (ActiveUrl) => {
     setActivateAdsPopupState(true);
-    setPropertyUrl(ActiveUrl)
+    setPropertyUrl(ActiveUrl);
   };
 
   const handleCloseActivateAdsPopup = () => {
@@ -375,9 +411,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -446,7 +482,6 @@ const PropertyDetailsPage = ({ params }) => {
     }
   }, []);
 
- 
   return (
     <>
       {isLoading && <Loader />}
@@ -472,13 +507,15 @@ const PropertyDetailsPage = ({ params }) => {
           propertyData={propertyData}
         />
       ) : null}
-      {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && propertyData.isActiveAd ? (
+      {userDetails?.role !== "admin" &&
+      userDetails?.role !== "superAdmin" &&
+      propertyData.isActiveAd ? (
         <AdsSection
           SinglePropertyId={propertyData?.propertyBroker[0]}
           propertyData={propertyData}
           id={propertyData?.propertyBroker?.[0]?._id}
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
-          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup} 
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
         />
       ) : null}
 
@@ -493,18 +530,21 @@ const PropertyDetailsPage = ({ params }) => {
       <Box>
         <MarketingSection overviewData={propertyData} />
         <Container maxWidth="evmd">
-         {openEnquiryForm && <EnquireNow
-            open={openEnquiryForm}
-            handleClose={handleCloseEnquiryForm}
-            handleAction={handleOpenVerifyPopup}
-            submitEnquiry={handleSubmitEnquiry}
-          />}
+          {openEnquiryForm && (
+            <EnquireNow
+              open={openEnquiryForm}
+              handleClose={handleCloseEnquiryForm}
+              handleAction={handleOpenVerifyPopup}
+              submitEnquiry={handleSubmitEnquiry}
+            />
+          )}
           <OtpVerify
+            formData={getItem(enquiryFormKey)}
             open={openOtpPopup}
             handleClose={handleCloseVerifyPopup}
             handleOpen={handleOpenEnquiryForm}
             handleAlternateSignIn={handleOpenAlternateSignIn}
-            submitEnquiry={handleSubmitEnquiry}
+            handleSubmit={handleSubmitEnquiryUnauth}
           />
           <AlternateSignIn
             open={openAlternateSignIn}
@@ -515,7 +555,10 @@ const PropertyDetailsPage = ({ params }) => {
             <ClearanceSection
               regulatoryClearanceData={propertyData?.regulatoryClearance}
             />
-            <LandscapeSection layoutData={propertyData?.layout} overviewData={propertyData?.overview} />
+            <LandscapeSection
+              layoutData={propertyData?.layout}
+              overviewData={propertyData?.overview}
+            />
             <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
             <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
             <LocationSection locationData={propertyData?.location} />
@@ -549,11 +592,12 @@ const PropertyDetailsPage = ({ params }) => {
                       />
                     </Box>
                   </Grid>
-                  {propertyData?.consultants?.length > 0 && propertyData?.consultants?.slice(0, 2).map((broker) => (
-                    <Grid item xs={12} sm={6} key={broker?.name}>
-                      <BrokerCard broker={broker} noReview />
-                    </Grid>
-                  ))}
+                  {propertyData?.consultants?.length > 0 &&
+                    propertyData?.consultants?.slice(0, 2).map((broker) => (
+                      <Grid item xs={12} sm={6} key={broker?.name}>
+                        <BrokerCard broker={broker} noReview />
+                      </Grid>
+                    ))}
                   <Grid item xs={12}>
                     <Box sx={{ display: "flex" }}>
                       <Typography
@@ -569,7 +613,7 @@ const PropertyDetailsPage = ({ params }) => {
                             icon={<PersonAddIcon fontSize="small" />}
                             size="small"
                             sx={{ fontSize: "0.875rem" }}
-                            onClick={() => { }}
+                            onClick={() => {}}
                           />
                         </a>
                       )}
@@ -581,10 +625,12 @@ const PropertyDetailsPage = ({ params }) => {
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
-              handleOpenEnquiryForm={()=> setOverallAssesmentOpenEnquiryForm(true)}
+              handleOpenEnquiryForm={() =>
+                setOverallAssesmentOpenEnquiryForm(true)
+              }
               handleSubmitEnquiry={handleSubmitEnquiry}
               open={OverallAssesmentOpenEnquiryForm}
-              handleClose={()=> setOverallAssesmentOpenEnquiryForm(false)}
+              handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
             />
           </Grid>
@@ -597,141 +643,155 @@ const PropertyDetailsPage = ({ params }) => {
             }}
           />
 
-          {userDetails?.role !== "admin" && userDetails?.role !== "superAdmin"  && userDetails?.role !== "broker"  && (
-            <>
-              <Card
-                sx={{
-                  p: 2,
-                  position: "fixed",
-                  left: 0,
-                  bottom: 0,
-                  width: "100%",
-                  display: { xs: "block", evmd: "none" },
-                  background: "whitesmoke",
-                  boxShadow: "-1px -2px 6px 2px gainsboro !important",
-                }}
-                ref={divRef}
-              >
-                <Box sx={{ mt: -1, ml: -1, display: "flex", flexWrap: "wrap" }}>
-                  {isLogged ? (
-                    <Button
-                      size="small"
-                      sx={{ mt: 1, ml: 1 }}
-                      variant="outlined"
-                      onClick={handlefavClick}
-                      startIcon={
-                        propertyData?.isFav ? (
-                          <ThumbUpIcon sx={{ color: colors.BLUE }} />
-                        ) : (
-                          <ThumbUpOffAltIcon />
-                        )
-                      }
-                    >
-                      Like
-                    </Button>
-                  ) : (
-                    <Button
-                      size="small"
-                      sx={{ mt: 1, ml: 1 }}
-                      variant="outlined"
-                      onClick={() => router.push(listOfPages.login)}
-                      startIcon={<ThumbUpOffAltIcon />}
-                    >
-                      Like
-                    </Button>
-                  )}
-
-                  <Button
-                    size="small"
-                    sx={{ mt: 1, ml: 1 }}
-                    variant="outlined"
-                    onClick={handleOpenEnquiryForm}
-                    startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
+          {userDetails?.role !== "admin" &&
+            userDetails?.role !== "superAdmin" &&
+            userDetails?.role !== "broker" && (
+              <>
+                <Card
+                  sx={{
+                    p: 2,
+                    position: "fixed",
+                    left: 0,
+                    bottom: 0,
+                    width: "100%",
+                    display: { xs: "block", evmd: "none" },
+                    background: "whitesmoke",
+                    boxShadow: "-1px -2px 6px 2px gainsboro !important",
+                  }}
+                  ref={divRef}
+                >
+                  <Box
+                    sx={{ mt: -1, ml: -1, display: "flex", flexWrap: "wrap" }}
                   >
-                    Share
-                  </Button>
-                  <Button
-                    size="small"
-                    sx={{ mt: 1, ml: 1 }}
-                    variant="outlined"
-                    onClick={handleOpenEnquiryForm}
-                    startIcon={<WhatsAppIcon />}
-                  >
-                    Contact
-                  </Button>
-                  <Button
-                    size="small"
-                    sx={{ mt: 1, ml: 1 }}
-                    variant="outlined"
-                    onClick={handleOpenEnquiryForm}
-                    startIcon={<AssignmentIcon />}
-                  >
-                    Enquire
-                  </Button>
-                </Box>
-              </Card>
-              <Box
-                sx={{
-                  position: "fixed",
-                  right: 16,
-                  bottom: 16,
-                  display: { xs: "none", evmd: "flex" },
-                  flexDirection: "column",
-                }}
-              >
-                {isLogged ? (
-                  <Fab
-                    variant="extended"
-                    sx={{ mb: 1, justifyContent: "flex-start" }}
-                    onClick={handlefavClick}
-                  >
-                    {propertyData?.isFav ? (
-                      <ThumbUpIcon sx={{ color: colors.BLUE, mr: 1 }} />
+                    {isLogged ? (
+                      <Button
+                        size="small"
+                        sx={{ mt: 1, ml: 1 }}
+                        variant="outlined"
+                        onClick={handlefavClick}
+                        startIcon={
+                          propertyData?.isFav ? (
+                            <ThumbUpIcon sx={{ color: colors.BLUE }} />
+                          ) : (
+                            <ThumbUpOffAltIcon />
+                          )
+                        }
+                      >
+                        Like
+                      </Button>
                     ) : (
-                      <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                      <Button
+                        size="small"
+                        sx={{ mt: 1, ml: 1 }}
+                        variant="outlined"
+                        onClick={() => router.push(listOfPages.login)}
+                        startIcon={<ThumbUpOffAltIcon />}
+                      >
+                        Like
+                      </Button>
                     )}
-                    Like
-                  </Fab>
-                ) : (
-                  <Fab
-                    variant="extended"
-                    sx={{ mb: 1, justifyContent: "flex-start" }}
-                    onClick={() => router.push(listOfPages.login)}
-                  >
-                    <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                    Like
-                  </Fab>
-                )}
-                <a href={`https://web.whatsapp.com/send?text=${url?.href ? url.href : ""}`} target="_blank" data-action="share/whatsapp/share">
-                <Fab
-                  variant="extended"
-                  sx={{ mb: 1, justifyContent: "flex-start", width: "100%" }}
-                >
-                  <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
-                  Share
-                </Fab>
-                </a>
-                <a href={`https://wa.me/+919725555595`}>
-                  <Fab
-                    variant="extended"
-                    sx={{ mb: 1, justifyContent: "flex-start" }}
-                  >
-                    <WhatsAppIcon sx={{ mr: 1 }} />
-                    Contact
-                  </Fab>
-                </a>
 
-                <Fab
-                  variant="extended"
-                  sx={{ justifyContent: "flex-start" }}
-                  onClick={handleOpenEnquiryForm}
+                    <Button
+                      size="small"
+                      sx={{ mt: 1, ml: 1 }}
+                      variant="outlined"
+                      onClick={handleOpenEnquiryForm}
+                      startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
+                    >
+                      Share
+                    </Button>
+                    <Button
+                      size="small"
+                      sx={{ mt: 1, ml: 1 }}
+                      variant="outlined"
+                      onClick={handleOpenEnquiryForm}
+                      startIcon={<WhatsAppIcon />}
+                    >
+                      Contact
+                    </Button>
+                    <Button
+                      size="small"
+                      sx={{ mt: 1, ml: 1 }}
+                      variant="outlined"
+                      onClick={handleOpenEnquiryForm}
+                      startIcon={<AssignmentIcon />}
+                    >
+                      Enquire
+                    </Button>
+                  </Box>
+                </Card>
+                <Box
+                  sx={{
+                    position: "fixed",
+                    right: 16,
+                    bottom: 16,
+                    display: { xs: "none", evmd: "flex" },
+                    flexDirection: "column",
+                  }}
                 >
-                  <AssignmentIcon sx={{ mr: 1 }} />
-                  Enquire
-                </Fab>
-              </Box>
-            </>
-          )}
+                  {isLogged ? (
+                    <Fab
+                      variant="extended"
+                      sx={{ mb: 1, justifyContent: "flex-start" }}
+                      onClick={handlefavClick}
+                    >
+                      {propertyData?.isFav ? (
+                        <ThumbUpIcon sx={{ color: colors.BLUE, mr: 1 }} />
+                      ) : (
+                        <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                      )}
+                      Like
+                    </Fab>
+                  ) : (
+                    <Fab
+                      variant="extended"
+                      sx={{ mb: 1, justifyContent: "flex-start" }}
+                      onClick={() => router.push(listOfPages.login)}
+                    >
+                      <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                      Like
+                    </Fab>
+                  )}
+                  <a
+                    href={`https://web.whatsapp.com/send?text=${
+                      url?.href ? url.href : ""
+                    }`}
+                    target="_blank"
+                    data-action="share/whatsapp/share"
+                  >
+                    <Fab
+                      variant="extended"
+                      sx={{
+                        mb: 1,
+                        justifyContent: "flex-start",
+                        width: "100%",
+                      }}
+                    >
+                      <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
+                      Share
+                    </Fab>
+                  </a>
+                  <a href={`https://wa.me/+919725555595`}>
+                    <Fab
+                      variant="extended"
+                      sx={{ mb: 1, justifyContent: "flex-start" }}
+                    >
+                      <WhatsAppIcon sx={{ mr: 1 }} />
+                      Contact
+                    </Fab>
+                  </a>
+
+                  <Fab
+                    variant="extended"
+                    sx={{ justifyContent: "flex-start" }}
+                    onClick={handleOpenEnquiryForm}
+                  >
+                    <AssignmentIcon sx={{ mr: 1 }} />
+                    Enquire
+                  </Fab>
+                </Box>
+              </>
+            )}
         </Container>
       </Box>
     </>
