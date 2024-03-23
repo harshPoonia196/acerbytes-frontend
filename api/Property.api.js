@@ -15,11 +15,18 @@ export const getAllAdminProperty = (queryParams) => {
   );
 };
 
+
+export const getAllPropertyByAdmin = (queryParams) => {
+  return axiosInstance.get(
+    `property/admin/getProperties` + (queryParams ? `?${queryParams}` : "")
+  );
+};
+
 export const getCities = () => {
   return axiosInstance.get(`category/get-cities`);
 };
 
-export const deleteProperty= (propertyId) =>{
+export const deleteProperty = (propertyId) => {
   return axiosInstance.delete(`property/delete/${propertyId}`);
 }
 
@@ -48,19 +55,19 @@ export const getAllfavouriteProperty = (queryParams) => {
   );
 };
 
-export const getAllOptionData= (data) => {
+export const getAllOptionData = (data) => {
   return axiosInstance.get(`/property/get-option-list`, data);
 };
 
-export const getAllOptions=()=>{
+export const getAllOptions = () => {
   return axiosInstance.get("/category/get-all-options")
 }
 
-export const getLocations = ()=>{
+export const getLocations = () => {
   return axiosInstance.get(`/category/get-locations`)
 }
 
-export const propertyByCity = ()=>{
+export const propertyByCity = () => {
   return axiosInstance.get(`/category/propertyByCity`)
 }
 

@@ -316,23 +316,23 @@ const PropertyListTable = ({ searchText, setCount }) => {
 
 
   const managePublishActive = async (propertyId, publishStatus) => {
-      try {
-        setLoading(true);
-        let response = await managePublishData(propertyId, publishStatus);
-        if (response.status === 200) {
-          getAllPropertyList()
-        }
-      } catch (error) {
-        showToaterMessages(
-          error?.response?.data?.message ||
-          error?.message ||
-          "Error deleting property",
-          "error"
-        );
-      } finally {
-        setLoading(false);
+    try {
+      setLoading(true);
+      let response = await managePublishData(propertyId, publishStatus);
+      if (response.status === 200) {
+        getAllPropertyList()
       }
-     
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error deleting property",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+
   };
 
   useEffect(() => {

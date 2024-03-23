@@ -81,6 +81,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
+          (headCell.id !== 'role' || selectedTabValue === 0) && (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
@@ -100,6 +101,7 @@ function EnhancedTableHead(props) {
               ) : null}
             </TableSortLabel>
           </TableCell>
+           )
         ))}
         <TableCell>Action</TableCell>
         {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{textAlign: "center"}}>Approval Request</TableCell>}
@@ -218,16 +220,18 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
         {countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}
       </TableCell>
       <TableCell>{row.email}</TableCell>
-      <TableCell>
-        {row.isBlocked ? <DoNotDisturbAltIcon fontSize="small" sx={{ color: colors.ERROR }} /> :
-          <RoleViewer
-            key={row._id}
-            role={row.role}
-            disabled={row.isBlocked}
-            userDetails={userDetails}
-            updateRole={(newRole) => updateRole(row.googleID, newRole)}
-          />}
-      </TableCell>
+      { selectedTabValue === 0 && (
+        <TableCell>
+          {row.isBlocked ? <DoNotDisturbAltIcon fontSize="small" sx={{ color: colors.ERROR }} /> :
+            <RoleViewer
+              key={row._id}
+              role={row.role}
+              disabled={row.isBlocked}
+              userDetails={userDetails}
+              updateRole={(newRole) => updateRole(row.googleID, newRole)}
+            />}
+        </TableCell>
+      )}
       <TableCell sx={{ py: 0 }}>
         <IconButton
           onClick={handleClick}
