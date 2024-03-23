@@ -32,7 +32,7 @@ function MakePayment() {
                         </Box>
                     </Box>
                     <Box sx={{ p: 2, textAlign: 'center', borderBottom: '1px solid whitesmoke' }}>
-                        <Image src='/images/upi.png' width={200} height={200} />
+                        <Image src={Qrimage} width={200} height={200} />
                     </Box>
                     <Box sx={{ p: 2 }}>
                         <Typography variant='body2'>
