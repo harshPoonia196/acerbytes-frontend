@@ -982,7 +982,7 @@ function Profile() {
                   isEdit={isEdit}
                   name1={"unit"}
                   name2={"value"}
-                  value1={profileInfo?.budget?.minimumBudget?.unit}
+                  value1={profileInfo?.budget?.minimumBudget?.unit||"₹INR"}
                   value2={profileInfo?.budget?.minimumBudget?.value}
                   handleChange={(e) =>
                     handleChange(e, "budget", "minimumBudget", "value")
@@ -995,7 +995,7 @@ function Profile() {
                   label="Maximum"
                   variant="outlined"
                   isEdit={isEdit}
-                  value1={profileInfo?.budget?.maximumBudget?.unit}
+                  value1={profileInfo?.budget?.maximumBudget?.unit||"₹INR"}
                   value2={profileInfo?.budget?.maximumBudget?.value}
                   handleChange={(e) =>
                     handleChange(e, "budget", "maximumBudget", "value")

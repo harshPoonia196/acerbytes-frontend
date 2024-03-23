@@ -922,7 +922,7 @@ function ConsultantProfile() {
                     variant="outlined"
                     isEdit={isEdit}
                     value1={
-                      brokerProfileInfo?.budget?.minimumBudget?.unit || ""
+                      brokerProfileInfo?.budget?.minimumBudget?.unit || "₹INR"
                     }
                     value2={
                       brokerProfileInfo?.budget?.minimumBudget?.value || ""
@@ -939,7 +939,7 @@ function ConsultantProfile() {
                     variant="outlined"
                     isEdit={isEdit}
                     value1={
-                      brokerProfileInfo?.budget?.maximumBudget?.unit || ""
+                      brokerProfileInfo?.budget?.maximumBudget?.unit || "₹INR"
                     }
                     value2={
                       brokerProfileInfo?.budget?.maximumBudget?.value || ""

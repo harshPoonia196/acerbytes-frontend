@@ -158,7 +158,7 @@ export default function ClippedDrawer({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {userDetails.role !== "admin" && (
+      {/* {userDetails.role !== "admin" && ( */}
         <MenuItem
           onClick={() => {
             router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
@@ -167,7 +167,7 @@ export default function ClippedDrawer({ children }) {
         >
           Profile
         </MenuItem>
-      )}
+      {/* )} */}
       {isLogged ? (
         <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
       ) : null}
@@ -303,7 +303,7 @@ export default function ClippedDrawer({ children }) {
                   ))}
                 </List>
               </>
-            )
+            ) 
           }
         </Box>
       </>

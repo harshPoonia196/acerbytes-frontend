@@ -38,6 +38,7 @@ const NewCurrencyInputField = ({
     };
     handleChange(updatedEvent);
   };
+ 
   return (
     <Grid item xs={12} sm={6}>
       <Box>
@@ -64,19 +65,25 @@ const NewCurrencyInputField = ({
                 <TextField
                   select
                   name={name1}
-                  defaultValue=""
+                  defaultValue="₹INR"
                   variant="standard"
                   value={value1}
                   onChange={handleSelect}
                   InputProps={{
                     disableUnderline: true,
                   }}
+                  
                 >
+                  
                   {currencies.map((option) => (
+                    
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
-                  ))}
+                    
+                    
+                    
+                  ))} 
                 </TextField>
               </InputAdornment>
             ),

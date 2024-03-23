@@ -117,7 +117,7 @@ function PropertyCard(props) {
             <Typography variant="caption">{propertyDetails?.overview?.status}</Typography>
             <Typography variant="subtitle2">{propertyDetails?.overview?.launchYear} - {propertyDetails?.overview?.completionYear}</Typography>
           </Grid>
-          <Grid item xs={8} sm={4} md={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Grid item xs={8} sm={6} md={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
             <Card
               sx={{
                 width: "fit-content",

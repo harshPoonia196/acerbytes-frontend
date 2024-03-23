@@ -57,6 +57,7 @@ export const currencies = [
     label: "₹",
   },
   {
+    
     value: "USD",
     label: "$",
   },
