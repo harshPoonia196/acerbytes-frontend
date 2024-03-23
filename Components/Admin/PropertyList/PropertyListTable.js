@@ -29,7 +29,7 @@ import { formattedCreatedAt, getComparator, stableSort } from "utills/CommonFunc
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
-import { getAllProperty, deleteProperty, managePublishData } from "api/Property.api";
+import { getAllProperty, deleteProperty, managePublishData, getAllPropertyByAdmin } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
@@ -258,7 +258,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
       if (userDetails?.role) {
         querParams.role = userDetails?.role
       }
-      let res = await getAllProperty(objectToQueryString(querParams));
+      let res = await getAllPropertyByAdmin(objectToQueryString(querParams));
       if (res.status === 200) {
         let transformedData = transformData(res.data?.data || []);
         setPropertyList(transformedData);
@@ -315,23 +315,23 @@ const PropertyListTable = ({ searchText, setCount }) => {
 
 
   const managePublishActive = async (propertyId, publishStatus) => {
-      try {
-        setLoading(true);
-        let response = await managePublishData(propertyId, publishStatus);
-        if (response.status === 200) {
-          getAllPropertyList()
-        }
-      } catch (error) {
-        showToaterMessages(
-          error?.response?.data?.message ||
-          error?.message ||
-          "Error deleting property",
-          "error"
-        );
-      } finally {
-        setLoading(false);
+    try {
+      setLoading(true);
+      let response = await managePublishData(propertyId, publishStatus);
+      if (response.status === 200) {
+        getAllPropertyList()
       }
-     
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error deleting property",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+
   };
 
   useEffect(() => {
