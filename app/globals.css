@@ -143,3 +143,7 @@ html {
 .role-select .MuiInputBase-root {
   margin-top: 0px ;
 }
+
+.MuiAutocomplete-popper {
+  z-index: 1000 !important;
+}
