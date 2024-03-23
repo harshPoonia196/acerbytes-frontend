@@ -59,6 +59,7 @@ import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import Loader from "Components/CommonLayouts/Loading";
 import { debounce } from "lodash";
 import { ORDER_STATUS } from "utills/Constants";
+import { countryCodeFormating } from "utills/utills";
 
 const headCells = [
   {
@@ -253,7 +254,7 @@ function RowStructure({
           {row?.brokerId?.name?.firstName} {row?.brokerId?.name?.lastName}
         </TableCell>
         <TableCell>
-          {row?.brokerId?.phone?.countryCode} {row?.brokerId?.phone?.number}
+          {countryCodeFormating(row?.brokerId?.phone?.countryCode)} {row?.brokerId?.phone?.number}
         </TableCell>
         <TableCell>{formatAmount(row.amount)}</TableCell>
         <TableCell>{formatPoints(row.points)}</TableCell>
@@ -467,7 +468,7 @@ function TableView({
   </>;
 }
 
-function OrdersTable() {
+function OrdersTable({ onDashboardDataUpdate }) {
   const { userDetails } = useAuth();
   const [isLoading, setLoading] = React.useState(false);
 
@@ -565,6 +566,10 @@ function OrdersTable() {
           nextPage: response?.data?.nextPage,
           prevPage: response?.data?.prevPage,
         });
+        onDashboardDataUpdate({
+          countInfo: response?.data?.dashboardInfo || {},
+          userDetails
+        });
       }
     } catch (error) {
       setOrderRequests({
@@ -585,6 +590,21 @@ function OrdersTable() {
     }
   };
 
+  React.useEffect(() => {
+    // This block will run only on initial mount
+    if (initialMount) {
+      setInitialMount(false);
+      return;
+    }
+
+    if (userDetails && Object.keys(userDetails).length) {
+      const pageOptions = {
+        pageLimit: rowsPerPage,
+        page,
+      };
+      getOrderRequestList(pageOptions);
+    }
+  }, [userDetails && Object.keys(userDetails).length, initialMount, value]);
   return (
     <Box sx={{ width: "100%" }}>
       {isLoading && <Loader />}

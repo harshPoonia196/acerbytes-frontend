@@ -90,7 +90,7 @@ function useThrottledOnScroll(callback, delay) {
   }, [throttledCallback]);
 }
 
-function ConsultantProfile() {
+function ConsultantProfile({ id, isAdminUpdate = false }) {
   const [isUploading, setUploading] = useState(false);
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
   const [image, setImage] = useState("");
@@ -138,10 +138,14 @@ function ConsultantProfile() {
   const [cityOptions, setCityOptions] = useState([]);
 
   const { data, isLoading, error } = useQueries(
-    [reactQueryKey.broker.profile(getGoogleId())],
+    userDetails?.googleID ? [reactQueryKey.broker.profile(getGoogleId())] : [],
     async () => {
       try {
-        const response = await getBrokerProfile();
+        const userId = isAdminUpdate ? id : userDetails?.googleID;
+        if (!userId) {
+          return
+        }
+        const response = await getBrokerProfile(userId);
         if (response.status == 200) {
           const { success, data, message } = response.data;
           if (success) {
@@ -164,23 +168,25 @@ function ConsultantProfile() {
 
   const onSuccess = (res) => {
 
-    let userInfo = JSON.parse(localStorage.getItem("userDetails"));
-    userInfo = {
-      ...userInfo,
-      name: {
-        ...userInfo.name,
-        firstName: brokerProfileInfo?.name?.firstName,
-        lastName: brokerProfileInfo?.name?.lastName,
-      },
-    };
-    localStorage.setItem("userDetails", JSON.stringify(userInfo));
-    window.dispatchEvent(new Event("storage"));
+    if (!isAdminUpdate) {
+      let userInfo = JSON.parse(localStorage.getItem("userDetails"));
+      userInfo = {
+        ...userInfo,
+        name: {
+          ...userInfo.name,
+          firstName: brokerProfileInfo?.name?.firstName,
+          lastName: brokerProfileInfo?.name?.lastName,
+        },
+      };
+      localStorage.setItem("userDetails", JSON.stringify(userInfo));
+      window.dispatchEvent(new Event("storage"));
 
-    setUserProfileInfo({
-      name: brokerProfileInfo?.name || {},
-      phone: brokerProfileInfo?.phone || {},
-    });
+      setUserProfileInfo({
+        name: brokerProfileInfo?.name || {},
+        phone: brokerProfileInfo?.phone || {},
+      });
 
+    }
 
     openSnackbar(res?.data?.message || "Success!", "success");
   };
@@ -480,7 +486,9 @@ function ConsultantProfile() {
       serviceDetails: brokerProfileInfo?.serviceDetails,
       targetCustomers: brokerProfileInfo?.targetCustomers,
     };
-    mutate.mutate(requestBody);
+    const userId = isAdminUpdate ? id : userDetails.googleID;
+
+    mutate.mutate({ userId, data: requestBody });
   };
 
   const classes = useStyles();
@@ -565,7 +573,8 @@ function ConsultantProfile() {
       formData.append('image', selectedFile);
       const response = await uploadImage(formData);
       if (response.data.status == 200) {
-        const imageResponse = await updateProfileImage(userDetails.googleID, response.data.data.Location);
+        const userId = isAdminUpdate ? id : userDetails.googleID;
+        const imageResponse = await updateProfileImage(userId, response.data.data.Location);
         if (imageResponse?.data?.status == 200) {
           updateOnLocalStorage(response.data.data.Location);
           openSnackbar(
@@ -621,7 +630,7 @@ function ConsultantProfile() {
             {/* <Grid item xs={12} sx={{ textAlign: 'end' }}>
             <Button variant='contained'>Save</Button>
           </Grid> */}
-            <Grid item xs={12} id="userDetails">
+            {isAdminUpdate ? null : <Grid item xs={12} id="userDetails">
               <Card sx={{ p: 2 }}>
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: "20px" }}
@@ -707,7 +716,7 @@ function ConsultantProfile() {
                   ) : null}
                 </Box>
               </Card>
-            </Grid>
+            </Grid>}
             <Grid item xs={12}>
               <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -724,6 +733,7 @@ function ConsultantProfile() {
                     isRequired={true}
                     label="First name"
                     variant="outlined"
+                    disabled={isAdminUpdate}
                     value={brokerProfileInfo?.name?.firstName || ""}
                     handleChange={(e) => handleChange(e, "name", "firstName")}
                     isEdit={isEdit}
@@ -732,6 +742,7 @@ function ConsultantProfile() {
                   <NewInputFieldStructure
                     label="Last name"
                     isRequired={true}
+                    disabled={isAdminUpdate}
                     variant="outlined"
                     value={brokerProfileInfo?.name?.lastName || ""}
                     handleChange={(e) => handleChange(e, "name", "lastName")}
@@ -755,6 +766,7 @@ function ConsultantProfile() {
                     label="Alternate Email"
                     isRequired={true}
                     variant="outlined"
+                    disabled={isAdminUpdate}
                     value={brokerProfileInfo?.alternateEmail || ""}
                     handleChange={(e) => handleChange(e, "alternateEmail")}
                     isEdit={isEdit}
