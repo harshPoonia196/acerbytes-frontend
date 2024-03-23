@@ -1022,7 +1022,6 @@ function Profile({ id, isAdminUpdate }) {
                   variant="outlined"
                   isEdit={isEdit}
                   value1={profileInfo?.budget?.maximumBudget?.unit}
-                  currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                   value2={profileInfo?.budget?.maximumBudget?.value}
                   handleChange={(e) =>
                     handleChange(e, "budget", "maximumBudget", "value")

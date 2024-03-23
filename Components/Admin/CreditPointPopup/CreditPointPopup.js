@@ -108,6 +108,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
   const updateCreditInfo = (event, isReset) => {
     const key = event.target.name;
     const value = event.target.value;
+    
     console.log({
       key,
       value,
@@ -180,14 +181,16 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
         {isLoading && <Loading />}
         <Grid container spacing={2}>
           <InputField
-            type="number"
+            // type="text"
             name="approvedPayment"
             value={creditInfo.approvedPayment}
             label="Enter received payment"
+            isAmount={true}
             handleChange={updateCreditInfo}
+            
           />
           <InputField
-            type="number"
+            // type="number"
             name="approvedPoints"
             value={creditInfo.approvedPoints}
             label="Enter assigned points"

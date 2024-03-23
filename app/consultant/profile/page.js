@@ -999,7 +999,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     isEdit={isEdit}
                     currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                     value1={
-                      brokerProfileInfo?.budget?.minimumBudget?.unit || ""
+                      brokerProfileInfo?.budget?.minimumBudget?.unit || "₹INR"
                     }
                     value2={
                       brokerProfileInfo?.budget?.minimumBudget?.value || ""
@@ -1017,7 +1017,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                     isEdit={isEdit}
                     value1={
-                      brokerProfileInfo?.budget?.maximumBudget?.unit || ""
+                      brokerProfileInfo?.budget?.maximumBudget?.unit || "₹INR"
                     }
                     value2={
                       brokerProfileInfo?.budget?.maximumBudget?.value || ""
