@@ -36,7 +36,7 @@ import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSect
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
-import { useSearchParams } from "next/navigation";
+import {useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
@@ -53,8 +53,6 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { getLoggedInUser } from "utills/utills";
-import { isEnquired, submitEnquiry } from "api/UserProfile.api";
 
 const tabHeight = 200;
 
@@ -113,7 +111,6 @@ const PropertyDetailsPage = ({ params }) => {
     }
     return a;
   }
-
   const detailsGetProperty = async () => {
     try {
       setLoading(true);
@@ -236,9 +233,7 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
 
-  const [brokerContact, setBrokerContact] = React.useState(null);
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
-  const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] = React.useState(false);
 
   const handleOpenEnquiryForm = () => {
     setOpenEnquiryForm(true);
@@ -249,30 +244,6 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   const [openOtpPopup, setOpenOtpPopup] = useState(false);
-
-  const handleSubmitEnquiry = async (data) => {
-    try {
-      const response = await submitEnquiry(data);
-      if (response.status == 200) {
-        const { success, message } = response.data;
-        if (success) {
-          openSnackbar(message, "success");
-          // hasEnquired();
-          setBrokerContact({});
-        } else {
-          openSnackbar(message, "error");
-        }
-      }
-    } catch (error) {
-      openSnackbar(
-        error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
-        "error"
-      );
-      return error;
-    }
-  };
 
   const handleOpenVerifyPopup = () => {
     setOpenOtpPopup(true);
@@ -420,20 +391,6 @@ const PropertyDetailsPage = ({ params }) => {
     []
   );
 
-  const hasEnquired = async () => {
-    let userDetail = getLoggedInUser();
-    if (userDetail?.role == "user") {
-      let response = await isEnquired(detailsPropertyId);
-      if (response.status === 200) {
-        setBrokerContact(response?.data?.data?.[0]);
-      }
-    }
-  };
-
-  React.useEffect(() => {
-    hasEnquired();
-  }, []);
-
   const divRef = useRef(null);
   const [heightOfFooter, setHeightOfFooter] = useState(0);
 
@@ -446,7 +403,6 @@ const PropertyDetailsPage = ({ params }) => {
     }
   }, []);
 
- 
   return (
     <>
       {isLoading && <Loader />}
@@ -493,18 +449,16 @@ const PropertyDetailsPage = ({ params }) => {
       <Box>
         <MarketingSection overviewData={propertyData} />
         <Container maxWidth="evmd">
-         {openEnquiryForm && <EnquireNow
+          <EnquireNow
             open={openEnquiryForm}
             handleClose={handleCloseEnquiryForm}
             handleAction={handleOpenVerifyPopup}
-            submitEnquiry={handleSubmitEnquiry}
-          />}
+          />
           <OtpVerify
             open={openOtpPopup}
             handleClose={handleCloseVerifyPopup}
             handleOpen={handleOpenEnquiryForm}
             handleAlternateSignIn={handleOpenAlternateSignIn}
-            submitEnquiry={handleSubmitEnquiry}
           />
           <AlternateSignIn
             open={openAlternateSignIn}
@@ -515,7 +469,7 @@ const PropertyDetailsPage = ({ params }) => {
             <ClearanceSection
               regulatoryClearanceData={propertyData?.regulatoryClearance}
             />
-            <LandscapeSection layoutData={propertyData?.layout} overviewData={propertyData?.overview} />
+            <LandscapeSection layoutData={propertyData?.layout} />
             <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
             <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
             <LocationSection locationData={propertyData?.location} />
@@ -581,10 +535,9 @@ const PropertyDetailsPage = ({ params }) => {
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
-              handleOpenEnquiryForm={()=> setOverallAssesmentOpenEnquiryForm(true)}
-              handleSubmitEnquiry={handleSubmitEnquiry}
-              open={OverallAssesmentOpenEnquiryForm}
-              handleClose={()=> setOverallAssesmentOpenEnquiryForm(false)}
+              handleOpenEnquiryForm={handleOpenEnquiryForm}
+              open={openEnquiryForm}
+              handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}
             />
           </Grid>

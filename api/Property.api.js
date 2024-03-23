@@ -9,6 +9,11 @@ export const getAllProperty = (queryParams) => {
     `property/getProperties` + (queryParams ? `?${queryParams}` : "")
   );
 };
+export const getAllAdminProperty = (queryParams) => {
+  return axiosInstance.get(
+    `/property/admin/getProperties` + (queryParams ? `?${queryParams}` : "")
+  );
+};
 
 
 export const getAllPropertyByAdmin = (queryParams) => {

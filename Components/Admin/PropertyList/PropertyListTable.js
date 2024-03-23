@@ -29,7 +29,7 @@ import { formattedCreatedAt, getComparator, stableSort } from "utills/CommonFunc
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
-import { getAllProperty, deleteProperty, managePublishData, getAllPropertyByAdmin } from "api/Property.api";
+import { getAllProperty, getAllAdminProperty, deleteProperty, managePublishData } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
@@ -258,7 +258,8 @@ const PropertyListTable = ({ searchText, setCount }) => {
       if (userDetails?.role) {
         querParams.role = userDetails?.role
       }
-      let res = await getAllPropertyByAdmin(objectToQueryString(querParams));
+
+      let res = await getAllAdminProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         let transformedData = transformData(res.data?.data || []);
         setPropertyList(transformedData);
