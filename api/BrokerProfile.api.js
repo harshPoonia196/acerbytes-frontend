@@ -1,9 +1,9 @@
 import axiosInstance from "./AxiosInstance";
 
-export const getBrokerProfile = () => {
-  return axiosInstance.get(`/broker/brokerProfile`);
+export const getBrokerProfile = (userId) => {
+  return axiosInstance.get(`/broker/brokerProfile/${userId}`);
 };
 
-export const updateBrokerProfile = (data) => {
-  return axiosInstance.post(`/broker/brokerProfile`, data);
+export const updateBrokerProfile = ({userId, data }) => {
+  return axiosInstance.post(`/broker/brokerProfile/${userId}`, data);
 };

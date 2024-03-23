@@ -1,21 +1,30 @@
+"use client";
 import { Box, Container, Typography, Card } from '@mui/material'
 import OrdersTable from 'Components/Admin/OrdersRequest/OrdersTable'
 
 import CustomAdminBreadScrumbs from 'Components/CommonLayouts/CustomAdminBreadScrumbs'
 import InfoBox from 'Components/CommonLayouts/CommonHeader'
 // import CustomSearchInput from 'Components/CommonLayouts/SearchInput'
-import React from 'react'
+import React, { useState } from 'react'
 
 function OrderRequest() {
+    const [dashboardInfo, setDashboardInfo] = useState({});
+    const [userDetails, setUserDetails] = useState({});
+
+    const handleDashboardDataUpdate = ({ countInfo, userDetails }) => {
+        setDashboardInfo(countInfo);
+        setUserDetails(userDetails || {});
+    }
+
     return (
         <>
             <CustomAdminBreadScrumbs text='Orders request' />
             <InfoBox
-                title="Anand Gupta(Admin)"
-                subtitle="3,344 property consultant links are currently active"
+                title={Object.keys(userDetails).length > 0 ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}(${userDetails?.role})` : ""}
+                subtitle={Object.keys(dashboardInfo).length > 0 ? `Pending: ${dashboardInfo.pendingOrders}, Completed: ${dashboardInfo.completedOrders}` : ''}
             />
             <Container>
-                <OrdersTable />
+                <OrdersTable onDashboardDataUpdate={handleDashboardDataUpdate} />
             </Container>
         </>
     )

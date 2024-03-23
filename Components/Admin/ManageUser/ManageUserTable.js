@@ -54,7 +54,7 @@ import RoleConfirmationDialog from "Components/CommonLayouts/RoleConfirmationDia
 const headCells = [
   {
     id: "name",
-    label: "Consultant name",
+    label: "Name",
   },
   {
     id: "phone",
@@ -148,7 +148,12 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
           })}
         </Select>
       </FormControl> */}
-      <Chip label={role} size="small" onClick={handleClick} sx={{ textTransform: 'capitalize' }} />
+      <Chip disabled={
+        disabled ||
+        !(
+          matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
+        )
+      } label={role} size="small" onClick={handleClick} sx={{ textTransform: 'capitalize' }} />
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -193,6 +198,9 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
   const editProfile = (googleID, role) => {
     if (role == ROLE_CONSTANTS.user) {
       router.push(listOfPages.adminUpdateProfileLinks + `/${googleID}`);
+    }
+    if (role == ROLE_CONSTANTS.broker) {
+      router.push(listOfPages.adminUpdateConsultantProfileLinks + `/${googleID}`);
     }
     handleClose();
   }
@@ -260,7 +268,7 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
               Block
             </MenuItem>
           )}
-          {(!row.isBlocked && row.role == ROLE_CONSTANTS.user) && <MenuItem onClick={() => editProfile(row.googleID, row.role)} >
+          {(!row.isBlocked && (row.role == ROLE_CONSTANTS.user || row.role == ROLE_CONSTANTS.broker)) && <MenuItem onClick={() => editProfile(row.googleID, row.role)} >
             Edit Profile
           </MenuItem>}
         </Menu>
