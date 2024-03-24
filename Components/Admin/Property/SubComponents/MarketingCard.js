@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useRef} from 'react'
 import {
     Card,
     Typography,
@@ -43,6 +43,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
     const [selectedImage, setImage] = useState('')
     const [cropData, setCropData] = useState('')
     const [cropper, setCropper] = useState(false)
+    const fileInputRef = useRef(null);
     const [enableCropper, setEnableCropper] = useState(false)
 
     const handleImageSelect = (e) => {
@@ -65,7 +66,11 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
     }
 
     const handleImageRemove = () => {
+
         setImage('')
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+          }
         handleCloseUploadPopup()
     }
 
@@ -109,6 +114,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                                 <input
                                     id="contained-button-file"
                                     type="file"
+                                    ref={fileInputRef}
                                     onChange={handleImageSelect}
                                     accept="image/x-png,image/gif,image/jpeg"
                                     style={{ display: 'none' }}
@@ -119,7 +125,6 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                                     alignItems: "flex-end",
                                     padding: "10px"
                                 }}>
-
                                     <label htmlFor="contained-button-file">
                                         <Button
                                             variant="contained"

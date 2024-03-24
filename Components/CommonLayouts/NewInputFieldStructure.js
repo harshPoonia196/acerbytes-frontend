@@ -82,7 +82,7 @@ const NewInputFieldStructure = ({
             type={type}
            inputProps={
             
-            name==="minFloors" ? {
+            name==="minFloors" || name === "maxFloors"? {
         
             min:"1"}
             :{
@@ -107,7 +107,7 @@ const NewInputFieldStructure = ({
             id={name}
             inputProps={
             
-              name==="minFloors" ? {
+              name==="minFloors" || name === "maxFloors" ? {
           
               min:"1"}
               :{
