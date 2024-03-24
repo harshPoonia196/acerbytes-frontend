@@ -357,7 +357,7 @@ setCities(res.data.data[0])
           assessment: temp,
           
         },
-        amenitiesData:{sectionScore:'',pointsGained:0,...amenities}
+        amenitiesData:{sectionScore:0,pointsGained:0,...amenities}
       }));
         // setSelectOption({ ...temp })
       }
@@ -410,7 +410,7 @@ setCities(res.data.data[0])
       completionYear: "",
       status: "",
       constructionProgress: "",
-      sectionScore: '',
+      sectionScore: 0,
       pointsGained:0
     },
     regulatoryClearance: {
@@ -423,7 +423,7 @@ setCities(res.data.data[0])
       privateBankLoan: "",
       fresh: "",
       resale: "",
-      sectionScore: '',
+      sectionScore: 0,
       pointsGained:0
     },
     layout: {
@@ -441,7 +441,7 @@ setCities(res.data.data[0])
       greenDensityScore: "",
       constructionQuality: 0,
       interiorQuality: 0,
-      sectionScore: '',
+      sectionScore: 0,
       pointsGained:0
     },
     unitsPlan: {
@@ -472,7 +472,7 @@ setCities(res.data.data[0])
       state: "",
       city: "",
       sector: "",
-      sectionScore:"",
+      sectionScore:0,
       pointsGained:0,
       area: "",
       pinCode: "",

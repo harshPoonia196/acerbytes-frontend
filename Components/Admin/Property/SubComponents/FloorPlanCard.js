@@ -379,7 +379,10 @@ else if(fieldName==='width'){
           priceUnit: priceUnitValue
         }))
       }
-      // setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
+      else{
+      setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
+
+      }
     } else {
       if (rows.length >= 1) {
         let check = rows.every(
