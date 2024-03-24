@@ -1154,6 +1154,7 @@ setForm({
         } else {
           label = item.context.key;
         }
+        console.log(label,'labbal')
 switch (label.toLowerCase()) {
   case "constructionquality":
     label = "Construction Quality";
@@ -1177,7 +1178,7 @@ switch (label.toLowerCase()) {
         openSnackbar(`Ratings needs to be provided for ${label}`, "error");
       }
       else if(item.context.key==="image"){
-        openSnackbar(`Image needs to be uploaded for the property`, "error");
+        openSnackbar(`${item.context.key} needs to be uploaded for the property`, "error");
       }
     });
     console.log(form, "formmmm", error, "errrr");
