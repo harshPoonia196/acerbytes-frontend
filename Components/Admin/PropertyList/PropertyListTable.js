@@ -127,7 +127,7 @@ function EnhancedTableHead(props) {
 function RowStructure({ row, router, handleDelete, managePublishActive }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEdit = (id) => {
-    router.push(`/admin/add-property?id=${id}`);
+    router.push(`/admin/edit-property?id=${id}`);
   };
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const open = Boolean(anchorEl);

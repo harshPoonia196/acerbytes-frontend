@@ -14,7 +14,7 @@ import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
 import BankCard from "Components/Admin/Property/SubComponents/BankCard";
-import { getAllOptions ,getCities } from "api/Property.api";
+import { getAllOptions, getAllProperty,getCities } from "api/Property.api";
 
 import {
   Schema,
@@ -1154,6 +1154,7 @@ setForm({
         } else {
           label = item.context.key;
         }
+        console.log(label,'labbal')
 switch (label.toLowerCase()) {
   case "constructionquality":
     label = "Construction Quality";
@@ -1177,7 +1178,7 @@ switch (label.toLowerCase()) {
         openSnackbar(`Ratings needs to be provided for ${label}`, "error");
       }
       else if(item.context.key==="image"){
-        openSnackbar(`Image needs to be uploaded for the property`, "error");
+        openSnackbar(`${item.context.key} needs to be uploaded for the property`, "error");
       }
     });
     console.log(form, "formmmm", error, "errrr");
