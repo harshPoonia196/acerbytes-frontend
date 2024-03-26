@@ -54,7 +54,7 @@ import RoleConfirmationDialog from "Components/CommonLayouts/RoleConfirmationDia
 const headCells = [
   {
     id: "name",
-    label: "Consultant name",
+    label: "Name",
   },
   {
     id: "phone",
@@ -81,6 +81,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
+          (headCell.id !== 'role' || selectedTabValue === 0) && (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
@@ -100,8 +101,9 @@ function EnhancedTableHead(props) {
               ) : null}
             </TableSortLabel>
           </TableCell>
+           )
         ))}
-        <TableCell>Action</TableCell>
+        {(selectedTabValue === 0) && <TableCell>Action</TableCell>}
         {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{textAlign: "center"}}>Approval Request</TableCell>}
       </TableRow>
     </TableHead>
@@ -148,7 +150,12 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
           })}
         </Select>
       </FormControl> */}
-      <Chip label={role} size="small" onClick={handleClick} sx={{ textTransform: 'capitalize' }} />
+      <Chip disabled={
+        disabled ||
+        !(
+          matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
+        )
+      } label={role} size="small" onClick={handleClick} sx={{ textTransform: 'capitalize' }} />
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -194,6 +201,9 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
     if (role == ROLE_CONSTANTS.user) {
       router.push(listOfPages.adminUpdateProfileLinks + `/${googleID}`);
     }
+    if (role == ROLE_CONSTANTS.broker) {
+      router.push(listOfPages.adminUpdateConsultantProfileLinks + `/${googleID}`);
+    }
     handleClose();
   }
 
@@ -210,64 +220,68 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
         {countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}
       </TableCell>
       <TableCell>{row.email}</TableCell>
-      <TableCell>
-        {row.isBlocked ? <DoNotDisturbAltIcon fontSize="small" sx={{ color: colors.ERROR }} /> :
-          <RoleViewer
-            key={row._id}
-            role={row.role}
-            disabled={row.isBlocked}
-            userDetails={userDetails}
-            updateRole={(newRole) => updateRole(row.googleID, newRole)}
-          />}
-      </TableCell>
-      <TableCell sx={{ py: 0 }}>
-        <IconButton
-          onClick={handleClick}
-          disabled={
-            !(
-              matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
-              matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)
-            )
-          }
-          sx={{ fontSize: "1rem !important" }}
-        >
-          <MoreVertIcon fontSize="1rem" />
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}
-          transformOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          sx={{
-            '& .MuiList-root': {
-              padding: '0px',
-            },
-          }}
-        >
-          {row.isBlocked ? (
-            <MenuItem onClick={() => updateStatus(row.googleID, false)}>
-              Unblock
-            </MenuItem>
-          ) : (
-            <MenuItem onClick={() => updateStatus(row.googleID, true)}>
-              Block
-            </MenuItem>
-          )}
-          {(!row.isBlocked && row.role == ROLE_CONSTANTS.user) && <MenuItem onClick={() => editProfile(row.googleID, row.role)} >
-            Edit Profile
-          </MenuItem>}
-        </Menu>
-      </TableCell>
+      { selectedTabValue === 0 && (
+        <TableCell>
+          {row.isBlocked ? <DoNotDisturbAltIcon fontSize="small" sx={{ color: colors.ERROR }} /> :
+            <RoleViewer
+              key={row._id}
+              role={row.role}
+              disabled={row.isBlocked}
+              userDetails={userDetails}
+              updateRole={(newRole) => updateRole(row.googleID, newRole)}
+            />}
+        </TableCell>
+      )}
+      { selectedTabValue === 0 && (
+        <TableCell sx={{ py: 0 }}>
+          <IconButton
+            onClick={handleClick}
+            disabled={
+              !(
+                matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
+                matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)
+              )
+            }
+            sx={{ fontSize: "1rem !important" }}
+          >
+            <MoreVertIcon fontSize="1rem" />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            transformOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            sx={{
+              '& .MuiList-root': {
+                padding: '0px',
+              },
+            }}
+          >
+            {row.isBlocked ? (
+              <MenuItem onClick={() => updateStatus(row.googleID, false)}>
+                Unblock
+              </MenuItem>
+            ) : (
+              <MenuItem onClick={() => updateStatus(row.googleID, true)}>
+                Block
+              </MenuItem>
+            )}
+            {(!row.isBlocked && (row.role == ROLE_CONSTANTS.user || row.role == ROLE_CONSTANTS.broker)) && <MenuItem onClick={() => editProfile(row.googleID, row.role)} >
+              Edit Profile
+            </MenuItem>}
+          </Menu>
+        </TableCell>
+      )}
       {(userDetails.role == 'superAdmin' && selectedTabValue == 1) &&<TableCell sx={{justifyContent: "center", display: "flex", gap: "12px"}}>
         <CheckCircleIcon onClick={() => UserApproveupdate(row.googleID, true, row)} sx={{ color: colors.SUCCESS }}/>
-        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false, row)} sx={{ color: colors.ERROR }}/>
+        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false, row )} sx={{ color: colors.ERROR }}/>
       </TableCell>}
     </TableRow>
   );

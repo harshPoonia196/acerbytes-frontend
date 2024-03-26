@@ -96,7 +96,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide }) {
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
                             <Typography variant="h6" sx={{ alignSelf: "center" }}>
-                                {form.published ? "Active" : "In Active"}
+                                {form.published ? "Published" : "Draft"}
                             </Typography>
                             <Typography variant="body1" sx={{ mt: 1 }}>
                                 {form.published ? formatDate(form.publishedAt) : 'Awaitng action'}

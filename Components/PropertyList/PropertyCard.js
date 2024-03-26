@@ -202,13 +202,7 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
               {propertyDetails?.overview?.completionYear}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={4}
-            md={2}
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
+          <Grid item xs={8} sm={6} md={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
             <Card
               sx={{
                 width: "fit-content",

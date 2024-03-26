@@ -153,7 +153,7 @@ function FloorPlanCard({
     } else if (edit) {
       let getSum = 0;
       rows.map((one) => {
-        getSum += parseInt(one.totalPrice);
+        getSum += parseInt(one.bsp);
       });
       let averagePriceSum = getSum / rows.length;
       const totalPriceValues = rows
@@ -200,12 +200,12 @@ function FloorPlanCard({
     } else {
       let getSum = 0;
       rows.map((one) => {
-        getSum += parseInt(one.totalPrice);
+        getSum += parseInt(one.bsp);
       });
       let averagePriceSum =
-        (getSum + parseInt(selectedItem.totalPrice)) / (rows.length + 1);
+        (getSum + parseInt(selectedItem.bsp)) / (rows.length + 1);
       let averagePriceDecrease =
-        (getSum - parseInt(selectedItem.totalPrice)) / (rows.length + 1);
+        (getSum - parseInt(selectedItem.bsp)) / (rows.length + 1);
       const totalPriceValues = valueArr
         .map((item) => parseFloat(item.totalPrice))
         .filter((value) => !isNaN(value));
@@ -225,7 +225,6 @@ function FloorPlanCard({
       let totalArea;
     if( [...rows,selectedItem].every(obj => obj.areaUnit.toLocaleLowerCase() === 'acres')){
      let areaCount =  [...rows,selectedItem].reduce((acc, obj) => parseInt(acc) + parseInt(obj.area), 0)
-     console.log(areaCount,'dddoo')
      const sqftPerAcre = 43560
      totalArea = areaCount * sqftPerAcre
       } 
@@ -369,7 +368,21 @@ else if(fieldName==='width'){
 
   const handleUnitArea = (e, type) => {
     if (type === 'textField') {
+      if (selectedItem.bsp) {
+        let calc =  selectedItem.bsp * e.target.value
+        let priceUnitValue = formatNumber(calc)
+        let finalValue = formatNumberWithCommas(calc)
+        setSelectedItem((prev) => ({
+          ...prev,
+          area: e.target.value,
+          totalPrice: calc,
+          priceUnit: priceUnitValue
+        }))
+      }
+      else{
       setSelectedItem((prev) => ({ ...prev, area: e.target.value }))
+
+      }
     } else {
       if (rows.length >= 1) {
         let check = rows.every(
@@ -542,8 +555,8 @@ else if(fieldName==='width'){
               error={localError?.["bsp"] || errors?.["unitsPlan.planList[0].bsp"]}
               value={selectedItem.bsp}
               handleChange={(e) => {
-                if (selectedItem.area && selectedItem.totalUnits) {
-                  let calc = selectedItem.totalUnits * selectedItem.area * e.target.value
+                if (selectedItem.area) {
+                  let calc =  selectedItem.area * e.target.value
                   let priceUnitValue = formatNumber(calc)
                   let finalValue = formatNumberWithCommas(calc)
                   setSelectedItem((prev) => ({
@@ -573,14 +586,14 @@ else if(fieldName==='width'){
                 errors?.["unitsPlan.planList[0].totalUnits"]
               }
               handleChange={(e) => {
-                let totalPriceCalc = e.target.value * selectedItem.area * selectedItem.bsp
-                let priceUnitValue = formatNumber(totalPriceCalc)
+                // let totalPriceCalc = e.target.value * selectedItem.area * selectedItem.bsp
+                // let priceUnitValue = formatNumber(totalPriceCalc)
                 let finalValue = formatNumberWithCommas(totalPriceCalc)
                 setSelectedItem((prev) => ({
                   ...prev,
                   totalUnits: e.target.value,
-                  totalPrice: totalPriceCalc,
-                  priceUnit: priceUnitValue
+                  // totalPrice: totalPriceCalc,
+                  // priceUnit: priceUnitValue
                 }))
               }}
             />

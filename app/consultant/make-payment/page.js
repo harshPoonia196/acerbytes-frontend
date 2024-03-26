@@ -4,6 +4,7 @@ import React from 'react'
 import { Container, Typography, Card, Box, Chip } from '@mui/material'
 import Image from 'next/image'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Qrimage from "../../../public/images/Upi.png"
 import Footer from 'Components/Footer';
 import CustomConsultantBreadScrumbs from 'Components/CommonLayouts/CustomConsultantBreadScrumbs';
 import { companyName } from 'Components/NavBar/Links';

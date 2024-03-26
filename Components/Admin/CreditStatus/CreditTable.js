@@ -193,7 +193,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
   );
 }
 
-function CreditTable() {
+function CreditTable({ onDashboardDataUpdate }) {
   const { userDetails } = useAuth();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
@@ -254,6 +254,10 @@ function CreditTable() {
           totalPages: response?.data?.totalPages,
           nextPage: response?.data?.nextPage,
           prevPage: response?.data?.prevPage,
+        });
+        onDashboardDataUpdate({
+          countInfo: { count: response?.data?.totalCount} || {},
+          userDetails
         });
       }
     } catch (error) {

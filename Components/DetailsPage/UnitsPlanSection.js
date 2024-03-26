@@ -77,10 +77,11 @@ function UnitsPlanSection(props) {
                 sm={3}
                 boxStyles={{ backgroundColor: "none" }}
               >
+                <Typography variant="h3">{unit?.name}</Typography>
                 <Typography variant="subtitle1">{unit?.propertyLayout ? unit?.propertyLayout : `${unit?.width}*${unit?.length}`}</Typography>
                 <Typography variant="h5">{unit?.areaValue} {unit?.areaUnit}</Typography>
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                  {unit?.bsp}
+                Bsp: {unit?.bsp}
                 </Typography>
               </GridItemWithCard>
             ))}

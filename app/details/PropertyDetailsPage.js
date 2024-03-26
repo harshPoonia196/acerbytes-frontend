@@ -55,7 +55,11 @@ import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
 import { getItem, getLoggedInUser } from "utills/utills";
-import { isEnquired, submitEnquiry, submitEnquiryUnauth } from "api/UserProfile.api";
+import {
+  isEnquired,
+  submitEnquiry,
+  submitEnquiryUnauth,
+} from "api/UserProfile.api";
 
 const tabHeight = 200;
 
@@ -456,20 +460,6 @@ const PropertyDetailsPage = ({ params }) => {
     []
   );
 
-  const hasEnquired = async () => {
-    let userDetail = getLoggedInUser();
-    if (userDetail?.role == "user") {
-      let response = await isEnquired(detailsPropertyId);
-      if (response.status === 200) {
-        setBrokerContact(response?.data?.data?.[0]);
-      }
-    }
-  };
-
-  React.useEffect(() => {
-    hasEnquired();
-  }, []);
-
   const divRef = useRef(null);
   const [heightOfFooter, setHeightOfFooter] = useState(0);
 
@@ -568,60 +558,62 @@ const PropertyDetailsPage = ({ params }) => {
               valueForMoneyData={propertyData?.valueForMoney}
             />
             {/* <FloorPlanSection /> */}
-            <Grid item xs={12} id="propertyConsultants">
-              <Card sx={{ p: 2 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sx={{ display: "flex" }}>
-                    <Box sx={{ flex: 1, alignSelf: "center" }}>
-                      <Typography variant="h4">
-                        Contact verified consultants
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <ConsultantsViewAll
-                        open={consultantsViewAll}
-                        handleClose={handleCloseConsultantsViewAll}
-                        propertyData={propertyData?.consultants}
-                      ></ConsultantsViewAll>
-                      <Chip
-                        label="View all"
-                        icon={<GroupIcon fontSize="small" />}
-                        size="small"
-                        onClick={handleOpenConsultantsViewAll}
-                        sx={{ fontSize: "0.875rem !important" }}
-                      />
-                    </Box>
+            {userDetails?.role === "user" && (
+              <Grid item xs={12} id="propertyConsultants">
+                <Card sx={{ p: 2 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sx={{ display: "flex" }}>
+                      <Box sx={{ flex: 1, alignSelf: "center" }}>
+                        <Typography variant="h4">
+                          Contact verified consultants
+                        </Typography>
+                      </Box>
+                      <Box>
+                        <ConsultantsViewAll
+                          open={consultantsViewAll}
+                          handleClose={handleCloseConsultantsViewAll}
+                          propertyData={propertyData?.consultants}
+                        ></ConsultantsViewAll>
+                        <Chip
+                          label="View all"
+                          icon={<GroupIcon fontSize="small" />}
+                          size="small"
+                          onClick={handleOpenConsultantsViewAll}
+                          sx={{ fontSize: "0.875rem !important" }}
+                        />
+                      </Box>
+                    </Grid>
+                    {propertyData?.consultants?.length > 0 &&
+                      propertyData?.consultants?.slice(0, 2).map((broker) => (
+                        <Grid item xs={12} sm={6} key={broker?.name}>
+                          <BrokerCard broker={broker} noReview />
+                        </Grid>
+                      ))}
+                    <Grid item xs={12}>
+                      <Box sx={{ display: "flex" }}>
+                        <Typography
+                          variant="body2"
+                          sx={{ flex: 1, alignSelf: "center" }}
+                        >
+                          Are you a property consultant, let Customers reach you
+                        </Typography>
+                        {userDetails?.role === "broker" && (
+                          <a href={`https://wa.me/+919818690582`}>
+                            <Chip
+                              label="Yes, show me here !"
+                              icon={<PersonAddIcon fontSize="small" />}
+                              size="small"
+                              sx={{ fontSize: "0.875rem" }}
+                              onClick={() => {}}
+                            />
+                          </a>
+                        )}
+                      </Box>
+                    </Grid>
                   </Grid>
-                  {propertyData?.consultants?.length > 0 &&
-                    propertyData?.consultants?.slice(0, 2).map((broker) => (
-                      <Grid item xs={12} sm={6} key={broker?.name}>
-                        <BrokerCard broker={broker} noReview />
-                      </Grid>
-                    ))}
-                  <Grid item xs={12}>
-                    <Box sx={{ display: "flex" }}>
-                      <Typography
-                        variant="body2"
-                        sx={{ flex: 1, alignSelf: "center" }}
-                      >
-                        Are you a property consultant, let Customers reach you
-                      </Typography>
-                      {userDetails?.role === "broker" && (
-                        <a href={`https://wa.me/+919818690582`}>
-                          <Chip
-                            label="Yes, show me here !"
-                            icon={<PersonAddIcon fontSize="small" />}
-                            size="small"
-                            sx={{ fontSize: "0.875rem" }}
-                            onClick={() => {}}
-                          />
-                        </a>
-                      )}
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Grid>
+                </Card>
+              </Grid>
+            )}
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
