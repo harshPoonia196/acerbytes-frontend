@@ -28,7 +28,6 @@ import {
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
 } from "utills/Constants";
-import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import colors from "styles/theme/colors";
 import {
@@ -38,6 +37,7 @@ import {
 } from "utills/CommonFunction";
 import { debounce } from "lodash";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import CustomSearch from "Components/CommonLayouts/CustomSearch";
 
 function PropertyList({ params }) {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -50,7 +50,6 @@ function PropertyList({ params }) {
   const [isLoading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
-  const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
   const [selectedOptions, setSelectedOptions] = useState(
     params.location ? { city: decodeURIComponent(params.location) } : {}
@@ -67,15 +66,14 @@ function PropertyList({ params }) {
     params.location ? [decodeURIComponent(params.location)] : []
   );
 
-  const handleSearch = (event) => {
-    const term = event.target.value.toLowerCase();
-    setSearchTerm(term);
-    setFocus(true);
-  };
-
+  const handleSearchButtonClick = () => {
+    performSearch();
+    setCurrentPage(1);
+};
+ 
   const getUserPropertyList = async (
     pageOptions,
-    searchTerm,
+    // searchTerm,
     selectedOptions,
     alignment,
     propertyvalue
@@ -168,7 +166,6 @@ function PropertyList({ params }) {
       setLoading(true);
       let res = await propertyByCity();
       if (res.status === 200) {
-        console.log(res.data.data);
         getLocationsCall(res.data.data);
       } else {
         console.log("err");
@@ -227,7 +224,7 @@ function PropertyList({ params }) {
   const handleReset = () => {
     setSearchTerm("");
     setSelectedOptions({});
-    setAlignment(1);
+    setAlignment(-1);
     setPropertyvalue("");
     setIsDisablePropertyType(true);
     setIsDisableLayoutType(true);
@@ -248,7 +245,7 @@ function PropertyList({ params }) {
 
     getUserPropertyList(
       pageOptions,
-      searchTerm,
+      // searchTerm,
       selectedOptions,
       alignment,
       propertyvalue
@@ -277,7 +274,7 @@ function PropertyList({ params }) {
     };
   }, [
     currentPage,
-    searchTerm,
+    // searchTerm,
     pageLimit,
     selectedOptions,
     alignment,
@@ -286,7 +283,7 @@ function PropertyList({ params }) {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedOptions, alignment, propertyvalue]);
+  }, [selectedOptions, alignment, propertyvalue]);
 
   useEffect(() => {
     getAllOptionDataList();
@@ -303,7 +300,7 @@ function PropertyList({ params }) {
     };
     getUserPropertyList(
       pageOptions,
-      searchTerm,
+      // searchTerm,
       selectedOptions,
       alignment,
       propertyvalue
@@ -319,7 +316,7 @@ function PropertyList({ params }) {
     };
     getUserPropertyList(
       pageOptions,
-      searchTerm,
+      // searchTerm,
       selectedOptions,
       alignment,
       propertyvalue
@@ -575,11 +572,11 @@ function PropertyList({ params }) {
             </Grid>
             <Grid item xs={36}>
               <Card>
-                <CustomSearchInput
+                <CustomSearch
                   value={searchTerm}
-                  onChange={handleSearch}
+                  onChange={(event) => setSearchTerm(event.target.value.toLowerCase())}
+                  onSearchButtonClick={handleSearchButtonClick} 
                   inputRef={inputRef}
-                  autoFocus={focus}
                 />
               </Card>
             </Grid>

@@ -14,13 +14,16 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import { getAllActiveAd } from "api/consultant.api";
+import Loader from "Components/CommonLayouts/Loading";
+import { useSnackbar } from "utills/SnackbarContext";
 
 const rows = [
   {
@@ -135,7 +138,7 @@ function EnhancedTableHead(props) {
 }
 
 function RowStructure({ row }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -203,6 +206,58 @@ function MyLinksTable() {
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [isLoading, setLoading] = useState(false);
+  const [activeAdData, setActiveAdData] = useState([]);
+
+  let transformData = (data) => {
+    return data?.map((item) => ({
+      id: item?._id,
+      // consultantName: item.overview?.builder,
+      // phone: item.overview?.projectName,
+      propertyType: item.propertyData?.overview?.projectCategory,
+      propertyName: item.propertyData?.overview?.projectName,
+      // link: item.location?.sector,
+      status: item?.status,
+      // validFrom: item?.modifiedAt,
+      // validTo: item?.published
+      // expiresIn: item?.published
+    }));
+  };
+
+
+  const { openSnackbar } = useSnackbar();
+
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
+  const getAlllActiveAdList = async (pageOptions) => {
+    try {
+      setLoading(true);
+      const querParams = {
+        ...pageOptions,
+        // ...(searchTerm ? { search: searchTerm } : {}),
+      };
+      let res = await getAllActiveAd(querParams);
+      if (res.status === 200) {
+        let transformedData = transformData(res?.data?.data || []);
+        setActiveAdData(transformedData);
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAlllActiveAdList()
+  }, [])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -230,9 +285,9 @@ function MyLinksTable() {
 
   return (
     <>
-
+      {isLoading && <Loader />}
       {
-        rows.length > 0 ? (
+        activeAdData?.length > 0 ? (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <EnhancedTableHead
@@ -241,7 +296,7 @@ function MyLinksTable() {
                 onRequestSort={handleRequestSort}
               />
               <TableBody>
-                {rows.map((row) => (
+                {activeAdData?.map((row) => (
                   <RowStructure row={row} />
                 ))}
               </TableBody>
@@ -252,7 +307,7 @@ function MyLinksTable() {
               }}
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={rows.length}
+              count={activeAdData?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
