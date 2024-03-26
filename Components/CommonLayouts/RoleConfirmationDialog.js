@@ -23,7 +23,7 @@ const RoleViewerDropdown = ({ row, setuserApproveStatusConfirmationDialog}) => {
   return (
     <Box >
       <FormControl size="small" variant="standard" >
-        <Typography variant="body" component="label">Role</Typography>
+        <Typography variant="body" component="label" sx={{paddingBottom: "5px"}}>Role</Typography>
         <Select
           labelId="dropdown-label"
           id="dropdown"
@@ -53,11 +53,16 @@ const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserAp
 
   return (
     <Box >
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} 
+      sx={{
+        '& .MuiDialog-paper': {height: '310px', width: "400px" }, 
+      }}
+
+      >
         <DialogTitle>Confirmation</DialogTitle>
         <DialogContent >
           <RoleViewerDropdown row={selectedRowData?.data?.row} setuserApproveStatusConfirmationDialog={setuserApproveStatusConfirmationDialog}/>
-          <DialogContentText sx={{paddingTop: "12px"}}>
+          <DialogContentText sx={{paddingTop: "40px"}}>
             Are you sure you want to perform this action?
           </DialogContentText>
         </DialogContent>
