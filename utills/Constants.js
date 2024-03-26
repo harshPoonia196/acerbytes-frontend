@@ -45,6 +45,16 @@ export const ROLES = [
     value: "broker",
     isVisible: true,
   },
+  {
+    label: "Customer Support",
+    value: "customerSupport",
+    isVisible: true,
+  },
+  {
+    label: "Sales",
+    value: "sales",
+    isVisible: true,
+  },
 ];
 
 export const countries = [

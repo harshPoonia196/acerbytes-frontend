@@ -19,6 +19,7 @@ import {
   getAllOptions,
   getAllProperty,
   getLocations,
+  propertyByCity,
 } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
@@ -51,7 +52,9 @@ function PropertyList({ params }) {
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
-  const [selectedOptions, setSelectedOptions] = useState(params.location ? { city: decodeURIComponent(params.location) } : {});
+  const [selectedOptions, setSelectedOptions] = useState(
+    params.location ? { city: decodeURIComponent(params.location) } : {}
+  );
   const [propertyvalue, setPropertyvalue] = useState("");
   const [selectOption, setSelectOption] = useState({});
   const [isDisablePropertyType, setIsDisablePropertyType] = useState(true);
@@ -60,7 +63,9 @@ function PropertyList({ params }) {
   const [cities, setCities] = useState([]);
   const [layoutTypeApplicable, setLayoutTypeApplicable] = useState([]);
   const [locationDisable, setLocationDisable] = useState(true);
-  const [selectedCity, setSelectedCity] = useState(params.location ? [ decodeURIComponent(params.location)] : []);
+  const [selectedCity, setSelectedCity] = useState(
+    params.location ? [decodeURIComponent(params.location)] : []
+  );
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
@@ -100,7 +105,7 @@ function PropertyList({ params }) {
         key: propertyvalue,
       };
       if (userDetails?._id) {
-        querParams.brokerId = userDetails?._id
+        querParams.brokerId = userDetails?._id;
       }
       if (Object.keys(data).length === 0) {
         delete querParams["searchParams"];
@@ -113,8 +118,8 @@ function PropertyList({ params }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -132,8 +137,8 @@ function PropertyList({ params }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -141,11 +146,13 @@ function PropertyList({ params }) {
     }
   };
 
-  const getLocationsCall = async () => {
+  const getLocationsCall = async (newdata) => {
     try {
       let res = await getLocations();
       if (res.status === 200) {
-        let transformLocation = transformDocumentsLocation(res.data.data);
+        const filteredCityDetails = res?.data?.data?.filter(cityDetail => 
+          newdata?.some(item => item.city === cityDetail.city));
+        let transformLocation = transformDocumentsLocation(filteredCityDetails);
         setLocationData({ ...transformLocation });
         setCities(Object.keys(transformLocation));
       } else {
@@ -153,6 +160,28 @@ function PropertyList({ params }) {
       }
     } catch (err) {
       openSnackbar("Error getting location  details", "error");
+    }
+  };
+
+  const getAllPropertyByCity = async () => {
+    try {
+      setLoading(true);
+      let res = await propertyByCity();
+      if (res.status === 200) {
+        console.log(res.data.data);
+        getLocationsCall(res.data.data);
+      } else {
+        console.log("err");
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -261,7 +290,8 @@ function PropertyList({ params }) {
 
   useEffect(() => {
     getAllOptionDataList();
-    getLocationsCall();
+    // getLocationsCall();
+    getAllPropertyByCity();
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -296,7 +326,6 @@ function PropertyList({ params }) {
     );
   };
 
-
   const handleChangeData = (event, value) => {
     setPropertyvalue(value);
     if (value !== propertyvalue) {
@@ -309,7 +338,6 @@ function PropertyList({ params }) {
       }
     }
   };
-
 
   return (
     <>
@@ -342,7 +370,9 @@ function PropertyList({ params }) {
                       boxShadow: "none",
                     }}
                   >
-                    <Typography variant="h2">{decodeURIComponent(params.location)}</Typography>
+                    <Typography variant="h2">
+                      {decodeURIComponent(params.location)}
+                    </Typography>
                     <Typography variant="caption">
                       Noida's strategic location, robust infrastructure, and
                       flourishing business environment have contributed to its
@@ -470,37 +500,62 @@ function PropertyList({ params }) {
                   value="score"
                   selected={propertyvalue === "score"}
                   sx={{ flex: 1, justifyContent: "space-around" }}
-
                 >
-                  Score {propertyvalue === "score" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
+                  Score{" "}
+                  {propertyvalue === "score" &&
+                    (alignment === -1 ? (
+                      <ArrowDownwardIcon fontSize="small" />
+                    ) : (
+                      <ArrowUpwardIcon fontSize="small" />
+                    ))}
                 </ToggleButton>
                 <ToggleButton
                   value="price"
                   selected={propertyvalue === "price"}
                   sx={{ flex: 1, justifyContent: "space-around" }}
                 >
-                  Price  {propertyvalue === "price" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
-
+                  Price{" "}
+                  {propertyvalue === "price" &&
+                    (alignment === -1 ? (
+                      <ArrowDownwardIcon fontSize="small" />
+                    ) : (
+                      <ArrowUpwardIcon fontSize="small" />
+                    ))}
                 </ToggleButton>
                 <ToggleButton
                   value="area"
                   selected={propertyvalue === "area"}
                   sx={{ flex: 1, justifyContent: "space-around" }}
                 >
-                  Area  {propertyvalue === "area" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
-
+                  Area{" "}
+                  {propertyvalue === "area" &&
+                    (alignment === -1 ? (
+                      <ArrowDownwardIcon fontSize="small" />
+                    ) : (
+                      <ArrowUpwardIcon fontSize="small" />
+                    ))}
                 </ToggleButton>
                 <ToggleButton
                   value="completion"
                   selected={propertyvalue === "completion"}
                   sx={{ flex: 1, justifyContent: "space-around" }}
                 >
-                  Completion  {propertyvalue === "completion" && (alignment === -1 ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />)}
-
+                  Completion{" "}
+                  {propertyvalue === "completion" &&
+                    (alignment === -1 ? (
+                      <ArrowDownwardIcon fontSize="small" />
+                    ) : (
+                      <ArrowUpwardIcon fontSize="small" />
+                    ))}
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={36} sm={18} sx={{ textAlign: 'end', alignSelf: 'end' }}>
+            <Grid
+              item
+              xs={36}
+              sm={18}
+              sx={{ textAlign: "end", alignSelf: "end" }}
+            >
               <Button
                 variant="h6"
                 sx={{
@@ -529,24 +584,21 @@ function PropertyList({ params }) {
               </Card>
             </Grid>
             <Grid item xs={36}>
-              {
-                count?.totalCount === 0 ? (
-                  <NoDataCard />
-                ) : (
-                  <Grid container spacing={0.25}>
-                    {property?.map((propertyDetails) => (
-                      <Grid item xs={12}>
-                        <PropertyCard
-                          createdDate={propertyDetails?.created_at}
-                          isShortListPageCard={propertyDetails?.isFav}
-                          propertyDetails={propertyDetails}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                )
-              }
-
+              {count?.totalCount === 0 ? (
+                <NoDataCard />
+              ) : (
+                <Grid container spacing={0.25}>
+                  {property?.map((propertyDetails) => (
+                    <Grid item xs={12}>
+                      <PropertyCard
+                        createdDate={propertyDetails?.created_at}
+                        isShortListPageCard={propertyDetails?.isFav}
+                        propertyDetails={propertyDetails}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </Grid>
             <Grid sx={{ marginLeft: "auto", marginRight: "0" }}>
               <TablePagination

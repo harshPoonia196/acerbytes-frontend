@@ -11,3 +11,8 @@ export const updateUserRole = (payload) => {
 export const updateUserStatus = (payload) => {
   return axiosInstance.post(`/higheruser/update/userStatus`, payload);
 };
+
+
+export const UserApprove = (payload) => {
+  return axiosInstance.post(`/higheruser/update/userApprove`, payload);
+};
