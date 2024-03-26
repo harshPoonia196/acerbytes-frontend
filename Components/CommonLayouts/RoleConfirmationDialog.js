@@ -44,7 +44,6 @@ const RoleViewerDropdown = ({ row, setuserApproveStatusConfirmationDialog, isApp
 };
 
 const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserApproveStatusConfirmationDialog}) => {
-  console.log(selectedRowData)
   const handleClose = () => {
     handleAction(false);
   };
