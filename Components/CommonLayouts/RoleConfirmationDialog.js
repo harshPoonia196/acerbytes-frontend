@@ -15,13 +15,14 @@ import {
 import CustomButton from "./Loading/LoadingButton";
 import { ROLES } from "utills/Constants";
 
-const RoleViewerDropdown = ({ row, setuserApproveStatusConfirmationDialog}) => {
+const RoleViewerDropdown = ({ row, setuserApproveStatusConfirmationDialog, isApproved}) => {
   const handleChange = (event) => {
     setuserApproveStatusConfirmationDialog(pre => ({...pre, data: {...pre.data, row: {...pre.data.row, role: event.target.value}}}));
   };
 
   return (
     <Box >
+      {isApproved?.isApproved && (
       <FormControl size="small" variant="standard" >
         <Typography variant="body" component="label" sx={{paddingBottom: "5px"}}>Role</Typography>
         <Select
@@ -37,12 +38,12 @@ const RoleViewerDropdown = ({ row, setuserApproveStatusConfirmationDialog}) => {
           })}
         </Select>
       </FormControl>
-
+      )}
     </Box>
   );
 };
 
-const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserApproveStatusConfirmationDialog }) => {
+const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserApproveStatusConfirmationDialog, isSelectVisible, setSelectVisibility }) => {
   const handleClose = () => {
     handleAction(false);
   };
@@ -61,7 +62,7 @@ const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserAp
       >
         <DialogTitle>Confirmation</DialogTitle>
         <DialogContent >
-          <RoleViewerDropdown row={selectedRowData?.data?.row} setuserApproveStatusConfirmationDialog={setuserApproveStatusConfirmationDialog}/>
+          <RoleViewerDropdown row={selectedRowData?.data?.row} setuserApproveStatusConfirmationDialog={setuserApproveStatusConfirmationDialog} isApproved={selectedRowData?.data}/>
           <DialogContentText sx={{paddingTop: "40px"}}>
             Are you sure you want to perform this action?
           </DialogContentText>
