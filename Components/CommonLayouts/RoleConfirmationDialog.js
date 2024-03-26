@@ -43,7 +43,8 @@ const RoleViewerDropdown = ({ row, setuserApproveStatusConfirmationDialog, isApp
   );
 };
 
-const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserApproveStatusConfirmationDialog, isSelectVisible, setSelectVisibility }) => {
+const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserApproveStatusConfirmationDialog}) => {
+  console.log(selectedRowData)
   const handleClose = () => {
     handleAction(false);
   };
@@ -52,18 +53,27 @@ const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserAp
     handleAction(true);
   };
 
+  const dialogSize = selectedRowData?.data?.isApproved
+    ? { height: '310px', width: '400px' }
+    : { height: 'auto' };
+
+  
+  const paddingTopStyle = selectedRowData?.data?.isApproved
+    ? { paddingTop: '40px' }
+    : {paddingTop: '5px'};
+
   return (
     <Box >
       <Dialog open={open} onClose={handleClose} 
       sx={{
-        '& .MuiDialog-paper': {height: '310px', width: "400px" }, 
+        '& .MuiDialog-paper': dialogSize,
       }}
 
       >
         <DialogTitle>Confirmation</DialogTitle>
         <DialogContent >
           <RoleViewerDropdown row={selectedRowData?.data?.row} setuserApproveStatusConfirmationDialog={setuserApproveStatusConfirmationDialog} isApproved={selectedRowData?.data}/>
-          <DialogContentText sx={{paddingTop: "40px"}}>
+          <DialogContentText sx={paddingTopStyle}>
             Are you sure you want to perform this action?
           </DialogContentText>
         </DialogContent>
