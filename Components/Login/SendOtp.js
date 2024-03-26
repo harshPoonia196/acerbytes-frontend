@@ -22,6 +22,10 @@ const SendOtp = ({ form, handleChange, sendOtpFun }) => {
             newErrors.phone = 'Phone number is required.';
         }
 
+        if (!([0, 10].includes(form.phone?.toString()?.length))) {
+            newErrors.phone = 'Phone number is invalid.';
+        }
+
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
