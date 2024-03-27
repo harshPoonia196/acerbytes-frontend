@@ -268,7 +268,6 @@ const PropertyListTable = ({ setCount }) => {
 
       let res = await getAllAdminProperty(objectToQueryString(querParams));
       if (res.status === 200) {
-        console.log(res.data?.data)
         let transformedData = transformData(res.data?.data || []);
         setPropertyList(transformedData);
         setCount(res?.data.totalCount);
