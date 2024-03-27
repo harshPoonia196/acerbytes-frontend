@@ -46,16 +46,19 @@ const NewInputFieldStructure = ({
     } else {
       if (label == "Pincode") {
         const numericValue = event.target.value.replace(/[^0-9]/g, '');
-
         // Example: Limit to 6 characters
         const truncatedValue = numericValue.slice(0, 6)
-        handleChange(truncatedValue);
+        handleChange({
+          ...event,
+          target: {
+            ...event.target,
+            value: truncatedValue,
+          },
+        });
       }
       else {
         handleChange(event);
       }
-
-
     }
   };
 

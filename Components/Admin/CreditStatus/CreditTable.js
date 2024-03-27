@@ -171,6 +171,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
             aria-haspopup="true"
             onClick={handleClick}
             size="small"
+            
           >
             <MoreVertIcon fontSize="small" />
           </IconButton>
@@ -183,8 +184,16 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           MenuListProps={{
             "aria-labelledby": "basic-button",
           }}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
         >
-          <MenuItem onClick={() => handlePopuChange(true)}>
+          <MenuItem  onClick={() => handlePopuChange(true)}>
             Assign points
           </MenuItem>
         </Menu>
