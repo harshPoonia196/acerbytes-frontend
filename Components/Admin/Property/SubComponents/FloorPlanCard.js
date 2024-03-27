@@ -263,6 +263,8 @@ function FloorPlanCard({
         areaUnit: "Sqft",
         priceUnit:"",
         totalUnits: "",
+        length:'',
+        width:"",
         totalPrice: "",
         priceUnit: "Crore",
         bsp: "",
