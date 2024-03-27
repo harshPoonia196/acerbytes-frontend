@@ -712,6 +712,7 @@ else if(fieldName==='width'){
               <TableCell align="left" >Area Unit</TableCell>
               <TableCell align="left" >Base Selling Price</TableCell>
               <TableCell align="left" >Total Price</TableCell>
+              <TableCell align="left" >Total Units</TableCell>
               <TableCell align="left" >Applicable Year</TableCell>
               <TableCell align="left" >Applicable Month</TableCell>
               <TableCell align="left" >Edit</TableCell>
@@ -762,6 +763,11 @@ else if(fieldName==='width'){
                 )}
                   {row.totalPrice ? (
                   <TableCell align="center">{formatNumberWithCommas(row.totalPrice)}</TableCell>
+                ) : (
+                  "-"
+                )}
+                 {row.totalUnits ? (
+                  <TableCell align="center">{formatNumberWithCommas(row.totalUnits)}</TableCell>
                 ) : (
                   "-"
                 )}

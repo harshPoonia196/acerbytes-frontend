@@ -97,14 +97,31 @@ const UploadMarketingImage = ({
                 handleChange(response.data.data.Location,"marketing","image")
                 handleClose()
             }
+           else if(response.data.status===413){
+                showToaterMessages(
+               
+                    "Image size is too large",
+                    "error"
+                  );
+            }
         }
         catch (error) {
-            showToaterMessages(
-              error?.response?.data?.message ||
-              error?.message ||
-              "Error fetching state list",
-              "error"
-            );
+            if(response.data.status===413){
+                showToaterMessages(
+               
+                    "Image size is too large",
+                    "error"
+                  );
+            }
+            else{
+                showToaterMessages(
+                    error?.response?.data?.message ||
+                    error?.message ||
+                    "Error fetching state list",
+                    "error"
+                  );
+            }
+           
           }
           finally {
             setLoading(false);
