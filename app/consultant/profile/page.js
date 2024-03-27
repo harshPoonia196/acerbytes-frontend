@@ -455,6 +455,7 @@ return ;
       brokerProfileInfo?.alternateEmail &&
       !validateEmail(brokerProfileInfo?.alternateEmail)
     ) {
+      isError= true;
       error['alternateEmail'] = true;
     } else {
       error['alternateEmail'] = false;
@@ -464,6 +465,7 @@ return ;
       brokerProfileInfo?.serviceDetails?.companyEmail &&
       !validateEmail(brokerProfileInfo?.serviceDetails?.companyEmail)
     ) {
+      isError= true;
       error['companyEmail'] = true;
     } else {
       error['companyEmail'] = false;
@@ -471,6 +473,7 @@ return ;
 
     if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
       error['reraNumber'] = true;
+      isError= true;
     } else {
       error['reraNumber'] = false;
     }
@@ -487,9 +490,21 @@ return ;
       error['phone'] = false;
     }
 
+    if (brokerProfileInfo?.serviceDetails?.registeredPhone?.number && !([0, 10].includes(brokerProfileInfo?.serviceDetails?.registeredPhone?.number?.toString()?.length))) {
+      error['registeredPhone'] = true;
+      isError= true;
+    } else {
+      error['registeredPhone'] = false;
+    }
+
+
     setErrorInvalid({
       ...error,
     });
+
+    if(isError){
+      return;
+    }
 
     const requestBody = {
       name: brokerProfileInfo?.name,
@@ -897,6 +912,7 @@ return ;
                       )
                       
                     }
+                    error={errorInvalid.registeredPhone}
                   />
                 </Grid>
               </Card>

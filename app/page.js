@@ -18,6 +18,7 @@ import { clearItem, getItem } from "utills/utills";
 import { propertyRedirectKey } from "utills/Constants";
 import { propertyByCity } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
+import { useSnackbar } from "utills/SnackbarContext";
 
 export default function Home() {
   const router = useRouter();
@@ -52,6 +53,11 @@ export default function Home() {
     }
     getAllPropertyByCity()
   }, []);
+
+  const { openSnackbar } = useSnackbar();
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
 
   return (
     <>

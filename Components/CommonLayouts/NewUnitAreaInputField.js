@@ -68,6 +68,7 @@ const NewUnitAreaInputField = ({
             value={value}
             size="small"
             InputProps={{
+              min:"0",
               startAdornment: (
                 <InputAdornment position="start">
                   <TextField
@@ -76,7 +77,7 @@ const NewUnitAreaInputField = ({
                     defaultValue="Acres"
                     value={unitValue || ''}
                     variant="standard"
-                    InputProps={{
+                    InputProps={{ min:"0",
                       disableUnderline: true,
                     }}
                   >

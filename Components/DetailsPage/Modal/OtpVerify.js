@@ -8,7 +8,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import DoneIcon from "@mui/icons-material/Done";
@@ -17,6 +17,8 @@ import colors from "styles/theme/colors";
 import { clearItem } from "utills/utills";
 import { enquiryFormKey } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { sendOtpAPI } from "api/Auth.api";
+import { useSnackbar } from "utills/SnackbarContext";
 
 function OtpVerify({
   open,
@@ -24,11 +26,34 @@ function OtpVerify({
   handleOpen,
   handleAlternateSignIn,
   formData,
-  handleSubmit
+  handleSubmit,
 }) {
   const [otp, setOtp] = useState("");
 
   const [isVerified, setIsVerified] = useState(false);
+
+  const { openSnackbar } = useSnackbar();
+
+  const handleSendOtp = async (isResend) => {
+    let payload = {
+      phoneNumber: formData?.number,
+      countryCode: formData?.countryCode,
+    };
+    console.log("payload: ", payload);
+    const res = await sendOtpAPI(payload);
+    if (res.status === 200) {
+      openSnackbar("Verfication code send successfully", "success");
+      if (!isResend) {
+        setOtp("");
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      handleSendOtp();
+    }
+  }, [open]);
 
   return (
     <Dialog
@@ -92,18 +117,16 @@ function OtpVerify({
               handleClose();
               handleOpen();
             }}
-
             ButtonText={"Back"}
           />
           <CustomButton
             startIcon={<DoneIcon />}
             variant="contained"
             onClick={() => {
-              handleSubmit(formData);
+              handleSubmit({ ...(formData || {}), otp: otp });
               handleAlternateSignIn();
               handleClose();
             }}
-
             ButtonText={"Verify"}
           />
         </DialogActions>

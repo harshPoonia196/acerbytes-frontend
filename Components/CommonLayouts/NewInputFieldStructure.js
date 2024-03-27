@@ -83,6 +83,16 @@ const NewInputFieldStructure = ({
             fullWidth
             value={value}
             type={type}
+           inputProps={
+            
+            name==="minFloors" || name === "maxFloors"? {
+        
+            min:"1"}
+            :{
+              min:"0"
+            }
+           
+           }
             size="small"
             defaultValue={defaultValue}
             sx={sx}
@@ -98,6 +108,16 @@ const NewInputFieldStructure = ({
             disabled={disabled}
             type={type}
             id={name}
+            inputProps={
+            
+              name==="minFloors" || name === "maxFloors" ? {
+          
+              min:"1"}
+              :{
+                min:"0"
+              }
+             
+             }
             onChange={changeHandler}
             variant={variant ? variant : "standard"}
             fullWidth

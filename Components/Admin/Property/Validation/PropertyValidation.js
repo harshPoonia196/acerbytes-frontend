@@ -80,18 +80,23 @@ const layoutSchema = Joi.object({
 
       return value;
     })
-    .when(Joi.ref("...overview.projectType"), {
-      is: Joi.array()
-        .items(
-          Joi.object({
-             label: Joi.string().valid("Land","Shop","Restaurant").required(),
-            value: Joi.string().valid("Land","Shop","Restaurant").required(),
-          })
-        )
-        .required(),
+    .when(Joi.ref("...overview.projectCategory"), {
+      is: Joi.string().valid("Commercial").required(),
       then: Joi.number().allow("").optional(),
-      otherwise: Joi.number().required(),
+        otherwise: Joi.number().required(),
     }),
+    // .when(Joi.ref("...overview.projectType"), {
+    //   is: Joi.array()
+    //     .items(
+    //       Joi.object({
+    //          label: Joi.string().valid("Land","Shop","Restaurant").required(),
+    //         value: Joi.string().valid("Land","Shop","Restaurant").required(),
+    //       })
+    //     )
+    //     .required(),
+    //   then: Joi.number().allow("").optional(),
+    //   otherwise: Joi.number().required(),
+    // }),
 
   layoutType: Joi.array()
   .custom((value, helpers) => {
@@ -105,18 +110,23 @@ const layoutSchema = Joi.object({
 
     return value;
   })
-  .when(Joi.ref("...overview.projectType"), {
-    is: Joi.array()
-      .items(
-        Joi.object({
-          label: Joi.string().valid("Land","Shop","Restaurant").required(),
-          value: Joi.string().valid("Land","Shop","Restaurant").required(),
-        })
-      )
-      .required(),
+  .when(Joi.ref("...overview.projectCategory"), {
+    is: Joi.string().valid("Commercial").required(),
     then: Joi.array().allow(),
-    otherwise: Joi.array().min(1).items(Joi.object()).required(),
+      otherwise: Joi.array().min(1).items(Joi.object()).required(),
   }),
+  // .when(Joi.ref("...overview.projectType"), {
+  //   is: Joi.array()
+  //     .items(
+  //       Joi.object({
+  //         label: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //         value: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //       })
+  //     )
+  //     .required(),
+  //   then: Joi.array().allow(),
+  //   otherwise: Joi.array().min(1).items(Joi.object()).required(),
+  // }),
   // layoutType: Joi.array().when(Joi.ref("...overview.projectCategory"), {
   //   is: Joi.string().valid("Commercial"),
   //   then: Joi.array().allow(),
@@ -138,18 +148,23 @@ const layoutSchema = Joi.object({
 
     return value;
   })
-  .when(Joi.ref("...overview.projectType"), {
-    is: Joi.array()
-      .items(
-        Joi.object({
-          label: Joi.string().valid("Land","Shop","Restaurant").required(),
-          value: Joi.string().valid("Land","Shop","Restaurant").required(),
-        })
-      )
-      .required(),
+  .when(Joi.ref("...overview.projectCategory"), {
+    is: Joi.string().valid("Commercial").required(),
     then: Joi.number().allow(""),
     otherwise:  Joi.number().required().min(0).precision(2)
   }),
+  // .when(Joi.ref("...overview.projectType"), {
+  //   is: Joi.array()
+  //     .items(
+  //       Joi.object({
+  //         label: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //         value: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //       })
+  //     )
+  //     .required(),
+  //   then: Joi.number().allow(""),
+  //   otherwise:  Joi.number().required().min(0).precision(2)
+  // }),
   minFloors: Joi.number()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
@@ -162,18 +177,23 @@ const layoutSchema = Joi.object({
 
     return value;
   })
-  .when(Joi.ref("...overview.projectType"), {
-    is: Joi.array()
-      .items(
-        Joi.object({
-          label: Joi.string().valid("Land","Shop","Restaurant").required(),
-          value: Joi.string().valid("Land","Shop","Restaurant").required(),
-        })
-      )
-      .required(),
+  .when(Joi.ref("...overview.projectCategory"), {
+    is: Joi.string().valid("Commercial").required(),
     then: Joi.number().allow(""),
     otherwise: Joi.number().required().less(Joi.ref('maxFloors')).precision(2),
   }),
+  // .when(Joi.ref("...overview.projectType"), {
+  //   is: Joi.array()
+  //     .items(
+  //       Joi.object({
+  //         label: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //         value: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //       })
+  //     )
+  //     .required(),
+  //   then: Joi.number().allow(""),
+  //   otherwise: Joi.number().required().less(Joi.ref('maxFloors')).precision(2),
+  // }),
     //   "numberOfBuildings",
   //   "layoutType",
   //  "floors",
@@ -198,18 +218,23 @@ const layoutSchema = Joi.object({
 
     return value;
   })
-  .when(Joi.ref("...overview.projectType"), {
-    is: Joi.array()
-      .items(
-        Joi.object({
-          label: Joi.string().valid("Land","Shop","Restaurant").required(),
-          value: Joi.string().valid("Land","Shop","Restaurant").required(),
-        })
-      )
-      .required(),
+  .when(Joi.ref("...overview.projectCategory"), {
+    is: Joi.string().valid("Commercial").required(),
     then: Joi.number().allow(""),
-    otherwise:  Joi.number().allow("").optional(),
-  }), 
+    otherwise: Joi.number().allow("").optional(),
+  }),
+  // .when(Joi.ref("...overview.projectType"), {
+  //   is: Joi.array()
+  //     .items(
+  //       Joi.object({
+  //         label: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //         value: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //       })
+  //     )
+  //     .required(),
+  //   then: Joi.number().allow(""),
+  //   otherwise:  Joi.number().allow("").optional(),
+  // }), 
   greenDensity: Joi.number()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;
@@ -222,22 +247,31 @@ const layoutSchema = Joi.object({
 
     return value;
   })
-  .when(Joi.ref("...overview.projectType"), {
-    is: Joi.array()
-      .items(
-        Joi.object({
-          label: Joi.string().valid("Land","Shop","Restaurant").required(),
-          value: Joi.string().valid("Land","Shop","Restaurant").required(),
-        })
-      )
-      .required(),
+  .when(Joi.ref("...overview.projectCategory"), {
+    is: Joi.string().valid("Commercial").required(),
     then: Joi.number().allow(""),
-    otherwise:  Joi.when("greenArea", {
+    otherwise: Joi.when("greenArea", {
       is: Joi.string().not("").required(),
       then: Joi.number().required(),
       otherwise: Joi.number().optional(),
     }),
   }),
+  // .when(Joi.ref("...overview.projectType"), {
+  //   is: Joi.array()
+  //     .items(
+  //       Joi.object({
+  //         label: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //         value: Joi.string().valid("Land","Shop","Restaurant").required(),
+  //       })
+  //     )
+  //     .required(),
+  //   then: Joi.number().allow(""),
+  //   otherwise:  Joi.when("greenArea", {
+  //     is: Joi.string().not("").required(),
+  //     then: Joi.number().required(),
+  //     otherwise: Joi.number().optional(),
+  //   }),
+  // }),
 
 
   // greenArea: Joi.number().allow("").optional(),
