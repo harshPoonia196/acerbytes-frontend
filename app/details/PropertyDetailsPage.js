@@ -488,8 +488,7 @@ const PropertyDetailsPage = ({ params }) => {
         handleOpen={handleOpenPersonalizeAds}
         handleClose={handleClosePersonalizeAds}
       />
-
-      {userDetails?.role === "broker" && !propertyData.isActiveAd ? (
+      {userDetails?.role === "broker" && (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
         <AdsSection
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
           handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
