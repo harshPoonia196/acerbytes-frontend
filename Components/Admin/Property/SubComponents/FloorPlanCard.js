@@ -243,7 +243,7 @@ function FloorPlanCard({
   };
   const addFloorPlan = () => {
 
-    let validationSchema = ["shop", "land", "restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
+    let validationSchema = ["commercial"].includes(form.overview.projectCategory.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
     const { error } = validationSchema?.validate(selectedItem, {
       abortEarly: false,
     });
@@ -274,7 +274,7 @@ function FloorPlanCard({
     } 
     else {
      
-        console.log("🚀 ~ validateForm ~ error:", error.details)
+        console.log("🚀 ~ validateForm ~ error:", error.details,selectedItem)
         const validationErrors = {};
         error.details.forEach((detail) => {
           validationErrors[detail?.context?.label] = detail?.message;
@@ -299,7 +299,7 @@ else if(fieldName==='width'){
 
   const editFloorPlan = () => {
     if (editItem >= 0) {
-      let validationSchema = ["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
+      let validationSchema = ["commercial"].includes(form.overview.projectCategory.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
     const { error } = validationSchema?.validate(selectedItem, {
       abortEarly: false,
     });
@@ -450,7 +450,7 @@ else if(fieldName==='width'){
                 }))
               }
             />
-            { !["shop","land","restaurant"].includes(selectedItem.propertyType.toLocaleLowerCase())?
+            { !["commercial"].includes(form.overview.projectCategory.toLocaleLowerCase())?
              <NewSelectTextFieldStructure
               label="Unit"
               isEdit={isEdit}
