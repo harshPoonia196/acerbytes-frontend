@@ -134,6 +134,12 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const open = Boolean(anchorEl);
 
+  const { openSnackbar } = useSnackbar();
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -200,7 +206,19 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
         >
           <MenuItem
             onClick={() => {
-              managePublishActive(row.id, !row.published);
+              if(row.rera==='yes' && row.published===false){
+                managePublishActive(row.id, !row.published);
+              }
+              else if(row.published===true){
+                managePublishActive(row.id, !row.published);
+              }
+              else{
+                openSnackbar( "RERA message needs to be provided for this property", "error");
+                // showToaterMessages(
+                //  "RERA message needs to be provided for this property",
+                // );
+              }
+           
               handleClose();
             }}
           >
@@ -230,6 +248,7 @@ const PropertyListTable = ({ setCount }) => {
   let transformData = (data) => {
     return data?.map((item) => ({
       id: item._id,
+      rera:item.regulatoryClearance.reraApproved.toLowerCase(),
       builder: item.overview?.builder,
       project: item.overview?.projectName,
       city: item.location?.city,

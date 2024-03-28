@@ -1380,8 +1380,8 @@ switch (label.toLowerCase()) {
             isEdit={isEdit}
           />
           <Grid item xs={12} sx={{ textAlign: "end" }}>
-            <CustomButton onClick={() => validateForm(false)} variant="contained"
-              ButtonText={editPage ? "Update" : "Save"} />
+            {/* <CustomButton onClick={() => validateForm(false)} variant="contained"
+              ButtonText={editPage ? "Update" : "Save"} /> */}
             <CustomButton onClick={() => validateForm(true)} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
           </Grid>
         </Grid>}
