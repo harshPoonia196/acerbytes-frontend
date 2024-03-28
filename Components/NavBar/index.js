@@ -238,7 +238,7 @@ export default function ClippedDrawer({ children }) {
           </List>
           <Divider />
           {
-            authRole("user") && (
+            // authRole("user") && (
               <>
                 <List
                   subheader={
@@ -253,7 +253,7 @@ export default function ClippedDrawer({ children }) {
                 </List>
                 <Divider />
               </>
-            )
+            // )
           }
 
           {

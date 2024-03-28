@@ -38,7 +38,7 @@ import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsult
 import { FILE_TYPES, listOfConsultantProfileTab, reactQueryKey } from "utills/Constants";
 import { getBrokerProfile, updateBrokerProfile } from "api/BrokerProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
-import { getGoogleId, validateEmail } from "utills/utills";
+import { getGoogleId, validateEmail, validatePhoneNumber } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
 import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
@@ -218,9 +218,15 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     }
     let value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    
     if (e.target.type == "number") {
       value = Number(value);
     }
+    if(secondKeyName == "registeredPhone" && thirdKeyName == "number") {
+if(e.target.value.length > 10) {
+return ;
+    }
+  }
     setBrokerProfileInfo((prev) => ({
       ...(prev || {}),
       [firstKeyName]: !secondKeyName
@@ -470,6 +476,18 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       isError= true;
     } else {
       error['reraNumber'] = false;
+    }
+    if (
+      !validatePhoneNumber( brokerProfileInfo?.serviceDetails?.registeredPhone)
+    ) {
+      error['phone'] = true;
+      openSnackbar(  "Mobile number is invalid", "error");
+      setErrorInvalid({
+        ...error,
+      });
+      return;
+    } else {
+      error['phone'] = false;
     }
 
     if (brokerProfileInfo?.serviceDetails?.registeredPhone?.number && !([0, 10].includes(brokerProfileInfo?.serviceDetails?.registeredPhone?.number?.toString()?.length))) {
@@ -723,7 +741,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                           variant="h6"
                           sx={{ alignSelf: "center", color: colors.BLUE }}
                         >
-                          {`${brokerProfileInfo?.phone?.countryCode || ""} ${brokerProfileInfo?.phone?.number || ""
+                          +{`${brokerProfileInfo?.phone?.countryCode || ""} ${brokerProfileInfo?.phone?.number || ""
                             }`}
                         </Typography>
                       </a>
@@ -892,6 +910,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                         "registeredPhone",
                         "countryCode"
                       )
+                      
                     }
                     error={errorInvalid.registeredPhone}
                   />
@@ -1015,7 +1034,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     isEdit={isEdit}
                     currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                     value1={
-                      brokerProfileInfo?.budget?.minimumBudget?.unit || "₹INR"
+                      brokerProfileInfo?.budget?.minimumBudget?.unit ||"₹INR"
                     }
                     value2={
                       brokerProfileInfo?.budget?.minimumBudget?.value || ""
@@ -1033,10 +1052,10 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                     isEdit={isEdit}
                     value1={
-                      brokerProfileInfo?.budget?.maximumBudget?.unit || "₹INR"
+                      brokerProfileInfo?.budget?.maximumBudget?.unit ||"₹INR"
                     }
                     value2={
-                      brokerProfileInfo?.budget?.maximumBudget?.value || ""
+                      brokerProfileInfo?.budget?.maximumBudget?.value
                     }
                     handleSelect={(e) =>
                       handleChange(e, "budget", "maximumBudget", "unit")
