@@ -343,10 +343,6 @@ const listOfPropertyDetailsTab = [
     value: "pricing",
   },
   {
-    label: "Resale",
-    value: "resale",
-  },
-  {
     label: "Value for money",
     value: "value",
   },
