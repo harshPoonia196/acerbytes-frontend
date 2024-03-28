@@ -189,10 +189,11 @@ function PropertyList({ params }) {
       setSelectedCity(value);
     } else if (key === "category") {
       setIsDisablePropertyType(false);
-    } else if (key === "propertyType") {
+      setIsDisableLayoutType(true);
+    } else if (key === "propertyType"  && selectedOptions.category === 'Residential') {
       setIsDisableLayoutType(false);
       setLayoutTypeApplicable(value);
-    }
+    } 
     const updatedValue = (prevOptions) => {
       const tempObje = { ...prevOptions };
       if (key === "category") {

@@ -35,7 +35,7 @@ function UnitsPlanSection(props) {
 
   return (
     <Grid item xs={12} ref={refCallback} id='unitsPlan' >
-      <Card>
+      <Card id="pricing">
         <Box sx={{ p: 2, display: 'flex' }}>
           <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
             Units plan
