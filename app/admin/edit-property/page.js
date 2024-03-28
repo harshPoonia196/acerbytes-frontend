@@ -14,7 +14,7 @@ import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
 import BankCard from "Components/Admin/Property/SubComponents/BankCard";
-import { getAllOptions ,getCities } from "api/Property.api";
+import { getAllOptions, getAllProperty,getCities } from "api/Property.api";
 
 import {
   Schema,
@@ -191,7 +191,6 @@ function AddProperty() {
   // Function to count items with ratings > 0 and isApplicable true in amenities data
   const countAmenitiesDataItems = (data) => {
     const items = [];
-  
     Object.values(data.amenitiesData).forEach(section => {
       Object.entries(section).forEach(([name, item]) => {
         if (item.rating > 0 && item.isApplicable) {
@@ -209,37 +208,39 @@ function AddProperty() {
   let getProp = async () => {
     try {
       let res = await detailsProperty(detailsPropertyId);
-      if (res.status === 200) {
-        let data = removeIds(res.data?.data);
-        delete data.__v;
-        handleUIHide(data.overview.projectType,"overview","projectType")
-        setEditForm(true);    
+        if (res.status === 200) {
+            let data = removeIds(res.data?.data);
+            delete data.__v;
+            handleUIHide(data.overview.projectType, "overview", "projectType")
+            setEditForm(true);
+            console.log(data,'daaaa')
 
 
-        
-       let countLocationItems = countLocationAssessmentItems(data)
-       let AmentiesCount =countAmenitiesDataItems(data)
-       let updateTotalCount=0
-        if(AmentiesCount.length > 0){
-         let count =  AmentiesCount.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
-         let names = AmentiesCount.map(item => item.name)
-         updateTotalCount+=(AmentiesCount.length*5)
-          // setTotalRating(totalRating+count)
-          setAmentiesStarScore([...amentiesStarsScore,...names])
+            let countLocationItems = countLocationAssessmentItems(data)
+            let AmentiesCount = countAmenitiesDataItems(data)
+            let updateTotalCount = 0
+            if (AmentiesCount.length > 0) {
+                let count = AmentiesCount.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
+                let names = AmentiesCount.map(item => item.name)
+                updateTotalCount += (AmentiesCount.length * 5)
+                // setTotalRating(totalRating+count)
+                setAmentiesStarScore([...amentiesStarsScore, ...names])
+            }
+            if (countLocationItems.length > 0) {
+                let count = countLocationItems.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
+                let names = countLocationItems.map(item => item.name)
+
+                //  setTotalRating(totalRating+count)
+                updateTotalCount += (countLocationItems.length * 5)
+                setLocationStarsScore([...locationStarsScore, ...names])
+            }
+            setTotalRating(totalRating + updateTotalCount)
+            setForm({ ...data });
+
         }
-if(countLocationItems.length>0){
-  let count =  countLocationItems.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
-  let names = countLocationItems.map(item => item.name)
-
-  //  setTotalRating(totalRating+count)
-  updateTotalCount+=(countLocationItems.length*5)
-   setLocationStarsScore([...locationStarsScore,...names])
-}
-setTotalRating(totalRating+updateTotalCount)
-        setForm({ ...data });
-      }
     } 
    catch (error) {
+    console.log(error,'iee')
     showToaterMessages(
       error?.response?.data?.message ||
       error?.message ||
@@ -357,7 +358,7 @@ setCities(res.data.data[0])
           assessment: temp,
           
         },
-        amenitiesData:{sectionScore:0,pointsGained:0,...amenities}
+        amenitiesData:{sectionScore:'',pointsGained:0,...amenities}
       }));
         // setSelectOption({ ...temp })
       }
@@ -410,7 +411,7 @@ setCities(res.data.data[0])
       completionYear: "",
       status: "",
       constructionProgress: "",
-      sectionScore: 0,
+      sectionScore: '',
       pointsGained:0
     },
     regulatoryClearance: {
@@ -423,7 +424,7 @@ setCities(res.data.data[0])
       privateBankLoan: "",
       fresh: "",
       resale: "",
-      sectionScore: 0,
+      sectionScore: '',
       pointsGained:0
     },
     layout: {
@@ -441,7 +442,7 @@ setCities(res.data.data[0])
       greenDensityScore: "",
       constructionQuality: 0,
       interiorQuality: 0,
-      sectionScore: 0,
+      sectionScore: '',
       pointsGained:0
     },
     unitsPlan: {
@@ -472,7 +473,7 @@ setCities(res.data.data[0])
       state: "",
       city: "",
       sector: "",
-      sectionScore:0,
+      sectionScore:"",
       pointsGained:0,
       area: "",
       pinCode: "",
@@ -1154,6 +1155,7 @@ setForm({
         } else {
           label = item.context.key;
         }
+        console.log(label,'labbal')
 switch (label.toLowerCase()) {
   case "constructionquality":
     label = "Construction Quality";
@@ -1177,7 +1179,7 @@ switch (label.toLowerCase()) {
         openSnackbar(`Ratings needs to be provided for ${label}`, "error");
       }
       else if(item.context.key==="image"){
-        openSnackbar(`Image needs to be uploaded for the property`, "error");
+        openSnackbar(`${item.context.key} needs to be uploaded for the property`, "error");
       }
     });
     console.log(form, "formmmm", error, "errrr");

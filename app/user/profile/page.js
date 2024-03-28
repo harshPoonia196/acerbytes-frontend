@@ -406,6 +406,12 @@ function Profile({ id, isAdminUpdate }) {
     if (secondKeyName === 'firstName' || secondKeyName === 'lastName' || secondKeyName === 'company') {
       value = capitalLizeName(value)
     }
+    if (secondKeyName === 'pinCode') {
+      
+      value = value.replace(/\D/g, '');
+      
+      value = value.slice(0, 6);
+    }
     await setProfileInfo((prev) => ({
       ...prev,
       [firstKeyName]: !secondKeyName
@@ -755,7 +761,7 @@ function Profile({ id, isAdminUpdate }) {
                       sx={{ alignSelf: "center" }}
                     />
                     <Typography variant="h6" sx={{ alignSelf: "center", color: colors.BLUE, }}>
-                      {profileInfo?.phone?.countryCode}{" "}
+                      +{profileInfo?.phone?.countryCode}{" "}
                       {profileInfo?.phone?.number}
                     </Typography>
                   </a>
@@ -1007,8 +1013,8 @@ function Profile({ id, isAdminUpdate }) {
                   isEdit={isEdit}
                   name1={"unit"}
                   name2={"value"}
-                  currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
-                  value1={profileInfo?.budget?.minimumBudget?.unit}
+                  // currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
+                  value1={profileInfo?.budget?.minimumBudget?.unit||"₹INR"}
                   value2={profileInfo?.budget?.minimumBudget?.value}
                   handleChange={(e) =>
                     handleChange(e, "budget", "minimumBudget", "value")
@@ -1021,8 +1027,8 @@ function Profile({ id, isAdminUpdate }) {
                   label="Maximum"
                   variant="outlined"
                   isEdit={isEdit}
-                  value1={profileInfo?.budget?.maximumBudget?.unit}
-                  currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
+                  
+                  value1={profileInfo?.budget?.maximumBudget?.unit||"₹INR"}
                   value2={profileInfo?.budget?.maximumBudget?.value}
                   handleChange={(e) =>
                     handleChange(e, "budget", "maximumBudget", "value")
@@ -1240,6 +1246,7 @@ function Profile({ id, isAdminUpdate }) {
                   }
                   id={"pinCode"}
                   name={"pinCode"}
+                  maxlength={6}
                 />
               </Grid>
             </Card>

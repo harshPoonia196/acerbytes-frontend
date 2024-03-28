@@ -15,49 +15,19 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { visuallyHidden } from "@mui/utils";
-import { getComparator, stableSort } from "utills/CommonFunction";
+import { formatDate, getComparator, stableSort } from "utills/CommonFunction";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import { PAGINATION_LIMIT_OPTIONS, PAGINATION_LIMIT } from "utills/Constants";
+import { useSnackbar } from "utills/SnackbarContext";
+import { getAllActiveAd } from "api/consultant.api";
+import Loader from "Components/CommonLayouts/Loading";
+import CustomSearch from "Components/CommonLayouts/CustomSearch";
 
-const rows = [
-  {
-    consultantName: "Anand Gupta",
-    phone: "1234567558",
-    propertyType: "Residency",
-    propertyName: "New Oak",
-    link: "abc.com",
-    status: "Active",
-    validFrom: "13-Dec-23",
-    validTo: "13-Dec-24",
-    expiresIn: "2 Days",
-  },
-  {
-    consultantName: "Anand Gupta",
-    phone: "1234567558",
-    propertyType: "Residency",
-    propertyName: "New Oak",
-    link: "abc.com",
-    status: "Expired",
-    validFrom: "13-Dec-23",
-    validTo: "13-Dec-24",
-    expiresIn: "2 Days",
-  },
-  {
-    consultantName: "Anand Gupta",
-    phone: "1234567558",
-    propertyType: "Residency",
-    propertyName: "New Oak",
-    link: "abc.com",
-    status: "Expiring soon",
-    validFrom: "13-Dec-23",
-    validTo: "13-Dec-24",
-    expiresIn: "2 Days",
-  },
-];
 
 // const rows = []
 const headCells = [
@@ -133,7 +103,6 @@ function EnhancedTableHead(props) {
               </TableSortLabel>
             </TableCell>
           ))}
-          <TableCell>Action</TableCell>
         </TableRow>
       </TableHead>
     </>
@@ -150,18 +119,47 @@ function RowStructure({ row }) {
     setAnchorEl(null);
   };
 
+  const copyToClipboard = (link) => {
+    navigator.clipboard.writeText(link).then(() => {
+      console.log('Link copied to clipboard!');
+    }, (err) => {
+      console.error('Could not copy link: ', err);
+    });
+  };
+
+  const  calculateDaysRemaining = (expiresAt) =>{
+    const currentDate = new Date();
+    const expirationDate = new Date(expiresAt);
+    
+    const differenceInTime = expirationDate - currentDate;
+    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+  
+    return differenceInDays;
+  }
+
+  const expiresInDisplay = (expiresAt) => {
+    const daysRemaining = calculateDaysRemaining(expiresAt);
+    if (daysRemaining < 0) {
+      return "-";
+    } else {
+      return `${daysRemaining} Days`;
+    }
+  };
+
   return (
     <TableRow
-      key={row.name}
+      key={row?.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell>{row.consultantName}</TableCell>
-      <TableCell>{row.phone}</TableCell>
-      <TableCell>{row.propertyType}</TableCell>
-      <TableCell>{row.propertyName}</TableCell>
+      <TableCell>{row?.consultantName}</TableCell>
+      <TableCell>{row?.phone}</TableCell>
+      <TableCell>{row?.propertyType}</TableCell>
+      <TableCell>{row?.propertyName}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy">
-          <IconButton sx={{ fontSize: "1rem !important" }}>
+          <IconButton sx={{ fontSize: "1rem !important" }} 
+           onClick={() => copyToClipboard(row?.link)}
+          >
             <ContentCopyIcon fontSize="1rem" />
           </IconButton>
         </Tooltip>
@@ -180,35 +178,131 @@ function RowStructure({ row }) {
           }
         />
       </TableCell>
-      <TableCell>{row.validFrom}</TableCell>
-      <TableCell>{row.validTo}</TableCell>
-      <TableCell>{row.expiresIn}</TableCell>
-      <TableCell sx={{ py: 0 }}>
-        <IconButton onClick={handleClick} sx={{ fontSize: "1rem !important" }}>
-          <MoreVertIcon fontSize="1rem" />
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}
-        >
-          <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-          <MenuItem onClick={handleClose}>Publish</MenuItem>
-        </Menu>
+      <TableCell>{formatDate(row?.validFrom)}</TableCell>
+      <TableCell>{formatDate(row?.validTo)}</TableCell>
+      <TableCell sx={{textAlign: "center"}}>
+        {row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
       </TableCell>
     </TableRow>
   );
 }
 
-function ConsultantLinksTable() {
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState(null);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExpiredCount }) {
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
+  const [isLoading, setLoading] = useState(false);
+  const [activeAdData, setActiveAdData] = useState([]);
+  const [property, setProperty] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { openSnackbar } = useSnackbar();
+
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
+  const constructPropertyUrl = (propertyDetailsData) => {
+    const overview = propertyDetailsData?.propertyData?.overview;
+    const location = propertyDetailsData?.propertyData?.location;
+  
+    const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+    let projectType;
+    if (overview?.projectType?.length > 0) {
+      projectType = overview.projectType.map(type => type?.value.trim().replace(/\s+/g, '-')).join("-");
+    } else {
+      projectType = 'type';
+    }
+    const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
+    const sector = (location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-');
+    const area = (location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '');
+    const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+    const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
+  
+    return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetailsData._id}`;
+  };
+
+  let transformData = (data) => {
+    return [...data]?.map((item) => {
+      const propertyUrl = constructPropertyUrl(item);
+      return {
+      id: item?._id,
+      consultantName: `${item?.brokerData?.name?.firstName} ${item?.brokerData?.name?.lastName}`,
+      phone: `+ ${item?.brokerData?.phone.countryCode} ${item?.brokerData?.phone.number}`,
+      propertyType: item.propertyData?.overview?.projectCategory,
+      propertyName: item.propertyData?.overview?.projectName,
+      link: propertyUrl,
+      status: item?.status,
+      validFrom: item?.created_at,
+      validTo: item?.expired_at,
+      expiresIn: item?.expired_at
+      }
+    });
+  };
+
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
+
+  const objectToQueryString = (obj) => {
+    const queryString = Object.keys(obj)
+      .map(
+        (key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`
+      )
+      .join("&");
+
+    return queryString;
+  };
+
+  const getAlllActiveAdList = async (pageOptions, searchTerm) => {
+    try {
+      setLoading(true);
+      const querParams = {
+        ...pageOptions,
+        ...(searchTerm ? { search: searchTerm } : {}),
+        ...(alignmentValue ? { status: alignmentValue } : {})
+      };
+      let res = await getAllActiveAd(objectToQueryString(querParams));
+      if (res.status === 200) {
+        let transformedData = transformData(res?.data?.data || []);
+        setActiveAdData([...transformedData]);
+        setCount(res?.data?.totalCount);
+        setProperty(res?.data);
+        const active = res?.data?.data.filter(item => item.status === "Active").length;
+        const expired = res?.data?.data.filter(item => item.status === "Expired").length;
+        setActiveCount(active);
+        setExpiredCount(expired);
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const pageOptions = {
+      pageLimit,
+      page: currentPage,
+    };
+    getAlllActiveAdList(pageOptions, searchTerm)
+  }, [currentPage, pageLimit, alignmentValue])
+
+  const handleSearchClick =() => {
+    setCurrentPage(1);
+    const pageOptions = {
+      pageLimit,
+      page: 1,
+    };
+    getAlllActiveAdList(pageOptions, searchTerm);
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -217,26 +311,40 @@ function ConsultantLinksTable() {
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    const page = newPage + 1;
+    setCurrentPage(page);
+    const pageOptions = {
+      pageLimit,
+      page,
+    };
+    getAlllActiveAdList(pageOptions, searchTerm);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setPageLimit(parseInt(event.target.value, 10));
+    setCurrentPage(1);
   };
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
+  // const visibleRows = React.useMemo(
+  //   () =>
+  //     stableSort(rows, getComparator(order, orderBy)).slice(
+  //       currentPage * pageLimit,
+  //       currentPage * pageLimit + pageLimit
+  //     ),
+  //   [order, orderBy, currentPage, pageLimit]
+  // );
 
   return (
     <>
-      {rows.length > 0 ? (
+    {isLoading && <Loader />}
+    <Card sx={{ mb: 2 }}>
+          <CustomSearch 
+            value={searchTerm} 
+            onChange={handleSearch}
+            onSearchButtonClick={handleSearchClick}
+              />
+      </Card>
+      {activeAdData?.length > 0 ? (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <EnhancedTableHead
@@ -245,7 +353,7 @@ function ConsultantLinksTable() {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {rows.map((row) => (
+              {activeAdData?.map((row) => (
                 <RowStructure row={row} />
               ))}
             </TableBody>
@@ -254,11 +362,11 @@ function ConsultantLinksTable() {
             sx={{
               overflow: "hidden",
             }}
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
             component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
+            count={property?.totalCount}
+            rowsPerPage={pageLimit}
+            page={currentPage - 1}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />

@@ -14,18 +14,29 @@ export const reviewBroker = (data) => {
 };
 
 export const getBrokers = (limit, page, search) => {
-  
-  return axiosInstance.get(`/admin/brokerList`)
+  return axiosInstance.get(`/admin/brokerList`);
 };
 
 export const submitEnquiry = (data) => {
+  console.log("Data: ", data);
   let userDetail = getLoggedInUser();
   return axiosInstance.post(`/user/enquiry`, {
     propertyId: data?.propertyId || null,
     adId: data?.adId,
     name: { firstName: data?.firstName, lastName: data?.lastName },
     phone: { countryCode: data?.countryCode, number: `${data?.number}` },
-    userId: userDetail?._id,
+    // userId: userDetail?._id,
+  });
+};
+
+export const submitEnquiryUnauth = (data) => {
+  console.log("Data: ", data);
+  return axiosInstance.post(`/user/enquiryUnauth`, {
+    propertyId: data?.propertyId || null,
+    adId: data?.adId,
+    name: { firstName: data?.firstName, lastName: data?.lastName },
+    phone: { countryCode: data?.countryCode, number: `${data?.number}` },
+    otp: data?.otp,
   });
 };
 

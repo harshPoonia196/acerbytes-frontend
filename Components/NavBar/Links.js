@@ -38,7 +38,7 @@ export const listOfPages = {
   adminPropertyList: '/admin/property-list',
   adminManageUser: '/admin/manage-user',
   adminManageConsultant: '/admin/manage-consultant',
-  adminConsultantLinks: '/admin/consultant-links',
+  adminConsultantLinks: '/admin/links-consultant',
   adminUpdateProfileLinks: '/admin/updateProfile',
   adminUpdateConsultantProfileLinks: '/admin/updateConsultantProfile',
 };

@@ -4,6 +4,7 @@ import React from 'react'
 import { Container, Typography, Card, Box, Chip } from '@mui/material'
 import Image from 'next/image'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Qrimage from "../../../public/images/Upi.png"
 import Footer from 'Components/Footer';
 import CustomConsultantBreadScrumbs from 'Components/CommonLayouts/CustomConsultantBreadScrumbs';
 import { companyName } from 'Components/NavBar/Links';
@@ -31,7 +32,7 @@ function MakePayment() {
                         </Box>
                     </Box>
                     <Box sx={{ p: 2, textAlign: 'center', borderBottom: '1px solid whitesmoke' }}>
-                        <Image src='/images/upi.png' width={200} height={200} />
+                        <Image src={Qrimage} width={200} height={200} />
                     </Box>
                     <Box sx={{ p: 2 }}>
                         <Typography variant='body2'>

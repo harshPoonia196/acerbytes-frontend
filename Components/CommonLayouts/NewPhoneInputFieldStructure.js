@@ -26,6 +26,7 @@ function NewPhoneInputFieldStructure({
   isRequired,
   variant,
   disabled,
+  error,
   ...props
 }) {
   const [countryCode, setCountryCode] = useState([]);
@@ -66,6 +67,7 @@ function NewPhoneInputFieldStructure({
           variant={variant ? variant : "standard"}
           fullWidth
           size="small"
+          error={error && error}
           disabled={disabled}
           InputProps={{
             startAdornment: (

@@ -158,7 +158,7 @@ export default function ClippedDrawer({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {userDetails.role === "broker" && (
+      {/* {userDetails.role !== "admin" && ( */}
         <MenuItem
           onClick={() => {
             router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
@@ -167,7 +167,7 @@ export default function ClippedDrawer({ children }) {
         >
           Profile
         </MenuItem>
-      )}
+      {/* )} */}
       {isLogged ? (
         <MenuItem onClick={() => logoutUser()}>Log out</MenuItem>
       ) : null}
@@ -238,7 +238,7 @@ export default function ClippedDrawer({ children }) {
           </List>
           <Divider />
           {
-            authRole("user") && (
+            // authRole("user") && (
               <>
                 <List
                   subheader={
@@ -253,7 +253,7 @@ export default function ClippedDrawer({ children }) {
                 </List>
                 <Divider />
               </>
-            )
+            // )
           }
 
           {
@@ -305,7 +305,7 @@ export default function ClippedDrawer({ children }) {
                   ))}
                 </List>
               </>
-            )
+            ) 
           }
         </Box>
       </>

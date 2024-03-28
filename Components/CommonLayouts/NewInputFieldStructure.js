@@ -46,16 +46,19 @@ const NewInputFieldStructure = ({
     } else {
       if (label == "Pincode") {
         const numericValue = event.target.value.replace(/[^0-9]/g, '');
-
         // Example: Limit to 6 characters
         const truncatedValue = numericValue.slice(0, 6)
-        handleChange(truncatedValue);
+        handleChange({
+          ...event,
+          target: {
+            ...event.target,
+            value: truncatedValue,
+          },
+        });
       }
       else {
         handleChange(event);
       }
-
-
     }
   };
 
@@ -80,6 +83,16 @@ const NewInputFieldStructure = ({
             fullWidth
             value={value}
             type={type}
+           inputProps={
+            
+            name==="minFloors" || name === "maxFloors"? {
+        
+            min:"1"}
+            :{
+              min:"0"
+            }
+           
+           }
             size="small"
             defaultValue={defaultValue}
             sx={sx}
@@ -95,6 +108,16 @@ const NewInputFieldStructure = ({
             disabled={disabled}
             type={type}
             id={name}
+            inputProps={
+            
+              name==="minFloors" || name === "maxFloors" ? {
+          
+              min:"1"}
+              :{
+                min:"0"
+              }
+             
+             }
             onChange={changeHandler}
             variant={variant ? variant : "standard"}
             fullWidth

@@ -103,7 +103,7 @@ function EnhancedTableHead(props) {
           </TableCell>
            )
         ))}
-        <TableCell>Action</TableCell>
+        {(selectedTabValue === 0) && <TableCell>Action</TableCell>}
         {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{textAlign: "center"}}>Approval Request</TableCell>}
       </TableRow>
     </TableHead>
@@ -232,54 +232,56 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
             />}
         </TableCell>
       )}
-      <TableCell sx={{ py: 0 }}>
-        <IconButton
-          onClick={handleClick}
-          disabled={
-            !(
-              matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
-              matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)
-            )
-          }
-          sx={{ fontSize: "1rem !important" }}
-        >
-          <MoreVertIcon fontSize="1rem" />
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}
-          transformOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          sx={{
-            '& .MuiList-root': {
-              padding: '0px',
-            },
-          }}
-        >
-          {row.isBlocked ? (
-            <MenuItem onClick={() => updateStatus(row.googleID, false)}>
-              Unblock
-            </MenuItem>
-          ) : (
-            <MenuItem onClick={() => updateStatus(row.googleID, true)}>
-              Block
-            </MenuItem>
-          )}
-          {(!row.isBlocked && (row.role == ROLE_CONSTANTS.user || row.role == ROLE_CONSTANTS.broker)) && <MenuItem onClick={() => editProfile(row.googleID, row.role)} >
-            Edit Profile
-          </MenuItem>}
-        </Menu>
-      </TableCell>
+      { selectedTabValue === 0 && (
+        <TableCell sx={{ py: 0 }}>
+          <IconButton
+            onClick={handleClick}
+            disabled={
+              !(
+                matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
+                matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)
+              )
+            }
+            sx={{ fontSize: "1rem !important" }}
+          >
+            <MoreVertIcon fontSize="1rem" />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            transformOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            sx={{
+              '& .MuiList-root': {
+                padding: '0px',
+              },
+            }}
+          >
+            {row.isBlocked ? (
+              <MenuItem onClick={() => updateStatus(row.googleID, false)}>
+                Unblock
+              </MenuItem>
+            ) : (
+              <MenuItem onClick={() => updateStatus(row.googleID, true)}>
+                Block
+              </MenuItem>
+            )}
+            {(!row.isBlocked && (row.role == ROLE_CONSTANTS.user || row.role == ROLE_CONSTANTS.broker)) && <MenuItem onClick={() => editProfile(row.googleID, row.role)} >
+              Edit Profile
+            </MenuItem>}
+          </Menu>
+        </TableCell>
+      )}
       {(userDetails.role == 'superAdmin' && selectedTabValue == 1) &&<TableCell sx={{justifyContent: "center", display: "flex", gap: "12px"}}>
         <CheckCircleIcon onClick={() => UserApproveupdate(row.googleID, true, row)} sx={{ color: colors.SUCCESS }}/>
-        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false, row)} sx={{ color: colors.ERROR }}/>
+        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false, row )} sx={{ color: colors.ERROR }}/>
       </TableCell>}
     </TableRow>
   );
