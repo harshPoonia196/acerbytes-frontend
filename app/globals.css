@@ -140,3 +140,7 @@ html {
   height: 36px;
   margin-top: 0px !important;
 }
+
+.MuiAutocomplete-popper {
+  z-index: 1000 !important;
+}
