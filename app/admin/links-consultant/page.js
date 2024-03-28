@@ -32,7 +32,7 @@ const page = () => {
             <CustomAdminBreadScrumbs text='Consultant links' />
             <InfoBox
                 title={`${capitalLizeName(name)} (${capitalLizeName(userDetails?.role)})`}
-                subtitle={`${dashboardInfo?.noOfAll} property consultant links are currently active`}
+                subtitle={`${dashboardInfo?.noOfActive} property consultant links are currently active`}
         
       />
             <Container>
