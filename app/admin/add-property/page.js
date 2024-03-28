@@ -427,7 +427,7 @@ setCities(res.data.data[0])
       pointsGained:0
     },
     layout: {
-      numberOfBuildings: "",
+      numberOfBuildings: 0,
       layoutType: [],
       maxFloors: "",
       minFloors: "",
@@ -628,7 +628,7 @@ const [hide,setHide]=useState([])
       case "overview":
         totalRatingModule = 10;
         break;
-      case "regulatoryinfo":
+      case "regulatoryclearance":
         totalRatingModule = 35;
         break;
       case "layout":
@@ -747,7 +747,6 @@ const [hide,setHide]=useState([])
     //   totalScored =
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
-
     let calc = (totalScored / totalRatingModule) * 10;
     if(seperateCalc){
       setForm({
@@ -862,7 +861,6 @@ setHide([
     } else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
     } else if (score === true) {
-
       let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
       let total = totalRating
       // let totalRating = form.overview.status ==="underconstruction"? 75:80;
