@@ -110,14 +110,6 @@ function EnhancedTableHead(props) {
 }
 
 function RowStructure({ row }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const copyToClipboard = (link) => {
     navigator.clipboard.writeText(link).then(() => {
@@ -187,7 +179,7 @@ function RowStructure({ row }) {
   );
 }
 
-function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExpiredCount }) {
+function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -229,9 +221,9 @@ function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExp
       return {
       id: item?._id,
       consultantName: `${item?.brokerData?.name?.firstName} ${item?.brokerData?.name?.lastName}`,
-      phone: `+ ${item?.brokerData?.phone.countryCode} ${item?.brokerData?.phone.number}`,
-      propertyType: item.propertyData?.overview?.projectCategory,
-      propertyName: item.propertyData?.overview?.projectName,
+      phone: `+ ${item?.brokerData?.phone?.countryCode} ${item?.brokerData?.phone?.number}`,
+      propertyType: item?.propertyData?.overview?.projectCategory,
+      propertyName: item?.propertyData?.overview?.projectName,
       link: propertyUrl,
       status: item?.status,
       validFrom: item?.created_at,
@@ -268,12 +260,10 @@ function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExp
       if (res.status === 200) {
         let transformedData = transformData(res?.data?.data || []);
         setActiveAdData([...transformedData]);
-        setCount(res?.data?.totalCount);
         setProperty(res?.data);
-        const active = res?.data?.data.filter(item => item.status === "Active").length;
-        const expired = res?.data?.data.filter(item => item.status === "Expired").length;
-        setActiveCount(active);
-        setExpiredCount(expired);
+        onDashboardDataUpdate({
+          countInfo: res?.data?.dashboardInfo || {},
+        });
       }
     } catch (error) {
       showToaterMessages(
