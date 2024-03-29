@@ -578,6 +578,11 @@ function PropertyList({ params }) {
                   onChange={(event) => setSearchTerm(event.target.value.toLowerCase())}
                   onSearchButtonClick={handleSearchButtonClick} 
                   inputRef={inputRef}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearchButtonClick();
+                    }
+                  }}
                 />
               </Card>
             </Grid>

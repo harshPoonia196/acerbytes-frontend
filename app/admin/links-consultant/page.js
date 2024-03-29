@@ -13,7 +13,6 @@ const page = () => {
         const [alignment, setAlignment] = useState('');
 		const name = userDetails?.name?.firstName && userDetails?.name?.lastName ? `${userDetails.name.firstName} ${userDetails.name.lastName}` : "";
         const [dashboardInfo, setDashboardInfo] = useState({ noOfAll: 0, noOfActive: 0, noOfExpired: 0, noOfExpiringSoon: 0 });
-        console.log(dashboardInfo);
 
     const handleChange = (event, newAlignment) => {
         setAlignment(newAlignment);

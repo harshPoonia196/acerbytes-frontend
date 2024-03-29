@@ -70,7 +70,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } = props;
+  const { order, orderBy, onRequestSort, alignmentValue } = props;
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -81,6 +81,7 @@ function EnhancedTableHead(props) {
       <TableHead>
         <TableRow>
           {headCells.map((headCell) => (
+            (headCell.id !== 'expiresIn' || alignmentValue === "Active" || alignmentValue === "") && (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}
@@ -102,6 +103,7 @@ function EnhancedTableHead(props) {
                 ) : null}
               </TableSortLabel>
             </TableCell>
+            )
           ))}
         </TableRow>
       </TableHead>
@@ -109,7 +111,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row }) {
+function RowStructure({ row, alignmentValue }) {
 
   const copyToClipboard = (link) => {
     navigator.clipboard.writeText(link).then(() => {
@@ -173,7 +175,7 @@ function RowStructure({ row }) {
       <TableCell>{formatDate(row?.validFrom)}</TableCell>
       <TableCell>{formatDate(row?.validTo)}</TableCell>
       <TableCell sx={{textAlign: "center"}}>
-        {row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
+        {alignmentValue !== "Expired" && row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
       </TableCell>
     </TableRow>
   );
@@ -285,6 +287,10 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
     getAlllActiveAdList(pageOptions, searchTerm)
   }, [currentPage, pageLimit, alignmentValue])
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [alignmentValue]);
+
   const handleSearchClick =() => {
     setCurrentPage(1);
     const pageOptions = {
@@ -332,6 +338,11 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
             value={searchTerm} 
             onChange={handleSearch}
             onSearchButtonClick={handleSearchClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearchClick();
+              }
+            }}
               />
       </Card>
       {activeAdData?.length > 0 ? (
@@ -341,10 +352,11 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
+              alignmentValue={alignmentValue}
             />
             <TableBody>
               {activeAdData?.map((row) => (
-                <RowStructure row={row} />
+                <RowStructure row={row} alignmentValue={alignmentValue} />
               ))}
             </TableBody>
           </Table>
