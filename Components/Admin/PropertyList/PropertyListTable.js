@@ -289,7 +289,7 @@ const PropertyListTable = ({ setCount }) => {
       if (res.status === 200) {
         let transformedData = transformData(res.data?.data || []);
         setPropertyList(transformedData);
-        setCount(res?.data.totalCount);
+        setCount(res?.data?.dashboardInfo || {});
         setProperty(res?.data);
       }
     } catch (error) {
@@ -429,6 +429,11 @@ const PropertyListTable = ({ setCount }) => {
             value={searchTerm} 
             onChange={handleSearch}
             onSearchButtonClick={handleSearchClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearchClick();
+              }
+            }}
               />
         </Card>
       {

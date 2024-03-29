@@ -323,6 +323,11 @@ function MyLinksTable({ setCount }) {
             value={searchTerm} 
             onChange={handleSearch}
             onSearchButtonClick={handleSearchClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearchClick();
+              }
+            }}
               />
       </Card>
       {

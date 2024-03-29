@@ -1,7 +1,7 @@
 import { Box, IconButton, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search'
 
-function CustomSearch({ value, onChange, onSearchButtonClick, inputRef }) {
+function CustomSearch({ value, onChange, onSearchButtonClick, inputRef, onKeyDown  }) {
     return (
         <Box
             sx={{
@@ -18,6 +18,7 @@ function CustomSearch({ value, onChange, onSearchButtonClick, inputRef }) {
                 onChange={onChange}
                 inputProps={{ "aria-label": "Search..." }}
                 fullWidth
+                onKeyDown={onKeyDown}
                 ref={inputRef}
             />
             <IconButton type="submit" aria-label="search" onClick={onSearchButtonClick}>
