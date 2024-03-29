@@ -178,7 +178,8 @@ function FloorPlanCard({
       const filteredArray = rows.filter(obj =>{
         return  !Object.keys(selectedItem).every(key => obj[key] === selectedItem[key])
       });
-      if( rows.every(obj => obj.areaUnit.toLocaleLowerCase() === 'acres')){
+   
+      if( rows.every(obj => obj.areaUnit.toLowerCase() === 'acres')){
         let areaCount = [...filteredArray,selectedItem].reduce((acc, obj) => parseInt(acc) + parseInt(obj.area), 0) 
         const sqftPerAcre = 43560
         totalArea = areaCount * sqftPerAcre
@@ -223,7 +224,8 @@ function FloorPlanCard({
       );
       const uniqueLayouts = Array.from(uniquePropertyLayoutsSet);
       let totalArea;
-    if( [...rows,selectedItem].every(obj => obj.areaUnit.toLocaleLowerCase() === 'acres')){
+    if( [...rows,selectedItem].every(obj => obj.areaUnit.toLowerCase() === 'acres')){
+
      let areaCount =  [...rows,selectedItem].reduce((acc, obj) => parseInt(acc) + parseInt(obj.area), 0)
      const sqftPerAcre = 43560
      totalArea = areaCount * sqftPerAcre
