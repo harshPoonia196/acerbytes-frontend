@@ -17,6 +17,7 @@ import {
   MenuItem,
   Grid,
   Card,
+  Button
 } from "@mui/material";
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -26,10 +27,11 @@ import UpdateLeadStatus from "./Modal/UpdateLeadStatus";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
 import { getBrokerLeads } from "api/Broker.api";
-import { reactQueryKey } from "utills/Constants";
+import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import { countryCodeFormating } from "utills/utills";
 
 // const rows = [
 //   {
@@ -122,7 +124,9 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row }) {
+function RowStructure({ row,handlePropertyView }) {
+  const user = row?.user || {};
+  const userDetail = row?.userDetail || {};
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const handleOpenUpdatePopup = () => {
     setOpenUpdatePopup(true);
@@ -211,40 +215,51 @@ function RowStructure({ row }) {
         </Menu>
       </TableCell>
       <TableCell>
-        {row.phone?.number}({row.phoneVerified ? "Yes" : "No"})
+      {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}({row.phoneVerified ? "Yes" : "No"})
       </TableCell>
       <TableCell>
-        {row.email}({row.emailVerified ? "Yes" : "No"})
+        {user.email}
+        {/* {row.email}({row.emailVerified ? "Yes" : "No"}) */}
       </TableCell>
-      <TableCell>{row.role}</TableCell>
-      <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell>
-      <TableCell>
+      <TableCell>{user.role}</TableCell>
+      {/* <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell> */}
+      <TableCell>{userDetail?.budget?.maximumBudget?.unit || ""} {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
+      {/* <TableCell>
         <Chip
           label={row.notesUpdated}
           size="small"
           onClick={handleOpenUpdatePopup}
         />
-      </TableCell>
+      </TableCell> */}
+       <TableCell>{row.propertyLink &&<Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={()=>handlePropertyView(row.propertyLink)}
+                // startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
+              >
+                View
+              </Button>}</TableCell>
     </TableRow>
   );
 }
 
-function MyLeadsTable() {
+function MyLeadsTable({ setLeadsCount }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
   const [rows, setRows] = React.useState([]);
   const [totalCount, setTotalCount] = React.useState(0);
   const firstLoad = React.useRef(true);
+  const [search, setSearch] = React.useState("");
 
   const { openSnackbar } = useSnackbar();
 
   const { data, isLoading, error, refetch } = useQueries(
-    [reactQueryKey.broker.myLeads],
+    [search, reactQueryKey.broker.myLeads],
     async () => {
       try {
-        const response = await getBrokerLeads({ limit: rowsPerPage, page });
+        const response = await getBrokerLeads({ limit: rowsPerPage, page, search });
         if (response.status == 200) {
           const { success, data, message } = response.data;
           if (success) {
@@ -293,6 +308,7 @@ function MyLeadsTable() {
   React.useEffect(() => {
     setRows(data?.data || []);
     setTotalCount(data?.totalCount || 0);
+    setLeadsCount(data?.leadsCount || 0);
   }, [data]);
 
   React.useEffect(() => {
@@ -302,16 +318,27 @@ function MyLeadsTable() {
     firstLoad.current = false;
   }, [rowsPerPage, page]);
 
+  const handleSearch = (e) => {
+    e.persist();
+    setSearch(e.target.value);
+  };
+
+  const handlePropertyView=(link)=>{
+    const baseUrl = window.location.origin;
+    const fullLink = `${baseUrl}/${link}`;
+    window.open(fullLink, "_blank");
+  }
+
   return (
     <>
       {isLoading && <Loader />}
       <Grid item xs={12}>
         <Card sx={{ mb: 2 }}>
-          <CustomSearchInput />
+          <CustomSearchInput value={search} onChange={handleSearch} />
         </Card>
       </Grid>
       {
-        rowsPerPage.length > 0 ? (
+        rows.length > 0 ? (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <EnhancedTableHead
@@ -321,7 +348,7 @@ function MyLeadsTable() {
               />
               <TableBody>
                 {rows.map((row) => (
-                  <RowStructure row={row} key={row.firstName} />
+                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} />
                 ))}
               </TableBody>
             </Table>
@@ -329,7 +356,7 @@ function MyLeadsTable() {
               sx={{
                 overflow: "hidden",
               }}
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
               component="div"
               count={totalCount}
               rowsPerPage={rowsPerPage}

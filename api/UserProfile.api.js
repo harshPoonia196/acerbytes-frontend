@@ -25,6 +25,8 @@ export const submitEnquiry = (data) => {
     adId: data?.adId,
     name: { firstName: data?.firstName, lastName: data?.lastName },
     phone: { countryCode: data?.countryCode, number: `${data?.number}` },
+    adId: data?.adId,
+    propertyLink: data?.propertyLink
     // userId: userDetail?._id,
   });
 };
@@ -37,6 +39,7 @@ export const submitEnquiryUnauth = (data) => {
     name: { firstName: data?.firstName, lastName: data?.lastName },
     phone: { countryCode: data?.countryCode, number: `${data?.number}` },
     otp: data?.otp,
+    propertyLink: data?.propertyLink
   });
 };
 

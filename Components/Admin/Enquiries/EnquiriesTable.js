@@ -11,6 +11,7 @@ import {
   TableCell,
   TableSortLabel,
   Tooltip,
+  Button,
   IconButton,
   Chip,
   Menu,
@@ -19,13 +20,14 @@ import {
 import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
-import { getComparator, stableSort } from "utills/CommonFunction";
+import { formatAmount, getComparator, stableSort } from "utills/CommonFunction";
 import { useQueries } from "utills/ReactQueryContext";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getLeads } from "api/Admin.api";
-import { reactQueryKey } from "utills/Constants";
+import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import { countryCodeFormating } from "utills/utills";
 
 // const rows = [
 //   {
@@ -60,25 +62,21 @@ const headCells = [
     label: "city",
   },
   {
-    id: "country Code",
-    label: "country Code",
-  },
-  {
     id: "phone",
     label: "phone",
   },
-  {
-    id: "phoneVerified",
-    label: "phoneVerified",
-  },
+  // {
+  //   id: "phoneVerified",
+  //   label: "phoneVerified",
+  // },
   {
     id: "email",
     label: "email",
   },
-  {
-    id: "emailVerified",
-    label: "email Verified",
-  },
+  // {
+  //   id: "emailVerified",
+  //   label: "email Verified",
+  // },
   {
     id: "role",
     label: "role",
@@ -87,21 +85,25 @@ const headCells = [
     id: "maxBudget",
     label: "max Budget",
   },
-  {
-    id: "closedStatus",
-    label: "closed Status",
-  },
-  {
-    id: "pendingStatus",
-    label: "pending Status",
-  },
-  {
-    id: "updatedBy",
-    label: "updated By",
-  },
-  {
-    id: "lastModified",
-    label: "last Modified",
+  // {
+  //   id: "closedStatus",
+  //   label: "closed Status",
+  // },
+  // {
+  //   id: "pendingStatus",
+  //   label: "pending Status",
+  // },
+  // {
+  //   id: "updatedBy",
+  //   label: "updated By",
+  // },
+  // {
+  //   id: "lastModified",
+  //   label: "last Modified",
+  // },
+   {
+    id: "propertyLink",
+    label: "Property link",
   },
 ];
 
@@ -141,7 +143,9 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row }) {
+function RowStructure({ row, handlePropertyView }) {
+  const user = row?.user || {};
+  const userDetail = row?.userDetail || {};
   return (
     <TableRow
       key={row.name}
@@ -150,28 +154,35 @@ function RowStructure({ row }) {
       <TableCell>{row?.name?.firstName}</TableCell>
       <TableCell>{row?.name?.lastName}</TableCell>
       <TableCell>{row?.property?.location?.city}</TableCell>
-      <TableCell>{row?.phone?.countryCode}</TableCell>
-      <TableCell>{row?.phone?.number}</TableCell>
-      <TableCell>{row.phoneVerified ? "Yes" : "No"}</TableCell>
-      <TableCell>{row.email}</TableCell>
-      <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell>
-      <TableCell>{row.role}</TableCell>
-      <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell>
-      <TableCell>{row.closedStatus}</TableCell>
-      <TableCell>{row.pendingStatus}</TableCell>
-      <TableCell>{row.updatedBy}</TableCell>
+      <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}</TableCell>
+      {/* <TableCell>{row.phoneVerified ? "Yes" : "No"}</TableCell> */}
+      <TableCell>{user.email}</TableCell>
+      {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
+      <TableCell>{user.role}</TableCell>
+      <TableCell>{userDetail?.budget?.maximumBudget?.unit || ""} {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
+      {/* <TableCell>{row.closedStatus}</TableCell>
+      <TableCell>{row.pendingStatus}</TableCell> */}
+      <TableCell>{row.propertyLink &&<Button
+                sx={{ mt: 1, ml: 1 }}
+                variant="outlined"
+                onClick={()=>handlePropertyView(row.propertyLink)}
+                // startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
+              >
+                View
+              </Button>}</TableCell>
+      {/* <TableCell>{row.updatedBy}</TableCell>
       <TableCell>
         <Chip label={row.lastModified} size="small" />
-      </TableCell>
+      </TableCell> */}
     </TableRow>
   );
 }
 
-function EnquiriesTable() {
+function EnquiriesTable({ search, setLeadsCount }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
   const [rows, setRows] = React.useState([]);
   const [totalCount, setTotalCount] = React.useState(0);
   const firstLoad = React.useRef(true);
@@ -179,10 +190,10 @@ function EnquiriesTable() {
   const { openSnackbar } = useSnackbar();
 
   const { data, isLoading, error, refetch } = useQueries(
-    [reactQueryKey.broker.myLeads],
+    [search, reactQueryKey.broker.myLeads],
     async () => {
       try {
-        const response = await getLeads({ limit: rowsPerPage, page });
+        const response = await getLeads({ limit: rowsPerPage, page, search });
         if (response.status == 200) {
           const { success, data, message } = response.data;
           if (success) {
@@ -231,6 +242,7 @@ function EnquiriesTable() {
   React.useEffect(() => {
     setRows(data?.data || []);
     setTotalCount(data?.totalCount || 0);
+    setLeadsCount(data?.leadsCount || 0);
   }, [data]);
 
   React.useEffect(() => {
@@ -239,6 +251,12 @@ function EnquiriesTable() {
     }
     firstLoad.current = false;
   }, [rowsPerPage, page]);
+
+  const handlePropertyView=(link)=>{
+    const baseUrl = window.location.origin;
+    const fullLink = `${baseUrl}/${link}`;
+    window.open(fullLink, "_blank");
+  }
 
   return (
     <>
@@ -255,7 +273,7 @@ function EnquiriesTable() {
               />
               <TableBody>
                 {rows.map((row) => (
-                  <RowStructure row={row} key={row.firstName} />
+                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} />
                 ))}
               </TableBody>
             </Table>
@@ -263,7 +281,7 @@ function EnquiriesTable() {
               sx={{
                 overflow: "hidden",
               }}
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
               component="div"
               count={totalCount}
               rowsPerPage={rowsPerPage}

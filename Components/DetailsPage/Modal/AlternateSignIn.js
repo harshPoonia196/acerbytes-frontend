@@ -97,7 +97,7 @@ function AlternateSignIn({ open, handleClose }) {
               
                 ButtonText={"Skip"}
               />
-              <CustomButton
+              {/* <CustomButton
                 startIcon={<DoneIcon />}
                 variant="contained"
                 onClick={() => {
@@ -105,7 +105,7 @@ function AlternateSignIn({ open, handleClose }) {
                 }}
               ButtonText={" Sign in"}
                
-              />
+              /> */}
             </Box>
           </Box>
         </DialogActions>
