@@ -93,7 +93,7 @@ function EnquireNow(props) {
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Enquire about <span style={{ color: "gray" }}>Godrej Woods</span>
+          Enquire about <span style={{ color: "gray" }}>{props?.propertyData?.overview?.projectName}</span>
         </Typography>
         <Typography variant="body1">
           Connect with professional property consultants only

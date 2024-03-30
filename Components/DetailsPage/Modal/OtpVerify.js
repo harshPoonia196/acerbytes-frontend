@@ -29,6 +29,8 @@ function OtpVerify({
   handleSubmit,
 }) {
   const [otp, setOtp] = useState("");
+  const [resendDisabled, setResendDisabled] = useState(true);
+  const [timer, setTimer] = useState(60);
 
   const [isVerified, setIsVerified] = useState(false);
 
@@ -49,11 +51,37 @@ function OtpVerify({
     }
   };
 
+  const handleResendClick = () => {
+    if (!resendDisabled) {
+        setResendDisabled(true);
+        setTimer(60);
+        setOtp("");
+    }
+};
+
+
   useEffect(() => {
     if (open) {
       handleSendOtp();
+      setTimer(60);
     }
   }, [open]);
+
+  useEffect(() => {
+    let interval;
+    if (resendDisabled) {
+        interval = setInterval(() => {
+            setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
+        }, 1000);
+    }
+    return () => clearInterval(interval);
+}, [resendDisabled]);
+
+useEffect(() => {
+  if (timer === 0) {
+      setResendDisabled(false)
+  }
+}, [timer])
 
   return (
     <Dialog
@@ -95,7 +123,7 @@ function OtpVerify({
                 <OTPInputLayout otpInput={otp} setOtpInput={setOtp} />
               </Box>
               <Box sx={{ alignSelf: "center" }}>
-                <CustomButton disabled ButtonText={"Resend OTP"} />
+                <CustomButton disabled={resendDisabled} ButtonText={`Resend OTP ${resendDisabled ? `(${timer}s)` : ''}`} onClick={handleResendClick} />
               </Box>
             </Grid>
             <Grid item xs={12}>

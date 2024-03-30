@@ -244,7 +244,9 @@ const PropertyDetails = ({ params }) => {
     try {
       const response = await submitEnquiry({
         ...(data || {}),
-        propertyId: getId,
+        propertyId: propertyData[0]?.property_id,
+        adId: getId,
+        propertyLink: params.projectdetails
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -270,7 +272,9 @@ const PropertyDetails = ({ params }) => {
     try {
       const response = await submitEnquiryUnauth({
         ...data,
-        propertyId: getId,
+        propertyId: propertyData[0]?.property_id,
+        adId: getId,
+        propertyLink: params.projectdetails
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -425,6 +429,7 @@ const PropertyDetails = ({ params }) => {
           {openEnquiryForm && (
             <EnquireNow
               open={openEnquiryForm}
+              propertyData={propertyData[0]?.propertyData}
               handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}
               submitEnquiry={handleSubmitEnquiry}

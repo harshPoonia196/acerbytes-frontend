@@ -265,6 +265,7 @@ const PropertyDetailsPage = ({ params }) => {
       const response = await submitEnquiry({
         ...data,
         propertyId: detailsPropertyId,
+        propertyLink: `details/${params.id}`
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -292,6 +293,7 @@ const PropertyDetailsPage = ({ params }) => {
       const response = await submitEnquiryUnauth({
         ...data,
         propertyId: detailsPropertyId,
+        propertyLink: `details/${params.id}`
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -521,6 +523,7 @@ const PropertyDetailsPage = ({ params }) => {
         <Container maxWidth="evmd">
           {openEnquiryForm && (
             <EnquireNow
+              propertyData={propertyData}
               open={openEnquiryForm}
               handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}
