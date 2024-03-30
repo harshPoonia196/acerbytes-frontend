@@ -570,7 +570,7 @@ const [hide,setHide]=useState([])
           incomingValue = 5;
           break;
         case "delay":
-          incomingValue = 3;
+          incomingValue = 0;
           break;
         default:
           incomingValue = 0;
@@ -626,7 +626,7 @@ const [hide,setHide]=useState([])
 
     switch (firstKeyName.toLowerCase()) {
       case "overview":
-        totalRatingModule = 10;
+        totalRatingModule = form.overview.status.toLowerCase().replace(/\s/g, '')==="underconstruction"?10:5;
         break;
       case "regulatoryclearance":
         totalRatingModule = 35;
@@ -895,6 +895,8 @@ setHide([
             break;
           case "delay":
             incomingValue = 0;
+            total = totalRating - 5
+            setTotalRating(total)
             break;
           default:
             incomingValue = 0;

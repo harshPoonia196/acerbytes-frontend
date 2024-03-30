@@ -454,7 +454,7 @@ else if(fieldName==='width'){
                 }))
               }
             />
-            { !["commercial"].includes(form.overview.projectCategory.toLocaleLowerCase())?
+            { (!["commercial"].includes(form.overview.projectCategory.toLowerCase())) && (selectedItem.propertyType.toLowerCase()!="land")?
              <NewSelectTextFieldStructure
               label="Unit"
               isEdit={isEdit}
