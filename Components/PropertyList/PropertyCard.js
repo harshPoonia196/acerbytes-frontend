@@ -111,8 +111,7 @@ function PropertyCard(props) {
               {propertyDetails?.location?.sector}
             </Typography>
           </Grid>
-
-          <Grid item xs={8} sm={4} lg={1.5}
+          <Grid item xs={8} sm={2.5} lg={1.5}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
@@ -124,7 +123,13 @@ function PropertyCard(props) {
                 : ""
               }`}</Typography>
           </Grid>
-          <Grid item xs={8} sm={5.5} lg={2.5}
+          <Grid item sm={1.5} sx={{ display: { xs: 'none', sm: 'block', lg: 'none' }, textAlign: 'end' }}>
+            <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
+              ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
+              // onClick={() => router.push("/research")}
+              onClick={() => router.push(`/details/${propertyUrl}`)} />
+          </Grid>
+          <Grid item xs={8} sm={6} lg={2.5}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
@@ -136,7 +141,7 @@ function PropertyCard(props) {
               {layoutData.join(", ")}
             </Typography>
           </Grid>
-          <Grid item xs={8} sm={5.5} lg={3}
+          <Grid item xs={8} sm={6} lg={3}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             {(propertyDetails?.unitsPlan?.averagePrice ||
@@ -155,7 +160,7 @@ function PropertyCard(props) {
                 </Typography>
               )}
           </Grid>
-          <Grid item xs={8} sm={3} lg={2}
+          <Grid item xs={8} sm={4} lg={2}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
@@ -166,7 +171,7 @@ function PropertyCard(props) {
               {propertyDetails?.overview?.completionYear}
             </Typography>
           </Grid>
-          <Grid item xs={8} sm={1.5} lg={1} sx={{ display: { xs: 'none', sm: 'block' }, textAlign: 'end' }}>
+          <Grid item xs={8} sm={1.5} lg={1} sx={{ display: { xs: 'none', lg: 'block' }, textAlign: 'end' }}>
             <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
               ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
               // onClick={() => router.push("/research")}
