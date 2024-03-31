@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography, Chip, Button, Card } from '@mui/material'
+import { Box, Typography, Chip, Button, Card, IconButton } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
@@ -10,6 +10,7 @@ import { listOfPages } from 'Components/NavBar/Links';
 import ShareIcon from '@mui/icons-material/Share';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function Footer({ paymentPage }) {
     const history = useRouter()
@@ -31,8 +32,7 @@ function Footer({ paymentPage }) {
             <Box sx={{ flex: 1, display: 'flex', mt: { xs: 1, md: 0 }, flexWrap: 'wrap', alignSelf: 'center', gap: 1 }}>
                 <Typography variant="body2" sx={{ alignSelf: 'center' }}>
                     <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/terms-and-condition') }}>Terms</span> ·{' '}
-                    <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/privacy') }}>Privacy</span> ·
-                    Platform solution by Gravity44
+                    <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/privacy') }}>Privacy</span>
                 </Typography>
                 {
                     !paymentPage &&
@@ -66,6 +66,9 @@ function Footer({ paymentPage }) {
                     />
                     {/* </a> */}
                 </Box>
+                <IconButton>
+                    <MoreVertIcon fontSize='small' />
+                </IconButton>
             </Box>
         </Card >
     )

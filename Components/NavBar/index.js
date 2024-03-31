@@ -167,7 +167,7 @@ export default function ClippedDrawer({ children }) {
         >
           Profile
         </MenuItem>
-      )} 
+      )}
       {isLogged ? (
         <MenuItem onClick={() => logoutUser()}>Log out</MenuItem>
       ) : null}
@@ -300,12 +300,12 @@ export default function ClippedDrawer({ children }) {
                 >
                   {AdminMenuList.map((item, index) => (
                     <>
-                    <DrawerListItem key={item.label} item={item} />
+                      <DrawerListItem key={item.label} item={item} />
                     </>
                   ))}
                 </List>
               </>
-            ) 
+            )
           }
         </Box>
       </>
@@ -454,7 +454,7 @@ export default function ClippedDrawer({ children }) {
                   sx={{
                     color: "#000",
                     fontSize: "1rem",
-                    fontWeight: 900,
+                    fontWeight: 600,
                     lineHeight: 1,
                     textTransform: "uppercase",
                   }}

@@ -112,7 +112,7 @@ const formatDate = (dateString) => {
   return moment(dateString).format("Do MMMM, YYYY");
 };
 
-const formattedCreatedAt  = (dateString) => {
+const formattedCreatedAt = (dateString) => {
   return format(new Date(dateString), "dd-MM-yyyy 'at' hh:mm aaa");
 };
 
@@ -206,6 +206,17 @@ const monthList = Array.from({ length: 12 }, (_, index) => {
   }
 });
 
+const getColorForProgressBar = (input) => {
+  let data = parseInt(input)
+  if (data > 70) {
+    return 'success'
+  } else if (data > 40) {
+    return 'warning'
+  } else {
+    return 'error'
+  }
+}
+
 export {
   upperCaseName,
   capitalLizeName,
@@ -225,5 +236,6 @@ export {
   formatDateAndDaysRemaining,
   formattedCreatedAt,
   yearList,
-  monthList
+  monthList,
+  getColorForProgressBar
 };

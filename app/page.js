@@ -37,8 +37,8 @@ export default function Home() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list", "error"
+        error?.message ||
+        "Error fetching state list", "error"
       );
     } finally {
       setLoading(false);
@@ -61,7 +61,7 @@ export default function Home() {
 
   return (
     <>
-     {isLoading && <Loader />}
+      {isLoading && <Loader />}
       <Container maxWidth="lg">
         <Box
           sx={{
@@ -76,10 +76,10 @@ export default function Home() {
             sx={{
               color: "#000",
               fontWeight: 300,
-              fontSize: { sm: "2em !important", md: "3em !important" },
+              fontSize: { sm: "2em !important", md: "4rem !important" },
             }}
           >
-            for better reach and data based decision in real estate
+            Empowering better Real Estate decisions
           </Typography>
 
           <Box
@@ -131,9 +131,9 @@ export default function Home() {
             <Grid item xs={12} sx={{ textAlign: "center", justifyContent: "center" }}>
               <Typography
                 variant="h5"
-                sx={{ textTransform: "uppercase", color: colors.BLUE }}
+                sx={{ textTransform: "lowercase", color: colors.BLUE }}
               >
-                data research for selective properties in
+                get insights into real estate projects across the cities below
               </Typography>
             </Grid>
             {cityRoute?.map((city) => (
@@ -141,7 +141,7 @@ export default function Home() {
                 <Card>
                   <CardActionArea
                     sx={{ p: 2, textAlign: "center" }}
-                    onClick={() => { 
+                    onClick={() => {
                       router.push(listOfPages.commonPropertyList + `/${city?.city}`);
                     }}
                   >
@@ -150,7 +150,7 @@ export default function Home() {
                   </CardActionArea>
                 </Card>
               </Grid>
-            ))} 
+            ))}
           </Grid>
         </Box>
       </Container>
