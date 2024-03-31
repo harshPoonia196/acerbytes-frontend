@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tabs, Tab, Card, Box, Typography, tabsClasses } from '@mui/material'
+import { Tabs, Tab, Card, Box, Typography, tabsClasses, Chip } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 
@@ -20,12 +20,13 @@ function TopMenu(props) {
                         variant="h2"
                         sx={{ fontWeight: "700 !important" }}
                     >
-                        {topMenu?.overview?.projectName}
+                        {topMenu?.overview?.builder} · {topMenu?.overview?.projectName}
                     </Typography>
-                    <Typography variant="h5" sx={{ alignSelf: "center" }}>
-                        {topMenu?.overview?.status},  {topMenu?.location?.sector}, {topMenu?.location?.city}, {topMenu?.location?.state}
+                    <Typography variant="h5" sx={{ alignSelf: "center", textTransform: 'capitalize' }}>
+                        {topMenu?.location?.sector}, {topMenu?.location?.city}, {topMenu?.location?.state}
                         {/* &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183;  */}
                     </Typography>
+                    <Chip label={topMenu?.overview?.status} color='primary' size='small' />
                 </Box>
                 <Box>
                     <Card

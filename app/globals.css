@@ -123,8 +123,30 @@ input[type="number"] {
   }
 }
 
+.img-preview {
+  overflow: hidden;
+}
+
 .urlStyling:hover {
   text-decoration-line: underline;
+}
+
+.urlStylingBackground {
+  background-color: inherit;
+}
+
+.urlStylingBackground > a:hover {
+  background-color: #276ef1;
+  color: white !important;
+}
+
+.urlStylingBackground > a:active {
+  background-color: black;
+  color: white !important;
+}
+.urlStylingBackground > a:visited  {
+  background-color: black;
+  color: white !important;
 }
 
 html {
