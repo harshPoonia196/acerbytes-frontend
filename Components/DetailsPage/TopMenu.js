@@ -2,56 +2,66 @@ import React from 'react'
 import { Tabs, Tab, Card, Box, Typography, tabsClasses, Chip } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
+import Image from 'next/image'
+import CircularWithValueLabel from 'Components/CommonLayouts/CircularProgressWithLabel'
 
 function TopMenu(props) {
     const { value, handleChange, list, topMenu } = props
     const router = useRouter()
-
+    console.log(value)
     return (
         <>
             <Card
-                sx={{
-                    p: 2,
-                    display: "flex",
-                }}
+                sx={{ p: 2 }}
             >
-                <Box sx={{ flex: 1 }}>
-                    <Typography
-                        variant="h2"
-                        sx={{ fontWeight: "700 !important" }}
-                    >
-                        {topMenu?.overview?.builder} · {topMenu?.overview?.projectName}
-                    </Typography>
-                    <Typography variant="h5" sx={{ alignSelf: "center", textTransform: 'capitalize' }}>
-                        {topMenu?.location?.sector}, {topMenu?.location?.city}, {topMenu?.location?.state}
-                        {/* &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183;  */}
-                    </Typography>
-                    <Chip label={topMenu?.overview?.status} color='primary' size='small' />
+                <Box sx={{ display: "flex" }}>
+                    <Box sx={{ flex: 1 }}>
+                        <Box sx={{ display: 'flex', gap: 2 }}>
+                            {value !== 'project' && <Image
+                                src={topMenu?.marketing?.image}
+                                width={100}
+                                height={50}
+                                alt="Picture of the author"
+                            />}
+                            <Box>
+                                <Typography
+                                    variant="h2"
+                                    sx={{ fontWeight: "700 !important", display: { xs: 'none', sm: 'block' } }}
+                                >
+                                    {topMenu?.overview?.builder} · {topMenu?.overview?.projectName}
+                                </Typography>
+                                <Typography
+                                    variant="h3"
+                                    sx={{ fontWeight: "700 !important", display: { xs: 'block', sm: 'none' } }}
+                                >
+                                    {topMenu?.overview?.builder} · {topMenu?.overview?.projectName}
+                                </Typography>
+                                <Typography variant="h5" sx={{ alignSelf: "center", textTransform: 'capitalize' }}>
+                                    {topMenu?.location?.sector}, {topMenu?.location?.city}, {topMenu?.location?.state}
+                                    {/* &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183;  */}
+                                </Typography>
+                                <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+                                    <Chip label={topMenu?.overview?.status}
+                                        color='primary' size='small' />
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                    <Box sx={{ display: { xs: 'none', sm: 'flex' }, flexDirection: 'column', gap: 1 }}>
+                        <Box>
+                            <CircularWithValueLabel onClick={() => router.push("/research")}
+                                progress={topMenu?.overallAssessment?.score} />
+                        </Box>
+                    </Box>
                 </Box>
-                <Box>
-                    <Card
-                        sx={{
-                            width: "fit-content",
-                            backgroundColor: colors?.BLUE,
-                            borderRadius: "4px !important",
-                            m: 0,
-                            ml: "auto !important",
-                            cursor: 'pointer'
-                        }}
-                        onClick={() => router.push("/research")}
-                    >
-                        <Typography
-                            variant="h3"
-                            sx={{
-                                fontWeight: 600,
-                                width: "fit-content",
-                                color: "white",
-                                p: 1,
-                            }}
-                        >
-                            {topMenu?.overallAssessment?.score}
-                        </Typography>
-                    </Card>
+                <Box sx={{ display: { xs: 'flex', sm: 'none' }, justifyContent: 'space-between', gap: 1 }}>
+                    <Box sx={{ alignSelf: 'center' }}>
+                        <Chip label={topMenu?.overview?.status} color='primary' size='small' />
+                    </Box>
+                    <Box>
+                        <CircularWithValueLabel onClick={() => router.push("/research")}
+                            progress={topMenu?.overallAssessment?.score} />
+                    </Box>
                 </Box>
             </Card>
 
