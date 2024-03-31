@@ -131,9 +131,11 @@ export default function Home() {
             <Grid item xs={12} sx={{ textAlign: "center", justifyContent: "center" }}>
               <Typography
                 variant="h5"
-                sx={{ textTransform: "lowercase", color: colors.BLUE }}
+                sx={{ textTransform: "lowercase" }}
+                className="urlStylingBackground"
               >
-                get insights into real estate projects across the cities below
+                get insights into <a style={{ color: colors.BLUE, cursor: "pointer" }} onClick={() => router.push(listOfPages.commonPropertyList)}>real estate projects</a>{' '}
+                across the cities below
               </Typography>
             </Grid>
             {cityRoute?.map((city) => (

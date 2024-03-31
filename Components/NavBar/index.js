@@ -137,6 +137,7 @@ export default function ClippedDrawer({ children }) {
   };
 
   const handleDrawerClose = () => {
+    console.log(' i  m triggerd')
     dispatch(setDrawerStateClose({ isDrawerOpen: false }));
   };
 
@@ -389,8 +390,8 @@ export default function ClippedDrawer({ children }) {
         anchor={"left"}
         open={isDrawerOpen}
         onClose={handleDrawerClose}
-        hideBackdrop={true}
-        BackdropProps={{ invisible: true }}
+        // hideBackdrop={true}
+        // BackdropProps={{ invisible: true }}
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -399,7 +400,11 @@ export default function ClippedDrawer({ children }) {
             boxSizing: "border-box",
           },
           position: "relative",
-        }}
+          [`& .MuiModal-backdrop`]: {
+            backgroundColor: 'transparent !important' /* Set the backdrop color to transparent */
+          }
+        }
+        }
       >
         <DrawerContent />
         {
@@ -407,7 +412,7 @@ export default function ClippedDrawer({ children }) {
             <DrawerBottomContent />
             : null
         }
-      </Drawer>
+      </Drawer >
     );
   };
 

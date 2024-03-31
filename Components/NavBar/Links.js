@@ -17,6 +17,8 @@ export const listOfPages = {
   home: '/',
   login: '/login',
   pageNotFound: '/page-not-found',
+  termsAndCondition: '/terms-and-condition',
+  privacy: '/privacy',
   commonPropertyList: "/property-list",
   commonAllBrokers: '/all-brokers',
   commonEnquiries: '/enquiries',

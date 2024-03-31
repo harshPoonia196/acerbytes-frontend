@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const UploadMarketingImage = ({
     open,
     handleClose,
-    image, changeImage, setImage, removeImage,handleChange
+    image, changeImage, setImage, removeImage, handleChange
 }) => {
     const { openSnackbar } = useSnackbar();
     const classes = useStyles()
@@ -57,7 +57,7 @@ const UploadMarketingImage = ({
 
     const showToaterMessages = (message, severity) => {
         openSnackbar(message, severity);
-      };
+    };
 
     const handleImageSelect = (e) => {
         e.preventDefault()
@@ -84,48 +84,48 @@ const UploadMarketingImage = ({
         uploadDocument(file)
     }
 
-    const uploadDocument = async(cropDataIn) => {
+    const uploadDocument = async (cropDataIn) => {
 
 
         let payload = {
             image: cropDataIn,
         }
-        try{
+        try {
             setLoading(true);
             let response = await uploadImage(payload)
             if (response.data.status == 200) {
-                handleChange(response.data.data.Location,"marketing","image")
+                handleChange(response.data.data.Location, "marketing", "image")
                 handleClose()
             }
-           else if(response.data.status===413){
+            else if (response.data.status === 413) {
                 showToaterMessages(
-               
+
                     "Image size is too large",
                     "error"
-                  );
+                );
             }
         }
         catch (error) {
-            if(response.data.status===413){
+            if (response.data.status === 413) {
                 showToaterMessages(
-               
+
                     "Image size is too large",
                     "error"
-                  );
+                );
             }
-            else{
+            else {
                 showToaterMessages(
                     error?.response?.data?.message ||
                     error?.message ||
                     "Error fetching state list",
                     "error"
-                  );
+                );
             }
-           
-          }
-          finally {
+
+        }
+        finally {
             setLoading(false);
-          }
+        }
 
     }
 
@@ -138,8 +138,8 @@ const UploadMarketingImage = ({
                         <div style={{ width: '100%', textAlign: 'center', maxHeight: 400 }}>
                             <Cropper
                                 style={{ width: '100%' }}
-                                initialAspectRatio={3/3}
-                                aspectRatio={3/3}
+                                initialAspectRatio={16 / 9}
+                                aspectRatio={16 / 9}
                                 preview=".img-preview"
                                 src={image}
                                 // ref={imageRef}
@@ -151,7 +151,7 @@ const UploadMarketingImage = ({
                                 cropBoxMovable={true}
                                 cropBoxResizable={false}
                                 responsive={true}
-                                scalable={false}
+                                // scalable={false}
                                 dragMode={'none'}
                                 zoomOnTouch={false}
                                 zoomOnWheel={false}
@@ -173,7 +173,7 @@ const UploadMarketingImage = ({
                         component="label"
                         sx={{ flexDirection: 'column' }}
                     >
-                        <RemoveCircleOutlineIcon fontSize='small'/>
+                        <RemoveCircleOutlineIcon fontSize='small' />
                         <Typography variant="body2" >
                             Change
                         </Typography>
@@ -187,9 +187,9 @@ const UploadMarketingImage = ({
                     </IconButton>
                     <IconButton
                         onClick={removeImage}
-                        sx={{ flexDirection: 'column',  }}
+                        sx={{ flexDirection: 'column', }}
                     >
-                        <DeleteIcon  fontSize='small'/>
+                        <DeleteIcon fontSize='small' />
                         <Typography variant="body2" >
                             Delete
                         </Typography>
