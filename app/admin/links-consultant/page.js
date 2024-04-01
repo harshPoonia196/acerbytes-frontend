@@ -50,7 +50,7 @@ const page = () => {
                         <ToggleButton size='small' value="" sx={{ flex: 1, border: 'none', padding: '10px' }}>All ({dashboardInfo?.noOfAll})</ToggleButton>
                         <ToggleButton size='small' value="Active" sx={{ flex: 1, border: 'none', padding: '10px' }}>Active ({dashboardInfo?.noOfActive})</ToggleButton>
                         <ToggleButton size='small' value="Expired" sx={{ flex: 1, border: 'none', padding: '10px' }}>Expired ({dashboardInfo?.noOfExpired})</ToggleButton>
-                        {/* <ToggleButton size='small' value="Expiring Soon" sx={{ flex: 1, border: 'none' }}>Expiring&nbsp;soon (10)</ToggleButton> */}
+                        <ToggleButton size='small' value="Expiring Soon" sx={{ flex: 1, border: 'none' }}>Expiring&nbsp;soon ({dashboardInfo?.noOfExpiringSoon})</ToggleButton>
                     </ToggleButtonGroup>
                 </Card>
                 <ConsultantLinksTable onDashboardDataUpdate={handleDashboardDataUpdate} alignmentValue={alignment}/>

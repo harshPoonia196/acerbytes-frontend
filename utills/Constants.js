@@ -14,7 +14,7 @@ export const menuMaxHeight = 150;
 export const FILE_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 
 export const PAGINATION_LIMIT = 10;
-export const PAGINATION_LIMIT_OPTIONS = [10, 25];
+export const PAGINATION_LIMIT_OPTIONS = [10, 20, 50];
 export const DEBOUNCE_TIMER = 500;
 
 export const ROLE_CONSTANTS = {
@@ -337,10 +337,6 @@ const listOfPropertyDetailsTab = [
   {
     label: "Location",
     value: "location",
-  },
-  {
-    label: "Pricing",
-    value: "pricing",
   },
   {
     label: "Value for money",

@@ -81,7 +81,7 @@ function EnhancedTableHead(props) {
       <TableHead>
         <TableRow>
           {headCells.map((headCell) => (
-            (headCell.id !== 'expiresIn' || alignmentValue === "Active" || alignmentValue === "") && (
+            (headCell.id !== 'expiresIn' || alignmentValue === "Active" || alignmentValue === "" || alignmentValue === "Expiring Soon") && (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}

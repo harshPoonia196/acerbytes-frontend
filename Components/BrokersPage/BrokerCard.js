@@ -109,7 +109,7 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
               mt: 0.5,
             }}
           >
-            <Box sx={{ flex: 1 }}>
+            {/* <Box sx={{ flex: 1 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -137,7 +137,7 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
               <Typography variant="caption" sx={{}}>
                 <i>{broker?.clients || 50} clients served</i>
               </Typography>
-            </Box>
+            </Box> */}
             {
               !noReview ? (
                 <Box sx={{ alignSelf: "end" }}>
