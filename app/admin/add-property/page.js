@@ -314,6 +314,7 @@ setCities(res.data.data[0])
       let res = await getAllOptions();
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data)
+        setSelectOption({ ...transform })
         let temp={}
         transform["assesment"].map((thing) => {
           temp[thing] = {

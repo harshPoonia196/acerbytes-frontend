@@ -106,21 +106,12 @@ const UploadMarketingImage = ({
             }
         }
         catch (error) {
-            if(response.data.status===413){
-                showToaterMessages(
+            showToaterMessages(
                
-                    "Image size is too large",
-                    "error"
-                  );
-            }
-            else{
-                showToaterMessages(
-                    error?.response?.data?.message ||
-                    error?.message ||
-                    "Error fetching state list",
-                    "error"
-                  );
-            }
+                "Image size is too large",
+                "error"
+              );
+           
            
           }
           finally {

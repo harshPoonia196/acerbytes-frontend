@@ -17,7 +17,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 
-function RegulatoryCard({ isEdit, form, handleChange, errors }) {
+function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
 
     const {
         reraApproved,
@@ -40,7 +40,6 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
     const [loading, setLoading] = useState(false);
 
 
-    const [selectOptions, setSelectOption] = useState({})
     const getAllOptionDataList = async () => {
         try {
             let res = await getAllOptions();
@@ -62,10 +61,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors }) {
         }
     };
 
-    useEffect(() => {
-        getAllOptionDataList()
-
-    }, [])
+ 
     return (
         <Grid item xs={12} id="regulatory">
             <Card>

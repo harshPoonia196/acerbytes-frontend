@@ -316,6 +316,7 @@ setCities(res.data.data[0])
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data)
         let temp={}
+        setSelectOption({ ...transform })
         transform["assesment"].map((thing) => {
           temp[thing] = {
               isApplicable: false,
@@ -378,7 +379,7 @@ setCities(res.data.data[0])
     if (detailsPropertyId) {
       getProp();
       setEditPage(true);
-
+      getAllOptionDataList()
     }
     else{
       getAllOptionDataList()
