@@ -1,35 +1,22 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from "react";
-import { Container, Typography, Card, Box } from "@mui/material";
-import CustomSearchInput from "Components/CommonLayouts/SearchInput";
+import React, { useEffect, useState } from "react";
+import { Container, Typography} from "@mui/material";
 import PropertyListTable from "Components/Admin/PropertyList/PropertyListTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
-import { DEBOUNCE_TIMER } from "utills/Constants";
 import { useAuth } from "utills/AuthContext";
 import { capitalLizeName } from "utills/CommonFunction";
 
 function PropertyList() {
   const { userDetails } = useAuth();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [count, setCount] = useState(0);
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+  const [count, setCount] = useState({noOfProperties: 0});
 
   const name = userDetails?.name?.firstName && userDetails?.name?.lastName ? `${userDetails.name.firstName} ${userDetails.name.lastName}` : "";
 
   useEffect(() => {
-    const timerId = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, DEBOUNCE_TIMER);
-
-    return () => clearTimeout(timerId);
-  }, [searchTerm]);
-
-  const handleSearch = (event) => {
-    const term = event.target.value.toLowerCase();
-    setSearchTerm(term);
-  };
+       
+  }, [count]);
 
   return (
     <>
@@ -37,16 +24,13 @@ function PropertyList() {
       <CustomAdminBreadScrumbs text='Property list' />
       <InfoBox
         title={`${capitalLizeName(name)} (${capitalLizeName(userDetails?.role)})`}
-        subtitle={`${count && count} property consultant links are currently active`}
+        subtitle={`${count?.noOfProperties} property consultant links are currently active`}
       />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
-          {count && count} Properties listed
+          {count?.noOfProperties} Properties listed
         </Typography>
-        <Card sx={{ mb: 2 }}>
-          <CustomSearchInput value={searchTerm} onChange={handleSearch} />
-        </Card>
-        <PropertyListTable searchText={debouncedSearchTerm} setCount={setCount} />
+        <PropertyListTable setCount={setCount} />
       </Container>
     </>
   );

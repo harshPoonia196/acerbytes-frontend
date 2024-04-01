@@ -18,11 +18,13 @@ import { useRouter } from "next/navigation";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { useAuth } from 'utills/AuthContext';
 
 function MyLeads() {
+  const { userDetails } = useAuth();
 
   const router = useRouter();
-
+const [leadsCount, setLeadsCount] = useState("");
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const handleOpenUpdatePopup = () => {
     setOpenUpdatePopup(true);
@@ -42,9 +44,8 @@ function MyLeads() {
     <>
       <CustomConsultantBreadScrumbs text="My leads" />
       <InfoBox
-        title="Anand Gupta(Admin)"
-        subtitle="3,344 property consultant links are currently active"
-
+        title={`${userDetails ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName} (${userDetails.role})` : ""}`}
+        subtitle={`Leads: ${leadsCount}`} 
       />
       <Container>
         <Typography variant="h6" sx={{ mb: 2 }}>
@@ -84,7 +85,7 @@ function MyLeads() {
         <Box sx={{ textAlign: 'end', mb: 2 }}>
           <CustomButton variant="outlined" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add notes"} />
         </Box>
-        {alignment === "all" ? <MyLeadsTable /> : <MyLeadsStatus />}
+        {alignment === "all" ? <MyLeadsTable setLeadsCount={setLeadsCount} /> : <MyLeadsStatus />}
       </Container>
     </>
   );

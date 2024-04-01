@@ -26,14 +26,14 @@ import { enquiryFormKey, propertyRedirectKey } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function EnquireNow(props) {
-  const { open, handleClose, handleAction, submitEnquiry } = props
+  const { open, handleClose, handleAction, submitEnquiry } = props;
   const router = useRouter();
 
   const token = isLoggedIn();
 
   const param = useParams();
-  
-  const  paramData = (paramValue) =>{
+
+  const paramData = (paramValue) => {
     if (paramValue) {
       const parts = paramValue.split("-");
       if (parts.length > 0) {
@@ -41,10 +41,10 @@ function EnquireNow(props) {
       }
     }
     return ""; // Default value if not found
-  }
+  };
 
   const initialState = {
-    adId: paramData(param?.projectdetails) || paramData(param?.id),
+    // adId: paramData(param?.projectdetails) || paramData(param?.id),
     firstName: "",
     lastName: "",
     countryCode: "91",
@@ -93,7 +93,7 @@ function EnquireNow(props) {
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Enquire about <span style={{ color: "gray" }}>Godrej Woods</span>
+          Enquire about <span style={{ color: "gray" }}>{props?.propertyData?.overview?.projectName}</span>
         </Typography>
         <Typography variant="body1">
           Connect with professional property consultants only
@@ -148,9 +148,10 @@ function EnquireNow(props) {
                 sx={{ mr: 2 }}
                 onClick={() => {
                   setItem(enquiryFormKey, formData);
-
                   if (param?.projectdetails) {
                     setItem(propertyRedirectKey, param?.projectdetails);
+                  } else if (param?.id) {
+                    setItem(propertyRedirectKey, "/details/" + param?.id);
                   }
                   router.push("/login");
                 }}
@@ -161,6 +162,7 @@ function EnquireNow(props) {
               startIcon={<DoneIcon />}
               variant="contained"
               onClick={() => {
+                console.log("formData: ", formData);
                 if (token) {
                   submitEnquiry(formData);
                 } else {

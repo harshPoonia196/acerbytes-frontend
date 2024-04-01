@@ -6,11 +6,20 @@ import { useRouter } from "next/navigation";
 
 function LocationSection(props) {
   const { locationData, refCallback } = props;
-  if (!(locationData?.assessment || locationData?.sectionScore)) {
-    return null;
-}
   const router = useRouter();
 
+  if (!(locationData?.assessment || locationData?.sectionScore)) {
+    return null;
+  }
+  const filteredEntries = Object.entries(locationData?.assessment).filter(
+    ([_, value]) => value.isApplicable
+  );
+
+  if (!filteredEntries.length) {
+    return null;
+  }
+
+  
   return (
     <Grid item xs={12} ref={refCallback} id="location">
       <Card>
@@ -40,7 +49,9 @@ function LocationSection(props) {
                   cursor: "pointer",
                 }}
               >
-                {locationData?.sectionScore ? locationData?.sectionScore.toFixed() : "00"}
+                {locationData?.sectionScore
+                  ? locationData?.sectionScore.toFixed()
+                  : "00"}
               </Typography>
             </Card>
           </Box>

@@ -131,6 +131,7 @@ function Login() {
           } else if (!userDetails?.isApproved) {
             setLoading(false);
             openSnackbar("Please try again after some time because permission is still waiting.", "warning");
+            router.push("/approval-pending-request");
             return;
           } 
           
@@ -251,6 +252,7 @@ function Login() {
           return;
         }else if (!userDetails?.isApproved){
           openSnackbar("Please try again after some time because permission is still waiting.", "warning");
+          router.push("/approval-pending-request");
           return;
         }else {
           login(userDetails, token);

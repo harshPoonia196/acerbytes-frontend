@@ -123,8 +123,30 @@ input[type="number"] {
   }
 }
 
+.img-preview {
+  overflow: hidden;
+}
+
 .urlStyling:hover {
   text-decoration-line: underline;
+}
+
+.urlStylingBackground {
+  background-color: inherit;
+}
+
+.urlStylingBackground > a:hover {
+  background-color: #276ef1;
+  color: white !important;
+}
+
+.urlStylingBackground > a:active {
+  background-color: black;
+  color: white !important;
+}
+.urlStylingBackground > a:visited  {
+  background-color: black;
+  color: white !important;
 }
 
 html {
@@ -140,6 +162,7 @@ html {
   height: 36px;
   margin-top: 0px !important;
 }
-.role-select .MuiInputBase-root {
-  margin-top: 0px ;
+
+.MuiAutocomplete-popper {
+  z-index: 1000 !important;
 }

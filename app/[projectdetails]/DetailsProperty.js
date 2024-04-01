@@ -44,6 +44,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import {
+  enquiryFormKey,
   listOfPropertyDetailsTab,
   listOfTabsInAddProperty,
 } from "utills/Constants";
@@ -53,7 +54,8 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
-import { submitEnquiry } from "api/UserProfile.api";
+import { submitEnquiry, submitEnquiryUnauth } from "api/UserProfile.api";
+import { getItem } from "utills/utills";
 
 const tabHeight = 200;
 
@@ -71,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -224,9 +226,9 @@ const PropertyDetails = ({ params }) => {
     setAmenitiesTab(newValue);
   };
 
-
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
-  const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] = React.useState(false);
+  const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
+    React.useState(false);
 
   const handleOpenEnquiryForm = () => {
     setOpenEnquiryForm(true);
@@ -240,11 +242,45 @@ const PropertyDetails = ({ params }) => {
 
   const handleSubmitEnquiry = async (data) => {
     try {
-      const response = await submitEnquiry(data);
+      const response = await submitEnquiry({
+        ...(data || {}),
+        propertyId: propertyData[0]?.property_id,
+        adId: getId,
+        propertyLink: params.projectdetails
+      });
       if (response.status == 200) {
         const { success, message } = response.data;
         if (success) {
           openSnackbar(message, "success");
+          setBrokerContact({});
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
+  const handleSubmitEnquiryUnauth = async (data) => {
+    try {
+      const response = await submitEnquiryUnauth({
+        ...data,
+        propertyId: propertyData[0]?.property_id,
+        adId: getId,
+        propertyLink: params.projectdetails
+      });
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+          // hasEnquired();
           setBrokerContact({});
         } else {
           openSnackbar(message, "error");
@@ -375,11 +411,10 @@ const PropertyDetails = ({ params }) => {
     []
   );
 
-
   return (
     <>
       {isLoading && <Loader />}
-        <UserDetailsAd  AllPropertyData={propertyData[0]}/>
+      <UserDetailsAd AllPropertyData={propertyData[0]} />
       <nav className={classes.demo2}>
         <TopMenu
           topMenu={propertyData[0]?.propertyData}
@@ -391,17 +426,22 @@ const PropertyDetails = ({ params }) => {
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
         <Container maxWidth="evmd">
-          {openEnquiryForm && <EnquireNow
-            open={openEnquiryForm}
-            handleClose={handleCloseEnquiryForm}
-            handleAction={handleOpenVerifyPopup}
-            submitEnquiry={handleSubmitEnquiry}
-          />}
+          {openEnquiryForm && (
+            <EnquireNow
+              open={openEnquiryForm}
+              propertyData={propertyData[0]?.propertyData}
+              handleClose={handleCloseEnquiryForm}
+              handleAction={handleOpenVerifyPopup}
+              submitEnquiry={handleSubmitEnquiry}
+            />
+          )}
           <OtpVerify
+            formData={getItem(enquiryFormKey)}
             open={openOtpPopup}
             handleClose={handleCloseVerifyPopup}
             handleOpen={handleOpenEnquiryForm}
             handleAlternateSignIn={handleOpenAlternateSignIn}
+            handleSubmit={handleSubmitEnquiryUnauth}
           />
           <AlternateSignIn
             open={openAlternateSignIn}
@@ -438,9 +478,11 @@ const PropertyDetails = ({ params }) => {
               }
               AllPropertyData={propertyData[0]?.propertyData}
               handleSubmitEnquiry={handleSubmitEnquiry}
-              handleOpenEnquiryForm={()=> setOverallAssesmentOpenEnquiryForm(true)}
+              handleOpenEnquiryForm={() =>
+                setOverallAssesmentOpenEnquiryForm(true)
+              }
               open={OverallAssesmentOpenEnquiryForm}
-              handleClose={()=> setOverallAssesmentOpenEnquiryForm(false)}
+              handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
             />
           </Grid>
@@ -496,7 +538,9 @@ const PropertyDetails = ({ params }) => {
               </Button>
             </Box>
           </Card>
-          {userDetails?.role === "user" && (
+          {userDetails?.role !== "admin" &&
+            userDetails?.role !== "superAdmin" &&
+            userDetails?.role !== "broker" && (
               <Box
                 sx={{
                   position: "fixed",

@@ -15,6 +15,7 @@ import {
   MenuItem,
   CircularProgress,
   Stack,
+  Card,
 } from "@mui/material";
 import React, {
   forwardRef,
@@ -39,6 +40,7 @@ import {
 } from "utills/Constants";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 import Loader from "Components/CommonLayouts/Loading";
+import CustomSearch from "Components/CommonLayouts/CustomSearch";
 
 const headCells = [
   {
@@ -228,7 +230,7 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
   );
 }
 
-const PropertyListTable = ({ searchText, setCount }) => {
+const PropertyListTable = ({ setCount }) => {
   const router = useRouter();
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [order, setOrder] = useState("asc");
@@ -239,7 +241,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
   const [propertyList, setPropertyList] = useState([]);
   const [property, setProperty] = useState({});
   const [isLoading, setLoading] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [deletingPropertyId, setDeletingPropertyId] = useState(null);
 
@@ -258,6 +260,11 @@ const PropertyListTable = ({ searchText, setCount }) => {
     }));
   };
 
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
+
   const objectToQueryString = (obj) => {
     const queryString = Object.keys(obj)
       .map(
@@ -267,12 +274,12 @@ const PropertyListTable = ({ searchText, setCount }) => {
 
     return queryString;
   };
-  const getAllPropertyList = async (pageOptions, searchText) => {
+  const getAllPropertyList = async (pageOptions, searchTerm) => {
     try {
       setLoading(true);
       const querParams = {
         ...pageOptions,
-        ...(searchText ? { search: searchText } : {}),
+        ...(searchTerm ? { search: searchTerm } : {}),
       };
       if (userDetails?.role) {
         querParams.role = userDetails?.role
@@ -282,7 +289,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
       if (res.status === 200) {
         let transformedData = transformData(res.data?.data || []);
         setPropertyList(transformedData);
-        setCount(res?.data.totalCount);
+        setCount(res?.data?.dashboardInfo || {});
         setProperty(res?.data);
       }
     } catch (error) {
@@ -313,7 +320,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
           if (currentPage > newTotalPages) {
             setCurrentPage(currentPage - 1 || 1);
           } else {
-            getAllPropertyList({ pageLimit, page: currentPage }, searchText);
+            getAllPropertyList({ pageLimit, page: currentPage }, searchTerm);
           }
           setDeletingPropertyId(null);
         }
@@ -359,12 +366,17 @@ const PropertyListTable = ({ searchText, setCount }) => {
       pageLimit,
       page: currentPage,
     };
-    getAllPropertyList(pageOptions, searchText);
-  }, [searchText, currentPage, pageLimit]);
+    getAllPropertyList(pageOptions, searchTerm);
+  }, [currentPage, pageLimit]);
 
-  useEffect(() => {
+  const handleSearchClick =() => {
     setCurrentPage(1);
-  }, [searchText]);
+    const pageOptions = {
+      pageLimit,
+      page: 1,
+    };
+    getAllPropertyList(pageOptions, searchTerm);
+  };
 
   const { openSnackbar } = useSnackbar();
 
@@ -385,7 +397,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
       pageLimit,
       page,
     };
-    getAllPropertyList(pageOptions, searchText);
+    getAllPropertyList(pageOptions, searchTerm);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -395,7 +407,7 @@ const PropertyListTable = ({ searchText, setCount }) => {
       pageLimit,
       page: 1,
     };
-    getAllPropertyList(pageOptions, searchText);
+    getAllPropertyList(pageOptions, searchTerm);
   };
 
   const visibleRows = React.useMemo(
@@ -412,6 +424,18 @@ const PropertyListTable = ({ searchText, setCount }) => {
   return (
     <>
       {isLoading && <Loader />}
+      <Card sx={{ mb: 2 }}>
+          <CustomSearch 
+            value={searchTerm} 
+            onChange={handleSearch}
+            onSearchButtonClick={handleSearchClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearchClick();
+              }
+            }}
+              />
+        </Card>
       {
         propertyList.length > 0 ? (
           <TableContainer component={Paper}>

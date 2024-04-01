@@ -7,7 +7,9 @@ import {
   Divider,
 } from "@mui/material";
 import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
+import Image from "next/image";
 import React, { useRef, useState } from "react";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import colors from "styles/theme/colors";
 
 function MarketingSection(props) {
@@ -15,20 +17,7 @@ function MarketingSection(props) {
   const alloverviewData = overviewData?.overview;
   const AllLocationData = overviewData?.location;
 
-  const myDivRef = useRef(null);
-
-  const [width, setWidth] = useState();
-
-  // useEffect(() => {
-  //     if (myDivRef.current) {
-  //         const myDiv = myDivRef.current;
-  //         const widthCal = myDiv.offsetWidth;
-  //         setWidth(widthCal)
-  //         console.log('Width of the div:', width, 'pixels');
-  //     }
-  // }, []);
-
-  const  extractUrl = (htmlString) => {
+  const extractUrl = (htmlString) => {
     const matches = htmlString?.match(/src="([^"]+)"/);
     return matches ? matches[1] : null;
   }
@@ -45,136 +34,124 @@ function MarketingSection(props) {
     return 'invalid';
   };
 
-  return (
-    <>
-      <Card
-        sx={{
-          background: "whitesmoke",
-          display: "flex",
-          height: { xs: "50vh", sm: "70vh" },
-          position: "relative",
-        }}
-        id="project"
-      >
-        <Box
-          style={{ backgroundImage: `url(${overviewData?.marketing?.image})` }}
-          sx={{
-            flex: 1,
-            backgroundPosition: "center center",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-        ></Box>
 
-        <Box
-          sx={{
-            backgroundImage:
-              "linear-gradient(240deg,transparent,rgba(37,37,37,.21),#111);",
-            height: "70vh",
-            width: "100%",
-            position: "absolute",
-            top: 0,
-            left: 0,
-          }}
-        ></Box>
-        <Card
-          sx={{
-            position: "absolute",
-            top: 24,
-            left: 24,
-            opacity: 0.85,
-            display: "flex",
-            maxWidth: "calc(100% - 48px)",
-          }}
-        >
-          <Box ref={myDivRef} sx={{ p: 2, textAlign: "center" }}>
+  const MapFrame = ({ mapUrl }) => {
+    console.log(mapUrl)
+    return <iframe
+      src={mapUrl}
+      style={{ border: 0 }}
+      height="100%"
+      width="100%"
+      loading="lazy"
+    />
+  }
+
+  const OverviewRatingCard = () => {
+    return <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} >
+      <Card sx={{ p: 2, textAlign: "center" }}>
+        <Typography variant="h2">
+          {`${alloverviewData?.builder} · ${alloverviewData?.projectName}`}
+        </Typography>
+
+        <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+          <LocationOnIcon fontSize="small" sx={{ alignSelf: 'center' }} />
+          <Typography variant="h4">
+            {`${AllLocationData?.city}, ${AllLocationData?.state}`}
+          </Typography>
+        </Box>
+      </Card>
+      <Card sx={{ p: 2, textAlign: "center" }}>
+        <Typography variant="h1">
+          {overviewData?.overallAssessment?.score
+            ? overviewData?.overallAssessment?.score.toFixed()
+            : "-"}
+          <Typography variant="h6" component="span">
+            {' / 100'}
+          </Typography>
+        </Typography>
+        <Typography variant="h4" sx={{ mb: 2 }}>
+          {categorizeScore(overviewData?.overallAssessment?.score)}
+        </Typography>
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
             <Typography variant="h2">
-              {`${alloverviewData?.builder} - ${alloverviewData?.projectName}`}
-            </Typography>
-            <Typography variant="h4" sx={{ mb: 2 }}>
-              {`${AllLocationData?.city}, ${AllLocationData?.state}`}
-            </Typography>
-            <Typography variant="h1">
-              {overviewData?.overallAssessment?.score
-                ? overviewData?.overallAssessment?.score.toFixed()
-                : "48"}
+              {alloverviewData?.sectionScore
+                ? alloverviewData?.sectionScore.toFixed()
+                : "-"}
               <Typography variant="h6" component="span">
-                  / 100
+                {' / 10'}
               </Typography>
             </Typography>
-            <Typography variant="h4" sx={{ mb: 2 }}>
-              {categorizeScore(overviewData?.overallAssessment?.score)}
+            <Typography variant="h6">Property</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h2">
+              {overviewData?.layout?.sectionScore
+                ? overviewData?.layout?.sectionScore.toFixed()
+                : "-"}
+              <Typography variant="h6" component="span">
+                {' / 10'}
+              </Typography>
             </Typography>
-            <Grid container spacing={1}>
-              <Grid item xs={6}>
-                <Typography variant="h2">
-                  {alloverviewData?.sectionScore
-                    ? alloverviewData?.sectionScore.toFixed()
-                    : "8"}
-                  <Typography variant="h6" component="span">
-                    / 10
-                  </Typography>
-                </Typography>
-                <Typography variant="h6">Property</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="h2">
-                  {overviewData?.layout?.sectionScore
-                    ? overviewData?.layout?.sectionScore.toFixed()
-                    : "6"}
-                  <Typography variant="h6" component="span">
-                    {" "}
-                    / 10
-                  </Typography>
-                </Typography>
-                <Typography variant="h6">Layout and amenities</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="h2">
-                  {overviewData?.location?.sectionScore
-                    ? overviewData?.location?.sectionScore.toFixed()
-                    : "6"}
-                  <Typography variant="h6" component="span">
-                    / 10
-                  </Typography>
-                </Typography>
-                <Typography variant="h6">Location</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="h2">
-                  {overviewData?.valueForMoney?.sectionScore
-                    ? overviewData?.valueForMoney?.sectionScore.toFixed()
-                    : "6"}
-                  <Typography variant="h6" component="span">
-                    / 10
-                  </Typography>
-                </Typography>
-                <Typography variant="h6">Value for money</Typography>
-              </Grid>
-            </Grid>
-          </Box>
-          <Box sx={{ display: { xs: "none", evmd: "block" } }}>
-            <iframe
-              src={mapUrl}
-              style={{ border: 0 }}
-              height="100%"
-              width={width}
-              loading="lazy"
-            />
-            
-          </Box>
-        </Card>
+            <Typography variant="h6">Layout and amenities</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h2">
+              {overviewData?.location?.sectionScore
+                ? overviewData?.location?.sectionScore.toFixed()
+                : "-"}
+              <Typography variant="h6" component="span">
+                {' / 10'}
+              </Typography>
+            </Typography>
+            <Typography variant="h6">Location</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h2">
+              {overviewData?.valueForMoney?.sectionScore
+                ? overviewData?.valueForMoney?.sectionScore.toFixed()
+                : "-"}
+              <Typography variant="h6" component="span">
+                {' / 10'}
+              </Typography>
+            </Typography>
+            <Typography variant="h6">Value for money</Typography>
+          </Grid>
+        </Grid>
       </Card>
-      <Container maxWidth="evmd" sx={{ pb: "0 !important" }}>
+    </Box>
+  }
+
+  return (
+    <>
+      <Container maxWidth='lg'>
+        <Box id='project' sx={{ display: { xs: 'block', evmd: 'flex' }, gap: 2 }}>
+          <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Card sx={{ maxHeight: 400 }}>
+              <img src={overviewData?.marketing?.image} style={{ width: '100%' }} />
+            </Card>
+            <Card sx={{ display: { xs: "none", evmd: "block" } }}>
+              <MapFrame mapUrl={mapUrl} />
+            </Card>
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <Box
+              sx={{
+                display: { xs: "none", evmd: "block" }
+              }}
+            >
+              <OverviewRatingCard />
+            </Box>
+          </Box>
+        </Box>
+      </Container>
+      <Container maxWidth="evmd" sx={{ py: "0 !important" }}>
+        <Box sx={{ display: { xs: "block", evmd: "none" }, mb: 2 }}>
+          <OverviewRatingCard />
+        </Box>
         <Card sx={{ display: { xs: "block", evmd: "none" }, mb: 2 }}>
           <Box>
-            <iframe
-              src={mapUrl}
-              style={{ border: 0 }}
-              height="100%"
-              width={"100%"}
-              loading="lazy"
-            />
+            <MapFrame mapUrl={mapUrl} />
           </Box>
         </Card>
         <Card id="builder">

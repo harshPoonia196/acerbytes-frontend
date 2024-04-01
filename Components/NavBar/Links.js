@@ -17,6 +17,8 @@ export const listOfPages = {
   home: '/',
   login: '/login',
   pageNotFound: '/page-not-found',
+  termsAndCondition: '/terms-and-condition',
+  privacy: '/privacy',
   commonPropertyList: "/property-list",
   commonAllBrokers: '/all-brokers',
   commonEnquiries: '/enquiries',
@@ -38,7 +40,7 @@ export const listOfPages = {
   adminPropertyList: '/admin/property-list',
   adminManageUser: '/admin/manage-user',
   adminManageConsultant: '/admin/manage-consultant',
-  adminConsultantLinks: '/admin/consultant-links',
+  adminConsultantLinks: '/admin/links-consultant',
   adminUpdateProfileLinks: '/admin/updateProfile',
   adminUpdateConsultantProfileLinks: '/admin/updateConsultantProfile',
 };

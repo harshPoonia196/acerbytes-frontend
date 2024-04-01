@@ -6,6 +6,7 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import ManageUserTable from "Components/Admin/ManageUser/ManageUserTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
+import { capitalLizeName } from "utills/CommonFunction";
 function ManageUser() {
   const [searchTerm, setSearchTerm] = useState("");
   const [dashboardInfo, setDashboardInfo] = useState({});
@@ -39,13 +40,19 @@ function ManageUser() {
     return subtitle;
   };
 
+  const displayNameAndRole = userDetails => {
+    const name = `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}`;
+    const role = userDetails?.role;
+    return `${capitalLizeName(name)} (${capitalLizeName(role)})`;
+  };
+
   return (
     <>
 
       <CustomAdminBreadScrumbs text='Manage user' />
 
       <InfoBox
-        title={Object.keys(userDetails).length > 0 ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}(${userDetails?.role})` : ""}
+        title={Object.keys(userDetails).length > 0 ? displayNameAndRole(userDetails) : ""}
         subtitle={generateSubtitle()}
       />
       <Container>

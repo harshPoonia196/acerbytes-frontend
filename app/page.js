@@ -18,6 +18,7 @@ import { clearItem, getItem } from "utills/utills";
 import { propertyRedirectKey } from "utills/Constants";
 import { propertyByCity } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
+import { useSnackbar } from "utills/SnackbarContext";
 
 export default function Home() {
   const router = useRouter();
@@ -36,8 +37,8 @@ export default function Home() {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list", "error"
+        error?.message ||
+        "Error fetching state list", "error"
       );
     } finally {
       setLoading(false);
@@ -53,9 +54,14 @@ export default function Home() {
     getAllPropertyByCity()
   }, []);
 
+  const { openSnackbar } = useSnackbar();
+  const showToaterMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
   return (
     <>
-     {isLoading && <Loader />}
+      {isLoading && <Loader />}
       <Container maxWidth="lg">
         <Box
           sx={{
@@ -70,10 +76,10 @@ export default function Home() {
             sx={{
               color: "#000",
               fontWeight: 300,
-              fontSize: { sm: "2em !important", md: "3em !important" },
+              fontSize: { sm: "2em !important", md: "4rem !important" },
             }}
           >
-            for better reach and data based decision in real estate
+            Empowering better Real Estate decisions
           </Typography>
 
           <Box
@@ -125,9 +131,11 @@ export default function Home() {
             <Grid item xs={12} sx={{ textAlign: "center", justifyContent: "center" }}>
               <Typography
                 variant="h5"
-                sx={{ textTransform: "uppercase", color: colors.BLUE }}
+                sx={{ textTransform: "lowercase" }}
+                className="urlStylingBackground"
               >
-                data research for selective properties in
+                get insights into <a style={{ color: colors.BLUE, cursor: "pointer" }} onClick={() => router.push(listOfPages.commonPropertyList)}>real estate projects</a>{' '}
+                across the cities below
               </Typography>
             </Grid>
             {cityRoute?.map((city) => (
@@ -135,7 +143,7 @@ export default function Home() {
                 <Card>
                   <CardActionArea
                     sx={{ p: 2, textAlign: "center" }}
-                    onClick={() => { 
+                    onClick={() => {
                       router.push(listOfPages.commonPropertyList + `/${city?.city}`);
                     }}
                   >
@@ -144,7 +152,7 @@ export default function Home() {
                   </CardActionArea>
                 </Card>
               </Grid>
-            ))} 
+            ))}
           </Grid>
         </Box>
       </Container>

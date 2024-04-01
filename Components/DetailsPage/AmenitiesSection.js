@@ -6,10 +6,16 @@ import colors from 'styles/theme/colors'
 
 function AmenitiesSection(props) {
     const { refCallback, amenitiesData } = props
+    const router = useRouter()
+    
     if (!amenitiesData) {
         return null;
     }
-    const router = useRouter()
+    const allAmenities = Object.values(amenitiesData).flatMap(Object.values);
+    const hasApplicableAmenity = allAmenities?.some(amenity => amenity.isApplicable);
+    if (!hasApplicableAmenity) {
+        return null;
+    }
 
     return (
         <Grid item xs={12} ref={refCallback} id='amenities' >
