@@ -316,6 +316,7 @@ setCities(res.data.data[0])
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data)
         let temp={}
+        setSelectOption({ ...transform })
         transform["assesment"].map((thing) => {
           temp[thing] = {
               isApplicable: false,
@@ -378,7 +379,7 @@ setCities(res.data.data[0])
     if (detailsPropertyId) {
       getProp();
       setEditPage(true);
-
+      getAllOptionDataList()
     }
     else{
       getAllOptionDataList()
@@ -1380,8 +1381,8 @@ switch (label.toLowerCase()) {
             isEdit={isEdit}
           />
           <Grid item xs={12} sx={{ textAlign: "end" }}>
-            {/* <CustomButton onClick={() => validateForm(false)} variant="contained"
-              ButtonText={editPage ? "Update" : "Save"} /> */}
+           { !form.published && <CustomButton onClick={() => validateForm(false)} variant="contained"
+              ButtonText={editPage ? "Update" : "Save"} /> }
             <CustomButton onClick={() => validateForm(true)} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
           </Grid>
         </Grid>}

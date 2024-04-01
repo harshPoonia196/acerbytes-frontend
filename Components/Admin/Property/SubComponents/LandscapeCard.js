@@ -21,7 +21,7 @@ import NewUnitAreaInputField from "../../../CommonLayouts/NewUnitAreaInputField"
 import colors from "styles/theme/colors";
 import NewMultiSelectAutoCompleteInputStructure from "Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure";
 
-function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide }) {
+function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,selectOptions }) {
   const {
     numberOfBuildings,
     maxFloors,
@@ -37,7 +37,6 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide }
     constructionQuality,
   } = form.layout;
 
-  const [selectOptions, setSelectOption] = useState({})
   const [loading, setLoading] = useState(false);
 
   const { openSnackbar } = useSnackbar();
@@ -66,10 +65,6 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide }
     }
   };
 
-  useEffect(() => {
-    getAllOptionDataList()
-
-  }, [])
 
   return (
     <Grid item xs={12} id="landscape">

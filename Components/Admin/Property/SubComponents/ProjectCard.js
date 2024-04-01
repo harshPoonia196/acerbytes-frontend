@@ -22,7 +22,7 @@ import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompl
 import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
 import colors from 'styles/theme/colors';
 
-function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide }) {
+function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide,selectOptions }) {
 
     const {
         builder,
@@ -52,7 +52,6 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide }) {
     const showToaterMessages = (message, severity) => {
         openSnackbar(message, severity);
     };
-    const [selectOptions, setSelectOption] = useState({})
     const getAllOptionDataList = async () => {
         try {
             let res = await getAllOptions();
@@ -74,10 +73,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide }) {
         }
     };
 
-    useEffect(() => {
-        getAllOptionDataList()
 
-    }, [])
 
 
 

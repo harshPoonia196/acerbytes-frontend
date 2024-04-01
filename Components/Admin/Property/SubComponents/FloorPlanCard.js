@@ -46,6 +46,7 @@ function FloorPlanCard({
   handleChange,
   errors,
   hide,
+  selectOptions,
   handleUnitsPlan,
 }) {
   const { projectType } = form.overview;
@@ -86,7 +87,6 @@ function FloorPlanCard({
 
   useEffect(() => {
     setUnit(layoutType);
-    getAllOptionDataList()
     setUnitType(projectType);
     const updatedPlanList = unitsPlan.planList.filter((plan) => {
       // Check if all fields in the plan object are empty
@@ -106,27 +106,6 @@ function FloorPlanCard({
   }, [editForm]);
 
 
-  const [selectOptions, setSelectOption] = useState({})
-  const getAllOptionDataList = async () => {
-    try {
-      let res = await getAllOptions();
-      if (res.status === 200) {
-        let transform = transformDocuments(res.data.data)
-        setSelectOption({ ...transform })
-      }
-    } catch (error) {
-      console.log(error, 'err')
-      showToaterMessages(
-        error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
-        "error"
-      );
-    }
-    finally {
-      setLoading(false);
-    }
-  };
 
 
   const style = {
@@ -523,7 +502,7 @@ function FloorPlanCard({
               }
               }
             />
-
+   
             <NewUnitAreaInputField
               label="Area (Per Unit)"
               name="area"
