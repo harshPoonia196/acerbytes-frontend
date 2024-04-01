@@ -371,6 +371,7 @@ const reactQueryKey = {
 };
 
 const enquiryFormKey = "enquiryForm";
+const enquiryFormOpen = "enquiryFormOpen";
 const propertyRedirectKey = "propertyRedirect";
 
 export {
@@ -381,6 +382,7 @@ export {
   listOfPropertyDetailsTab,
   reactQueryKey,
   enquiryFormKey,
+  enquiryFormOpen,
   propertyRedirectKey,
 };
 

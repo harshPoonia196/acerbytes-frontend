@@ -42,6 +42,10 @@ export const activeadCreate = (data) => {
   return axiosInstance.post(`/activead/create`, data);
 };
 
+export const checkEnquiryOnActiveLink = (id) => {
+  return axiosInstance.get(`/activead/checkEnquiryOnActiveLink/${id}`);
+};
+
 export const EditProperty = (detailsPropertyId, data) => {
   return axiosInstance.put(`/property/update/${detailsPropertyId}`, data);
 };

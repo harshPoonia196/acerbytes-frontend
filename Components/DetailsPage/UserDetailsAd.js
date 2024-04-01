@@ -7,7 +7,7 @@ import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from "utills/AuthContext";
 import CloseIcon from "@mui/icons-material/Close";
 
-function UserDetailsAd({ AllPropertyData }) {
+function UserDetailsAd({ AllPropertyData, contactPermissionToView }) {
   const { userDetails } = useAuth();
   const overviewData = AllPropertyData?.propertyData?.overview
   const [showContact, setShowContact] = useState(false);
@@ -78,6 +78,7 @@ function UserDetailsAd({ AllPropertyData }) {
             </a> */}
             <Button
               variant="outlined"
+              disabled={!contactPermissionToView}
               startIcon={showContact ? <CloseIcon /> : <PhoneIcon />}
               onClick={() => setShowContact(!showContact)}
             >

@@ -22,7 +22,7 @@ import {
 } from "utills/utills";
 import React from "react";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
-import { enquiryFormKey, propertyRedirectKey } from "utills/Constants";
+import { enquiryFormKey, enquiryFormOpen, propertyRedirectKey } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function EnquireNow(props) {
@@ -148,6 +148,7 @@ function EnquireNow(props) {
                 sx={{ mr: 2 }}
                 onClick={() => {
                   setItem(enquiryFormKey, formData);
+                  setItem(enquiryFormOpen, true);
                   if (param?.projectdetails) {
                     setItem(propertyRedirectKey, param?.projectdetails);
                   } else if (param?.id) {

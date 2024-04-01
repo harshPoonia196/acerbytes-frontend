@@ -45,17 +45,18 @@ import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import {
   enquiryFormKey,
+  enquiryFormOpen,
   listOfPropertyDetailsTab,
   listOfTabsInAddProperty,
 } from "utills/Constants";
-import { activeAdGet, favPropertyCreate } from "api/Property.api";
+import { activeAdGet, checkEnquiryOnActiveLink, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
 import { submitEnquiry, submitEnquiryUnauth } from "api/UserProfile.api";
-import { getItem } from "utills/utills";
+import { clearItem, getItem, setItem } from "utills/utills";
 
 const tabHeight = 200;
 
@@ -73,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -104,6 +105,7 @@ const PropertyDetails = ({ params }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([]);
+  const [contactPermissionToView, setContactPermissionToView] = useState(false);
 
   const activeAdGetProperty = async () => {
     try {
@@ -117,8 +119,30 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const checkPropertyIsEnquired = async () => {
+    try {
+      setLoading(true);
+      let res = await checkEnquiryOnActiveLink(
+        `${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ""}`
+      );
+      if (res.status === 200) {
+        console.log("res.data?.data: ", res.data?.data?._id);
+        setContactPermissionToView(!!res.data?.data?._id);
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -138,8 +162,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error generating fav Property",
+        error?.message ||
+        "Error generating fav Property",
         "error"
       );
     } finally {
@@ -154,6 +178,7 @@ const PropertyDetails = ({ params }) => {
 
   useEffect(() => {
     activeAdGetProperty();
+    checkPropertyIsEnquired();
   }, [userDetails]);
 
   const GridItemWithCard = (props) => {
@@ -260,8 +285,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -289,8 +314,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -343,6 +368,13 @@ const PropertyDetails = ({ params }) => {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
+  useEffect(() => {
+    if (getItem(enquiryFormOpen)) {
+      handleOpenEnquiryForm(true);
+      clearItem(enquiryFormOpen);
+    }
+  }, [getItem(enquiryFormOpen) == true]);
+  console.log("getItem(enquiryFormOpen):", getItem(enquiryFormOpen));
   const clickedRef = React.useRef(false);
   const unsetClickedRef = React.useRef(null);
 
@@ -366,9 +398,9 @@ const PropertyDetails = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -414,7 +446,7 @@ const PropertyDetails = ({ params }) => {
   return (
     <>
       {isLoading && <Loader />}
-      <UserDetailsAd AllPropertyData={propertyData[0]} />
+      <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={contactPermissionToView} />
       <nav className={classes.demo2}>
         <TopMenu
           topMenu={propertyData[0]?.propertyData}
