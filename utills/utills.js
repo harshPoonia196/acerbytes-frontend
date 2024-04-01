@@ -56,13 +56,18 @@ const scopes = {
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
   const isPublicRoute = publicRoutes.some(publicRoute => {
-    if (publicRoute.includes("/:")) { // Handle dynamic routes
-      const baseRoute = publicRoute.split("/:")[0];
-      return url.startsWith(baseRoute);
+    if (publicRoute.includes("/:")) { 
+      const parts = publicRoute.split("/:");
+      const baseRoute = parts[0];
+      if (parts.length === 2 && url.startsWith(baseRoute)) {
+        const dynamicPart = url.substring(baseRoute.length + 1);
+        return !dynamicPart.includes("/");
+      }
+      return false;
     }
     return url === publicRoute;
   });
-
+  
   if (!isLogged && !isPublicRoute) {
     redirectUser("/login");
   }
