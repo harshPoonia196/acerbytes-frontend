@@ -1,5 +1,5 @@
-import React from 'react'
-import { Box, Typography, Chip, Button, Card } from '@mui/material'
+import React, { useState } from 'react'
+import { Box, Typography, Chip, Button, Card, IconButton, Menu, MenuItem } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
@@ -10,6 +10,7 @@ import { listOfPages } from 'Components/NavBar/Links';
 import ShareIcon from '@mui/icons-material/Share';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function Footer({ paymentPage }) {
     const history = useRouter()
@@ -20,52 +21,87 @@ function Footer({ paymentPage }) {
 
     const navState = useSelector(globalState => globalState.isDrawerOpen)
 
+    const [anchorEl, setAnchorEl] = useState(null)
+    const open = Boolean(anchorEl)
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget)
+    }
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+
     return (
         <Card sx={{
             position: 'fixed', bottom: 0, p: 2, width: '100%', display: 'flex',
             boxShadow: '-1px -2px 6px -2px gainsboro!important',
-            flexDirection: {
-                xs: 'column-reverse', md: 'row'
-            }
         }}>
-            <Box sx={{ flex: 1, display: 'flex', mt: { xs: 1, md: 0 }, flexWrap: 'wrap', alignSelf: 'center', gap: 1 }}>
-                <Typography variant="body2" sx={{ alignSelf: 'center' }}>
-                    <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/terms-and-condition') }}>Terms</span> ·{' '}
-                    <span className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => { history.push('/privacy') }}>Privacy</span> ·
-                    Platform solution by Gravity44
-                </Typography>
+            <Box sx={{ flex: 1, alignSelf: 'center' }}>
                 {
                     !paymentPage &&
-                    <Box sx={{ alignSelf: 'center', cursor: 'pointer' }}>
-                        <CustomButton variant='outlined'
-                            onClick={() => { history.push('/consultant/make-payment') }}
-                            size="small" sx={{ fontSize: '0.75rem' }}
-                            startIcon={<QrCodeScannerIcon />}
+                    <CustomButton variant='outlined'
+                        onClick={() => { history.push('/consultant/make-payment') }}
+                        size="small" sx={{ fontSize: '0.75rem' }}
+                        startIcon={<QrCodeScannerIcon />}
 
-                            ButtonText={<>Pay&nbsp;here</>}
-                        />
-                    </Box>
+                        ButtonText={<>Pay&nbsp;here</>}
+                    />
                 }
             </Box>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', alignSelf: 'center', gap: 1 }}>
+            <Box sx={{ display: 'flex', gap: 1 }}>
                 <Box sx={{ alignSelf: 'center', cursor: 'pointer', }}>
                     <CustomButton startIcon={<ShareIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}
                         ButtonText={"Share"}
                     />
                 </Box>
-                <Box sx={{ alignSelf: 'center', cursor: 'pointer', }}>
-                    <CustomButton startIcon={<PersonAddAlt1Icon />} onClick={() => history.push(listOfPages.consultantJoinNow)} size="small" sx={{ fontSize: '0.75rem' }}
-                        ButtonText={<>Invite&nbsp;-&nbsp;Consultant</>}
-                    />
-                </Box>
-                <Box sx={{ alignSelf: 'center', cursor: 'pointer', }}>
-                    {/* <a href="whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients." data-action="share/whatsapp/share"
-                    target="_blank"> */}
-                    <CustomButton startIcon={<HowToRegIcon />} onClick={() => history.push(listOfPages.consultantJoinNow)} size="small" sx={{ fontSize: '0.75rem' }}
-                        ButtonText={<>Register&nbsp;-&nbsp;Consultant</>}
-                    />
-                    {/* </a> */}
-                </Box>
+                <IconButton onClick={handleClick}>
+                    <MoreVertIcon fontSize='small' />
+                </IconButton>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
+                >
+                    <MenuItem onClick={() => {
+                        handleClose()
+                        history.push(listOfPages.consultantJoinNow)
+                    }}>
+                        <PersonAddAlt1Icon fontSize='1rem' sx={{
+                            mr: 1
+                        }} />
+                        Invite&nbsp;-&nbsp;Consultant
+                    </MenuItem>
+                    <MenuItem onClick={() => {
+                        handleClose()
+                        history.push(listOfPages.consultantJoinNow)
+                    }}>
+                        <HowToRegIcon fontSize='1rem' sx={{
+                            mr: 1
+                        }} />
+                        Register&nbsp;-&nbsp;Consultant
+                    </MenuItem>
+                    <MenuItem onClick={() => {
+                        handleClose()
+                        history.push(listOfPages.termsAndCondition)
+                    }}>
+                        <HowToRegIcon fontSize='1rem' sx={{
+                            mr: 1
+                        }} />
+                        Terms
+                    </MenuItem>
+                    <MenuItem onClick={() => {
+                        handleClose()
+                        history.push(listOfPages.privacy)
+                    }}>
+                        <HowToRegIcon fontSize='1rem' sx={{
+                            mr: 1
+                        }} />
+                        Privacy
+                    </MenuItem>
+                </Menu>
             </Box>
         </Card >
     )

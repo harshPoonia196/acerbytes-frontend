@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -123,8 +123,7 @@ const PropertyDetailsPage = ({ params }) => {
     try {
       setLoading(true);
       let res = await detailsProperty(
-        `${detailsPropertyId}${
-          userDetails._id ? `?brokerId=${userDetails._id}` : ""
+        `${detailsPropertyId}${userDetails._id ? `?brokerId=${userDetails._id}` : ""
         }`
       );
       if (res.status === 200) {
@@ -137,8 +136,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -158,8 +157,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error generating fav Property",
+        error?.message ||
+        "Error generating fav Property",
         "error"
       );
     } finally {
@@ -280,8 +279,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -308,8 +307,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -417,9 +416,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -499,8 +498,8 @@ const PropertyDetailsPage = ({ params }) => {
         />
       ) : null}
       {userDetails?.role !== "admin" &&
-      userDetails?.role !== "superAdmin" &&
-      propertyData.isActiveAd ? (
+        userDetails?.role !== "superAdmin" &&
+        propertyData.isActiveAd ? (
         <AdsSection
           SinglePropertyId={propertyData?.propertyBroker[0]}
           propertyData={propertyData}
@@ -519,7 +518,7 @@ const PropertyDetailsPage = ({ params }) => {
         />
       </nav>
       <Box>
-        <MarketingSection overviewData={propertyData} />
+        <MarketingSection overviewData={propertyData} activeState={activeState} />
         <Container maxWidth="evmd">
           {openEnquiryForm && (
             <EnquireNow
@@ -606,7 +605,7 @@ const PropertyDetailsPage = ({ params }) => {
                               icon={<PersonAddIcon fontSize="small" />}
                               size="small"
                               sx={{ fontSize: "0.875rem" }}
-                              onClick={() => {}}
+                              onClick={() => { }}
                             />
                           </a>
                         )}
@@ -747,9 +746,8 @@ const PropertyDetailsPage = ({ params }) => {
                     </Fab>
                   )}
                   <a
-                    href={`https://web.whatsapp.com/send?text=${
-                      url?.href ? url.href : ""
-                    }`}
+                    href={`https://web.whatsapp.com/send?text=${url?.href ? url.href : ""
+                      }`}
                     target="_blank"
                     data-action="share/whatsapp/share"
                   >

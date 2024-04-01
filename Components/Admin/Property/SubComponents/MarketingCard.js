@@ -1,4 +1,4 @@
-import React,{useRef} from 'react'
+import React, { useRef } from 'react'
 import {
     Card,
     Typography,
@@ -28,7 +28,7 @@ import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 
 function MarketingCard({ isEdit, errors, form, handleChange }) {
 
-    const { tagLine, description,image } = form.marketing
+    const { tagLine, description, image } = form.marketing
     const { openSnackbar } = useSnackbar();
     const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false)
 
@@ -56,7 +56,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
         }
         const reader = new FileReader()
         reader.onload = (ev) => {
-  
+
             setImage(reader.result)
 
         }
@@ -70,7 +70,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
         setImage('')
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
-          }
+        }
         handleCloseUploadPopup()
     }
 
@@ -89,27 +89,21 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <Grid item xs={12}>
-                    {image && 
-               <Box
-               component="img"
-               sx={{
-                 height: 233,
-                 width: 350,
-                 maxHeight: { xs: 233, md: 167 },
-                 maxWidth: { xs: 350, md: 250 },
-               }}
-               alt="The Property image"
-               src={image}
-             />
-    }
+                        {image &&
+                            <Box
+                                component="img"
+                                sx={{
+                                    height: 233,
+                                    width: 350,
+                                    maxHeight: { xs: 233, md: 167 },
+                                    maxWidth: { xs: 350, md: 250 },
+                                }}
+                                alt="The Property image"
+                                src={image}
+                            />
+                        }
                         <Card sx={{ display: 'flex', p: 2 }}>
-
-             
-                            <>
-                         
                             <Typography sx={{ flex: 1, alignSelf: 'center' }}>Upload</Typography>
-                    
-
                             <>
                                 <input
                                     id="contained-button-file"
@@ -123,7 +117,6 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                                     display: "flex",
                                     flexDirection: "column",
                                     alignItems: "flex-end",
-                                    padding: "10px"
                                 }}>
                                     <label htmlFor="contained-button-file">
                                         <Button
@@ -131,12 +124,11 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                                             component="span"
                                             startIcon={<AttachFileIcon />}
                                         >
-                                            Attach File
+                                            Banner Image
                                         </Button>
                                     </label>
                                     {/* <Typography sx={{ flex: 1, alignSelf: 'center', marginTop: "5px" }}>{selectedImage ? selectedImage : image}</Typography> */}
                                 </div>
-                            </>
                             </>
                         </Card>
                     </Grid>

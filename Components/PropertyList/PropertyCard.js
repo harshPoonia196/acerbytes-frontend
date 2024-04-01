@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { useMemo } from "react";
 import { useAuth } from "utills/AuthContext";
+import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
+import { getColorForProgressBar } from "utills/CommonFunction";
 
 function PropertyCard(props) {
   const { userDetails } = useAuth();
@@ -27,8 +29,8 @@ function PropertyCard(props) {
     const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
     let projectType;
     if (overview?.projectType?.length > 0) {
-        projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
-    }else{
+      projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+    } else {
       projectType = 'type';
     }
     const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
@@ -37,36 +39,38 @@ function PropertyCard(props) {
     const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
 
     return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetails._id}`;
-};
+  };
 
-const propertyUrl = constructPropertyUrl(propertyDetails)
+  const propertyUrl = constructPropertyUrl(propertyDetails)
 
   const formattedCreatedAt =
     createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' hh:mm aaa");
 
-    const  numDifferentiation = (value) => {
-      const val = Math.abs(value)
-      if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`
-      if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`
-      if (val >= 1000) return `${(value / 1000).toFixed(2)}k`
-      return value;
-    }
-    const layoutCount = useMemo(()=> {
-      return propertyDetails?.unitsPlan?.uniqueLayouts?.length + propertyDetails?.unitsPlan?.planList?.filter(item=> !item.propertyLayout)?.length 
-    }, [propertyDetails])
+  const numDifferentiation = (value) => {
+    const val = Math.abs(value)
+    if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`
+    if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`
+    if (val >= 1000) return `${(value / 1000).toFixed(2)}k`
+    return value;
+  }
+  const layoutCount = useMemo(() => {
+    return propertyDetails?.unitsPlan?.uniqueLayouts?.length + propertyDetails?.unitsPlan?.planList?.filter(item => !item.propertyLayout)?.length
+  }, [propertyDetails])
 
-    const layoutData = useMemo(()=> {
-      const withoutUniqueLayout = [...propertyDetails?.unitsPlan?.planList.filter(item=> !item.propertyLayout)]?.map((item) => `${item?.width}*${item?.length}`)
-      return [...propertyDetails?.unitsPlan?.uniqueLayouts, ...withoutUniqueLayout]
-    }, [propertyDetails])
+  const layoutData = useMemo(() => {
+    const withoutUniqueLayout = [...propertyDetails?.unitsPlan?.planList.filter(item => !item.propertyLayout)]?.map((item) => `${item?.width}*${item?.length}`)
+    return [...propertyDetails?.unitsPlan?.uniqueLayouts, ...withoutUniqueLayout]
+  }, [propertyDetails])
+
+  console.log(propertyDetails)
 
   return (
     <Card>
       <CardActionArea sx={{ p: 2 }}>
-        <Grid container spacing={2} columns={16}>
-          <Grid item xs={13.5} sm={8} md={4}>
+        <Grid container spacing={1} columns={16}>
+          <Grid item xs={16} sm={8} lg={4.5} sx={{ display: 'flex' }}>
             <Box
-              sx={{ display: "flex" }}
+              sx={{ display: "flex", flex: 1 }}
               onClick={() => router.push(`/details/${propertyUrl}`)}
             >
               <CardMedia
@@ -85,64 +89,65 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
-                  {propertyDetails?.overview?.builder}
+                  {propertyDetails?.location?.city}
                 </Typography>
-                <Typography variant="subtitle2">
-                  {propertyDetails?.overview?.projectName}
+                <Typography variant="subtitle2" sx={{ textTransform: 'capitalize' }}>
+                  {propertyDetails?.overview?.builder + ' ' + propertyDetails?.overview?.projectName}
                 </Typography>
               </Box>
             </Box>
+            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+              <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
+                ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
+                // onClick={() => router.push("/research")}
+                onClick={() => router.push(`/details/${propertyUrl}`)} />
+            </Box>
           </Grid>
-          <Grid item xs={2.5} sx={{ display: { xs: "block", sm: "none" } }}>
-            <Card
-              sx={{
-                width: "fit-content",
-                backgroundColor: colors?.BLACK,
-                // borderRadius: "4px !important",
-                m: 0,
-                ml: "auto !important",
-              }}
-              onClick={() => router.push("/research")}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 600,
-                  width: "fit-content",
-                  color: "white",
-                  p: 0.5,
-                  px: 1,
-                }}
-              >
-                99
-              </Typography>
-            </Card>
-          </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={4}
-            md={2}
-            onClick={() => router.push(`/details/${propertyUrl}`)}
-          >
-            <Typography variant="caption">
+          <Grid item xs={8} sm={4} lg={1.5} onClick={() => router.push(`/details/${propertyUrl}`)}>
+            <Typography variant="caption" sx={{ textTransform: 'capitalize' }}>
               {propertyDetails?.location?.area}
             </Typography>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle2" sx={{ textTransform: 'capitalize' }}>
               {propertyDetails?.location?.sector}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={4}
-            md={2.5}
+          <Grid item xs={8} sm={2.5} lg={1.5}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
+          >
+            <Typography variant="caption">
+              {propertyDetails?.layout?.totalUnits} Units
+            </Typography>
+            <Typography variant="subtitle2">{`${propertyDetails?.layout?.area
+              } ${propertyDetails?.layout?.areaUnit
+                ? propertyDetails?.layout?.areaUnit
+                : ""
+              }`}</Typography>
+          </Grid>
+          <Grid item sm={1.5} sx={{ display: { xs: 'none', sm: 'block', lg: 'none' }, textAlign: 'end' }}>
+            <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
+              ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
+              // onClick={() => router.push("/research")}
+              onClick={() => router.push(`/details/${propertyUrl}`)} />
+          </Grid>
+          <Grid item xs={8} sm={6} lg={2.5}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
+          >
+            <Typography variant="caption">
+              {(layoutCount) === 1
+                ? `${layoutCount} layout`
+                : `${layoutCount} layouts`}
+            </Typography>
+            <Typography variant="subtitle2">
+              {layoutData.join(", ")}
+            </Typography>
+          </Grid>
+          <Grid item xs={8} sm={6} lg={3}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             {(propertyDetails?.unitsPlan?.averagePrice ||
               propertyDetails?.unitsPlan?.planList[0]?.areaUnit) && (
                 <Typography variant="caption">
-                  {propertyDetails?.unitsPlan?.averagePrice.toLocaleString() +
+                  {'₹ ' + propertyDetails?.unitsPlan?.averagePrice.toLocaleString() +
                     "/" +
                     propertyDetails?.unitsPlan?.planList[0]?.areaUnit}
                 </Typography>
@@ -155,43 +160,7 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
                 </Typography>
               )}
           </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={4}
-            md={1.5}
-            onClick={() => router.push(`/details/${propertyUrl}`)}
-          >
-            <Typography variant="caption">
-              {propertyDetails?.layout?.totalUnits} Units
-            </Typography>
-            <Typography variant="subtitle2">{`${propertyDetails?.layout?.area
-              } ${propertyDetails?.layout?.areaUnit
-                ? propertyDetails?.layout?.areaUnit
-                : ""
-              }`}</Typography>
-          </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={4}
-            md={2}
-            onClick={() => router.push(`/details/${propertyUrl}`)}
-          >
-            <Typography variant="caption">
-              {(layoutCount) === 1
-                ? `${layoutCount} layout`
-                : `${layoutCount} layouts`}
-            </Typography>
-            <Typography variant="subtitle2">
-              {layoutData.join(", ")}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={4}
-            md={2}
+          <Grid item xs={8} sm={4} lg={2}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
@@ -202,33 +171,11 @@ const propertyUrl = constructPropertyUrl(propertyDetails)
               {propertyDetails?.overview?.completionYear}
             </Typography>
           </Grid>
-          <Grid item xs={8} sm={6} md={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
-            <Card
-              sx={{
-                width: "fit-content",
-                backgroundColor: colors?.BLACK,
-                // borderRadius: "4px !important",
-                m: 0,
-                ml: "auto !important",
-              }}
+          <Grid item xs={8} sm={1.5} lg={1} sx={{ display: { xs: 'none', lg: 'block' }, textAlign: 'end' }}>
+            <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
+              ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyUrl}`)}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 600,
-                  width: "fit-content",
-                  color: "white",
-                  p: 0.5,
-                  px: 1,
-                }}
-              >
-                {propertyDetails?.overallAssessment?.score
-                  ? propertyDetails?.overallAssessment?.score.toFixed()
-                  : "00"}
-              </Typography>
-            </Card>
+              onClick={() => router.push(`/details/${propertyUrl}`)} />
           </Grid>
           {/* <Grid
             item

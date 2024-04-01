@@ -8,6 +8,17 @@ function ValueForMoneySection(props) {
     const  {refCallback, valueForMoneyData} = props
     const router = useRouter()
 
+  if (
+    !(
+      valueForMoneyData &&
+      (valueForMoneyData.appTillNow ||
+        valueForMoneyData.expectedFurtherApp ||
+        valueForMoneyData.forEndUse)
+    )
+  ) {
+    return null;
+  }
+
     return (
       <Grid item xs={12} id="value" ref={refCallback}>
         <Card>

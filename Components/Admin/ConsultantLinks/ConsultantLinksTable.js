@@ -70,7 +70,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } = props;
+  const { order, orderBy, onRequestSort, alignmentValue } = props;
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -81,6 +81,7 @@ function EnhancedTableHead(props) {
       <TableHead>
         <TableRow>
           {headCells.map((headCell) => (
+            (headCell.id !== 'expiresIn' || alignmentValue === "Active" || alignmentValue === "") && (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}
@@ -102,6 +103,7 @@ function EnhancedTableHead(props) {
                 ) : null}
               </TableSortLabel>
             </TableCell>
+            )
           ))}
         </TableRow>
       </TableHead>
@@ -109,15 +111,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+function RowStructure({ row, alignmentValue }) {
 
   const copyToClipboard = (link) => {
     navigator.clipboard.writeText(link).then(() => {
@@ -181,13 +175,13 @@ function RowStructure({ row }) {
       <TableCell>{formatDate(row?.validFrom)}</TableCell>
       <TableCell>{formatDate(row?.validTo)}</TableCell>
       <TableCell sx={{textAlign: "center"}}>
-        {row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
+        {alignmentValue !== "Expired" && row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
       </TableCell>
     </TableRow>
   );
 }
 
-function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExpiredCount }) {
+function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -229,9 +223,9 @@ function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExp
       return {
       id: item?._id,
       consultantName: `${item?.brokerData?.name?.firstName} ${item?.brokerData?.name?.lastName}`,
-      phone: `+ ${item?.brokerData?.phone.countryCode} ${item?.brokerData?.phone.number}`,
-      propertyType: item.propertyData?.overview?.projectCategory,
-      propertyName: item.propertyData?.overview?.projectName,
+      phone: `+ ${item?.brokerData?.phone?.countryCode} ${item?.brokerData?.phone?.number}`,
+      propertyType: item?.propertyData?.overview?.projectCategory,
+      propertyName: item?.propertyData?.overview?.projectName,
       link: propertyUrl,
       status: item?.status,
       validFrom: item?.created_at,
@@ -268,12 +262,10 @@ function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExp
       if (res.status === 200) {
         let transformedData = transformData(res?.data?.data || []);
         setActiveAdData([...transformedData]);
-        setCount(res?.data?.totalCount);
         setProperty(res?.data);
-        const active = res?.data?.data.filter(item => item.status === "Active").length;
-        const expired = res?.data?.data.filter(item => item.status === "Expired").length;
-        setActiveCount(active);
-        setExpiredCount(expired);
+        onDashboardDataUpdate({
+          countInfo: res?.data?.dashboardInfo || {},
+        });
       }
     } catch (error) {
       showToaterMessages(
@@ -294,6 +286,10 @@ function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExp
     };
     getAlllActiveAdList(pageOptions, searchTerm)
   }, [currentPage, pageLimit, alignmentValue])
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [alignmentValue]);
 
   const handleSearchClick =() => {
     setCurrentPage(1);
@@ -342,6 +338,11 @@ function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExp
             value={searchTerm} 
             onChange={handleSearch}
             onSearchButtonClick={handleSearchClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearchClick();
+              }
+            }}
               />
       </Card>
       {activeAdData?.length > 0 ? (
@@ -351,10 +352,11 @@ function ConsultantLinksTable({ setCount, alignmentValue, setActiveCount, setExp
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
+              alignmentValue={alignmentValue}
             />
             <TableBody>
               {activeAdData?.map((row) => (
-                <RowStructure row={row} />
+                <RowStructure row={row} alignmentValue={alignmentValue} />
               ))}
             </TableBody>
           </Table>

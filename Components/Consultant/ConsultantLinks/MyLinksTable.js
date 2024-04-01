@@ -104,14 +104,6 @@ function EnhancedTableHead(props) {
 }
 
 function RowStructure({ row }) {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const copyToClipboard = (link) => {
     navigator.clipboard.writeText(link).then(() => {
@@ -182,7 +174,6 @@ function RowStructure({ row }) {
 }
 
 function MyLinksTable({ setCount }) {
-  let userInfo = JSON.parse(localStorage.getItem("userDetails"));
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -218,9 +209,9 @@ function MyLinksTable({ setCount }) {
       return {
       id: item?._id,
       consultantName: `${item?.brokerData?.name?.firstName} ${item?.brokerData?.name?.lastName}`,
-      phone: `+ ${item?.brokerData?.phone.countryCode} ${item?.brokerData?.phone.number}`,
-      propertyType: item.propertyData?.overview?.projectCategory,
-      propertyName: item.propertyData?.overview?.projectName,
+      phone: `+ ${item?.brokerData?.phone?.countryCode} ${item?.brokerData?.phone?.number}`,
+      propertyType: item?.propertyData?.overview?.projectCategory,
+      propertyName: item?.propertyData?.overview?.projectName,
       link: propertyUrl,
       status: item?.status,
       validFrom: item?.created_at,
@@ -257,11 +248,8 @@ function MyLinksTable({ setCount }) {
       const querParams = {
         ...pageOptions,
         ...(searchTerm ? { search: searchTerm } : {}),
-        ...(userInfo?._id ? { brokerId: userInfo._id } : {}),
       };
-      let queryString = objectToQueryString(querParams); 
-      
-      let res = await getAllActiveAd(`${queryString}`);
+      let res = await getAllActiveAd(objectToQueryString(querParams));
       if (res.status === 200) {
         let transformedData = transformData(res?.data?.data || []);
         setActiveAdData([...transformedData]);
@@ -335,6 +323,11 @@ function MyLinksTable({ setCount }) {
             value={searchTerm} 
             onChange={handleSearch}
             onSearchButtonClick={handleSearchClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearchClick();
+              }
+            }}
               />
       </Card>
       {

@@ -55,6 +55,9 @@ const Step2 = ({ form, handleChange, handleSignUp, showOtp, setOtpInput, otpInpu
         if (!form.phone) {
             newErrors.phone = true;
         }
+        if (form.phone.length !== 10) {
+            newErrors.phone = true;
+        }
 
 
         setErrors(newErrors);
