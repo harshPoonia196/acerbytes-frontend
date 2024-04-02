@@ -625,13 +625,12 @@ function AddProperty() {
   const moduleScoreCalc = (e, firstKeyName, secondKeyName, seperateCalc, thirdKeyName) => {
     let totalRatingModule;
     let totalScored;
-
     switch (firstKeyName.toLowerCase()) {
       case "overview":
         totalRatingModule = form.overview.status.toLowerCase().replace(/\s/g, '') === "underconstruction" ? 10 : 5;
         break;
       case "regulatoryclearance":
-        totalRatingModule = 35;
+        totalRatingModule = 40;
         break;
       case "layout":
         totalRatingModule = 20;
@@ -729,6 +728,7 @@ function AddProperty() {
         totalScored =
           +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
       }
+    
     }
 
     else {
@@ -749,6 +749,7 @@ function AddProperty() {
     //   totalScored =
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
+
     let calc = (totalScored / totalRatingModule) * 10;
     if (seperateCalc) {
       setForm({
