@@ -16,6 +16,7 @@ function MarketingSection(props) {
   const { overviewData } = props;
   const alloverviewData = overviewData?.overview;
   const AllLocationData = overviewData?.location;
+  const AllUnitsPlan = overviewData?.unitsPlan;
 
   const extractUrl = (htmlString) => {
     const matches = htmlString?.match(/src="([^"]+)"/);
@@ -200,8 +201,8 @@ function MarketingSection(props) {
             />
             <NewKeyValuePairStructure
               label="Project type"
-              value={alloverviewData?.projectType
-                ?.map((item) => item.value)
+              value={Array.from(new Set (AllUnitsPlan?.planList
+                ?.map((item) => item?.propertyType)))
                 .join(", ")}
             />
             <NewKeyValuePairStructure

@@ -11,6 +11,9 @@ export async function generateMetadata({ params }) {
   const product = await fetch(`${baseUrl}/property/getProperty/${paramsId}`).then((res) => res.json())
   if(product.status !== 200){
     notFound()
+  }return {
+    title: product?.data?.marketing?.tagLine ?? "",
+    description: product?.data?.marketing?.description ?? ""
   }
 }
 

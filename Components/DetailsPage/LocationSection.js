@@ -25,7 +25,7 @@ function LocationSection(props) {
       <Card>
         <Box sx={{ p: 2, display: "flex" }}>
           <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
-            Location
+            Location assesment
           </Typography>
           <Box sx={{ alignSelf: "center" }}>
             <Card

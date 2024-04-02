@@ -559,7 +559,6 @@ const PropertyDetailsPage = ({ params }) => {
               valueForMoneyData={propertyData?.valueForMoney}
             />
             {/* <FloorPlanSection /> */}
-            {userDetails?.role === "user" && (
               <Grid item xs={12} id="propertyConsultants">
                 <Card sx={{ p: 2 }}>
                   <Grid container spacing={2}>
@@ -614,7 +613,6 @@ const PropertyDetailsPage = ({ params }) => {
                   </Grid>
                 </Card>
               </Grid>
-            )}
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
