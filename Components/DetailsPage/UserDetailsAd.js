@@ -6,6 +6,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from "utills/AuthContext";
 import CloseIcon from "@mui/icons-material/Close";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 
 function UserDetailsAd({ AllPropertyData }) {
   const { userDetails } = useAuth();
@@ -46,10 +47,12 @@ function UserDetailsAd({ AllPropertyData }) {
             flexDirection: { xs: "column", sm: "row" },
           }}
         >
-          <Box sx={{ display: "flex", flex: 1, alignSelf: "center" }}>
+          <Box sx={{ display: "flex", flex: 1, alignSelf: "center", alignItems: "end" }}>
+            <AccountCircle />
             <Typography variant="h5" sx={{}}>
-              Contact ({name} &#183; 4.7&nbsp;
-              <Rating
+              Contact {name} &#183; for {projectName} &#183; {city} &#183; {sector} &#183; {pinCode} &#183; {state}
+              {/* 4.7&nbsp; */}
+              {/* <Rating
                 name="text-feedback"
                 value={4}
                 readOnly
@@ -62,8 +65,7 @@ function UserDetailsAd({ AllPropertyData }) {
                 emptyIcon={
                   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
                 }
-              />
-              ) for {projectName} &#183; {city} &#183; {sector} &#183; {pinCode} &#183; {state}
+              /> */}
             </Typography>
           </Box>
           <Box sx={{ alignSelf: { xs: "end", sm: "center" } }}>

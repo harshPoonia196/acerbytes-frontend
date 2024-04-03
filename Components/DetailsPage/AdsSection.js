@@ -10,6 +10,7 @@ import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import { formatDateAndDaysRemaining } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
 import { ToasterMessages } from 'utills/Constants';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant, SinglePropertyId, propertyData, id }) {
     const { userDetails } = useAuth();
@@ -106,9 +107,11 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
             }
             <Card sx={{ border: isConsultant ? '2px solid gold' : `2px solid ${colors.BLUE}` }}>
                 <Box sx={{ display: 'flex', p: 1, px: 2, gap: 1, background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue', flexDirection: { xs: 'column', sm: 'row' } }}>
-                    <Box sx={{ display: 'flex', flex: 1, alignSelf: 'center' }}>
-                        <Typography variant='h5' sx={{}}>Contact ({name} &#183; 4.7&nbsp;
-                            <Rating
+                    <Box sx={{ display: 'flex', flex: 1, alignSelf: 'center', alignItems: "end" }}>
+                        <AccountCircle />
+                        <Typography variant='h5' sx={{}}>Contact us {name} &#183; for {projectName} &#183; {city} &#183; {sector} &#183; {pinCode} &#183; {state}
+                            {/* &#183 */}
+                            {/* <Rating
                                 name="text-feedback"
                                 value={4}
                                 readOnly
@@ -120,8 +123,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                                         fontSize="inherit"
                                     />
                                 }
-                            />
-                            ) for {projectName} &#183; {city} &#183; {sector} &#183; {pinCode} &#183; {state}
+                            /> */}
                         </Typography>
                     </Box>
                     <Box sx={{ alignSelf: { xs: "end", sm: 'center' } }}>

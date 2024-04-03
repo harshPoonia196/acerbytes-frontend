@@ -35,7 +35,7 @@ function UnitsPlanSection(props) {
 
   return (
     <Grid item xs={12} ref={refCallback} id='unitsPlan' >
-      <Card id="pricing">
+      <Card>
         <Box sx={{ p: 2, display: 'flex' }}>
           <Typography variant='h4' sx={{ flex: 1, alignSelf: 'center' }}>
             Units plan
@@ -81,7 +81,7 @@ function UnitsPlanSection(props) {
                 <Typography variant="subtitle1">{unit?.propertyLayout ? unit?.propertyLayout : `${unit?.width}*${unit?.length}`}</Typography>
                 <Typography variant="h5">{unit?.areaValue} {unit?.areaUnit}</Typography>
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                Bsp: {unit?.bsp}
+                Bsp: ₹ {new Intl.NumberFormat('en-IN').format(unit?.bsp).replace('₹', '')}
                 </Typography>
               </GridItemWithCard>
             ))}

@@ -49,10 +49,10 @@ function LandscapeSection(props) {
                     <NewKeyValuePairStructure label="Property type" value={overviewData?.projectType?.map(item => item.value).join(", ")} />
                     <NewKeyValuePairStructure label="Units (Total)" value={layoutData?.totalUnits} />
                     {/* <NewKeyValuePairStructure label="Floor types" value={layoutData?.layoutType?.map(item => item.value).join(", ")} /> */}
-                    <NewKeyValuePairStructure label="Floors (Max-Min)" value={`${layoutData?.maxFloors } - ${layoutData?.minFloors}`} />
-                    <NewKeyValuePairStructure label="Area" value={layoutData?.area && `${parseFloat(layoutData?.area).toFixed(2)} ${layoutData?.areaUnit || ''}`} />
+                    <NewKeyValuePairStructure label="Floors (Min-Max)" value={`${layoutData?.minFloors } - ${layoutData?.maxFloors}`} />
+                    <NewKeyValuePairStructure label="Area" value={layoutData?.area && `${parseFloat(layoutData?.area).toFixed()} ${layoutData?.areaUnit || ''}`} />
                     {/* <NewKeyValuePairStructure label="Open area" value={layoutData?.area && parseFloat(layoutData?.area).toFixed(2)} /> */}
-                    <NewKeyValuePairStructure label="Green area" value={layoutData?.greenArea && `${parseFloat(layoutData?.greenArea).toFixed(2)} ${layoutData?.areaUnit || ''}`} />
+                    <NewKeyValuePairStructure label="Green area" value={layoutData?.greenArea && `${parseFloat(layoutData?.greenArea).toFixed()} ${layoutData?.areaUnit || ''}`} />
                     <NewKeyValuePairStructure label="Unit density (Unit/Area)" value={`${layoutData?.unitDensity && parseFloat(layoutData?.unitDensity).toFixed(2)}`}  />
                     <NewKeyValuePairStructure label="Green density" value={layoutData?.greenDensity && parseFloat(layoutData?.greenDensity).toFixed(2)} />
                     <NewKeyValuePairStructure label="Construction quality" value={layoutData?.constructionQuality} isRating={true} isRatingReadOnly/>

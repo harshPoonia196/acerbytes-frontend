@@ -43,7 +43,7 @@ function PropertyList({ params }) {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [alignment, setAlignment] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(PAGINATION_LIMIT);
+  const [pageLimit, setPageLimit] = useState(20);
 
   const [property, setProperty] = useState([]);
   const [count, setCount] = useState({});
