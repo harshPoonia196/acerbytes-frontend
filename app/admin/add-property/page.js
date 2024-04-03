@@ -563,10 +563,14 @@ function AddProperty() {
           incomingValue = 4;
           break;
         case "dont know":
-          incomingValue = 3;
+          incomingValue = 0;
+          total = totalRating - 5
+          setTotalRating(total)
           break;
         case "don't know":
-          incomingValue = 3;
+          incomingValue = 0;
+          total = totalRating - 5
+          setTotalRating(total)
           break;
         case "on time":
           incomingValue = 5;
@@ -625,13 +629,12 @@ function AddProperty() {
   const moduleScoreCalc = (e, firstKeyName, secondKeyName, seperateCalc, thirdKeyName) => {
     let totalRatingModule;
     let totalScored;
-
     switch (firstKeyName.toLowerCase()) {
       case "overview":
         totalRatingModule = form.overview.status.toLowerCase().replace(/\s/g, '') === "underconstruction" ? 10 : 5;
         break;
       case "regulatoryclearance":
-        totalRatingModule = 35;
+        totalRatingModule = 40;
         break;
       case "layout":
         totalRatingModule = 20;
@@ -729,6 +732,7 @@ function AddProperty() {
         totalScored =
           +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
       }
+    
     }
 
     else {
@@ -749,6 +753,7 @@ function AddProperty() {
     //   totalScored =
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
+
     let calc = (totalScored / totalRatingModule) * 10;
     if (seperateCalc) {
       setForm({
@@ -925,7 +930,30 @@ function AddProperty() {
             form.overallAssessment.scoredRating + parseInt(incomingValue);
         }
       }
+else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()==='yes'){
+  total = totalRating + 5
+  setTotalRating(total)
 
+  if(form.overallAssessment.rated?.[secondKeyName] > 0){
+    let difference =
+    form.overallAssessment.rated?.[secondKeyName] -
+    parseInt(incomingValue);
+  let compare =
+    form.overallAssessment.rated?.[secondKeyName] <
+    parseInt(incomingValue);
+  if (compare) {
+    totalScored =
+      form.overallAssessment.scoredRating + Math.abs(difference);
+  } else {
+    totalScored =
+      form.overallAssessment.scoredRating - Math.abs(difference);
+  }
+  }
+  else{
+    totalScored =
+    form.overallAssessment.scoredRating + parseInt(incomingValue);
+  }
+}
 
       else if (form.overallAssessment.rated?.[secondKeyName] > 0) {
         let difference =
@@ -946,9 +974,9 @@ function AddProperty() {
           form.overallAssessment.scoredRating + parseInt(incomingValue);
       }
 
-      if (e.target.value.toLowerCase() === "dont know" || e.target.value.toLowerCase() === "don't know") {
-        totalScored -= 5
-      }
+      // if (e.target.value.toLowerCase() === "dont know" || e.target.value.toLowerCase() === "don't know") {
+      //   totalScored -= 5
+      // }
       let calc = (totalScored / total) * 100;
 
       setForm({

@@ -224,8 +224,7 @@ function FloorPlanCard({
     }
   };
   const addFloorPlan = () => {
-
-    let validationSchema = ["commercial"].includes(form.overview.projectCategory.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
+    let validationSchema = ["commercial"].includes(form.overview.projectCategory.toLowerCase()) || ["land"].includes(selectedItem.propertyType.toLowerCase())  ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
     const { error } = validationSchema?.validate(selectedItem, {
       abortEarly: false,
     });
@@ -283,7 +282,7 @@ function FloorPlanCard({
 
   const editFloorPlan = () => {
     if (editItem >= 0) {
-      let validationSchema = ["commercial"].includes(form.overview.projectCategory.toLocaleLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
+      let validationSchema = ["commercial"].includes(form.overview.projectCategory.toLocaleLowerCase()) || ["land"].includes(selectedItem.propertyType.toLowerCase()) ? unitsPlanSchemaWithoutLayout : unitsPlanSchemaWithLayout
       const { error } = validationSchema?.validate(selectedItem, {
         abortEarly: false,
       });
@@ -537,7 +536,7 @@ function FloorPlanCard({
               value={selectedItem.bsp}
               handleChange={(e) => {
                 if (selectedItem.area) {
-                  let calc = selectedItem.area * e.target.value
+                  let calc = selectedItem.area * +e.target.value
                   let priceUnitValue = formatNumber(calc)
                   let finalValue = formatNumberWithCommas(calc)
                   setSelectedItem((prev) => ({

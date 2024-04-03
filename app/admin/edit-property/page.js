@@ -563,10 +563,10 @@ const [hide,setHide]=useState([])
           incomingValue = 4;
           break;
         case "dont know":
-          incomingValue = 3;
+          incomingValue = 0;
           break;
         case "don't know":
-          incomingValue = 3;
+          incomingValue = 0;
           break;
         case "on time":
           incomingValue = 5;
@@ -926,7 +926,30 @@ if (firstKeyName==="location" || firstKeyName === "amenitiesData"){
   } 
 }
 
+else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()==='yes'){
+  total = totalRating + 5
+  setTotalRating(total)
 
+  if(form.overallAssessment.rated?.[secondKeyName] > 0){
+    let difference =
+    form.overallAssessment.rated?.[secondKeyName] -
+    parseInt(incomingValue);
+  let compare =
+    form.overallAssessment.rated?.[secondKeyName] <
+    parseInt(incomingValue);
+  if (compare) {
+    totalScored =
+      form.overallAssessment.scoredRating + Math.abs(difference);
+  } else {
+    totalScored =
+      form.overallAssessment.scoredRating - Math.abs(difference);
+  }
+  }
+  else{
+    totalScored =
+    form.overallAssessment.scoredRating + parseInt(incomingValue);
+  }
+}
       else if (form.overallAssessment.rated?.[secondKeyName] > 0) {
         let difference =
           form.overallAssessment.rated?.[secondKeyName] -

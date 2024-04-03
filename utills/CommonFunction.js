@@ -60,10 +60,10 @@ function formatNumber(number) {
     const thousand = Math.floor(number / 1000);
     return `thousand`;
   }
-  // // Less than one thousand
-  // else {
-  //   return `${number}`;
-  // }
+  // Less than one thousand
+  else {
+    return `hundred`;
+  }
 }
 
 
