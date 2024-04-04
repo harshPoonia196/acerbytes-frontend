@@ -7,7 +7,7 @@ import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from "utills/AuthContext";
 import CloseIcon from "@mui/icons-material/Close";
 
-function UserDetailsAd({ AllPropertyData, contactPermissionToView }) {
+function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnquiryForm }) {
   const { userDetails } = useAuth();
   const overviewData = AllPropertyData?.propertyData?.overview
   const [showContact, setShowContact] = useState(false);
@@ -32,6 +32,13 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView }) {
   const description = AllPropertyData?.description
     ? `${AllPropertyData?.description}`
     : "Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on";
+  const handleViewContactClick = () => {
+    if (!contactPermissionToView) {
+      handleOpenEnquiryForm();
+    } else {
+      setShowContact(!showContact)
+    }
+  }
 
   return (
     <Box sx={{ m: 2, mb: 0 }}>
@@ -78,9 +85,10 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView }) {
             </a> */}
             <Button
               variant="outlined"
-              disabled={!contactPermissionToView}
+              // disabled={!contactPermissionToView}
               startIcon={showContact ? <CloseIcon /> : <PhoneIcon />}
-              onClick={() => setShowContact(!showContact)}
+              // onClick={() => setShowContact(!showContact)}
+              onClick={handleViewContactClick}
             >
               {showContact ? phoneNumber : "View Contact"}
             </Button>

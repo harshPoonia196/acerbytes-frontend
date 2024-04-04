@@ -55,7 +55,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
-import { submitEnquiry, submitEnquiryUnauth } from "api/UserProfile.api";
+import { submitEnquiry, submitEnquiryUnauth, updateEnquiryVerified } from "api/UserProfile.api";
 import { clearItem, getItem, setItem } from "utills/utills";
 
 const tabHeight = 200;
@@ -106,6 +106,7 @@ const PropertyDetails = ({ params }) => {
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([]);
   const [contactPermissionToView, setContactPermissionToView] = useState(false);
+  const [leadId, setLeadId] = useState("");
 
   const activeAdGetProperty = async () => {
     try {
@@ -278,6 +279,8 @@ const PropertyDetails = ({ params }) => {
         if (success) {
           openSnackbar(message, "success");
           setBrokerContact({});
+          checkPropertyIsEnquired();
+          setLeadId(response.data?.data[0]?._id);
         } else {
           openSnackbar(message, "error");
         }
@@ -300,6 +303,42 @@ const PropertyDetails = ({ params }) => {
         propertyId: propertyData[0]?.property_id,
         adId: getId,
         propertyLink: params.projectdetails
+      });
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+          // hasEnquired();
+          setBrokerContact({});
+          setLeadId(response.data?.data[0]?._id);
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
+
+  const updateEnquiryVerfication = async (data) => {
+    try {
+      if (!leadId) {
+        return;
+      }
+      const response = await updateEnquiryVerified({
+        leadId: leadId,
+        otp: data.otp,
+        phone: {
+          countryCode: data.countryCode,
+          number: data.number
+        }
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -446,7 +485,7 @@ const PropertyDetails = ({ params }) => {
   return (
     <>
       {isLoading && <Loader />}
-      <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={contactPermissionToView} />
+      <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={contactPermissionToView} handleOpenEnquiryForm={handleOpenEnquiryForm} />
       <nav className={classes.demo2}>
         <TopMenu
           topMenu={propertyData[0]?.propertyData}
@@ -465,6 +504,7 @@ const PropertyDetails = ({ params }) => {
               handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}
               submitEnquiry={handleSubmitEnquiry}
+              submitEnquiryUnath={handleSubmitEnquiryUnauth}
             />
           )}
           <OtpVerify
@@ -473,7 +513,7 @@ const PropertyDetails = ({ params }) => {
             handleClose={handleCloseVerifyPopup}
             handleOpen={handleOpenEnquiryForm}
             handleAlternateSignIn={handleOpenAlternateSignIn}
-            handleSubmit={handleSubmitEnquiryUnauth}
+            handleSubmit={updateEnquiryVerfication}
           />
           <AlternateSignIn
             open={openAlternateSignIn}

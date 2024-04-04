@@ -26,7 +26,8 @@ export const submitEnquiry = (data) => {
     name: { firstName: data?.firstName, lastName: data?.lastName },
     phone: { countryCode: data?.countryCode, number: `${data?.number}` },
     adId: data?.adId,
-    propertyLink: data?.propertyLink
+    propertyLink: data?.propertyLink,
+    brokerId: data?.brokerId,
     // userId: userDetail?._id,
   });
 };
@@ -42,6 +43,13 @@ export const submitEnquiryUnauth = (data) => {
     propertyLink: data?.propertyLink
   });
 };
+
+export const updateEnquiryVerified = (data) => {
+  return axiosInstance.post(`/user/enquiryVerify`, {
+    ...data
+  });
+};
+
 
 export const isEnquired = (adId, propertyId) => {
   return axiosInstance.post(`/user/isEnquired`, {

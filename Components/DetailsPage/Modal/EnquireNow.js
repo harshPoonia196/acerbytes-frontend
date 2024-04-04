@@ -26,7 +26,7 @@ import { enquiryFormKey, enquiryFormOpen, propertyRedirectKey } from "utills/Con
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function EnquireNow(props) {
-  const { open, handleClose, handleAction, submitEnquiry } = props;
+  const { open, handleClose, handleAction, submitEnquiry, submitEnquiryUnath } = props;
   const router = useRouter();
 
   const token = isLoggedIn();
@@ -167,6 +167,7 @@ function EnquireNow(props) {
                 if (token) {
                   submitEnquiry(formData);
                 } else {
+                  submitEnquiryUnath(formData);
                   setItem(enquiryFormKey, formData);
                   handleAction();
                 }

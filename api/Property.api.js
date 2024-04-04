@@ -46,6 +46,10 @@ export const checkEnquiryOnActiveLink = (id) => {
   return axiosInstance.get(`/activead/checkEnquiryOnActiveLink/${id}`);
 };
 
+export const checkEnquiryOnPropertyLink = (id) => {
+  return axiosInstance.get(`/activead/checkEnquiryOnPropertyLink/${id}`);
+};
+
 export const EditProperty = (detailsPropertyId, data) => {
   return axiosInstance.put(`/property/update/${detailsPropertyId}`, data);
 };
