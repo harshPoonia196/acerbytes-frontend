@@ -48,6 +48,7 @@ function MarketingSection(props) {
   }
 
   const OverviewRatingCard = () => {
+    console.log(AllLocationData)
     return <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} >
       <Card sx={{ p: 2, textAlign: "center" }}>
         <Typography variant="h2">
@@ -57,7 +58,7 @@ function MarketingSection(props) {
         <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
           <LocationOnIcon fontSize="small" sx={{ alignSelf: 'center' }} />
           <Typography variant="h4">
-            {`${AllLocationData?.city}, ${AllLocationData?.state}`}
+            {`${AllLocationData?.sector}, ${AllLocationData?.city}, ${AllLocationData?.state}`}
           </Typography>
         </Box>
       </Card>
@@ -83,7 +84,7 @@ function MarketingSection(props) {
                 {' / 10'}
               </Typography>
             </Typography>
-            <Typography variant="h6">Property</Typography>
+            <Typography variant="h6">Performance</Typography>
           </Grid>
           <Grid item xs={6}>
             <Typography variant="h2">
@@ -128,7 +129,7 @@ function MarketingSection(props) {
       <Container maxWidth='lg'>
         <Box id='project' sx={{ display: { xs: 'block', evmd: 'flex' }, gap: 2 }}>
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Card sx={{ maxHeight: 400 }}>
+            <Card sx={{ maxHeight: 350 }}>
               <img src={overviewData?.marketing?.image} style={{ width: '100%' }} />
             </Card>
             <Card sx={{ display: { xs: "none", evmd: "block" } }}>
@@ -201,7 +202,7 @@ function MarketingSection(props) {
             />
             <NewKeyValuePairStructure
               label="Project type"
-              value={Array.from(new Set (AllUnitsPlan?.planList
+              value={Array.from(new Set(AllUnitsPlan?.planList
                 ?.map((item) => item?.propertyType)))
                 .join(", ")}
             />

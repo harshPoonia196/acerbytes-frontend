@@ -17,6 +17,7 @@ import { useMemo } from "react";
 import { useAuth } from "utills/AuthContext";
 import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
 import { getColorForProgressBar } from "utills/CommonFunction";
+import Image from "next/image";
 
 function PropertyCard(props) {
   const { userDetails } = useAuth();
@@ -73,17 +74,12 @@ function PropertyCard(props) {
               sx={{ display: "flex", flex: 1 }}
               onClick={() => router.push(`/details/${propertyUrl}`)}
             >
-              <CardMedia
-                component="img"
-                alt={propertyDetails?.marketing?.tagLine}
-                sx={{
-                  width: 80,
-                  height: 54,
+              <Image alt={propertyDetails?.marketing?.tagLine} height={54} width={80}
+                loading="lazy" src={propertyDetails?.marketing?.image}
+                style={{
                   borderRadius: "8px",
-                  mr: 2,
-                }}
-                image={propertyDetails?.marketing?.image}
-              />
+                  marginRight: 16,
+                }} />
               <Box
                 sx={{ flex: 1 }}
                 onClick={() => router.push(`/details/${propertyUrl}`)}
