@@ -350,7 +350,7 @@ setCities(res.data.data[0])
         return sum;
       };
 
-      let amentiesSatrCount = sumItems({sectionScore:'',pointsGained:0,...amenities},['sectionScore', 'pointsGained'])
+      let amentiesSatrCount = sumItems({sectionScore:0,pointsGained:0,...amenities},['sectionScore', 'pointsGained'])
   
       setForm((prevForm) => ({
         ...prevForm,
@@ -425,7 +425,7 @@ setCities(res.data.data[0])
       privateBankLoan: "",
       fresh: "",
       resale: "",
-      sectionScore: '',
+      sectionScore: 0,
       pointsGained:0
     },
     layout: {
@@ -443,7 +443,7 @@ setCities(res.data.data[0])
       greenDensityScore: "",
       constructionQuality: 0,
       interiorQuality: 0,
-      sectionScore: '',
+      sectionScore: 0,
       pointsGained:0
     },
     unitsPlan: {
@@ -474,7 +474,7 @@ setCities(res.data.data[0])
       state: "",
       city: "",
       sector: "",
-      sectionScore:"",
+      sectionScore:0,
       pointsGained:0,
       area: "",
       pinCode: "",
@@ -489,7 +489,7 @@ setCities(res.data.data[0])
       expectedFurtherApp: 0,
       forEndUse: 0,
       pointsGained:0,
-      sectionScore:""
+      sectionScore:0
     },
     consultants: [],
     overallAssessment: {
