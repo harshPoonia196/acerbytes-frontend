@@ -48,7 +48,7 @@ import {
 } from "utills/Constants";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
-import { detailsProperty, favPropertyCreate } from "api/Property.api";
+import { checkEnquiryOnPropertyLink, detailsProperty, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
@@ -59,6 +59,7 @@ import {
   isEnquired,
   submitEnquiry,
   submitEnquiryUnauth,
+  updateEnquiryVerified,
 } from "api/UserProfile.api";
 
 const tabHeight = 200;
@@ -110,7 +111,8 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState({});
-
+  const [leadId, setLeadId] = useState("");
+  const [enquiredInfo, setEnquiredInfo] = useState(null);
   const shuffle = (a) => {
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -173,6 +175,7 @@ const PropertyDetailsPage = ({ params }) => {
 
   useEffect(() => {
     detailsGetProperty();
+    checkPropertyIsEnquired();
   }, [userDetails._id]);
 
   const GridItemWithCard = (props) => {
@@ -219,6 +222,32 @@ const PropertyDetailsPage = ({ params }) => {
     );
   }
 
+  const checkPropertyIsEnquired = async () => {
+    try {
+      setLoading(true);
+      if (userDetails?._id) {
+        let res = await checkEnquiryOnPropertyLink(
+          `${detailsPropertyId}${userDetails?._id ? `?userId=${userDetails?._id}` : ""}`
+        );
+        if (res.status === 200) {
+          if (res.data?.data?._id) {
+            setEnquiredInfo(res.data?.data);
+          }
+        }
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+
+  };
+
   const [currentTab, setCurrentTab] = React.useState(0);
 
   const handleTabChange = (event, newValue) => {
@@ -246,6 +275,7 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [brokerContact, setBrokerContact] = React.useState(null);
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
+  const [enquireWithBrokerId, setEnquireWithBrokerId] = useState("");
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
     React.useState(false);
 
@@ -264,7 +294,8 @@ const PropertyDetailsPage = ({ params }) => {
       const response = await submitEnquiry({
         ...data,
         propertyId: detailsPropertyId,
-        propertyLink: `details/${params.id}`
+        propertyLink: `details/${params.id}`,
+        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -272,6 +303,8 @@ const PropertyDetailsPage = ({ params }) => {
           openSnackbar(message, "success");
           // hasEnquired();
           setBrokerContact({});
+          setLeadId(response.data?.data[0]?._id);
+          checkPropertyIsEnquired();
         } else {
           openSnackbar(message, "error");
         }
@@ -293,6 +326,41 @@ const PropertyDetailsPage = ({ params }) => {
         ...data,
         propertyId: detailsPropertyId,
         propertyLink: `details/${params.id}`
+      });
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+          // hasEnquired();
+          setBrokerContact({});
+          setLeadId(response.data?.data[0]?._id);
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
+  const updateEnquiryVerfication = async (data) => {
+    try {
+      if (!leadId) {
+        return;
+      }
+      const response = await updateEnquiryVerified({
+        leadId: leadId,
+        otp: data.otp,
+        phone: {
+          countryCode: data.countryCode,
+          number: data.number
+        }
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -364,6 +432,11 @@ const PropertyDetailsPage = ({ params }) => {
   const handleCloseConsultantsViewAll = () => {
     setConsultantsViewAll(false);
   };
+
+  const handleEnquireWithBroker = (brokerId) => {
+    handleOpenEnquiryForm();
+    setEnquireWithBrokerId(brokerId);
+  }
 
   const classes = useStyles();
 
@@ -527,6 +600,8 @@ const PropertyDetailsPage = ({ params }) => {
               handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}
               submitEnquiry={handleSubmitEnquiry}
+              submitEnquiryUnath={handleSubmitEnquiryUnauth}
+
             />
           )}
           <OtpVerify
@@ -535,7 +610,7 @@ const PropertyDetailsPage = ({ params }) => {
             handleClose={handleCloseVerifyPopup}
             handleOpen={handleOpenEnquiryForm}
             handleAlternateSignIn={handleOpenAlternateSignIn}
-            handleSubmit={handleSubmitEnquiryUnauth}
+            handleSubmit={updateEnquiryVerfication}
           />
           <AlternateSignIn
             open={openAlternateSignIn}
@@ -571,7 +646,9 @@ const PropertyDetailsPage = ({ params }) => {
                       <Box>
                         <ConsultantsViewAll
                           open={consultantsViewAll}
+                          enquiredInfo={enquiredInfo}
                           handleClose={handleCloseConsultantsViewAll}
+                          handleEnquireWithBroker={handleEnquireWithBroker}
                           propertyData={propertyData?.consultants}
                         ></ConsultantsViewAll>
                         <Chip
@@ -586,7 +663,7 @@ const PropertyDetailsPage = ({ params }) => {
                     {propertyData?.consultants?.length > 0 &&
                       propertyData?.consultants?.slice(0, 2).map((broker) => (
                         <Grid item xs={12} sm={6} key={broker?.name}>
-                          <BrokerCard broker={broker} noReview />
+                          <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
                         </Grid>
                       ))}
                     <Grid item xs={12}>
