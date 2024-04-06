@@ -499,7 +499,6 @@ function AddProperty() {
     overallAssessment: {
       score: 0,
       scoredRating: 0,
-      outOff:0,
       rated: {
         builder: 0,
         constructionProgress: 0,
@@ -1112,9 +1111,7 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
       let total = totalRating + 5
       setTotalRating(total)
     }
-    setForm({
-      ...form, overallAssessment: { ...form.overallAssessment, outOff: totalRating }
-    })
+  
   };
 
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {

@@ -23,12 +23,12 @@ import { useSnackbar } from "utills/SnackbarContext";
 
 function FacilitiesCard({ isEdit, form, handleChange, handleRating,formUpdated }) {
 
-    let [amenitiesData,setAmenitiesData]=useState(form.amenitiesData)
-    useEffect(()=>{
-        setAmenitiesData(form.amenitiesData)
-    },[form])
+    // let [amenitiesData,setAmenitiesData]=useState(form.amenitiesData)
+    // useEffect(()=>{
+    //     setAmenitiesData(form.amenitiesData)
+    // },[form])
 
-    // const { amenitiesData } = form
+    const { amenitiesData } = form
     return (
        <>{amenitiesData && <Grid item xs={12} id="facilities">
             <Card>

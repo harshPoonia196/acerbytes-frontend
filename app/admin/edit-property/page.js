@@ -21,7 +21,7 @@ import {
   projectName,
   reraSchema,
 } from "Components/Admin/Property/Validation/PropertyValidation";
-import EditFacilitiesCard from "Components/Admin/Property/SubComponents/EditFacilitiesCard";
+import FacilitiesCard from "Components/Admin/Property/SubComponents/FacilitiesCard";
 import LandscapeCard from "Components/Admin/Property/SubComponents/LandscapeCard";
 import FloorPlanCard from "Components/Admin/Property/SubComponents/FloorPlanCard";
 import RegulatoryCard from "Components/Admin/Property/SubComponents/RegulatoryCard";
@@ -218,7 +218,7 @@ function AddProperty() {
             handleUIHide(data.overview.projectType, "overview", "projectType")
             setEditForm(true);
             console.log(data,'daaaa')
-
+            setForm({ ...data });
 
             let countLocationItems = countLocationAssessmentItems(data)
             let AmentiesCount = countAmenitiesDataItems(data)
@@ -246,8 +246,7 @@ function AddProperty() {
           });
           setRegulatoryCount(countYes)
             setTotalRating(totalRating + updateTotalCount)
-            setForm({ ...data });
-            setTotalRating(data.overallAssessment.outOff)
+      
     setFormUpdated(true)
         }
     } 
@@ -388,22 +387,21 @@ setCities(res.data.data[0])
   };
   React.useEffect(() => {
     if (detailsPropertyId) {
-      setLoading(true)
+      // setLoading(true)
       getProp();
       setEditPage(true);
-      getAllOptionDataList()
     }
     else{
       getAllOptionDataList()
     }
     getCitiesList();
     brokersList();
-    setLoading(false)
+    // setLoading(false)
 
     return () => {
       clearTimeout(unsetClickedRef.current);
     };
-  }, [detailsPropertyId]);
+  }, []);
 
 
 
@@ -507,7 +505,6 @@ setCities(res.data.data[0])
     overallAssessment: {
       score: 0,
       scoredRating: 0,
-      outOff:0,
       rated: {
         builder: 0,
         constructionProgress: 0,
@@ -1379,22 +1376,20 @@ switch (label.toLowerCase()) {
             handleUnitsPlan={handleUnitsPlan}
             isEdit={isEdit}
           />}
-          <EditFacilitiesCard
+          <FacilitiesCard
             errors={errors}
             hide={hide}
             form={form}
             isEdit={isEdit}
-            formUpdated={formUpdated}
             selectOptions={selectOptions}
             handleChange={handleChange}
           />
-          <EditLocationCard
+          <LocationCard
             errors={errors}
             hide={hide}
             cities={cities}
             selectOptions={selectOptions}
             form={form}
-            formUpdated={formUpdated}
             moduleScoreCalc={moduleScoreCalc}
             handleChange={handleChange}
             isEdit={isEdit}

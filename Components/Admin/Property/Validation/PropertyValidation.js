@@ -463,7 +463,6 @@ export const Schema = Joi.object({
   overallAssessment: Joi.object().keys({
     score: Joi.number().allow(0),
     scoredRating: Joi.number().allow(0),
-    outOff:Joi.number().allow(0),
     rated: Joi.object().keys({
       builder: Joi.number().allow(0),
       builderScore: Joi.number().allow(0),
