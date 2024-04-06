@@ -737,6 +737,10 @@ const [hide,setHide]=useState([])
         totalRatingModule=totalRatingModule+5
         setRegulatoryCount(regulatoryCount+1)
       }
+      else if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()!==`don't know` && e.target.value.toLowerCase()===`don't know`){
+        totalRatingModule=totalRatingModule-5
+        setRegulatoryCount(regulatoryCount-1)
+      }
       let difference =
       chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) - parseInt(incomingValue);
     let compare =
@@ -768,6 +772,7 @@ const [hide,setHide]=useState([])
     //   totalScored =
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
+    console.log(totalScored,totalRatingModule,'check',regulatoryCount)
     let calc = (totalScored / totalRatingModule) * 10;
 
     if(seperateCalc){
