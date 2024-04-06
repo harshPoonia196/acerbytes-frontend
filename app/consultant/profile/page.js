@@ -53,6 +53,7 @@ import { currencies, countries } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import { useAuth } from "utills/AuthContext";
 import { getAllOptions, getCities } from "api/Property.api";
+import { capitalLizeName } from "utills/CommonFunction";
 
 const tabHeight = 116;
 
@@ -218,15 +219,18 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     }
     let value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    
+
+    if (secondKeyName === 'firstName' || secondKeyName === 'lastName') {
+      value = capitalLizeName(value)
+    }
     if (e.target.type == "number") {
       value = Number(value);
     }
-    if(secondKeyName == "registeredPhone" && thirdKeyName == "number") {
-if(e.target.value.length > 10) {
-return ;
+    if (secondKeyName == "registeredPhone" && thirdKeyName == "number") {
+      if (e.target.value.length > 10) {
+        return;
+      }
     }
-  }
     setBrokerProfileInfo((prev) => ({
       ...(prev || {}),
       [firstKeyName]: !secondKeyName
@@ -455,7 +459,7 @@ return ;
       brokerProfileInfo?.alternateEmail &&
       !validateEmail(brokerProfileInfo?.alternateEmail)
     ) {
-      isError= true;
+      isError = true;
       error['alternateEmail'] = true;
     } else {
       error['alternateEmail'] = false;
@@ -465,7 +469,7 @@ return ;
       brokerProfileInfo?.serviceDetails?.companyEmail &&
       !validateEmail(brokerProfileInfo?.serviceDetails?.companyEmail)
     ) {
-      isError= true;
+      isError = true;
       error['companyEmail'] = true;
     } else {
       error['companyEmail'] = false;
@@ -473,15 +477,15 @@ return ;
 
     if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
       error['reraNumber'] = true;
-      isError= true;
+      isError = true;
     } else {
       error['reraNumber'] = false;
     }
     if (
-      !validatePhoneNumber( brokerProfileInfo?.serviceDetails?.registeredPhone)
+      !validatePhoneNumber(brokerProfileInfo?.serviceDetails?.registeredPhone)
     ) {
       error['phone'] = true;
-      openSnackbar(  "Mobile number is invalid", "error");
+      openSnackbar("Mobile number is invalid", "error");
       setErrorInvalid({
         ...error,
       });
@@ -492,7 +496,7 @@ return ;
 
     if (brokerProfileInfo?.serviceDetails?.registeredPhone?.number && !([0, 10].includes(brokerProfileInfo?.serviceDetails?.registeredPhone?.number?.toString()?.length))) {
       error['registeredPhone'] = true;
-      isError= true;
+      isError = true;
     } else {
       error['registeredPhone'] = false;
     }
@@ -502,7 +506,7 @@ return ;
       ...error,
     });
 
-    if(isError){
+    if (isError) {
       return;
     }
 
@@ -910,7 +914,7 @@ return ;
                         "registeredPhone",
                         "countryCode"
                       )
-                      
+
                     }
                     error={errorInvalid.registeredPhone}
                   />
@@ -1034,7 +1038,7 @@ return ;
                     isEdit={isEdit}
                     currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                     value1={
-                      brokerProfileInfo?.budget?.minimumBudget?.unit ||"₹INR"
+                      brokerProfileInfo?.budget?.minimumBudget?.unit || "₹INR"
                     }
                     value2={
                       brokerProfileInfo?.budget?.minimumBudget?.value || ""
@@ -1052,7 +1056,7 @@ return ;
                     currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
                     isEdit={isEdit}
                     value1={
-                      brokerProfileInfo?.budget?.maximumBudget?.unit ||"₹INR"
+                      brokerProfileInfo?.budget?.maximumBudget?.unit || "₹INR"
                     }
                     value2={
                       brokerProfileInfo?.budget?.maximumBudget?.value

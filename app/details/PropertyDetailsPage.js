@@ -634,62 +634,64 @@ const PropertyDetailsPage = ({ params }) => {
               valueForMoneyData={propertyData?.valueForMoney}
             />
             {/* <FloorPlanSection /> */}
-              <Grid item xs={12} id="propertyConsultants">
-                <Card sx={{ p: 2 }}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} sx={{ display: "flex" }}>
-                      <Box sx={{ flex: 1, alignSelf: "center" }}>
-                        <Typography variant="h4">
-                          Contact verified consultants
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <ConsultantsViewAll
-                          open={consultantsViewAll}
-                          enquiredInfo={enquiredInfo}
-                          handleClose={handleCloseConsultantsViewAll}
-                          handleEnquireWithBroker={handleEnquireWithBroker}
-                          propertyData={propertyData?.consultants}
-                        ></ConsultantsViewAll>
-                        <Chip
-                          label="View all"
-                          icon={<GroupIcon fontSize="small" />}
-                          size="small"
-                          onClick={handleOpenConsultantsViewAll}
-                          sx={{ fontSize: "0.875rem !important" }}
-                        />
-                      </Box>
-                    </Grid>
-                    {propertyData?.consultants?.length > 0 &&
-                      propertyData?.consultants?.slice(0, 2).map((broker) => (
-                        <Grid item xs={12} sm={6} key={broker?.name}>
-                          <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
-                        </Grid>
-                      ))}
-                    <Grid item xs={12}>
-                      <Box sx={{ display: "flex" }}>
-                        <Typography
-                          variant="body2"
-                          sx={{ flex: 1, alignSelf: "center" }}
-                        >
-                          Are you a property consultant, let Customers reach you
-                        </Typography>
-                        {userDetails?.role === "broker" && (
-                          <a href={`https://wa.me/+919818690582`}>
-                            <Chip
-                              label="Yes, show me here !"
-                              icon={<PersonAddIcon fontSize="small" />}
-                              size="small"
-                              sx={{ fontSize: "0.875rem" }}
-                              onClick={() => { }}
-                            />
-                          </a>
-                        )}
-                      </Box>
-                    </Grid>
+            <Grid item xs={12} id="propertyConsultants">
+              <Card sx={{ p: 2 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sx={{ display: "flex" }}>
+                    <Box sx={{ flex: 1, alignSelf: "center" }}>
+                      <Typography variant="h4">
+                        Contact verified consultants
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <ConsultantsViewAll
+                        open={consultantsViewAll}
+                        enquiredInfo={enquiredInfo}
+                        handleClose={handleCloseConsultantsViewAll}
+                        handleEnquireWithBroker={handleEnquireWithBroker}
+                        propertyData={propertyData?.consultants}
+                      ></ConsultantsViewAll>
+                      <Chip
+                        label="View all"
+                        icon={<GroupIcon fontSize="small" />}
+                        size="small"
+                        onClick={handleOpenConsultantsViewAll}
+                        sx={{ fontSize: "0.875rem !important" }}
+                      />
+                    </Box>
                   </Grid>
-                </Card>
-              </Grid>
+                  {propertyData?.consultants?.length > 0 &&
+                    propertyData?.consultants?.slice(0, 2).map((broker) => (
+                      <Grid item xs={12} sm={6} key={broker?.name}>
+                        <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
+                      </Grid>
+                    ))}
+                  <Grid item xs={12}>
+                    <Box sx={{ display: "flex" }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ flex: 1, alignSelf: "center" }}
+                      >
+                        Are you a property consultant, let Customers reach you
+                      </Typography>
+                    </Box>
+                    <Box sx={{ alignSelf: { xs: 'end' } }}>
+                      {userDetails?.role === "broker" && (
+                        <a href={`https://wa.me/+919818690582`}>
+                          <Chip
+                            label="Yes, show me here !"
+                            icon={<PersonAddIcon fontSize="small" />}
+                            size="small"
+                            sx={{ fontSize: "0.875rem" }}
+                            onClick={() => { }}
+                          />
+                        </a>
+                      )}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
@@ -704,13 +706,17 @@ const PropertyDetailsPage = ({ params }) => {
           </Grid>
 
           {/* Dont Touch this */}
-          <Toolbar
-            sx={{
-              display: { xs: "flex", evmd: "none" },
-              height: heightOfFooter,
-            }}
-          />
-
+          {
+            userDetails?.role !== "admin" &&
+            userDetails?.role !== "superAdmin" &&
+            userDetails?.role !== "broker" &&
+            <Toolbar
+              sx={{
+                display: { xs: "flex", evmd: "none" },
+                height: heightOfFooter,
+              }}
+            />
+          }
           {userDetails?.role !== "admin" &&
             userDetails?.role !== "superAdmin" &&
             userDetails?.role !== "broker" && (
