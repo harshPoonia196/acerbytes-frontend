@@ -10,7 +10,7 @@ import {
   TableRow,
   TableCell,
   TableSortLabel,
-  Tooltip,
+  Typography,
   Button,
   IconButton,
   Chip,
@@ -28,6 +28,7 @@ import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utill
 import Loader from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 // const rows = [
 //   {
@@ -105,7 +106,7 @@ const headCells = [
   //   id: "lastModified",
   //   label: "last Modified",
   // },
-   {
+  {
     id: "property",
     label: "Property",
   },
@@ -160,7 +161,7 @@ function RowStructure({ row, handlePropertyView }) {
       <TableCell>{row?.property?.location?.city}</TableCell>
       <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}</TableCell>
       <TableCell>
-        {row.isVerified ? "Yes" : "No"}
+        {row.isVerified ? <CheckCircleIcon fontSize="1rem" color='success' /> : ""}
       </TableCell>
       <TableCell>{user.email}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
@@ -168,17 +169,15 @@ function RowStructure({ row, handlePropertyView }) {
       <TableCell>₹ {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
       {/* <TableCell>{row.closedStatus}</TableCell>
       <TableCell>{row.pendingStatus}</TableCell> */}
-      <TableCell>
+      <TableCell className="urlStylingBackground">
         {row.propertyLink && (
-          <a
-            href={row.propertyLink}
+          <a sx={{ cursor: 'pointer' }}
             onClick={(e) => {
               e.preventDefault();
               handlePropertyView(row.propertyLink);
             }}
-            style={{ textDecoration: 'none' }}
           >
-            {capitalLizeName(row?.property?.overview?.projectName)}.{capitalLizeName(row?.property?.overview?.builder)}
+            {capitalLizeName(row?.property?.overview?.projectName)}&#183;{capitalLizeName(row?.property?.overview?.builder)}
           </a>
         )}
       </TableCell>
@@ -264,7 +263,7 @@ function EnquiriesTable({ search, setLeadsCount }) {
     firstLoad.current = false;
   }, [rowsPerPage, page]);
 
-  const handlePropertyView=(link)=>{
+  const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
     const fullLink = `${baseUrl}/${link}`;
     window.open(fullLink, "_blank");

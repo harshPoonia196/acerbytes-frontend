@@ -5,8 +5,8 @@ import React from "react";
 import { useSearchParams } from "next/navigation";
 import BrokerDetails from "Components/Ratings/BrokerDetails";
 import BrokerFeedBack from "Components/Ratings/BrokerFeedBack";
-import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
+import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
 
 const page = () => {
   const searchParams = useSearchParams();
@@ -14,12 +14,12 @@ const page = () => {
 
   return (
     <>
-    
-      <CustomAdminBreadScrumbs text="List of leads" />
+
+      <CustomConsultantBreadScrumbs text="List of reviews" />
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-        
+
       />
       <Box
         sx={{

@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Card, Typography, Box, Divider, Rating } from "@mui/material";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
+import { shortPriceFormatter } from "utills/CommonFunction";
 
 function UnitsPlanSection(props) {
   const { refCallback, unitsPlan } = props;
@@ -77,11 +78,15 @@ function UnitsPlanSection(props) {
                 sm={3}
                 boxStyles={{ backgroundColor: "none" }}
               >
-                <Typography variant="h3">{unit?.name}</Typography>
-                <Typography variant="subtitle1">{unit?.propertyLayout ? unit?.propertyLayout : `${unit?.width}*${unit?.length}`}</Typography>
-                <Typography variant="h5">{unit?.areaValue} {unit?.areaUnit}</Typography>
+                <Typography variant="h6">{unit?.name}</Typography>
+                <Typography variant="h6">{unit?.area} {unit?.areaUnit}</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 600 }}>{unit?.propertyLayout ? unit?.propertyLayout : `${unit?.width}*${unit?.length}`}</Typography>
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                Bsp: ₹ {new Intl.NumberFormat('en-IN').format(unit?.bsp).replace('₹', '')}
+                  ₹ {shortPriceFormatter(unit?.totalPrice)}
+                </Typography>
+
+                <Typography variant="h6">
+                  ₹ {new Intl.NumberFormat('en-IN').format(unit?.bsp).replace('₹', '')} / {unit?.areaUnit}
                 </Typography>
               </GridItemWithCard>
             ))}

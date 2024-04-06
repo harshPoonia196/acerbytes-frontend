@@ -1,5 +1,5 @@
 "use client";
-import { Box, Container, Typography, Card } from '@mui/material'
+import { Box, Container, Typography, Card, Grid } from '@mui/material'
 import OrdersTable from 'Components/Admin/OrdersRequest/OrdersTable'
 
 import CustomAdminBreadScrumbs from 'Components/CommonLayouts/CustomAdminBreadScrumbs'
@@ -19,10 +19,29 @@ function OrderRequest() {
     return (
         <>
             <CustomAdminBreadScrumbs text='Orders request' />
-            <InfoBox
-                title={Object.keys(userDetails).length > 0 ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}(${userDetails?.role})` : ""}
-                subtitle={Object.keys(dashboardInfo).length > 0 ? `Pending: ${dashboardInfo.pendingOrders}, Completed: ${dashboardInfo.completedOrders}` : ''}
-            />
+
+            <Box sx={{ backgroundColor: "white" }}>
+                <Container maxWidth="lg">
+                    <Grid container spacing={2}>
+                        {dashboardInfo.pendingOrders &&
+                            <Grid item xs={6} sm={4} md={2}>
+                                <Card sx={{ p: 2, textAlign: 'center' }}>
+                                    <Typography variant="h3">{`${dashboardInfo.pendingOrders}`}</Typography>
+                                    <Typography variant="h6">Pending</Typography>
+                                </Card>
+                            </Grid>
+                        }
+                        {dashboardInfo.completedOrders &&
+                            <Grid item xs={6} sm={4} md={2}>
+                                <Card sx={{ p: 2, textAlign: 'center' }}>
+                                    <Typography variant="h3">{`${dashboardInfo.completedOrders}`}</Typography>
+                                    <Typography variant="h6">Completed</Typography>
+                                </Card>
+                            </Grid>
+                        }
+                    </Grid>
+                </Container>
+            </Box>
             <Container>
                 <OrdersTable onDashboardDataUpdate={handleDashboardDataUpdate} />
             </Container>

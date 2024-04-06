@@ -16,8 +16,9 @@ import {
   Chip,
   Menu,
   MenuItem,
-  Button,
+  Container,
   Typography,
+  Grid
 } from "@mui/material";
 
 import {
@@ -171,7 +172,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
             aria-haspopup="true"
             onClick={handleClick}
             size="small"
-            
+
           >
             <MoreVertIcon fontSize="small" />
           </IconButton>
@@ -193,7 +194,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
             horizontal: 'left',
           }}
         >
-          <MenuItem  onClick={() => handlePopuChange(true)}>
+          <MenuItem onClick={() => handlePopuChange(true)}>
             Assign points
           </MenuItem>
         </Menu>
@@ -202,7 +203,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
   );
 }
 
-function CreditTable({ onDashboardDataUpdate }) {
+function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
   const { userDetails } = useAuth();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
@@ -265,7 +266,7 @@ function CreditTable({ onDashboardDataUpdate }) {
           prevPage: response?.data?.prevPage,
         });
         onDashboardDataUpdate({
-          countInfo: { count: response?.data?.totalCount} || {},
+          countInfo: { count: response?.data?.totalCount } || {},
           userDetails
         });
       }
@@ -362,63 +363,80 @@ function CreditTable({ onDashboardDataUpdate }) {
   };
 
   return <Box sx={{ width: "100%" }}>
-    {isLoading && <Loading />}
-    <Box sx={{ display: 'flex', mb: 2 }}>
-      <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
-        Credit point status (Admin)
-      </Typography>
-      <CustomButton
-        variant="contained"
-        onClick={() => setOpenAddCreditPoints(true)}
-        startIcon={<Add />}
-        ButtonText={"Add credit"}
-      />
-    </Box>
-
-    <AdminCreditPointsPopup
-      open={openAddCreditPoints}
-      handleClose={handleCloseAddCreditPopup}
-      handleSubmit={adminAssignPointsHandler}
-    />
-
-    <Card sx={{ mb: 2 }}>
-      <CustomSearchInput
-        label="Search"
-        variant="outlined"
-        value={searchTerm}
-        onChange={handleSearch}
-      />
-    </Card>
-    {
-      creditPointList?.list?.length > 0 ? (<TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {creditPointList?.list?.map((row) => (
-              <RowStructure
-                row={row}
-                key={row.firstName}
-                adminAssignPointsHandler={adminAssignPointsHandler}
+    <Box sx={{ backgroundColor: "white" }}>
+      <Container maxWidth="lg">
+        <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ display: 'flex' }}>
+            <Box sx={{ flex: 1, alignSelf: 'center' }}>
+              <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Credit points status</Typography>
+            </Box>
+            <Box sx={{ textAlign: 'end' }}>
+              <CustomButton
+                variant="contained"
+                onClick={() => setOpenAddCreditPoints(true)}
+                startIcon={<Add />}
+                ButtonText={"Credit points"}
               />
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-          component="div"
-          count={creditPointList.totalCount}
-          rowsPerPage={rowsPerPage}
-          page={page - 1}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>) : <NoDataCard title={"No data found"} />
-    }
+            </Box>
+          </Grid>
+          {dashboardInfo.count &&
+            <Grid item xs={6} sm={4} md={2}>
+              <Card sx={{ p: 2, textAlign: 'center' }}>
+                <Typography variant="h3">{`${dashboardInfo.count}`}</Typography>
+                <Typography variant="h6">Credit points request</Typography>
+              </Card>
+            </Grid>
+          }
+        </Grid>
+      </Container>
+    </Box>
+    <Container>
+      {isLoading && <Loading />}
 
+      <AdminCreditPointsPopup
+        open={openAddCreditPoints}
+        handleClose={handleCloseAddCreditPopup}
+        handleSubmit={adminAssignPointsHandler}
+      />
+
+      <Card sx={{ mb: 2 }}>
+        <CustomSearchInput
+          label="Search"
+          variant="outlined"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      </Card>
+      {
+        creditPointList?.list?.length > 0 ? (<TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {creditPointList?.list?.map((row) => (
+                <RowStructure
+                  row={row}
+                  key={row.firstName}
+                  adminAssignPointsHandler={adminAssignPointsHandler}
+                />
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+            component="div"
+            count={creditPointList.totalCount}
+            rowsPerPage={rowsPerPage}
+            page={page - 1}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>) : <NoDataCard title={"No data found"} />
+      }
+    </Container>
   </Box>
 }
 
