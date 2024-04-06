@@ -50,6 +50,7 @@ import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { ORDER_STATUS, ToasterMessages } from "utills/Constants";
 import { countryCodeFormating } from "utills/utills";
+import InfoBox from "Components/CommonLayouts/CommonHeader";
 
 const headCells = [
   {
@@ -363,33 +364,15 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
   };
 
   return <Box sx={{ width: "100%" }}>
-    <Box sx={{ backgroundColor: "white" }}>
-      <Container maxWidth="lg">
-        <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ display: 'flex' }}>
-            <Box sx={{ flex: 1, alignSelf: 'center' }}>
-              <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Credit points status</Typography>
-            </Box>
-            <Box sx={{ textAlign: 'end' }}>
-              <CustomButton
-                variant="contained"
-                onClick={() => setOpenAddCreditPoints(true)}
-                startIcon={<Add />}
-                ButtonText={"Credit points"}
-              />
-            </Box>
-          </Grid>
-          {dashboardInfo.count &&
-            <Grid item xs={6} sm={4} md={2}>
-              <Card sx={{ p: 2, textAlign: 'center' }}>
-                <Typography variant="h3">{`${dashboardInfo.count}`}</Typography>
-                <Typography variant="h6">Credit points request</Typography>
-              </Card>
-            </Grid>
-          }
-        </Grid>
-      </Container>
-    </Box>
+    <InfoBox label='Credit points status'
+      button={<CustomButton
+        variant="contained"
+        onClick={() => setOpenAddCreditPoints(true)}
+        startIcon={<Add />}
+        ButtonText={"Credit points"}
+      />}
+      dataList={[{ label: 'Credit points request', value: dashboardInfo.count }]} />
+
     <Container>
       {isLoading && <Loading />}
 

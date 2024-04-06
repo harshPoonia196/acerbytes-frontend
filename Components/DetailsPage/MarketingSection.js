@@ -10,6 +10,11 @@ import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairSt
 import React from "react";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import colors from "styles/theme/colors";
+import CircularProgressWithIcon from 'Components/CommonLayouts/CircularProgressWithIcon'
+import HandshakeIcon from '@mui/icons-material/Handshake'
+import BusinessIcon from '@mui/icons-material/Business'
+import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
 function MarketingSection(props) {
   const { overviewData } = props;
@@ -66,56 +71,84 @@ function MarketingSection(props) {
         </Typography>
         <Grid container spacing={1}>
           <Grid item xs={6}>
-            <Typography variant="h2">
-              {alloverviewData?.sectionScore
-                ? alloverviewData?.sectionScore.toFixed()
-                : "0"}
-              <Typography variant="h6" component="span">
-                {' / 10'}
-              </Typography>
-            </Typography>
-            <Typography variant="h6">Performance</Typography>
+            <Box sx={{ display: 'flex' }}>
+              <Box sx={{ mr: 1 }}>
+                <CircularProgressWithIcon icon={<HandshakeIcon />} />
+              </Box>
+              <Box>
+                <Typography variant="h6">Performance</Typography>
+                <Typography variant="h4">
+                  {alloverviewData?.sectionScore
+                    ? alloverviewData?.sectionScore.toFixed()
+                    : "0"}
+                  <Typography variant="h6" component="span">
+                    {' / 10'}
+                  </Typography>
+                </Typography>
+              </Box>
+            </Box>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h2">
-              {overviewData?.layout?.sectionScore
-                ? overviewData?.layout?.sectionScore.toFixed()
-                : "0"}
-              <Typography variant="h6" component="span">
-                {' / 10'}
-              </Typography>
-            </Typography>
-            <Typography variant="h6">Layout and amenities</Typography>
+            <Box sx={{ display: 'flex' }}>
+              <Box sx={{ mr: 1 }}>
+                <CircularProgressWithIcon icon={<BusinessIcon />} />
+              </Box>
+              <Box>
+                <Typography variant="h6">Layout and amenities</Typography>
+                <Typography variant="h4">
+                  {overviewData?.layout?.sectionScore
+                    ? overviewData?.layout?.sectionScore.toFixed()
+                    : "0"}
+                  <Typography variant="h6" component="span">
+                    {' / 10'}
+                  </Typography>
+                </Typography>
+              </Box>
+            </Box>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h2">
-              {overviewData?.location?.sectionScore
-                ? overviewData?.location?.sectionScore.toFixed()
-                : '0'}
-              <Typography variant="h6" component="span">
-                {' / 10'}
-              </Typography>
-            </Typography>
-            <Typography variant="h6">Location</Typography>
+            <Box sx={{ display: 'flex' }}>
+              <Box sx={{ mr: 1 }}>
+                <CircularProgressWithIcon icon={<WhereToVoteIcon />} />
+              </Box>
+              <Box>
+                <Typography variant="h6">Location</Typography>
+                <Typography variant="h4">
+                  {overviewData?.location?.sectionScore
+                    ? overviewData?.location?.sectionScore.toFixed()
+                    : '0'}
+                  <Typography variant="h6" component="span">
+                    {' / 10'}
+                  </Typography>
+                </Typography>
+              </Box>
+            </Box>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h2">
-              {overviewData?.valueForMoney?.sectionScore
-                ? overviewData?.valueForMoney?.sectionScore.toFixed()
-                : "0"}
-              <Typography variant="h6" component="span">
-                {' / 10'}
-              </Typography>
-            </Typography>
-            <Typography variant="h6">Value for money</Typography>
+            <Box sx={{ display: 'flex' }}>
+              <Box sx={{ mr: 1 }}>
+                <CircularProgressWithIcon icon={<CurrencyRupeeIcon />} />
+              </Box>
+              <Box>
+                <Typography variant="h6">Value for money</Typography>
+                <Typography variant="h4">
+                  {overviewData?.valueForMoney?.sectionScore
+                    ? overviewData?.valueForMoney?.sectionScore.toFixed()
+                    : "0"}
+                  <Typography variant="h6" component="span">
+                    {' / 10'}
+                  </Typography>
+                </Typography>
+              </Box>
+            </Box>
           </Grid>
-          <Grid item xs={6} sx={{}}>
+          <Grid item xs={6}>
             <Chip label={'Under construction'} color='primary' size='small' sx={{ fontSize: '1rem' }} />
             <Typography variant="h6">
               2004-2008
             </Typography>
           </Grid>
-          <Grid item xs={6} sx={{}}>
+          <Grid item xs={6}>
             <Chip label={'₹ 1Cr - ₹ 2.75Cr'} color='primary' size='small' sx={{ fontSize: '1rem' }} />
             <Typography variant="h6">
               ₹ 2,500 / sqft
@@ -123,7 +156,7 @@ function MarketingSection(props) {
           </Grid>
         </Grid>
       </Card>
-    </Box>
+    </Box >
   }
 
   return (

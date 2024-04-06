@@ -21,10 +21,7 @@ function PropertyList() {
   return (
     <>
       <CustomAdminBreadScrumbs text='Property list' />
-      <InfoBox
-        title={`${capitalLizeName(name)} (${capitalLizeName(userDetails?.role)})`}
-        subtitle={`${count?.noOfProperties} property consultant links are currently active`}
-      />
+      <InfoBox dataList={[{ label: 'Properties', value: count?.noOfProperties }]} />
       <Container>
         <PropertyListTable setCount={setCount} />
       </Container>

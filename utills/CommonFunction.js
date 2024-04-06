@@ -136,7 +136,7 @@ const formatAmount = (amount) => {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 0,
-  }).format(numericAmount);
+  }).format(numericAmount).replace("₹", "₹ ");
 };
 
 const formatPoints = (points) => {

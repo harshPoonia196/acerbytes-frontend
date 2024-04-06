@@ -18,17 +18,7 @@ const page = () => {
     return (
         <>
             <CustomAdminBreadScrumbs text='Manage consultants' />
-            <InfoBox
-                title="Anand Gupta(Admin)"
-                subtitle="3,344 property consultant links are currently active"
-
-            />
-            <Container>
-                <Card sx={{ mb: 2 }}>
-                    <CustomSearchInput />
-                </Card>
-                <ManageConsultantTable />
-            </Container>
+            <ManageConsultantTable />
         </>
     )
 }

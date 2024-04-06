@@ -52,9 +52,10 @@ function ManageUser() {
       <CustomAdminBreadScrumbs text='Manage users' />
 
       <InfoBox
-        title={Object.keys(userDetails).length > 0 ? displayNameAndRole(userDetails) : ""}
-        subtitle={generateSubtitle()}
+        label={generateSubtitle()}
+      // dataList={[{ label: 'Credit points request', value: dashboardInfo.count }]}
       />
+
       <Container>
         {userDetails?.role === "superAdmin" ?
           <Card sx={{ my: 2 }}>
