@@ -8,7 +8,7 @@ import { useAuth } from "utills/AuthContext";
 import CloseIcon from "@mui/icons-material/Close";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 
-function UserDetailsAd({ AllPropertyData }) {
+function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnquiryForm }) {
   const { userDetails } = useAuth();
   const overviewData = AllPropertyData?.propertyData?.overview
   const [showContact, setShowContact] = useState(false);
@@ -33,6 +33,13 @@ function UserDetailsAd({ AllPropertyData }) {
   const description = AllPropertyData?.description
     ? `${AllPropertyData?.description}`
     : "Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on";
+  const handleViewContactClick = () => {
+    if (!contactPermissionToView) {
+      handleOpenEnquiryForm();
+    } else {
+      setShowContact(!showContact)
+    }
+  }
 
   return (
     <Box sx={{ m: 2, mb: 0 }}>
@@ -80,8 +87,10 @@ function UserDetailsAd({ AllPropertyData }) {
             </a> */}
             <Button
               variant="outlined"
+              // disabled={!contactPermissionToView}
               startIcon={showContact ? <CloseIcon /> : <PhoneIcon />}
-              onClick={() => setShowContact(!showContact)}
+              // onClick={() => setShowContact(!showContact)}
+              onClick={handleViewContactClick}
             >
               {showContact ? phoneNumber : "View Contact"}
             </Button>

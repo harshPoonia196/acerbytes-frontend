@@ -107,7 +107,7 @@ function MarketingSection(props) {
             <Typography variant="h2">
               {alloverviewData?.sectionScore
                 ? alloverviewData?.sectionScore.toFixed()
-                : "-"}
+                : "0"}
               <Typography variant="h6" component="span">
                 {' / 10'}
               </Typography>
@@ -118,7 +118,7 @@ function MarketingSection(props) {
             <Typography variant="h2">
               {overviewData?.layout?.sectionScore
                 ? overviewData?.layout?.sectionScore.toFixed()
-                : "-"}
+                : "0"}
               <Typography variant="h6" component="span">
                 {' / 10'}
               </Typography>
@@ -129,7 +129,7 @@ function MarketingSection(props) {
             <Typography variant="h2">
               {overviewData?.location?.sectionScore
                 ? overviewData?.location?.sectionScore.toFixed()
-                : "-"}
+                : '0'}
               <Typography variant="h6" component="span">
                 {' / 10'}
               </Typography>
@@ -140,7 +140,7 @@ function MarketingSection(props) {
             <Typography variant="h2">
               {overviewData?.valueForMoney?.sectionScore
                 ? overviewData?.valueForMoney?.sectionScore.toFixed()
-                : "-"}
+                : "0"}
               <Typography variant="h6" component="span">
                 {' / 10'}
               </Typography>

@@ -20,7 +20,7 @@ import {
 import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
-import { formatAmount, getComparator, stableSort } from "utills/CommonFunction";
+import { capitalLizeName, formatAmount, getComparator, stableSort } from "utills/CommonFunction";
 import { useQueries } from "utills/ReactQueryContext";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getLeads } from "api/Admin.api";
@@ -65,6 +65,10 @@ const headCells = [
     id: "phone",
     label: "phone",
   },
+  {
+    id: "verified",
+    label: "Verified",
+  },
   // {
   //   id: "phoneVerified",
   //   label: "phoneVerified",
@@ -102,8 +106,8 @@ const headCells = [
   //   label: "last Modified",
   // },
    {
-    id: "propertyLink",
-    label: "Property link",
+    id: "property",
+    label: "Property",
   },
 ];
 
@@ -155,21 +159,29 @@ function RowStructure({ row, handlePropertyView }) {
       <TableCell>{row?.name?.lastName}</TableCell>
       <TableCell>{row?.property?.location?.city}</TableCell>
       <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}</TableCell>
-      {/* <TableCell>{row.phoneVerified ? "Yes" : "No"}</TableCell> */}
+      <TableCell>
+        {row.isVerified ? "Yes" : "No"}
+      </TableCell>
       <TableCell>{user.email}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
       <TableCell>{user.role}</TableCell>
-      <TableCell>{userDetail?.budget?.maximumBudget?.unit || ""} {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
+      <TableCell>₹ {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
       {/* <TableCell>{row.closedStatus}</TableCell>
       <TableCell>{row.pendingStatus}</TableCell> */}
-      <TableCell>{row.propertyLink &&<Button
-                sx={{ mt: 1, ml: 1 }}
-                variant="outlined"
-                onClick={()=>handlePropertyView(row.propertyLink)}
-                // startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
-              >
-                View
-              </Button>}</TableCell>
+      <TableCell>
+        {row.propertyLink && (
+          <a
+            href={row.propertyLink}
+            onClick={(e) => {
+              e.preventDefault();
+              handlePropertyView(row.propertyLink);
+            }}
+            style={{ textDecoration: 'none' }}
+          >
+            {capitalLizeName(row?.property?.overview?.projectName)}.{capitalLizeName(row?.property?.overview?.builder)}
+          </a>
+        )}
+      </TableCell>
       {/* <TableCell>{row.updatedBy}</TableCell>
       <TableCell>
         <Chip label={row.lastModified} size="small" />

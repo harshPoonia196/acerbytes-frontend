@@ -18,7 +18,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import { useState } from "react";
 import { useParams,useRouter } from "next/navigation";
 import { setItem } from "utills/utills";
-import { propertyRedirectKey } from "utills/Constants";
+import { enquiryFormOpen, propertyRedirectKey } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
 function AlternateSignIn({ open, handleClose }) {
@@ -27,6 +27,7 @@ function AlternateSignIn({ open, handleClose }) {
   const param = useParams();
 
   const handleSignin = () => {
+    setItem(enquiryFormOpen, true);    
     setIsVerified(true);
     if (param?.projectdetails) {
       setItem(propertyRedirectKey, param?.projectdetails);
