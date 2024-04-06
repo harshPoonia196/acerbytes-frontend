@@ -245,7 +245,7 @@ function AddProperty() {
             }
           });
           setRegulatoryCount(countYes)
-            setTotalRating(totalRating + updateTotalCount)
+          setTotalRating(totalRating + updateTotalCount)
       
     setFormUpdated(true)
         }
@@ -646,13 +646,13 @@ const [hide,setHide]=useState([])
         totalRatingModule = 20;
         break;
       case "location":
-        totalRatingModule = locationStars.length*5;
+        totalRatingModule = locationStarsScore.length*5;
         break;
       case "valueformoney" :
         totalRatingModule = 15;
         break;
         case "amenitiesdata" :
-          totalRatingModule = +amentiesStars.length*5;
+          totalRatingModule = +amentiesStarsScore.length*5;
         break;
       default:
         totalRatingModule = 10;
@@ -736,6 +736,10 @@ const [hide,setHide]=useState([])
       if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
         totalRatingModule=totalRatingModule+5
         setRegulatoryCount(regulatoryCount+1)
+      }
+      else if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()!==`don't know` && e.target.value.toLowerCase()===`don't know`){
+        totalRatingModule=totalRatingModule-5
+        setRegulatoryCount(regulatoryCount-1)
       }
       let difference =
       chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) - parseInt(incomingValue);
