@@ -22,7 +22,7 @@ import {
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
-import { getComparator, stableSort } from "utills/CommonFunction";
+import { capitalLizeName, getComparator, stableSort } from "utills/CommonFunction";
 import UpdateLeadStatus from "./Modal/UpdateLeadStatus";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
@@ -58,17 +58,21 @@ const headCells = [
     id: "city",
     label: "city",
   },
-  {
-    id: "currentStatus",
-    label: "Current Status",
-  },
-  {
-    id: "nextStatus",
-    label: "Next Status",
-  },
+  // {
+  //   id: "currentStatus",
+  //   label: "Current Status",
+  // },
+  // {
+  //   id: "nextStatus",
+  //   label: "Next Status",
+  // },
   {
     id: "phone",
     label: "phone",
+  },
+  {
+    id: "verified",
+    label: "Verified",
   },
   {
     id: "email",
@@ -83,8 +87,8 @@ const headCells = [
     label: "max Budget",
   },
   {
-    id: "notesUpdated",
-    label: "Notes updated",
+    id: "property",
+    label: "Property",
   },
 ];
 
@@ -124,7 +128,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row,handlePropertyView }) {
+function RowStructure({ row, handlePropertyView }) {
   const user = row?.user || {};
   const userDetail = row?.userDetail || {};
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
@@ -163,10 +167,10 @@ function RowStructure({ row,handlePropertyView }) {
         open={openUpdatePopup}
         handleClose={handleCloseUpdatePopup}
         isUserSelected
-      />  
+      />
       <TableCell>{row?.fullName}</TableCell>
       <TableCell>{row?.property?.location?.city}</TableCell>
-      <TableCell>
+      {/* <TableCell>
         <Chip
           label={row.currentStatus}
           onClick={handleClickCurrent}
@@ -213,9 +217,12 @@ function RowStructure({ row,handlePropertyView }) {
           <MenuItem onClick={handleOpenUpdatePopup}>My account</MenuItem>
           <MenuItem onClick={handleOpenUpdatePopup}>Logout</MenuItem>
         </Menu>
+      </TableCell> */}
+      <TableCell>
+        {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}
       </TableCell>
       <TableCell>
-      {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}({row.phoneVerified ? "Yes" : "No"})
+        {row.isVerified ? "Yes" : "No"}
       </TableCell>
       <TableCell>
         {user.email}
@@ -223,7 +230,7 @@ function RowStructure({ row,handlePropertyView }) {
       </TableCell>
       <TableCell>{user.role}</TableCell>
       {/* <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell> */}
-      <TableCell>{userDetail?.budget?.maximumBudget?.unit || ""} {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
+      <TableCell>₹ {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
       {/* <TableCell>
         <Chip
           label={row.notesUpdated}
@@ -231,14 +238,20 @@ function RowStructure({ row,handlePropertyView }) {
           onClick={handleOpenUpdatePopup}
         />
       </TableCell> */}
-       <TableCell>{row.propertyLink &&<Button
-                sx={{ mt: 1, ml: 1 }}
-                variant="outlined"
-                onClick={()=>handlePropertyView(row.propertyLink)}
-                // startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
-              >
-                View
-              </Button>}</TableCell>
+      <TableCell>
+        {row.propertyLink && (
+          <a
+            href={row.propertyLink}
+            onClick={(e) => {
+              e.preventDefault();
+              handlePropertyView(row.propertyLink);
+            }}
+            style={{ textDecoration: 'none' }}
+          >
+            {capitalLizeName(row?.property?.overview?.projectName)}.{capitalLizeName(row?.property?.overview?.builder)}
+          </a>
+        )}
+      </TableCell>
     </TableRow>
   );
 }
@@ -323,7 +336,7 @@ function MyLeadsTable({ setLeadsCount }) {
     setSearch(e.target.value);
   };
 
-  const handlePropertyView=(link)=>{
+  const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
     const fullLink = `${baseUrl}/${link}`;
     window.open(fullLink, "_blank");

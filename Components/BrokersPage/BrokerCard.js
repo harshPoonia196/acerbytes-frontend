@@ -63,7 +63,7 @@ const labels = (rating) => {
   return "";
 };
 
-function BrokerCard({ broker, type, noReview, updateBroker }) {
+function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker }) {
   const [openDialog, setOpenDialog] = useState(false);
   const { userDetails, isLogged } = useAuth();
 
@@ -80,9 +80,25 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
   const precision = 0.5;
 
   const titleCase = (string) => {
-    return string ? string.replace(/^\w/, c =>c.toUpperCase()) : string
+    return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
   }
 
+  const isEnquiredByCurrentBroker = enquiredInfo?.brokerId == broker?.id;
+
+  const handleCallClick = () => {
+    if (typeof handleEnquireWithBroker === 'function') {
+      if (isEnquiredByCurrentBroker) {
+        const callHref = `tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")}`;
+        if (callHref) {
+          window.location.href = callHref;
+        }
+      } else {
+        handleEnquireWithBroker(broker?.id);
+      }
+    } else {
+      console.error('handleEnquireWithBroker is not a function');
+    }
+  }
   return (
     <Card sx={{ position: "relative" }}>
       <Box sx={{ display: "flex", p: 2 }}>
@@ -188,17 +204,17 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
         </Box>
       ) : null} */}
       {isLogged ? (
-        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-          <a
+        <Box sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCallClick}  >
+          {/* <a
             href={`tel:${
               (userDetails?.phone?.countryCode || "") +
               (userDetails?.phone?.number || "")
             }`}
-          >
-            <IconButton>
-              <CallIcon fontSize="small" />
-            </IconButton>
-          </a>
+          > */}
+          <IconButton>
+            <CallIcon fontSize="small" />
+          </IconButton>
+          {/* </a> */}
         </Box>
       ) : (
         <Box sx={{ position: "absolute", top: 8, right: 8 }}>
@@ -252,8 +268,8 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
                   You wrote a Public review
                   {broker?.reviews?.createdAt
                     ? moment(broker?.reviews?.createdAt).format(
-                        " on DD MMM, YYYY"
-                      )
+                      " on DD MMM, YYYY"
+                    )
                     : ""}
                 </Typography>
                 <Typography variant="body2">

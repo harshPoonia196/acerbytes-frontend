@@ -84,6 +84,7 @@ function AddProperty() {
   const [amentiesStarsScore,setAmentiesStarScore]=useState([]);
   const [amentiesStars,setAmentiesStar]=useState([]);
   const [locationStars,setLocationStars]=useState([]);
+  const [regulatoryCount,setRegulatoryCount]=useState(0)
   const[totalRating,setTotalRating]=useState(80)
   const [locationStarsScore,setLocationStarsScore]=useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -234,6 +235,13 @@ function AddProperty() {
                 updateTotalCount += (countLocationItems.length * 5)
                 setLocationStarsScore([...locationStarsScore, ...names])
             }
+          let countYes=0
+          Object.values(data.regulatoryClearance).forEach(value => {
+            if (value === 'Yes') {
+              countYes++;
+            }
+          });
+          setRegulatoryCount(countYes)
             setTotalRating(totalRating + updateTotalCount)
             setForm({ ...data });
 
@@ -350,7 +358,7 @@ setCities(res.data.data[0])
         return sum;
       };
 
-      let amentiesSatrCount = sumItems({sectionScore:'',pointsGained:0,...amenities},['sectionScore', 'pointsGained'])
+      let amentiesSatrCount = sumItems({sectionScore:0,pointsGained:0,...amenities},['sectionScore', 'pointsGained'])
   
       setForm((prevForm) => ({
         ...prevForm,
@@ -359,7 +367,7 @@ setCities(res.data.data[0])
           assessment: temp,
           
         },
-        amenitiesData:{sectionScore:'',pointsGained:0,...amenities}
+        amenitiesData:{sectionScore:0,pointsGained:0,...amenities}
       }));
         // setSelectOption({ ...temp })
       }
@@ -425,7 +433,7 @@ setCities(res.data.data[0])
       privateBankLoan: "",
       fresh: "",
       resale: "",
-      sectionScore: '',
+      sectionScore: 0,
       pointsGained:0
     },
     layout: {
@@ -443,7 +451,7 @@ setCities(res.data.data[0])
       greenDensityScore: "",
       constructionQuality: 0,
       interiorQuality: 0,
-      sectionScore: '',
+      sectionScore: 0,
       pointsGained:0
     },
     unitsPlan: {
@@ -474,7 +482,7 @@ setCities(res.data.data[0])
       state: "",
       city: "",
       sector: "",
-      sectionScore:"",
+      sectionScore:0,
       pointsGained:0,
       area: "",
       pinCode: "",
@@ -489,7 +497,7 @@ setCities(res.data.data[0])
       expectedFurtherApp: 0,
       forEndUse: 0,
       pointsGained:0,
-      sectionScore:""
+      sectionScore:0
     },
     consultants: [],
     overallAssessment: {
@@ -625,13 +633,12 @@ const [hide,setHide]=useState([])
   const moduleScoreCalc = (e, firstKeyName, secondKeyName,seperateCalc,thirdKeyName) => {
     let totalRatingModule;
     let totalScored;
-
     switch (firstKeyName.toLowerCase()) {
       case "overview":
         totalRatingModule = 10;
         break;
-      case "regulatoryinfo":
-        totalRatingModule = 35;
+      case "regulatoryclearance":
+        totalRatingModule = regulatoryCount*5;
         break;
       case "layout":
         totalRatingModule = 20;
@@ -688,21 +695,26 @@ const [hide,setHide]=useState([])
      incomingValue=val
     
     }
-    if (form.overallAssessment.rated?.[secondKeyName] > 0) {
-      let difference =
-        form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
-      let compare =
-        form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
-      if (compare) {
-        totalScored =
-          form.overallAssessment.scoredRating + Math.abs(difference);
-      } else {
-        totalScored =
-          form.overallAssessment.scoredRating - Math.abs(difference);
-      }
-    } 
+    // if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+    //   console.log('isinn')
+    //   let difference =
+    //   form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
+    //   let compare =
+    //   form?.[firstKeyName]?.[secondKeyName] < parseInt(incomingValue);
+    //   // let difference =
+    //   //   form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
+    //   // let compare =
+    //   //   form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
+    //   if (compare) {
+    //     totalScored =
+    //       form?.[firstKeyName]?.["pointsGained"] + Math.abs(difference);
+    //   } else {
+    //     totalScored =
+    //     form?.[firstKeyName]?.["pointsGained"] - Math.abs(difference);
+    //   }
+    // } 
 
-    else if(secondKeyName==="assessment" || firstKeyName==="amenitiesData"){
+    if(secondKeyName==="assessment" || firstKeyName==="amenitiesData"){
 
       let difference =
       +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(incomingValue);
@@ -717,7 +729,11 @@ const [hide,setHide]=useState([])
     }
     }
     
-    else if(firstKeyName==="regulatoryClearance"){
+    else if(firstKeyName==="regulatoryClearance" ){
+      if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()==='yes'){
+        totalRatingModule=totalRatingModule+5
+        setRegulatoryCount(regulatoryCount+1)
+      }
       let difference =
       chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) - parseInt(incomingValue);
     let compare =
@@ -749,7 +765,6 @@ const [hide,setHide]=useState([])
     //   totalScored =
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
-
     let calc = (totalScored / totalRatingModule) * 10;
     if(seperateCalc){
       setForm({
@@ -1236,6 +1251,7 @@ switch (label.toLowerCase()) {
             abortEarly: false,
           });
           if (!error) {
+            
             setForm({ ...form, published: true })
             CreateProperty({ ...form, published: true })
               .then((res) => {
