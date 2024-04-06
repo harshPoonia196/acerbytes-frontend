@@ -88,6 +88,7 @@ function AddProperty() {
   const[totalRating,setTotalRating]=useState(80)
   const [locationStarsScore,setLocationStarsScore]=useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [formUpdated, setFormUpdated] = useState(false);
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
  
@@ -210,6 +211,7 @@ function AddProperty() {
     try {
       let res = await detailsProperty(detailsPropertyId);
         if (res.status === 200) {
+          setFormUpdated(false)
             let data = removeIds(res.data?.data);
             delete data.__v;
             handleUIHide(data.overview.projectType, "overview", "projectType")
@@ -244,7 +246,7 @@ function AddProperty() {
           setRegulatoryCount(countYes)
             setTotalRating(totalRating + updateTotalCount)
             setForm({ ...data });
-
+    setFormUpdated(true)
         }
     } 
    catch (error) {
@@ -385,6 +387,7 @@ setCities(res.data.data[0])
   };
   React.useEffect(() => {
     if (detailsPropertyId) {
+      setLoading(true)
       getProp();
       setEditPage(true);
       getAllOptionDataList()
@@ -394,12 +397,12 @@ setCities(res.data.data[0])
     }
     getCitiesList();
     brokersList();
-
+    setLoading(false)
 
     return () => {
       clearTimeout(unsetClickedRef.current);
     };
-  }, []);
+  }, [detailsPropertyId]);
 
 
 
@@ -605,8 +608,8 @@ const [hide,setHide]=useState([])
       totalScored =
         form.overallAssessment.scoredRating + parseInt(incomingValue);
     }
-
     let calc = (totalScored / totalRating) * 100;
+
     setForm({
       ...form,
       [firstKeyName]: {
@@ -766,6 +769,7 @@ const [hide,setHide]=useState([])
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
     let calc = (totalScored / totalRatingModule) * 10;
+
     if(seperateCalc){
       setForm({
         ...form,
@@ -1333,7 +1337,7 @@ switch (label.toLowerCase()) {
 
       <Container>
 
-       { isLoading===false &&<Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+       { isLoading===false && formUpdated && <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
           <ProjectCard
             errors={errors}
             form={form}
@@ -1377,6 +1381,7 @@ switch (label.toLowerCase()) {
             hide={hide}
             form={form}
             isEdit={isEdit}
+            formUpdated={formUpdated}
             selectOptions={selectOptions}
             handleChange={handleChange}
           />
@@ -1386,6 +1391,7 @@ switch (label.toLowerCase()) {
             cities={cities}
             selectOptions={selectOptions}
             form={form}
+            formUpdated={formUpdated}
             moduleScoreCalc={moduleScoreCalc}
             handleChange={handleChange}
             isEdit={isEdit}

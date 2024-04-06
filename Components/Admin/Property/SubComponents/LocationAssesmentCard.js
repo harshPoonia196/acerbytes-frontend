@@ -24,9 +24,13 @@ import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonSt
 import colors from 'styles/theme/colors';
 import { Assessment } from '@mui/icons-material';
 
-function LocationAssesmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
+function LocationAssesmentCard({ isEdit, form, handleChange,moduleScoreCalc,formUpdated }) {
 
-    const { location } = form
+    // const { location } = form
+let [location,setLocation]=useState(form.location)
+useEffect(()=>{
+    setLocation(form.location)
+},[formUpdated])
 
     return (
         <Grid item xs={12} id="facilities">
@@ -36,7 +40,7 @@ function LocationAssesmentCard({ isEdit, form, handleChange,moduleScoreCalc }) {
                         variant="subtitle1"
                         sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                     >
-{/* {JSON.stringify(location)} */}
+
 
                         Assessment
                     </Typography>

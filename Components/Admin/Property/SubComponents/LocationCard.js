@@ -19,10 +19,12 @@ import { getLocations } from 'api/Property.api';
 import { useSnackbar } from "utills/SnackbarContext";
 
 
-function LocationCard({ isEdit, form, handleChange, errors, selectOptions,moduleScoreCalc,cities }) {
+function LocationCard({ isEdit, form, handleChange, errors, selectOptions,moduleScoreCalc,cities,formUpdated }) {
     const { openSnackbar } = useSnackbar()
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
+useEffect(()=>{
 
+},[formUpdated])
     const getLocationsCall = async () => {
         try {
             let res = await getLocations()
@@ -49,6 +51,7 @@ function LocationCard({ isEdit, form, handleChange, errors, selectOptions,module
     }, [])
 
     return (
+       <>{formUpdated && 
         <Grid item xs={12} id="location" >
             <Card sx={{ mb: 2 }}>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -159,6 +162,7 @@ function LocationCard({ isEdit, form, handleChange, errors, selectOptions,module
 
             <LocationAssesmentCard moduleScoreCalc={moduleScoreCalc} errors={errors} form={form} handleChange={handleChange} isEdit={isEdit} />
         </Grid>
+                    }</>
     )
 }
 
