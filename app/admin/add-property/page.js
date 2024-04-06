@@ -10,6 +10,8 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { getBrokersList } from "api/Admin.api";
 import { getBrokers } from "api/UserProfile.api";
+import { getAllBrokers } from "api/Broker.api";
+
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
@@ -254,7 +256,7 @@ function AddProperty() {
   };
   const brokersList = async (rowsPerPage, page, search) => {
     try {
-      const response = await getBrokers();
+      const response = await getAllBrokers();
       if (response.status == 200) {
         const { success, data, message } = response.data;
         if (success) {

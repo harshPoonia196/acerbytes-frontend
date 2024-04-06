@@ -8,6 +8,10 @@ export const getBrokerBalance = () => {
   return axiosInstance.get(`/broker/paymentBalance`);
 };
 
+export const getAllBrokers = (limit, page, search) => {
+  return axiosInstance.get(`/admin/allBrokerList`);
+};
+
 export const getPaymentHisotryList = () => {
   return axiosInstance.get(`/broker/paymentHistory`);
 };
