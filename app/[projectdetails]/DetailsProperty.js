@@ -496,7 +496,7 @@ const PropertyDetails = ({ params }) => {
       </nav>
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
-        <Container maxWidth="evmd">
+        <Container maxWidth='md'>
           {openEnquiryForm && (
             <EnquireNow
               open={openEnquiryForm}

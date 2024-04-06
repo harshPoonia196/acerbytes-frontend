@@ -4,7 +4,7 @@ import {
   Container,
   Grid,
   Typography,
-  Divider,
+  Divider, Chip
 } from "@mui/material";
 import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
 import React from "react";
@@ -48,49 +48,11 @@ function MarketingSection(props) {
 
   const OverviewRatingCard = () => {
     console.log(AllLocationData)
-    return <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} >
-      <Card sx={{ p: 2, textAlign: "center" }}>
-        <Box>
-          <Typography variant="h2">
-            {`${alloverviewData?.builder} · ${alloverviewData?.projectName}`}
-          </Typography>
-
-          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-            <LocationOnIcon fontSize="small" sx={{ alignSelf: 'center' }} />
-            <Typography variant="h4">
-              {`${AllLocationData?.sector}, ${AllLocationData?.city}, ${AllLocationData?.state}`}
-            </Typography>
-          </Box>
-        </Box>
-        <Grid container spacing={2} sx={{ pt: 2 }}>
-          <Grid item xs={6}>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Construction status
-            </Typography>
-            <Typography variant="body1">Performance</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              SBI approved
-            </Typography>
-            <Typography variant="body1">Yes</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Rera approved
-            </Typography>
-            <Typography variant="body1">Yes</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Time
-            </Typography>
-            <Typography variant="body1">2024-2028</Typography>
-          </Grid>
-        </Grid>
-
+    return <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }} >
+      <Card sx={{ width: '50%' }}>
+        <MapFrame mapUrl={mapUrl} />
       </Card>
-      <Card sx={{ p: 2, textAlign: "center" }}>
+      <Card sx={{ p: 2, textAlign: "center", width: '50%' }}>
         <Typography variant="h1">
           {overviewData?.overallAssessment?.score
             ? overviewData?.overallAssessment?.score.toFixed()
@@ -147,6 +109,18 @@ function MarketingSection(props) {
             </Typography>
             <Typography variant="h6">Value for money</Typography>
           </Grid>
+          <Grid item xs={6} sx={{}}>
+            <Chip label={'Under construction'} color='primary' size='small' sx={{ fontSize: '1rem' }} />
+            <Typography variant="h6">
+              2004-2008
+            </Typography>
+          </Grid>
+          <Grid item xs={6} sx={{}}>
+            <Chip label={'₹ 1Cr - ₹ 2.75Cr'} color='primary' size='small' sx={{ fontSize: '1rem' }} />
+            <Typography variant="h6">
+              ₹ 2,500 / sqft
+            </Typography>
+          </Grid>
         </Grid>
       </Card>
     </Box>
@@ -154,37 +128,16 @@ function MarketingSection(props) {
 
   return (
     <>
-      <Container maxWidth='lg'>
-        <Box id='project' sx={{ display: { xs: 'block', evmd: 'flex' }, gap: 2 }}>
-          <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Card sx={{ maxHeight: 350 }}>
-              <img src={overviewData?.marketing?.image} style={{ width: '100%' }} />
-            </Card>
-            <Card sx={{ display: { xs: "none", evmd: "block" } }}>
-              <MapFrame mapUrl={mapUrl} />
-            </Card>
-          </Box>
-          <Box sx={{ flex: 1 }}>
-            <Box
-              sx={{
-                display: { xs: "none", evmd: "block" }
-              }}
-            >
-              <OverviewRatingCard />
-            </Box>
+      <Container maxWidth='md'>
+        <Box id='project' >
+          <Card sx={{ height: 'fit-content' }}>
+            <img src={overviewData?.marketing?.image} style={{ width: '100%' }} />
+          </Card>
+          <Box sx={{ my: 2 }}>
+            <OverviewRatingCard />
           </Box>
         </Box>
-      </Container>
-      <Container maxWidth="evmd" sx={{ py: "0 !important" }}>
-        <Box sx={{ display: { xs: "block", evmd: "none" }, mb: 2 }}>
-          <OverviewRatingCard />
-        </Box>
-        <Card sx={{ display: { xs: "block", evmd: "none" }, mb: 2 }}>
-          <Box>
-            <MapFrame mapUrl={mapUrl} />
-          </Box>
-        </Card>
-        <Card id="builder">
+        <Card id="builder" >
           <Box sx={{ display: "flex", p: 2 }}>
             <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
               Overview

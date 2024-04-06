@@ -82,29 +82,29 @@ function EnhancedTableHead(props) {
       <TableRow>
         {headCells.map((headCell) => (
           (headCell.id !== 'role' || selectedTabValue === 0) && (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? "right" : "left"}
+              padding={headCell.disablePadding ? "none" : "normal"}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-           )
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          )
         ))}
         {(selectedTabValue === 0) && <TableCell>Action</TableCell>}
-        {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{textAlign: "center"}}>Approval Request</TableCell>}
+        {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{ textAlign: "center" }}>Approval Request</TableCell>}
       </TableRow>
     </TableHead>
   );
@@ -177,7 +177,7 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
   );
 };
 
-function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus, selectedTabValue, UserApproveupdateStatus}) {
+function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus, selectedTabValue, UserApproveupdateStatus }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -195,7 +195,7 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
   const UserApproveupdate = (userId, isApproved, row) => {
     handleClose();
     UserApproveupdateStatus(userId, isApproved, row);
-  }; 
+  };
 
   const editProfile = (googleID, role) => {
     if (role == ROLE_CONSTANTS.user) {
@@ -210,7 +210,7 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
   return (
     <TableRow
       key={row.name}
-      style={row.isBlocked ? { backgroundColor: colors.DISABLED } : null}
+      style={row.isBlocked ? { backgroundColor: 'whitesmoke' } : null}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <TableCell>
@@ -220,9 +220,9 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
         {countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}
       </TableCell>
       <TableCell>{row.email}</TableCell>
-      { selectedTabValue === 0 && (
+      {selectedTabValue === 0 && (
         <TableCell>
-          {row.isBlocked ? <DoNotDisturbAltIcon fontSize="small" sx={{ color: colors.ERROR }} /> :
+          {row.isBlocked ? <DoNotDisturbAltIcon sx={{ color: colors.ERROR, fontSize: "1rem" }} /> :
             <RoleViewer
               key={row._id}
               role={row.role}
@@ -232,7 +232,7 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
             />}
         </TableCell>
       )}
-      { selectedTabValue === 0 && (
+      {selectedTabValue === 0 && (
         <TableCell sx={{ py: 0 }}>
           <IconButton
             onClick={handleClick}
@@ -279,9 +279,9 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
           </Menu>
         </TableCell>
       )}
-      {(userDetails.role == 'superAdmin' && selectedTabValue == 1) &&<TableCell sx={{justifyContent: "center", display: "flex", gap: "12px"}}>
-        <CheckCircleIcon onClick={() => UserApproveupdate(row.googleID, true, row)} sx={{ color: colors.SUCCESS }}/>
-        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false, row )} sx={{ color: colors.ERROR }}/>
+      {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{ justifyContent: "center", display: "flex", gap: "12px" }}>
+        <CheckCircleIcon onClick={() => UserApproveupdate(row.googleID, true, row)} sx={{ color: colors.SUCCESS }} />
+        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false, row)} sx={{ color: colors.ERROR }} />
       </TableCell>}
     </TableRow>
   );
@@ -308,7 +308,7 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
       data: {},
     });
 
-    const [userApproveStatusConfirmationDialog, setuserApproveStatusConfirmationDialog] =
+  const [userApproveStatusConfirmationDialog, setuserApproveStatusConfirmationDialog] =
     React.useState({
       isOpen: false,
       data: {},
@@ -363,8 +363,8 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
         phone: searchText,
         email: searchText,
         isApproved: selectedTabValue == 0 ? true : false
-      };  
-      if(userDetails.role === "admin"){
+      };
+      if (userDetails.role === "admin") {
         delete querParams?.isApproved
       }
       setLoading(true);
@@ -452,7 +452,7 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
     });
   };
 
-  
+
 
   const handleDialogAction = async (action) => {
     if (action) {

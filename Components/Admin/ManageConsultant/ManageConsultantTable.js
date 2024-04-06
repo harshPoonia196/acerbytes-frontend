@@ -77,7 +77,7 @@ const headCells = [
 
   {
     id: "RERANumber",
-    label: "RERANumber",
+    label: "RERA #",
   },
   {
     id: "NoOfActiveLinks",
@@ -161,7 +161,7 @@ function RowStructure({ row }) {
         <TableCell>
           {row.action === "Add Credit" && (
             <IconButton
-              sx={{ fontSize: "1rem !important" }}
+              sx={{ fontSize: "1rem !important", p: 0 }}
               onClick={handleOpenAddCreditPopup}
             >
               <AddIcon fontSize="1rem" />

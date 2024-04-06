@@ -481,18 +481,18 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     } else {
       error['reraNumber'] = false;
     }
-    if (
-      !validatePhoneNumber(brokerProfileInfo?.serviceDetails?.registeredPhone)
-    ) {
-      error['phone'] = true;
-      openSnackbar("Mobile number is invalid", "error");
-      setErrorInvalid({
-        ...error,
-      });
-      return;
-    } else {
-      error['phone'] = false;
-    }
+    // if (
+    //   !validatePhoneNumber(brokerProfileInfo?.serviceDetails?.registeredPhone)
+    // ) {
+    //   error['phone'] = true;
+    //   openSnackbar("Mobile number is invalid", "error");
+    //   setErrorInvalid({
+    //     ...error,
+    //   });
+    //   return;
+    // } else {
+    //   error['phone'] = false;
+    // }
 
     if (brokerProfileInfo?.serviceDetails?.registeredPhone?.number && !([0, 10].includes(brokerProfileInfo?.serviceDetails?.registeredPhone?.number?.toString()?.length))) {
       error['registeredPhone'] = true;
@@ -888,7 +888,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                   />
                   <NewPhoneInputFieldStructure
                     variant="outlined"
-                    label="Registerd phone"
+                    label="Alternate phone"
                     countryCodeOptions={allDropdownOptions?.find(rs => rs.name == "Country code")?.childSub || []}
                     value1={
                       brokerProfileInfo?.serviceDetails?.registeredPhone
@@ -1079,7 +1079,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     variant="subtitle1"
                     sx={{ flex: 1, alignSelf: "center", fontWeight: "bold" }}
                   >
-                    Setting
+                    Settings
                   </Typography>
                 </Box>
                 <Divider />
@@ -1099,7 +1099,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                       color="primary"
                     />
                     <Typography variant="body1">
-                      Do Not Disturb (DND) Mode
+                      Do Not Disturb (DND) mode
                     </Typography>
                   </Grid>
 
@@ -1120,7 +1120,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                       color="primary"
                     />
                     <Typography variant="body1">
-                      Receive WhatsApp Promotions
+                      Receive WhatsApp promotions
                     </Typography>
                   </Grid>
                 </Grid>

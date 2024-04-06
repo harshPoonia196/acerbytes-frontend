@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Typography, Card } from '@mui/material'
+import { Box, Container, Typography, Card, Grid } from '@mui/material'
 import CreditTable from 'Components/Admin/CreditStatus/CreditTable'
 
 import CustomAdminBreadScrumbs from 'Components/CommonLayouts/CustomAdminBreadScrumbs'
@@ -19,14 +19,8 @@ function CreditStatus() {
 
     return (
         <>
-            <CustomAdminBreadScrumbs text='Credit point status' />
-            <InfoBox
-                title={Object.keys(userDetails).length > 0 ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}(${userDetails?.role})` : ""}
-                subtitle={Object.keys(dashboardInfo).length > 0 ? `Consultants: ${dashboardInfo.count}` : ''}
-            />
-            <Container>
-                <CreditTable onDashboardDataUpdate={handleDashboardDataUpdate} />
-            </Container>
+            <CustomAdminBreadScrumbs text='Credit points status' />
+            <CreditTable onDashboardDataUpdate={handleDashboardDataUpdate} dashboardInfo={dashboardInfo} />
         </>
     )
 }

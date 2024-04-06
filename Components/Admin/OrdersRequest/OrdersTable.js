@@ -267,7 +267,7 @@ function RowStructure({
           <TableCell>{formatPoints(row?.approvedPoints)}</TableCell>
         )}
         {!isCompleted && (
-          <TableCell>
+          <TableCell sx={{}}>
             <IconButton
               aria-label="more"
               id="long-button"
@@ -276,7 +276,8 @@ function RowStructure({
               aria-expanded={open ? "true" : undefined}
               aria-haspopup="true"
               onClick={handleClick}
-              size="small"
+              size='small'
+              sx={{ p: 0 }}
             >
               <MoreVertIcon fontSize="small" />
             </IconButton>
@@ -614,7 +615,7 @@ function OrdersTable({ onDashboardDataUpdate }) {
         align="right"
         onClick={() => setOpenAddCreditPoints(true)}
         startIcon={<Add />}
-        ButtonText={"Add request"}
+        ButtonText={"Add Order"}
       />
 
       <AdminCreditPointsPopup

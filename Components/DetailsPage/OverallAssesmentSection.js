@@ -66,9 +66,12 @@ function OverallAssesmentSection({
 
         <Box sx={{ p: 2, textAlign: "center" }}>
           {AllPropertyData?.overview?.projectName && (
-            <Typography variant="body1">
-              {AllPropertyData?.overview?.projectName} project has scored
-            </Typography>
+            <>
+              <Typography variant="h3">
+                {AllPropertyData?.overview?.builder}, {AllPropertyData?.overview?.projectName}
+              </Typography>
+              <Typography variant='body2'>has scored</Typography>
+            </>
           )}
           <Box
             sx={{
@@ -77,23 +80,25 @@ function OverallAssesmentSection({
               margin: "auto",
             }}
           >
-            <Typography variant="h1">{overallAssessment?.score}</Typography>
+            <Typography variant="h1" sx={{ mr: 1 }}>{overallAssessment?.score}</Typography>
             <Typography variant="h5" sx={{ alignSelf: "center" }}>
-              /100
+              {' / 100'}
             </Typography>
           </Box>
-          <Typography variant="body1" sx={{ mb: 2 }}>
+          <Typography variant="body2" >
             Our authorized professional consultants help you decide whether to
             buy as Investor / End user. Contact us now
           </Typography>
           {userDetails?.role === "user" && (
-              <Chip
-                icon={<AssignmentIcon />}
-                label="Enquire now"
-                size="small"
-                onClick={handleOpenEnquiryForm}
-              />
-            )}
+            <Chip
+              sx={{ mt: 2 }}
+              color='primary'
+              icon={<AssignmentIcon />}
+              label="Enquire now"
+              size="small"
+              onClick={handleOpenEnquiryForm}
+            />
+          )}
         </Box>
         {open && <EnquireNow
           open={open}
@@ -104,11 +109,12 @@ function OverallAssesmentSection({
         <Divider />
         <Box sx={{ p: 1, display: "flex" }}>
           <Chip label="Disclaimer" size="small" />
+          &nbsp;&nbsp;
           <Typography
             variant="subtitle2"
             style={{ fontSize: "0.6rem", alignSelf: "center" }}
           >
-            &nbsp;&nbsp;AcresByte.com acts as a inside research and marketing
+            AcresByte.com acts as a inside research and marketing
             platform, doesnt take any responsibility on the accuracy
           </Typography>
         </Box>

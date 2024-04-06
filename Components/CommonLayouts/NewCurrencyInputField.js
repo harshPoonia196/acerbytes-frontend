@@ -39,7 +39,7 @@ const NewCurrencyInputField = ({
     };
     handleChange(updatedEvent);
   };
- 
+
   return (
     <Grid item xs={12} sm={6}>
       <Box>
@@ -73,7 +73,7 @@ const NewCurrencyInputField = ({
                   InputProps={{
                     disableUnderline: true,
                   }}
-                  
+
                 >
                   {(currentOptions || currencies).map((option) => {
                     if (option.label) {

@@ -82,27 +82,14 @@ function EnhancedTableHead(props) {
         <TableRow>
           {headCells.map((headCell) => (
             (headCell.id !== 'expiresIn' || alignmentValue === "Active" || alignmentValue === "" || alignmentValue === "Expiring Soon") && (
-            <TableCell
-              key={headCell.id}
-              align={headCell.numeric ? "right" : "left"}
-              padding={headCell.disablePadding ? "none" : "normal"}
-              sortDirection={orderBy === headCell.id ? order : false}
-            >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
+              <TableCell
+                key={headCell.id}
+                align={headCell.numeric ? "right" : "left"}
+                padding={headCell.disablePadding ? "none" : "normal"}
+                sortDirection={orderBy === headCell.id ? order : false}
               >
                 {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc"
-                      ? "sorted descending"
-                      : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
+              </TableCell>
             )
           ))}
         </TableRow>
@@ -121,13 +108,13 @@ function RowStructure({ row, alignmentValue }) {
     });
   };
 
-  const  calculateDaysRemaining = (expiresAt) =>{
+  const calculateDaysRemaining = (expiresAt) => {
     const currentDate = new Date();
     const expirationDate = new Date(expiresAt);
-    
+
     const differenceInTime = expirationDate - currentDate;
     const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-  
+
     return differenceInDays;
   }
 
@@ -151,8 +138,8 @@ function RowStructure({ row, alignmentValue }) {
       <TableCell>{row?.propertyName}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy">
-          <IconButton sx={{ fontSize: "1rem !important" }} 
-           onClick={() => copyToClipboard(row?.link)}
+          <IconButton sx={{ fontSize: "1rem !important" }}
+            onClick={() => copyToClipboard(row?.link)}
           >
             <ContentCopyIcon fontSize="1rem" />
           </IconButton>
@@ -174,7 +161,7 @@ function RowStructure({ row, alignmentValue }) {
       </TableCell>
       <TableCell>{formatDate(row?.validFrom)}</TableCell>
       <TableCell>{formatDate(row?.validTo)}</TableCell>
-      <TableCell sx={{textAlign: "center"}}>
+      <TableCell sx={{ textAlign: "center" }}>
         {alignmentValue !== "Expired" && row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
       </TableCell>
     </TableRow>
@@ -200,7 +187,7 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
   const constructPropertyUrl = (propertyDetailsData) => {
     const overview = propertyDetailsData?.propertyData?.overview;
     const location = propertyDetailsData?.propertyData?.location;
-  
+
     const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
     let projectType;
     if (overview?.projectType?.length > 0) {
@@ -213,7 +200,7 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
     const area = (location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '');
     const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
     const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
-  
+
     return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetailsData._id}`;
   };
 
@@ -221,16 +208,16 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
     return [...data]?.map((item) => {
       const propertyUrl = constructPropertyUrl(item);
       return {
-      id: item?._id,
-      consultantName: `${item?.brokerData?.name?.firstName} ${item?.brokerData?.name?.lastName}`,
-      phone: `+ ${item?.brokerData?.phone?.countryCode} ${item?.brokerData?.phone?.number}`,
-      propertyType: item?.propertyData?.overview?.projectCategory,
-      propertyName: item?.propertyData?.overview?.projectName,
-      link: propertyUrl,
-      status: item?.status,
-      validFrom: item?.created_at,
-      validTo: item?.expired_at,
-      expiresIn: item?.expired_at
+        id: item?._id,
+        consultantName: `${item?.brokerData?.name?.firstName} ${item?.brokerData?.name?.lastName}`,
+        phone: `+ ${item?.brokerData?.phone?.countryCode} ${item?.brokerData?.phone?.number}`,
+        propertyType: item?.propertyData?.overview?.projectCategory,
+        propertyName: item?.propertyData?.overview?.projectName,
+        link: propertyUrl,
+        status: item?.status,
+        validFrom: item?.created_at,
+        validTo: item?.expired_at,
+        expiresIn: item?.expired_at
       }
     });
   };
@@ -291,7 +278,7 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
     setCurrentPage(1);
   }, [alignmentValue]);
 
-  const handleSearchClick =() => {
+  const handleSearchClick = () => {
     setCurrentPage(1);
     const pageOptions = {
       pageLimit,
@@ -332,18 +319,18 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
 
   return (
     <>
-    {isLoading && <Loader />}
-    <Card sx={{ mb: 2 }}>
-          <CustomSearch 
-            value={searchTerm} 
-            onChange={handleSearch}
-            onSearchButtonClick={handleSearchClick}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSearchClick();
-              }
-            }}
-              />
+      {isLoading && <Loader />}
+      <Card sx={{ mb: 2 }}>
+        <CustomSearch
+          value={searchTerm}
+          onChange={handleSearch}
+          onSearchButtonClick={handleSearchClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearchClick();
+            }
+          }}
+        />
       </Card>
       {activeAdData?.length > 0 ? (
         <TableContainer component={Paper}>
