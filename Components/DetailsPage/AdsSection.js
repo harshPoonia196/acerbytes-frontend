@@ -16,7 +16,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
     const { userDetails } = useAuth();
     const brokerData = SinglePropertyId?.brokerData
     const locationData = propertyData?.location;
-    
+
     const constructPropertyUrl = (property) => {
         const overview = property?.overview;
         const location = property?.location;
@@ -101,14 +101,14 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
-                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={()=> handleOpenActivateAdsPopup(propertyUrl)} ButtonText={"Extend"} />
+                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} ButtonText={"Extend"} />
                         </Box>
                     </Box>
             }
             <Card sx={{ border: isConsultant ? '2px solid gold' : `2px solid ${colors.BLUE}` }}>
                 <Box sx={{ display: 'flex', p: 1, px: 2, gap: 1, background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue', flexDirection: { xs: 'column', sm: 'row' } }}>
-                    <Box sx={{ display: 'flex', flex: 1, alignSelf: 'center', alignItems: "end" }}>
-                        <AccountCircle />
+                    <Box sx={{ display: 'flex', flex: 1, alignSelf: 'center', alignItems: "start" }}>
+                        <AccountCircle fontSize='small' sx={{ mr: 1 }} />
                         <Typography variant='h5' sx={{}}>Contact us {name} &#183; for {projectName} &#183; {city} &#183; {sector} &#183; {pinCode} &#183; {state}
                             {/* &#183 */}
                             {/* <Rating

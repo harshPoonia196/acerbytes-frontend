@@ -7,8 +7,7 @@ import {
   Divider,
 } from "@mui/material";
 import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
-import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React from "react";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import colors from "styles/theme/colors";
 
@@ -51,16 +50,45 @@ function MarketingSection(props) {
     console.log(AllLocationData)
     return <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} >
       <Card sx={{ p: 2, textAlign: "center" }}>
-        <Typography variant="h2">
-          {`${alloverviewData?.builder} · ${alloverviewData?.projectName}`}
-        </Typography>
-
-        <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-          <LocationOnIcon fontSize="small" sx={{ alignSelf: 'center' }} />
-          <Typography variant="h4">
-            {`${AllLocationData?.sector}, ${AllLocationData?.city}, ${AllLocationData?.state}`}
+        <Box>
+          <Typography variant="h2">
+            {`${alloverviewData?.builder} · ${alloverviewData?.projectName}`}
           </Typography>
+
+          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+            <LocationOnIcon fontSize="small" sx={{ alignSelf: 'center' }} />
+            <Typography variant="h4">
+              {`${AllLocationData?.sector}, ${AllLocationData?.city}, ${AllLocationData?.state}`}
+            </Typography>
+          </Box>
         </Box>
+        <Grid container spacing={2} sx={{ pt: 2 }}>
+          <Grid item xs={6}>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              Construction status
+            </Typography>
+            <Typography variant="body1">Performance</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              SBI approved
+            </Typography>
+            <Typography variant="body1">Yes</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              Rera approved
+            </Typography>
+            <Typography variant="body1">Yes</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              Time
+            </Typography>
+            <Typography variant="body1">2024-2028</Typography>
+          </Grid>
+        </Grid>
+
       </Card>
       <Card sx={{ p: 2, textAlign: "center" }}>
         <Typography variant="h1">
