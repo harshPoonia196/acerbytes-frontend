@@ -74,4 +74,4 @@ function EditFacilitiesCard({ isEdit, form, handleChange, handleRating,formUpdat
     )
 }
 
-export default React.memo(EditFacilitiesCard)
+export default EditFacilitiesCard

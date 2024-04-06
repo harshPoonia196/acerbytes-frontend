@@ -172,4 +172,4 @@ useEffect(()=>{
     )
 }
 
-export default React.memo(EditLocationCard)
+export default EditLocationCard
