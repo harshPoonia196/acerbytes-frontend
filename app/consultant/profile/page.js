@@ -471,6 +471,13 @@ return ;
       error['companyEmail'] = false;
     }
 
+    if (!brokerProfileInfo?.serviceDetails?.company) {
+      error['company'] = true;
+      isError= true;
+    } else {
+      error['company'] = false;
+    }
+
     if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
       error['reraNumber'] = true;
       isError= true;
@@ -481,7 +488,7 @@ return ;
       !validatePhoneNumber( brokerProfileInfo?.serviceDetails?.registeredPhone)
     ) {
       error['phone'] = true;
-      openSnackbar(  "Mobile number is invalid", "error");
+      openSnackbar("Registered Phone number is invalid", "error");
       setErrorInvalid({
         ...error,
       });
@@ -851,6 +858,7 @@ return ;
                     value={brokerProfileInfo?.serviceDetails?.company || ""}
                     variant="outlined"
                     isEdit={isEdit}
+                    error={errorInvalid.company}
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "company")
                     }
