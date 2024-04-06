@@ -20,18 +20,7 @@ function Enquiries() {
   return (
     <>
       <CustomAdminBreadScrumbs text='List of leads' />
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container maxWidth="lg">
-          <Grid container spacing={2}>
-            <Grid item xs={6} sm={4} md={2}>
-              <Card sx={{ p: 2, textAlign: 'center' }}>
-                <Typography variant="h3">{`${leadsCount}`}</Typography>
-                <Typography variant="h6">Leads</Typography>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+      <InfoBox dataList={[{ label: 'Leads', value: leadsCount }]} />
       <Container>
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput value={search} onChange={handleSearch} />

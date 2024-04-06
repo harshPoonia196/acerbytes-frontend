@@ -9,8 +9,8 @@ import {
   TableCell,
   TableSortLabel,
   IconButton,
-  Dialog,
-  Button,
+  Container,
+  Card,
 } from "@mui/material";
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -20,6 +20,8 @@ import { getComparator, stableSort } from "utills/CommonFunction";
 import AddIcon from "@mui/icons-material/Add";
 import AddCreditPopup from "./Modal/AddCreditPopup";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import InfoBox from "Components/CommonLayouts/CommonHeader";
+import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 
 const rows = [
   {
@@ -205,36 +207,46 @@ function ManageConsultantTable() {
 
   return (
     <>
-      {rows.length > 0 ? (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
+      <InfoBox
+        dataList={[{ label: 'Consultants list', value: rows.length }]}
+      />
+
+      <Container>
+        <Card sx={{ mb: 2 }}>
+          <CustomSearchInput />
+        </Card>
+
+        {rows.length > 0 ? (
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+              <EnhancedTableHead
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+              />
+              <TableBody>
+                {rows.map((row) => (
+                  <RowStructure row={row} />
+                ))}
+              </TableBody>
+            </Table>
+            <TablePagination
+              sx={{
+                overflow: "hidden",
+              }}
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
             />
-            <TableBody>
-              {rows.map((row) => (
-                <RowStructure row={row} />
-              ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            sx={{
-              overflow: "hidden",
-            }}
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </TableContainer>
-      ) : (
-        <NoDataCard title={"No data found"} />
-      )}
+          </TableContainer>
+        ) : (
+          <NoDataCard title={"No data found"} />
+        )}
+      </Container>
     </>
   );
 }
