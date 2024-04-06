@@ -245,7 +245,7 @@ function AddProperty() {
             }
           });
           setRegulatoryCount(countYes)
-            setTotalRating(totalRating + updateTotalCount)
+          setTotalRating(totalRating + updateTotalCount)
       
     setFormUpdated(true)
         }
@@ -646,13 +646,13 @@ const [hide,setHide]=useState([])
         totalRatingModule = 20;
         break;
       case "location":
-        totalRatingModule = locationStars.length*5;
+        totalRatingModule = locationStarsScore.length*5;
         break;
       case "valueformoney" :
         totalRatingModule = 15;
         break;
         case "amenitiesdata" :
-          totalRatingModule = +amentiesStars.length*5;
+          totalRatingModule = +amentiesStarsScore.length*5;
         break;
       default:
         totalRatingModule = 10;
@@ -772,7 +772,6 @@ const [hide,setHide]=useState([])
     //   totalScored =
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
-    console.log(totalScored,totalRatingModule,'check',regulatoryCount)
     let calc = (totalScored / totalRatingModule) * 10;
 
     if(seperateCalc){
