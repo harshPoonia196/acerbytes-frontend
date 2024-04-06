@@ -316,6 +316,7 @@ function AddProperty() {
     try {
       let res = await getAllOptions();
       if (res.status === 200) {
+        setLoading(true)
         let transform = transformDocuments(res.data.data)
         setSelectOption({ ...transform })
         let temp={}
@@ -364,6 +365,7 @@ function AddProperty() {
           amenitiesData: { sectionScore: 0, pointsGained: 0, ...amenities }
         }));
         // setSelectOption({ ...temp })
+        setLoading(false)
       }
     } catch (error) {
       showToaterMessages(
@@ -491,12 +493,13 @@ function AddProperty() {
       expectedFurtherApp: 0,
       forEndUse: 0,
       pointsGained: 0,
-      sectionScore: ""
+      sectionScore: 0
     },
     consultants: [],
     overallAssessment: {
       score: 0,
       scoredRating: 0,
+      outOff:0,
       rated: {
         builder: 0,
         constructionProgress: 0,
@@ -932,7 +935,7 @@ function AddProperty() {
             form.overallAssessment.scoredRating + parseInt(incomingValue);
         }
       }
-else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()==='yes'){
+else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
   total = totalRating + 5
   setTotalRating(total)
 
@@ -1109,6 +1112,9 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
       let total = totalRating + 5
       setTotalRating(total)
     }
+    setForm({
+      ...form, overallAssessment: { ...form.overallAssessment, outOff: totalRating }
+    })
   };
 
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
@@ -1156,6 +1162,7 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
 
   const validateForm = (publish) => {
     const { error } = Schema?.validate(form, { abortEarly: false });
+console.log(totalRating,'totalss')
 
     let store = [
       "constructionQuality",
@@ -1217,6 +1224,7 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
       }
     });
     console.log(form, "formmmm", error, "errrr");
+    console.log(totalRating,'totalss')
 
     if (error) {
       // console.log("🚀 ~ validateForm ~ error:", error.details)

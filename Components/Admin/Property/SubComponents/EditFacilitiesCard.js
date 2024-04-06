@@ -21,16 +21,16 @@ import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonSt
 import colors from 'styles/theme/colors';
 import { useSnackbar } from "utills/SnackbarContext";
 
-function FacilitiesCard({ isEdit, form, handleChange, handleRating,formUpdated }) {
+function EditFacilitiesCard({ isEdit, form, handleChange, handleRating,formUpdated }) {
 
     let [amenitiesData,setAmenitiesData]=useState(form.amenitiesData)
     useEffect(()=>{
         setAmenitiesData(form.amenitiesData)
-    },[form])
+    },[formUpdated])
 
     // const { amenitiesData } = form
     return (
-       <>{amenitiesData && <Grid item xs={12} id="facilities">
+       <>{formUpdated && <Grid item xs={12} id="facilities">
             <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                     <Typography
@@ -74,4 +74,4 @@ function FacilitiesCard({ isEdit, form, handleChange, handleRating,formUpdated }
     )
 }
 
-export default React.memo(FacilitiesCard)
+export default React.memo(EditFacilitiesCard)

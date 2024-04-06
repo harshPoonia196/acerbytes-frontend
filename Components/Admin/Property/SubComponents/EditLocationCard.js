@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import {
     Card,
     Typography,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import LocationAssesmentCard from "Components/Admin/Property/SubComponents/LocationAssesmentCard"
+import EditLocationAssesmentCard from "Components/Admin/Property/SubComponents/EditLocationAssesmentCard"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewAutocompleteAddOptionToList from "Components/CommonLayouts/NewAutocompleteAddOptionToList"
@@ -19,7 +20,7 @@ import { getLocations } from 'api/Property.api';
 import { useSnackbar } from "utills/SnackbarContext";
 
 
-function LocationCard({ isEdit, form, handleChange, errors, selectOptions,moduleScoreCalc,cities,formUpdated }) {
+function EditLocationCard({ isEdit, form, handleChange, errors, selectOptions,moduleScoreCalc,cities,formUpdated }) {
     const { openSnackbar } = useSnackbar()
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
 useEffect(()=>{
@@ -50,8 +51,13 @@ useEffect(()=>{
         getLocationsCall();
     }, [])
 
+    let [location,setLocation]=useState(form.location)
+    useEffect(()=>{
+
+    },[formUpdated])
+
     return (
-       <>{  
+       <>{  formUpdated && 
         <Grid item xs={12} id="location" >
             <Card sx={{ mb: 2 }}>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -160,10 +166,10 @@ useEffect(()=>{
                 </Grid>
             </Card>
 
-            <LocationAssesmentCard moduleScoreCalc={moduleScoreCalc} errors={errors} form={form} handleChange={handleChange} formUpdated={formUpdated} isEdit={isEdit} />
+            <EditLocationAssesmentCard moduleScoreCalc={moduleScoreCalc} errors={errors} form={form} handleChange={handleChange} formUpdated={formUpdated} isEdit={isEdit} />
         </Grid>
                     }</>
     )
 }
 
-export default React.memo(LocationCard)
+export default React.memo(EditLocationCard)

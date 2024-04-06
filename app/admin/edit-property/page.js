@@ -21,7 +21,7 @@ import {
   projectName,
   reraSchema,
 } from "Components/Admin/Property/Validation/PropertyValidation";
-import FacilitiesCard from "Components/Admin/Property/SubComponents/FacilitiesCard";
+import EditFacilitiesCard from "Components/Admin/Property/SubComponents/EditFacilitiesCard";
 import LandscapeCard from "Components/Admin/Property/SubComponents/LandscapeCard";
 import FloorPlanCard from "Components/Admin/Property/SubComponents/FloorPlanCard";
 import RegulatoryCard from "Components/Admin/Property/SubComponents/RegulatoryCard";
@@ -37,6 +37,7 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import { detailsProperty } from "api/Property.api";
 import colors from "styles/theme/colors";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import EditLocationCard from "Components/Admin/Property/SubComponents/EditLocationCard";
 
 const tabHeight = 116;
 
@@ -246,11 +247,11 @@ function AddProperty() {
           setRegulatoryCount(countYes)
             setTotalRating(totalRating + updateTotalCount)
             setForm({ ...data });
+            setTotalRating(data.overallAssessment.outOff)
     setFormUpdated(true)
         }
     } 
    catch (error) {
-    console.log(error,'iee')
     showToaterMessages(
       error?.response?.data?.message ||
       error?.message ||
@@ -506,6 +507,7 @@ setCities(res.data.data[0])
     overallAssessment: {
       score: 0,
       scoredRating: 0,
+      outOff:0,
       rated: {
         builder: 0,
         constructionProgress: 0,
@@ -733,7 +735,8 @@ const [hide,setHide]=useState([])
     }
     
     else if(firstKeyName==="regulatoryClearance" ){
-      if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()==='yes'){
+
+      if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
         totalRatingModule=totalRatingModule+5
         setRegulatoryCount(regulatoryCount+1)
       }
@@ -945,7 +948,7 @@ if (firstKeyName==="location" || firstKeyName === "amenitiesData"){
   } 
 }
 
-else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()==='yes'){
+else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
   total = totalRating + 5
   setTotalRating(total)
 
@@ -1376,7 +1379,7 @@ switch (label.toLowerCase()) {
             handleUnitsPlan={handleUnitsPlan}
             isEdit={isEdit}
           />}
-          <FacilitiesCard
+          <EditFacilitiesCard
             errors={errors}
             hide={hide}
             form={form}
@@ -1385,7 +1388,7 @@ switch (label.toLowerCase()) {
             selectOptions={selectOptions}
             handleChange={handleChange}
           />
-          <LocationCard
+          <EditLocationCard
             errors={errors}
             hide={hide}
             cities={cities}
