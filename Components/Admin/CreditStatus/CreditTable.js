@@ -173,9 +173,8 @@ function RowStructure({ row, adminAssignPointsHandler }) {
             aria-haspopup="true"
             onClick={handleClick}
             size="small"
-
           >
-            <MoreVertIcon fontSize="small" />
+            <MoreVertIcon fontSize="1rem" />
           </IconButton>
         </TableCell>
         <Menu
@@ -371,7 +370,8 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
         startIcon={<Add />}
         ButtonText={"Credit points"}
       />}
-      dataList={[{ label: 'Credit points request', value: dashboardInfo.count }]} />
+      dataList={[{ label: 'Paid Consultants', value: dashboardInfo.count }]}
+    />
 
     <Container>
       {isLoading && <Loading />}

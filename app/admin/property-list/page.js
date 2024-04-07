@@ -12,8 +12,6 @@ function PropertyList() {
   const { userDetails } = useAuth();
   const [count, setCount] = useState({ noOfProperties: 0 });
 
-  const name = userDetails?.name?.firstName && userDetails?.name?.lastName ? `${userDetails.name.firstName} ${userDetails.name.lastName}` : "";
-
   useEffect(() => {
 
   }, [count]);
@@ -21,7 +19,8 @@ function PropertyList() {
   return (
     <>
       <CustomAdminBreadScrumbs text='Property list' />
-      <InfoBox dataList={[{ label: 'Properties', value: count?.noOfProperties }]} />
+      <InfoBox dataList={[{ label: 'Published', value: count?.noOfProperties },
+      { label: 'Drafted', value: count?.noOfProperties + '(static)' }]} />
       <Container>
         <PropertyListTable setCount={setCount} />
       </Container>

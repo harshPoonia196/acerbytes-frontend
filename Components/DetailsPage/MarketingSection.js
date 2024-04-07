@@ -11,6 +11,7 @@ import React from "react";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import colors from "styles/theme/colors";
 import CircularProgressWithIcon from 'Components/CommonLayouts/CircularProgressWithIcon'
+import CircularProgressWithLabel from 'Components/CommonLayouts/CircularProgressWithLabel'
 import HandshakeIcon from '@mui/icons-material/Handshake'
 import BusinessIcon from '@mui/icons-material/Business'
 import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
@@ -58,14 +59,7 @@ function MarketingSection(props) {
         <MapFrame mapUrl={mapUrl} />
       </Card>
       <Card sx={{ p: 2, textAlign: "center", width: '50%' }}>
-        <Typography variant="h1">
-          {overviewData?.overallAssessment?.score
-            ? overviewData?.overallAssessment?.score.toFixed()
-            : "-"}
-          <Typography variant="h6" component="span">
-            {' / 100'}
-          </Typography>
-        </Typography>
+        <CircularProgressWithLabel progress={overviewData?.overallAssessment?.score} />
         <Typography variant="h4" sx={{ mb: 2 }}>
           {categorizeScore(overviewData?.overallAssessment?.score)}
         </Typography>
@@ -73,9 +67,10 @@ function MarketingSection(props) {
           <Grid item xs={6}>
             <Box sx={{ display: 'flex' }}>
               <Box sx={{ mr: 1 }}>
-                <CircularProgressWithIcon icon={<HandshakeIcon />} />
+                <CircularProgressWithIcon score={alloverviewData?.sectionScore} outOf={10}
+                  icon={<HandshakeIcon fontSize="1rem" />} />
               </Box>
-              <Box>
+              <Box sx={{ flex: 1 }}>
                 <Typography variant="h6">Performance</Typography>
                 <Typography variant="h4">
                   {alloverviewData?.sectionScore
@@ -91,9 +86,10 @@ function MarketingSection(props) {
           <Grid item xs={6}>
             <Box sx={{ display: 'flex' }}>
               <Box sx={{ mr: 1 }}>
-                <CircularProgressWithIcon icon={<BusinessIcon />} />
+                <CircularProgressWithIcon icon={<BusinessIcon fontSize="1rem" />}
+                  score={overviewData?.layout?.sectionScore.toFixed()} outOf={10} />
               </Box>
-              <Box>
+              <Box sx={{ flex: 1 }}>
                 <Typography variant="h6">Layout and amenities</Typography>
                 <Typography variant="h4">
                   {overviewData?.layout?.sectionScore
@@ -109,9 +105,10 @@ function MarketingSection(props) {
           <Grid item xs={6}>
             <Box sx={{ display: 'flex' }}>
               <Box sx={{ mr: 1 }}>
-                <CircularProgressWithIcon icon={<WhereToVoteIcon />} />
+                <CircularProgressWithIcon icon={<WhereToVoteIcon fontSize="1rem" />}
+                  score={overviewData?.location?.sectionScore.toFixed()} outOf={10} />
               </Box>
-              <Box>
+              <Box sx={{ flex: 1 }}>
                 <Typography variant="h6">Location</Typography>
                 <Typography variant="h4">
                   {overviewData?.location?.sectionScore
@@ -127,9 +124,10 @@ function MarketingSection(props) {
           <Grid item xs={6}>
             <Box sx={{ display: 'flex' }}>
               <Box sx={{ mr: 1 }}>
-                <CircularProgressWithIcon icon={<CurrencyRupeeIcon />} />
+                <CircularProgressWithIcon icon={<CurrencyRupeeIcon fontSize="1rem" />}
+                  score={overviewData?.valueForMoney?.sectionScore.toFixed()} outOf={10} />
               </Box>
-              <Box>
+              <Box sx={{ flex: 1 }}>
                 <Typography variant="h6">Value for money</Typography>
                 <Typography variant="h4">
                   {overviewData?.valueForMoney?.sectionScore

@@ -27,6 +27,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { getAllActiveAd } from "api/consultant.api";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearch from "Components/CommonLayouts/CustomSearch";
+import { useRouter } from "next/navigation";
 
 
 // const rows = []
@@ -98,7 +99,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, alignmentValue }) {
+function RowStructure({ row, alignmentValue, history }) {
 
   const copyToClipboard = (link) => {
     navigator.clipboard.writeText(link).then(() => {
@@ -137,7 +138,7 @@ function RowStructure({ row, alignmentValue }) {
       <TableCell>{row?.propertyType}</TableCell>
       <TableCell>{row?.propertyName}</TableCell>
       <TableCell sx={{ py: 0 }}>
-        <Tooltip title="Copy">
+        <Tooltip title="Copy consultant property link">
           <IconButton sx={{ fontSize: "1rem !important" }}
             onClick={() => copyToClipboard(row?.link)}
           >
@@ -149,7 +150,7 @@ function RowStructure({ row, alignmentValue }) {
         <Chip
           label={row.status}
           size="small"
-          onClick={() => { }}
+          onClick={() => { history.push(row?.link) }}
           color={
             row.status === "Active"
               ? "success"
@@ -169,6 +170,9 @@ function RowStructure({ row, alignmentValue }) {
 }
 
 function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
+
+  const history = useRouter()
+
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -343,7 +347,7 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
             />
             <TableBody>
               {activeAdData?.map((row) => (
-                <RowStructure row={row} alignmentValue={alignmentValue} />
+                <RowStructure row={row} alignmentValue={alignmentValue} history={history} />
               ))}
             </TableBody>
           </Table>

@@ -12,16 +12,15 @@ const page = () => {
   const { userDetails } = useAuth();
   const [count, setCount] = useState(0);
 
-  const name = userDetails?.name?.firstName && userDetails?.name?.lastName ? `${userDetails.name.firstName} ${userDetails.name.lastName}` : "";
   return (
     <>
-      <CustomConsultantBreadScrumbs text="Make links" />
+      <CustomConsultantBreadScrumbs text="My links" />
       <InfoBox
-        title={`${capitalLizeName(name)} (${capitalLizeName(userDetails?.role)})`}
-        subtitle={`${count && count} property consultant links are currently active`}
+        label='My links'
+        dataList={[{ label: 'Links', value: count }]}
       />
       <Container>
-        <MyLinksTable setCount={setCount}/>
+        <MyLinksTable setCount={setCount} />
       </Container>
     </>
   );

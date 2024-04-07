@@ -279,7 +279,7 @@ function RowStructure({
               size='small'
               sx={{ p: 0 }}
             >
-              <MoreVertIcon fontSize="small" />
+              <MoreVertIcon fontSize="1rem" />
             </IconButton>
           </TableCell>
         )}

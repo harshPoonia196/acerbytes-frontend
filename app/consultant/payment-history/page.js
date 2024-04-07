@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { Box, Card, Container, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import HistoryCard from "Components/Consultant/PaymentHistory/HistoryCard";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
@@ -50,7 +50,7 @@ function PaymentHistory(props) {
   };
 
 
-  
+
   const getBrokerPaymentHistory = async () => {
     try {
       setLoading(true);
@@ -95,36 +95,27 @@ function PaymentHistory(props) {
       />
       <CustomConsultantBreadScrumbs text="Payment history" />
       <InfoBox
+        label={<Box sx={{ flex: 1 }}>
+          <Typography variant="h3">Balance: <span style={{ fontWeight: 600 }}>{brokerBalance}</span></Typography>
+          <Typography variant="h6" sx={{ flex: 1, alignSelf: "center" }}>
+            My payment and points credit history
+          </Typography>
+        </Box>}
+        button={<CustomButton
+          startIcon={<AddCardIcon />}
+          size="small"
+          variant="contained"
+          onClick={handleOpenAddCredit}
+          ButtonText={"Add credits "} />}
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
 
       />
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>
-              <Typography variant="h3">Balance: {brokerBalance}</Typography>
-              <Typography variant="h6" sx={{ flex: 1, alignSelf: "center" }}>
-                My payment and points credit history
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex" }}>
-              <Box>
-                <CustomButton
-                  startIcon={<AddCardIcon />}
-                  size="small"
-                  variant="contained"
-                  onClick={handleOpenAddCredit}
-                  ButtonText={"Add credits "} />
-
-              </Box>
-            </Box>
-          </Box>
-        </Container>
-      </Box>
       <Container>
         {paymentHistory?.map((history, index) => {
-          return <HistoryCard history={history} key={index} />;
+          return <Card sx={{ mb: 1 }}>
+            <HistoryCard history={history} key={index} />
+          </Card>
         })}
       </Container>
     </>

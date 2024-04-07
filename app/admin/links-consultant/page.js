@@ -9,10 +9,10 @@ import { useAuth } from 'utills/AuthContext';
 import { capitalLizeName } from 'utills/CommonFunction';
 
 const page = () => {
-		const { userDetails } = useAuth();
-        const [alignment, setAlignment] = useState('');
-		const name = userDetails?.name?.firstName && userDetails?.name?.lastName ? `${userDetails.name.firstName} ${userDetails.name.lastName}` : "";
-        const [dashboardInfo, setDashboardInfo] = useState({ noOfAll: 0, noOfActive: 0, noOfExpired: 0, noOfExpiringSoon: 0 });
+    const { userDetails } = useAuth();
+    const [alignment, setAlignment] = useState('');
+    const name = userDetails?.name?.firstName && userDetails?.name?.lastName ? `${userDetails.name.firstName} ${userDetails.name.lastName}` : "";
+    const [dashboardInfo, setDashboardInfo] = useState({ noOfAll: 0, noOfActive: 0, noOfExpired: 0, noOfExpiringSoon: 0 });
 
     const handleChange = (event, newAlignment) => {
         setAlignment(newAlignment);
@@ -20,20 +20,20 @@ const page = () => {
 
     const handleDashboardDataUpdate = ({ countInfo }) => {
         setDashboardInfo(countInfo);
-      }
+    }
 
     useEffect(() => {
-       
+
     }, [dashboardInfo]);
 
     return (
         <>
             <CustomAdminBreadScrumbs text='Consultant links' />
             <InfoBox
-                title={`${capitalLizeName(name)} (${capitalLizeName(userDetails?.role)})`}
-                subtitle={`${dashboardInfo?.noOfActive} property consultant links are currently active`}
-        
-      />
+                dataList={[{ label: 'Active links', value: dashboardInfo?.noOfActive },
+                { label: 'Expiring soon links', value: dashboardInfo?.noOfExpiringSoon },
+                { label: 'Expired links', value: dashboardInfo?.noOfExpired }]}
+            />
             <Container>
                 <Card sx={{ mb: 2 }}>
                     <ToggleButtonGroup
@@ -53,7 +53,7 @@ const page = () => {
                         <ToggleButton size='small' value="Expiring Soon" sx={{ flex: 1, border: 'none' }}>Expiring&nbsp;soon ({dashboardInfo?.noOfExpiringSoon})</ToggleButton>
                     </ToggleButtonGroup>
                 </Card>
-                <ConsultantLinksTable onDashboardDataUpdate={handleDashboardDataUpdate} alignmentValue={alignment}/>
+                <ConsultantLinksTable onDashboardDataUpdate={handleDashboardDataUpdate} alignmentValue={alignment} />
             </Container>
         </>
     )
