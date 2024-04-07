@@ -440,6 +440,7 @@ function AddProperty() {
       totalUnits: "",
       areaUnit: "Acres",
       area: "",
+      areaInSqft:0,
       greenArea: "",
       unitDensity: "",
       unitDensityScore: "",
@@ -1065,6 +1066,14 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
           ...form, marketing: { ...form.marketing, image: e }
         })
       }
+      else if (firstKeyName === "layout" && secondKeyName === "area") {
+        const sqftPerAcre = 43560
+        let totalArea = +e.target.value * sqftPerAcre
+        console.log(e,totalArea,'area')
+        setForm({
+          ...form, layout: { ...form.layout, area: e.target.value,areaInSqft:totalArea }
+        })
+      }
       else {
         let value = e?.target
           ? thirdKeyName === "checked"
@@ -1087,6 +1096,7 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
           (firstKeyName === 'overview' && (secondKeyName === 'projectName' || secondKeyName === 'phase'))) {
           value = capitalLizeName(value)
         }
+
         setForm((prev) => ({
           ...prev,
           [firstKeyName]: !secondKeyName

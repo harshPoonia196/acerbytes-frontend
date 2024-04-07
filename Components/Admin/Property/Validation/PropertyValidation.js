@@ -213,7 +213,7 @@ const layoutSchema = Joi.object({
   greenDensityScore: Joi.string().allow("").optional(),
   area: Joi.number().required(),
   areaUnit: Joi.string().required(),
-
+  areaInSqft:Joi.number().required().allow(0),
   greenArea: Joi.number()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;

@@ -10,6 +10,8 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { getBrokersList } from "api/Admin.api";
 import { getBrokers } from "api/UserProfile.api";
+import { getAllBrokers } from "api/Broker.api";
+
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
@@ -264,7 +266,7 @@ function AddProperty() {
   };
   const brokersList = async (rowsPerPage, page, search) => {
     try {
-      const response = await getBrokers();
+      const response = await getAllBrokers();
       if (response.status == 200) {
         const { success, data, message } = response.data;
         if (success) {
@@ -325,8 +327,11 @@ setCities(res.data.data[0])
       let res = await getAllOptions();
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data)
+        console.log(res.data.data,'datt')
         let temp={}
-        setSelectOption({ ...transform })
+        const filteredData = res.data.data.filter(item => item.name !== "Assesment" && item.name !== "Amenities");
+        const transformFiltered = transformDocuments(filteredData)
+        setSelectOption({ ...transformFiltered })
         transform["assesment"].map((thing) => {
           temp[thing] = {
               isApplicable: false,
@@ -390,6 +395,7 @@ setCities(res.data.data[0])
       // setLoading(true)
       getProp();
       setEditPage(true);
+      getAllOptionDataList()
     }
     else{
       getAllOptionDataList()
@@ -446,6 +452,7 @@ setCities(res.data.data[0])
       totalUnits: "",
       areaUnit: "Acres",
       area: "",
+      areaInSqft:0,
       greenArea: "",
       unitDensity: "",
       unitDensityScore: "",
@@ -1078,6 +1085,14 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
 setForm({
   ...form,marketing:{...form.marketing,image:e}
 })
+      }
+      else if (firstKeyName === "layout" && secondKeyName === "area") {
+        const sqftPerAcre = 43560
+        let totalArea = +e.target.value * sqftPerAcre
+        console.log(e,totalArea,'area')
+        setForm({
+          ...form, layout: { ...form.layout, area: e.target.value,areaInSqft:totalArea }
+        })
       }
       else {
         let value = e?.target
