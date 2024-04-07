@@ -186,7 +186,7 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
       </TableCell>
       <TableCell>
         <Chip
-          label={row.published ? "Publish" : "Draft"}
+          label={row.published ? "Published" : "Draft"}
           size="small"
           color={row.published ? "success" : "error"}
         />
@@ -206,19 +206,19 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
         >
           <MenuItem
             onClick={() => {
-              if(row.rera==='yes' && row.published===false){
+              if (row.rera === 'yes' && row.published === false) {
                 managePublishActive(row.id, !row.published);
               }
-              else if(row.published===true){
+              else if (row.published === true) {
                 managePublishActive(row.id, !row.published);
               }
-              else{
-                openSnackbar( "RERA message needs to be provided for this property", "error");
+              else {
+                openSnackbar("RERA message needs to be provided for this property", "error");
                 // showToaterMessages(
                 //  "RERA message needs to be provided for this property",
                 // );
               }
-           
+
               handleClose();
             }}
           >
@@ -248,7 +248,7 @@ const PropertyListTable = ({ setCount }) => {
   let transformData = (data) => {
     return data?.map((item) => ({
       id: item._id,
-      rera:item.regulatoryClearance.reraApproved.toLowerCase(),
+      rera: item.regulatoryClearance.reraApproved.toLowerCase(),
       builder: item.overview?.builder,
       project: item.overview?.projectName,
       city: item.location?.city,
@@ -369,7 +369,7 @@ const PropertyListTable = ({ setCount }) => {
     getAllPropertyList(pageOptions, searchTerm);
   }, [currentPage, pageLimit]);
 
-  const handleSearchClick =() => {
+  const handleSearchClick = () => {
     setCurrentPage(1);
     const pageOptions = {
       pageLimit,
@@ -425,17 +425,17 @@ const PropertyListTable = ({ setCount }) => {
     <>
       {isLoading && <Loader />}
       <Card sx={{ mb: 2 }}>
-          <CustomSearch 
-            value={searchTerm} 
-            onChange={handleSearch}
-            onSearchButtonClick={handleSearchClick}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSearchClick();
-              }
-            }}
-              />
-        </Card>
+        <CustomSearch
+          value={searchTerm}
+          onChange={handleSearch}
+          onSearchButtonClick={handleSearchClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearchClick();
+            }
+          }}
+        />
+      </Card>
       {
         propertyList.length > 0 ? (
           <TableContainer component={Paper}>

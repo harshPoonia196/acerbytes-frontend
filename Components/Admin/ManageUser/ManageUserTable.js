@@ -150,12 +150,21 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
           })}
         </Select>
       </FormControl> */}
-      <Chip disabled={
-        disabled ||
-        !(
-          matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
-        )
-      } label={role} size="small" onClick={handleClick} sx={{ textTransform: 'capitalize' }} />
+      {
+        matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ?
+          <Chip
+            // disabled={
+            //   disabled ||
+            //   !(
+            //     matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
+            //   )
+            // }
+            label={role} size="small" onClick={handleClick} sx={{ textTransform: 'capitalize' }} />
+          :
+          <Chip label={role} size="small" sx={{ textTransform: 'capitalize' }} />
+      }
+
+
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}

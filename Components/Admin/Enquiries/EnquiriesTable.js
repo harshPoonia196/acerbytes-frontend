@@ -51,16 +51,16 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const headCells = [
   {
-    id: "firstName",
-    label: "First name",
-  },
-  {
-    id: "lastName",
-    label: "last Name",
+    id: "property",
+    label: "Property",
   },
   {
     id: "city",
     label: "city",
+  },
+  {
+    id: "name",
+    label: "name",
   },
   {
     id: "phone",
@@ -83,13 +83,14 @@ const headCells = [
   //   label: "email Verified",
   // },
   {
-    id: "role",
-    label: "role",
-  },
-  {
     id: "maxBudget",
     label: "max Budget",
   },
+  {
+    id: "role",
+    label: "role",
+  },
+
   // {
   //   id: "closedStatus",
   //   label: "closed Status",
@@ -106,10 +107,7 @@ const headCells = [
   //   id: "lastModified",
   //   label: "last Modified",
   // },
-  {
-    id: "property",
-    label: "Property",
-  },
+
 ];
 
 function EnhancedTableHead(props) {
@@ -156,19 +154,6 @@ function RowStructure({ row, handlePropertyView }) {
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell>{row?.name?.firstName}</TableCell>
-      <TableCell>{row?.name?.lastName}</TableCell>
-      <TableCell>{row?.property?.location?.city}</TableCell>
-      <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}</TableCell>
-      <TableCell>
-        {row.isVerified ? <CheckCircleIcon fontSize="1rem" color='success' /> : ""}
-      </TableCell>
-      <TableCell>{user.email}</TableCell>
-      {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
-      <TableCell>{user.role}</TableCell>
-      <TableCell>₹ {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
-      {/* <TableCell>{row.closedStatus}</TableCell>
-      <TableCell>{row.pendingStatus}</TableCell> */}
       <TableCell className="urlStylingBackground">
         {row.propertyLink && (
           <a sx={{ cursor: 'pointer' }}
@@ -181,6 +166,21 @@ function RowStructure({ row, handlePropertyView }) {
           </a>
         )}
       </TableCell>
+      <TableCell>{row?.property?.location?.city}</TableCell>
+      <TableCell>{row?.name?.firstName} {row?.name?.lastName}</TableCell>
+
+      <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}</TableCell>
+      <TableCell>
+        {row.isVerified ? <CheckCircleIcon fontSize="1rem" color='success' /> : ""}
+      </TableCell>
+      <TableCell>{user.email}</TableCell>
+      {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
+
+      <TableCell>₹ {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
+      <TableCell>{user.role}</TableCell>
+      {/* <TableCell>{row.closedStatus}</TableCell>
+      <TableCell>{row.pendingStatus}</TableCell> */}
+
       {/* <TableCell>{row.updatedBy}</TableCell>
       <TableCell>
         <Chip label={row.lastModified} size="small" />

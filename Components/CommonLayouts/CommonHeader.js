@@ -18,7 +18,6 @@ const InfoBox = ({ label, button, dataList }) => {
                   {button}
                 </Box>
               }
-
             </Grid>
           }
           {

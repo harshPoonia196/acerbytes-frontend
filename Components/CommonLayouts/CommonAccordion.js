@@ -9,7 +9,7 @@ const CustomAccordion = styled((props) => (
 ))(({ theme }) => ({
     border: `1px solid whitesmoke`,
     '&:not(:last-child)': {
-        borderBottom: 0,    
+        borderBottom: 0,
     },
     '&::before': {
         display: 'none',
@@ -18,14 +18,14 @@ const CustomAccordion = styled((props) => (
 
 const CustomAccordionSummary = styled(({ handleIconClick, ...props }) => (
     <MuiAccordionSummary
-        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem',marginRight:"0.5rem" }} onClick={handleIconClick} />}
+        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', marginRight: "0.5rem" }} onClick={handleIconClick} />}
         {...props}
     />
 ))(({ theme }) => ({
     backgroundColor:
         theme.palette.mode === 'dark'
             ? 'rgba(255, 255, 255, .05)'
-            : 'rgba(0, 0, 0, .03)',
+            : 'White',
     flexDirection: 'row-reverse',
     '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
         transform: 'rotate(90deg)',

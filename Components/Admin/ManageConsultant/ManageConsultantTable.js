@@ -208,7 +208,7 @@ function ManageConsultantTable() {
   return (
     <>
       <InfoBox
-        dataList={[{ label: 'Consultants list', value: rows.length }]}
+        dataList={[{ label: 'Consultants', value: rows.length }]}
       />
 
       <Container>

@@ -39,14 +39,16 @@ function MyNotes() {
     <>
       <CustomConsultantBreadScrumbs text="My notes" />
       <InfoBox
-        title="Anand Gupta(Admin)"
-        subtitle="3,344 property consultant links are currently active"
-        
+        dataList={[{ label: 'Leads', value: '0 static' }]}
+        label={'My Notes'}
+        button={<CustomButton
+          variant="contained"
+          size="small"
+          onClick={handleOpenUpdatePopup}
+          ButtonText={"Add notes"}
+        />}
       />
       <Container>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          My Leads
-        </Typography>
         <UpdateLeadStatus
           open={openUpdatePopup}
           handleClose={handleCloseUpdatePopup}
@@ -78,14 +80,6 @@ function MyNotes() {
             </ToggleButton>
           </ToggleButtonGroup>
         </Card>
-        <Box sx={{ textAlign: "end", mb: 2 }}>
-          <CustomButton
-            variant="outlined"
-            size="small"
-            onClick={handleOpenUpdatePopup}
-            ButtonText={"Add notes"}
-          />
-        </Box>
         <MyLeadsStatus />
       </Container>
     </>
