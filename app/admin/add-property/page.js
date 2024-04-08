@@ -1067,9 +1067,11 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
         })
       }
       else if (firstKeyName === "layout" && secondKeyName === "area") {
-        const sqftPerAcre = 43560
-        let totalArea = +e.target.value * sqftPerAcre
-        console.log(e,totalArea,'area')
+        let totalArea = +e.target.value 
+        if(form.layout.areaUnit.toLowerCase()==='acres'){
+          const sqftPerAcre = 43560
+           totalArea = +e.target.value * sqftPerAcre
+        }
         setForm({
           ...form, layout: { ...form.layout, area: e.target.value,areaInSqft:totalArea }
         })
