@@ -54,11 +54,11 @@ function MarketingSection(props) {
 
   const OverviewRatingCard = () => {
     console.log(AllLocationData)
-    return <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }} >
-      <Card sx={{ width: '50%' }}>
+    return <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }} >
+      <Card sx={{ width: '100%' }}>
         <MapFrame mapUrl={mapUrl} />
       </Card>
-      <Card sx={{ p: 2, textAlign: "center", width: '50%' }}>
+      <Card sx={{ p: 2, textAlign: "center", width: '100%' }}>
         <CircularProgressWithLabel progress={overviewData?.overallAssessment?.score} />
         <Typography variant="h4" sx={{ mb: 2 }}>
           {categorizeScore(overviewData?.overallAssessment?.score)}

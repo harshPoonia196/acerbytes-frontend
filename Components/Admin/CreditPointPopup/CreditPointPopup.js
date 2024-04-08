@@ -194,11 +194,13 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
             name="approvedPoints"
             value={creditInfo.approvedPoints}
             label="Enter assigned points"
+            isPoint={true}
             handleChange={updateCreditInfo}
             halfSm
           />
           <NewAutoCompleteInputStructure
             label="Select Consultant"
+            variant='standard'
             handleChange={(e, newValue) =>
               updateCreditInfo({
                 target: {
@@ -220,6 +222,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
           />
           <NewAutoCompleteInputStructure
             label="Select Sales person"
+            variant='standard'
             handleChange={(e, newValue) =>
               updateCreditInfo({
                 target: {

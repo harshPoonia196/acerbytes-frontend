@@ -643,7 +643,7 @@ const PropertyDetailsPage = ({ params }) => {
       </nav>
       <Box>
         <MarketingSection overviewData={propertyData} activeState={activeState} />
-        <Container maxWidth="evmd">
+        <Container maxWidth="md" sx={{ pt: '0 !important' }}>
           {openEnquiryForm && (
             <EnquireNow
               propertyData={propertyData}
@@ -753,7 +753,7 @@ const PropertyDetailsPage = ({ params }) => {
                     </Box>
                   )}
                 </Card>
-               )}
+              )}
             </Grid>
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
