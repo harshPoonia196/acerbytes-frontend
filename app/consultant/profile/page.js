@@ -475,12 +475,20 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       error['companyEmail'] = false;
     }
 
+    if (!brokerProfileInfo?.serviceDetails?.company) {
+      error['company'] = true;
+      isError= true;
+    } else {
+      error['company'] = false;
+    }
+
     if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
       error['reraNumber'] = true;
       isError = true;
     } else {
       error['reraNumber'] = false;
     }
+
     // if (
     //   !validatePhoneNumber(brokerProfileInfo?.serviceDetails?.registeredPhone)
     // ) {
@@ -855,6 +863,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     value={brokerProfileInfo?.serviceDetails?.company || ""}
                     variant="outlined"
                     isEdit={isEdit}
+                    error={errorInvalid.company}
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "company")
                     }

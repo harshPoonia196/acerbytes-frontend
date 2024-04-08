@@ -55,8 +55,8 @@ const headCells = [
     label: "Property",
   },
   {
-    id: "city",
-    label: "city",
+    id: "propertyCity",
+    label: "Property city",
   },
   {
     id: "name",
@@ -67,8 +67,8 @@ const headCells = [
     label: "phone",
   },
   {
-    id: "verified",
-    label: "Verified",
+    id: "numberVerified",
+    label: "Number Verified",
   },
   // {
   //   id: "phoneVerified",
@@ -86,10 +86,10 @@ const headCells = [
     id: "maxBudget",
     label: "max Budget",
   },
-  {
-    id: "role",
-    label: "role",
-  },
+  // {
+  //   id: "role",
+  //   label: "role",
+  // },
 
   // {
   //   id: "closedStatus",
@@ -106,6 +106,14 @@ const headCells = [
   // {
   //   id: "lastModified",
   //   label: "last Modified",
+  // },
+  {
+    id: "brokerInfo",
+    label: "Broker",
+  },
+  //  {
+  //   id: "property",
+  //   label: "Property",
   // },
 
 ];
@@ -173,11 +181,13 @@ function RowStructure({ row, handlePropertyView }) {
       <TableCell>
         {row.isVerified ? <CheckCircleIcon fontSize="1rem" color='success' /> : ""}
       </TableCell>
-      <TableCell>{user.email}</TableCell>
+      <TableCell>{user.email || "-"}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
 
-      <TableCell>₹ {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
-      <TableCell>{user.role}</TableCell>
+      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
+      {/* <TableCell>{user.role}</TableCell> */}
+      <TableCell>{row.brokerId ? `${row?.higherrole?.name?.firstName} ${row?.higherrole?.name?.lastName}` : "-"}</TableCell>
+
       {/* <TableCell>{row.closedStatus}</TableCell>
       <TableCell>{row.pendingStatus}</TableCell> */}
 

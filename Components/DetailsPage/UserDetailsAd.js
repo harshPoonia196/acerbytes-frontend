@@ -1,12 +1,13 @@
 import { Box, Button, Card, Rating, Typography } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import colors from "styles/theme/colors";
 import PhoneIcon from "@mui/icons-material/Phone";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from "utills/AuthContext";
 import CloseIcon from "@mui/icons-material/Close";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { countryCodeFormating } from "utills/utills";
 
 function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnquiryForm }) {
   const { userDetails } = useAuth();
@@ -17,8 +18,8 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
   const locationData = AllPropertyData?.propertyData.location;
   const phoneNumber =
     brokerData?.phone?.countryCode && brokerData?.phone?.number
-      ? `${brokerData.phone.countryCode} ${brokerData.phone.number}`
-      : `${userDetails?.phone?.countryCode}  ${userDetails?.phone?.number}`;
+      ? `${countryCodeFormating(brokerData.phone.countryCode)} ${brokerData.phone.number}`
+      : `${countryCodeFormating(userDetails?.phone?.countryCode)}  ${userDetails?.phone?.number}`;
 
   const name =
     brokerData?.name?.firstName && brokerData?.name?.lastName
@@ -40,6 +41,12 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
       setShowContact(!showContact)
     }
   }
+
+  useEffect(()=>{
+    if(contactPermissionToView){
+      setShowContact(contactPermissionToView ? true: false);
+    }
+  },[contactPermissionToView, showContact])
 
   return (
     <Box sx={{ m: 2, mb: 0 }}>

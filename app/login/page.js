@@ -18,7 +18,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import ConsultantDialog from "Components/Login/ConsultantDialog";
 import { useAuth } from "utills/AuthContext";
 import { getItem } from "utills/utills";
-import { countries, enquiryFormKey, } from "utills/Constants";
+import { ROLE_CONSTANTS, countries, enquiryFormKey, enquiryFormOpen, } from "utills/Constants";
 import { isLoggedIn } from "utills/utills";
 
 function Login() {
@@ -199,7 +199,12 @@ function Login() {
         otp: otpInput,
       };
       const res = await verifyOtpAPI(payload);
-      if (res.status === 200 && !(form.role === 'superAdmin')) {
+      const isEnquireyFormOpen = getItem(enquiryFormOpen);
+      if(isEnquireyFormOpen){
+        createUserFun()
+      }
+
+      if (res.status === 200 && !(form.role === 'superAdmin') && !isEnquireyFormOpen) {
         nextStep();
       }
       if (form.role === "superAdmin") {
@@ -227,6 +232,7 @@ function Login() {
 
   const createUserFun = async () => {
     try {
+      const isEnquireyFormOpen = getItem(enquiryFormOpen);
       setLoading(true);
       let payload = {
         name: {
@@ -238,7 +244,7 @@ function Login() {
           number: form.phone,
         },
         email: form.email,
-        role: form.role,
+        role: isEnquireyFormOpen ? ROLE_CONSTANTS.user : form.role,
         googleId: form.googleId,
         businessType: form.businessType,
         company: form.company,

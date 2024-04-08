@@ -365,6 +365,8 @@ const reactQueryKey = {
 const enquiryFormKey = "enquiryForm";
 const enquiryFormOpen = "enquiryFormOpen";
 const propertyRedirectKey = "propertyRedirect";
+const propertyUserVerifiedKey = "propertyUserVerified";
+const userLeadId = "userLeadId";
 
 export {
   listOfTabsInAddProperty,
@@ -376,6 +378,8 @@ export {
   enquiryFormKey,
   enquiryFormOpen,
   propertyRedirectKey,
+  propertyUserVerifiedKey,
+  userLeadId,
 };
 
 export const generateContent = () => (

@@ -68,7 +68,7 @@ function MyLeads() {
             >
               All (10 static)
             </ToggleButton>
-            <ToggleButton
+            {/* <ToggleButton
               size="small"
               value="notes"
               sx={{ flex: 1, border: "none" }}
@@ -77,8 +77,8 @@ function MyLeads() {
               }}
             >
               Notes (10 static)
-            </ToggleButton>
-          </ToggleButtonGroup>
+            </ToggleButton>*/}
+            </ToggleButtonGroup>
         </Card>
         <Box sx={{ textAlign: 'end', mb: 2 }}>
 

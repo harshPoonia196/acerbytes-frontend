@@ -43,8 +43,11 @@ import throttle from "lodash/throttle";
 import AdsSection from "Components/DetailsPage/AdsSection";
 import {
   enquiryFormKey,
+  enquiryFormOpen,
   listOfPropertyDetailsTab,
   listOfTabsInAddProperty,
+  propertyUserVerifiedKey,
+  userLeadId,
 } from "utills/Constants";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
@@ -54,12 +57,13 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { getItem, getLoggedInUser } from "utills/utills";
+import { clearItem, getItem, getLoggedInUser } from "utills/utills";
 import {
   isEnquired,
   submitEnquiry,
   submitEnquiryUnauth,
   updateEnquiryVerified,
+  updateEnquiryVerifiedByUserId,
 } from "api/UserProfile.api";
 
 const tabHeight = 200;
@@ -289,6 +293,51 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [openOtpPopup, setOpenOtpPopup] = useState(false);
 
+  const updateEnquiryVerficationByUserId = async (leadId) => {
+    try {
+      const response = await updateEnquiryVerifiedByUserId({
+        leadId: leadId,
+        userId: userDetails?._id,
+        adId: "",
+        propertyId: detailsPropertyId
+      });
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
+
+  useEffect(() => {
+    if (getItem(enquiryFormOpen)) {
+      handleOpenEnquiryForm(true);
+      clearItem(enquiryFormOpen);
+    }
+  }, [getItem(enquiryFormOpen) == true]);
+
+  useEffect(() => {
+    if (getItem(propertyUserVerifiedKey) && userDetails?._id) {
+      const leadId = getItem(userLeadId);
+      updateEnquiryVerficationByUserId(leadId);
+      updateEnquiryVerficationByUserId(leadId);
+      clearItem(propertyUserVerifiedKey);
+      clearItem(userLeadId);
+    }
+  }, [getItem(propertyUserVerifiedKey) == true]);
+
   const handleSubmitEnquiry = async (data) => {
     try {
       const response = await submitEnquiry({
@@ -368,6 +417,8 @@ const PropertyDetailsPage = ({ params }) => {
           openSnackbar(message, "success");
           // hasEnquired();
           setBrokerContact({});
+          handleCloseVerifyPopup();
+          handleOpenAlternateSignIn();
         } else {
           openSnackbar(message, "error");
         }
@@ -614,6 +665,7 @@ const PropertyDetailsPage = ({ params }) => {
           />
           <AlternateSignIn
             open={openAlternateSignIn}
+            leadId={leadId}
             handleClose={handleCloseAlternateSignIn}
           />
 

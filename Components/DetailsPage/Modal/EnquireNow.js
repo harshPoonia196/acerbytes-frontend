@@ -22,8 +22,9 @@ import {
 } from "utills/utills";
 import React from "react";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
-import { enquiryFormKey, enquiryFormOpen, propertyRedirectKey } from "utills/Constants";
+import { countries, enquiryFormKey,enquiryFormOpen, propertyRedirectKey } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { getAllOptions, getCities } from "api/Property.api";
 
 function EnquireNow(props) {
   const { open, handleClose, handleAction, submitEnquiry, submitEnquiryUnath } = props;
@@ -51,6 +52,8 @@ function EnquireNow(props) {
     number: "",
   };
   const [formData, setFormData] = React.useState(initialState);
+  const [allCountryCodeOptions, setAllCountryCodeOptions] = React.useState([]);
+
   React.useEffect(() => {
     let userDetail = getLoggedInUser();
     if (userDetail) {
@@ -58,21 +61,34 @@ function EnquireNow(props) {
         ...formData,
         firstName: userDetail?.name?.firstName || "",
         lastName: userDetail?.name?.lastName || "",
-        countryCode: userDetail?.phone?.countryCode,
+        countryCode: userDetail?.phone?.countryCode || countries[0]?.value,
         number: userDetail?.phone?.number,
       }));
+      clearItem(enquiryFormKey);
     } else {
       userDetail = getItem(enquiryFormKey);
       setFormData((formData) => ({
         ...formData,
         firstName: userDetail?.firstName || "",
         lastName: userDetail?.lastName || "",
-        countryCode: userDetail?.countryCode,
+        countryCode: userDetail?.countryCode || countries[0]?.value,
         number: userDetail?.number,
       }));
     }
+    getDropdownOptions();
   }, [open]);
 
+  const getDropdownOptions = async () => {
+    try {
+      const allOptionsResponse = await getAllOptions();
+      if (allOptionsResponse?.data?.data?.length > 0) {
+        const countryCodeOptions = allOptionsResponse?.data?.data?.find(rs => rs.name == "Country code")?.childSub || []
+        setAllCountryCodeOptions(countryCodeOptions);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
   const onChangeHandler = (e, field) => {
     if (e?.persist) {
       e.persist();
@@ -121,6 +137,7 @@ function EnquireNow(props) {
             label="Phone number"
             isEdit={true}
             disabled={token}
+            countryCodeOptions={allCountryCodeOptions || []}
             value1={formData?.countryCode}
             value2={formData?.number}
             handleSelect={(e) => {
@@ -175,7 +192,7 @@ function EnquireNow(props) {
               }}
               disabled={
                 !formData?.countryCode ||
-                !formData?.number ||
+                formData?.number?.length !== 10 ||
                 !formData?.firstName ||
                 !formData?.lastName
               }
