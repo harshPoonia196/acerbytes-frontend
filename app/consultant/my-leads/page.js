@@ -70,7 +70,7 @@ const [leadsCount, setLeadsCount] = useState("");
             >
               All (10)
             </ToggleButton>
-            <ToggleButton
+            {/* <ToggleButton
               size="small"
               value="notes"
               sx={{ flex: 1, border: "none" }}
@@ -79,11 +79,11 @@ const [leadsCount, setLeadsCount] = useState("");
               }}
             >
               Notes (10)
-            </ToggleButton>
+            </ToggleButton> */}
           </ToggleButtonGroup>
         </Card>
         <Box sx={{ textAlign: 'end', mb: 2 }}>
-          <CustomButton variant="outlined" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add notes"} />
+          {/* <CustomButton variant="outlined" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add notes"} /> */}
         </Box>
         {alignment === "all" ? <MyLeadsTable setLeadsCount={setLeadsCount} /> : <MyLeadsStatus />}
       </Container>

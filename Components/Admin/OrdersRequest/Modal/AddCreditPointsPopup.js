@@ -94,7 +94,8 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             value={receivedPayment}
           />
           <InputField
-            type="number"
+            type="text"
+            isAmount={true}
             label="Enter assigned points"
             handleChange={handlePointsChange}
             value={assignedPoints}

@@ -51,6 +51,13 @@ export const updateEnquiryVerified = (data) => {
 };
 
 
+export const updateEnquiryVerifiedByUserId = (data) => {
+  return axiosInstance.post(`/user/enquiryVerifyByUserId`, {
+    ...data
+  });
+};
+
+
 export const isEnquired = (adId, propertyId) => {
   return axiosInstance.post(`/user/isEnquired`, {
     adId: adId || "",

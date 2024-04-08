@@ -24,6 +24,7 @@ function OtpVerify({
   open,
   handleClose,
   handleOpen,
+  sendOtpFun,
   handleAlternateSignIn,
   formData,
   handleSubmit,
@@ -54,6 +55,7 @@ function OtpVerify({
   const handleResendClick = () => {
     if (!resendDisabled) {
         setResendDisabled(true);
+        handleSendOtp(true);
         setTimer(60);
         setOtp("");
     }
@@ -139,22 +141,23 @@ useEffect(() => {
       </DialogContent>
       {!isVerified && (
         <DialogActions>
-          <CustomButton
+          {/* <CustomButton
             startIcon={<ArrowBackIosIcon />}
             onClick={() => {
               handleClose();
               handleOpen();
             }}
             ButtonText={"Back"}
-          />
+          /> */}
           <CustomButton
             startIcon={<DoneIcon />}
             variant="contained"
             onClick={() => {
               handleSubmit({ ...(formData || {}), otp: otp });
-              handleAlternateSignIn();
-              handleClose();
+              // handleAlternateSignIn();
+              // handleClose();
             }}
+            disabled={otp.length !== 4}
             ButtonText={"Verify"}
           />
         </DialogActions>

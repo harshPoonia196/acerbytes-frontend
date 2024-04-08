@@ -22,6 +22,7 @@ import moment from "moment";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
+import { countryCodeFormating } from "utills/utills";
 
 const labels = (rating) => {
   if (rating <= 0.5) {
@@ -204,18 +205,14 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Box>
       ) : null} */}
       {isLogged ? (
-        <Box sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCallClick}  >
-          {/* <a
-            href={`tel:${
-              (userDetails?.phone?.countryCode || "") +
-              (userDetails?.phone?.number || "")
-            }`}
-          > */}
+        !isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCallClick}  >
           <IconButton>
             <CallIcon fontSize="small" />
           </IconButton>
-          {/* </a> */}
-        </Box>
+        </Box>) :
+          <Box sx={{ position: "absolute", top: 8, right: 8 }} >
+            {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}
+          </Box>
       ) : (
         <Box sx={{ position: "absolute", top: 8, right: 8 }}>
           <IconButton onClick={() => router.push(listOfPages.login)}>

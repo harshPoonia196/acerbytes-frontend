@@ -55,8 +55,8 @@ const headCells = [
     label: "Name",
   },
   {
-    id: "city",
-    label: "city",
+    id: "propertyCity",
+    label: "Property city",
   },
   // {
   //   id: "currentStatus",
@@ -71,17 +71,17 @@ const headCells = [
     label: "phone",
   },
   {
-    id: "verified",
-    label: "Verified",
+    id: "numberVerified",
+    label: "Number Verified",
   },
   {
     id: "email",
     label: "email",
   },
-  {
-    id: "role",
-    label: "role",
-  },
+  // {
+  //   id: "role",
+  //   label: "role",
+  // },
   {
     id: "maxBudget",
     label: "max Budget",
@@ -225,12 +225,12 @@ function RowStructure({ row, handlePropertyView }) {
         {row.isVerified ? "Yes" : "No"}
       </TableCell>
       <TableCell>
-        {user.email}
+        {user.email || "-"}
         {/* {row.email}({row.emailVerified ? "Yes" : "No"}) */}
       </TableCell>
-      <TableCell>{user.role}</TableCell>
+      {/* <TableCell>{user.role}</TableCell> */}
       {/* <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell> */}
-      <TableCell>₹ {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
+      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
       {/* <TableCell>
         <Chip
           label={row.notesUpdated}
@@ -248,7 +248,9 @@ function RowStructure({ row, handlePropertyView }) {
             }}
             style={{ textDecoration: 'none' }}
           >
-            {capitalLizeName(row?.property?.overview?.projectName)}.{capitalLizeName(row?.property?.overview?.builder)}
+            {row?.property?.overview?.projectName ?
+            `${capitalLizeName(row?.property?.overview?.projectName)}.${capitalLizeName(row?.property?.overview?.builder)}`
+            : "-"}
           </a>
         )}
       </TableCell>

@@ -192,7 +192,7 @@ function EnquireNow(props) {
               }}
               disabled={
                 !formData?.countryCode ||
-                !formData?.number ||
+                formData?.number?.length !== 10 ||
                 !formData?.firstName ||
                 !formData?.lastName
               }
