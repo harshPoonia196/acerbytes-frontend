@@ -433,7 +433,7 @@ function AddProperty() {
       pointsGained: 0
     },
     layout: {
-      numberOfBuildings: 0,
+      numberOfBuildings: "",
       layoutType: [],
       maxFloors: "",
       minFloors: "",
