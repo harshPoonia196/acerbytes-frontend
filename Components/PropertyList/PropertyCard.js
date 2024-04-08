@@ -27,17 +27,18 @@ function PropertyCard(props) {
     const overview = propertyDetailsData?.overview;
     const location = propertyDetailsData?.location;
 
-    const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+    const projectCategory = encodeURIComponent((overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-').replace(/\//g, '-'));
     let projectType;
     if (overview?.projectType?.length > 0) {
-      projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+      projectType = overview.projectType.map(type => encodeURIComponent(type.value.trim().replace(/\s+/g, '-').replace(/\//g, '-'))).join("-");
     } else {
       projectType = 'type';
     }
-    const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
-    const sector = (location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-');
-    const area = (location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '');
-    const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+    const city = encodeURIComponent((location?.city.trim() ?? 'city').replace(/\s+/g, '-').replace(/\//g, '-'));
+    const sector = encodeURIComponent((location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-').replace(/\//g, '-'));
+    const area = encodeURIComponent((location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '').replace(/\//g, '-'));
+    const projectName = encodeURIComponent((overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-').replace(/\//g, '-'));
+
 
     return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetails._id}`;
   };
@@ -56,7 +57,6 @@ function PropertyCard(props) {
     return [...propertyDetails?.unitsPlan?.uniqueLayouts, ...withoutUniqueLayout]
   }, [propertyDetails])
 
-  console.log(propertyDetails)
 
   return (
     <Card>
