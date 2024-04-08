@@ -18,6 +18,8 @@ import { listOfPages } from "Components/NavBar/Links";
 
 function NoPropertyFound() {
 
+  const isLoggedIn = localStorage.getItem('token')
+
   const history = useRouter()
 
   return (
@@ -33,7 +35,7 @@ function NoPropertyFound() {
         </Typography>
       </Card>
       <Card sx={{ mt: 2, p: 2 }}>
-        <Card sx={{ mb: 2 }}>
+        <Card sx={{ mb: isLoggedIn ? 0 : 2 }}>
           <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }} onClick={() => { history.push(listOfPages.home) }}>
             <HomeIcon />
             <Typography variant="subtitle2" sx={{ ml: 1, alignSelf: "center" }}>
@@ -41,14 +43,14 @@ function NoPropertyFound() {
             </Typography>
           </CardActionArea>
         </Card>
-        <Card>
+        {!isLoggedIn && <Card>
           <CardActionArea sx={{ p: 2, display: "flex", justifyContent: "start" }} onClick={() => { history.push(listOfPages.login) }}>
             <HowToRegIcon />
             <Typography variant="subtitle2" sx={{ ml: 1, alignSelf: "center" }}>
               Sign in
             </Typography>
           </CardActionArea>
-        </Card>
+        </Card>}
       </Card>
     </Container>
   );

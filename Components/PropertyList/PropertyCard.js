@@ -16,7 +16,7 @@ import { format } from "date-fns";
 import { useMemo } from "react";
 import { useAuth } from "utills/AuthContext";
 import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
-import { getColorForProgressBar } from "utills/CommonFunction";
+import { getColorForProgressBar, shortPriceFormatter } from "utills/CommonFunction";
 import Image from "next/image";
 
 function PropertyCard(props) {
@@ -47,13 +47,6 @@ function PropertyCard(props) {
   const formattedCreatedAt =
     createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' hh:mm aaa");
 
-  const numDifferentiation = (value) => {
-    const val = Math.abs(value)
-    if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`
-    if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`
-    if (val >= 1000) return `${(value / 1000).toFixed(2)}k`
-    return value;
-  }
   const layoutCount = useMemo(() => {
     return propertyDetails?.unitsPlan?.uniqueLayouts?.length + propertyDetails?.unitsPlan?.planList?.filter(item => !item.propertyLayout)?.length
   }, [propertyDetails])
@@ -151,8 +144,8 @@ function PropertyCard(props) {
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
                 <Typography variant="subtitle2">
-                  ₹ {numDifferentiation(propertyDetails?.unitsPlan?.minPriceRange)} - ₹{" "}
-                  {numDifferentiation(propertyDetails?.unitsPlan?.maxPriceRange)}
+                  ₹ {shortPriceFormatter(propertyDetails?.unitsPlan?.minPriceRange)} - ₹{" "}
+                  {shortPriceFormatter(propertyDetails?.unitsPlan?.maxPriceRange)}
                 </Typography>
               )}
           </Grid>

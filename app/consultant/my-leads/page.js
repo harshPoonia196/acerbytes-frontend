@@ -24,7 +24,7 @@ function MyLeads() {
   const { userDetails } = useAuth();
 
   const router = useRouter();
-const [leadsCount, setLeadsCount] = useState("");
+  const [leadsCount, setLeadsCount] = useState("");
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const handleOpenUpdatePopup = () => {
     setOpenUpdatePopup(true);
@@ -44,13 +44,11 @@ const [leadsCount, setLeadsCount] = useState("");
     <>
       <CustomConsultantBreadScrumbs text="My leads" />
       <InfoBox
-        title={`${userDetails ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName} (${userDetails.role})` : ""}`}
-        subtitle={`Leads: ${leadsCount}`} 
+        dataList={[{ label: 'Leads', value: leadsCount }]}
+        label={'My Leads'}
+        button={<CustomButton variant="contained" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add Notes"} />}
       />
       <Container>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          My Leads
-        </Typography>
         <UpdateLeadStatus
           open={openUpdatePopup}
           handleClose={handleCloseUpdatePopup}
@@ -68,7 +66,7 @@ const [leadsCount, setLeadsCount] = useState("");
               value="all"
               sx={{ flex: 1, border: "none" }}
             >
-              All (10)
+              All (10 static)
             </ToggleButton>
             {/* <ToggleButton
               size="small"
@@ -78,12 +76,12 @@ const [leadsCount, setLeadsCount] = useState("");
                 router.push(listOfPages.consultantMyNotes);
               }}
             >
-              Notes (10)
-            </ToggleButton> */}
-          </ToggleButtonGroup>
+              Notes (10 static)
+            </ToggleButton>*/}
+            </ToggleButtonGroup>
         </Card>
         <Box sx={{ textAlign: 'end', mb: 2 }}>
-          {/* <CustomButton variant="outlined" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add notes"} /> */}
+
         </Box>
         {alignment === "all" ? <MyLeadsTable setLeadsCount={setLeadsCount} /> : <MyLeadsStatus />}
       </Container>

@@ -158,12 +158,12 @@ export const AdminMenuList = [
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
-    label: "Manage user",
+    label: "Manage users",
     route: listOfPages.adminManageUser,
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
-    label: "Manage Consultant",
+    label: "Manage Consultants",
     route: listOfPages.adminManageConsultant,
     icon: <PlaylistAddIcon fontSize="small" />,
   },

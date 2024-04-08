@@ -110,6 +110,14 @@ const layoutSchema = Joi.object({
 
     return value;
   })
+  // .when('...overview.projectType', {
+  //   is: Joi.array().items(Joi.object({
+  //     name: "Land",
+  //     value: "Land"
+  //   })).required(),
+  //   then: Joi.array().allow(),
+  //   otherwise: Joi.array().min(1).items(Joi.object()).required(),
+  // })
   .when(Joi.ref("...overview.projectCategory"), {
     is: Joi.string().valid("Commercial").required(),
     then: Joi.array().allow(),
@@ -205,7 +213,7 @@ const layoutSchema = Joi.object({
   greenDensityScore: Joi.string().allow("").optional(),
   area: Joi.number().required(),
   areaUnit: Joi.string().required(),
-
+  areaInSqft:Joi.number().required().allow(0),
   greenArea: Joi.number()
   .custom((value, helpers) => {
     const projectType = helpers.state.ancestors[1].overview.projectType;

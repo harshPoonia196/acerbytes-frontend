@@ -8,7 +8,7 @@ import {
   Box,
   Chip,
   Toolbar,
-  Button,
+  Button, Divider
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -687,59 +687,70 @@ const PropertyDetailsPage = ({ params }) => {
             />
             {/* <FloorPlanSection /> */}
             <Grid item xs={12} id="propertyConsultants">
-              <Card sx={{ p: 2 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sx={{ display: "flex" }}>
-                    <Box sx={{ flex: 1, alignSelf: "center" }}>
-                      <Typography variant="h4">
-                        Contact verified consultants
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <ConsultantsViewAll
-                        open={consultantsViewAll}
-                        enquiredInfo={enquiredInfo}
-                        handleClose={handleCloseConsultantsViewAll}
-                        handleEnquireWithBroker={handleEnquireWithBroker}
-                        propertyData={propertyData?.consultants}
-                      ></ConsultantsViewAll>
-                      <Chip
-                        label="View all"
-                        icon={<GroupIcon fontSize="small" />}
-                        size="small"
-                        onClick={handleOpenConsultantsViewAll}
-                        sx={{ fontSize: "0.875rem !important" }}
-                      />
-                    </Box>
+              <Card>
+                <Box sx={{ display: "flex", p: 2 }}>
+                  <Box sx={{ flex: 1, alignSelf: "center" }}>
+                    <Typography variant="h4">
+                      Contact verified consultants
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <ConsultantsViewAll
+                      open={consultantsViewAll}
+                      enquiredInfo={enquiredInfo}
+                      handleClose={handleCloseConsultantsViewAll}
+                      handleEnquireWithBroker={handleEnquireWithBroker}
+                      propertyData={propertyData?.consultants}
+                    ></ConsultantsViewAll>
+                    <Chip
+                      label="View all"
+                      icon={<GroupIcon fontSize="small" />}
+                      size="small"
+                      onClick={handleOpenConsultantsViewAll}
+                      sx={{ fontSize: "0.875rem !important" }}
+                    />
+                  </Box>
+                </Box>
+                <Divider />
+                <Box sx={{ p: 2 }}>
+                  <Grid container spacing={2}>
+                    {propertyData?.consultants?.length > 0 &&
+                      propertyData?.consultants?.slice(0, 2).map((broker) => (
+                        <Grid item xs={12} sm={6} key={broker?.name}>
+                          <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
+                        </Grid>
+                      ))}
                   </Grid>
-                  {propertyData?.consultants?.length > 0 &&
-                    propertyData?.consultants?.slice(0, 2).map((broker) => (
-                      <Grid item xs={12} sm={6} key={broker?.name}>
-                        <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
-                      </Grid>
-                    ))}
-                  <Grid item xs={12}>
-                    <Box sx={{ display: "flex" }}>
+                </Box>
+                <Divider />
+                {userDetails?.role === "broker" && (
+                  <Box sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: { xs: "column", sm: 'row' },
+                    gap: 1
+                  }}>
+                    <Box sx={{ flex: 1, alignSelf: "center" }}>
                       <Typography
                         variant="body2"
-                        sx={{ flex: 1, alignSelf: "center" }}
+                        sx={{ flex: 1, }}
                       >
                         Are you a property consultant, let Customers reach you
                       </Typography>
-                      {userDetails?.role === "broker" && (
-                        <a href={`https://wa.me/+919818690582`}>
-                          <Chip
-                            label="Yes, show me here !"
-                            icon={<PersonAddIcon fontSize="small" />}
-                            size="small"
-                            sx={{ fontSize: "0.875rem" }}
-                            onClick={() => { }}
-                          />
-                        </a>
-                      )}
                     </Box>
-                  </Grid>
-                </Grid>
+                    <Box sx={{ alignSelf: { xs: 'end' } }}>
+                      <a href={`https://wa.me/+919818690582`}>
+                        <Chip
+                          label="Yes, show me here !"
+                          icon={<PersonAddIcon fontSize="small" />}
+                          size="small"
+                          sx={{ fontSize: "0.875rem" }}
+                          onClick={() => { }}
+                        />
+                      </a>
+                    </Box>
+                  </Box>
+                )}
               </Card>
             </Grid>
             <OverallAssesmentSection
@@ -756,13 +767,17 @@ const PropertyDetailsPage = ({ params }) => {
           </Grid>
 
           {/* Dont Touch this */}
-          <Toolbar
-            sx={{
-              display: { xs: "flex", evmd: "none" },
-              height: heightOfFooter,
-            }}
-          />
-
+          {
+            userDetails?.role !== "admin" &&
+            userDetails?.role !== "superAdmin" &&
+            userDetails?.role !== "broker" &&
+            <Toolbar
+              sx={{
+                display: { xs: "flex", evmd: "none" },
+                height: heightOfFooter,
+              }}
+            />
+          }
           {userDetails?.role !== "admin" &&
             userDetails?.role !== "superAdmin" &&
             userDetails?.role !== "broker" && (
@@ -890,7 +905,7 @@ const PropertyDetailsPage = ({ params }) => {
                       Share
                     </Fab>
                   </a>
-                  <a href={`https://wa.me/+919725555595`}>
+                  <a href={`https://wa.me/+919323996997`}>
                     <Fab
                       variant="extended"
                       sx={{ mb: 1, justifyContent: "flex-start" }}
@@ -911,8 +926,8 @@ const PropertyDetailsPage = ({ params }) => {
                 </Box>
               </>
             )}
-        </Container>
-      </Box>
+        </Container >
+      </Box >
     </>
   );
 };

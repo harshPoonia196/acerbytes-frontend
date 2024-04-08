@@ -524,6 +524,29 @@ const PropertyDetails = ({ params }) => {
   return (
     <>
       {isLoading && <Loader />}
+      {openEnquiryForm && (
+        <EnquireNow
+          open={openEnquiryForm}
+          propertyData={propertyData[0]?.propertyData}
+          handleClose={handleCloseEnquiryForm}
+          handleAction={handleOpenVerifyPopup}
+          submitEnquiry={handleSubmitEnquiry}
+          submitEnquiryUnath={handleSubmitEnquiryUnauth}
+        />
+      )}
+      <OtpVerify
+        formData={getItem(enquiryFormKey)}
+        open={openOtpPopup}
+        handleClose={handleCloseVerifyPopup}
+        handleOpen={handleOpenEnquiryForm}
+        handleAlternateSignIn={handleOpenAlternateSignIn}
+        handleSubmit={updateEnquiryVerfication}
+      />
+      <AlternateSignIn
+        open={openAlternateSignIn}
+        handleClose={handleCloseAlternateSignIn}
+        leadId={leadId}
+      />
       <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={contactPermissionToView} handleOpenEnquiryForm={handleOpenEnquiryForm} />
       <nav className={classes.demo2}>
         <TopMenu
@@ -535,32 +558,8 @@ const PropertyDetails = ({ params }) => {
       </nav>
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
-        <Container maxWidth="evmd">
-          {openEnquiryForm && (
-            <EnquireNow
-              open={openEnquiryForm}
-              propertyData={propertyData[0]?.propertyData}
-              handleClose={handleCloseEnquiryForm}
-              handleAction={handleOpenVerifyPopup}
-              submitEnquiry={handleSubmitEnquiry}
-              submitEnquiryUnath={handleSubmitEnquiryUnauth}
-            />
-          )}
-          <OtpVerify
-            formData={getItem(enquiryFormKey)}
-            open={openOtpPopup}
-            handleClose={handleCloseVerifyPopup}
-            handleOpen={handleOpenEnquiryForm}
-            handleAlternateSignIn={handleOpenAlternateSignIn}
-            handleSubmit={updateEnquiryVerfication}
-          />
-          <AlternateSignIn
-            open={openAlternateSignIn}
-            leadId={leadId}
-            handleClose={handleCloseAlternateSignIn}
-          />
-
-          <Grid container spacing={2} id="section-list">
+        <Container maxWidth="md" sx={{ p: '0 !important' }}>
+          <Grid container spacing={2}>
             <ClearanceSection
               regulatoryClearanceData={
                 propertyData[0]?.propertyData?.regulatoryClearance
@@ -600,7 +599,7 @@ const PropertyDetails = ({ params }) => {
           </Grid>
 
           {/* Dont Touch this */}
-          <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
+          <Toolbar sx={{ display: { xs: "flex", md: "none" } }} />
 
           <Card
             sx={{
@@ -609,7 +608,7 @@ const PropertyDetails = ({ params }) => {
               left: 0,
               bottom: 0,
               width: "100%",
-              display: { xs: "block", evmd: "none" },
+              display: { xs: "block", md: "none" },
               background: "whitesmoke",
               boxShadow: "-1px -2px 6px 2px gainsboro !important",
             }}
@@ -658,7 +657,7 @@ const PropertyDetails = ({ params }) => {
                   position: "fixed",
                   right: 16,
                   bottom: 16,
-                  display: { xs: "none", evmd: "flex" },
+                  display: { xs: "none", md: "flex" },
                   flexDirection: "column",
                 }}
               >

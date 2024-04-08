@@ -10,7 +10,7 @@ import {
   TableRow,
   TableCell,
   TableSortLabel,
-  Tooltip,
+  Typography,
   Button,
   IconButton,
   Chip,
@@ -28,6 +28,7 @@ import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utill
 import Loader from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 // const rows = [
 //   {
@@ -50,16 +51,16 @@ import { countryCodeFormating } from "utills/utills";
 
 const headCells = [
   {
-    id: "firstName",
-    label: "First name",
-  },
-  {
-    id: "lastName",
-    label: "last Name",
+    id: "property",
+    label: "Property",
   },
   {
     id: "propertyCity",
     label: "Property city",
+  },
+  {
+    id: "name",
+    label: "name",
   },
   {
     id: "phone",
@@ -81,14 +82,15 @@ const headCells = [
   //   id: "emailVerified",
   //   label: "email Verified",
   // },
-  // {
-  //   id: "role",
-  //   label: "role",
-  // },
   {
     id: "maxBudget",
     label: "max Budget",
   },
+  // {
+  //   id: "role",
+  //   label: "role",
+  // },
+
   // {
   //   id: "closedStatus",
   //   label: "closed Status",
@@ -109,10 +111,11 @@ const headCells = [
     id: "brokerInfo",
     label: "Broker",
   },
-   {
-    id: "property",
-    label: "Property",
-  },
+  //  {
+  //   id: "property",
+  //   label: "Property",
+  // },
+
 ];
 
 function EnhancedTableHead(props) {
@@ -159,37 +162,35 @@ function RowStructure({ row, handlePropertyView }) {
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell>{row?.name?.firstName}</TableCell>
-      <TableCell>{row?.name?.lastName}</TableCell>
-      <TableCell>{row?.property?.location?.city}</TableCell>
-      <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}</TableCell>
-      <TableCell>
-        {row.isVerified ? "Yes" : "No"}
-      </TableCell>
-      <TableCell>{user.email || "-"}</TableCell>
-      {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
-      {/* <TableCell>{user.role}</TableCell> */}
-      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
-      {/* <TableCell>{row.closedStatus}</TableCell>
-      <TableCell>{row.pendingStatus}</TableCell> */}
-            <TableCell>{row.brokerId ? `${row?.higherrole?.name?.firstName} ${row?.higherrole?.name?.lastName}` : "-"}</TableCell>
-
-      <TableCell>
+      <TableCell className="urlStylingBackground">
         {row.propertyLink && (
-          <a
-            href={row.propertyLink}
+          <a sx={{ cursor: 'pointer' }}
             onClick={(e) => {
               e.preventDefault();
               handlePropertyView(row.propertyLink);
             }}
-            style={{ textDecoration: 'none' }}
           >
-           {row?.property?.overview?.projectName ?
-            `${capitalLizeName(row?.property?.overview?.projectName)}.${capitalLizeName(row?.property?.overview?.builder)}`
-            : "-"}
+            {capitalLizeName(row?.property?.overview?.projectName)}&#183;{capitalLizeName(row?.property?.overview?.builder)}
           </a>
         )}
       </TableCell>
+      <TableCell>{row?.property?.location?.city}</TableCell>
+      <TableCell>{row?.name?.firstName} {row?.name?.lastName}</TableCell>
+
+      <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}</TableCell>
+      <TableCell>
+        {row.isVerified ? <CheckCircleIcon fontSize="1rem" color='success' /> : ""}
+      </TableCell>
+      <TableCell>{user.email || "-"}</TableCell>
+      {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
+
+      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
+      {/* <TableCell>{user.role}</TableCell> */}
+      <TableCell>{row.brokerId ? `${row?.higherrole?.name?.firstName} ${row?.higherrole?.name?.lastName}` : "-"}</TableCell>
+
+      {/* <TableCell>{row.closedStatus}</TableCell>
+      <TableCell>{row.pendingStatus}</TableCell> */}
+
       {/* <TableCell>{row.updatedBy}</TableCell>
       <TableCell>
         <Chip label={row.lastModified} size="small" />
@@ -272,7 +273,7 @@ function EnquiriesTable({ search, setLeadsCount }) {
     firstLoad.current = false;
   }, [rowsPerPage, page]);
 
-  const handlePropertyView=(link)=>{
+  const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
     const fullLink = `${baseUrl}/${link}`;
     window.open(fullLink, "_blank");

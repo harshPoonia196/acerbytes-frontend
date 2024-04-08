@@ -1,13 +1,12 @@
 import * as React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { getColorForProgressBar } from 'utills/CommonFunction';
 
-function CircularProgressWithLabel(props) {
+function CircularProgressWithIcon(props) {
     return (
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-            <CircularProgress variant="determinate" thickness={4} size={40} {...props} />
+            <CircularProgress variant="determinate" thickness={2} size={40} {...props} />
             <Box
                 sx={{
                     top: 0,
@@ -20,15 +19,15 @@ function CircularProgressWithLabel(props) {
                     justifyContent: 'center',
                 }}
             >
-                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                    {`${Math.round(props.value)}`}
-                </Typography>
+                {props.icon}
             </Box>
         </Box>
     );
 }
 
-export default function CircularWithValueLabel({ progress }) {
+export default function CircularWithValueIcon({ icon, score, outOf }) {
 
-    return <CircularProgressWithLabel value={progress} color={getColorForProgressBar(progress)} />;
+    let resultedValue = (parseInt(score) / outOf) * 100
+
+    return <CircularProgressWithIcon icon={icon} value={resultedValue} color={getColorForProgressBar(resultedValue)} />;
 }

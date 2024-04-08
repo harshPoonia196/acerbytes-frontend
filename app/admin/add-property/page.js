@@ -10,6 +10,8 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { getBrokersList } from "api/Admin.api";
 import { getBrokers } from "api/UserProfile.api";
+import { getAllBrokers } from "api/Broker.api";
+
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
@@ -254,7 +256,7 @@ function AddProperty() {
   };
   const brokersList = async (rowsPerPage, page, search) => {
     try {
-      const response = await getBrokers();
+      const response = await getAllBrokers();
       if (response.status == 200) {
         const { success, data, message } = response.data;
         if (success) {
@@ -314,6 +316,7 @@ function AddProperty() {
     try {
       let res = await getAllOptions();
       if (res.status === 200) {
+        setLoading(true)
         let transform = transformDocuments(res.data.data)
         setSelectOption({ ...transform })
         let temp={}
@@ -362,6 +365,7 @@ function AddProperty() {
           amenitiesData: { sectionScore: 0, pointsGained: 0, ...amenities }
         }));
         // setSelectOption({ ...temp })
+        setLoading(false)
       }
     } catch (error) {
       showToaterMessages(
@@ -436,6 +440,7 @@ function AddProperty() {
       totalUnits: "",
       areaUnit: "Acres",
       area: "",
+      areaInSqft:0,
       greenArea: "",
       unitDensity: "",
       unitDensityScore: "",
@@ -489,7 +494,7 @@ function AddProperty() {
       expectedFurtherApp: 0,
       forEndUse: 0,
       pointsGained: 0,
-      sectionScore: ""
+      sectionScore: 0
     },
     consultants: [],
     overallAssessment: {
@@ -930,7 +935,7 @@ function AddProperty() {
             form.overallAssessment.scoredRating + parseInt(incomingValue);
         }
       }
-else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()==='yes'){
+else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
   total = totalRating + 5
   setTotalRating(total)
 
@@ -1061,6 +1066,14 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
           ...form, marketing: { ...form.marketing, image: e }
         })
       }
+      else if (firstKeyName === "layout" && secondKeyName === "area") {
+        const sqftPerAcre = 43560
+        let totalArea = +e.target.value * sqftPerAcre
+        console.log(e,totalArea,'area')
+        setForm({
+          ...form, layout: { ...form.layout, area: e.target.value,areaInSqft:totalArea }
+        })
+      }
       else {
         let value = e?.target
           ? thirdKeyName === "checked"
@@ -1083,6 +1096,7 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
           (firstKeyName === 'overview' && (secondKeyName === 'projectName' || secondKeyName === 'phase'))) {
           value = capitalLizeName(value)
         }
+
         setForm((prev) => ({
           ...prev,
           [firstKeyName]: !secondKeyName
@@ -1107,6 +1121,7 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
       let total = totalRating + 5
       setTotalRating(total)
     }
+  
   };
 
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
@@ -1154,6 +1169,7 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
 
   const validateForm = (publish) => {
     const { error } = Schema?.validate(form, { abortEarly: false });
+console.log(totalRating,'totalss')
 
     let store = [
       "constructionQuality",
@@ -1215,6 +1231,7 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
       }
     });
     console.log(form, "formmmm", error, "errrr");
+    console.log(totalRating,'totalss')
 
     if (error) {
       // console.log("🚀 ~ validateForm ~ error:", error.details)

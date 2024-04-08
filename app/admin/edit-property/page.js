@@ -10,6 +10,8 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { getBrokersList } from "api/Admin.api";
 import { getBrokers } from "api/UserProfile.api";
+import { getAllBrokers } from "api/Broker.api";
+
 import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
@@ -37,6 +39,7 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import { detailsProperty } from "api/Property.api";
 import colors from "styles/theme/colors";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import EditLocationCard from "Components/Admin/Property/SubComponents/EditLocationCard";
 
 const tabHeight = 116;
 
@@ -88,6 +91,7 @@ function AddProperty() {
   const[totalRating,setTotalRating]=useState(80)
   const [locationStarsScore,setLocationStarsScore]=useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [formUpdated, setFormUpdated] = useState(false);
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
  
@@ -210,12 +214,13 @@ function AddProperty() {
     try {
       let res = await detailsProperty(detailsPropertyId);
         if (res.status === 200) {
+          setFormUpdated(false)
             let data = removeIds(res.data?.data);
             delete data.__v;
             handleUIHide(data.overview.projectType, "overview", "projectType")
             setEditForm(true);
             console.log(data,'daaaa')
-
+            setForm({ ...data });
 
             let countLocationItems = countLocationAssessmentItems(data)
             let AmentiesCount = countAmenitiesDataItems(data)
@@ -242,13 +247,12 @@ function AddProperty() {
             }
           });
           setRegulatoryCount(countYes)
-            setTotalRating(totalRating + updateTotalCount)
-            setForm({ ...data });
-
+          setTotalRating(totalRating + updateTotalCount)
+      
+    setFormUpdated(true)
         }
     } 
    catch (error) {
-    console.log(error,'iee')
     showToaterMessages(
       error?.response?.data?.message ||
       error?.message ||
@@ -262,7 +266,7 @@ function AddProperty() {
   };
   const brokersList = async (rowsPerPage, page, search) => {
     try {
-      const response = await getBrokers();
+      const response = await getAllBrokers();
       if (response.status == 200) {
         const { success, data, message } = response.data;
         if (success) {
@@ -323,8 +327,11 @@ setCities(res.data.data[0])
       let res = await getAllOptions();
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data)
+        console.log(res.data.data,'datt')
         let temp={}
-        setSelectOption({ ...transform })
+        const filteredData = res.data.data.filter(item => item.name !== "Assesment" && item.name !== "Amenities");
+        const transformFiltered = transformDocuments(filteredData)
+        setSelectOption({ ...transformFiltered })
         transform["assesment"].map((thing) => {
           temp[thing] = {
               isApplicable: false,
@@ -385,6 +392,7 @@ setCities(res.data.data[0])
   };
   React.useEffect(() => {
     if (detailsPropertyId) {
+      // setLoading(true)
       getProp();
       setEditPage(true);
       getAllOptionDataList()
@@ -394,7 +402,7 @@ setCities(res.data.data[0])
     }
     getCitiesList();
     brokersList();
-
+    // setLoading(false)
 
     return () => {
       clearTimeout(unsetClickedRef.current);
@@ -444,6 +452,7 @@ setCities(res.data.data[0])
       totalUnits: "",
       areaUnit: "Acres",
       area: "",
+      areaInSqft:0,
       greenArea: "",
       unitDensity: "",
       unitDensityScore: "",
@@ -605,8 +614,8 @@ const [hide,setHide]=useState([])
       totalScored =
         form.overallAssessment.scoredRating + parseInt(incomingValue);
     }
-
     let calc = (totalScored / totalRating) * 100;
+
     setForm({
       ...form,
       [firstKeyName]: {
@@ -644,13 +653,13 @@ const [hide,setHide]=useState([])
         totalRatingModule = 20;
         break;
       case "location":
-        totalRatingModule = locationStars.length*5;
+        totalRatingModule = locationStarsScore.length*5;
         break;
       case "valueformoney" :
         totalRatingModule = 15;
         break;
         case "amenitiesdata" :
-          totalRatingModule = +amentiesStars.length*5;
+          totalRatingModule = +amentiesStarsScore.length*5;
         break;
       default:
         totalRatingModule = 10;
@@ -730,9 +739,14 @@ const [hide,setHide]=useState([])
     }
     
     else if(firstKeyName==="regulatoryClearance" ){
-      if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()==='yes'){
+
+      if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
         totalRatingModule=totalRatingModule+5
         setRegulatoryCount(regulatoryCount+1)
+      }
+      else if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()!==`don't know` && e.target.value.toLowerCase()===`don't know`){
+        totalRatingModule=totalRatingModule-5
+        setRegulatoryCount(regulatoryCount-1)
       }
       let difference =
       chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) - parseInt(incomingValue);
@@ -766,6 +780,7 @@ const [hide,setHide]=useState([])
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
     let calc = (totalScored / totalRatingModule) * 10;
+
     if(seperateCalc){
       setForm({
         ...form,
@@ -941,7 +956,7 @@ if (firstKeyName==="location" || firstKeyName === "amenitiesData"){
   } 
 }
 
-else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()==='yes'){
+else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
   total = totalRating + 5
   setTotalRating(total)
 
@@ -1070,6 +1085,14 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
 setForm({
   ...form,marketing:{...form.marketing,image:e}
 })
+      }
+      else if (firstKeyName === "layout" && secondKeyName === "area") {
+        const sqftPerAcre = 43560
+        let totalArea = +e.target.value * sqftPerAcre
+        console.log(e,totalArea,'area')
+        setForm({
+          ...form, layout: { ...form.layout, area: e.target.value,areaInSqft:totalArea }
+        })
       }
       else {
         let value = e?.target
@@ -1333,7 +1356,7 @@ switch (label.toLowerCase()) {
 
       <Container>
 
-       { isLoading===false &&<Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+       { isLoading===false && formUpdated && <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
           <ProjectCard
             errors={errors}
             form={form}

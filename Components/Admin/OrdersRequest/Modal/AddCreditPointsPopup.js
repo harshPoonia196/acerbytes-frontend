@@ -12,6 +12,7 @@ import InputField from "Components/CommonLayouts/InputField";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import React from "react";
+import { formatAmount, formatPoints } from "utills/CommonFunction";
 
 function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
   const [receivedPayment, setReceivedPayment] = React.useState("");
@@ -69,7 +70,7 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Add credit for <span style={{ color: "gray" }}>{info?.name}</span>
+          Add Credit points for <span style={{ color: "gray" }}>{info?.name}</span>
         </Typography>
         <Typography variant="body1">
           Potential to buy leads from the panel
@@ -79,12 +80,12 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              Points : {info?.points}
+              Points : {formatPoints(info?.points)} pts
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              Amount : {info?.amount}
+              Amount : {formatAmount(info?.amount)}
             </Typography>
           </Grid>
           <InputField
@@ -92,6 +93,7 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             label="Enter received payment"
             handleChange={handleChange}
             value={receivedPayment}
+            halfSm
           />
           <InputField
             type="text"
@@ -99,6 +101,7 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             label="Enter assigned points"
             handleChange={handlePointsChange}
             value={assignedPoints}
+            halfSm
           />
           <NewAutoCompleteInputStructure
             label="Select Sales person"
@@ -108,11 +111,11 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             value={
               salesPersonInfo
                 ? {
-                    label:
-                      `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}` ||
-                      "",
-                    value: salesPersonInfo?.googleID || "",
-                  }
+                  label:
+                    `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}` ||
+                    "",
+                  value: salesPersonInfo?.googleID || "",
+                }
                 : null
             }
             list={info?.salesPersons?.map((rs) => {
@@ -144,7 +147,7 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             onClick={() => {
               saveHandler();
             }}
-            ButtonText={"Submit"}
+            ButtonText={"Update"}
           />
         </Box>
       </DialogActions>
