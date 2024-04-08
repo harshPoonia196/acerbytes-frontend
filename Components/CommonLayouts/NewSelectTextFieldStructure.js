@@ -66,13 +66,13 @@ function NewSelectTextFieldStructure({
         >
           {list ? (
             list?.map((option) => {
-              if(option.label){
+              if (option.label) {
                 return (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )
-              }else{
+              } else {
                 return (
                   <MenuItem key={option} value={option}>
                     {capitalLizeName(option)}
