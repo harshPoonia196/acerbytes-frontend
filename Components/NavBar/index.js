@@ -137,7 +137,6 @@ export default function ClippedDrawer({ children }) {
   };
 
   const handleDrawerClose = () => {
-    console.log(' i  m triggerd')
     dispatch(setDrawerStateClose({ isDrawerOpen: false }));
   };
 
@@ -224,7 +223,7 @@ export default function ClippedDrawer({ children }) {
             </ListSubheader>
           }>
             {CommonMenuList.map((item) => (
-              <DrawerListItem key={item.label} item={item} />
+              <DrawerListItem key={`common-${item.label}`} item={item} />
             ))}
           </List>
           <Divider />
@@ -234,7 +233,7 @@ export default function ClippedDrawer({ children }) {
             </ListSubheader>
           }>
             {ToBeRemoved.map((item) => (
-              <DrawerListItem key={item.label} item={item} />
+              <DrawerListItem key={`toberemoved-${item.label}`} item={item} />
             ))}
           </List>
           <Divider />
@@ -249,7 +248,7 @@ export default function ClippedDrawer({ children }) {
                   }
                 >
                   {UserMenuList.map((item) => (
-                    <DrawerListItem key={item.label} item={item} />
+                    <DrawerListItem key={`user-${item.label}`} item={item} />
                   ))}
                 </List>
                 <Divider />
@@ -281,7 +280,7 @@ export default function ClippedDrawer({ children }) {
                   }
                 >
                   {ConsultantMenuList.map((item, index) => (
-                    <DrawerListItem key={item.label} item={item} />
+                    <DrawerListItem key={`consultant-${item.label}`} item={item} />
                   ))}
                 </List>
                 <Divider />
@@ -301,7 +300,7 @@ export default function ClippedDrawer({ children }) {
                 >
                   {AdminMenuList.map((item, index) => (
                     <>
-                      <DrawerListItem key={item.label} item={item} />
+                      <DrawerListItem key={`admin-${item.label}`} item={item} />
                     </>
                   ))}
                 </List>
@@ -473,11 +472,11 @@ export default function ClippedDrawer({ children }) {
             <Box sx={{ alignSelf: "center" }}>
               {userDetails && Object.keys(userDetails).length ? (
                 <Box>
-                  <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, color: colors.BLUE, textTransform: 'capitalize' }}>
-                    {userDetails?.name?.firstName} <Typography sx={{ marginLeft: "5px", color: colors.BLUE, textTransform: 'capitalize' }}>{userDetails?.name?.lastName}</Typography>
+                  <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, color: colors.BLUE }}>
+                    {userDetails?.name?.firstName} {userDetails?.name?.lastName}
                   </Typography>
-                  <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, color: colors.BLUE, textTransform: 'capitalize' }}>
-                    {userDetails?.name?.lastName}
+                  <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, color: colors.BLUE }}>
+                    {userDetails?.name?.firstName}
                   </Typography>
                   <Box sx={{ alignSelf: "center" }}>
                     {userDetails?.role == ROLE_CONSTANTS.broker && (
@@ -523,6 +522,6 @@ export default function ClippedDrawer({ children }) {
         <Toolbar />
         {children}
       </Box>
-    </Box>
+    </Box >
   );
 }

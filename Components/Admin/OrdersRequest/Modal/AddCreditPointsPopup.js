@@ -93,14 +93,15 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             label="Enter received payment"
             handleChange={handleChange}
             value={receivedPayment}
+            isAmount={true}
             halfSm
           />
           <InputField
             type="text"
-            isAmount={true}
             label="Enter assigned points"
             handleChange={handlePointsChange}
             value={assignedPoints}
+            isPoint={true}
             halfSm
           />
           <NewAutoCompleteInputStructure
@@ -108,6 +109,7 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             handleChange={(e, newValue) =>
               handleSelectSalesPerson(newValue?.value ? newValue?.value : "")
             }
+            variant='standard'
             value={
               salesPersonInfo
                 ? {

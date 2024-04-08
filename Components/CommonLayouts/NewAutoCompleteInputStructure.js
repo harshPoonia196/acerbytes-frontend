@@ -43,7 +43,8 @@ const NewAutoCompleteInputStructure = ({
         fullWidth
         onChange={handleChange}
         renderInput={(params, index) => {
-          return <TextField key={index} error={error} value={params.value} {...params} size="small" fullWidth />
+          return <TextField key={index} error={error} value={params.value} variant={variant ? variant : "outlined"}
+            {...params} size="small" fullWidth />
         }}
         ListboxProps={
           {
