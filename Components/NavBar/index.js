@@ -22,7 +22,7 @@ import {
   ListSubheader,
   Card,
   Badge,
-  Avatar,
+  Avatar, Chip
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -158,7 +158,7 @@ export default function ClippedDrawer({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {userDetails.role !== "admin" && (
+      {(userDetails.role !== "admin" && userDetails.role !== 'superAdmin') && (
         <MenuItem
           onClick={() => {
             router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
@@ -472,15 +472,18 @@ export default function ClippedDrawer({ children }) {
             <Box sx={{ alignSelf: "center" }}>
               {userDetails && Object.keys(userDetails).length ? (
                 <Box>
-                  <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, color: colors.BLUE }}>
-                    {userDetails?.name?.firstName} {userDetails?.name?.lastName}
-                  </Typography>
-                  <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, color: colors.BLUE }}>
-                    {userDetails?.name?.firstName}
-                  </Typography>
+                  <Box>
+                    <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, flex: 1, color: colors.BLUE }}>
+                      {userDetails?.name?.firstName} {userDetails?.name?.lastName}
+                    </Typography>
+                    <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, flex: 1, color: colors.BLUE }}>
+                      {userDetails?.name?.firstName}
+                    </Typography>
+                  </Box>
                   <Box sx={{ alignSelf: "center" }}>
                     {userDetails?.role == ROLE_CONSTANTS.broker && (
-                      <Typography variant='body2'>Points: {brokerBalance} &nbsp;&nbsp;</Typography>
+                      <Chip label={`Points: ${brokerBalance}`} size="small"
+                        onClick={() => router.push(listOfPages.consultantPaymentHistory)} />
                     )}
                   </Box>
                 </Box>

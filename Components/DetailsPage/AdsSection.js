@@ -66,47 +66,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
     };
     return (
         <Box sx={{ m: 2, mb: 0, }}>
-            {
-                isConsultant ?
-                    <Box sx={{ pb: 1, pt: 0, display: 'flex', gap: 1, flexDirection: { xs: 'column', evmd: 'row' } }}>
-                        <Box sx={{ display: 'flex', flex: 1 }}>
-                            <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
-                                <Chip
-                                    size="small"
-                                    sx={{
-                                        backgroundColor: "lightgoldenrodyellow",
-                                        border: "2px solid gold",
-                                        mr: 1,
-                                    }}
-                                    label="Sample Ad"
-                                />Get your personalized URL to receive potential buyers queries directly in your leadsbox
-                            </Typography>
-                        </Box>
-                        <Box sx={{ textAlign: 'end' }}>
-                            <Box sx={{ alignSelf: 'center' }}>
-                                <IconButton onClick={handleOpenPersonalizeAds}>
-                                    <Close fontSize='small' />
-                                </IconButton>
-                                <CustomButton startIcon={<AddLinkIcon />} variant='outlined'
-                                    size='small' sx={{ fontSize: '0.875rem' }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)}
-                                    ButtonText={isConsultant ? 'Activate my link' : 'Extend'} />
-                            </Box>
-                        </Box>
-                    </Box>
-                    :
-                    <Box sx={{ p: 1, pt: 0, px: 2, display: 'flex', gap: 1, flexDirection: { xs: 'column', evmd: 'row' } }}>
-                        <Box sx={{ display: 'flex', flex: 1 }}>
-                            <Chip size='small' sx={{ backgroundColor: 'lightgoldenrodyellow', border: '2px solid gold', alignSelf: 'center', mr: 1 }} label="Active Ad" />
-                            <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
-                                {SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : " "}
-                            </Typography>
-                        </Box>
-                        <Box sx={{ textAlign: 'end' }}>
-                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} ButtonText={"Extend"} />
-                        </Box>
-                    </Box>
-            }
-            <Card sx={{ border: isConsultant ? '2px solid gold' : `2px solid ${colors.BLUE}` }}>
+            <Card sx={{ border: isConsultant ? '2px solid gold' : `2px solid ${colors.BLUE}`, mb: 1 }}>
                 <Box sx={{ display: 'flex', p: 1, px: 2, gap: 1, background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue' }}>
                     <Box sx={{ display: 'flex', flex: 1, alignSelf: { xs: 'start', sm: 'center' }, alignItems: "start" }}>
                         <AccountCircle fontSize='small' sx={{ mr: 1 }} />
@@ -156,6 +116,46 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                 <Typography variant='body2' sx={{ p: 2, py: 1 }}>{description}</Typography>
                 {/* <Divider sx={{ borderColor: 'gainsboro' }} /> */}
             </Card>
+            {
+                isConsultant ?
+                    <Box sx={{ pb: 1, pt: 0, display: 'flex', gap: 1, flexDirection: { xs: 'column', evmd: 'row' } }}>
+                        <Box sx={{ display: 'flex', flex: 1 }}>
+                            <Typography variant="body2" sx={{ flex: 1, alignSelf: 'center' }}>
+                                <Chip
+                                    size="small"
+                                    sx={{
+                                        backgroundColor: "lightgoldenrodyellow",
+                                        border: "2px solid gold",
+                                        mr: 1,
+                                    }}
+                                    label="Sample Ad"
+                                />Get your personalized URL to receive potential buyers queries directly in your leadsbox
+                            </Typography>
+                        </Box>
+                        <Box sx={{ textAlign: 'end' }}>
+                            <Box sx={{ alignSelf: 'center' }}>
+                                <IconButton onClick={handleOpenPersonalizeAds}>
+                                    <Close fontSize='small' />
+                                </IconButton>
+                                <CustomButton startIcon={<AddLinkIcon />} variant='outlined'
+                                    size='small' sx={{ fontSize: '0.875rem' }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)}
+                                    ButtonText={isConsultant ? 'Activate my link' : 'Extend'} />
+                            </Box>
+                        </Box>
+                    </Box>
+                    :
+                    <Box sx={{ p: 1, pt: 0, px: 2, display: 'flex', gap: 1, flexDirection: { xs: 'column', evmd: 'row' } }}>
+                        <Box sx={{ display: 'flex', flex: 1 }}>
+                            <Chip size='small' sx={{ backgroundColor: 'lightgoldenrodyellow', border: '2px solid gold', alignSelf: 'center', mr: 1 }} label="Active Ad" />
+                            <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
+                                {SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : " "}
+                            </Typography>
+                        </Box>
+                        <Box sx={{ textAlign: 'end' }}>
+                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} ButtonText={"Extend"} />
+                        </Box>
+                    </Box>
+            }
         </Box>
     )
 }

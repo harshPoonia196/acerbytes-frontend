@@ -29,15 +29,24 @@ function ManageUser() {
   };
 
   const generateSubtitle = () => {
+    console.log(dashboardInfo)
+    let result = []
     let subtitle = "";
     if (Object.keys(dashboardInfo).length > 0) {
       if (value === 0) {
-        subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Super admins: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Admins: ${dashboardInfo.noOfAdmin}, Brokers: ${dashboardInfo.noOfBroker}, Users: ${dashboardInfo.noOfUsers}`;
+        result.push({ label: 'Super admins', value: dashboardInfo.noOfSuperAdmins })
+        result.push({ label: 'Admins', value: dashboardInfo.noOfAdmin })
+        result.push({ label: 'Brokers', value: dashboardInfo.noOfBroker })
+        result.push({ label: 'Users', value: dashboardInfo.noOfUsers })
+        // subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Super admins: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Admins: 
+        // ${dashboardInfo.noOfAdmin}, Brokers: ${dashboardInfo.noOfBroker}, Users: ${dashboardInfo.noOfUsers}`;
       } else if (value === 1) {
-        subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Pending approval: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Pending approval : ${dashboardInfo.noOfAdmin}`;
+        result.push({ label: 'Super admins', value: dashboardInfo.noOfSuperAdmins })
+        result.push({ label: 'Admins', value: dashboardInfo.noOfAdmin })
+        // subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Pending approval: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Pending approval : ${dashboardInfo.noOfAdmin}`;
       }
     }
-    return subtitle;
+    return result;
   };
 
   const displayNameAndRole = userDetails => {
@@ -52,8 +61,8 @@ function ManageUser() {
       <CustomAdminBreadScrumbs text='Manage users' />
 
       <InfoBox
-        label={generateSubtitle()}
-      // dataList={[{ label: 'Credit points request', value: dashboardInfo.count }]}
+        // label={generateSubtitle()}
+        dataList={generateSubtitle()}
       />
 
       <Container>
