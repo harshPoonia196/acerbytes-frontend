@@ -686,8 +686,8 @@ const PropertyDetailsPage = ({ params }) => {
               valueForMoneyData={propertyData?.valueForMoney}
             />
             {/* <FloorPlanSection /> */}
-            <Grid item xs={12} id="propertyConsultants">
-              {propertyData?.consultants?.length > 0 && (
+            {propertyData?.consultants?.length > 0 &&
+              <Grid item xs={12} id="propertyConsultants">
                 <Card>
                   <Box sx={{ display: "flex", p: 2 }}>
                     <Box sx={{ flex: 1, alignSelf: "center" }}>
@@ -753,8 +753,8 @@ const PropertyDetailsPage = ({ params }) => {
                     </Box>
                   )}
                 </Card>
-              )}
-            </Grid>
+              </Grid>
+            }
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
