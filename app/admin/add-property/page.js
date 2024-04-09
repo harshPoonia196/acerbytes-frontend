@@ -695,21 +695,21 @@ function AddProperty() {
       incomingValue = val
 
     }
-    if (form.overallAssessment.rated?.[secondKeyName] > 0) {
-      let difference =
-        form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
-      let compare =
-        form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
-      if (compare) {
-        totalScored =
-          form.overallAssessment.scoredRating + Math.abs(difference);
-      } else {
-        totalScored =
-          form.overallAssessment.scoredRating - Math.abs(difference);
-      }
-    }
+    // if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+    //   let difference =
+    //     form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
+    //   let compare =
+    //     form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
+    //   if (compare) {
+    //     totalScored =
+    //       form.overallAssessment.scoredRating + Math.abs(difference);
+    //   } else {
+    //     totalScored =
+    //       form.overallAssessment.scoredRating - Math.abs(difference);
+    //   }
+    // }
 
-    else if (secondKeyName === "assessment" || firstKeyName === "amenitiesData") {
+    if (secondKeyName === "assessment" || firstKeyName === "amenitiesData") {
 
       let difference =
         +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(incomingValue);
@@ -740,7 +740,6 @@ function AddProperty() {
     }
 
     else {
-
       let difference =
         +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
       let compare =
@@ -757,7 +756,6 @@ function AddProperty() {
     //   totalScored =
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
-
     let calc = (totalScored / totalRatingModule) * 10;
     if (seperateCalc) {
       setForm({
