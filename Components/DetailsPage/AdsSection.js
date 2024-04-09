@@ -136,7 +136,8 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                                 }
                             /> */}
                             <Typography variant='h6'>{projectName}&#183;{city}&#183;{sector}&#183;
-                                {state}</Typography>
+                                {state}
+                            </Typography>
                         </Box>
                     </Box>
                 </Box>

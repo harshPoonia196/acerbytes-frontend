@@ -558,7 +558,7 @@ const PropertyDetails = ({ params }) => {
       </nav>
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
-        <Container maxWidth="md" sx={{ p: '0 !important' }}>
+        <Container maxWidth="md" sx={{ pt: '0 !important' }}>
           <Grid container spacing={2}>
             <ClearanceSection
               regulatoryClearanceData={
