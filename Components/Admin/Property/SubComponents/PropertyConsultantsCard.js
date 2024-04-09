@@ -29,7 +29,6 @@ function PropertyConsultantsCard({ isEdit, form, list, handleChange }) {
         </Box>
         <Divider />
         <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-          {/* {JSON.stringify(list)} */}
           <NewMultiSelectAutoCompleteInputStructure
             value={form.consultants}
             list={list}
@@ -49,6 +48,7 @@ function PropertyConsultantsCard({ isEdit, form, list, handleChange }) {
                       type: "Consultant",
                       stars: item.ratings,
                       phone:item.phone,
+                      profilePicture:item.profilePicture,
                       clients: 432,
                     }}
                     noReview

@@ -261,17 +261,16 @@ function AddProperty() {
         const { success, data, message } = response.data;
         if (success) {
           let getValue = data.data.map((i) => {
-
             let u = {
               fullName: i.fullName.replace(/\b\w/g, (match) => match.toUpperCase()),
               type: "consultant",
               phone: i.phone,
               rating: i.rating,
+              profilePicture:i?.brokerPic?.profilePicture?i?.brokerPic?.profilePicture:"",
               id: i._id,
             };
             return u;
           });
-
           setBrokerList([...getValue]);
           // setBrokerList([...data.data]);
           //   return data;
@@ -869,6 +868,7 @@ function AddProperty() {
         [firstKeyName]: { ...form?.[firstKeyName], ...innerObj },
       });
     } else if (firstKeyName === "consultant") {
+      console.log('cponsul',e)
       setForm({ ...form, consultants: [...e] });
     } else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
