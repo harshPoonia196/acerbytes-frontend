@@ -261,17 +261,16 @@ function AddProperty() {
         const { success, data, message } = response.data;
         if (success) {
           let getValue = data.data.map((i) => {
-
             let u = {
               fullName: i.fullName.replace(/\b\w/g, (match) => match.toUpperCase()),
               type: "consultant",
               phone: i.phone,
               rating: i.rating,
+              profilePicture:i?.brokerPic?.profilePicture?i?.brokerPic?.profilePicture:"",
               id: i._id,
             };
             return u;
           });
-
           setBrokerList([...getValue]);
           // setBrokerList([...data.data]);
           //   return data;
@@ -696,21 +695,21 @@ function AddProperty() {
       incomingValue = val
 
     }
-    if (form.overallAssessment.rated?.[secondKeyName] > 0) {
-      let difference =
-        form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
-      let compare =
-        form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
-      if (compare) {
-        totalScored =
-          form.overallAssessment.scoredRating + Math.abs(difference);
-      } else {
-        totalScored =
-          form.overallAssessment.scoredRating - Math.abs(difference);
-      }
-    }
+    // if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+    //   let difference =
+    //     form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
+    //   let compare =
+    //     form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
+    //   if (compare) {
+    //     totalScored =
+    //       form.overallAssessment.scoredRating + Math.abs(difference);
+    //   } else {
+    //     totalScored =
+    //       form.overallAssessment.scoredRating - Math.abs(difference);
+    //   }
+    // }
 
-    else if (secondKeyName === "assessment" || firstKeyName === "amenitiesData") {
+    if (secondKeyName === "assessment" || firstKeyName === "amenitiesData") {
 
       let difference =
         +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(incomingValue);
@@ -741,7 +740,6 @@ function AddProperty() {
     }
 
     else {
-
       let difference =
         +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
       let compare =
@@ -758,7 +756,6 @@ function AddProperty() {
     //   totalScored =
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
-
     let calc = (totalScored / totalRatingModule) * 10;
     if (seperateCalc) {
       setForm({
@@ -869,6 +866,7 @@ function AddProperty() {
         [firstKeyName]: { ...form?.[firstKeyName], ...innerObj },
       });
     } else if (firstKeyName === "consultant") {
+      console.log('cponsul',e)
       setForm({ ...form, consultants: [...e] });
     } else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
