@@ -66,7 +66,7 @@ function MyLeads() {
               value="all"
               sx={{ flex: 1, border: "none" }}
             >
-              All (10 static)
+              All ({leadsCount})
             </ToggleButton>
             {/* <ToggleButton
               size="small"
@@ -78,7 +78,7 @@ function MyLeads() {
             >
               Notes (10 static)
             </ToggleButton>*/}
-            </ToggleButtonGroup>
+          </ToggleButtonGroup>
         </Card>
         <Box sx={{ textAlign: 'end', mb: 2 }}>
 
