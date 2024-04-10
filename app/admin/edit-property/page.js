@@ -367,15 +367,15 @@ setCities(res.data.data[0])
 
       let amentiesSatrCount = sumItems({sectionScore:0,pointsGained:0,...amenities},['sectionScore', 'pointsGained'])
   
-      setForm((prevForm) => ({
-        ...prevForm,
-        location: {
-          ...prevForm.location,
-          assessment: temp,
+      // setForm((prevForm) => ({
+      //   ...prevForm,
+      //   location: {
+      //     ...prevForm.location,
+      //     assessment: temp,
           
-        },
-        amenitiesData:{sectionScore:0,pointsGained:0,...amenities}
-      }));
+      //   },
+      //   amenitiesData:{sectionScore:0,pointsGained:0,...amenities}
+      // }));
         // setSelectOption({ ...temp })
       }
     } catch (error) {
