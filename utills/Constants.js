@@ -335,10 +335,6 @@ const listOfPropertyDetailsTab = [
     value: "amenities",
   },
   {
-    label: "Location",
-    value: "location",
-  },
-  {
     label: "Value for money",
     value: "value",
   },

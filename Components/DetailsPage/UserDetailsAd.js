@@ -1,4 +1,4 @@
-import { Box, Button, Card, Rating, Typography } from "@mui/material";
+import { Box, Button, Card, Chip, Divider, Typography } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import React, { useEffect, useState } from "react";
 import colors from "styles/theme/colors";
@@ -42,11 +42,11 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
     }
   }
 
-  useEffect(()=>{
-    if(contactPermissionToView){
-      setShowContact(contactPermissionToView ? true: false);
+  useEffect(() => {
+    if (contactPermissionToView) {
+      setShowContact(contactPermissionToView ? true : false);
     }
-  },[contactPermissionToView, showContact])
+  }, [contactPermissionToView, showContact])
 
   return (
     <Box sx={{ m: 2, mb: 0 }}>
@@ -61,49 +61,27 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
             flexDirection: { xs: "column", sm: "row" },
           }}
         >
-          <Box sx={{ display: "flex", flex: 1, alignSelf: "center", alignItems: "end" }}>
-            <AccountCircle />
-            <Typography variant="h5" sx={{}}>
-              Contact {name} &#183; for {projectName} &#183; {city} &#183; {sector} &#183; {pinCode} &#183; {state}
-              {/* 4.7&nbsp; */}
-              {/* <Rating
-                name="text-feedback"
-                value={4}
-                readOnly
-                precision={0.5}
-                sx={{
-                  fontSize: "1rem",
-                  alignSelf: "center",
-                  verticalAlign: "baseline",
-                }}
-                emptyIcon={
-                  <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-                }
-              /> */}
-            </Typography>
-          </Box>
-          <Box sx={{ alignSelf: { xs: "end", sm: "center" } }}>
-            {/* <a href={`tel:${phoneNumber}`}>
-              <CustomButton
-                variant="outlined"
-                startIcon={<PhoneIcon />}
-                size="small"
-                sx={{ fontSize: "0.875rem" }}
-                ButtonText={phoneNumber}
-              />
-            </a> */}
-            <Button
-              variant="outlined"
-              // disabled={!contactPermissionToView}
-              startIcon={showContact ? null : <PhoneIcon />}
-              // onClick={() => setShowContact(!showContact)}
-              onClick={handleViewContactClick}
-            >
-              {showContact ? phoneNumber : "View Contact"}
-            </Button>
+          <Box sx={{ display: 'flex', flex: 1, }}>
+            <AccountCircle fontSize='small' sx={{ mr: 1 }} />
+            <Box sx={{ flex: 1 }}>
+              <Box sx={{ display: 'flex' }}>
+                <Typography variant='h5' sx={{ flex: 1 }}>
+                  {name}
+                </Typography>
+                <Box>
+                  <Chip icon={showContact ? null : <PhoneIcon />}
+                    label={showContact ? phoneNumber : "View Contact"}
+                    size='small' onClick={handleViewContactClick} />
+                </Box>
+              </Box>
+              <Typography variant='h6'>{projectName}&#183;{city}&#183;{sector}&#183;
+                {state}
+              </Typography>
+            </Box>
           </Box>
         </Box>
-        <Typography variant="body2" noWrap sx={{ p: 2, py: 1 }}>
+        <Divider sx={{ borderColor: 'whitesmoke' }} />
+        <Typography variant="body2" sx={{ p: 2, py: 1 }}>
           {description}
         </Typography>
       </Card>

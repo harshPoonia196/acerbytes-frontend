@@ -58,11 +58,11 @@ const headCells = [
   },
   {
     id: "propertyCity",
-    label: "Property city",
+    label: "city",
   },
   {
     id: "name",
-    label: "name",
+    label: "Customer",
   },
   {
     id: "phone",
@@ -70,7 +70,7 @@ const headCells = [
   },
   {
     id: "numberVerified",
-    label: "Number Verified",
+    label: "Verified",
   },
   // {
   //   id: "phoneVerified",
@@ -179,7 +179,7 @@ function RowStructure({ row, handlePropertyView, router }) {
               handlePropertyView(row.propertyLink);
             }}
           >
-            {capitalLizeName(row?.property?.overview?.projectName)}&#183;{capitalLizeName(row?.property?.overview?.builder)}
+            {capitalLizeName(row?.property?.overview?.builder)} {capitalLizeName(row?.property?.overview?.projectName)}
           </a>
         )}
       </TableCell>
@@ -293,7 +293,6 @@ function EnquiriesTable({ search, setLeadsCount }) {
     <>
       {isLoading ? <Loader /> : null}
       {
-
         rows.length > 0 ? (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -322,9 +321,7 @@ function EnquiriesTable({ search, setLeadsCount }) {
             />
           </TableContainer>
         ) :
-
           <NoDataCard title={"No data found"} />
-
       }
 
     </>

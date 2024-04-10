@@ -129,11 +129,17 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       onClose={handleClose}
     >
       <DialogTitle onClose={handleClose}>
-        <Box sx={{ display: 'flex' }}>
-          <Typography variant="h4" sx={{ fontWeight: 700, flex: 1, alignSelf: 'center' }}>
-            Activate your link
-          </Typography>
-          <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+          <Box sx={{ flex: 1, alignSelf: { xs: 'start', sm: 'center' } }}>
+            <Typography variant="h4" sx={{ fontWeight: 700, }}>
+              Activate your link
+            </Typography>
+            <Typography variant="subtitle2"
+              sx={{ alignSelf: "center", color: colors.GRAY, display: { xs: 'none', sm: 'block' }, visibility: 'hidden' }}>
+              Your balance
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignSelf: 'end', }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: 'end' }}>
               <CustomButton
                 startIcon={<PaymentIcon fontSize="small" />}
@@ -160,7 +166,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       </DialogTitle>
       <DialogContent sx={{ minWidth: 300, }}>
         <Grid container spacing={2}>
-          <NewInputFieldStructure isFull  isMultiline={true} label={'Your personalized link to share'} isEdit={true} value={propertyUrl ? propertyUrl : ""}
+          <NewInputFieldStructure isFull isMultiline={true} label={'Your personalized link to share'} isEdit={true} value={propertyUrl ? propertyUrl : ""}
           />
           <NewInputFieldStructure label='Title (10 words)' isFull
             name="title"

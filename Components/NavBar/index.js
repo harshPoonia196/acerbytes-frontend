@@ -22,7 +22,7 @@ import {
   ListSubheader,
   Card,
   Badge,
-  Avatar,
+  Avatar, Chip
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -137,7 +137,6 @@ export default function ClippedDrawer({ children }) {
   };
 
   const handleDrawerClose = () => {
-    console.log(' i  m triggerd')
     dispatch(setDrawerStateClose({ isDrawerOpen: false }));
   };
 
@@ -159,7 +158,7 @@ export default function ClippedDrawer({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {userDetails.role !== "admin" && (
+      {(userDetails.role !== "admin" && userDetails.role !== 'superAdmin') && (
         <MenuItem
           onClick={() => {
             router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
@@ -224,7 +223,7 @@ export default function ClippedDrawer({ children }) {
             </ListSubheader>
           }>
             {CommonMenuList.map((item) => (
-              <DrawerListItem key={item.label} item={item} />
+              <DrawerListItem key={`common-${item.label}`} item={item} />
             ))}
           </List>
           <Divider />
@@ -234,7 +233,7 @@ export default function ClippedDrawer({ children }) {
             </ListSubheader>
           }>
             {ToBeRemoved.map((item) => (
-              <DrawerListItem key={item.label} item={item} />
+              <DrawerListItem key={`toberemoved-${item.label}`} item={item} />
             ))}
           </List>
           <Divider />
@@ -249,7 +248,7 @@ export default function ClippedDrawer({ children }) {
                   }
                 >
                   {UserMenuList.map((item) => (
-                    <DrawerListItem key={item.label} item={item} />
+                    <DrawerListItem key={`user-${item.label}`} item={item} />
                   ))}
                 </List>
                 <Divider />
@@ -281,7 +280,7 @@ export default function ClippedDrawer({ children }) {
                   }
                 >
                   {ConsultantMenuList.map((item, index) => (
-                    <DrawerListItem key={item.label} item={item} />
+                    <DrawerListItem key={`consultant-${item.label}`} item={item} />
                   ))}
                 </List>
                 <Divider />
@@ -301,7 +300,7 @@ export default function ClippedDrawer({ children }) {
                 >
                   {AdminMenuList.map((item, index) => (
                     <>
-                      <DrawerListItem key={item.label} item={item} />
+                      <DrawerListItem key={`admin-${item.label}`} item={item} />
                     </>
                   ))}
                 </List>
@@ -473,15 +472,18 @@ export default function ClippedDrawer({ children }) {
             <Box sx={{ alignSelf: "center" }}>
               {userDetails && Object.keys(userDetails).length ? (
                 <Box>
-                  <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, color: colors.BLUE, textTransform: 'capitalize' }}>
-                    {userDetails?.name?.firstName} <Typography sx={{ marginLeft: "5px", color: colors.BLUE, textTransform: 'capitalize' }}>{userDetails?.name?.lastName}</Typography>
-                  </Typography>
-                  <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, color: colors.BLUE, textTransform: 'capitalize' }}>
-                    {userDetails?.name?.lastName}
-                  </Typography>
+                  <Box>
+                    <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, flex: 1, color: colors.BLUE }}>
+                      {userDetails?.name?.firstName} {userDetails?.name?.lastName}
+                    </Typography>
+                    <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, flex: 1, color: colors.BLUE }}>
+                      {userDetails?.name?.firstName}
+                    </Typography>
+                  </Box>
                   <Box sx={{ alignSelf: "center" }}>
                     {userDetails?.role == ROLE_CONSTANTS.broker && (
-                      <Typography variant='body2'>Points: {brokerBalance} &nbsp;&nbsp;</Typography>
+                      <Chip label={`Points: ${brokerBalance}`} size="small"
+                        onClick={() => router.push(listOfPages.consultantPaymentHistory)} />
                     )}
                   </Box>
                 </Box>
@@ -523,6 +525,6 @@ export default function ClippedDrawer({ children }) {
         <Toolbar />
         {children}
       </Box>
-    </Box>
+    </Box >
   );
 }
