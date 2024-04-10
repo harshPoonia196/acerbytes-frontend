@@ -16,6 +16,7 @@ import HandshakeIcon from '@mui/icons-material/Handshake'
 import BusinessIcon from '@mui/icons-material/Business'
 import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import { shortPriceFormatter } from "utills/CommonFunction";
 
 function MarketingSection(props) {
   const { overviewData } = props;
@@ -139,16 +140,28 @@ function MarketingSection(props) {
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <Chip label={'Under construction'} color='primary' size='small' sx={{ fontSize: '1rem' }} />
-            <Typography variant="h6">
-              2004-2008
-            </Typography>
+            {overviewData?.overview?.status &&
+              <Chip label={overviewData?.overview?.status} color='primary' size='small' />}
+            {
+              (overviewData?.overview?.launchYear || overviewData?.overview?.completionYear) &&
+              <Typography variant="h6">
+                {overviewData?.overview?.launchYear} -{" "}
+                {overviewData?.overview?.completionYear}
+              </Typography>
+            }
           </Grid>
           <Grid item xs={6}>
-            <Chip label={'₹ 1Cr - ₹ 2.75Cr'} color='primary' size='small' sx={{ fontSize: '1rem' }} />
-            <Typography variant="h6">
-              ₹ 2,500 / sqft
-            </Typography>
+            {(overviewData?.unitsPlan?.minPriceRange || overviewData?.unitsPlan?.maxPriceRange) &&
+              <Chip label={`₹ ${shortPriceFormatter(overviewData?.unitsPlan?.minPriceRange)} - ₹ 
+            ${shortPriceFormatter(overviewData?.unitsPlan?.maxPriceRange)}`} color='primary' size='small' />
+            }
+            {(overviewData?.unitsPlan?.averagePrice || overviewData?.unitsPlan?.planList[0]) &&
+              <Typography variant="h6">
+                {'₹ ' + overviewData?.unitsPlan?.averagePrice.toLocaleString() +
+                  "/" +
+                  overviewData?.unitsPlan?.planList[0]?.areaUnit}
+              </Typography>
+            }
           </Grid>
         </Grid>
       </Card>
@@ -157,6 +170,7 @@ function MarketingSection(props) {
 
   return (
     <>
+      {console.log(overviewData)}
       <Container maxWidth='md'>
         <Box id='project' >
           <Card sx={{ height: 'fit-content' }}>

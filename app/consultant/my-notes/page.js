@@ -69,14 +69,14 @@ function MyNotes() {
                 router.push(listOfPages.consultantMyLeads);
               }}
             >
-              All (10)
+              All (10 static)
             </ToggleButton>
             <ToggleButton
               size="small"
               value="notes"
               sx={{ flex: 1, border: "none" }}
             >
-              Notes (10)
+              Notes (10 static)
             </ToggleButton>
           </ToggleButtonGroup>
         </Card>
