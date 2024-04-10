@@ -42,7 +42,6 @@ function MarketingSection(props) {
 
 
   const MapFrame = ({ mapUrl }) => {
-    console.log(mapUrl)
     return <iframe
       src={mapUrl}
       style={{ border: 0 }}
@@ -53,7 +52,6 @@ function MarketingSection(props) {
   }
 
   const OverviewRatingCard = () => {
-    console.log(AllLocationData)
     return <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }} >
       <Card sx={{ width: '100%' }}>
         <MapFrame mapUrl={mapUrl} />
