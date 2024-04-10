@@ -100,15 +100,35 @@ const PropertyDetails = ({ params }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
+  const [isLoading, setLoading] = useState(false);
+  const [propertyData, setPropertyData] = useState([]);
+  const [contactPermissionToView, setContactPermissionToView] = useState(false);
+  const [leadId, setLeadId] = useState("");
 
   const linkIdData = params.projectdetails;
   const parts = linkIdData.split("-");
   const getId = parts[parts.length - 1];
 
-  const [isLoading, setLoading] = useState(false);
-  const [propertyData, setPropertyData] = useState([]);
-  const [contactPermissionToView, setContactPermissionToView] = useState(false);
-  const [leadId, setLeadId] = useState("");
+
+  const constructPropertyUrl = (propertyDetailsData) => {
+    const overview = propertyDetailsData?.propertyData?.overview;
+    const location = propertyDetailsData?.propertyData?.location;
+
+    const projectCategory = encodeURIComponent((overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-').replace(/\//g, '-'));
+    let projectType;
+    if (overview?.projectType?.length > 0) {
+      projectType = overview.projectType.map(type => encodeURIComponent(type.value.trim().replace(/\s+/g, '-').replace(/\//g, '-'))).join("-");
+    } else {
+      projectType = 'type';
+    }
+    const city = encodeURIComponent((location?.city.trim() ?? 'city').replace(/\s+/g, '-').replace(/\//g, '-'));
+    const sector = encodeURIComponent((location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-').replace(/\//g, '-'));
+    const area = encodeURIComponent((location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '').replace(/\//g, '-'));
+    const projectName = encodeURIComponent((overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-').replace(/\//g, '-'));
+
+
+    return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetailsData?.property_id}`;
+  };
 
   const activeAdGetProperty = async () => {
     try {
@@ -118,6 +138,14 @@ const PropertyDetails = ({ params }) => {
       );
       if (res.status === 200) {
         setPropertyData(res.data?.data);
+        const expiredAt = new Date(res?.data?.data[0]?.expired_at);
+        const now = new Date();
+        const brokerData = res.data.data[0]?.brokerData;
+        if (brokerData && (brokerData?.isBlocked || brokerData.role !== 'broker')) {
+          router.push(`details/${constructPropertyUrl(res.data?.data[0])}`);
+        } else if (expiredAt && now > expiredAt) {
+          router.push(`details/${constructPropertyUrl(res.data?.data[0])}`);
+        }
       }
     } catch (error) {
       showToaterMessages(
@@ -138,7 +166,7 @@ const PropertyDetails = ({ params }) => {
         `${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ""}`
       );
       if (res.status === 200) {
-        console.log("res.data?.data: ", res.data?.data?._id);
+        // console.log("res.data?.data: ", res.data?.data?._id);
         setContactPermissionToView(!!res.data?.data?._id);
       }
     } catch (error) {

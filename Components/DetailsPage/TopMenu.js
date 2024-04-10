@@ -8,7 +8,7 @@ import CircularWithValueLabel from 'Components/CommonLayouts/CircularProgressWit
 function TopMenu(props) {
     const { value, handleChange, list, topMenu } = props
     const router = useRouter()
-    console.log(value)
+    // console.log(value)
     return (
         <>
             <Card
