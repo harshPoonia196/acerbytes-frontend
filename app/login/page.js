@@ -18,7 +18,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import ConsultantDialog from "Components/Login/ConsultantDialog";
 import { useAuth } from "utills/AuthContext";
 import { getItem } from "utills/utills";
-import { ROLE_CONSTANTS, countries, enquiryFormKey, enquiryFormOpen, } from "utills/Constants";
+import { ROLE_CONSTANTS, countries, enquiryFormKey, enquiryFormOpen, propertyUserVerifiedKey, } from "utills/Constants";
 import { isLoggedIn } from "utills/utills";
 
 function Login() {
@@ -199,7 +199,7 @@ function Login() {
         otp: otpInput,
       };
       const res = await verifyOtpAPI(payload);
-      const isEnquireyFormOpen = getItem(enquiryFormOpen);
+      const isEnquireyFormOpen = getItem(enquiryFormOpen) || getItem(propertyUserVerifiedKey);
       if(isEnquireyFormOpen){
         createUserFun()
       }
@@ -232,7 +232,7 @@ function Login() {
 
   const createUserFun = async () => {
     try {
-      const isEnquireyFormOpen = getItem(enquiryFormOpen);
+      const isEnquireyFormOpen = getItem(enquiryFormOpen) || getItem(propertyUserVerifiedKey);
       setLoading(true);
       let payload = {
         name: {

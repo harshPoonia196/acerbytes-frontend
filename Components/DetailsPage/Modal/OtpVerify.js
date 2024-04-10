@@ -152,10 +152,11 @@ useEffect(() => {
           <CustomButton
             startIcon={<DoneIcon />}
             variant="contained"
-            onClick={() => {
-              handleSubmit({ ...(formData || {}), otp: otp });
+            onClick={async() => {
+              await handleSubmit({ ...(formData || {}), otp: otp });
               // handleAlternateSignIn();
               // handleClose();
+              setOtp("");
             }}
             disabled={otp.length !== 4}
             ButtonText={"Verify"}

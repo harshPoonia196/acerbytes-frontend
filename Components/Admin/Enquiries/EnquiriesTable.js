@@ -29,6 +29,8 @@ import Loader from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { listOfPages } from "Components/NavBar/Links";
+import { useRouter } from "next/navigation";
 
 // const rows = [
 //   {
@@ -154,9 +156,16 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, handlePropertyView }) {
+function RowStructure({ row, handlePropertyView, router }) {
   const user = row?.user || {};
   const userDetail = row?.userDetail || {};
+
+  const handleBrokerProfileClick = (googleID) => {
+    if (googleID) {
+      router.push(listOfPages.adminUpdateConsultantProfileLinks + `/${googleID}`);
+    }
+  }
+
   return (
     <TableRow
       key={row.name}
@@ -186,7 +195,7 @@ function RowStructure({ row, handlePropertyView }) {
 
       <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
-      <TableCell>{row.brokerId ? `${row?.higherrole?.name?.firstName} ${row?.higherrole?.name?.lastName}` : "-"}</TableCell>
+      <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell>
 
       {/* <TableCell>{row.closedStatus}</TableCell>
       <TableCell>{row.pendingStatus}</TableCell> */}
@@ -200,6 +209,7 @@ function RowStructure({ row, handlePropertyView }) {
 }
 
 function EnquiriesTable({ search, setLeadsCount }) {
+  const router = useRouter();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
@@ -293,7 +303,7 @@ function EnquiriesTable({ search, setLeadsCount }) {
               />
               <TableBody>
                 {rows.map((row) => (
-                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} />
+                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} router={router} />
                 ))}
               </TableBody>
             </Table>

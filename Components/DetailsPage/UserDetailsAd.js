@@ -69,8 +69,8 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
                   {name}
                 </Typography>
                 <Box>
-                  <Chip icon={showContact ? <CloseIcon /> : <PhoneIcon />}
-                    label={showContact ? '+' + phoneNumber : "View Contact"}
+                  <Chip icon={showContact ? null : <PhoneIcon />}
+                    label={showContact ? phoneNumber : "View Contact"}
                     size='small' onClick={handleViewContactClick} />
                 </Box>
               </Box>
