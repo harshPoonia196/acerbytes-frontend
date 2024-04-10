@@ -68,10 +68,6 @@ const headCells = [
     id: "phone",
     label: "phone",
   },
-  {
-    id: "numberVerified",
-    label: "Verified",
-  },
   // {
   //   id: "phoneVerified",
   //   label: "phoneVerified",
@@ -186,10 +182,8 @@ function RowStructure({ row, handlePropertyView, router }) {
       <TableCell>{row?.property?.location?.city}</TableCell>
       <TableCell>{row?.name?.firstName} {row?.name?.lastName}</TableCell>
 
-      <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}</TableCell>
-      <TableCell>
-        {row.isVerified ? <CheckCircleIcon fontSize="1rem" color='success' /> : ""}
-      </TableCell>
+      <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}&nbsp;
+        {row.isVerified && <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' />}</TableCell>
       <TableCell>{user.email || "-"}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
 
