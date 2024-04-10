@@ -95,7 +95,7 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
             <Button
               variant="outlined"
               // disabled={!contactPermissionToView}
-              startIcon={showContact ? <CloseIcon /> : <PhoneIcon />}
+              startIcon={showContact ? null : <PhoneIcon />}
               // onClick={() => setShowContact(!showContact)}
               onClick={handleViewContactClick}
             >

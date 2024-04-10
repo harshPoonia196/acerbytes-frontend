@@ -204,22 +204,23 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           </a>
         </Box>
       ) : null} */}
-      {isLogged ? (
-        !isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCallClick}  >
-          <IconButton>
-            <CallIcon fontSize="small" />
-          </IconButton>
-        </Box>) :
-          <Box sx={{ position: "absolute", top: 8, right: 8 }} >
-            {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}
-          </Box>
-      ) : (
-        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-          <IconButton onClick={() => router.push(listOfPages.login)}>
-            <CallIcon fontSize="small" />
-          </IconButton>
+      {/* {isLogged ? ( */}
+      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCallClick}  >
+        <IconButton>
+          <CallIcon fontSize="small" />
+        </IconButton>
+      </Box>) :
+        <Box sx={{ position: "absolute", top: 8, right: 8 , cursor: "pointer", color: "blue"}} onClick={handleCallClick} >
+          {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}          
         </Box>
-      )}
+      }
+      {/* // : (
+      //   <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+      //     <IconButton onClick={() => router.push(listOfPages.login)}>
+      //       <CallIcon fontSize="small" />
+      //     </IconButton>
+      //   </Box>
+      // )} */}
       <Divider />
       {!noReview && (
         <Grid container spacing={1} sx={{ p: 2 }}>

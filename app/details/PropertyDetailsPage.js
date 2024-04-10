@@ -332,7 +332,6 @@ const PropertyDetailsPage = ({ params }) => {
     if (getItem(propertyUserVerifiedKey) && userDetails?._id) {
       const leadId = getItem(userLeadId);
       updateEnquiryVerficationByUserId(leadId);
-      updateEnquiryVerficationByUserId(leadId);
       clearItem(propertyUserVerifiedKey);
       clearItem(userLeadId);
     }
