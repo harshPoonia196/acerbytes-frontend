@@ -13,7 +13,9 @@ function NewKeyValuePairStructure({
       {value ? (
         <>
           <Grid item xs={middleValue === undefined ? 8 : 5}>
-            <Typography variant="h6">{label}</Typography>
+            <Typography variant="h6"
+              sx={{ fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
+            >{label}</Typography>
           </Grid>
           {!(middleValue === undefined) && (
             <Grid item xs={3} sx={{ textAlign: "center" }}>
@@ -22,7 +24,7 @@ function NewKeyValuePairStructure({
           )}
           <Grid item xs={4} sx={{ textAlign: "end" }}>
             {isRating === undefined ? (
-              <Typography variant="body2" sx={{ alignSelf: "center", flex: 1 }}>
+              <Typography variant="body2" sx={{ alignSelf: "center", flex: 1, fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}>
                 {value}
               </Typography>
             ) : (
@@ -33,7 +35,7 @@ function NewKeyValuePairStructure({
                 value={value}
                 readOnly={isRatingReadOnly && true}
                 size="small"
-                sx={{ alignSelf: "center", fontSize: "1rem !important" }}
+                sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
               />
             )}
           </Grid>
