@@ -8,7 +8,9 @@ import {
   Box,
   Chip,
   Toolbar,
-  Button, Divider
+  Button, Divider,
+  BottomNavigation,
+  BottomNavigationAction
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -65,6 +67,9 @@ import {
   updateEnquiryVerified,
   updateEnquiryVerifiedByUserId,
 } from "api/UserProfile.api";
+
+import BottomFooterConsultant from "Components/DetailsPage/BottomFooterConsultant";
+import BottomFooterUser from "Components/DetailsPage/BottomFooterUser";
 
 const tabHeight = 200;
 
@@ -783,7 +788,9 @@ const PropertyDetailsPage = ({ params }) => {
             userDetails?.role !== "superAdmin" &&
             userDetails?.role !== "broker" && (
               <>
-                <Card
+                <BottomFooterUser isLogged={isLogged} propertyData={propertyData} url={url}
+                  divRef={divRef} handlefavClick={handlefavClick} handleOpenEnquiryForm={handleOpenEnquiryForm} />
+                {/* <Card
                   sx={{
                     p: 2,
                     position: "fixed",
@@ -924,7 +931,19 @@ const PropertyDetailsPage = ({ params }) => {
                     <AssignmentIcon sx={{ mr: 1 }} />
                     Enquire
                   </Fab>
-                </Box>
+                </Box> */}
+              </>
+            )}
+
+          {
+            userDetails?.role === "broker" && (
+              <>
+                <Toolbar
+                  sx={{
+                    display: { xs: "flex", evmd: "none" },
+                  }}
+                />
+                <BottomFooterConsultant />
               </>
             )}
         </Container >
