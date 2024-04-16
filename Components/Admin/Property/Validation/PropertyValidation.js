@@ -494,6 +494,7 @@ export const Schema = Joi.object({
   publishedAt:Joi.date(),
   createdAt:Joi.date(),
   modifiedAt:Joi.date(),
+  tag: Joi.string().optional().allow(""),
   marketing: Joi.object().keys({
     image: Joi.string().required(),
     tagLine: Joi.string().required(),
