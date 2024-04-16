@@ -31,6 +31,7 @@ import { countryCodeFormating } from "utills/utills";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 // const rows = [
 //   {
@@ -109,10 +110,10 @@ const headCells = [
     id: "brokerInfo",
     label: "Broker",
   },
-  //  {
-  //   id: "property",
-  //   label: "Property",
-  // },
+  {
+    id: "action",
+    label: "Action",
+  },
 
 ];
 
@@ -162,6 +163,23 @@ function RowStructure({ row, handlePropertyView, router }) {
     }
   }
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const editProfile = (googleID) => {
+    if (googleID) {
+      router.push(listOfPages.adminUpdateProfileLinks + `/${googleID}`);
+    }
+    handleClose();
+  }
+
+
   return (
     <TableRow
       key={row.name}
@@ -190,6 +208,40 @@ function RowStructure({ row, handlePropertyView, router }) {
       <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
       <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell>
+      <TableCell sx={{ py: 0 }}>
+        <IconButton
+          onClick={handleClick}
+          disabled={
+            !user.email
+          }
+          sx={{ fontSize: "1rem !important" }}
+        >
+          <MoreVertIcon fontSize="1rem" />
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+          transformOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          sx={{
+            '& .MuiList-root': {
+              padding: '0px',
+            },
+          }}
+        >
+          <MenuItem onClick={() => editProfile(row?.user?.googleID)} >
+            Edit Profile
+          </MenuItem>
+        </Menu>
+      </TableCell>
+
 
       {/* <TableCell>{row.closedStatus}</TableCell>
       <TableCell>{row.pendingStatus}</TableCell> */}
@@ -198,6 +250,7 @@ function RowStructure({ row, handlePropertyView, router }) {
       <TableCell>
         <Chip label={row.lastModified} size="small" />
       </TableCell> */}
+
     </TableRow>
   );
 }

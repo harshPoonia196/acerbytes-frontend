@@ -30,6 +30,7 @@ import { usePathname, useRouter } from "next/navigation";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import {
   AdminMenuList,
+  CSRMenuList,
   CommonMenuList,
   ConsultantMenuList,
   ToBeRemoved,
@@ -217,7 +218,7 @@ export default function ClippedDrawer({ children }) {
       <>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <List subheader={
+          {!authRole("customerSupport") && <List subheader={
             <ListSubheader component="div" id="nested-list-subheader">
               Public
             </ListSubheader>
@@ -225,9 +226,9 @@ export default function ClippedDrawer({ children }) {
             {CommonMenuList.map((item) => (
               <DrawerListItem key={`common-${item.label}`} item={item} />
             ))}
-          </List>
+          </List>}
           <Divider />
-          <List subheader={
+          {!authRole("customerSupport") && <List subheader={
             <ListSubheader component="div" id="nested-list-subheader">
               To be removed
             </ListSubheader>
@@ -235,7 +236,7 @@ export default function ClippedDrawer({ children }) {
             {ToBeRemoved.map((item) => (
               <DrawerListItem key={`toberemoved-${item.label}`} item={item} />
             ))}
-          </List>
+          </List>}
           <Divider />
           {
             authRole("user") && (
@@ -289,7 +290,7 @@ export default function ClippedDrawer({ children }) {
           }
 
           {
-            (authRole("admin") || authRole("superAdmin") || authRole("sales") || authRole("customerSupport")) && (
+            (authRole("admin") || authRole("superAdmin") || authRole("sales")) && (
               <>
                 <List
                   subheader={
@@ -299,6 +300,25 @@ export default function ClippedDrawer({ children }) {
                   }
                 >
                   {AdminMenuList.map((item, index) => (
+                    <>
+                      <DrawerListItem key={`admin-${item.label}`} item={item} />
+                    </>
+                  ))}
+                </List>
+              </>
+            )
+          }
+          {
+            (authRole("customerSupport")) && (
+              <>
+                <List
+                  subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                      Admin
+                    </ListSubheader>
+                  }
+                >
+                  {CSRMenuList.map((item, index) => (
                     <>
                       <DrawerListItem key={`admin-${item.label}`} item={item} />
                     </>
