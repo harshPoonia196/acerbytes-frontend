@@ -12,6 +12,7 @@ import colors from "styles/theme/colors";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import EnquireNow from "./Modal/EnquireNow";
 import { useAuth } from "utills/AuthContext";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 function OverallAssesmentSection({
   refCallback,
@@ -67,8 +68,8 @@ function OverallAssesmentSection({
         <Box sx={{ p: 2, textAlign: "center" }}>
           {AllPropertyData?.overview?.projectName && (
             <>
-              <Typography variant="h3">
-                {AllPropertyData?.overview?.builder}, {AllPropertyData?.overview?.projectName}
+              <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                {AllPropertyData?.overview?.builder} {AllPropertyData?.overview?.projectName}
               </Typography>
               <Typography variant='body2'>has scored</Typography>
             </>
@@ -87,8 +88,9 @@ function OverallAssesmentSection({
           </Box>
           <Typography variant="body2" >
             Our authorized professional consultants help you decide whether to
-            buy as Investor / End user. Contact us now
+            buy as Investor / End user.
           </Typography>
+          <Chip label="Contact us now" icon={<WhatsAppIcon />} size='small' sx={{ mt: 1 }} />
           {userDetails?.role === "user" && (
             <Chip
               sx={{ mt: 2 }}
@@ -112,7 +114,7 @@ function OverallAssesmentSection({
           &nbsp;&nbsp;
           <Typography
             variant="subtitle2"
-            style={{ fontSize: "0.6rem", alignSelf: "center" }}
+            style={{ fontSize: "0.75rem", alignSelf: "center" }}
           >
             AcresByte.com acts as a inside research and marketing
             platform, doesnt take any responsibility on the accuracy

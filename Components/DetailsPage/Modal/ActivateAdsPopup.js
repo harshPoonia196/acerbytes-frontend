@@ -129,30 +129,18 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       onClose={handleClose}
     >
       <DialogTitle onClose={handleClose}>
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2 }}>
           <Box sx={{ flex: 1, alignSelf: { xs: 'start', sm: 'center' } }}>
             <Typography variant="h4" sx={{ fontWeight: 700, }}>
               Activate your link
             </Typography>
             <Typography variant="subtitle2"
-              sx={{ alignSelf: "center", color: colors.GRAY, display: { xs: 'none', sm: 'block' }, visibility: 'hidden' }}>
-              Your balance
+              sx={{ alignSelf: "center", color: colors.GRAY, display: { xs: 'block', sm: 'none' } }}>
+              Balance: {brokerBalance} points
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', alignSelf: 'end', }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: 'end' }}>
-              <CustomButton
-                startIcon={<PaymentIcon fontSize="small" />}
-                variant="outlined"
-                size="small"
-                ButtonText={brokerBalance ? brokerBalance : "35000"}
-              />
-              <Typography variant="subtitle2"
-                sx={{ alignSelf: "center", color: colors.GRAY }}>
-                Your balance
-              </Typography>
-            </Box>
-            <Box sx={{ ml: 1 }}>
+            <Box sx={{ ml: 1, textAlign: 'end' }}>
               <CustomButton
                 startIcon={<AddCardIcon fontSize="small" />}
                 variant="outlined"
@@ -160,13 +148,17 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
                 onClick={() => router.push(listOfPages.consultantPaymentHistory)}
                 ButtonText={"Add"}
               />
+              <Typography variant="subtitle2"
+                sx={{ alignSelf: "center", color: colors.GRAY, display: { xs: 'none', sm: 'block' } }}>
+                Balance: {brokerBalance} points
+              </Typography>
             </Box>
           </Box>
         </Box>
       </DialogTitle>
       <DialogContent sx={{ minWidth: 300, }}>
         <Grid container spacing={2}>
-          <NewInputFieldStructure isFull isMultiline={true} label={'Your personalized link to share'} isEdit={true} value={propertyUrl ? propertyUrl : ""}
+          <NewInputFieldStructure isFull disabled isMultiline={true} label={'Your personalized link to share'} isEdit={true} value={propertyUrl ? propertyUrl : ""}
           />
           <NewInputFieldStructure label='Title (10 words)' isFull
             name="title"
@@ -204,7 +196,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
           />
           <Typography variant="subtitle2"
             sx={{ alignSelf: "center", color: colors.GRAY }}>
-            10,000 points
+            10,000 points required
           </Typography>
         </Box>
       </DialogActions>

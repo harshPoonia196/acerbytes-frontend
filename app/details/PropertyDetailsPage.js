@@ -740,7 +740,7 @@ const PropertyDetailsPage = ({ params }) => {
                           variant="body2"
                           sx={{ flex: 1, }}
                         >
-                          Are you a property consultant, let Customers reach you
+                          Are you a <span style={{ fontWeight: 700 }}>Property Consultant?</span> let Customers reach you
                         </Typography>
                       </Box>
                       <Box sx={{ alignSelf: { xs: 'end' } }}>

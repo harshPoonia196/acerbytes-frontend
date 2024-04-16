@@ -23,6 +23,7 @@ import { ToasterMessages } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { formatAmount, formatPoints } from "utills/CommonFunction";
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
   const router = useRouter();
@@ -115,7 +116,8 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
       </DialogTitle>
       <DialogContent>
         <Box sx={{ textAlign: "center" }}>
-          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+          <Typography variant="h6">Order number</Typography>
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
             <Typography variant="h3">{orderNumber}</Typography>
             <Box>
               <Tooltip title="Copy">
@@ -128,17 +130,19 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
               </Tooltip>
             </Box>
           </Box>
+          <Typography sx={{ fontSize: "1rem" }}>generated for</Typography>
           <Typography variant="h3">
-            <span style={{ fontSize: "1rem" }}>for</span>&nbsp;
             {formatPoints(creditRequest?.point || 0)}&nbsp;
-            <span style={{ fontSize: "1rem" }}>credits (points)</span>
           </Typography>
-          <Typography variant="h6">
-            is pending for payment for request number
+          <Typography sx={{ fontSize: "1rem", pb: 2 }}>credits (points)</Typography>
+          <Box sx={{ my: 2 }}>
+            <Chip icon={<AutorenewIcon />} label='Payment pending' size='small' color='warning' />
+          </Box>
+          <Typography variant="h4">
+            You need to make payment of
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", my: 2, mt: 0 }}>
             <Typography variant="h2" sx={{ fontWeight: 600 }}>
-              <span style={{ fontSize: "1rem" }}>Rs&nbsp;</span>
               {formatAmount(creditRequest?.amount || 0)}
             </Typography>
             <Box sx={{ alignSelf: "center" }}>
@@ -168,7 +172,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
             loadingPosition="start"
             variant="contained"
           >
-            Pay here
+            Click here to pay
           </LoadingButton>
         </Box>
         <Divider sx={{ my: 2, borderColor: "gainsboro" }} />
@@ -194,7 +198,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
           </li>
         </ul>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 }
 
