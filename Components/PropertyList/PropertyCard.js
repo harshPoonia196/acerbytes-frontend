@@ -118,19 +118,7 @@ function PropertyCard(props) {
               // onClick={() => router.push("/research")}
               onClick={() => router.push(`/details/${propertyUrl}`)} />
           </Grid>
-          <Grid item xs={8} sm={6} lg={2.5}
-            onClick={() => router.push(`/details/${propertyUrl}`)}
-          >
-            <Typography variant="caption">
-              {(layoutCount) === 1
-                ? `${layoutCount} layout`
-                : `${layoutCount} layouts`}
-            </Typography>
-            <Typography variant="subtitle2">
-              {layoutData.join(", ")}
-            </Typography>
-          </Grid>
-          <Grid item xs={8} sm={6} lg={3}
+          <Grid item xs={8} sm={8} lg={3}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             {(propertyDetails?.unitsPlan?.averagePrice ||
@@ -149,6 +137,19 @@ function PropertyCard(props) {
                 </Typography>
               )}
           </Grid>
+          <Grid item xs={8} sm={4} lg={2.5}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
+          >
+            <Typography variant="caption">
+              {(layoutCount) === 1
+                ? `${layoutCount} layout`
+                : `${layoutCount} layouts`}
+            </Typography>
+            <Typography variant="subtitle2">
+              {layoutData.join(", ")}
+            </Typography>
+          </Grid>
+
           <Grid item xs={8} sm={4} lg={2}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
