@@ -8,6 +8,7 @@ import React from 'react';
 import colors from 'styles/theme/colors';
 import { listOfPages } from 'Components/NavBar/Links';
 import { useRouter } from 'next/navigation';
+import { boxShadowTop } from 'utills/Constants';
 
 function BottomFooterUser({ divRef, handlefavClick, isLogged, propertyData, url, handleOpenEnquiryForm }) {
 
@@ -32,6 +33,7 @@ function BottomFooterUser({ divRef, handlefavClick, isLogged, propertyData, url,
                     left: 0,
                     zIndex: 1000,
                     display: { xs: "block", evmd: "none" },
+                    boxShadow: boxShadowTop
                 }}
             >
                 <BottomNavigation

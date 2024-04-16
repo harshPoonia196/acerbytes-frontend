@@ -225,6 +225,11 @@ const shortPriceFormatter = (value) => {
   return value;
 }
 
+const getFirstCharacterOfFirstOfFullName = (fname) => {
+  let listOfWords = fname.split(' ');
+  return listOfWords[0].charAt(0) + listOfWords[listOfWords.length - 1].charAt(0)
+}
+
 export {
   upperCaseName,
   capitalLizeName,
@@ -246,5 +251,6 @@ export {
   yearList,
   monthList,
   getColorForProgressBar,
-  shortPriceFormatter
+  shortPriceFormatter,
+  getFirstCharacterOfFirstOfFullName
 };

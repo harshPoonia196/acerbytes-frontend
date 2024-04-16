@@ -23,6 +23,7 @@ import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import { countryCodeFormating } from "utills/utills";
+import { getFirstCharacterOfFirstOfFullName } from "utills/CommonFunction";
 
 const labels = (rating) => {
   if (rating <= 0.5) {
@@ -104,10 +105,12 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
     <Card sx={{ position: "relative" }}>
       <Box sx={{ display: "flex", p: 2 }}>
         <Avatar
-          alt="Remy Sharp"
-          src = {broker.profilePicture}
+          alt={titleCase(broker?.fullName)}
+          src={broker.profilePicture}
           sx={{ mr: 2, width: 56, height: 56 }}
-        />
+        >
+          {getFirstCharacterOfFirstOfFullName(broker?.fullName)}
+        </Avatar>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">
             {titleCase(broker?.fullName)}
@@ -210,8 +213,8 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           <CallIcon fontSize="small" />
         </IconButton>
       </Box>) :
-        <Box sx={{ position: "absolute", top: 8, right: 8 , cursor: "pointer", color: "blue"}} onClick={handleCallClick} >
-          {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}          
+        <Box sx={{ position: "absolute", top: 8, right: 8, cursor: "pointer", color: "blue" }} onClick={handleCallClick} >
+          {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}
         </Box>
       }
       {/* // : (
