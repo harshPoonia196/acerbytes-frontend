@@ -175,4 +175,12 @@ export const AdminMenuList = [
 
 ];
 
+export const CSRMenuList = [
+  {
+    label: "Leads received",
+    route: listOfPages.adminEnquiries,
+    icon: <RecentActorsIcon fontSize="small" />,
+  }
+];
+
 
