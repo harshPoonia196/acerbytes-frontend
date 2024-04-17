@@ -496,6 +496,7 @@ function AddProperty() {
       sectionScore: 0
     },
     consultants: [],
+    tag:'',
     overallAssessment: {
       score: 0,
       scoredRating: 0,
@@ -710,7 +711,6 @@ function AddProperty() {
     // }
 
     if (secondKeyName === "assessment" || firstKeyName === "amenitiesData") {
-
       let difference =
         +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(incomingValue);
       let compare =
@@ -866,9 +866,12 @@ function AddProperty() {
         [firstKeyName]: { ...form?.[firstKeyName], ...innerObj },
       });
     } else if (firstKeyName === "consultant") {
-      console.log('cponsul',e)
       setForm({ ...form, consultants: [...e] });
-    } else if (firstKeyName === "unitsPlan") {
+   
+   
+    } 
+   
+    else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
     } else if (score === true) {
       let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
@@ -1059,9 +1062,15 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
           return updatedForm;
         });
       }
+      // tagline will be added here
       else if (firstKeyName === "marketing" && secondKeyName === "image") {
+      //  let projectType=form.projectType.map(item => item.value).join('-');
+        // setForm({
+        //   ...form,tag:`${form.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} `,marketing: { ...form.marketing, image: e }
+        // })
         setForm({
-          ...form, marketing: { ...form.marketing, image: e }
+          ...form,
+          marketing: { ...form.marketing, image: e }
         })
       }
       else if (firstKeyName === "layout" && secondKeyName === "area") {
@@ -1127,49 +1136,97 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
     // let totalRating = form.overview.status ==="underconstruction"? 75:80;
     let total = totalRating
-    let totalScored;
-    let checkField = firstKeyName === "location" ? locationStarsScore : amentiesStarsScore
-    const findItemByKey = (array, searchKey) => {
-      return array.find(item => Object.keys(item)[0] === searchKey);
+    let checkField = firstKeyName.toLowerCase() === "location" ? locationStarsScore : amentiesStarsScore
+        const findItemByKey = (array, searchKey) => {
+      return array.find(item => item === searchKey);
     };
     const foundItem = findItemByKey(checkField, autoFillField);
-    if (foundItem) {
-      let difference =
-        foundItem?.[autoFillField] -
-        parseInt(e.target.value);
-      let compare =
-        foundItem?.[autoFillField] <
-        parseInt(e.target.value);
-      if (compare) {
-        totalScored =
-          form.overallAssessment.scoredRating + Math.abs(difference);
-      } else {
-        totalScored =
-          form.overallAssessment.scoredRating - Math.abs(difference);
-      }
-    }
-    else {
-      let fieldName = autoFillField
-      if (firstKeyName === "amenitiesData") {
 
-        setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
+if(!foundItem){
+  let fieldName = autoFillField
+      if (firstKeyName === "amenitiesData") {
+        total=totalRating+5
+        setTotalRating(total)
+        setAmentiesStarScore([...amentiesStarsScore,  fieldName ])
+        // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
       }
       else {
-        setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
+        total=totalRating+5
+        setTotalRating(total)
+        / setLocationStarsScore([...locationStarsScore,  fieldName ])
+
+        // setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
       }
-      total = totalRating + 5
-      setTotalRating(total)
-      totalScored =
-        form.overallAssessment.scoredRating + parseInt(e.target.value)
-    }
+}
+    let totalScored;
+
+    let difference =
+    +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(e.target.value);
+  let compare =
+    form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(e.target.value);
+  if (compare) {
+    totalScored =
+      +form.overallAssessment.scoredRating+ Math.abs(difference);
+  } else {
+    totalScored =
+      +form.overallAssessment.scoredRating - Math.abs(difference);
+  }
+
+
+    // let checkField = firstKeyName === "location" ? locationStarsScore : amentiesStarsScore
+    // const findItemByKey = (array, searchKey) => {
+    //   return array.find(item => Object.keys(item)[0] === searchKey);
+    // };
+    // const foundItem = findItemByKey(checkField, autoFillField);
+    // console.log(foundItem,'found',checkField,autoFillField,e.target.value)
+    // if (foundItem) {
+    //   let difference =
+    //     foundItem?.[autoFillField] -
+    //     parseInt(e.target.value);
+    //   let compare =
+    //     foundItem?.[autoFillField] <
+    //     parseInt(e.target.value);
+    //     console.log(compare,'compare')
+    //   if (compare) {
+    //     console.log(compare,' greater')
+    //     totalScored =
+    //       form.overallAssessment.scoredRating + Math.abs(difference);
+    //   } else {
+    //     console.log(compare,' lesser',form.overallAssessment.scoredRating, difference)
+    //     totalScored =
+    //       form.overallAssessment.scoredRating - Math.abs(difference);
+    //   }
+    // }
+    // else {
+    //   console.log(foundItem,'inselse',checkField,autoFillField)
+
+    //   let fieldName = autoFillField
+    //   if (firstKeyName === "amenitiesData") {
+
+    //     setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
+    //   }
+    //   else {
+    //     setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
+    //   }
+    //   total = totalRating + 5
+    //   setTotalRating(total)
+    //   totalScored =
+    //     form.overallAssessment.scoredRating + parseInt(e.target.value)
+    // }
+
     let calc = (totalScored / total) * 100;
 
     return { calc, totalScored }
   }
 
   const validateForm = (publish) => {
+    let projectType=form.overview.projectType.map(item => item.value).join('-');
+    setForm({
+      ...form,tag:`${form.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} `
+    })
+
+
     const { error } = Schema?.validate(form, { abortEarly: false });
-console.log(totalRating,'totalss')
 
     let store = [
       "constructionQuality",
@@ -1261,8 +1318,8 @@ console.log(totalRating,'totalss')
             abortEarly: false,
           });
           if (!error) {
-            setForm({ ...form, published: true })
-            CreateProperty({ ...form, published: true })
+            setForm({ ...form, published: true,tag:`${form.overview.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} ` })
+            CreateProperty({ ...form, published: true,tag:`${form.overview.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} ` })
               .then((res) => {
                 openSnackbar(`Property Published successfully`, "success");
                 routerNavigation.push(`/admin/property-list`);
@@ -1276,7 +1333,9 @@ console.log(totalRating,'totalss')
           }
         }
         else {
-          CreateProperty({ ...form })
+          CreateProperty({ ...form, tag:`${form.overview.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} ` })
+
+          // CreateProperty({ ...form })
             .then((res) => {
               openSnackbar(`Property added successfully`, "success");
               routerNavigation.push(`/admin/property-list`);
