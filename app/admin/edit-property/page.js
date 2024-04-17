@@ -765,23 +765,32 @@ const [hide,setHide]=useState([])
     }
 
     else {
-     
-      let difference =
+      let difference
+     let compare
+     if(secondKeyName==="constructionProgress"){
+       difference = 
+      (form?.[firstKeyName]?.[secondKeyName]=="" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() ==="delay"?0:5) - parseInt(incomingValue);
+     compare =
+    (form?.[firstKeyName]?.[secondKeyName]=="" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() ==="delay"?0:5) < parseInt(incomingValue);
+     }
+     else{
+       difference =
       +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
-    let compare =
+     compare =
     form?.[firstKeyName]?.[secondKeyName] < parseInt(incomingValue);
+     }
+
     if (compare) {
       totalScored =
       +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
     } else {
+
       totalScored =
       +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
     }
     }
-    // else {
-    //   totalScored =
-    //     form.overallAssessment.scoredRating + parseInt(incomingValue);
-    // }
+
+
     let calc = (totalScored / totalRatingModule) * 10;
 
     if(seperateCalc){

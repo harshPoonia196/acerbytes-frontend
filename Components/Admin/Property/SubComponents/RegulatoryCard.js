@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { getAllOptions } from "api/Property.api";
+import colors from 'styles/theme/colors';
+
 import {
     transformDocuments
 } from "utills/CommonFunction";
@@ -72,6 +74,34 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                     >
                         Regulatory clearance
                     </Typography>
+
+                    <Box sx={{ alignSelf: "center" }}>
+              <Card
+                sx={{
+                  width: "fit-content",
+                  backgroundColor: colors?.BLACK,
+                  borderRadius: "4px !important",
+                  m: 0,
+                  ml: "auto !important",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 600,
+                    width: "fit-content",
+                    color: "white",
+                    p: 0.5,
+                    px: 1,
+                    cursor: "pointer",
+                  }}
+                >
+                  {form?.regulatoryClearance.sectionScore
+                    ? form?.regulatoryClearance.sectionScore.toFixed()
+                    : "00"}
+                </Typography>
+              </Card>
+            </Box>
 
                 </Box>
                 <Divider />

@@ -25,6 +25,36 @@ function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc,scoreChange
                     >
                         Value for money
                     </Typography>
+
+                    <Box sx={{ alignSelf: "center" }}>
+              <Card
+                sx={{
+                  width: "fit-content",
+                  backgroundColor: colors?.BLACK,
+                  borderRadius: "4px !important",
+                  m: 0,
+                  ml: "auto !important",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 600,
+                    width: "fit-content",
+                    color: "white",
+                    p: 0.5,
+                    px: 1,
+                    cursor: "pointer",
+                  }}
+                >
+                  {form?.valueForMoney.sectionScore
+                    ? form?.valueForMoney.sectionScore.toFixed()
+                    : "00"}
+                </Typography>
+              </Card>
+            </Box>
+
+
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>

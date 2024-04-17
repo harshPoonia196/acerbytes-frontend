@@ -25,7 +25,6 @@ function EditFacilitiesCard({ isEdit, form, handleChange, handleRating,formUpdat
 
     let [amenitiesData,setAmenitiesData]=useState(form.amenitiesData)
     useEffect(()=>{
-        console.log(form.amenitiesData,'see')
         setAmenitiesData(form.amenitiesData)
     },[])
 
