@@ -348,6 +348,8 @@ const listOfPropertyDetailsTab = [
   },
 ];
 
+export const showStarFor =    ["RERA approved","CC","OC","Construction Progress","Authority registration","Government Loan","Private Bank loan","Fresh","Resale"]
+
 const reactQueryKey = {
   broker: {
     profile: (uniqueKey) => "broker-profile-" + uniqueKey,

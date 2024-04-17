@@ -89,6 +89,15 @@ function AddProperty() {
   const [locationStars,setLocationStars]=useState([]);
   const [regulatoryCount,setRegulatoryCount]=useState(0)
   const[totalRating,setTotalRating]=useState(80)
+  const [tagField,setTagField]=useState({
+    builder:"",
+    projectName:"",
+    projectCategory:"",
+    projectType:"",
+    area:"",
+    sector:"",
+    city:""
+  })
   const [locationStarsScore,setLocationStarsScore]=useState([]);
   const [isLoading, setLoading] = useState(false);
   const [formUpdated, setFormUpdated] = useState(false);
@@ -219,7 +228,18 @@ function AddProperty() {
             delete data.__v;
             handleUIHide(data.overview.projectType, "overview", "projectType")
             setEditForm(true);
-            console.log(data,'daaaa')
+
+           let assignTagLine = {
+              builder:data.overview.builder,
+              projectName:data.overview.projectName,
+              projectCategory:data.overview.projectCategory,
+              projectType:data.overview.projectType,
+              area:data.location.area,
+              sector:data.location.sector,
+              city:data.location.city
+            }
+
+            setTagField(assignTagLine)
             setForm({ ...data });
 
             let countLocationItems = countLocationAssessmentItems(data)
@@ -392,12 +412,13 @@ setCities(res.data.data[0])
       setLoading(false);
     }
   };
+
   React.useEffect(() => {
     if (detailsPropertyId) {
-      // setLoading(true)
       getProp();
       setEditPage(true);
       getAllOptionDataList()
+
     }
     else{
       getAllOptionDataList()
@@ -765,23 +786,32 @@ const [hide,setHide]=useState([])
     }
 
     else {
-     
-      let difference =
+      let difference
+     let compare
+     if(secondKeyName==="constructionProgress"){
+       difference = 
+      (form?.[firstKeyName]?.[secondKeyName]=="" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() ==="delay"?0:5) - parseInt(incomingValue);
+     compare =
+    (form?.[firstKeyName]?.[secondKeyName]=="" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() ==="delay"?0:5) < parseInt(incomingValue);
+     }
+     else{
+       difference =
       +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
-    let compare =
+     compare =
     form?.[firstKeyName]?.[secondKeyName] < parseInt(incomingValue);
+     }
+
     if (compare) {
       totalScored =
       +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
     } else {
+
       totalScored =
       +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
     }
     }
-    // else {
-    //   totalScored =
-    //     form.overallAssessment.scoredRating + parseInt(incomingValue);
-    // }
+
+
     let calc = (totalScored / totalRatingModule) * 10;
 
     if(seperateCalc){
@@ -1025,7 +1055,31 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
           },
         },
       });
-    } else {
+    } 
+    else if(secondKeyName.toLowerCase() === "projecttype" ){
+      let  projectType=e.map(item => item.value).join('-');
+     let formattedTagLine= formatTagLine(projectType,secondKeyName)
+       setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e }
+        ,marketing: {...form.marketing,tagLine:formattedTagLine}
+      });
+     }
+    else if(secondKeyName.toLowerCase() === "builder" || secondKeyName.toLowerCase() ==="city"){
+      let formattedTagLine= formatTagLine(e,secondKeyName)
+      setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e }
+        ,marketing: {...form.marketing,tagLine:formattedTagLine}
+      });
+    
+    }
+    else if(secondKeyName.toLowerCase() === "projectcategory" || secondKeyName.toLowerCase() === "state"|| secondKeyName.toLowerCase() === "area"||secondKeyName.toLowerCase() === "projectname"){
+        let formattedTagLine= formatTagLine(e.target.value,secondKeyName)
+        setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e.target.value }
+          ,marketing: {...form.marketing,tagLine:formattedTagLine}
+        });
+      
+    }
+    
+    
+    else {
       if (thirdKeyName === "checked") {
         setForm((prevForm) => {
           const updatedForm = { ...prevForm };
@@ -1146,7 +1200,24 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
     }
   };
 
+  let formatTagLine = (value,key)=>{
 
+    let obj = {
+      ...tagField,[key]:value
+    }
+    let output = '';
+    setTagField(obj)
+    Object.entries(obj).forEach(([key, value]) => {
+      if (value) {
+        if (output) {
+          output += "-";
+        }
+        output += value;
+      }
+    });
+
+    return output
+  }
 
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
     let total = totalRating
