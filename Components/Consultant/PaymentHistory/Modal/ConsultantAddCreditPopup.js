@@ -67,7 +67,7 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
                         variant="contained"
                         size="small"
                         onClick={() => handleOpenCreditRequestPaymentPopup(credit)}
-                        ButtonText={`Get ${formatPoints(credit.point)}`}
+                        ButtonText={`Get ${formatPoints(credit.point)} pts`}
                       />
                     </Box>
                   </Box>

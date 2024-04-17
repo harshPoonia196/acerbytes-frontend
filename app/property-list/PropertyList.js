@@ -69,8 +69,8 @@ function PropertyList({ params }) {
   const handleSearchButtonClick = () => {
     performSearch();
     setCurrentPage(1);
-};
- 
+  };
+
   const getUserPropertyList = async (
     pageOptions,
     // searchTerm,
@@ -116,8 +116,8 @@ function PropertyList({ params }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -135,8 +135,8 @@ function PropertyList({ params }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -148,7 +148,7 @@ function PropertyList({ params }) {
     try {
       let res = await getLocations();
       if (res.status === 200) {
-        const filteredCityDetails = res?.data?.data?.filter(cityDetail => 
+        const filteredCityDetails = res?.data?.data?.filter(cityDetail =>
           newdata?.some(item => item.city === cityDetail.city));
         let transformLocation = transformDocumentsLocation(filteredCityDetails);
         setLocationData({ ...transformLocation });
@@ -173,8 +173,8 @@ function PropertyList({ params }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -190,10 +190,10 @@ function PropertyList({ params }) {
     } else if (key === "category") {
       setIsDisablePropertyType(false);
       setIsDisableLayoutType(true);
-    } else if (key === "propertyType"  && selectedOptions.category === 'Residential') {
+    } else if (key === "propertyType" && selectedOptions.category === 'Residential') {
       setIsDisableLayoutType(false);
       setLayoutTypeApplicable(value);
-    } 
+    }
     const updatedValue = (prevOptions) => {
       const tempObje = { ...prevOptions };
       if (key === "category") {
@@ -592,7 +592,7 @@ function PropertyList({ params }) {
                 <CustomSearch
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value.toLowerCase())}
-                  onSearchButtonClick={handleSearchButtonClick} 
+                  onSearchButtonClick={handleSearchButtonClick}
                   inputRef={inputRef}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
@@ -606,7 +606,7 @@ function PropertyList({ params }) {
               {count?.totalCount === 0 ? (
                 <NoDataCard />
               ) : (
-                <Grid container spacing={0.25}>
+                <Grid container spacing={1}>
                   {property?.map((propertyDetails) => (
                     <Grid item xs={12}>
                       <PropertyCard

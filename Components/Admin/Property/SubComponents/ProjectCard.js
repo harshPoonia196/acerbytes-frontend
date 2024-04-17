@@ -95,14 +95,14 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide,select
                                 {form.published ? "Published" : "Draft"}
                             </Typography>
                             <Typography variant="body1" sx={{ mt: 1 }}>
-                                {form.published ? formatDate(form.publishedAt) : 'Awaitng action'}
+                                {form.published ? formatDate(form.createdAt) : 'Awaitng action'}
                             </Typography>
                         </Box>
                     </Box>
                 </Card>
             </Grid>}
-            <Grid item xs={12}>
-                <Card>
+            <Grid item xs={12}>    
+                <Card>           
                     <Box sx={{ display: "flex", p: 2, py: 1 }}>
                         <Typography
                             variant="subtitle1"
@@ -155,7 +155,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide,select
                             isEdit={isEdit}
                             value={projectName}
                             error={errors?.["overview.projectName"]}
-                            handleChange={(e) => handleChange(e, "overview", "projectName")}
+                            handleChange={(e) =>{ handleChange(e, "overview", "projectName")}}
                         />
                         <NewSelectTextFieldStructure
                             label="Project category"

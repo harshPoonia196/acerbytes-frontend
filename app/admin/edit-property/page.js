@@ -230,6 +230,7 @@ function AddProperty() {
                 let names = AmentiesCount.map(item => item.name)
                 updateTotalCount += (AmentiesCount.length * 5)
                 // setTotalRating(totalRating+count)
+                // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
                 setAmentiesStarScore([...amentiesStarsScore, ...names])
             }
             if (countLocationItems.length > 0) {
@@ -277,6 +278,7 @@ function AddProperty() {
               type: "consultant",
               phone:i.phone,
               rating: i.rating,
+              profilePicture:i?.brokerPic?.profilePicture?i?.brokerPic?.profilePicture:"",
               id: i._id,
             };
             return u;
@@ -535,6 +537,7 @@ setCities(res.data.data[0])
       },
     },
     published: false,
+    tag:"",
     marketing: {
       image:"",
       tagLine: "",
@@ -1032,6 +1035,7 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
             isRating
           ) {
             if (firstKeyName === 'location' || firstKeyName === "amenitiesData") {
+
               let getCalc = amentieScoreCalc(e, firstKeyName, secondKeyName, autoFillField)
 
               let locationAssesment = moduleScoreCalc(e, firstKeyName, secondKeyName)
@@ -1081,11 +1085,12 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
           return updatedForm;
         });
       } 
-      else if(firstKeyName==="marketing" && secondKeyName==="image"){
-setForm({
-  ...form,marketing:{...form.marketing,image:e}
-})
-      }
+     // tagline will be added here
+     else if(firstKeyName==="marketing" && secondKeyName==="image"){
+      setForm({
+        ...form,marketing:{...form.marketing,image:e}
+      })
+            }
       else if (firstKeyName === "layout" && secondKeyName === "area") {
 
         let totalArea = +e.target.value 
@@ -1141,47 +1146,87 @@ setForm({
     }
   };
 
-  let amentieScoreCalc=(e,firstKeyName,secondKeyName,autoFillField)=>{
-    // let totalRating = form.overview.status ==="underconstruction"? 75:80;
+
+
+  let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
     let total = totalRating
-    let totalScored;
-    let checkField = firstKeyName === "location" ? locationStarsScore :amentiesStarsScore
-    const findItemByKey = (array, searchKey) => {
-      return array.find(item => Object.keys(item)[0] === searchKey);
+    let checkField = firstKeyName.toLowerCase() === "location" ? locationStarsScore : amentiesStarsScore
+        const findItemByKey = (array, searchKey) => {
+      return array.find(item =>item === searchKey);
     };
     const foundItem = findItemByKey(checkField, autoFillField);
-    if (foundItem) {
-      let difference =
-      foundItem?.[autoFillField] -
-        parseInt(e.target.value);
-      let compare =
-      foundItem?.[autoFillField] <
-        parseInt(e.target.value);
-      if (compare) {
-        totalScored =
-          form.overallAssessment.scoredRating + Math.abs(difference);
-      } else {
-        totalScored =
-          form.overallAssessment.scoredRating - Math.abs(difference);
+if(!foundItem){
+  let fieldName = autoFillField
+      if (firstKeyName === "amenitiesData") {
+        total=totalRating+5
+        setTotalRating(total)
+        setAmentiesStarScore([...amentiesStarsScore,fieldName])
+        // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
       }
-    } 
-    else {
-      let fieldName = autoFillField
-      if(firstKeyName==="amenitiesData"){
-      
-        setAmentiesStarScore([...amentiesStarsScore,{[fieldName]:e.target.value}])
+      else {
+        total=totalRating+5
+        setTotalRating(total)
+        setLocationStarsScore([...locationStarsScore,  fieldName ])
+        // setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
       }
-      else{
-       setLocationStarsScore([...locationStarsScore,{[fieldName]:e.target.value}]) 
-      }
-     total = totalRating + 5
-     setTotalRating(total)
-      totalScored =
-      form.overallAssessment.scoredRating + parseInt(e.target.value)
-    } 
+}
+    let totalScored;
+
+    let difference =
+    +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(e.target.value);
+  let compare =
+    form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(e.target.value);
+  if (compare) {
+    totalScored =
+      +form.overallAssessment.scoredRating+ Math.abs(difference);
+  } else {
+    totalScored =
+      +form.overallAssessment.scoredRating - Math.abs(difference);
+  }
+
+
+    // let checkField = firstKeyName === "location" ? locationStarsScore : amentiesStarsScore
+    // const findItemByKey = (array, searchKey) => {
+    //   return array.find(item => Object.keys(item)[0] === searchKey);
+    // };
+    // const foundItem = findItemByKey(checkField, autoFillField);
+    // console.log(foundItem,'found',checkField,autoFillField,e.target.value)
+    // if (foundItem) {
+    //   let difference =
+    //     foundItem?.[autoFillField] -
+    //     parseInt(e.target.value);
+    //   let compare =
+    //     foundItem?.[autoFillField] <
+    //     parseInt(e.target.value);
+    //     console.log(compare,'compare')
+    //   if (compare) {
+    //     console.log(compare,' greater')
+    //     totalScored =
+    //       form.overallAssessment.scoredRating + Math.abs(difference);
+    //   } else {
+    //     console.log(compare,' lesser',form.overallAssessment.scoredRating, difference)
+    //     totalScored =
+    //       form.overallAssessment.scoredRating - Math.abs(difference);
+    //   }
+    // }
+    // else {
+    //   console.log(foundItem,'inselse',checkField,autoFillField)
+
+    //   let fieldName = autoFillField
+    //   if (firstKeyName === "amenitiesData") {
+
+    //     setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
+    //   }
+    //   else {
+    //     setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
+    //   }
+    //   total = totalRating + 5
+    //   setTotalRating(total)
+    //   totalScored =
+    //     form.overallAssessment.scoredRating + parseInt(e.target.value)
     let calc = (totalScored / total) * 100;
 
-    return {calc,totalScored}
+    return { calc, totalScored }
   }
 
   const validateForm = (publish) => {

@@ -11,6 +11,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { boxShadowTop } from 'utills/Constants';
 
 function Footer({ paymentPage }) {
     const history = useRouter()
@@ -33,7 +34,7 @@ function Footer({ paymentPage }) {
     return (
         <Card sx={{
             position: 'fixed', bottom: 0, p: 2, width: '100%', display: 'flex',
-            boxShadow: '-1px -2px 6px -2px gainsboro!important',
+            boxShadow: boxShadowTop,
         }}>
             <Box sx={{ flex: 1, alignSelf: 'center' }}>
                 {

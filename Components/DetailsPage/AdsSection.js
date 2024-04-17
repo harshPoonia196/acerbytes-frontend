@@ -108,9 +108,10 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                 <Typography variant='body2' noWrap sx={{ p: 2, py: 1 }}>{description}</Typography>
                 {/* <Divider sx={{ borderColor: 'gainsboro' }} /> */}
             </Card>
-            {isConsultant && <IconButton sx={{ position: 'absolute', top: 0, right: 0 }} onClick={handleOpenPersonalizeAds}>
-                <Close fontSize='small' />
-            </IconButton>}
+            {isConsultant &&
+                <IconButton size="small" sx={{ position: 'absolute', top: 0, right: 0 }} onClick={handleOpenPersonalizeAds}>
+                    <Close sx={{ fontSize: '0.75rem' }} />
+                </IconButton>}
             {
                 isConsultant ?
                     <Box sx={{ pb: 1, pt: 0, display: 'flex', gap: 1, flexDirection: { xs: 'column', evmd: 'row' } }}>

@@ -3,6 +3,7 @@ import AddLinkIcon from '@mui/icons-material/AddLink';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React from 'react';
+import { boxShadowTop } from 'utills/Constants';
 
 function BottomFooterConsultant() {
     const [value, setValue] = React.useState(0);
@@ -26,6 +27,7 @@ function BottomFooterConsultant() {
                     left: 0,
                     zIndex: 1000,
                     display: { xs: "block", evmd: "none" },
+                    boxShadow: boxShadowTop
                 }}
             >
                 <BottomNavigation
@@ -34,10 +36,10 @@ function BottomFooterConsultant() {
                         justifyContent: 'space-evenly',
                         '& .MuiBottomNavigationAction-root': { padding: 1, width: '100%' },
                         '& .MuiBottomNavigationAction-label': {
-                            fontSize: { xs: '0.6rem !important', sm: '0.8rem !important' },
+                            fontSize: { xs: '0.75rem !important', sm: '0.8rem !important' },
                         },
                         '& .Mui-selected': {
-                            fontSize: { xs: '0.6rem !important', sm: '0.8rem !important' },
+                            fontSize: { xs: '0.75rem !important', sm: '0.8rem !important' },
                         },
                         '& .MuiSvgIcon-root': {
                             fontSize: '1.25rem',
@@ -51,7 +53,7 @@ function BottomFooterConsultant() {
                     <BottomNavigationAction sx={{ flex: '0 1 auto', minWidth: 0 }}
                         label="Activate link" icon={<AddLinkIcon />} />
                     <BottomNavigationAction sx={{ flex: '0 1 auto', minWidth: 0 }}
-                        label="Enquiries" icon={<FormatListBulletedIcon />} />
+                        label="View leads" icon={<FormatListBulletedIcon />} />
                     <BottomNavigationAction sx={{ flex: '0 1 auto', minWidth: 0 }}
                         label="More" icon={<MoreHorizIcon />} onClick={handleClick} />
                     <Menu
