@@ -69,8 +69,8 @@ function PropertyList({ params }) {
   const handleSearchButtonClick = () => {
     performSearch();
     setCurrentPage(1);
-};
- 
+  };
+
   const getUserPropertyList = async (
     pageOptions,
     // searchTerm,
@@ -116,8 +116,8 @@ function PropertyList({ params }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -135,8 +135,8 @@ function PropertyList({ params }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -148,7 +148,7 @@ function PropertyList({ params }) {
     try {
       let res = await getLocations();
       if (res.status === 200) {
-        const filteredCityDetails = res?.data?.data?.filter(cityDetail => 
+        const filteredCityDetails = res?.data?.data?.filter(cityDetail =>
           newdata?.some(item => item.city === cityDetail.city));
         let transformLocation = transformDocumentsLocation(filteredCityDetails);
         setLocationData({ ...transformLocation });
@@ -173,8 +173,8 @@ function PropertyList({ params }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -190,10 +190,10 @@ function PropertyList({ params }) {
     } else if (key === "category") {
       setIsDisablePropertyType(false);
       setIsDisableLayoutType(true);
-    } else if (key === "propertyType"  && selectedOptions.category === 'Residential') {
+    } else if (key === "propertyType" && selectedOptions.category === 'Residential') {
       setIsDisableLayoutType(false);
       setLayoutTypeApplicable(value);
-    } 
+    }
     const updatedValue = (prevOptions) => {
       const tempObje = { ...prevOptions };
       if (key === "category") {
@@ -385,198 +385,219 @@ function PropertyList({ params }) {
             )}
           </Card>
           <Grid container spacing={2} columns={36}>
-            {/* commercial,residential */}{" "}
-            {/*please delete this after done and same for all below*/}
-            <NewAutoCompleteInputStructure
-              xs={18}
-              sm={12}
-              md={6}
-              label="Category"
-              list={selectOption?.projectCategory}
-              handleChange={(event, value) =>
-                handleOptionChange("category", value)
-              }
-              value={selectedOptions.category ? selectedOptions.category : ""}
-              clearable
-            />
-            {/* Flat,shop */}
-            <NewAutoCompleteInputStructure
-              xs={18}
-              sm={12}
-              md={6}
-              label="Property type"
-              disabled={isDisablePropertyType}
-              list={
-                selectedOptions?.category === "Commercial"
-                  ? selectOption?.commercialProjectType
-                  : selectOption?.residentialProjectType
-              }
-              handleChange={(event, value) =>
-                handleOptionChange("propertyType", value)
-              }
-              value={
-                selectedOptions?.propertyType
-                  ? selectedOptions?.propertyType
-                  : ""
-              }
-              clearable
-            />
-            {/* 1BHK, 2BHK */}
-            <NewAutoCompleteInputStructure
-              xs={18}
-              sm={12}
-              md={6}
-              label="Layout type"
-              disabled={isDisableLayoutType}
-              list={
-                selectOption?.layoutTypeApplicable?.includes(
-                  selectedOptions?.propertyType
-                )
-                  ? selectOption.layoutType
-                  : ""
-              }
-              handleChange={(event, value) =>
-                handleOptionChange("unitType", value)
-              }
-              value={selectedOptions.unitType ? selectedOptions.unitType : ""}
-              clearable
-            />
-            {/* Noida,gurgoan */}
-            <NewAutoCompleteInputStructure
-              xs={18}
-              sm={12}
-              md={6}
-              label="City"
-              list={cities}
-              handleChange={(event, value) => handleOptionChange("city", value)}
-              value={selectedOptions.city ? selectedOptions.city : ""}
-              clearable
-            />
-            {/* Sector/area */}
-            <NewAutoCompleteInputStructure
-              xs={18}
-              sm={12}
-              md={6}
-              label="Location"
-              disabled={locationDisable}
-              list={selectedCity ? locationData[selectedCity] : []}
-              handleChange={(event, value) =>
-                handleOptionChange("location", value)
-              }
-              value={selectedOptions.location ? selectedOptions.location : ""}
-              clearable
-            />
-            <NewAutoCompleteInputStructure
-              xs={18}
-              sm={12}
-              md={6}
-              label="Status"
-              list={selectOption?.status}
-              handleChange={(event, value) =>
-                handleOptionChange("status", value)
-              }
-              value={selectedOptions.status ? selectedOptions.status : ""}
-              clearable
-            />
-            <Grid item xs={36} sm={18} sx={{ alignSelf: "center" }}>
-              <Typography
-                variant="subtitle2"
-                sx={{ alignSelf: "center", color: colors.GRAY }}
-              >
-                Sort by
-              </Typography>
-              <ToggleButtonGroup
-                color="primary"
-                value={alignment}
-                exclusive
-                onChange={handleChangeData}
-                aria-label="Platform"
-                sx={{ display: "flex" }}
-                size="small"
-              >
-                <ToggleButton
-                  value="score"
-                  selected={propertyvalue === "score"}
-                  sx={{ flex: 1, justifyContent: "space-around" }}
-                >
-                  Score{" "}
-                  {propertyvalue === "score" &&
-                    (alignment === -1 ? (
-                      <ArrowDownwardIcon fontSize="small" />
-                    ) : (
-                      <ArrowUpwardIcon fontSize="small" />
-                    ))}
-                </ToggleButton>
-                <ToggleButton
-                  value="price"
-                  selected={propertyvalue === "price"}
-                  sx={{ flex: 1, justifyContent: "space-around" }}
-                >
-                  Price{" "}
-                  {propertyvalue === "price" &&
-                    (alignment === -1 ? (
-                      <ArrowDownwardIcon fontSize="small" />
-                    ) : (
-                      <ArrowUpwardIcon fontSize="small" />
-                    ))}
-                </ToggleButton>
-                <ToggleButton
-                  value="area"
-                  selected={propertyvalue === "area"}
-                  sx={{ flex: 1, justifyContent: "space-around" }}
-                >
-                  Area{" "}
-                  {propertyvalue === "area" &&
-                    (alignment === -1 ? (
-                      <ArrowDownwardIcon fontSize="small" />
-                    ) : (
-                      <ArrowUpwardIcon fontSize="small" />
-                    ))}
-                </ToggleButton>
-                <ToggleButton
-                  value="completion"
-                  selected={propertyvalue === "completion"}
-                  sx={{ flex: 1, justifyContent: "space-around" }}
-                >
-                  Completion{" "}
-                  {propertyvalue === "completion" &&
-                    (alignment === -1 ? (
-                      <ArrowDownwardIcon fontSize="small" />
-                    ) : (
-                      <ArrowUpwardIcon fontSize="small" />
-                    ))}
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </Grid>
-            <Grid
-              item
-              xs={36}
-              sm={18}
-              sx={{ textAlign: "end", alignSelf: "end" }}
-            >
-              <Button
-                variant="h6"
-                sx={{
-                  fontWeight: 600,
-                  color: "white",
-                  backgroundColor: colors?.BLACK,
-                  "&:hover": {
-                    backgroundColor: colors?.BLACK,
-                    boxShadow: "none",
-                  },
-                }}
-                startIcon={<CloseIcon />}
-                onClick={handleReset}
-              >
-                Reset
-              </Button>
+            <Grid item xs={36}>
+              <Card sx={{ p: 2 }}>
+                {/* commercial,residential */}{" "}
+                {/*please delete this after done and same for all below*/}
+                <Grid container spacing={2} columns={36}>
+                  <NewAutoCompleteInputStructure
+                    xs={18}
+                    sm={12}
+                    md={6}
+                    label="Builder"
+                    list={selectOption?.builder}
+                    handleChange={(event, value) =>
+                      handleOptionChange("builder", value)
+                    }
+                    value={selectedOptions.builder ? selectedOptions.builder : ""}
+                    clearable
+                  />
+                  <NewAutoCompleteInputStructure
+                    xs={18}
+                    sm={12}
+                    md={6}
+                    label="Category"
+                    list={selectOption?.projectCategory}
+                    handleChange={(event, value) =>
+                      handleOptionChange("category", value)
+                    }
+                    value={selectedOptions.category ? selectedOptions.category : ""}
+                    clearable
+                  />
+                  {/* Flat,shop */}
+                  <NewAutoCompleteInputStructure
+                    xs={18}
+                    sm={12}
+                    md={6}
+                    label="Property type"
+                    disabled={isDisablePropertyType}
+                    list={
+                      selectedOptions?.category === "Commercial"
+                        ? selectOption?.commercialProjectType
+                        : selectOption?.residentialProjectType
+                    }
+                    handleChange={(event, value) =>
+                      handleOptionChange("propertyType", value)
+                    }
+                    value={
+                      selectedOptions?.propertyType
+                        ? selectedOptions?.propertyType
+                        : ""
+                    }
+                    clearable
+                  />
+                  {/* 1BHK, 2BHK */}
+                  <NewAutoCompleteInputStructure
+                    xs={18}
+                    sm={12}
+                    md={6}
+                    label="Layout type"
+                    disabled={isDisableLayoutType}
+                    list={
+                      selectOption?.layoutTypeApplicable?.includes(
+                        selectedOptions?.propertyType
+                      )
+                        ? selectOption.layoutType
+                        : ""
+                    }
+                    handleChange={(event, value) =>
+                      handleOptionChange("unitType", value)
+                    }
+                    value={selectedOptions.unitType ? selectedOptions.unitType : ""}
+                    clearable
+                  />
+                  {/* Noida,gurgoan */}
+                  <NewAutoCompleteInputStructure
+                    xs={18}
+                    sm={12}
+                    md={6}
+                    label="City"
+                    list={cities}
+                    handleChange={(event, value) =>
+                      handleOptionChange("city", value)
+                    }
+                    value={selectedOptions.city ? selectedOptions.city : ""}
+                    clearable
+                  />
+                  {/* Sector/area */}
+                  <NewAutoCompleteInputStructure
+                    xs={18}
+                    sm={12}
+                    md={6}
+                    label="Location"
+                    disabled={locationDisable}
+                    list={selectedCity ? locationData[selectedCity] : []}
+                    handleChange={(event, value) =>
+                      handleOptionChange("location", value)
+                    }
+                    value={selectedOptions.location ? selectedOptions.location : ""}
+                    clearable
+                  />
+                  <NewAutoCompleteInputStructure
+                    xs={18}
+                    sm={12}
+                    md={6}
+                    label="Status"
+                    list={selectOption?.status}
+                    handleChange={(event, value) =>
+                      handleOptionChange("status", value)
+                    }
+                    value={selectedOptions.status ? selectedOptions.status : ""}
+                    clearable
+                  />
+                  <Grid item xs={36} sm={24} sx={{ alignSelf: "center" }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ alignSelf: "center", color: colors.GRAY }}
+                    >
+                      Sort by
+                    </Typography>
+                    <ToggleButtonGroup
+                      color="primary"
+                      value={alignment}
+                      exclusive
+                      onChange={handleChangeData}
+                      aria-label="Platform"
+                      sx={{ display: "flex" }}
+                      size="small"
+                    >
+                      <ToggleButton
+                        value="score"
+                        selected={propertyvalue === "score"}
+                        sx={{ flex: 1, justifyContent: "space-around" }}
+                      >
+                        Score{" "}
+                        {propertyvalue === "score" &&
+                          (alignment === -1 ? (
+                            <ArrowDownwardIcon fontSize="small" />
+                          ) : (
+                            <ArrowUpwardIcon fontSize="small" />
+                          ))}
+                      </ToggleButton>
+                      <ToggleButton
+                        value="price"
+                        selected={propertyvalue === "price"}
+                        sx={{ flex: 1, justifyContent: "space-around" }}
+                      >
+                        Price{" "}
+                        {propertyvalue === "price" &&
+                          (alignment === -1 ? (
+                            <ArrowDownwardIcon fontSize="small" />
+                          ) : (
+                            <ArrowUpwardIcon fontSize="small" />
+                          ))}
+                      </ToggleButton>
+                      <ToggleButton
+                        value="area"
+                        selected={propertyvalue === "area"}
+                        sx={{ flex: 1, justifyContent: "space-around" }}
+                      >
+                        Area{" "}
+                        {propertyvalue === "area" &&
+                          (alignment === -1 ? (
+                            <ArrowDownwardIcon fontSize="small" />
+                          ) : (
+                            <ArrowUpwardIcon fontSize="small" />
+                          ))}
+                      </ToggleButton>
+                      <ToggleButton
+                        value="completion"
+                        selected={propertyvalue === "completion"}
+                        sx={{ flex: 1, justifyContent: "space-around" }}
+                      >
+                        Completion{" "}
+                        {propertyvalue === "completion" &&
+                          (alignment === -1 ? (
+                            <ArrowDownwardIcon fontSize="small" />
+                          ) : (
+                            <ArrowUpwardIcon fontSize="small" />
+                          ))}
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={36}
+                    sm={36}
+                    md={6}
+                    sx={{ textAlign: "end", alignSelf: "end" }}
+                  >
+                    <Button
+                      variant="h6"
+                      sx={{
+                        fontWeight: 600,
+                        color: "white",
+                        backgroundColor: colors?.BLACK,
+                        "&:hover": {
+                          backgroundColor: colors?.BLACK,
+                          boxShadow: "none",
+                        },
+                      }}
+                      startIcon={<CloseIcon />}
+                      onClick={handleReset}
+                    >
+                      Reset
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Card>
             </Grid>
             <Grid item xs={36}>
               <Card>
                 <CustomSearch
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value.toLowerCase())}
-                  onSearchButtonClick={handleSearchButtonClick} 
+                  onSearchButtonClick={handleSearchButtonClick}
                   inputRef={inputRef}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
@@ -590,7 +611,7 @@ function PropertyList({ params }) {
               {count?.totalCount === 0 ? (
                 <NoDataCard />
               ) : (
-                <Grid container spacing={0.25}>
+                <Grid container spacing={1}>
                   {property?.map((propertyDetails) => (
                     <Grid item xs={12}>
                       <PropertyCard

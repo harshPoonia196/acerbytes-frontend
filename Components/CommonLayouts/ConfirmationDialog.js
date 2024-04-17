@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography
 } from "@mui/material";
 import CustomButton from "./Loading/LoadingButton";
 
@@ -19,24 +20,27 @@ const ConfirmationDialog = ({ open, handleAction }) => {
   };
 
   return (
-    <div>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to perform this action?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <CustomButton onClick={handleClose} color="primary"
-            ButtonText={"No"}
-          />
-          <CustomButton onClick={handleConfirm} color="primary" autoFocus
-            ButtonText={"Yes"}
-          />
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
+      open={open} onClose={handleClose}>
+      <DialogTitle onClose={handleClose}>
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
+          Confirmation
+        </Typography>
+      </DialogTitle>
+      <DialogContent>
+        <Typography variant="body1">
+          Are you sure you want to perform this action?
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <CustomButton onClick={handleClose}
+          ButtonText={"No"}
+        />
+        <CustomButton onClick={handleConfirm} autoFocus
+          ButtonText={"Yes"}
+        />
+      </DialogActions>
+    </Dialog>
   );
 };
 

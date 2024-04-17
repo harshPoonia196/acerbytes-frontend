@@ -29,15 +29,24 @@ function ManageUser() {
   };
 
   const generateSubtitle = () => {
+    console.log(dashboardInfo)
+    let result = []
     let subtitle = "";
     if (Object.keys(dashboardInfo).length > 0) {
-      if (value === 0) { 
-        subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Super admins: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Admins: ${dashboardInfo.noOfAdmin}, Brokers: ${dashboardInfo.noOfBroker}, Users: ${dashboardInfo.noOfUsers}`;
-      } else if (value === 1) { 
-        subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Pending approval: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Pending approval : ${dashboardInfo.noOfAdmin}`;
+      if (value === 0) {
+        result.push({ label: 'Super admins', value: dashboardInfo.noOfSuperAdmins })
+        result.push({ label: 'Admins', value: dashboardInfo.noOfAdmin })
+        result.push({ label: 'Brokers', value: dashboardInfo.noOfBroker })
+        result.push({ label: 'Users', value: dashboardInfo.noOfUsers })
+        // subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Super admins: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Admins: 
+        // ${dashboardInfo.noOfAdmin}, Brokers: ${dashboardInfo.noOfBroker}, Users: ${dashboardInfo.noOfUsers}`;
+      } else if (value === 1) {
+        result.push({ label: 'Super admins', value: dashboardInfo.noOfSuperAdmins })
+        result.push({ label: 'Admins', value: dashboardInfo.noOfAdmin })
+        // subtitle = `${dashboardInfo?.noOfSuperAdmins ? `Pending approval: ${dashboardInfo.noOfSuperAdmins}, ` : ''}Pending approval : ${dashboardInfo.noOfAdmin}`;
       }
     }
-    return subtitle;
+    return result;
   };
 
   const displayNameAndRole = userDetails => {
@@ -49,15 +58,16 @@ function ManageUser() {
   return (
     <>
 
-      <CustomAdminBreadScrumbs text='Manage user' />
+      <CustomAdminBreadScrumbs text='Manage users' />
 
       <InfoBox
-        title={Object.keys(userDetails).length > 0 ? displayNameAndRole(userDetails) : ""}
-        subtitle={generateSubtitle()}
+        // label={generateSubtitle()}
+        dataList={generateSubtitle()}
       />
+
       <Container>
-       {userDetails?.role === "superAdmin" ?
-        <Card sx={{ my: 2 }}>
+        {userDetails?.role === "superAdmin" ?
+          <Card sx={{ my: 2 }}>
             <ToggleButtonGroup
               color="primary"
               value={value}
@@ -81,12 +91,10 @@ function ManageUser() {
                 Pending Request
               </ToggleButton>
             </ToggleButtonGroup>
-        </Card>
-        : 
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Manage User
-        </Typography>
-       } 
+          </Card>
+          :
+          <></>
+        }
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput
             label="Search"
@@ -95,8 +103,8 @@ function ManageUser() {
             onChange={handleSearch}
           />
         </Card>
-        <ManageUserTable searchText={searchTerm} onDashboardDataUpdate={handleDashboardDataUpdate} selectedTabValue={value}
-         />
+        <ManageUserTable searchText={searchTerm} onDashboardDataUpdate={handleDashboardDataUpdate}
+          selectedTabValue={value} />
 
       </Container>
     </>

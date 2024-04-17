@@ -22,6 +22,8 @@ import moment from "moment";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
+import { countryCodeFormating } from "utills/utills";
+import { getFirstCharacterOfFirstOfFullName } from "utills/CommonFunction";
 
 const labels = (rating) => {
   if (rating <= 0.5) {
@@ -63,7 +65,7 @@ const labels = (rating) => {
   return "";
 };
 
-function BrokerCard({ broker, type, noReview, updateBroker }) {
+function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker }) {
   const [openDialog, setOpenDialog] = useState(false);
   const { userDetails, isLogged } = useAuth();
 
@@ -80,17 +82,35 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
   const precision = 0.5;
 
   const titleCase = (string) => {
-    return string ? string.replace(/^\w/, c =>c.toUpperCase()) : string
+    return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
   }
 
+  const isEnquiredByCurrentBroker = enquiredInfo?.brokerId == broker?.id;
+
+  const handleCallClick = () => {
+    if (typeof handleEnquireWithBroker === 'function') {
+      if (isEnquiredByCurrentBroker) {
+        const callHref = `tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")}`;
+        if (callHref) {
+          window.location.href = callHref;
+        }
+      } else {
+        handleEnquireWithBroker(broker?.id);
+      }
+    } else {
+      console.error('handleEnquireWithBroker is not a function');
+    }
+  }
   return (
     <Card sx={{ position: "relative" }}>
       <Box sx={{ display: "flex", p: 2 }}>
         <Avatar
-          alt="Remy Sharp"
-          src = {broker.profilePicture}
+          alt={titleCase(broker?.fullName)}
+          src={broker.profilePicture}
           sx={{ mr: 2, width: 56, height: 56 }}
-        />
+        >
+          {getFirstCharacterOfFirstOfFullName(broker?.fullName)}
+        </Avatar>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">
             {titleCase(broker?.fullName)}
@@ -187,26 +207,23 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
           </a>
         </Box>
       ) : null} */}
-      {isLogged ? (
-        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-          <a
-            href={`tel:${
-              (userDetails?.phone?.countryCode || "") +
-              (userDetails?.phone?.number || "")
-            }`}
-          >
-            <IconButton>
-              <CallIcon fontSize="small" />
-            </IconButton>
-          </a>
+      {/* {isLogged ? ( */}
+      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCallClick}  >
+        <IconButton>
+          <CallIcon fontSize="small" />
+        </IconButton>
+      </Box>) :
+        <Box sx={{ position: "absolute", top: 8, right: 8, cursor: "pointer", color: "blue" }} onClick={handleCallClick} >
+          {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}
         </Box>
-      ) : (
-        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-          <IconButton onClick={() => router.push(listOfPages.login)}>
-            <CallIcon fontSize="small" />
-          </IconButton>
-        </Box>
-      )}
+      }
+      {/* // : (
+      //   <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+      //     <IconButton onClick={() => router.push(listOfPages.login)}>
+      //       <CallIcon fontSize="small" />
+      //     </IconButton>
+      //   </Box>
+      // )} */}
       <Divider />
       {!noReview && (
         <Grid container spacing={1} sx={{ p: 2 }}>
@@ -252,8 +269,8 @@ function BrokerCard({ broker, type, noReview, updateBroker }) {
                   You wrote a Public review
                   {broker?.reviews?.createdAt
                     ? moment(broker?.reviews?.createdAt).format(
-                        " on DD MMM, YYYY"
-                      )
+                      " on DD MMM, YYYY"
+                    )
                     : ""}
                 </Typography>
                 <Typography variant="body2">

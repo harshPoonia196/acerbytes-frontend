@@ -8,7 +8,9 @@ import {
   Box,
   Chip,
   Toolbar,
-  Button,
+  Button, Divider,
+  BottomNavigation,
+  BottomNavigationAction
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -43,23 +45,31 @@ import throttle from "lodash/throttle";
 import AdsSection from "Components/DetailsPage/AdsSection";
 import {
   enquiryFormKey,
+  enquiryFormOpen,
   listOfPropertyDetailsTab,
   listOfTabsInAddProperty,
+  propertyUserVerifiedKey,
+  userLeadId,
 } from "utills/Constants";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
-import { detailsProperty, favPropertyCreate } from "api/Property.api";
+import { checkEnquiryOnPropertyLink, detailsProperty, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { getItem, getLoggedInUser } from "utills/utills";
+import { clearItem, getItem, getLoggedInUser } from "utills/utills";
 import {
   isEnquired,
   submitEnquiry,
   submitEnquiryUnauth,
+  updateEnquiryVerified,
+  updateEnquiryVerifiedByUserId,
 } from "api/UserProfile.api";
+
+import BottomFooterConsultant from "Components/DetailsPage/BottomFooterConsultant";
+import BottomFooterUser from "Components/DetailsPage/BottomFooterUser";
 
 const tabHeight = 200;
 
@@ -110,7 +120,8 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState({});
-
+  const [leadId, setLeadId] = useState("");
+  const [enquiredInfo, setEnquiredInfo] = useState(null);
   const shuffle = (a) => {
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -173,6 +184,7 @@ const PropertyDetailsPage = ({ params }) => {
 
   useEffect(() => {
     detailsGetProperty();
+    checkPropertyIsEnquired();
   }, [userDetails._id]);
 
   const GridItemWithCard = (props) => {
@@ -219,6 +231,32 @@ const PropertyDetailsPage = ({ params }) => {
     );
   }
 
+  const checkPropertyIsEnquired = async () => {
+    try {
+      setLoading(true);
+      if (userDetails?._id) {
+        let res = await checkEnquiryOnPropertyLink(
+          `${detailsPropertyId}${userDetails?._id ? `?userId=${userDetails?._id}` : ""}`
+        );
+        if (res.status === 200) {
+          if (res.data?.data?._id) {
+            setEnquiredInfo(res.data?.data);
+          }
+        }
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+
+  };
+
   const [currentTab, setCurrentTab] = React.useState(0);
 
   const handleTabChange = (event, newValue) => {
@@ -246,6 +284,7 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [brokerContact, setBrokerContact] = React.useState(null);
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
+  const [enquireWithBrokerId, setEnquireWithBrokerId] = useState("");
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
     React.useState(false);
 
@@ -259,12 +298,57 @@ const PropertyDetailsPage = ({ params }) => {
 
   const [openOtpPopup, setOpenOtpPopup] = useState(false);
 
+  const updateEnquiryVerficationByUserId = async (leadId) => {
+    try {
+      const response = await updateEnquiryVerifiedByUserId({
+        leadId: leadId,
+        userId: userDetails?._id,
+        adId: "",
+        propertyId: detailsPropertyId
+      });
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
+
+  useEffect(() => {
+    if (getItem(enquiryFormOpen)) {
+      handleOpenEnquiryForm(true);
+      clearItem(enquiryFormOpen);
+    }
+  }, [getItem(enquiryFormOpen) == true]);
+
+  useEffect(() => {
+    if (getItem(propertyUserVerifiedKey) && userDetails?._id) {
+      const leadId = getItem(userLeadId);
+      updateEnquiryVerficationByUserId(leadId);
+      clearItem(propertyUserVerifiedKey);
+      clearItem(userLeadId);
+    }
+  }, [getItem(propertyUserVerifiedKey) == true]);
+
   const handleSubmitEnquiry = async (data) => {
     try {
       const response = await submitEnquiry({
         ...data,
         propertyId: detailsPropertyId,
-        propertyLink: `details/${params.id}`
+        propertyLink: `details/${params.id}`,
+        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -272,6 +356,8 @@ const PropertyDetailsPage = ({ params }) => {
           openSnackbar(message, "success");
           // hasEnquired();
           setBrokerContact({});
+          setLeadId(response.data?.data[0]?._id);
+          checkPropertyIsEnquired();
         } else {
           openSnackbar(message, "error");
         }
@@ -300,6 +386,43 @@ const PropertyDetailsPage = ({ params }) => {
           openSnackbar(message, "success");
           // hasEnquired();
           setBrokerContact({});
+          setLeadId(response.data?.data[0]?._id);
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
+  const updateEnquiryVerfication = async (data) => {
+    try {
+      if (!leadId) {
+        return;
+      }
+      const response = await updateEnquiryVerified({
+        leadId: leadId,
+        otp: data.otp,
+        phone: {
+          countryCode: data.countryCode,
+          number: data.number
+        }
+      });
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+          // hasEnquired();
+          setBrokerContact({});
+          handleCloseVerifyPopup();
+          handleOpenAlternateSignIn();
         } else {
           openSnackbar(message, "error");
         }
@@ -364,6 +487,11 @@ const PropertyDetailsPage = ({ params }) => {
   const handleCloseConsultantsViewAll = () => {
     setConsultantsViewAll(false);
   };
+
+  const handleEnquireWithBroker = (brokerId) => {
+    handleOpenEnquiryForm();
+    setEnquireWithBrokerId(brokerId);
+  }
 
   const classes = useStyles();
 
@@ -519,7 +647,7 @@ const PropertyDetailsPage = ({ params }) => {
       </nav>
       <Box>
         <MarketingSection overviewData={propertyData} activeState={activeState} />
-        <Container maxWidth="evmd">
+        <Container maxWidth="md" sx={{ pt: '0 !important' }}>
           {openEnquiryForm && (
             <EnquireNow
               propertyData={propertyData}
@@ -527,6 +655,8 @@ const PropertyDetailsPage = ({ params }) => {
               handleClose={handleCloseEnquiryForm}
               handleAction={handleOpenVerifyPopup}
               submitEnquiry={handleSubmitEnquiry}
+              submitEnquiryUnath={handleSubmitEnquiryUnauth}
+
             />
           )}
           <OtpVerify
@@ -535,10 +665,11 @@ const PropertyDetailsPage = ({ params }) => {
             handleClose={handleCloseVerifyPopup}
             handleOpen={handleOpenEnquiryForm}
             handleAlternateSignIn={handleOpenAlternateSignIn}
-            handleSubmit={handleSubmitEnquiryUnauth}
+            handleSubmit={updateEnquiryVerfication}
           />
           <AlternateSignIn
             open={openAlternateSignIn}
+            leadId={leadId}
             handleClose={handleCloseAlternateSignIn}
           />
 
@@ -559,60 +690,75 @@ const PropertyDetailsPage = ({ params }) => {
               valueForMoneyData={propertyData?.valueForMoney}
             />
             {/* <FloorPlanSection /> */}
+            {propertyData?.consultants?.length > 0 &&
               <Grid item xs={12} id="propertyConsultants">
-                <Card sx={{ p: 2 }}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} sx={{ display: "flex" }}>
-                      <Box sx={{ flex: 1, alignSelf: "center" }}>
-                        <Typography variant="h4">
-                          Contact verified consultants
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <ConsultantsViewAll
-                          open={consultantsViewAll}
-                          handleClose={handleCloseConsultantsViewAll}
-                          propertyData={propertyData?.consultants}
-                        ></ConsultantsViewAll>
-                        <Chip
-                          label="View all"
-                          icon={<GroupIcon fontSize="small" />}
-                          size="small"
-                          onClick={handleOpenConsultantsViewAll}
-                          sx={{ fontSize: "0.875rem !important" }}
-                        />
-                      </Box>
+                <Card>
+                  <Box sx={{ display: "flex", p: 2 }}>
+                    <Box sx={{ flex: 1, alignSelf: "center" }}>
+                      <Typography variant="h4">
+                        Contact verified consultants
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <ConsultantsViewAll
+                        open={consultantsViewAll}
+                        enquiredInfo={enquiredInfo}
+                        handleClose={handleCloseConsultantsViewAll}
+                        handleEnquireWithBroker={handleEnquireWithBroker}
+                        propertyData={propertyData?.consultants}
+                      ></ConsultantsViewAll>
+                      <Chip
+                        label="View all"
+                        icon={<GroupIcon fontSize="small" />}
+                        size="small"
+                        onClick={handleOpenConsultantsViewAll}
+                        sx={{ fontSize: "0.875rem !important" }}
+                      />
+                    </Box>
+                  </Box>
+                  <Divider />
+                  <Box sx={{ p: 2 }}>
+                    <Grid container spacing={2}>
+                      {propertyData?.consultants?.length > 0 &&
+                        propertyData?.consultants?.slice(0, 2).map((broker) => (
+                          <Grid item xs={12} sm={6} key={broker?.name}>
+                            <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
+                          </Grid>
+                        ))}
                     </Grid>
-                    {propertyData?.consultants?.length > 0 &&
-                      propertyData?.consultants?.slice(0, 2).map((broker) => (
-                        <Grid item xs={12} sm={6} key={broker?.name}>
-                          <BrokerCard broker={broker} noReview />
-                        </Grid>
-                      ))}
-                    <Grid item xs={12}>
-                      <Box sx={{ display: "flex" }}>
+                  </Box>
+                  <Divider />
+                  {userDetails?.role === "broker" && (
+                    <Box sx={{
+                      p: 2,
+                      display: 'flex',
+                      flexDirection: { xs: "column", sm: 'row' },
+                      gap: 1
+                    }}>
+                      <Box sx={{ flex: 1, alignSelf: "center" }}>
                         <Typography
                           variant="body2"
-                          sx={{ flex: 1, alignSelf: "center" }}
+                          sx={{ flex: 1, }}
                         >
-                          Are you a property consultant, let Customers reach you
+                          Are you a <span style={{ fontWeight: 700 }}>Property Consultant?</span> let Customers reach you
                         </Typography>
-                        {userDetails?.role === "broker" && (
-                          <a href={`https://wa.me/+919818690582`}>
-                            <Chip
-                              label="Yes, show me here !"
-                              icon={<PersonAddIcon fontSize="small" />}
-                              size="small"
-                              sx={{ fontSize: "0.875rem" }}
-                              onClick={() => { }}
-                            />
-                          </a>
-                        )}
                       </Box>
-                    </Grid>
-                  </Grid>
+                      <Box sx={{ alignSelf: { xs: 'end' } }}>
+                        <a href={`https://wa.me/+919818690582`}>
+                          <Chip
+                            label="Yes, show me here !"
+                            icon={<PersonAddIcon fontSize="small" />}
+                            size="small"
+                            sx={{ fontSize: "0.875rem" }}
+                            onClick={() => { }}
+                          />
+                        </a>
+                      </Box>
+                    </Box>
+                  )}
                 </Card>
               </Grid>
+            }
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
@@ -627,18 +773,24 @@ const PropertyDetailsPage = ({ params }) => {
           </Grid>
 
           {/* Dont Touch this */}
-          <Toolbar
-            sx={{
-              display: { xs: "flex", evmd: "none" },
-              height: heightOfFooter,
-            }}
-          />
-
+          {
+            userDetails?.role !== "admin" &&
+            userDetails?.role !== "superAdmin" &&
+            userDetails?.role !== "broker" &&
+            <Toolbar
+              sx={{
+                display: { xs: "flex", evmd: "none" },
+                height: heightOfFooter,
+              }}
+            />
+          }
           {userDetails?.role !== "admin" &&
             userDetails?.role !== "superAdmin" &&
             userDetails?.role !== "broker" && (
               <>
-                <Card
+                <BottomFooterUser isLogged={isLogged} propertyData={propertyData} url={url}
+                  divRef={divRef} handlefavClick={handlefavClick} handleOpenEnquiryForm={handleOpenEnquiryForm} />
+                {/* <Card
                   sx={{
                     p: 2,
                     position: "fixed",
@@ -761,7 +913,7 @@ const PropertyDetailsPage = ({ params }) => {
                       Share
                     </Fab>
                   </a>
-                  <a href={`https://wa.me/+919725555595`}>
+                  <a href={`https://wa.me/+919323996997`}>
                     <Fab
                       variant="extended"
                       sx={{ mb: 1, justifyContent: "flex-start" }}
@@ -779,11 +931,23 @@ const PropertyDetailsPage = ({ params }) => {
                     <AssignmentIcon sx={{ mr: 1 }} />
                     Enquire
                   </Fab>
-                </Box>
+                </Box> */}
               </>
             )}
-        </Container>
-      </Box>
+
+          {
+            userDetails?.role === "broker" && (
+              <>
+                <Toolbar
+                  sx={{
+                    display: { xs: "flex", evmd: "none" },
+                  }}
+                />
+                <BottomFooterConsultant />
+              </>
+            )}
+        </Container >
+      </Box >
     </>
   );
 };

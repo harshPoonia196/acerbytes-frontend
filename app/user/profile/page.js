@@ -295,7 +295,7 @@ function Profile({ id, isAdminUpdate }) {
     if (isLogged && userDetails?._id) {
       try {
         setLoading(true);
-        const userId = isAdminUpdate? id:  userDetails?.googleID;
+        const userId = isAdminUpdate ? id : userDetails?.googleID;
         const res = await getUserProfileByGoogleId(userId);
         if (res.status === 200) {
           const dataPlayload = res?.data?.data;
@@ -407,9 +407,9 @@ function Profile({ id, isAdminUpdate }) {
       value = capitalLizeName(value)
     }
     if (secondKeyName === 'pinCode') {
-      
+
       value = value.replace(/\D/g, '');
-      
+
       value = value.slice(0, 6);
     }
     await setProfileInfo((prev) => ({
@@ -549,7 +549,7 @@ function Profile({ id, isAdminUpdate }) {
           profileInfo
         );
         if (response.status == 200) {
-          if(!isAdminUpdate){
+          if (!isAdminUpdate) {
             updateDetailsonLocalStorage(profileInfo);
           }
           showToaterMessages(ToasterMessages.PROFILE_UPDATE_SUCCESS, "success");
@@ -611,7 +611,7 @@ function Profile({ id, isAdminUpdate }) {
       formData.append('image', selectedFile);
       const response = await uploadImage(formData);
       if (response.data.status == 200) {
-        const userId = isAdminUpdate ? id: userDetails.googleID;
+        const userId = isAdminUpdate ? id : userDetails.googleID;
         const imageResponse = await updateProfileImage(userId, response.data.data.Location);
         if (imageResponse?.data?.status == 200) {
           updateOnLocalStorage(response.data.data.Location);
@@ -674,10 +674,10 @@ function Profile({ id, isAdminUpdate }) {
               Save
             </LoadingButton>
           </Grid> */}
-          {!isAdminUpdate &&<Grid item xs={12} id="userDetails">
+          {!isAdminUpdate && <Grid item xs={12} id="userDetails">
             <Card sx={{ p: 2 }}>
-            <Box sx={{ display: "flex" }}>
-              <Box sx={{ flex: 1, display: 'flex', gap: 2 }}>
+              <Box sx={{ display: "flex", flexDirection: { xs: 'column', sm: 'row' }, gap: 1 }}>
+                <Box sx={{ flex: 1, display: 'flex', gap: 2, }}>
                   <Box>
                     {/* <UploadMarketingImage
                       open={isUploadPopupOpen}
@@ -746,7 +746,7 @@ function Profile({ id, isAdminUpdate }) {
                     </Typography>
                   </Box>
                 </Box>
-                <Box>
+                <Box sx={{ alignSelf: { xs: 'end', sm: 'start' } }}>
                   <a
                     href={`tel:${profileInfo?.phone?.countryCode}${profileInfo?.phone?.number}`}
                     style={{
@@ -1014,7 +1014,7 @@ function Profile({ id, isAdminUpdate }) {
                   name1={"unit"}
                   name2={"value"}
                   // currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
-                  value1={profileInfo?.budget?.minimumBudget?.unit||"₹INR"}
+                  value1={profileInfo?.budget?.minimumBudget?.unit || "₹INR"}
                   value2={profileInfo?.budget?.minimumBudget?.value}
                   handleChange={(e) =>
                     handleChange(e, "budget", "minimumBudget", "value")
@@ -1027,8 +1027,8 @@ function Profile({ id, isAdminUpdate }) {
                   label="Maximum"
                   variant="outlined"
                   isEdit={isEdit}
-                  
-                  value1={profileInfo?.budget?.maximumBudget?.unit||"₹INR"}
+
+                  value1={profileInfo?.budget?.maximumBudget?.unit || "₹INR"}
                   value2={profileInfo?.budget?.maximumBudget?.value}
                   handleChange={(e) =>
                     handleChange(e, "budget", "maximumBudget", "value")

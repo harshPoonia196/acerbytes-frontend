@@ -11,12 +11,13 @@ import { formatDateAndDaysRemaining } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
 import { ToasterMessages } from 'utills/Constants';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant, SinglePropertyId, propertyData, id }) {
     const { userDetails } = useAuth();
     const brokerData = SinglePropertyId?.brokerData
     const locationData = propertyData?.location;
-    
+
     const constructPropertyUrl = (property) => {
         const overview = property?.overview;
         const location = property?.location;
@@ -45,6 +46,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
     const pinCode = locationData?.pinCode ? locationData.pinCode : "132"
     const state = locationData?.state ? locationData.state : "Noida"
     const projectName = propertyData?.overview?.projectName ? propertyData?.overview?.projectName : ""
+    const builderName = propertyData?.overview?.builder
 
     const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
         ? `${brokerData.phone.countryCode} ${brokerData.phone.number}`
@@ -65,31 +67,68 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
         openSnackbar(message, severity);
     };
     return (
+        <Box sx={{ m: 2, mb: 0, position: 'relative' }}>
+            <Card sx={{ border: isConsultant ? '2px solid gold' : `2px solid ${colors.BLUE}`, mb: 1, }}>
+                <Box sx={{ p: 1, px: 2, gap: 1, background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue', }}>
+                    <Box sx={{ flex: 1, alignSelf: { xs: 'start', sm: 'center' }, alignItems: "start" }}>
+                        <Typography variant='h5'>
+                            {builderName}&#183;{projectName}&#183;{city}&#183;{sector}
+                        </Typography>
 
-        <Box sx={{ m: 2, mb: 0, }}>
+                        <Box sx={{ display: 'flex', width: '100%' }}>
+                            <AccountCircle fontSize='small' sx={{ mr: 1 }} />
+                            <Box sx={{ display: 'flex', flex: 1 }}>
+                                <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
+                                    {name}
+                                </Typography>
+                                <Box>
+                                    <a href={`tel:${phoneNumber}`}>
+                                        <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' onClick={() => { }} />
+                                    </a>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Box>
+
+                <Divider sx={{ borderColor: 'whitesmoke' }} />
+                <Box sx={{ alignSelf: 'center', p: 2, py: 1, display: 'flex' }}>
+                    <Box sx={{ flex: 1 }}>
+                        <Typography variant='body2' nowrap sx={{ display: 'block' }}>
+                            {propertyUrl}
+                        </Typography>
+                    </Box>
+                    {isConsultant ? (
+                        <ContentCopyIcon fontSize='1rem' sx={{ color: colors.BLUE, cursor: 'not-allowed' }} />
+                    ) : (
+                        <ContentCopyIcon fontSize='1rem' sx={{ color: colors.BLUE, cursor: 'not-allowed' }} onClick={() => copyToClipboard(propertyUrl)} />
+                    )}
+                </Box>
+                <Divider sx={{ borderColor: 'whitesmoke' }} />
+                <Typography variant='body2' noWrap sx={{ p: 2, py: 1 }}>{description}</Typography>
+                {/* <Divider sx={{ borderColor: 'gainsboro' }} /> */}
+            </Card>
+            {isConsultant &&
+                <IconButton size="small" sx={{ position: 'absolute', top: 0, right: 0 }} onClick={handleOpenPersonalizeAds}>
+                    <Close sx={{ fontSize: '0.75rem' }} />
+                </IconButton>}
             {
                 isConsultant ?
                     <Box sx={{ pb: 1, pt: 0, display: 'flex', gap: 1, flexDirection: { xs: 'column', evmd: 'row' } }}>
                         <Box sx={{ display: 'flex', flex: 1 }}>
-                            <Typography variant="h6" sx={{ flex: 1, alignSelf: 'center' }}>
-                                <Chip
-                                    size="small"
-                                    sx={{
-                                        backgroundColor: "lightgoldenrodyellow",
-                                        border: "2px solid gold",
-                                        mr: 1,
-                                    }}
-                                    label="Sample Ad"
-                                />Get your personalized URL to receive potential buyers queries directly in your leadsbox
+                            <Typography variant="body2" sx={{ flex: 1, alignSelf: 'center' }}>
+                                Get your customer enquiries
                             </Typography>
-                        </Box>
-                        <Box sx={{ textAlign: 'end' }}>
-                            <Box sx={{ alignSelf: 'center' }}>
-                                <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} ButtonText={isConsultant ? 'Activate my link' : <>Extend</>} />
-                                <IconButton onClick={handleOpenPersonalizeAds}>
-                                    <Close fontSize='small' />
-                                </IconButton>
-                            </Box>
+                            <Chip
+                                size="small"
+                                sx={{
+                                    backgroundColor: "lightgoldenrodyellow",
+                                    border: "2px solid gold",
+                                    mr: 1,
+                                }}
+                                label="👆 Activate your ad link"
+                                onClick={() => handleOpenActivateAdsPopup(propertyUrl)}
+                            />
                         </Box>
                     </Box>
                     :
@@ -101,52 +140,10 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'end' }}>
-                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={()=> handleOpenActivateAdsPopup(propertyUrl)} ButtonText={"Extend"} />
+                            <CustomButton startIcon={<AddLinkIcon />} variant='outlined' size='small' sx={{ fontSize: '0.875rem' }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} ButtonText={"Extend"} />
                         </Box>
                     </Box>
             }
-            <Card sx={{ border: isConsultant ? '2px solid gold' : `2px solid ${colors.BLUE}` }}>
-                <Box sx={{ display: 'flex', p: 1, px: 2, gap: 1, background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue', flexDirection: { xs: 'column', sm: 'row' } }}>
-                    <Box sx={{ display: 'flex', flex: 1, alignSelf: 'center', alignItems: "end" }}>
-                        <AccountCircle />
-                        <Typography variant='h5' sx={{}}>Contact us {name} &#183; for {projectName} &#183; {city} &#183; {sector} &#183; {pinCode} &#183; {state}
-                            {/* &#183 */}
-                            {/* <Rating
-                                name="text-feedback"
-                                value={4}
-                                readOnly
-                                precision={0.5}
-                                sx={{ fontSize: '1rem', alignSelf: 'center', verticalAlign: 'baseline' }}
-                                emptyIcon={
-                                    <StarIcon
-                                        style={{ opacity: 0.55 }}
-                                        fontSize="inherit"
-                                    />
-                                }
-                            /> */}
-                        </Typography>
-                    </Box>
-                    <Box sx={{ alignSelf: { xs: "end", sm: 'center' } }}>
-                        <a href={`tel:${phoneNumber}`}>
-                            <CustomButton variant='outlined' startIcon={<PhoneIcon />} size='small' sx={{ fontSize: '0.875rem' }} ButtonText={phoneNumber} />
-                        </a>
-                    </Box>
-                </Box>
-                <Divider sx={{ borderColor: 'whitesmoke' }} />
-                <Box sx={{ alignSelf: 'center', p: 2, py: 1, display: 'flex' }}>
-                    <Typography variant='body2' sx={{ flex: 1 }}>
-                        {propertyUrl}
-                    </Typography>
-                    {isConsultant ? (
-                        <Typography variant='body2' className='urlStyling' style={{ color: colors.BLUE, cursor: 'not-allowed' }}>Copy link</Typography>
-                    ) : (
-                        <Typography variant='body2' className='urlStyling' style={{ color: colors.BLUE, cursor: 'pointer' }} onClick={() => copyToClipboard(propertyUrl)}>Copy link</Typography>
-                    )}
-                </Box>
-                <Divider sx={{ borderColor: 'whitesmoke' }} />
-                <Typography variant='body2' noWrap sx={{ p: 2, py: 1 }}>{description}</Typography>
-                {/* <Divider sx={{ borderColor: 'gainsboro' }} /> */}
-            </Card>
         </Box>
     )
 }

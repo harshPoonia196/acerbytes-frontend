@@ -107,14 +107,14 @@ const UploadMarketingImage = ({
         }
         catch (error) {
             showToaterMessages(
-               
+
                 "Image size is too large",
                 "error"
-              );
-           
-           
-          }
-          finally {
+            );
+
+
+        }
+        finally {
             setLoading(false);
         }
 
@@ -129,8 +129,8 @@ const UploadMarketingImage = ({
                         <div style={{ width: '100%', textAlign: 'center', maxHeight: 400 }}>
                             <Cropper
                                 style={{ width: '100%' }}
-                                initialAspectRatio={16 / 9}
-                                aspectRatio={16 / 9}
+                                initialAspectRatio={16 / 8}
+                                aspectRatio={16 / 8}
                                 preview=".img-preview"
                                 src={image}
                                 // ref={imageRef}

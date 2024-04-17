@@ -45,17 +45,20 @@ import { makeStyles, withStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import {
   enquiryFormKey,
+  enquiryFormOpen,
   listOfPropertyDetailsTab,
   listOfTabsInAddProperty,
+  propertyUserVerifiedKey,
+  userLeadId,
 } from "utills/Constants";
-import { activeAdGet, favPropertyCreate } from "api/Property.api";
+import { activeAdGet, checkEnquiryOnActiveLink, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
-import { submitEnquiry, submitEnquiryUnauth } from "api/UserProfile.api";
-import { getItem } from "utills/utills";
+import { submitEnquiry, submitEnquiryUnauth, updateEnquiryVerified, updateEnquiryVerifiedByUserId } from "api/UserProfile.api";
+import { clearItem, getItem, setItem } from "utills/utills";
 
 const tabHeight = 200;
 
@@ -73,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -97,13 +100,35 @@ const PropertyDetails = ({ params }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
+  const [isLoading, setLoading] = useState(false);
+  const [propertyData, setPropertyData] = useState([]);
+  const [contactPermissionToView, setContactPermissionToView] = useState(false);
+  const [leadId, setLeadId] = useState("");
 
   const linkIdData = params.projectdetails;
   const parts = linkIdData.split("-");
   const getId = parts[parts.length - 1];
 
-  const [isLoading, setLoading] = useState(false);
-  const [propertyData, setPropertyData] = useState([]);
+
+  const constructPropertyUrl = (propertyDetailsData) => {
+    const overview = propertyDetailsData?.propertyData?.overview;
+    const location = propertyDetailsData?.propertyData?.location;
+
+    const projectCategory = encodeURIComponent((overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-').replace(/\//g, '-'));
+    let projectType;
+    if (overview?.projectType?.length > 0) {
+      projectType = overview.projectType.map(type => encodeURIComponent(type.value.trim().replace(/\s+/g, '-').replace(/\//g, '-'))).join("-");
+    } else {
+      projectType = 'type';
+    }
+    const city = encodeURIComponent((location?.city.trim() ?? 'city').replace(/\s+/g, '-').replace(/\//g, '-'));
+    const sector = encodeURIComponent((location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-').replace(/\//g, '-'));
+    const area = encodeURIComponent((location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '').replace(/\//g, '-'));
+    const projectName = encodeURIComponent((overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-').replace(/\//g, '-'));
+
+
+    return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetailsData?.property_id}`;
+  };
 
   const activeAdGetProperty = async () => {
     try {
@@ -113,12 +138,42 @@ const PropertyDetails = ({ params }) => {
       );
       if (res.status === 200) {
         setPropertyData(res.data?.data);
+        const expiredAt = new Date(res?.data?.data[0]?.expired_at);
+        const now = new Date();
+        const brokerData = res.data.data[0]?.brokerData;
+        if (brokerData && (brokerData?.isBlocked || brokerData.role !== 'broker')) {
+          router.push(`details/${constructPropertyUrl(res.data?.data[0])}`);
+        } else if (expiredAt && now > expiredAt) {
+          router.push(`details/${constructPropertyUrl(res.data?.data[0])}`);
+        }
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const checkPropertyIsEnquired = async () => {
+    try {
+      setLoading(true);
+      let res = await checkEnquiryOnActiveLink(
+        `${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ""}`
+      );
+      if (res.status === 200) {
+        // console.log("res.data?.data: ", res.data?.data?._id);
+        setContactPermissionToView(!!res.data?.data?._id);
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -138,8 +193,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error generating fav Property",
+        error?.message ||
+        "Error generating fav Property",
         "error"
       );
     } finally {
@@ -154,6 +209,7 @@ const PropertyDetails = ({ params }) => {
 
   useEffect(() => {
     activeAdGetProperty();
+    checkPropertyIsEnquired();
   }, [userDetails]);
 
   const GridItemWithCard = (props) => {
@@ -253,6 +309,8 @@ const PropertyDetails = ({ params }) => {
         if (success) {
           openSnackbar(message, "success");
           setBrokerContact({});
+          checkPropertyIsEnquired();
+          setLeadId(response.data?.data[0]?._id);
         } else {
           openSnackbar(message, "error");
         }
@@ -260,8 +318,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -282,6 +340,7 @@ const PropertyDetails = ({ params }) => {
           openSnackbar(message, "success");
           // hasEnquired();
           setBrokerContact({});
+          setLeadId(response.data?.data[0]?._id);
         } else {
           openSnackbar(message, "error");
         }
@@ -289,8 +348,72 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
+
+  const updateEnquiryVerfication = async (data) => {
+    try {
+      if (!leadId) {
+        return;
+      }
+      const response = await updateEnquiryVerified({
+        leadId: leadId,
+        otp: data.otp,
+        phone: {
+          countryCode: data.countryCode,
+          number: data.number
+        }
+      });
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+          // hasEnquired();
+          setBrokerContact({});
+          handleCloseVerifyPopup();
+          handleOpenAlternateSignIn();
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong!",
+        "error"
+      );
+      return error;
+    }
+  };
+
+  const updateEnquiryVerficationByUserId = async (leadId) => {
+    try {
+      const response = await updateEnquiryVerifiedByUserId({
+        leadId: leadId,
+        userId: userDetails?._id,
+        adId: getId,
+        propertyId: ""
+      });
+      if (response.status == 200) {
+        const { success, message } = response.data;
+        if (success) {
+          openSnackbar(message, "success");
+        } else {
+          openSnackbar(message, "error");
+        }
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -343,6 +466,21 @@ const PropertyDetails = ({ params }) => {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
+  useEffect(() => {
+    if (getItem(enquiryFormOpen)) {
+      handleOpenEnquiryForm(true);
+      clearItem(enquiryFormOpen);
+    }
+  }, [getItem(enquiryFormOpen) == true]);
+
+  useEffect(() => {
+    if (getItem(propertyUserVerifiedKey) && userDetails?._id) {
+      const leadId = getItem(userLeadId);
+      updateEnquiryVerficationByUserId(leadId);
+      clearItem(propertyUserVerifiedKey);
+      clearItem(userLeadId);
+    }
+  }, [getItem(propertyUserVerifiedKey) == true]);
   const clickedRef = React.useRef(false);
   const unsetClickedRef = React.useRef(null);
 
@@ -366,9 +504,9 @@ const PropertyDetails = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -414,7 +552,30 @@ const PropertyDetails = ({ params }) => {
   return (
     <>
       {isLoading && <Loader />}
-      <UserDetailsAd AllPropertyData={propertyData[0]} />
+      {openEnquiryForm && (
+        <EnquireNow
+          open={openEnquiryForm}
+          propertyData={propertyData[0]?.propertyData}
+          handleClose={handleCloseEnquiryForm}
+          handleAction={handleOpenVerifyPopup}
+          submitEnquiry={handleSubmitEnquiry}
+          submitEnquiryUnath={handleSubmitEnquiryUnauth}
+        />
+      )}
+      <OtpVerify
+        formData={getItem(enquiryFormKey)}
+        open={openOtpPopup}
+        handleClose={handleCloseVerifyPopup}
+        handleOpen={handleOpenEnquiryForm}
+        handleAlternateSignIn={handleOpenAlternateSignIn}
+        handleSubmit={updateEnquiryVerfication}
+      />
+      <AlternateSignIn
+        open={openAlternateSignIn}
+        handleClose={handleCloseAlternateSignIn}
+        leadId={leadId}
+      />
+      <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={contactPermissionToView} handleOpenEnquiryForm={handleOpenEnquiryForm} />
       <nav className={classes.demo2}>
         <TopMenu
           topMenu={propertyData[0]?.propertyData}
@@ -425,30 +586,8 @@ const PropertyDetails = ({ params }) => {
       </nav>
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
-        <Container maxWidth="evmd">
-          {openEnquiryForm && (
-            <EnquireNow
-              open={openEnquiryForm}
-              propertyData={propertyData[0]?.propertyData}
-              handleClose={handleCloseEnquiryForm}
-              handleAction={handleOpenVerifyPopup}
-              submitEnquiry={handleSubmitEnquiry}
-            />
-          )}
-          <OtpVerify
-            formData={getItem(enquiryFormKey)}
-            open={openOtpPopup}
-            handleClose={handleCloseVerifyPopup}
-            handleOpen={handleOpenEnquiryForm}
-            handleAlternateSignIn={handleOpenAlternateSignIn}
-            handleSubmit={handleSubmitEnquiryUnauth}
-          />
-          <AlternateSignIn
-            open={openAlternateSignIn}
-            handleClose={handleCloseAlternateSignIn}
-          />
-
-          <Grid container spacing={2} id="section-list">
+        <Container maxWidth="md" sx={{ pt: '0 !important' }}>
+          <Grid container spacing={2}>
             <ClearanceSection
               regulatoryClearanceData={
                 propertyData[0]?.propertyData?.regulatoryClearance
@@ -488,7 +627,7 @@ const PropertyDetails = ({ params }) => {
           </Grid>
 
           {/* Dont Touch this */}
-          <Toolbar sx={{ display: { xs: "flex", evmd: "none" } }} />
+          <Toolbar sx={{ display: { xs: "flex", md: "none" } }} />
 
           <Card
             sx={{
@@ -497,7 +636,7 @@ const PropertyDetails = ({ params }) => {
               left: 0,
               bottom: 0,
               width: "100%",
-              display: { xs: "block", evmd: "none" },
+              display: { xs: "block", md: "none" },
               background: "whitesmoke",
               boxShadow: "-1px -2px 6px 2px gainsboro !important",
             }}
@@ -546,7 +685,7 @@ const PropertyDetails = ({ params }) => {
                   position: "fixed",
                   right: 16,
                   bottom: 16,
-                  display: { xs: "none", evmd: "flex" },
+                  display: { xs: "none", md: "flex" },
                   flexDirection: "column",
                 }}
               >

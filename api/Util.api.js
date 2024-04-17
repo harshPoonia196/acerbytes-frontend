@@ -76,7 +76,7 @@ export const getEnquiries = () => {
 
 
 export const uploadImage = (data) => {
-  return axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/general/upload`, data, {
+  return axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}general/upload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

@@ -1,5 +1,5 @@
 "use client";
-import { Box, Container, Typography, Card } from '@mui/material'
+import { Box, Container, Typography, Card, Grid } from '@mui/material'
 import OrdersTable from 'Components/Admin/OrdersRequest/OrdersTable'
 
 import CustomAdminBreadScrumbs from 'Components/CommonLayouts/CustomAdminBreadScrumbs'
@@ -19,10 +19,10 @@ function OrderRequest() {
     return (
         <>
             <CustomAdminBreadScrumbs text='Orders request' />
-            <InfoBox
-                title={Object.keys(userDetails).length > 0 ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}(${userDetails?.role})` : ""}
-                subtitle={Object.keys(dashboardInfo).length > 0 ? `Pending: ${dashboardInfo.pendingOrders}, Completed: ${dashboardInfo.completedOrders}` : ''}
-            />
+
+            <InfoBox dataList={[{ label: 'Pending', value: dashboardInfo.pendingOrders },
+            { label: 'Completed', value: dashboardInfo.completedOrders }]} />
+
             <Container>
                 <OrdersTable onDashboardDataUpdate={handleDashboardDataUpdate} />
             </Container>

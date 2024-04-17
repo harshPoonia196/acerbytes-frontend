@@ -10,7 +10,7 @@ import {
   TableRow,
   TableCell,
   TableSortLabel,
-  Tooltip,
+  Typography,
   Button,
   IconButton,
   Chip,
@@ -20,7 +20,7 @@ import {
 import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
-import { formatAmount, getComparator, stableSort } from "utills/CommonFunction";
+import { capitalLizeName, formatAmount, getComparator, stableSort } from "utills/CommonFunction";
 import { useQueries } from "utills/ReactQueryContext";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getLeads } from "api/Admin.api";
@@ -28,6 +28,10 @@ import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utill
 import Loader from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { listOfPages } from "Components/NavBar/Links";
+import { useRouter } from "next/navigation";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 // const rows = [
 //   {
@@ -50,16 +54,16 @@ import { countryCodeFormating } from "utills/utills";
 
 const headCells = [
   {
-    id: "firstName",
-    label: "First name",
+    id: "property",
+    label: "Property",
   },
   {
-    id: "lastName",
-    label: "last Name",
-  },
-  {
-    id: "city",
+    id: "propertyCity",
     label: "city",
+  },
+  {
+    id: "name",
+    label: "Customer",
   },
   {
     id: "phone",
@@ -78,13 +82,14 @@ const headCells = [
   //   label: "email Verified",
   // },
   {
-    id: "role",
-    label: "role",
-  },
-  {
     id: "maxBudget",
     label: "max Budget",
   },
+  // {
+  //   id: "role",
+  //   label: "role",
+  // },
+
   // {
   //   id: "closedStatus",
   //   label: "closed Status",
@@ -101,10 +106,15 @@ const headCells = [
   //   id: "lastModified",
   //   label: "last Modified",
   // },
-   {
-    id: "propertyLink",
-    label: "Property link",
+  {
+    id: "brokerInfo",
+    label: "Broker",
   },
+  {
+    id: "action",
+    label: "Action",
+  },
+
 ];
 
 function EnhancedTableHead(props) {
@@ -143,42 +153,110 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, handlePropertyView }) {
+function RowStructure({ row, handlePropertyView, router }) {
   const user = row?.user || {};
   const userDetail = row?.userDetail || {};
+
+  const handleBrokerProfileClick = (googleID) => {
+    if (googleID) {
+      router.push(listOfPages.adminUpdateConsultantProfileLinks + `/${googleID}`);
+    }
+  }
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const editProfile = (googleID) => {
+    if (googleID) {
+      router.push(listOfPages.adminUpdateProfileLinks + `/${googleID}`);
+    }
+    handleClose();
+  }
+
+
   return (
     <TableRow
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell>{row?.name?.firstName}</TableCell>
-      <TableCell>{row?.name?.lastName}</TableCell>
+      <TableCell className="urlStylingBackground">
+        {row.propertyLink && (
+          <a sx={{ cursor: 'pointer' }}
+            onClick={(e) => {
+              e.preventDefault();
+              handlePropertyView(row.propertyLink);
+            }}
+          >
+            {capitalLizeName(row?.property?.overview?.builder)} {capitalLizeName(row?.property?.overview?.projectName)}
+          </a>
+        )}
+      </TableCell>
       <TableCell>{row?.property?.location?.city}</TableCell>
-      <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}</TableCell>
-      {/* <TableCell>{row.phoneVerified ? "Yes" : "No"}</TableCell> */}
-      <TableCell>{user.email}</TableCell>
+      <TableCell>{row?.name?.firstName} {row?.name?.lastName}</TableCell>
+
+      <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}&nbsp;
+        {row.isVerified && <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' />}</TableCell>
+      <TableCell>{user.email || "-"}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
-      <TableCell>{user.role}</TableCell>
-      <TableCell>{userDetail?.budget?.maximumBudget?.unit || ""} {userDetail?.budget?.maximumBudget?.value || ""}</TableCell>
+
+      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
+      {/* <TableCell>{user.role}</TableCell> */}
+      <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell>
+      <TableCell sx={{ py: 0 }}>
+        <IconButton
+          onClick={handleClick}
+          disabled={
+            !user.email
+          }
+          sx={{ fontSize: "1rem !important" }}
+        >
+          <MoreVertIcon fontSize="1rem" />
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+          transformOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          sx={{
+            '& .MuiList-root': {
+              padding: '0px',
+            },
+          }}
+        >
+          <MenuItem onClick={() => editProfile(row?.user?.googleID)} >
+            Edit Profile
+          </MenuItem>
+        </Menu>
+      </TableCell>
+
+
       {/* <TableCell>{row.closedStatus}</TableCell>
       <TableCell>{row.pendingStatus}</TableCell> */}
-      <TableCell>{row.propertyLink &&<Button
-                sx={{ mt: 1, ml: 1 }}
-                variant="outlined"
-                onClick={()=>handlePropertyView(row.propertyLink)}
-                // startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
-              >
-                View
-              </Button>}</TableCell>
+
       {/* <TableCell>{row.updatedBy}</TableCell>
       <TableCell>
         <Chip label={row.lastModified} size="small" />
       </TableCell> */}
+
     </TableRow>
   );
 }
 
 function EnquiriesTable({ search, setLeadsCount }) {
+  const router = useRouter();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
@@ -252,7 +330,7 @@ function EnquiriesTable({ search, setLeadsCount }) {
     firstLoad.current = false;
   }, [rowsPerPage, page]);
 
-  const handlePropertyView=(link)=>{
+  const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
     const fullLink = `${baseUrl}/${link}`;
     window.open(fullLink, "_blank");
@@ -262,7 +340,6 @@ function EnquiriesTable({ search, setLeadsCount }) {
     <>
       {isLoading ? <Loader /> : null}
       {
-
         rows.length > 0 ? (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -273,7 +350,7 @@ function EnquiriesTable({ search, setLeadsCount }) {
               />
               <TableBody>
                 {rows.map((row) => (
-                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} />
+                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} router={router} />
                 ))}
               </TableBody>
             </Table>
@@ -291,9 +368,7 @@ function EnquiriesTable({ search, setLeadsCount }) {
             />
           </TableContainer>
         ) :
-
           <NoDataCard title={"No data found"} />
-
       }
 
     </>

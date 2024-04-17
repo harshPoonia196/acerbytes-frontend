@@ -1,7 +1,7 @@
 'use client'
 
 import React from "react";
-import { Box, Container, Typography,Card } from "@mui/material";
+import { Box, Container, Typography, Card, Grid } from "@mui/material";
 import EnquiriesTable from "Components/Admin/Enquiries/EnquiriesTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
@@ -19,19 +19,12 @@ function Enquiries() {
   console.log("userDetails:", userDetails);
   return (
     <>
-
       <CustomAdminBreadScrumbs text='List of leads' />
-      <InfoBox
-        title={`${userDetails ? `${userDetails?.name?.firstName} ${userDetails?.name?.lastName} (${userDetails.role})` : ""}`}
-        subtitle={`Leads: ${leadsCount}`} 
-      />
+      <InfoBox dataList={[{ label: 'Leads', value: leadsCount }]} />
       <Container>
-        <Typography variant="h6" sx={{ mb: 2,mt:1 }}>
-          List of Enquiries (Admin)
-        </Typography>
         <Card sx={{ mb: 2 }}>
-                    <CustomSearchInput value={search} onChange={handleSearch} />
-                </Card>
+          <CustomSearchInput value={search} onChange={handleSearch} />
+        </Card>
         <EnquiriesTable search={search} setLeadsCount={setLeadsCount} />
       </Container>
     </>

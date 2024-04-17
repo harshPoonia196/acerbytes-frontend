@@ -33,20 +33,21 @@ function Research() {
             <Card
               sx={{
                 width: "fit-content",
-                backgroundColor: colors?.BLUE,
+                backgroundColor: colors?.BLACK,
                 borderRadius: "4px !important",
                 m: 0,
                 ml: "auto !important",
               }}
             >
               <Typography
-                variant="body1"
+                variant="h6"
                 sx={{
-                  fontWeight: 700,
+                  fontWeight: 600,
                   width: "fit-content",
                   color: "white",
                   p: 0.5,
                   px: 1,
+                  cursor: "pointer",
                 }}
               >
                 43

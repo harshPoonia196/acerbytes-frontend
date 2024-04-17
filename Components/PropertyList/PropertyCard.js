@@ -16,7 +16,8 @@ import { format } from "date-fns";
 import { useMemo } from "react";
 import { useAuth } from "utills/AuthContext";
 import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
-import { getColorForProgressBar } from "utills/CommonFunction";
+import { getColorForProgressBar, shortPriceFormatter } from "utills/CommonFunction";
+import Image from "next/image";
 
 function PropertyCard(props) {
   const { userDetails } = useAuth();
@@ -26,17 +27,18 @@ function PropertyCard(props) {
     const overview = propertyDetailsData?.overview;
     const location = propertyDetailsData?.location;
 
-    const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+    const projectCategory = encodeURIComponent((overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-').replace(/\//g, '-'));
     let projectType;
     if (overview?.projectType?.length > 0) {
-      projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+      projectType = overview.projectType.map(type => encodeURIComponent(type.value.trim().replace(/\s+/g, '-').replace(/\//g, '-'))).join("-");
     } else {
       projectType = 'type';
     }
-    const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
-    const sector = (location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-');
-    const area = (location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '');
-    const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+    const city = encodeURIComponent((location?.city.trim() ?? 'city').replace(/\s+/g, '-').replace(/\//g, '-'));
+    const sector = encodeURIComponent((location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-').replace(/\//g, '-'));
+    const area = encodeURIComponent((location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '').replace(/\//g, '-'));
+    const projectName = encodeURIComponent((overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-').replace(/\//g, '-'));
+
 
     return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetails._id}`;
   };
@@ -46,13 +48,6 @@ function PropertyCard(props) {
   const formattedCreatedAt =
     createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' hh:mm aaa");
 
-  const numDifferentiation = (value) => {
-    const val = Math.abs(value)
-    if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`
-    if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`
-    if (val >= 1000) return `${(value / 1000).toFixed(2)}k`
-    return value;
-  }
   const layoutCount = useMemo(() => {
     return propertyDetails?.unitsPlan?.uniqueLayouts?.length + propertyDetails?.unitsPlan?.planList?.filter(item => !item.propertyLayout)?.length
   }, [propertyDetails])
@@ -62,7 +57,6 @@ function PropertyCard(props) {
     return [...propertyDetails?.unitsPlan?.uniqueLayouts, ...withoutUniqueLayout]
   }, [propertyDetails])
 
-  console.log(propertyDetails)
 
   return (
     <Card>
@@ -73,17 +67,12 @@ function PropertyCard(props) {
               sx={{ display: "flex", flex: 1 }}
               onClick={() => router.push(`/details/${propertyUrl}`)}
             >
-              <CardMedia
-                component="img"
-                alt={propertyDetails?.marketing?.tagLine}
-                sx={{
-                  width: 80,
-                  height: 54,
+              <Image alt={propertyDetails?.marketing?.tagLine} height={54} width={80}
+                loading="lazy" src={propertyDetails?.marketing?.image}
+                style={{
                   borderRadius: "8px",
-                  mr: 2,
-                }}
-                image={propertyDetails?.marketing?.image}
-              />
+                  marginRight: 16,
+                }} />
               <Box
                 sx={{ flex: 1 }}
                 onClick={() => router.push(`/details/${propertyUrl}`)}
@@ -129,19 +118,7 @@ function PropertyCard(props) {
               // onClick={() => router.push("/research")}
               onClick={() => router.push(`/details/${propertyUrl}`)} />
           </Grid>
-          <Grid item xs={8} sm={6} lg={2.5}
-            onClick={() => router.push(`/details/${propertyUrl}`)}
-          >
-            <Typography variant="caption">
-              {(layoutCount) === 1
-                ? `${layoutCount} layout`
-                : `${layoutCount} layouts`}
-            </Typography>
-            <Typography variant="subtitle2">
-              {layoutData.join(", ")}
-            </Typography>
-          </Grid>
-          <Grid item xs={8} sm={6} lg={3}
+          <Grid item xs={8} sm={8} lg={3}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             {(propertyDetails?.unitsPlan?.averagePrice ||
@@ -155,11 +132,24 @@ function PropertyCard(props) {
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
                 <Typography variant="subtitle2">
-                  ₹ {numDifferentiation(propertyDetails?.unitsPlan?.minPriceRange)} - ₹{" "}
-                  {numDifferentiation(propertyDetails?.unitsPlan?.maxPriceRange)}
+                  ₹ {shortPriceFormatter(propertyDetails?.unitsPlan?.minPriceRange)} - ₹{" "}
+                  {shortPriceFormatter(propertyDetails?.unitsPlan?.maxPriceRange)}
                 </Typography>
               )}
           </Grid>
+          <Grid item xs={8} sm={4} lg={2.5}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
+          >
+            <Typography variant="caption">
+              {(layoutCount) === 1
+                ? `${layoutCount} layout`
+                : `${layoutCount} layouts`}
+            </Typography>
+            <Typography variant="subtitle2">
+              {layoutData.join(", ")}
+            </Typography>
+          </Grid>
+
           <Grid item xs={8} sm={4} lg={2}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >

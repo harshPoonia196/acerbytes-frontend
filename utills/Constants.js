@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import FiberManualRecord from "@mui/icons-material/FiberManualRecord";
 import colors from "styles/theme/colors";
-export const boxShadowTop = '-1px -2px 6px 2px gainsboro !important';
+export const boxShadowTop = '-1px -2px 6px -2px gainsboro !important';
 export const boxShadowBottom = '1px 2px 2px -2px gainsboro !important';
 export const menuMaxHeight = 150;
 export const FILE_TYPES = ["image/png", "image/jpeg", "image/jpg"];
@@ -335,10 +335,6 @@ const listOfPropertyDetailsTab = [
     value: "amenities",
   },
   {
-    label: "Location",
-    value: "location",
-  },
-  {
     label: "Value for money",
     value: "value",
   },
@@ -363,7 +359,10 @@ const reactQueryKey = {
 };
 
 const enquiryFormKey = "enquiryForm";
+const enquiryFormOpen = "enquiryFormOpen";
 const propertyRedirectKey = "propertyRedirect";
+const propertyUserVerifiedKey = "propertyUserVerified";
+const userLeadId = "userLeadId";
 
 export {
   listOfTabsInAddProperty,
@@ -373,7 +372,10 @@ export {
   listOfPropertyDetailsTab,
   reactQueryKey,
   enquiryFormKey,
+  enquiryFormOpen,
   propertyRedirectKey,
+  propertyUserVerifiedKey,
+  userLeadId,
 };
 
 export const generateContent = () => (

@@ -16,21 +16,26 @@ import GoogleIcon from "@mui/icons-material/Google";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import { useState } from "react";
-import { useParams,useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { setItem } from "utills/utills";
-import { propertyRedirectKey } from "utills/Constants";
+import { propertyRedirectKey, propertyUserVerifiedKey, userLeadId } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
-function AlternateSignIn({ open, handleClose }) {
+function AlternateSignIn({ open,leadId, handleClose }) {
   const [isVerified, setIsVerified] = useState(false);
   const router = useRouter();
   const param = useParams();
 
   const handleSignin = () => {
+    setItem(propertyUserVerifiedKey, true);
+    setItem(userLeadId, leadId);
     setIsVerified(true);
     if (param?.projectdetails) {
       setItem(propertyRedirectKey, param?.projectdetails);
+    } else if (param?.id) {
+      setItem(propertyRedirectKey, "/details/" + param?.id);
     }
+
     router.push("/login");
   };
 
@@ -94,7 +99,7 @@ function AlternateSignIn({ open, handleClose }) {
                 startIcon={<CloseIcon />}
                 sx={{ mr: 2 }}
                 onClick={handleClose}
-              
+
                 ButtonText={"Skip"}
               />
               {/* <CustomButton

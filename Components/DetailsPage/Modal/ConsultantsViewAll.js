@@ -11,7 +11,7 @@ import {
 import BrokerCard from "Components/BrokersPage/BrokerCard";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
-function ConsultantsViewAll({ open, handleClose, propertyData }) {
+function ConsultantsViewAll({ open, handleClose, propertyData, enquiredInfo, handleEnquireWithBroker }) {
   return (
     <Dialog
       sx={{
@@ -37,7 +37,7 @@ function ConsultantsViewAll({ open, handleClose, propertyData }) {
         >
           {propertyData?.map((broker) => (
             <Grid item xs={12} sm={12} key={broker?.name}>
-              <BrokerCard broker={broker} noReview />
+              <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
             </Grid>
           ))}
         </List>

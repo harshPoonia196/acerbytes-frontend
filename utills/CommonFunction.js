@@ -113,7 +113,7 @@ const formatDate = (dateString) => {
 };
 
 const formattedCreatedAt = (dateString) => {
-  return format(new Date(dateString), "dd-MM-yyyy 'at' hh:mm aaa");
+  return format(new Date(dateString), "dd MMM, yyyy, hh:mm aaa");
 };
 
 let formatDateAndDaysRemaining = (expiryDate) => {
@@ -136,7 +136,7 @@ const formatAmount = (amount) => {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 0,
-  }).format(numericAmount);
+  }).format(numericAmount).replace("₹", "₹ ");
 };
 
 const formatPoints = (points) => {
@@ -217,6 +217,19 @@ const getColorForProgressBar = (input) => {
   }
 }
 
+const shortPriceFormatter = (value) => {
+  const val = Math.abs(value)
+  if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`
+  if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`
+  if (val >= 1000) return `${(value / 1000).toFixed(2)}k`
+  return value;
+}
+
+const getFirstCharacterOfFirstOfFullName = (fname) => {
+  let listOfWords = fname.split(' ');
+  return listOfWords[0].charAt(0) + listOfWords[listOfWords.length - 1].charAt(0)
+}
+
 export {
   upperCaseName,
   capitalLizeName,
@@ -237,5 +250,7 @@ export {
   formattedCreatedAt,
   yearList,
   monthList,
-  getColorForProgressBar
+  getColorForProgressBar,
+  shortPriceFormatter,
+  getFirstCharacterOfFirstOfFullName
 };

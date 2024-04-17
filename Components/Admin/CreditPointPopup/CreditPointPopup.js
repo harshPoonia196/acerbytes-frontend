@@ -72,7 +72,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
                 : "",
           },
         },
-        isReset);
+          isReset);
       }
     } catch (error) {
       showToaterMessages(
@@ -108,7 +108,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
   const updateCreditInfo = (event, isReset) => {
     const key = event.target.name;
     const value = event.target.value;
-    
+
     console.log({
       key,
       value,
@@ -171,7 +171,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Add credit for Consultant
+          Add Credit points for Consultant
         </Typography>
         <Typography variant="body1">
           Potential to buy leads from the panel
@@ -187,17 +187,20 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
             label="Enter received payment"
             isAmount={true}
             handleChange={updateCreditInfo}
-            
+            halfSm
           />
           <InputField
             // type="number"
             name="approvedPoints"
             value={creditInfo.approvedPoints}
             label="Enter assigned points"
+            isPoint={true}
             handleChange={updateCreditInfo}
+            halfSm
           />
           <NewAutoCompleteInputStructure
             label="Select Consultant"
+            variant='standard'
             handleChange={(e, newValue) =>
               updateCreditInfo({
                 target: {
@@ -219,6 +222,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
           />
           <NewAutoCompleteInputStructure
             label="Select Sales person"
+            variant='standard'
             handleChange={(e, newValue) =>
               updateCreditInfo({
                 target: {

@@ -17,7 +17,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
     <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
         <DialogTitle>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                Access the links for <span style={{ color: "gray" }}>Consultant</span>
+                Quick links for <span style={{ color: "gray" }}>Real Estate Consultant</span>
             </Typography>
         </DialogTitle>
         <DialogContent>
@@ -42,7 +42,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
                                     <Typography variant="h5">Make payment</Typography>
-                                    <Typography variant="body1">Payment</Typography>
+                                    <Typography variant="body2">Payment</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -68,7 +68,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
                                     <Typography variant="h5">My leads</Typography>
-                                    <Typography variant="body1">List of all leads</Typography>
+                                    <Typography variant="body2">List of all leads</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -94,7 +94,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
                                     <Typography variant="h5">My links</Typography>
-                                    <Typography variant="body1">List of all links</Typography>
+                                    <Typography variant="body2">List of all links</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -120,7 +120,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
                                     <Typography variant="h5">My notes</Typography>
-                                    <Typography variant="body1">List of all notes</Typography>
+                                    <Typography variant="body2">List of all notes</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -146,7 +146,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
                                     <Typography variant="h5">Payment history</Typography>
-                                    <Typography variant="body1">List of all past payment</Typography>
+                                    <Typography variant="body2">List of all past payment</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>
@@ -172,7 +172,7 @@ const PopupForLinks = ({ open, handleClose, router }) => (
                                 {/* <SupportAgentIcon sx={{ mr: 1 }} /> */}
                                 <Box>
                                     <Typography variant="h5">Consultant profile</Typography>
-                                    <Typography variant="body1">Modify profile</Typography>
+                                    <Typography variant="body2">Modify profile</Typography>
                                 </Box>
                             </CardActionArea>
                         </Card>

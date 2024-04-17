@@ -57,43 +57,44 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
           {BuyingCreditPoints?.map((credit) => {
             return (
               <>
-                <Card sx={{ display: "flex", p: 1, gap: 1, flexDirection: { xs: 'column', sm: 'row' } }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="body1">
+                <Card sx={{ p: 1, }}>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Typography variant="body1" sx={{ flex: 1, alignSelf: 'center' }}>
                       {formatPoints(credit.point)} points
                     </Typography>
-                    <Typography variant="subtitle2">
-                      <span style={{ fontWeight: 600 }}>
-                        {formatAmount(credit.amount)}
-                      </span>{" "}
-                      ({credit.discount}% discount)
-                    </Typography>
+                    <Box>
+                      <CustomButton
+                        variant="contained"
+                        size="small"
+                        onClick={() => handleOpenCreditRequestPaymentPopup(credit)}
+                        ButtonText={`Get ${formatPoints(credit.point)} pts`}
+                      />
+                    </Box>
                   </Box>
-                  <Box sx={{ textAlign: 'end' }}>
-                    <CustomButton
-                      variant="contained"
-                      size="small"
-                      onClick={() => handleOpenCreditRequestPaymentPopup(credit)}
-                      ButtonText={`Get ${formatPoints(credit.point)} points`}
-                    />
-                  </Box>
+
+                  <Typography variant="subtitle2">
+                    <span style={{ fontWeight: 600 }}>
+                      {formatAmount(credit.amount)}
+                    </span>{" "}
+                    ({credit.discount}% discount)
+                  </Typography>
                 </Card>
                 <Divider />
               </>
             );
           })}
           <Box sx={{ backgroundColor: "whitesmoke", p: 2, my: 2 }}>
-            <Typography variant="body1">
+            <Typography variant="body2">
               Post requesting you will receive a{" "}
-              <span style={{ fontWeight: 600 }}>order number</span>
+              <span style={{ fontWeight: 600 }}>order number </span>
               that can be shared with {companyName} representative (if any) and
-              send screenshot at
+              send screenshot at&nbsp;&nbsp;
               <Chip
                 onClick={() => { }}
                 icon={<WhatsAppIcon fontSize="small" />}
                 label="+9198799877"
                 size="small"
-                sx={{ fontSize: "0.875rem" }}
+                sx={{ fontSize: "0.875rem", alignSelf: 'center' }}
               />
             </Typography>
           </Box>

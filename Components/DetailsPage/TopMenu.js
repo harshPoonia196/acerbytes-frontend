@@ -8,7 +8,7 @@ import CircularWithValueLabel from 'Components/CommonLayouts/CircularProgressWit
 function TopMenu(props) {
     const { value, handleChange, list, topMenu } = props
     const router = useRouter()
-    console.log(value)
+    // console.log(value)
     return (
         <>
             <Card
@@ -17,7 +17,7 @@ function TopMenu(props) {
                 <Box sx={{ display: "flex" }}>
                     <Box sx={{ flex: 1 }}>
                         <Box sx={{ display: 'flex', gap: 2 }}>
-                            {value !== 'project' && <Image
+                            {value && value !== 'project' && <Image
                                 src={topMenu?.marketing?.image}
                                 width={100}
                                 height={50}
@@ -41,8 +41,10 @@ function TopMenu(props) {
                                     {/* &#183; ₹ 2.5 Cr – ₹ 5.6 Cr &#183;  */}
                                 </Typography>
                                 <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                                    <Chip label={topMenu?.overview?.status}
-                                        color='primary' size='small' />
+                                    {topMenu?.overview?.status &&
+                                        <Chip label={topMenu?.overview?.status}
+                                            color='primary' size='small' />
+                                    }
                                 </Box>
                             </Box>
                         </Box>
@@ -56,7 +58,9 @@ function TopMenu(props) {
                 </Box>
                 <Box sx={{ display: { xs: 'flex', sm: 'none' }, justifyContent: 'space-between', gap: 1 }}>
                     <Box sx={{ alignSelf: 'center' }}>
-                        <Chip label={topMenu?.overview?.status} color='primary' size='small' />
+                        {topMenu?.overview?.status &&
+                            <Chip label={topMenu?.overview?.status} color='primary' size='small' />
+                        }
                     </Box>
                     <Box>
                         <CircularWithValueLabel onClick={() => router.push("/research")}
