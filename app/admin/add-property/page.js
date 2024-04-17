@@ -87,6 +87,16 @@ function AddProperty() {
   const [amentiesStarsScore, setAmentiesStarScore] = useState([]);
   const [amentiesStars, setAmentiesStar] = useState([]);
   const [locationStars, setLocationStars] = useState([]);
+  const[tagProjectName,setTagProjectName]=useState('');
+  const [tagField,setTagField]=useState({
+    builder:"",
+    projectName:"",
+    projectCategory:"",
+    projectType:"",
+    area:"",
+    sector:"",
+    city:""
+  })
   const [totalRating, setTotalRating] = useState(80)
   const [locationStarsScore, setLocationStarsScore] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -458,17 +468,6 @@ function AddProperty() {
       totalAreaSqft: 0,
       totalPrice: 0,
       planList: [
-        // {
-        //   propertyType: "",
-        //   propertyLayout: "",
-        //   name: "",
-        //   areaUnit: "",
-        //   totalUnits: "",
-        //   area: "",
-        //   bsp: "",
-        //   applicableMonth: "",
-        //   applicableYear: "",
-        // },
       ],
     },
 
@@ -1003,7 +1002,31 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
           },
         },
       });
-    } else {
+    } 
+    else if(secondKeyName.toLowerCase() === "projecttype" ){
+      let  projectType=e.map(item => item.value).join('-');
+     let formattedTagLine= formatTagLine(projectType,secondKeyName)
+       setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e }
+        ,marketing: {...form.marketing,tagLine:formattedTagLine}
+      });
+     }
+    else if(secondKeyName.toLowerCase() === "builder" || secondKeyName.toLowerCase() ==="city"){
+      let formattedTagLine= formatTagLine(e,secondKeyName)
+      setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e }
+        ,marketing: {...form.marketing,tagLine:formattedTagLine}
+      });
+    
+    }
+    else if(secondKeyName.toLowerCase() === "projectcategory" || secondKeyName.toLowerCase() === "state"|| secondKeyName.toLowerCase() === "area"||secondKeyName.toLowerCase() === "projectname"|| secondKeyName.toLowerCase() === "sector"){
+        let formattedTagLine= formatTagLine(e.target.value,secondKeyName)
+        setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e.target.value }
+          ,marketing: {...form.marketing,tagLine:formattedTagLine}
+        });
+      
+    }
+    
+    
+    else {
       if (thirdKeyName === "checked") {
         setForm((prevForm) => {
           const updatedForm = { ...prevForm };
@@ -1133,6 +1156,26 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
   
   };
 
+  let formatTagLine = (value,key)=>{
+
+    let obj = {
+      ...tagField,[key]:value
+    }
+    let output = '';
+setTagField(obj)
+    Object.entries(obj).forEach(([key, value]) => {
+      if (value) {
+        if (output) {
+          output += "-";
+        }
+        output += value;
+      }
+    });
+
+    return output
+
+
+  }
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
     // let totalRating = form.overview.status ==="underconstruction"? 75:80;
     let total = totalRating

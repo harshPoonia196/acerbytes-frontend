@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import InfoIcon from "@mui/icons-material/Info";
-import { menuMaxHeight } from "utills/Constants";
+import { menuMaxHeight,showStarFor } from "utills/Constants";
 import { capitalLizeName } from "utills/CommonFunction";
 
 function NewSelectTextFieldStructure({
@@ -31,6 +31,8 @@ function NewSelectTextFieldStructure({
 
   useEffect(()=>{
     let returnValue=0
+   let check = showStarFor.find(item => item === label)
+    if(check){
       switch (value.toLowerCase()) {
         case "yes":
           returnValue = 5;
@@ -54,6 +56,8 @@ function NewSelectTextFieldStructure({
           returnValue = 0;
       }
       setRating(returnValue)
+    }
+
   })
   return (
     <Grid item xs={12} sm={full ? 12 : 6}>
@@ -65,7 +69,7 @@ function NewSelectTextFieldStructure({
           {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
         {
-          ["RERA approved","CC","OC","Construction Progress","Authority registration","Government Loan","Private Bank loan","Fresh","Resale"].find(item => item === label)
+showStarFor.find(item => item === label)
            &&
          <Rating
          readOnly={true}
