@@ -563,6 +563,7 @@ setCities(res.data.data[0])
       image:"",
       tagLine: "",
       description: "",
+      metaDescription: ""
     },
   });
 

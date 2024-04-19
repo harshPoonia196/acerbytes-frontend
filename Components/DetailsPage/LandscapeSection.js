@@ -53,8 +53,8 @@ function LandscapeSection(props) {
                     <NewKeyValuePairStructure label="Area" value={layoutData?.area && `${parseFloat(layoutData?.area).toFixed()} ${layoutData?.areaUnit || ''}`} />
                     {/* <NewKeyValuePairStructure label="Open area" value={layoutData?.area && parseFloat(layoutData?.area).toFixed(2)} /> */}
                     <NewKeyValuePairStructure label="Green area" value={layoutData?.greenArea && `${parseFloat(layoutData?.greenArea).toFixed()} ${layoutData?.areaUnit || ''}`} />
-                    <NewKeyValuePairStructure label="Unit density (Unit/Area)" value={`${layoutData?.unitDensity && parseFloat(layoutData?.unitDensity).toFixed(2)}`}  />
-                    <NewKeyValuePairStructure label="Green density" value={layoutData?.greenDensity && parseFloat(layoutData?.greenDensity).toFixed(2)} />
+                    <NewKeyValuePairStructure label="Unit density (Unit/Area)" value={layoutData?.unitDensity} isRating={true} isRatingReadOnly />
+                    <NewKeyValuePairStructure label="Green density" value={layoutData?.greenDensity} isRating={true} isRatingReadOnly />
                     <NewKeyValuePairStructure label="Construction quality" value={layoutData?.constructionQuality} isRating={true} isRatingReadOnly/>
                     <NewKeyValuePairStructure label="Interior quality" value={layoutData?.interiorQuality} isRating={true} isRatingReadOnly />
                 </Grid>

@@ -526,9 +526,9 @@ function AddProperty() {
       image: "",
       tagLine: "",
       description: "",
+      metaDescription: ""
     },
   });
-
 
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
