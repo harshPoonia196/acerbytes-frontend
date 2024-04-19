@@ -26,7 +26,6 @@ function BottomFooterUser({
   url,
   handleOpenEnquiryForm,
 }) {
-  console.log(url, "url?.href");
 
   const router = useRouter();
 
@@ -189,7 +188,8 @@ function BottomFooterUser({
           }}
           component="a"
           href={`https://web.whatsapp.com/send?text=${encodeURIComponent(
-            `https://acrebytes.vercel.app/details/Residential-Flat-ghaziabad-Pandav-Nagar-MF4F%2BV5M-NH-24-skardi-greens-662110b393dc2802fdf01266`
+            url?.href ? url?.href : ''
+            // `https://acrebytes.vercel.app/details/Residential-Flat-ghaziabad-Pandav-Nagar-MF4F%2BV5M-NH-24-skardi-greens-662110b393dc2802fdf01266`
           )}`}
           target="_blank"
           data-action="share/whatsapp/share"

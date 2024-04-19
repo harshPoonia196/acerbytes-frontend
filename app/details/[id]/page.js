@@ -23,11 +23,11 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
-    imageUrl,
+    // imageUrl,
     openGraph: {
       title,
       description,
-      images: [imageUrl]
+      images: [{ url: imageUrl, width: 500, height: 500}]
     }
   };
 }
