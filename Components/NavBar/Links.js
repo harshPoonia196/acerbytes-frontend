@@ -183,4 +183,12 @@ export const CSRMenuList = [
   }
 ];
 
+export const SMRMenuList = [
+  {
+    label: "Manage Consultants",
+    route: listOfPages.adminManageConsultant,
+    icon: <PlaylistAddIcon fontSize="small" />,
+  },
+];
+
 

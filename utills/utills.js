@@ -56,7 +56,7 @@ const scopes = {
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
   const isPublicRoute = publicRoutes.some(publicRoute => {
-    if (publicRoute.includes("/:")) { 
+    if (publicRoute.includes("/:")) {
       const parts = publicRoute.split("/:");
       const baseRoute = parts[0];
       if (parts.length === 2 && url.startsWith(baseRoute)) {
@@ -67,18 +67,25 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
     }
     return url === publicRoute;
   });
-  
+
   if (!isLogged && !isPublicRoute) {
     redirectUser("/login");
   }
+
   if (isLogged) {
-    if (url.includes("/admin") && role !== "admin" && role !== "superAdmin" && role !== "customerSupport") {
-      redirectUser("/");
-    } else if (url.includes("/user") && role !== "user") {
-      redirectUser("/");
-    } else if (url.includes("/consultant") && role !== "broker") {
-      console.log(url, isLogged)
-      redirectUser("/");
+    const urls = [
+      { baseUrl: '/admin', access_roles: ['admin', 'superAdmin', 'customerSupport', 'sales'] },
+      { baseUrl: '/user', access_roles: ['user'] },
+      { baseUrl: '/consultant', access_roles: ['broker'] }
+    ]
+
+    /* Returing to baseurl if user has not access */
+    for (let i = 0, len = urls.length; i < len; i++) {
+      const { baseUrl, access_roles } = urls[i];
+      if (url.includes(baseUrl) && !access_roles.includes(role)) {
+        redirectUser("/");
+        break;
+      }
     }
   }
 };

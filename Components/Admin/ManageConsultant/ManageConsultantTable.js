@@ -11,9 +11,12 @@ import {
   IconButton,
   Container,
   Card,
+  Menu,
+  MenuItem
 } from "@mui/material";
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
@@ -22,6 +25,10 @@ import AddCreditPopup from "./Modal/AddCreditPopup";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
+import { matchUserRole } from "utills/utills";
+import {
+  ROLE_CONSTANTS
+} from "utills/Constants";
 
 const rows = [
   {
@@ -132,13 +139,26 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row }) {
+function RowStructure({ row, userDetails }) {
   const [openAddCredit, setOpenAddCredit] = useState(false);
-  const handleOpenAddCreditPopup = () => {
-    setOpenAddCredit(true);
-  };
 
-  const handleCloseAddCreditPopup = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null),
+    open = Boolean(anchorEl),
+
+    handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    },
+
+    handleClose = () => {
+      setAnchorEl(null);
+    },
+
+   handleOpenAddCreditPopup = () => {
+    handleClose();
+    setOpenAddCredit(true);
+  },
+
+   handleCloseAddCreditPopup = () => {
     setOpenAddCredit(false);
   };
 
@@ -161,14 +181,38 @@ function RowStructure({ row }) {
         <TableCell>{row.CreditAmount}</TableCell>
         <TableCell>{row.status}</TableCell>
         <TableCell>
-          {row.action === "Add Credit" && (
-            <IconButton
-              sx={{ fontSize: "1rem !important", p: 0 }}
-              onClick={handleOpenAddCreditPopup}
-            >
-              <AddIcon fontSize="1rem" />
-            </IconButton>
-          )}
+          <IconButton
+            onClick={handleClick}
+            sx={{ fontSize: "1rem !important" }}
+          >
+            <MoreVertIcon fontSize="1rem" />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            transformOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            sx={{
+              '& .MuiList-root': {
+                padding: '0px',
+              },
+            }}
+          >
+            <MenuItem onClick={handleOpenAddCreditPopup}>
+              Add Credit
+            </MenuItem>
+
+            <MenuItem>
+              Edit Profile
+            </MenuItem>
+          </Menu>
         </TableCell>
       </TableRow>
     </>
