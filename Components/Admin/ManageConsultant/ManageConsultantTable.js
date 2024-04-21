@@ -14,57 +14,23 @@ import {
   Menu,
   MenuItem
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import { visuallyHidden } from "@mui/utils";
 import { getComparator, stableSort } from "utills/CommonFunction";
-import AddIcon from "@mui/icons-material/Add";
 import AddCreditPopup from "./Modal/AddCreditPopup";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
-import { matchUserRole } from "utills/utills";
+import { listOfPages } from "Components/NavBar/Links";
+import { useRouter } from "next/navigation";
+import { getBrokersList } from "api/Admin.api";
+import { debounce } from "lodash";
 import {
-  ROLE_CONSTANTS
+  ROLE_CONSTANTS, DEBOUNCE_TIMER
 } from "utills/Constants";
-
-const rows = [
-  {
-    FirstName: "Anand",
-    LastName: "Gupta",
-    CompanyName: "ABC Enterprise",
-    phone: "1234567558",
-    RERANumber: "12344",
-    NoOfActiveLinks: "2",
-    CreditAmount: "5000",
-    status: "Active",
-    action: "Add Credit",
-  },
-  {
-    FirstName: "Anand",
-    LastName: "Gupta",
-    CompanyName: "ABC Enterprise",
-    phone: "1234567558",
-    RERANumber: "12344",
-    NoOfActiveLinks: "2",
-    CreditAmount: "5000",
-    status: "Active",
-    action: "Add Credit",
-  },
-  {
-    FirstName: "Anand",
-    LastName: "Gupta",
-    CompanyName: "ABC Enterprise",
-    phone: "1234567558",
-    RERANumber: "12344",
-    NoOfActiveLinks: "2",
-    CreditAmount: "5000",
-    status: "Active",
-    action: "Add Credit",
-  },
-];
 
 const headCells = [
   {
@@ -95,10 +61,6 @@ const headCells = [
   {
     id: "CreditAmount",
     label: "Credit amount",
-  },
-  {
-    id: "status",
-    label: "Status",
   },
 ];
 
@@ -139,10 +101,9 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, userDetails }) {
-  const [openAddCredit, setOpenAddCredit] = useState(false);
-
-  const [anchorEl, setAnchorEl] = React.useState(null),
+function RowStructure({ row, router }) {
+  const [openAddCredit, setOpenAddCredit] = useState(false),
+    [anchorEl, setAnchorEl] = React.useState(null),
     open = Boolean(anchorEl),
 
     handleClick = (event) => {
@@ -153,14 +114,22 @@ function RowStructure({ row, userDetails }) {
       setAnchorEl(null);
     },
 
-   handleOpenAddCreditPopup = () => {
-    handleClose();
-    setOpenAddCredit(true);
-  },
+    handleOpenAddCreditPopup = () => {
+      handleClose();
+      setOpenAddCredit(true);
+    },
 
-   handleCloseAddCreditPopup = () => {
-    setOpenAddCredit(false);
-  };
+    handleCloseAddCreditPopup = () => {
+      setOpenAddCredit(false);
+    },
+
+    editProfile = (googleID, role) => {
+      if (role == ROLE_CONSTANTS.broker) {
+        router.push(listOfPages.adminUpdateConsultantProfileLinks + `/${googleID}`);
+      }
+      handleClose();
+    }
+
 
   return (
     <>
@@ -172,14 +141,13 @@ function RowStructure({ row, userDetails }) {
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
       >
-        <TableCell>{row.FirstName}</TableCell>
-        <TableCell>{row.LastName}</TableCell>
-        <TableCell>{row.CompanyName}</TableCell>
-        <TableCell>{row.phone}</TableCell>
-        <TableCell>{row.RERANumber}</TableCell>
-        <TableCell>{row.NoOfActiveLinks}</TableCell>
-        <TableCell>{row.CreditAmount}</TableCell>
-        <TableCell>{row.status}</TableCell>
+        <TableCell>{row?.name.firstName}</TableCell>
+        <TableCell>{row?.name.lastName}</TableCell>
+        <TableCell>{row?.serviceDetails?.company || ''}</TableCell>
+        <TableCell>{row?.phone?.countryCode + row?.phone?.number}</TableCell>
+        <TableCell>{row?.serviceDetails?.reraNumber || ''}</TableCell>
+        <TableCell>{row?.totalLinks || 0}</TableCell>
+        <TableCell>{row?.brokerBalance?.balance || 0}</TableCell>
         <TableCell>
           <IconButton
             onClick={handleClick}
@@ -209,7 +177,7 @@ function RowStructure({ row, userDetails }) {
               Add Credit
             </MenuItem>
 
-            <MenuItem>
+            <MenuItem onClick={() => editProfile(row?.brokerBalance?.googleID, 'broker')} >
               Edit Profile
             </MenuItem>
           </Menu>
@@ -220,10 +188,38 @@ function RowStructure({ row, userDetails }) {
 }
 
 function ManageConsultantTable() {
+  const router = useRouter();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [consultantList, setConsultantList] = React.useState({ rows: [], totalCount: 0 });
+  const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
+  const [initialMount, setInitialMount] = React.useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    getList()
+  }, [rowsPerPage, page])
+
+  useEffect(() => {
+    if (initialMount) {
+      setInitialMount(false);
+      return;
+    }
+
+    debouncedSearch();
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchTerm]);
+
+  const getList = async () => {
+    const { data: { data: { data, totalCount } }, status } = await getBrokersList(rowsPerPage, page, searchTerm)
+    if (status) {
+      setConsultantList({ rows: data, totalCount })
+    }
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -240,27 +236,30 @@ function ManageConsultantTable() {
     setPage(0);
   };
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
+  function performSearch() {
+    getList()
+  }
+
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
+
 
   return (
     <>
       <InfoBox
-        dataList={[{ label: 'Consultants', value: rows.length }]}
+        dataList={[{ label: 'Consultants', value: consultantList.totalCount }]}
       />
 
       <Container>
         <Card sx={{ mb: 2 }}>
-          <CustomSearchInput />
+          <CustomSearchInput value={searchTerm}
+            onChange={handleSearch}
+          />
         </Card>
 
-        {rows.length > 0 ? (
+        {!!consultantList.rows.length ? (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <EnhancedTableHead
@@ -269,8 +268,8 @@ function ManageConsultantTable() {
                 onRequestSort={handleRequestSort}
               />
               <TableBody>
-                {rows.map((row) => (
-                  <RowStructure row={row} />
+                {consultantList.rows.map((row) => (
+                  <RowStructure row={row} router={router} />
                 ))}
               </TableBody>
             </Table>
@@ -280,7 +279,7 @@ function ManageConsultantTable() {
               }}
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={rows.length}
+              count={consultantList.totalCount}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

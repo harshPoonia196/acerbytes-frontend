@@ -18,10 +18,10 @@ export const getConsultantsPersons = () => {
 
 export const getBrokersList = (limit, page, search) => {
   let query = "";
-  if (limit) {
+  if (limit === 0 || limit) {
     query += `limit=${limit || 0}&&`;
   }
-  if (page) {
+  if (page === 0 || page) {
     query += `page=${page || 0}&&`;
   }
   if (search) {
@@ -32,8 +32,7 @@ export const getBrokersList = (limit, page, search) => {
 
 export const getLeads = ({ limit, page, search }) => {
   return axiosInstance.get(
-    `/admin/getLeads?limit=${limit || ""}&&page=${page || 0}&&search=${
-      search || ""
+    `/admin/getLeads?limit=${limit || ""}&&page=${page || 0}&&search=${search || ""
     }`
   );
 };
