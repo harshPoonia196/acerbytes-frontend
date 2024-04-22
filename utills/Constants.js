@@ -22,6 +22,8 @@ export const ROLE_CONSTANTS = {
   admin: "admin",
   user: "user",
   broker: "broker",
+  sales: "sales",
+  customerSupport: "customerSupport"
 };
 
 export const ROLES = [
@@ -568,3 +570,8 @@ export const privacyData = [
     content: privacyContent(),
   },
 ];
+
+export const SORTING  ={
+   asc: 'asc',
+   desc: 'desc'
+}

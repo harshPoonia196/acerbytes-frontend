@@ -71,18 +71,37 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
   if (!isLogged && !isPublicRoute) {
     redirectUser("/login");
   }
+
   if (isLogged) {
-    if (role === "customerSupport") {
-      if(!(url.includes("/admin/enquiries") || url.includes("/admin/updateProfile"))){
-        redirectUser("/admin/enquiries");
+    const urls = [
+      { baseUrl: '/admin', access_roles: [{ sub_urls: [], role: 'admin', home: '/' }, { sub_urls: [], role: 'superAdmin', home: '/' }, { sub_urls: ['enquiries', 'updateProfile'], role: 'customerSupport', home: '/admin/enquiries' }, { sub_urls: ['manage-consultant', 'updateConsultantProfile'], role: 'sales', home: '/' }] },
+      { baseUrl: '/user', access_roles: [{ sub_urls: [], role: 'user' }] },
+      { baseUrl: '/consultant', access_roles: [{ sub_urls: [], role: 'broker' }] }
+    ]
+
+
+    function isHasSubUrl(subUrl) {
+      return url.includes(subUrl);
+    }
+
+    /* Returing to baseurl if user has not access */
+    for (let i = 0, len = urls.length; i < len; i++) {
+      const { baseUrl, access_roles = [] } = urls[i];
+      if (url.includes(baseUrl)) {
+        const data = access_roles.find(item => item.role === role);
+        if (data) {
+          const { sub_urls = [], home = '' } = data;
+          if (sub_urls.length) {
+            if (!sub_urls.some(isHasSubUrl)) {
+              redirectUser(home);
+              break
+            };
+          };
+        } else {
+          redirectUser("/");
+          break;
+        }
       }
-    } else if (url.includes("/admin") && role !== "admin" && role !== "superAdmin") {
-      redirectUser("/");
-    } else if (url.includes("/user") && role !== "user") {
-      redirectUser("/");
-    } else if (url.includes("/consultant") && role !== "broker") {
-      console.log(url, isLogged)
-      redirectUser("/");
     }
   }
 };

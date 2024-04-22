@@ -33,6 +33,7 @@ import {
   CSRMenuList,
   CommonMenuList,
   ConsultantMenuList,
+  SMRMenuList,
   ToBeRemoved,
   UserMenuList,
   companyName,
@@ -214,11 +215,13 @@ export default function ClippedDrawer({ children }) {
   };
 
   const DrawerContent = () => {
+    
+    const isSalesRole = authRole(ROLE_CONSTANTS.sales);
     return (
       <>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          {!authRole("customerSupport") && <List subheader={
+          {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole && <List subheader={
             <ListSubheader component="div" id="nested-list-subheader">
               Public
             </ListSubheader>
@@ -228,7 +231,7 @@ export default function ClippedDrawer({ children }) {
             ))}
           </List>}
           <Divider />
-          {!authRole("customerSupport") && <List subheader={
+          {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole && <List subheader={
             <ListSubheader component="div" id="nested-list-subheader">
               To be removed
             </ListSubheader>
@@ -288,9 +291,8 @@ export default function ClippedDrawer({ children }) {
               </>
             )
           }
-
           {
-            (authRole("admin") || authRole("superAdmin") || authRole("sales")) && (
+            (authRole(ROLE_CONSTANTS.admin) || authRole(ROLE_CONSTANTS.superAdmin)) && (
               <>
                 <List
                   subheader={
@@ -309,7 +311,7 @@ export default function ClippedDrawer({ children }) {
             )
           }
           {
-            (authRole("customerSupport")) && (
+            (authRole(ROLE_CONSTANTS.customerSupport)) && (
               <>
                 <List
                   subheader={
@@ -319,6 +321,25 @@ export default function ClippedDrawer({ children }) {
                   }
                 >
                   {CSRMenuList.map((item, index) => (
+                    <>
+                      <DrawerListItem key={`admin-${item.label}`} item={item} />
+                    </>
+                  ))}
+                </List>
+              </>
+            )
+          }
+          {
+          isSalesRole && (
+              <>
+                <List
+                  subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                      Admin
+                    </ListSubheader>
+                  }
+                >
+                  {SMRMenuList.map((item, index) => (
                     <>
                       <DrawerListItem key={`admin-${item.label}`} item={item} />
                     </>
