@@ -56,7 +56,7 @@ const scopes = {
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
   const isPublicRoute = publicRoutes.some(publicRoute => {
-    if (publicRoute.includes("/:")) { 
+    if (publicRoute.includes("/:")) {
       const parts = publicRoute.split("/:");
       const baseRoute = parts[0];
       if (parts.length === 2 && url.startsWith(baseRoute)) {
@@ -67,12 +67,16 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
     }
     return url === publicRoute;
   });
-  
+
   if (!isLogged && !isPublicRoute) {
     redirectUser("/login");
   }
   if (isLogged) {
-    if (url.includes("/admin") && role !== "admin" && role !== "superAdmin" && role !== "customerSupport") {
+    if (role === "customerSupport") {
+      if(!(url.includes("/admin/enquiries") || url.includes("/admin/updateProfile"))){
+        redirectUser("/admin/enquiries");
+      }
+    } else if (url.includes("/admin") && role !== "admin" && role !== "superAdmin") {
       redirectUser("/");
     } else if (url.includes("/user") && role !== "user") {
       redirectUser("/");
