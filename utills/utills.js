@@ -74,17 +74,33 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
 
   if (isLogged) {
     const urls = [
-      { baseUrl: '/admin', access_roles: ['admin', 'superAdmin', 'customerSupport', 'sales'] },
-      { baseUrl: '/user', access_roles: ['user'] },
-      { baseUrl: '/consultant', access_roles: ['broker'] }
+      { baseUrl: '/admin', access_roles: [{ sub_urls: [], role: 'admin' }, { sub_urls: [], role: 'superAdmin' }, { sub_urls: [], role: 'customerSupport' }, { sub_urls: ['manage-consultant'], role: 'sales' }] },
+      { baseUrl: '/user', access_roles: [{ sub_urls: [], role: 'user' }] },
+      { baseUrl: '/consultant', access_roles: [{ sub_urls: [], role: 'broker' }] }
     ]
+
+
+    function isHasSubUrl(subUrl) {
+      return url.includes(subUrl);
+    }
 
     /* Returing to baseurl if user has not access */
     for (let i = 0, len = urls.length; i < len; i++) {
-      const { baseUrl, access_roles } = urls[i];
-      if (url.includes(baseUrl) && !access_roles.includes(role)) {
-        redirectUser("/");
-        break;
+      const { baseUrl, access_roles = [] } = urls[i];
+      if (url.includes(baseUrl)) {
+        const data = access_roles.find(item => item.role === role);
+        if (data) {
+          const { sub_urls = [] } = data;
+          if (sub_urls.length) {
+            if (!sub_urls.some(isHasSubUrl)) {
+              redirectUser("/");
+              break
+            };
+          };
+        } else {
+          redirectUser("/");
+          break;
+        }
       }
     }
   }

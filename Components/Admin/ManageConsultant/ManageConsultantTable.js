@@ -128,7 +128,13 @@ function RowStructure({ row, router }) {
         router.push(listOfPages.adminUpdateConsultantProfileLinks + `/${googleID}`);
       }
       handleClose();
-    }
+    },
+
+    numberFormat = (value) =>
+      new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR'
+      }).format(value);
 
 
   return (
@@ -147,7 +153,7 @@ function RowStructure({ row, router }) {
         <TableCell>{row?.phone?.countryCode + row?.phone?.number}</TableCell>
         <TableCell>{row?.serviceDetails?.reraNumber || ''}</TableCell>
         <TableCell>{row?.totalLinks || 0}</TableCell>
-        <TableCell>{row?.brokerBalance?.balance || 0}</TableCell>
+        <TableCell>{numberFormat(row?.brokerBalance?.balance || 0)}</TableCell>
         <TableCell>
           <IconButton
             onClick={handleClick}
