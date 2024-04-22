@@ -74,7 +74,7 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
 
   if (isLogged) {
     const urls = [
-      { baseUrl: '/admin', access_roles: [{ sub_urls: [], role: 'admin' }, { sub_urls: [], role: 'superAdmin' }, { sub_urls: [], role: 'customerSupport' }, { sub_urls: ['manage-consultant'], role: 'sales' }] },
+      { baseUrl: '/admin', access_roles: [{ sub_urls: [], role: 'admin' }, { sub_urls: [], role: 'superAdmin' }, { sub_urls: [], role: 'customerSupport' }, { sub_urls: ['manage-consultant', 'updateConsultantProfile'], role: 'sales' }] },
       { baseUrl: '/user', access_roles: [{ sub_urls: [], role: 'user' }] },
       { baseUrl: '/consultant', access_roles: [{ sub_urls: [], role: 'broker' }] }
     ]

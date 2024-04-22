@@ -18,10 +18,11 @@ export const getConsultantsPersons = () => {
 
 export const getBrokersList = (limit, page, search) => {
   let query = "";
-  if (limit === 0 || limit) {
+
+  if (limit >= 0) {
     query += `limit=${limit || 0}&&`;
   }
-  if (page === 0 || page) {
+  if (page >= 0) {
     query += `page=${page || 0}&&`;
   }
   if (search) {
