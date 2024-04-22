@@ -528,7 +528,13 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       email: brokerProfileInfo?.email,
       phone: brokerProfileInfo?.phone,
       receiveWhatsappPromotion: brokerProfileInfo?.receiveWhatsappPromotion,
-      serviceDetails: brokerProfileInfo?.serviceDetails,
+      serviceDetails: {
+        ...brokerProfileInfo?.serviceDetails,
+        registeredPhone: {
+          ...brokerProfileInfo?.serviceDetails?.registeredPhone,
+          number: brokerProfileInfo?.serviceDetails?.registeredPhone?.number?.toString() || "",
+        },
+      },
       targetCustomers: brokerProfileInfo?.targetCustomers,
     };
     const userId = isAdminUpdate ? id : userDetails.googleID;
