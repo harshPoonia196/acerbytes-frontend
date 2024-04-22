@@ -170,7 +170,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                 Meta Description
               </Typography>
             </Box>
-            <Box sx={{ border : "1px solid #0000002e", minHeight: "200px" }}>
+            <Box>
               <ReactQuill
                 theme="snow"
                 value={decodeURIComponent(metaDescription)}
