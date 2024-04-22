@@ -23,7 +23,6 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
-    // imageUrl,
     openGraph: {
       title,
       description,
