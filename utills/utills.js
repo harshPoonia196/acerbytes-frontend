@@ -74,7 +74,7 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
 
   if (isLogged) {
     const urls = [
-      { baseUrl: '/admin', access_roles: [{ sub_urls: [], role: 'admin' }, { sub_urls: [], role: 'superAdmin' }, { sub_urls: [], role: 'customerSupport' }, { sub_urls: ['manage-consultant', 'updateConsultantProfile'], role: 'sales' }] },
+      { baseUrl: '/admin', access_roles: [{ sub_urls: [], role: 'admin', home: '/' }, { sub_urls: [], role: 'superAdmin', home: '/' }, { sub_urls: ['enquiries', 'updateProfile'], role: 'customerSupport', home: '/admin/enquiries' }, { sub_urls: ['manage-consultant', 'updateConsultantProfile'], role: 'sales', home: '/' }] },
       { baseUrl: '/user', access_roles: [{ sub_urls: [], role: 'user' }] },
       { baseUrl: '/consultant', access_roles: [{ sub_urls: [], role: 'broker' }] }
     ]
@@ -90,10 +90,10 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
       if (url.includes(baseUrl)) {
         const data = access_roles.find(item => item.role === role);
         if (data) {
-          const { sub_urls = [] } = data;
+          const { sub_urls = [], home = '' } = data;
           if (sub_urls.length) {
             if (!sub_urls.some(isHasSubUrl)) {
-              redirectUser("/");
+              redirectUser(home);
               break
             };
           };
