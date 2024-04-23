@@ -13,9 +13,18 @@ export async function generateMetadata({ params, searchParams }, parent) {
   if(product.status !== 200){
     notFound()
   }
+  const title = product?.data?.[0]?.propertyData?.marketing?.tagLine ?? ""
+  const description = product?.data?.[0]?.propertyData?.marketing?.description ?? ""
+  const imageUrl = product?.data?.[0]?.propertyData?.marketing?.image ?? "default-image-url.jpg"
+
   return {
-    title: product?.data?.[0]?.title ?? "",
-    description: projectdetails ?? ""
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [{ url: imageUrl, width: 500, height: 500}]
+    }
   }
 }
 
