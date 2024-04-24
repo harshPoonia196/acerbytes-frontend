@@ -205,7 +205,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   React.useEffect(() => {
     setRows(data?.data || []);
     setTotalCount(data?.totalCount || 0);
-    setLeadsCount(data?.totalCount || 0);
+    setLeadsCount(data?.suggestedLeadsCount || 0);
   }, [data]);
 
   React.useEffect(() => {
