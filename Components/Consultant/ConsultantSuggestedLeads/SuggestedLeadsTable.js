@@ -13,6 +13,8 @@ import {
   Grid,
   Card,
   IconButton,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -28,6 +30,8 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import SuggesredLeadsDetails from "./Modal/SuggesredLeadsDetails";
 
 
 const headCells = [
@@ -50,6 +54,10 @@ const headCells = [
   {
     id: "Leadprice",
     label: "Lead price",
+  },
+  {
+    id: "ViewDetails",
+    label: "View",
   },
 ];
 
@@ -90,7 +98,15 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, handlePropertyView }) {
+function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelectedRowData }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <TableRow
@@ -100,7 +116,7 @@ function RowStructure({ row, handlePropertyView }) {
       <TableCell>{row?.fullName}</TableCell>
       <TableCell>{row?.properties?.location?.city}</TableCell>
       <TableCell>
-      {`${countryCodeFormating(row.phone?.countryCode)} ${row.phone?.number}`}
+        {`${countryCodeFormating(row.phone?.countryCode)} ${row.phone?.number}`}
       </TableCell>
       <TableCell>
         {row.propertyLink && (
@@ -110,22 +126,65 @@ function RowStructure({ row, handlePropertyView }) {
               e.preventDefault();
               handlePropertyView(row.propertyLink);
             }}
-            style={{ textDecoration: 'none' }}
+            style={{ textDecoration: "none" }}
           >
             {row?.propertyLink ? row?.propertyLink : "-"}
           </a>
         )}
       </TableCell>
-      <TableCell>
-        {row?.properties?.unitsPlan?.averagePrice}
-      </TableCell>
+      <TableCell>{row?.properties?.unitsPlan?.averagePrice}</TableCell>
+      <TableCell> <IconButton
+          sx={{ fontSize: "1rem !important" }}
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={() => {
+            setSelectedRowData(row);
+            setViewLeadsDetails(true);
+          }}
+          size="small"
+        >
+          <VisibilityIcon fontSize="1rem" />
+        </IconButton></TableCell>
       <TableCell sx={{ py: 0 }}>
-          <IconButton
-            sx={{ fontSize: "1rem !important" }}
-          >
-            <MoreVertIcon fontSize="1rem" />
-          </IconButton>
-        </TableCell>
+        <IconButton
+          sx={{ fontSize: "1rem !important" }}
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+          size="small"
+        >
+          <MoreVertIcon fontSize="1rem" />
+        </IconButton>
+      </TableCell>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        <MenuItem
+         
+        >
+          Buy Now
+        </MenuItem>
+      </Menu>
     </TableRow>
   );
 }
@@ -136,11 +195,12 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
   const [rows, setRows] = React.useState([]);
+  const [selectedRowData, setSelectedRowData] = React.useState({});
   const [totalCount, setTotalCount] = React.useState(0);
   const firstLoad = React.useRef(true);
   const [search, setSearch] = React.useState("");
   const [tempsearch, setTempSearch] = React.useState("");
-
+  const [viewLeadsDetails, setViewLeadsDetails] = useState(false);
   const { openSnackbar } = useSnackbar();
 
   const { data, isLoading, error, refetch } = useQueries(
@@ -223,6 +283,9 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     const fullLink = `${baseUrl}/${link}`;
     window.open(fullLink, "_blank");
   }
+  const handleCloseViewLeadsDetails = () => {
+    setViewLeadsDetails(false)
+  }
 
   return (
     <>
@@ -251,6 +314,8 @@ function SuggestedLeadsTable({ setLeadsCount }) {
                   row={row}
                   key={row.firstName}
                   handlePropertyView={handlePropertyView}
+                  setViewLeadsDetails={setViewLeadsDetails}
+                  setSelectedRowData={setSelectedRowData}
                 />
               ))}
             </TableBody>
@@ -270,6 +335,13 @@ function SuggestedLeadsTable({ setLeadsCount }) {
         </TableContainer>
       ) : (
         <NoDataCard title={"No data found"} />
+      )}
+      {viewLeadsDetails && (
+        <SuggesredLeadsDetails
+          open={viewLeadsDetails}
+          handleClose={handleCloseViewLeadsDetails}
+          selectedRowData={selectedRowData}
+        />
       )}
     </>
   );
