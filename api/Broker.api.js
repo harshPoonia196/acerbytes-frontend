@@ -30,7 +30,7 @@ export const getBrokerLeads = ({ limit, page, search }) => {
 
 export const getBrokerSuggestedLeads = ({ limit, page, search }) => {
   return axiosInstance.get(
-    `/broker/suggestedLeads?limit=${limit || ""}&&page=${page || 0}&&search=${
+    `/broker/suggestedLeads?limit=${limit || ""}&page=${page || 0}&search=${
       search || ""
     }`
   );

@@ -15,7 +15,7 @@ export async function generateMetadata({ params, searchParams }, parent) {
   }
   const title = product?.data?.[0]?.propertyData?.marketing?.tagLine ?? ""
   const description = product?.data?.[0]?.propertyData?.marketing?.description ?? ""
-  const imageUrl = product?.data?.[0]?.propertyData?.marketing?.image ?? "default-image-url.jpg"
+  const imageUrl = product?.data?.[0]?.propertyData?.marketing?.image ?? "vercel.svg"
 
   return {
     title,

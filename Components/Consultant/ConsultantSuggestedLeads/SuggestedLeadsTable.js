@@ -21,7 +21,8 @@ import { capitalLizeName, getComparator, stableSort } from "utills/CommonFunctio
 import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
 import {  getBrokerSuggestedLeads } from "api/Broker.api";
-import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
+import { debounce } from "lodash";
+import { DEBOUNCE_TIMER, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
@@ -91,27 +92,15 @@ function EnhancedTableHead(props) {
 
 function RowStructure({ row, handlePropertyView }) {
 
-  const formatPhoneNumber = (countryCode, number) => {
-    if (!number) return "";
-    // Mask all digits except the first two
-    const maskedNumber = number.slice(0, 2) + number.slice(2).replace(/\d/g, '*');
-    return `${countryCodeFormating(countryCode)} ${maskedNumber}`;
-  };
-
-  const maskName = (name) => {
-    if (!name) return "";
-    return `${name.charAt(0)}${'*'.repeat(name.length - 1)}`;
-  };
-
   return (
     <TableRow
       key={row?._id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell>{capitalLizeName(maskName(row?.fullName))}</TableCell>
+      <TableCell>{row?.fullName}</TableCell>
       <TableCell>{row?.properties?.location?.city}</TableCell>
       <TableCell>
-      {formatPhoneNumber(row.phone?.countryCode, row.phone?.number)}
+      {`${countryCodeFormating(row.phone?.countryCode)} ${row.phone?.number}`}
       </TableCell>
       <TableCell>
         {row.propertyLink && (
@@ -150,6 +139,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const [totalCount, setTotalCount] = React.useState(0);
   const firstLoad = React.useRef(true);
   const [search, setSearch] = React.useState("");
+  const [tempsearch, setTempSearch] = React.useState("");
 
   const { openSnackbar } = useSnackbar();
 
@@ -215,11 +205,18 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     firstLoad.current = false;
   }, [rowsPerPage, page]);
 
-  const handleSearch = (e) => {
-    e.persist();
-    setSearch(e.target.value);
-    setPage(0);
-  };
+  React.useEffect(() => {
+    const handleSearch = debounce(() => {
+      setSearch(tempsearch);
+      setPage(0);
+    }, DEBOUNCE_TIMER);
+  
+    handleSearch();
+  
+    return () => {
+      handleSearch.cancel();
+    };
+  }, [tempsearch]);
 
   const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
@@ -232,39 +229,48 @@ function SuggestedLeadsTable({ setLeadsCount }) {
       {isLoading && <Loader />}
       <Grid item xs={12}>
         <Card sx={{ mb: 2 }}>
-          <CustomSearchInput value={search} onChange={handleSearch} />
+          <CustomSearchInput
+            value={tempsearch}
+            onChange={(e) => {
+              setTempSearch(e.target.value);
+            }}
+          />
         </Card>
       </Grid>
-      {
-        rows.length > 0 ? (
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-              <EnhancedTableHead
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-              />
-              <TableBody>
-                {rows.map((row) => (
-                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} />
-                ))}
-              </TableBody>
-            </Table>
-            <TablePagination
-              sx={{
-                overflow: "hidden",
-              }}
-              rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-              component="div"
-              count={totalCount}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+      {rows.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
             />
-          </TableContainer>
-        ) : <NoDataCard title={"No data found"} />}
-
+            <TableBody>
+              {rows.map((row) => (
+                <RowStructure
+                  row={row}
+                  key={row.firstName}
+                  handlePropertyView={handlePropertyView}
+                />
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            sx={{
+              overflow: "hidden",
+            }}
+            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+            component="div"
+            count={totalCount}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>
+      ) : (
+        <NoDataCard title={"No data found"} />
+      )}
     </>
   );
 }
