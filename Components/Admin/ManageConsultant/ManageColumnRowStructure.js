@@ -8,13 +8,10 @@ import {
 import React, { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { listOfPages } from "Components/NavBar/Links";
-import AddCreditPopup from "./Modal/AddCreditPopup";
-import { ROLE_CONSTANTS } from "utills/Constants";
 
-function RowStructure({ row, router, user }) {
-  console.log(user, '******************8');
-  const [openAddCredit, setOpenAddCredit] = useState(false),
-    [anchorEl, setAnchorEl] = useState(null),
+function RowStructure({ row, router }) {
+  
+  const [anchorEl, setAnchorEl] = useState(null),
     open = Boolean(anchorEl),
 
     handleClick = (event) => {
@@ -23,15 +20,6 @@ function RowStructure({ row, router, user }) {
 
     handleClose = () => {
       setAnchorEl(null);
-    },
-
-    handleOpenAddCreditPopup = () => {
-      handleClose();
-      setOpenAddCredit(true);
-    },
-
-    handleCloseAddCreditPopup = () => {
-      setOpenAddCredit(false);
     },
 
     editProfile = (googleID) => {
@@ -48,10 +36,6 @@ function RowStructure({ row, router, user }) {
 
   return (
     <>
-      <AddCreditPopup
-        open={openAddCredit}
-        handleClose={handleCloseAddCreditPopup}
-      />
       <TableRow
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -88,12 +72,6 @@ function RowStructure({ row, router, user }) {
               },
             }}
           >
-            {
-              user?.role === ROLE_CONSTANTS.sales ? null :
-                <MenuItem onClick={handleOpenAddCreditPopup}>
-                  Add Credit
-                </MenuItem>
-            }
             <MenuItem onClick={() => editProfile(row?.brokerBalance?.googleID)} >
               Edit Profile
             </MenuItem>
