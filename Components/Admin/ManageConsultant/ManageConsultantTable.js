@@ -21,7 +21,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import RowStructure from "./ManageColumnRowStructure";
 import EnhancedTableHead from "./EnhancedManageConsultant";
 
-function ManageConsultantTable() {
+function ManageConsultantTable({user}) {
   const router = useRouter();
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(null);
@@ -110,7 +110,7 @@ function ManageConsultantTable() {
               />
               <TableBody>
                 {consultantList.rows.map((row) => (
-                  <RowStructure row={row} router={router} />
+                  <RowStructure row={row} router={router} user={user}/>
                 ))}
               </TableBody>
             </Table>
