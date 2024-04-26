@@ -16,7 +16,7 @@ export const getConsultantsPersons = () => {
   return axiosInstance.get(`/higheruser/consultantsList`);
 };
 
-export const getBrokersList = (limit, page, search) => {
+export const getBrokersList = (limit, page, search, city = 'all') => {
   let query = "";
 
   if (limit >= 0) {
@@ -28,7 +28,16 @@ export const getBrokersList = (limit, page, search) => {
   if (search) {
     query += `search=${search || ""}&&`;
   }
+
+  if (city != 'all') {
+    query += `city=${city}&&`
+  }
+
   return axiosInstance.get(`/admin/brokerList?${query}`);
+};
+
+export const getBrokerCityList = () => {
+  return axiosInstance.get(`/admin/brokerCityList`);
 };
 
 export const getLeads = ({ limit, page, search }) => {

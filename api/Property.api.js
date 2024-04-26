@@ -82,3 +82,8 @@ export const propertyByCity = () => {
 export const managePublishData = (propertyId, publishStatus) => {
   return axiosInstance.put(`/property/managePublish/${propertyId}/${publishStatus}`);
 };
+
+export const getBrokersList = (search) => {
+  let query = `search=${search || ""}`;
+  return axiosInstance.get(`/property/brokerList${query ? '?' + query : ''}`);
+};

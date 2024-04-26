@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Typography, TextField, MenuItem, Box } from "@mui/material";
 import colors from "styles/theme/colors";
 import Tooltip from "@mui/material/Tooltip";
@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import InfoIcon from "@mui/icons-material/Info";
-import { menuMaxHeight,showStarFor } from "utills/Constants";
+import { menuMaxHeight, showStarFor } from "utills/Constants";
 import { capitalLizeName } from "utills/CommonFunction";
 
 function NewSelectTextFieldStructure({
@@ -28,11 +28,11 @@ function NewSelectTextFieldStructure({
   helperText = "",
 }) {
   const [rating, setRating] = useState(0);
-
-  useEffect(()=>{
-    let returnValue=0
-   let check = showStarFor.find(item => item === label)
-    if(check){
+debugger
+  useEffect(() => {
+    let returnValue = 0
+    let check = showStarFor.find(item => item === label)
+    if (check) {
       switch (value.toLowerCase()) {
         case "yes":
           returnValue = 5;
@@ -69,20 +69,20 @@ function NewSelectTextFieldStructure({
           {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
         {
-showStarFor.find(item => item === label)
-           &&
-         <Rating
-         readOnly={true}
-          value={rating}
-          defaultValue={0}
-          precision={0.5}
-          size="small"
-          sx={{ alignSelf: "center",marginLeft:"5px" }}
-        
-          /> 
+          showStarFor.find(item => item === label)
+          &&
+          <Rating
+            readOnly={true}
+            value={rating}
+            defaultValue={0}
+            precision={0.5}
+            size="small"
+            sx={{ alignSelf: "center", marginLeft: "5px" }}
+
+          />
 
         }
-        
+
         {showInfo && (
           <span>
             <Tooltip title={infoText}>
