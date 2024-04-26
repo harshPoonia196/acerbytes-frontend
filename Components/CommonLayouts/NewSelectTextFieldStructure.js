@@ -28,7 +28,6 @@ function NewSelectTextFieldStructure({
   helperText = "",
 }) {
   const [rating, setRating] = useState(0);
-debugger
   useEffect(() => {
     let returnValue = 0
     let check = showStarFor.find(item => item === label)
