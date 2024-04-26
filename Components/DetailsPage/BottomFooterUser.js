@@ -98,7 +98,12 @@ function BottomFooterUser({
           <BottomNavigationAction
             sx={{ flex: "0 1 auto", minWidth: 0 }}
             label="Share"
-            onClick={handleOpenEnquiryForm}
+            component="a"
+            href={`https://web.whatsapp.com/send?text=${encodeURIComponent(
+            url?.href ? url?.href : ''
+          )}`}
+          target="_blank"
+          data-action="share/whatsapp/share"
             icon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
           />
           <BottomNavigationAction
@@ -160,25 +165,6 @@ function BottomFooterUser({
             Like
           </Fab>
         )}
-        {/* <a
-          href={`https://web.whatsapp.com/send?text=${
-            url?.href ? url?.href : ""
-          }`}
-          target="_blank"
-          data-action="share/whatsapp/share"
-        >
-          <Fab
-            variant="extended"
-            sx={{
-              mb: 1,
-              justifyContent: "flex-start",
-              width: "100%",
-            }}
-          >
-            <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
-            Share
-          </Fab>
-        </a> */}
         <Fab
           variant="extended"
           sx={{
