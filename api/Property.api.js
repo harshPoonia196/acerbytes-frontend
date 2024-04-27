@@ -83,7 +83,16 @@ export const managePublishData = (propertyId, publishStatus) => {
   return axiosInstance.put(`/property/managePublish/${propertyId}/${publishStatus}`);
 };
 
-export const getBrokersList = (search) => {
-  let query = `search=${search || ""}`;
+export const getBrokersList = (search, city = 'all') => {
+  let query = `search=${search || ""}&&`;
+
+  if (city != 'all') {
+    query += `city=${city}&&`
+  }
+
   return axiosInstance.get(`/property/brokerList${query ? '?' + query : ''}`);
+};
+
+export const getBrokerCityList = () => {
+  return axiosInstance.get(`/property/broker-cities`);
 };
