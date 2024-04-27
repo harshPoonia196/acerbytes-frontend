@@ -167,3 +167,7 @@ html {
 .MuiAutocomplete-popper {
   z-index: 1000 !important;
 }
+
+.select_city_consultant fieldset{
+  border: none;
+}
