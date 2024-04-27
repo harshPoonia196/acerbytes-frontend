@@ -1,110 +1,82 @@
 "use client";
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Button,
   Container,
   Grid,
   Typography,
   Box,
   Card,
-  InputBase,
-  IconButton,
   Pagination,
 } from "@mui/material";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
-import { useQueries } from "utills/ReactQueryContext";
 import { getBrokers } from "api/UserProfile.api";
-import { reactQueryKey } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
+import { debounce } from "lodash";
+import {
+  DEBOUNCE_TIMER, SORTING
+} from "utills/Constants";
 
 function Brokers() {
-  const router = useRouter();
 
-  const { openSnackbar } = useSnackbar();
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [consultantList, setConsultantList] = useState({ rows: [], totalCount: 0 });
+  const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
+  const [initialMount, setInitialMount] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
-  const limit = 5;
+  useEffect(() => {
+    getList()
+  }, [rowsPerPage, page])
 
-  var interval = null;
-
-  const firstLoad = React.useRef(true);
-  const [currentPage, setCurrentPage] = React.useState(0);
-  const [searchText, setSearchText] = React.useState("");
-  const [totalPage, setTotalPage] = React.useState(0);
-
-  const { data, isLoading, error, refetch } = useQueries(
-    [reactQueryKey.user.myConsultant],
-    async () => {
-      try {
-        const response = await getBrokers(limit, currentPage, searchText);
-        if (response.status == 200) {
-          const { success, data, message } = response.data;
-          if (success) {
-            return data;
-          } else {
-            openSnackbar(message, "error");
-          }
-        }
-      } catch (error) {
-        openSnackbar(
-          error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
-          "error"
-        );
-        return error;
-      }
+  useEffect(() => {
+    if (initialMount) {
+      setInitialMount(false);
+      return;
     }
-  );
 
-  const [brokersList, setBrokersList] = React.useState([]);
-
-  const handleUpdateBroker = () => {
-    refetch();
-  };
-
-  const handleSearch = (e) => {
-    e.persist();
-    setSearchText(e.target.value);
-  };
-
-  React.useEffect(() => {
-    if (interval) {
-      clearTimeout(interval);
-    }
-    if (!firstLoad?.current) {
-      interval = setTimeout(handleUpdateBroker, 1000);
-    }
+    debouncedSearch();
     return () => {
-      if (interval) {
-        clearTimeout(interval);
-      }
+      debouncedSearch.cancel();
     };
-  }, [searchText]);
+  }, [searchTerm])
 
-  React.useEffect(() => {
-    setBrokersList(data?.data || []);
-    let total = parseInt((data?.totalCount || 0) / limit);
-    if ((data?.totalCount || 0) % limit) {
-      total += 1;
-    }
-    setTotalPage(total);
-    if (total <= currentPage && currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  }, [data]);
+  const { openSnackbar } = useSnackbar(),
+    showToaterMessages = (message, severity) => {
+      openSnackbar(message, severity);
+    };
 
-  React.useEffect(() => {
-    if (!firstLoad?.current) {
-      handleUpdateBroker();
+  const getList = async () => {
+    try {
+      const { data: { data: { data = [], totalCount = 0 } } } = await getBrokers(rowsPerPage, page, searchTerm)
+      let total = parseInt(totalCount / rowsPerPage);
+      if (totalCount % rowsPerPage) {
+        total += 1;
+      }
+      setTotalPage(total)
+      setConsultantList({ rows: data, totalCount })
+    } catch (error) {
+      showToaterMessages(error.message, "error");
     }
-    firstLoad.current = false;
-  }, [currentPage]);
+  },
+
+    handleChangePage = (event, newPage) => {
+      setPage(newPage - 1);
+    }
+
+  function performSearch() {
+    getList()
+  }
+
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  }
 
   return (
     <>
@@ -122,26 +94,33 @@ function Brokers() {
       >
         <Container>
           <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
-            75 consultant may be interested to work with you
+            {consultantList.totalCount} Consultant may be interested to work with you
           </Typography>
           <Card>
-            <CustomSearchInput value={searchText} onChange={handleSearch} />
+            <CustomSearchInput value={searchTerm} onChange={handleSearch} />
           </Card>
         </Container>
       </Box>
 
       <Container>
         <Grid container spacing={2}>
-          {brokersList?.length ? (
-            brokersList?.map((broker) => (
-              <Grid item xs={12} key={broker._id}>
-                <BrokerCard
-                  broker={broker}
-                  noReview={!broker?.reviews}
-                  updateBroker={handleUpdateBroker}
-                />
-              </Grid>
-            ))
+          {consultantList?.rows?.length ? (
+            consultantList?.rows?.map((broker) => {
+              const type = broker.businessType,
+                profilePicture = broker?.brokerPic?.[0]?.profilePicture ?? '';
+              broker = { ...broker, type, profilePicture }
+
+              return (
+                <Grid item xs={12} key={broker._id}>
+                  <BrokerCard
+                    broker={broker}
+                    noReview={!broker?.reviews}
+                    updateBroker={getList}
+                  />
+                </Grid>
+              )
+            }
+            )
           ) : (
             <Grid item xs={12} display={"flex"} justifyContent={"center"}>
               <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
@@ -151,10 +130,8 @@ function Brokers() {
           )}
           <Grid item xs={12} display={"flex"} justifyContent={"end"}>
             <Pagination
-              page={currentPage + 1}
-              onChange={(e, value) => {
-                setCurrentPage(value - 1);
-              }}
+              page={page + 1}
+              onChange={handleChangePage}
               count={totalPage}
               shape="rounded"
             />
