@@ -10,7 +10,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { listOfPages } from "Components/NavBar/Links";
 
 function RowStructure({ row, router }) {
-  
+
   const [anchorEl, setAnchorEl] = useState(null),
     open = Boolean(anchorEl),
 
@@ -43,7 +43,7 @@ function RowStructure({ row, router }) {
         <TableCell>{row?.name.firstName}</TableCell>
         <TableCell>{row?.name.lastName}</TableCell>
         <TableCell>{row?.serviceDetails?.company || ''}</TableCell>
-        <TableCell>{row?.phone?.countryCode + row?.phone?.number}</TableCell>
+        <TableCell>{`${(row?.phone?.countryCode) ? '+' + row?.phone?.countryCode : ''}${row?.phone?.number}`}</TableCell>
         <TableCell>{row?.serviceDetails?.reraNumber || ''}</TableCell>
         <TableCell>{row?.totalLinks || 0}</TableCell>
         <TableCell>{numberFormat(row?.brokerBalance?.balance || 0)}</TableCell>

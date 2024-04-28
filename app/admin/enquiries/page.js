@@ -1,7 +1,7 @@
 'use client'
 
-import React from "react";
-import { Box, Container, Typography, Card, Grid } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Container, Typography, Card, Grid, ToggleButtonGroup, ToggleButton } from "@mui/material";
 import EnquiriesTable from "Components/Admin/Enquiries/EnquiriesTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
@@ -9,23 +9,49 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { useAuth } from 'utills/AuthContext';
 
 function Enquiries() {
-  const { userDetails } = useAuth();
-  const [search, setSearch] = React.useState("");
-  const [leadsCount, setLeadsCount] = React.useState("");
-  const handleSearch = (e) => {
-    e.persist();
-    setSearch(e.target.value);
-  };
-  console.log("userDetails:", userDetails);
+  const [search, setSearch] = useState("");
+  const [counts, setCounts] = useState({ leadCounts: 0, pending: 0, reviewed: 0 });
+  const [alignment, setAlignment] = useState(''),
+    [page, setPage] = useState(0),
+
+    handleSearch = (e) => {
+      e.persist();
+      setSearch(e.target.value);
+    },
+
+    handleChange = (event, newAlignment) => {
+      setPage(0);
+      setAlignment(newAlignment);
+    }
+
   return (
     <>
       <CustomAdminBreadScrumbs text='List of leads' />
-      <InfoBox dataList={[{ label: 'Leads', value: leadsCount }]} />
+      <InfoBox dataList={[{ label: 'Leads', value: counts.leadCounts }, { label: 'Pending', value: counts.pending }, { label: 'Reviewed', value: counts.reviewed }]} />
+      <Container>
+        <Card sx={{ mb: 2 }}>
+          <ToggleButtonGroup
+            color="primary"
+            value={alignment}
+            exclusive
+            onChange={handleChange}
+            aria-label="Platform"
+            sx={{
+              display: 'flex',
+              overflowX: 'auto',
+            }}
+          >
+            <ToggleButton size='small' value="" sx={{ flex: 1, border: 'none', padding: '10px' }}>All</ToggleButton>
+            <ToggleButton size='small' value="pending" sx={{ flex: 1, border: 'none', padding: '10px' }}>Pending </ToggleButton>
+            <ToggleButton size='small' value="reviewed" sx={{ flex: 1, border: 'none', padding: '10px' }}>Reviewed</ToggleButton>
+          </ToggleButtonGroup>
+        </Card>
+      </Container>
       <Container>
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput value={search} onChange={handleSearch} />
         </Card>
-        <EnquiriesTable search={search} setLeadsCount={setLeadsCount} />
+        <EnquiriesTable search={search} setCounts={setCounts} alignment={alignment} page={page} setPage={setPage} />
       </Container>
     </>
   );
