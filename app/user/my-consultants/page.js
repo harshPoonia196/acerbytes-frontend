@@ -94,7 +94,7 @@ function Brokers() {
       >
         <Container>
           <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
-            {consultantList.totalCount} Consultant may be interested to work with you
+            {consultantList.totalCount} Consultants you contacted with
           </Typography>
           <Card>
             <CustomSearchInput value={searchTerm} onChange={handleSearch} />
