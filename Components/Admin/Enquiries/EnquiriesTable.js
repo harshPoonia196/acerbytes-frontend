@@ -24,7 +24,7 @@ import { capitalLizeName, formatAmount, getComparator, stableSort } from "utills
 import { useQueries } from "utills/ReactQueryContext";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getLeads } from "api/Admin.api";
-import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
+import { LINK, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
@@ -109,6 +109,10 @@ const headCells = [
   {
     id: "brokerInfo",
     label: "Broker",
+  },
+  {
+    id: "source",
+    label: "Source",
   },
   {
     id: "action",
@@ -208,6 +212,7 @@ function RowStructure({ row, handlePropertyView, router }) {
       <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
       <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell>
+      <TableCell>{row.source}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton
           onClick={handleClick}
@@ -353,9 +358,17 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
                 onRequestSort={handleRequestSort}
               />
               <TableBody>
-                {rows.map((row) => (
-                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} router={router} />
-                ))}
+                {rows.map((row) => {
+                  const { adId = null, brokerId = null, userId = null } = row;
+                  if (adId && brokerId && userId) {
+                    row.source = LINK.unique;
+                  } else if (!adId && brokerId && userId) {
+                    row.source = LINK.consultant;
+                  } else if (!adId && !brokerId && userId) {
+                    row.source = LINK.acrebytes;
+                  }
+                  return <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} router={router} />
+                })}
               </TableBody>
             </Table>
             <TablePagination

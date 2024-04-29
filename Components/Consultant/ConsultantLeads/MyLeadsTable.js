@@ -27,7 +27,7 @@ import UpdateLeadStatus from "./Modal/UpdateLeadStatus";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
 import { getBrokerLeads } from "api/Broker.api";
-import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
+import { LINK, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
@@ -85,6 +85,10 @@ const headCells = [
   {
     id: "maxBudget",
     label: "max Budget",
+  },
+  {
+    id: "source",
+    label: "Source",
   },
   {
     id: "property",
@@ -238,6 +242,7 @@ function RowStructure({ row, handlePropertyView }) {
           onClick={handleOpenUpdatePopup}
         />
       </TableCell> */}
+      <TableCell>{row.source}</TableCell>
       <TableCell>
         {row.propertyLink && (
           <a
@@ -249,8 +254,8 @@ function RowStructure({ row, handlePropertyView }) {
             style={{ textDecoration: 'none' }}
           >
             {row?.property?.overview?.projectName ?
-            `${capitalLizeName(row?.property?.overview?.projectName)}.${capitalLizeName(row?.property?.overview?.builder)}`
-            : "-"}
+              `${capitalLizeName(row?.property?.overview?.projectName)}.${capitalLizeName(row?.property?.overview?.builder)}`
+              : "-"}
           </a>
         )}
       </TableCell>
@@ -362,9 +367,18 @@ function MyLeadsTable({ setLeadsCount }) {
                 onRequestSort={handleRequestSort}
               />
               <TableBody>
-                {rows.map((row) => (
-                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} />
-                ))}
+                {rows.map((row) => {
+                  const { adId = null, brokerId = null, userId = null } = row;
+                  if (adId && brokerId && userId) {
+                    row.source = LINK.unique;
+                  } else if (!adId && brokerId && userId) {
+                    row.source = LINK.consultant;
+                  } else if (!adId && !brokerId && userId) {
+                    row.source = LINK.acrebytes;
+                  }
+                  return <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} />
+                }
+                )}
               </TableBody>
             </Table>
             <TablePagination

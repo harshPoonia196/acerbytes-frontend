@@ -575,3 +575,9 @@ export const SORTING  ={
    asc: 'asc',
    desc: 'desc'
 }
+
+export const LINK  ={
+  unique: 'Unique Link',
+  consultant: 'Consultant Card',
+  acrebytes: 'Acrebytes Property Link',
+}
