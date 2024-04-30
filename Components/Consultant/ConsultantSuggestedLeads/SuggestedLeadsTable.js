@@ -14,8 +14,10 @@ import {
   Card,
   IconButton,
   Button,
-  Menu,
-  MenuItem,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -30,10 +32,11 @@ import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SuggesredLeadsDetails from "./Modal/SuggesredLeadsDetails";
 import { useAuth } from "utills/AuthContext";
+import colors from "styles/theme/colors";
+import { useRouter } from "next/navigation";
 
 
 const headCells = [
@@ -157,7 +160,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
         </IconButton>
       </TableCell>
         <TableCell>
-          <Button onClick={()=> manageBuyNow(row?._id, row?.userDetail?.userCreditValue)}> 
+          <Button onClick={()=> manageBuyNow(row?._id)}> 
             Buy Now
             </Button>
             </TableCell>
@@ -165,7 +168,10 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
   );
 }
 
+
+
 function SuggestedLeadsTable({ setLeadsCount }) {
+  const router = useRouter();
   const { userDetails, setBrokerPoints } = useAuth();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
@@ -179,6 +185,8 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const [tempsearch, setTempSearch] = React.useState("");
   const [viewLeadsDetails, setViewLeadsDetails] = useState(false);
   const { openSnackbar } = useSnackbar();
+  const [buyModalOpen, setBuyModalOpen] = useState(false);
+  const [buyNowResponseMessage, setBuyNowResponseMessage] = useState("");
 
   const { data, isLoading, error, refetch } = useQueries(
     [search, reactQueryKey.broker.myLeads],
@@ -280,30 +288,63 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     }
   };
 
-  const manageBuyNow = async (leadId, userCreditValue) => {
+  const manageBuyNow = async (leadId) => {
     try {
-      let response = await buySuggestedLeads({leadId, userCreditValue, brokerId: userDetails?._id, googleID: userDetails?.googleID});
+      let response = await buySuggestedLeads({leadId, brokerId: userDetails?._id, googleID: userDetails?.googleID});
       if (response.status === 200) {
-        console.log(response?.message, "response.message");
-        console.log(response?.data?.message, "response.message");
-        openSnackbar(
-          response?.data?.message ||
-          "Fetched leads Successfully",
-          "success"
-        );
-        refetch();
-        getBrokerpointBalance()
+        setBuyModalOpen(true);
+        setBuyNowResponseMessage(response.data.message || "Fetched leads successfully please check my leads");
       }
     } catch (error) {
-      openSnackbar(
-        error?.response?.data?.message ||
-        error?.message ||
-        "Error deleting property",
-        "error"
-      );
+      setBuyNowResponseMessage(error?.response?.data?.message || error?.message || "Error processing purchase");
+      setBuyModalOpen(true);
     } 
   };
 
+  const closeBuyResponseModal = () => {
+    setBuyModalOpen(false)
+    getBrokerpointBalance()
+    refetch()  
+  }
+
+  const BuyResponseModal = () => (
+    <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
+      <DialogContent sx={{ padding: "25px 30px !important", minWidth: "415px" }}>
+        <DialogContentText>
+          {buyNowResponseMessage}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button  variant="h6"
+          sx={{
+            fontWeight: 600,
+            color: "white",
+            backgroundColor: colors?.BLACK,
+            "&:hover": {
+              backgroundColor: colors?.BLACK,
+              boxShadow: "none",
+            },
+          }} onClick={closeBuyResponseModal} color="primary">
+          Close
+        </Button>
+        <Button
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            color: "white",
+            backgroundColor: colors?.BLACK,
+            "&:hover": {
+              backgroundColor: colors?.BLACK,
+              boxShadow: "none",
+            },
+          }}
+          onClick={() => router.push("/consultant/my-leads")}
+        >
+          View My lead
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 
 
   return (
@@ -363,6 +404,8 @@ function SuggestedLeadsTable({ setLeadsCount }) {
           selectedRowData={selectedRowData}
         />
       )}
+
+      <BuyResponseModal />
     </>
   );
 }
