@@ -113,8 +113,9 @@ function Brokers() {
               return (
                 <Grid item xs={12} key={broker._id}>
                   <BrokerCard
+                    showRating={true}
                     broker={broker}
-                    noReview={!broker?.reviews}
+                    noReview={false}
                     updateBroker={getList}
                   />
                 </Grid>

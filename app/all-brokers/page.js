@@ -125,7 +125,7 @@ const page = () => {
 
             return (
               <Grid item xs={12} key={broker.fullName}>
-                <BrokerCard type={'View Reviews'} broker={broker} noReview />
+                <BrokerCard type={'View Reviews'}  showRating={true} broker={broker} noReview />
               </Grid>
             )
           }
