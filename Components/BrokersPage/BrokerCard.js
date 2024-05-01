@@ -65,42 +65,39 @@ const labels = (rating) => {
   return "";
 };
 
-function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker }) {
-  const [openDialog, setOpenDialog] = useState(false);
-  const { userDetails, isLogged } = useAuth();
+function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, showRating }) {
+  const [openDialog, setOpenDialog] = useState(false),
+    { userDetails, isLogged } = useAuth(),
+    router = useRouter(),
 
-  const router = useRouter();
+    handleDialogOpen = () => {
+      setOpenDialog(true);
+    },
+    handleViewReview = (name) => {
+      router.push(`/broker-review?name=${name}`);
+    },
 
-  const handleDialogOpen = () => {
-    setOpenDialog(true);
-  };
-
-  const handleViewReview = (name) => {
-    router.push(`/broker-review?name=${name}`);
-  };
-
-  const precision = 0.5;
-
-  const titleCase = (string) => {
-    return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
-  }
-
-  const isEnquiredByCurrentBroker = enquiredInfo?.brokerId == broker?.id;
-
-  const handleCallClick = () => {
-    if (typeof handleEnquireWithBroker === 'function') {
-      if (isEnquiredByCurrentBroker) {
-        const callHref = `tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")}`;
-        if (callHref) {
-          window.location.href = callHref;
+    precision = 0.5,
+    titleCase = (string) => {
+      return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
+    },
+    
+    isEnquiredByCurrentBroker = enquiredInfo?.brokerId == broker?.id,
+    handleCallClick = () => {
+      if (typeof handleEnquireWithBroker === 'function') {
+        if (isEnquiredByCurrentBroker) {
+          const callHref = `tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")}`;
+          if (callHref) {
+            window.location.href = callHref;
+          }
+        } else {
+          handleEnquireWithBroker(broker?.id);
         }
       } else {
-        handleEnquireWithBroker(broker?.id);
+        console.error('handleEnquireWithBroker is not a function');
       }
-    } else {
-      console.error('handleEnquireWithBroker is not a function');
     }
-  }
+
   return (
     <Card sx={{ position: "relative" }}>
       <Box sx={{ display: "flex", p: 2 }}>
@@ -113,8 +110,15 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Avatar>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">
-            {titleCase(broker?.fullName)}
-            <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
+            <div style={{ display: "flex", gap: '5px' }} >
+              {titleCase(broker?.fullName)}
+              <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center" }} />
+              {showRating ?
+                <>
+                  <div className="rating">{broker?.rating ?? 0} ★</div><div className="rating-count"> {broker?.ratingCount ?? 0} Ratings</div>
+                </>
+                : null}
+            </div>
           </Typography>
           <Typography variant="body2">
             {broker?.currentAddress?.city || ""}{" "}
