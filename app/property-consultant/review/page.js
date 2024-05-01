@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import BrokerDetails from "Components/Ratings/BrokerDetails";
@@ -44,25 +44,33 @@ const page = () => {
         subtitle="3,344 property consultant links are currently active"
 
       />
-      <Box
-        sx={{
-          zIndex: 100,
-          background: "white",
-          position: "sticky",
-          top: { xs: 48, sm: 64 },
-        }}
-      >
-        <Container maxWidth="evmd">
-          <BrokerDetails name={name} data={data} />
-        </Container>
-      </Box>
-      <Container maxWidth="evmd">
-        <Grid container spacing={2}>
-          {
-            data?.reviews?.map((review) => <BrokerFeedBack review={review} />)
-          }
+      {data ?
+        <><Box
+          sx={{
+            zIndex: 100,
+            background: "white",
+            position: "sticky",
+            top: { xs: 48, sm: 64 },
+          }}
+        >
+          <Container maxWidth="evmd">
+            <BrokerDetails name={name} data={data} />
+          </Container>
+        </Box>
+          <Container maxWidth="evmd">
+            <Grid container spacing={2}>
+              {
+                data?.reviews?.map((review) => <BrokerFeedBack review={review} />)
+              }
+            </Grid>
+          </Container></>
+
+        : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
+          <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
+            No data found!
+          </Typography>
         </Grid>
-      </Container>
+      }
     </>
   );
 };
