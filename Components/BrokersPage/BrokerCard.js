@@ -81,7 +81,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
     titleCase = (string) => {
       return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
     },
-    
+
     isEnquiredByCurrentBroker = enquiredInfo?.brokerId == broker?.id,
     handleCallClick = () => {
       if (typeof handleEnquireWithBroker === 'function') {
@@ -115,7 +115,17 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
               <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center" }} />
               {showRating ?
                 <>
-                  <div className="rating">{broker?.rating ?? 0} ★</div><div className="rating-count"> {broker?.ratingCount ?? 0} Ratings</div>
+                  <div className="rating">
+
+                    <Rating
+                      readOnly
+                      size="small"
+                      name="hover-feedback"
+                      precision={0.5}
+                      value={broker?.rating ?? 0}
+                    />
+
+                  </div><div className="rating-count"> {broker?.ratingCount ?? 0} Ratings</div>
                 </>
                 : null}
             </div>

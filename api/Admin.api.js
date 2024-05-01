@@ -42,7 +42,7 @@ export const getBrokerCityList = () => {
 
 export const getLeads = ({ limit, page, search, status }) => {
   return axiosInstance.get(
-    `/admin/getLeads?limit=${limit || ""}&&page=${page || 0}&&search=${search || ""
+    `/admin/getLeadsddp?limit=${limit || ""}&&page=${page || 0}&&search=${search || ""
     }&&status=${status}`
   );
 };
