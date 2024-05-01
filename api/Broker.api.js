@@ -21,7 +21,7 @@ export const generateRandorOrderNumber = () => {
 };
 
 export const getReviews = () => {
-  return axiosInstance.get(`/broker/getReviewss`);
+  return axiosInstance.get(`/broker/getReviews`);
 };
 
 export const getBrokerLeads = ({ limit, page, search }) => {
