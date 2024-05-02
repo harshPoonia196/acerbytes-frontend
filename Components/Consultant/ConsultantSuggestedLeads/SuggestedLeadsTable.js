@@ -13,8 +13,11 @@ import {
   Grid,
   Card,
   IconButton,
-  Menu,
-  MenuItem,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -22,16 +25,18 @@ import { visuallyHidden } from "@mui/utils";
 import { capitalLizeName, getComparator, stableSort } from "utills/CommonFunction";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
-import {  getBrokerSuggestedLeads } from "api/Broker.api";
+import {  buySuggestedLeads, getBrokerBalance, getBrokerSuggestedLeads } from "api/Broker.api";
 import { debounce } from "lodash";
 import { DEBOUNCE_TIMER, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SuggesredLeadsDetails from "./Modal/SuggesredLeadsDetails";
+import { useAuth } from "utills/AuthContext";
+import colors from "styles/theme/colors";
+import { useRouter } from "next/navigation";
 
 
 const headCells = [
@@ -50,10 +55,6 @@ const headCells = [
   {
     id: "PropertyLink",
     label: "Property link",
-  },
-  {
-    id: "Leadprice",
-    label: "Lead price",
   },
   {
     id: "ViewDetails",
@@ -82,6 +83,14 @@ function EnhancedTableHead(props) {
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
+              sx={{
+                '&:hover .MuiTableSortLabel-icon': {
+                  opacity: 0,
+                },
+                '&.Mui-active .MuiTableSortLabel-icon': {
+                  opacity: 0,
+                },
+              }}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -92,13 +101,13 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-      <TableCell>Buy now</TableCell>
+        <TableCell>Action</TableCell>
       </TableRow>
     </TableHead>
   );
 }
 
-function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelectedRowData }) {
+function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelectedRowData, manageBuyNow }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -128,11 +137,12 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
             }}
             style={{ textDecoration: "none" }}
           >
-            {row?.propertyLink ? row?.propertyLink : "-"}
+            {row?.properties?.overview?.projectName ?
+            `${capitalLizeName(row?.properties?.overview?.projectName)}`
+            : "-"}
           </a>
         )}
       </TableCell>
-      <TableCell>{row?.properties?.unitsPlan?.averagePrice}</TableCell>
       <TableCell> <IconButton
           sx={{ fontSize: "1rem !important" }}
           aria-label="more"
@@ -147,49 +157,22 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
           size="small"
         >
           <VisibilityIcon fontSize="1rem" />
-        </IconButton></TableCell>
-      <TableCell sx={{ py: 0 }}>
-        <IconButton
-          sx={{ fontSize: "1rem !important" }}
-          aria-label="more"
-          id="long-button"
-          aria-controls={open ? "long-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-haspopup="true"
-          onClick={handleClick}
-          size="small"
-        >
-          <MoreVertIcon fontSize="1rem" />
         </IconButton>
       </TableCell>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-      >
-        <MenuItem
-         
-        >
-          Buy Now
-        </MenuItem>
-      </Menu>
+        <TableCell>
+          <Button onClick={()=> manageBuyNow(row?._id)}> 
+            Buy Now
+            </Button>
+            </TableCell>
     </TableRow>
   );
 }
 
+
+
 function SuggestedLeadsTable({ setLeadsCount }) {
+  const router = useRouter();
+  const { userDetails, setBrokerPoints } = useAuth();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
@@ -202,6 +185,8 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const [tempsearch, setTempSearch] = React.useState("");
   const [viewLeadsDetails, setViewLeadsDetails] = useState(false);
   const { openSnackbar } = useSnackbar();
+  const [buyModalOpen, setBuyModalOpen] = useState(false);
+  const [buyNowResponseMessage, setBuyNowResponseMessage] = useState("");
 
   const { data, isLoading, error, refetch } = useQueries(
     [search, reactQueryKey.broker.myLeads],
@@ -287,6 +272,81 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     setViewLeadsDetails(false)
   }
 
+  const getBrokerpointBalance = async () => {
+    try {
+      const response = await getBrokerBalance();
+      if (response.status == 200) {
+        setBrokerPoints(response?.data?.data?.balance || 0);
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error getbroker balance request",
+        "error"
+      );
+    }
+  };
+
+  const manageBuyNow = async (leadId) => {
+    try {
+      let response = await buySuggestedLeads({leadId, brokerId: userDetails?._id, googleID: userDetails?.googleID});
+      if (response.status === 200) {
+        setBuyModalOpen(true);
+        setBuyNowResponseMessage(response.data.message || "Fetched leads successfully please check my leads");
+      }
+    } catch (error) {
+      setBuyNowResponseMessage(error?.response?.data?.message || error?.message || "Error processing purchase");
+      setBuyModalOpen(true);
+    } 
+  };
+
+  const closeBuyResponseModal = () => {
+    setBuyModalOpen(false)
+    getBrokerpointBalance()
+    refetch()  
+  }
+
+  const BuyResponseModal = () => (
+    <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
+      <DialogContent sx={{ padding: "25px 30px !important", minWidth: "415px" }}>
+        <DialogContentText>
+          {buyNowResponseMessage}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button  variant="h6"
+          sx={{
+            fontWeight: 600,
+            color: "white",
+            backgroundColor: colors?.BLACK,
+            "&:hover": {
+              backgroundColor: colors?.BLACK,
+              boxShadow: "none",
+            },
+          }} onClick={closeBuyResponseModal} color="primary">
+          Close
+        </Button>
+        <Button
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            color: "white",
+            backgroundColor: colors?.BLACK,
+            "&:hover": {
+              backgroundColor: colors?.BLACK,
+              boxShadow: "none",
+            },
+          }}
+          onClick={() => router.push("/consultant/my-leads")}
+        >
+          View My lead
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
+
   return (
     <>
       {isLoading && <Loader />}
@@ -316,6 +376,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
                   handlePropertyView={handlePropertyView}
                   setViewLeadsDetails={setViewLeadsDetails}
                   setSelectedRowData={setSelectedRowData}
+                  manageBuyNow={manageBuyNow}
                 />
               ))}
             </TableBody>
@@ -343,6 +404,8 @@ function SuggestedLeadsTable({ setLeadsCount }) {
           selectedRowData={selectedRowData}
         />
       )}
+
+      <BuyResponseModal />
     </>
   );
 }
