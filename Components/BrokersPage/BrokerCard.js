@@ -9,6 +9,7 @@ import {
   IconButton,
   Grid,
   Divider,
+  Dialog,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import CallIcon from "@mui/icons-material/Call";
@@ -24,6 +25,7 @@ import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import { countryCodeFormating } from "utills/utills";
 import { getFirstCharacterOfFirstOfFullName } from "utills/CommonFunction";
+import Reviews from "./reviews";
 
 const labels = (rating) => {
   if (rating <= 0.5) {
@@ -65,14 +67,24 @@ const labels = (rating) => {
   return "";
 };
 
-function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, showRating }) {
+function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, showRating = false, hasReviews = false }) {
   const [openDialog, setOpenDialog] = useState(false),
+    [openReviews, setOpenReviews] = useState(false),
     { userDetails, isLogged } = useAuth(),
     router = useRouter(),
 
     handleDialogOpen = () => {
       setOpenDialog(true);
     },
+
+    handleOpenReviews = () => {
+      setOpenReviews(true);
+    },
+
+    handleCloseOpenReviews = () => {
+      setOpenReviews(false);
+    },
+
     handleViewReview = (name) => {
       router.push(`/broker-review?name=${name}`);
     },
@@ -110,7 +122,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Avatar>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">
-            <div style={{ display: "flex", gap: '5px' }} >
+            <div style={{ display: "flex", gap: '5px', cursor: 'pointer' }} onClick={hasReviews ? handleOpenReviews : null}>
               {titleCase(broker?.fullName)}
               <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center" }} />
               {showRating ?
@@ -209,6 +221,16 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           </Box>
         </Box>
       </Box>
+
+      <Dialog
+        sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
+        open={openReviews}
+        fullWidth={"xsm"}
+        onClose={handleCloseOpenReviews}
+      >
+        <Reviews broker={broker} />
+      </Dialog>
+
       {/* {broker?.phone?.number ? (
         <Box sx={{ position: "absolute", top: 8, right: 8 }}>
           <a
@@ -280,7 +302,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
             <Grid item xs={12} sx={{ mt: 1 }}>
               <Box sx={{ background: "whitesmoke", p: 2 }}>
                 <Typography variant="caption">
-                  You wrote a Public review
+                  Review given
                   {broker?.reviews?.createdAt
                     ? moment(broker?.reviews?.createdAt).format(
                       " on DD MMM, YYYY"

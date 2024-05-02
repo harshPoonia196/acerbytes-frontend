@@ -96,3 +96,7 @@ export const getBrokersList = (search, city = 'all') => {
 export const getBrokerCityList = () => {
   return axiosInstance.get(`/property/broker-cities`);
 };
+
+export const getReviews = (id) => {
+  return axiosInstance.get(`/property/getReviews?brokerId=${id}`);
+};

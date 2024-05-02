@@ -1,4 +1,4 @@
-import { Box, Card, Button, Menu, Rating, Typography, MenuItem } from '@mui/material'
+import { Avatar, Box, Card, Button, Menu, Rating, Typography, MenuItem } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import StarIcon from "@mui/icons-material/Star";
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
@@ -20,8 +20,8 @@ const labels = {
 
 const BrokerDetails = (props) => {
   const { name, data } = props,
-   [anchorEl, setAnchorEl] = useState(null),
-    open = Boolean(anchorEl),    
+    [anchorEl, setAnchorEl] = useState(null),
+    open = Boolean(anchorEl),
 
     handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -52,25 +52,33 @@ const BrokerDetails = (props) => {
 
       }}>
         <Box sx={{ flex: 1 }}>
-          <Typography variant="h3" sx={{ textTransform: 'capitalize' }}>
-            {data?.fullName ?? ''}
-          </Typography>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
+            <Avatar
+              alt="Remy Sharp"
+              src={data?.profilePicture}
+            />
+            <Typography variant="h3" sx={{ textTransform: 'capitalize' }}>
+              {data?.fullName ?? ''}
+            </Typography>
+          </div>
           {/* <Typography sx={{ my: '4px' }} variant="body1">{'6133 Rockside Rd #400 , independence, OH'}</Typography> */}
 
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Rating
-              name="text-feedback"
-              value={getRating(data?.rating)}
-              readOnly
-              precision={0.5}
-              sx={{ fontSize: "1rem" }}
-              emptyIcon={<StarIcon style={{ opacity: 0.55 }} sx={{ fontSize: "1rem" }} />}
-            />
-            <Typography variant="body2" sx={{ ml: 1 }}>
-              {labels[getRating(data?.rating)]}
-            </Typography>
-          </Box>
-          <Typography variant="body2">{data?.ratingCount} Reviews</Typography>
+          <div style={{ marginLeft: '7.5%' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Rating
+                name="text-feedback"
+                value={getRating(data?.rating)}
+                readOnly
+                precision={0.5}
+                sx={{ fontSize: "1rem" }}
+                emptyIcon={<StarIcon style={{ opacity: 0.55 }} sx={{ fontSize: "1rem" }} />}
+              />
+              <Typography variant="body2" sx={{ ml: 1 }}>
+                {labels[getRating(data?.rating)]}
+              </Typography>
+            </Box>
+            <Typography variant="body2">{data?.ratingCount} Reviews</Typography>
+          </div>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'row', evmd: 'column' }, justifyContent: 'space-between' }}>
           {/* <Box>
