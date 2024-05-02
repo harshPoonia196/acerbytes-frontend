@@ -304,8 +304,15 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const closeBuyResponseModal = () => {
     setBuyModalOpen(false)
     getBrokerpointBalance()
-    refetch()  
+    refetch() 
   }
+
+  const handleViewMyLeadClick = async () => {
+    setBuyModalOpen(false); 
+    await getBrokerpointBalance(); 
+    refetch();
+    router.push("/consultant/my-leads"); 
+  };
 
   const BuyResponseModal = () => (
     <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
@@ -338,7 +345,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
               boxShadow: "none",
             },
           }}
-          onClick={() => router.push("/consultant/my-leads")}
+          onClick={handleViewMyLeadClick}
         >
           View My lead
         </Button>
