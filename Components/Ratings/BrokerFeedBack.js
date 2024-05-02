@@ -22,7 +22,7 @@ const BrokerFeedBack = ({ review }) => {
                 <Box>
                     <Avatar
                         alt="Remy Sharp"
-                        src={review?.[0]?.profilePic}
+                        src={review?.profilePic?.[0]}
                     />
                 </Box>
                 <Box>
