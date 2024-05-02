@@ -18,7 +18,9 @@ export async function generateMetadata({ params }) {
   }
   const title = product?.data?.marketing?.tagLine ?? ""
   const description = product?.data?.marketing?.description ?? ""
-  const imageUrl = product?.data?.marketing?.image ?? "default-image-url.jpg"
+  // const imageUrl = product?.data?.marketing?.image ?? "default-image-url.jpg"
+  const imageUrl = 'https://acrebytes.s3.ap-south-1.amazonaws.com/1713723593367_image.jpg' ?? "default-image-url.jpg"
+  console.log(imageUrl, "imageUrl");
 
   return {
     title,
