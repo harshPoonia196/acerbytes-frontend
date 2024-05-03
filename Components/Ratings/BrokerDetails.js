@@ -1,10 +1,9 @@
-import { Box, Card, Button, Menu, Rating, Typography, MenuItem } from '@mui/material'
-import React, { useState } from 'react'
+import { Avatar, Box, Card, Button, Menu, Rating, Typography, MenuItem } from '@mui/material'
+import React, { useState, useEffect } from 'react'
 import StarIcon from "@mui/icons-material/Star";
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
-
 
 const labels = {
   0.5: "Useless",
@@ -20,18 +19,28 @@ const labels = {
 };
 
 const BrokerDetails = (props) => {
+  const { name, data } = props,
+    [anchorEl, setAnchorEl] = useState(null),
+    open = Boolean(anchorEl),
 
-  const { name } = props
+    handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    },
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+    handleClose = () => {
+      setAnchorEl(null);
+    },
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+    getRating = (rating) => {
+      let data = Math.floor(rating),
+        decimal_point = rating % 2;
+      if (decimal_point == .5) {
+        data = data + .5
+      } else if (decimal_point > .5) {
+        data = data + 1
+      }
+      return data;
+    }
 
 
   return (
@@ -43,33 +52,39 @@ const BrokerDetails = (props) => {
 
       }}>
         <Box sx={{ flex: 1 }}>
-          <Typography variant="h3" sx={{ textTransform: 'capitalize' }}>
-            {/* {name} */}Anand Gupta
-          </Typography>
-          <Typography sx={{ my: '4px' }} variant="body1">{'6133 Rockside Rd #400 , independence, OH'}</Typography>
-
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Rating
-              name="text-feedback"
-              value={4}
-              readOnly
-              precision={0.5}
-              sx={{ fontSize: "1rem" }}
-              emptyIcon={<StarIcon style={{ opacity: 0.55 }} sx={{ fontSize: "1rem" }} />}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
+            <Avatar
+              alt="Remy Sharp"
+              src={data?.profilePicture}
             />
-            <Typography variant="body2" sx={{ ml: 1 }}>
-              {labels[4]}
+            <Typography variant="h3" sx={{ textTransform: 'capitalize' }}>
+              {data?.fullName ?? ''}
             </Typography>
-          </Box>
+          </div>
+          {/* <Typography sx={{ my: '4px' }} variant="body1">{'6133 Rockside Rd #400 , independence, OH'}</Typography> */}
 
-          <Typography variant="body2">{'48 Reviews'}</Typography>
-
+          <div style={{ marginLeft: '7.5%' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Rating
+                name="text-feedback"
+                value={getRating(data?.rating)}
+                readOnly
+                precision={0.5}
+                sx={{ fontSize: "1rem" }}
+                emptyIcon={<StarIcon style={{ opacity: 0.55 }} sx={{ fontSize: "1rem" }} />}
+              />
+              <Typography variant="body2" sx={{ ml: 1 }}>
+                {labels[getRating(data?.rating)]}
+              </Typography>
+            </Box>
+            <Typography variant="body2">{data?.ratingCount} Reviews</Typography>
+          </div>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'row', evmd: 'column' }, justifyContent: 'space-between' }}>
-          <Box>
+          {/* <Box>
             <CustomButton startIcon={<DriveFileRenameOutlineRoundedIcon />} size='small' variant='contained' ButtonText={"Write a Review"} />
-          </Box>
-          <Box sx={{ textAlign: 'end' }}>
+          </Box> */}
+          {/* <Box sx={{ textAlign: 'end' }}>
             <CustomButton
               size='small'
               id="basic-button"
@@ -93,7 +108,7 @@ const BrokerDetails = (props) => {
               <MenuItem onClick={handleClose}>Most Helpful</MenuItem>
               <MenuItem onClick={handleClose}>Recent</MenuItem>
             </Menu>
-          </Box>
+          </Box> */}
         </Box>
       </Box >
     </>

@@ -7,11 +7,11 @@ import BrokerDetails from "Components/Ratings/BrokerDetails";
 import BrokerFeedBack from "Components/Ratings/BrokerFeedBack";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
-import { getReviews } from 'api/Broker.api';
+import { getReviews } from 'api/Property.api';
 import { useSnackbar } from "utills/SnackbarContext";
 
-const page = () => {
-
+const Reviews = ({ broker }) => {
+  const { _id } = broker;
   const [data, setData] = useState(null);
   useEffect(() => {
     getList()
@@ -24,7 +24,7 @@ const page = () => {
 
     getList = async () => {
       try {
-        const { data: { data } } = await getReviews();
+        const { data: { data } } = await getReviews(_id);
         setData(data)
       } catch (error) {
         showToaterMessages(error.message, "error");
@@ -37,20 +37,13 @@ const page = () => {
 
   return (
     <>
-
-      <CustomConsultantBreadScrumbs text="List of reviews" />
-      <InfoBox
-        title="Anand Gupta(Admin)"
-        subtitle="3,344 property consultant links are currently active"
-
-      />
       {data ?
         <><Box
           sx={{
             zIndex: 100,
             background: "white",
             position: "sticky",
-            top: { xs: 48, sm: 64 },
+            top: { xs: 0, sm: 0 },
           }}
         >
           <Container maxWidth="evmd">
@@ -75,4 +68,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Reviews;
