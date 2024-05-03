@@ -82,3 +82,21 @@ export const propertyByCity = () => {
 export const managePublishData = (propertyId, publishStatus) => {
   return axiosInstance.put(`/property/managePublish/${propertyId}/${publishStatus}`);
 };
+
+export const getBrokersList = (search, city = 'all') => {
+  let query = `search=${search || ""}&&`;
+
+  if (city != 'all') {
+    query += `city=${city}&&`
+  }
+
+  return axiosInstance.get(`/property/brokerList${query ? '?' + query : ''}`);
+};
+
+export const getBrokerCityList = () => {
+  return axiosInstance.get(`/property/broker-cities`);
+};
+
+export const getReviews = (id) => {
+  return axiosInstance.get(`/property/getReviews?brokerId=${id}`);
+};

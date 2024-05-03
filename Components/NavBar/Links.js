@@ -28,6 +28,7 @@ export const listOfPages = {
   consultantProfile: '/consultant/profile',
   consultantRatings: '/property-consultant/review',
   consultantMyLeads: "/consultant/my-leads",
+  suggestedLeads: "/consultant/suggested-leads",
   consultantLinks: "/consultant/my-links",
   consultantMyNotes: "/consultant/my-notes",
   consultantMakePayment: "/consultant/make-payment",
@@ -111,7 +112,7 @@ export const ConsultantMenuList = [
   },
   {
     label: "Suggested leads",
-    route: listOfPages.consultantMyLeads,
+    route: listOfPages.suggestedLeads,
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
@@ -181,6 +182,14 @@ export const CSRMenuList = [
     route: listOfPages.adminEnquiries,
     icon: <RecentActorsIcon fontSize="small" />,
   }
+];
+
+export const SMRMenuList = [
+  {
+    label: "Manage Consultants",
+    route: listOfPages.adminManageConsultant,
+    icon: <PlaylistAddIcon fontSize="small" />,
+  },
 ];
 
 

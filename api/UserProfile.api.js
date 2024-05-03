@@ -14,7 +14,19 @@ export const reviewBroker = (data) => {
 };
 
 export const getBrokers = (limit, page, search) => {
-  return axiosInstance.get(`/admin/brokerList`);
+  let query = "";
+
+  if (limit >= 0) {
+    query += `limit=${limit || 0}&&`;
+  }
+  if (page >= 0) {
+    query += `page=${page || 0}&&`;
+  }
+  if (search) {
+    query += `search=${search || ""}&&`;
+  }
+
+  return axiosInstance.get(`/user/consultants?${query}`);
 };
 
 export const submitEnquiry = (data) => {

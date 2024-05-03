@@ -47,7 +47,7 @@ function PropertyList({ params }) {
 
   const [property, setProperty] = useState([]);
   const [count, setCount] = useState({});
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState({ loader1: true, loader2: true });
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const inputRef = useRef(null);
@@ -71,6 +71,7 @@ function PropertyList({ params }) {
     setCurrentPage(1);
   };
 
+
   const getUserPropertyList = async (
     pageOptions,
     // searchTerm,
@@ -79,7 +80,7 @@ function PropertyList({ params }) {
     propertyvalue
   ) => {
     try {
-      setLoading(true);
+      setLoading(res => ({...res, loader1: true}));
       let data = {};
       Object.keys(selectedOptions).forEach((key) => {
         const value = selectedOptions[key];
@@ -121,7 +122,7 @@ function PropertyList({ params }) {
         "error"
       );
     } finally {
-      setLoading(false);
+      setLoading(res => ({...res, loader1: false}));
     }
   };
 
@@ -139,8 +140,6 @@ function PropertyList({ params }) {
         "Error fetching state list",
         "error"
       );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -163,7 +162,7 @@ function PropertyList({ params }) {
 
   const getAllPropertyByCity = async () => {
     try {
-      setLoading(true);
+      setLoading(res => ({...res, loader2: true}));
       let res = await propertyByCity();
       if (res.status === 200) {
         getLocationsCall(res.data.data);
@@ -178,7 +177,7 @@ function PropertyList({ params }) {
         "error"
       );
     } finally {
-      setLoading(false);
+      setLoading(res => ({...res, loader2: false}));
     }
   };
 
@@ -340,7 +339,7 @@ function PropertyList({ params }) {
   return (
     <>
       <>
-        {isLoading && <Loader />}
+        {(isLoading?.loader1 || isLoading?.loader2) && <Loader />}
         <Container maxWidth="lg">
           <Card sx={{ mb: 2 }}>
             {params.location ? (

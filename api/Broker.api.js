@@ -20,10 +20,27 @@ export const generateRandorOrderNumber = () => {
   return axiosInstance.get(`/broker/generateOrderNumber`);
 };
 
+export const getReviews = () => {
+  return axiosInstance.get(`/broker/getReviews`);
+};
+
 export const getBrokerLeads = ({ limit, page, search }) => {
   return axiosInstance.get(
     `/broker/myLeads?limit=${limit || ""}&&page=${page || 0}&&search=${
       search || ""
     }`
+  );
+};
+
+export const getBrokerSuggestedLeads = ({ limit, page, search }) => {
+  return axiosInstance.get(
+    `/broker/suggestedLeads?limit=${limit || ""}&page=${page || 0}&search=${
+      search || ""
+    }`
+  );
+};
+export const buySuggestedLeads = (data) => {
+  return axiosInstance.put(
+    "/broker/leadBrokerUpdate",data
   );
 };

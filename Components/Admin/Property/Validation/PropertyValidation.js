@@ -499,5 +499,6 @@ export const Schema = Joi.object({
     image: Joi.string().required(),
     tagLine: Joi.string().required(),
     description: Joi.string().required(),
+    metaDescription: Joi.string().optional().allow(""),
   }),
 });

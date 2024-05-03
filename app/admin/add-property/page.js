@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Button, Card, Container, Grid } from "@mui/material";
+import dynamic from 'next/dynamic'
 import React from "react";
 import { useState } from "react";
 import { listOfTabsInAddProperty } from "utills/Constants";
@@ -30,7 +31,9 @@ import RegulatoryCard from "Components/Admin/Property/SubComponents/RegulatoryCa
 import BuilderPriceCard from "Components/Admin/Property/SubComponents/BuilderPriceCard";
 import ResalePriceCard from "Components/Admin/Property/SubComponents/ResalePriceCard";
 import InvestmentCard from "Components/Admin/Property/SubComponents/InvestmentCard";
-import MarketingCard from "Components/Admin/Property/SubComponents/MarketingCard";
+const MarketingCard = dynamic(() => import('Components/Admin/Property/SubComponents/MarketingCard'), {
+  ssr: false,
+})
 import { useSnackbar } from "utills/SnackbarContext";
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
@@ -526,9 +529,9 @@ function AddProperty() {
       image: "",
       tagLine: "",
       description: "",
+      metaDescription: ""
     },
   });
-
 
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });

@@ -17,14 +17,14 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { capitalLizeName, formatAmount, getComparator, stableSort } from "utills/CommonFunction";
 import { useQueries } from "utills/ReactQueryContext";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getLeads } from "api/Admin.api";
-import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
+import { LINK, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
@@ -112,6 +112,10 @@ const headCells = [
     label: "Broker",
   },
   {
+    id: "source",
+    label: "Source",
+  },
+  {
     id: "action",
     label: "Action",
   },
@@ -164,7 +168,7 @@ function RowStructure({ row, handlePropertyView, router }) {
     }
   }
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -211,6 +215,7 @@ function RowStructure({ row, handlePropertyView, router }) {
       <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
       <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell>
+      <TableCell>{row.source}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton
           onClick={handleClick}
@@ -258,43 +263,40 @@ function RowStructure({ row, handlePropertyView, router }) {
   );
 }
 
-function EnquiriesTable({ search, setLeadsCount }) {
-  const router = useRouter();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState(null);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
-  const [rows, setRows] = React.useState([]);
-  const [totalCount, setTotalCount] = React.useState(0);
-  const firstLoad = React.useRef(true);
+function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
+  const router = useRouter(),
+    [order, setOrder] = useState("asc"),
+    [orderBy, setOrderBy] = useState(null),
+    [rows, setRows] = useState([]),
+    [rowsPerPage, setRowsPerPage] = useState(PAGINATION_LIMIT),
+    [totalCount, setTotalCount] = useState(0),
+    firstLoad = useRef(true),
+    { openSnackbar } = useSnackbar(),
 
-  const { openSnackbar } = useSnackbar();
-
-  const { data, isLoading, error, refetch } = useQueries(
-    [search, reactQueryKey.broker.myLeads],
-    async () => {
-      try {
-        const response = await getLeads({ limit: rowsPerPage, page, search });
-        if (response.status == 200) {
-          const { success, data, message } = response.data;
-          if (success) {
-            return data;
-          } else {
-            openSnackbar(message, "error");
+    { data, isLoading, error, refetch } = useQueries(
+      [search, reactQueryKey.broker.myLeads],
+      async () => {
+        try {
+          const response = await getLeads({ limit: rowsPerPage, page, search, status: alignment });
+          if (response.status == 200) {
+            const { success, data, message } = response.data;
+            if (success) {
+              return data;
+            } else {
+              openSnackbar(message, "error");
+            }
           }
+        } catch (error) {
+          openSnackbar(
+            error?.response?.data?.message ||
+            error?.message ||
+            "Something went wrong!",
+            "error"
+          );
+          return error;
         }
-      } catch (error) {
-        openSnackbar(
-          error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
-          "error"
-        );
-        return error;
       }
-    }
-  );
-  console.log("DATA: ", data);
+    );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -311,7 +313,7 @@ function EnquiriesTable({ search, setLeadsCount }) {
     setPage(0);
   };
 
-  const visibleRows = React.useMemo(
+  const visibleRows = useMemo(
     () =>
       stableSort(rows, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
@@ -320,18 +322,25 @@ function EnquiriesTable({ search, setLeadsCount }) {
     [order, orderBy, page, rowsPerPage]
   );
 
-  React.useEffect(() => {
-    setRows(data?.data || []);
-    setTotalCount(data?.totalCount || 0);
-    setLeadsCount(data?.leadsCount || 0);
+  useEffect(() => {
+    const records = data?.data ?? [],
+      totalCount = data?.totalCount ?? 0,
+      leadCounts = data?.leadsCount ?? 0,
+      reviewed = data?.reviewed ?? 0,
+      pending = data?.pending ?? 0;
+
+    setRows(records);
+    setTotalCount(totalCount);
+    setCounts({ leadCounts, pending, reviewed });
+
   }, [data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!firstLoad.current) {
       refetch();
     }
     firstLoad.current = false;
-  }, [rowsPerPage, page]);
+  }, [rowsPerPage, page, alignment]);
 
   const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
@@ -352,9 +361,17 @@ function EnquiriesTable({ search, setLeadsCount }) {
                 onRequestSort={handleRequestSort}
               />
               <TableBody>
-                {rows.map((row) => (
-                  <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} router={router} />
-                ))}
+                {rows.map((row) => {
+                  const { adId = null, brokerId = null, userId = null } = row;
+                  if (adId && brokerId && userId) {
+                    row.source = LINK.unique;
+                  } else if (!adId && brokerId && userId) {
+                    row.source = LINK.consultant;
+                  } else if (!adId && !brokerId && userId) {
+                    row.source = LINK.acrebytes;
+                  }
+                  return <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} router={router} />
+                })}
               </TableBody>
             </Table>
             <TablePagination

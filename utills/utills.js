@@ -56,7 +56,7 @@ const scopes = {
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
   const isPublicRoute = publicRoutes.some(publicRoute => {
-    if (publicRoute.includes("/:")) { 
+    if (publicRoute.includes("/:")) {
       const parts = publicRoute.split("/:");
       const baseRoute = parts[0];
       if (parts.length === 2 && url.startsWith(baseRoute)) {
@@ -67,18 +67,44 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
     }
     return url === publicRoute;
   });
-  
+
   if (!isLogged && !isPublicRoute) {
     redirectUser("/login");
   }
+
   if (isLogged) {
-    if (url.includes("/admin") && role !== "admin" && role !== "superAdmin" && role !== "customerSupport") {
-      redirectUser("/");
-    } else if (url.includes("/user") && role !== "user") {
-      redirectUser("/");
-    } else if (url.includes("/consultant") && role !== "broker") {
-      console.log(url, isLogged)
-      redirectUser("/");
+    const urls = [
+      { baseUrl: '/admin', access_roles: [{ sub_urls: [], role: 'admin', home: '/', is_public_restric: false }, { sub_urls: [], role: 'superAdmin', home: '/', is_public_restric: false }, { sub_urls: ['enquiries', 'updateProfile'], role: 'customerSupport', home: '/admin/enquiries', is_public_restric: true }, { sub_urls: ['manage-consultant', 'updateConsultantProfile'], role: 'sales', home: '/admin/manage-consultant', is_public_restric: true }] },
+      { baseUrl: '/user', access_roles: [{ sub_urls: [], role: 'user', is_public_restric: false }] },
+      { baseUrl: '/consultant', access_roles: [{ sub_urls: [], role: 'broker', is_public_restric: false }] }
+    ]
+
+
+    function isHasSubUrl(subUrl) {
+      return url.includes(subUrl);
+    }
+
+    /* Returing to baseurl if user has not access */
+    for (let i = 0, len = urls.length; i < len; i++) {
+      const { baseUrl, access_roles = [] } = urls[i],
+        data = access_roles.find(item => item.role === role);
+      if (data) {
+        const { sub_urls = [], home = '', is_public_restric = false, role: user_role } = data;
+        if (url.includes(baseUrl)) {
+          if (sub_urls.length) {
+            if (!sub_urls.some(isHasSubUrl)) {
+              redirectUser(home);
+            };
+          };
+        } else {
+          if (isPublicRoute) {
+            is_public_restric ? redirectUser(home) : redirectUser(url);
+          } else {
+            redirectUser(home);
+          }
+        }
+        break;
+      }
     }
   }
 };

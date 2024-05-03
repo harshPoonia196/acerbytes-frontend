@@ -98,6 +98,7 @@ function useThrottledOnScroll(callback, delay) {
 const PropertyDetails = ({ params }) => {
   const { userDetails, isLogged } = useAuth();
   const router = useRouter();
+  const url = new URL(window.location.href);
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const [isLoading, setLoading] = useState(false);
@@ -651,9 +652,14 @@ const PropertyDetails = ({ params }) => {
                 Like
               </Button>
               <Button
+                component="a"
                 sx={{ mt: 1, ml: 1 }}
                 variant="outlined"
-                onClick={handleOpenEnquiryForm}
+                href={`https://web.whatsapp.com/send?text=${encodeURIComponent(
+                  url?.href ? url?.href : ''
+                    )}`}
+                target="_blank"
+                data-action="share/whatsapp/share"
                 startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
               >
                 Share
@@ -713,8 +719,14 @@ const PropertyDetails = ({ params }) => {
                   </Fab>
                 )}
                 <Fab
+                  component="a"
                   variant="extended"
                   sx={{ mb: 1, justifyContent: "flex-start" }}
+                  href={`https://web.whatsapp.com/send?text=${encodeURIComponent(
+                  url?.href ? url?.href : ''
+                    )}`}
+                  target="_blank"
+                  data-action="share/whatsapp/share"
                 >
                   <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
                   Share

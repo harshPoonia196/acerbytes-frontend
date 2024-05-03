@@ -111,6 +111,7 @@ function Profile({ id, isAdminUpdate }) {
   const [selectInterestedCity, setInterestedCity] = useState("");
   const [selectInterestedArea, setInterestedArea] = useState("");
   const [emailInvalid, setEmailInvalid] = useState(false);
+  const [invalidAge, setInvalidAge] = useState(false);
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
   const [image, setImage] = useState("");
 
@@ -326,6 +327,7 @@ function Profile({ id, isAdminUpdate }) {
             serviceDetails: dataPlayload?.serviceDetails,
             settings: dataPlayload?.settings,
             alternateEmail: dataPlayload?.alternateEmail,
+            age: dataPlayload?.age,
 
             // extra info
             role: dataPlayload?.role,
@@ -412,6 +414,17 @@ function Profile({ id, isAdminUpdate }) {
 
       value = value.slice(0, 6);
     }
+
+    if (firstKeyName === 'age') {
+      const age = Number(value)
+      if (age > 100 || age < 0) {
+        setInvalidAge(true)
+        showToaterMessages('Please Enter Correct Age', 'error')
+      } else {
+        setInvalidAge(false)
+      }
+    }
+
     await setProfileInfo((prev) => ({
       ...prev,
       [firstKeyName]: !secondKeyName
@@ -540,6 +553,10 @@ function Profile({ id, isAdminUpdate }) {
         return;
       } else {
         setEmailInvalid(false);
+      }
+
+      if (invalidAge) {
+        return
       }
 
       setLoading(true);
@@ -834,6 +851,17 @@ function Profile({ id, isAdminUpdate }) {
                   name={"alternateEmail"}
                   value={profileInfo?.alternateEmail}
                   error={emailInvalid}
+                />
+
+                <NewInputFieldStructure
+                  label="Age"
+                  type="number"
+                  variant="outlined"
+                  isEdit={isEdit}
+                  handleChange={(e) => handleChange(e, "age")}
+                  name={"age"}
+                  error={invalidAge}
+                  value={profileInfo?.age}
                 />
               </Grid>
             </Card>

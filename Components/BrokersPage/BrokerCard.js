@@ -9,6 +9,7 @@ import {
   IconButton,
   Grid,
   Divider,
+  Dialog,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import CallIcon from "@mui/icons-material/Call";
@@ -24,6 +25,7 @@ import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import { countryCodeFormating } from "utills/utills";
 import { getFirstCharacterOfFirstOfFullName } from "utills/CommonFunction";
+import Reviews from "./reviews";
 
 const labels = (rating) => {
   if (rating <= 0.5) {
@@ -65,42 +67,49 @@ const labels = (rating) => {
   return "";
 };
 
-function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker }) {
-  const [openDialog, setOpenDialog] = useState(false);
-  const { userDetails, isLogged } = useAuth();
+function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, showRating = false, hasReviews = false }) {
+  const [openDialog, setOpenDialog] = useState(false),
+    [openReviews, setOpenReviews] = useState(false),
+    { userDetails, isLogged } = useAuth(),
+    router = useRouter(),
 
-  const router = useRouter();
+    handleDialogOpen = () => {
+      setOpenDialog(true);
+    },
 
-  const handleDialogOpen = () => {
-    setOpenDialog(true);
-  };
+    handleOpenReviews = () => {
+      setOpenReviews(true);
+    },
 
-  const handleViewReview = (name) => {
-    router.push(`/broker-review?name=${name}`);
-  };
+    handleCloseOpenReviews = () => {
+      setOpenReviews(false);
+    },
 
-  const precision = 0.5;
+    handleViewReview = (name) => {
+      router.push(`/broker-review?name=${name}`);
+    },
 
-  const titleCase = (string) => {
-    return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
-  }
+    precision = 0.5,
+    titleCase = (string) => {
+      return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
+    },
 
-  const isEnquiredByCurrentBroker = enquiredInfo?.brokerId == broker?.id;
-
-  const handleCallClick = () => {
-    if (typeof handleEnquireWithBroker === 'function') {
-      if (isEnquiredByCurrentBroker) {
-        const callHref = `tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")}`;
-        if (callHref) {
-          window.location.href = callHref;
+    isEnquiredByCurrentBroker = enquiredInfo?.brokerId == broker?.id,
+    handleCallClick = () => {
+      if (typeof handleEnquireWithBroker === 'function') {
+        if (isEnquiredByCurrentBroker) {
+          const callHref = `tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")}`;
+          if (callHref) {
+            window.location.href = callHref;
+          }
+        } else {
+          handleEnquireWithBroker(broker?.id);
         }
       } else {
-        handleEnquireWithBroker(broker?.id);
+        console.error('handleEnquireWithBroker is not a function');
       }
-    } else {
-      console.error('handleEnquireWithBroker is not a function');
     }
-  }
+
   return (
     <Card sx={{ position: "relative" }}>
       <Box sx={{ display: "flex", p: 2 }}>
@@ -113,8 +122,25 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Avatar>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6">
-            {titleCase(broker?.fullName)}
-            <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center", ml: 1 }} />
+            <div style={{ display: "flex", gap: '5px', cursor: 'pointer' }} onClick={hasReviews ? handleOpenReviews : null}>
+              {titleCase(broker?.fullName)}
+              <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center" }} />
+              {showRating ?
+                <>
+                  <div className="rating">
+
+                    <Rating
+                      readOnly
+                      size="small"
+                      name="hover-feedback"
+                      precision={0.5}
+                      value={broker?.rating ?? 0}
+                    />
+
+                  </div><div className="rating-count"> {broker?.ratingCount ?? 0} Ratings</div>
+                </>
+                : null}
+            </div>
           </Typography>
           <Typography variant="body2">
             {broker?.currentAddress?.city || ""}{" "}
@@ -195,6 +221,16 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           </Box>
         </Box>
       </Box>
+
+      <Dialog
+        sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
+        open={openReviews}
+        fullWidth={"xsm"}
+        onClose={handleCloseOpenReviews}
+      >
+        <Reviews broker={broker} />
+      </Dialog>
+
       {/* {broker?.phone?.number ? (
         <Box sx={{ position: "absolute", top: 8, right: 8 }}>
           <a
@@ -266,7 +302,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
             <Grid item xs={12} sx={{ mt: 1 }}>
               <Box sx={{ background: "whitesmoke", p: 2 }}>
                 <Typography variant="caption">
-                  You wrote a Public review
+                  Review given
                   {broker?.reviews?.createdAt
                     ? moment(broker?.reviews?.createdAt).format(
                       " on DD MMM, YYYY"
