@@ -37,6 +37,7 @@ import SuggesredLeadsDetails from "./Modal/SuggesredLeadsDetails";
 import { useAuth } from "utills/AuthContext";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
+import { listOfPages } from "Components/NavBar/Links";
 
 
 const headCells = [
@@ -307,11 +308,11 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     refetch() 
   }
 
-  const handleViewMyLeadClick = async () => {
+  const handleViewMyLeadClick = () => {
     setBuyModalOpen(false); 
-    await getBrokerpointBalance(); 
+    getBrokerpointBalance(); 
     refetch();
-    router.push("/consultant/my-leads"); 
+    router.push(listOfPages.consultantMyLeads)
   };
 
   const BuyResponseModal = () => (
