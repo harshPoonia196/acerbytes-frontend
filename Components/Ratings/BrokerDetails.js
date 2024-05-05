@@ -4,19 +4,7 @@ import StarIcon from "@mui/icons-material/Star";
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
-
-const labels = {
-  0.5: "Useless",
-  1: "Useless+",
-  1.5: "Poor",
-  2: "Poor+",
-  2.5: "Ok",
-  3: "Ok+",
-  3.5: "Good",
-  4: "Good+",
-  4.5: "Excellent",
-  5: "Excellent+",
-};
+import { ratingLabels } from 'utills/utills';
 
 const BrokerDetails = (props) => {
   const { name, data } = props,
@@ -67,14 +55,14 @@ const BrokerDetails = (props) => {
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Rating
                 name="text-feedback"
-                value={getRating(data?.rating)}
+                value={data?.rating}
                 readOnly
                 precision={0.5}
                 sx={{ fontSize: "1rem" }}
                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} sx={{ fontSize: "1rem" }} />}
               />
               <Typography variant="body2" sx={{ ml: 1 }}>
-                {labels[getRating(data?.rating)]}
+                {ratingLabels(data?.rating)}
               </Typography>
             </Box>
             <Typography variant="body2">{data?.ratingCount} Reviews</Typography>

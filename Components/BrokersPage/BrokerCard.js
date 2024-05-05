@@ -27,46 +27,6 @@ import { countryCodeFormating } from "utills/utills";
 import { getFirstCharacterOfFirstOfFullName } from "utills/CommonFunction";
 import Reviews from "./reviews";
 
-const labels = (rating) => {
-  if (rating <= 0.5) {
-    return "Useless";
-  }
-  if (rating <= 1) {
-    return "Useless+";
-  }
-  if (rating <= 1.5) {
-    return "Poor";
-  }
-  if (rating <= 1.5) {
-    return "Poor";
-  }
-  if (rating <= 1.5) {
-    return "Poor";
-  }
-  if (rating <= 2) {
-    return "Poor+";
-  }
-  if (rating <= 2.5) {
-    return "Ok";
-  }
-  if (rating <= 3) {
-    return "Ok+";
-  }
-  if (rating <= 3.5) {
-    return "Good";
-  }
-  if (rating <= 4) {
-    return "Good+";
-  }
-  if (rating <= 4.5) {
-    return "Excellent";
-  }
-  if (rating <= 5) {
-    return "Excellent+";
-  }
-  return "";
-};
-
 function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, showRating = false, hasReviews = false }) {
   const [openDialog, setOpenDialog] = useState(false),
     [openReviews, setOpenReviews] = useState(false),
