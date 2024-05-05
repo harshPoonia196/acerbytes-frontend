@@ -587,3 +587,9 @@ export const LEADS_TAB = [
   { value: 'pending', label: 'Pending' },
   { value: 'reviewed', label: 'Reviewed' }
 ]
+
+export const NOTES_STATUS = [
+  { value: 'Contact Done', label: 'Contact Done' },
+  { value: 'Didn\'t Pick Call', label: 'Didn\'t Pick Call' },
+  { value: 'Purchsed', label: 'Purchsed' }
+];
