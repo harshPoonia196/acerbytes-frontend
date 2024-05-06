@@ -17,29 +17,29 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
     const [loading, setLoading] = useState(false),
         [myLeadsCustomer, setMyLeadsCustomer] = useState([])
 
-    useEffect(() => {
-        getList()
-    }, [])
+    // useEffect(() => {
+    //     // getList()
+    // }, [])
 
     const { openSnackbar } = useSnackbar(),
         showToaterMessages = (message, severity) => {
             openSnackbar(message, severity);
         };
 
-    const getList = async () => {
-        try {
-            const { data: { data: { data = [] } } } = await getMyLeadsCustomer(),
-                list = []
-            for (let i = 0; i < data.length; i++) {
-                const { userId, fullName } = data[i]
-                if (!list?.find(user => user.value === userId))
-                    list.push({ value: userId, label: fullName })
-            }
-            setMyLeadsCustomer(list)
-        } catch (error) {
-            showToaterMessages(error.message, "error");
-        }
-    }
+    // const getList = async () => {
+    //     try {
+    //         const { data: { data: { data = [] } } } = await getMyLeadsCustomer(),
+    //             list = []
+    //         for (let i = 0; i < data.length; i++) {
+    //             const { userId, fullName } = data[i]
+    //             if (!list?.find(user => user.value === userId))
+    //                 list.push({ value: userId, label: fullName })
+    //         }
+    //         setMyLeadsCustomer(list)
+    //     } catch (error) {
+    //         showToaterMessages(error.message, "error");
+    //     }
+    // }
 
     const handleClick = () => {
         setLoading(true);
