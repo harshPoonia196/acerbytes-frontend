@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -18,9 +18,10 @@ import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsult
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 function MyNotes() {
-  const router = useRouter();
 
+  const router = useRouter();
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
+
   const handleOpenUpdatePopup = () => {
     setOpenUpdatePopup(true);
   };
@@ -39,7 +40,7 @@ function MyNotes() {
     <>
       <CustomConsultantBreadScrumbs text="My notes" />
       <InfoBox
-        dataList={[{ label: 'Leads', value: '0 static' }]}
+        dataList={[{ label: 'Notes', value: '100' }]}
         label={'My Notes'}
         button={<CustomButton
           variant="contained"
@@ -53,7 +54,7 @@ function MyNotes() {
           open={openUpdatePopup}
           handleClose={handleCloseUpdatePopup}
         />
-        <Card sx={{ mb: 2 }}>
+        {/* <Card sx={{ mb: 2 }}>
           <ToggleButtonGroup
             color="primary"
             value={alignment}
@@ -79,7 +80,7 @@ function MyNotes() {
               Notes (10 static)
             </ToggleButton>
           </ToggleButtonGroup>
-        </Card>
+        </Card> */}
         <MyLeadsStatus />
       </Container>
     </>

@@ -350,7 +350,7 @@ const listOfPropertyDetailsTab = [
   },
 ];
 
-export const showStarFor =    ["RERA approved","CC","OC","Construction Progress","Authority registration","Government Loan","Private Bank loan","Fresh","Resale"]
+export const showStarFor = ["RERA approved", "CC", "OC", "Construction Progress", "Authority registration", "Government Loan", "Private Bank loan", "Fresh", "Resale"]
 
 const reactQueryKey = {
   broker: {
@@ -571,13 +571,25 @@ export const privacyData = [
   },
 ];
 
-export const SORTING  ={
-   asc: 'asc',
-   desc: 'desc'
+export const SORTING = {
+  asc: 'asc',
+  desc: 'desc'
 }
 
-export const LINK  ={
+export const LINK = {
   unique: 'Unique Link',
   consultant: 'Consultant Card',
   acrebytes: 'Acrebytes Property Link',
 }
+
+export const LEADS_TAB = [
+  { value: '', label: 'All' },
+  { value: 'pending', label: 'Pending' },
+  { value: 'reviewed', label: 'Reviewed' }
+]
+
+export const NOTES_STATUS = [
+  { value: 'Contact Done', label: 'Contact Done' },
+  { value: 'Didn\'t Pick Call', label: 'Didn\'t Pick Call' },
+  { value: 'Purchsed', label: 'Purchsed' }
+];

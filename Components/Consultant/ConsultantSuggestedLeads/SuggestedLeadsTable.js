@@ -27,7 +27,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
 import { buySuggestedLeads, getBrokerBalance, getBrokerSuggestedLeads } from "api/Broker.api";
 import { debounce } from "lodash";
-import { DEBOUNCE_TIMER, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
+import { DEBOUNCE_TIMER, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
@@ -37,6 +37,7 @@ import SuggesredLeadsDetails from "./Modal/SuggesredLeadsDetails";
 import { useAuth } from "utills/AuthContext";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
+import { listOfPages } from "Components/NavBar/Links";
 
 
 const headCells = [
@@ -188,8 +189,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [buyNowResponseMessage, setBuyNowResponseMessage] = useState("");
 
-  const { data, isLoading, error, refetch } = useQueries(
-    [search, reactQueryKey.broker.myLeads],
+  const { data, isLoading, error, refetch } = useQueries([search],
     async () => {
       try {
         const response = await getBrokerSuggestedLeads({ limit: rowsPerPage, page, search });
@@ -304,8 +304,15 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const closeBuyResponseModal = () => {
     setBuyModalOpen(false)
     getBrokerpointBalance()
-    refetch()
+    refetch() 
   }
+
+  const handleViewMyLeadClick = () => {
+    setBuyModalOpen(false); 
+    getBrokerpointBalance(); 
+    refetch();
+    router.push(listOfPages.consultantMyLeads)
+  };
 
   const BuyResponseModal = () => (
     <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
@@ -338,7 +345,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
               boxShadow: "none",
             },
           }}
-          onClick={() => router.push("/consultant/my-leads")}
+          onClick={handleViewMyLeadClick}
         >
           View My lead
         </Button>

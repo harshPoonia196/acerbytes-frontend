@@ -193,6 +193,7 @@ export default function ClippedDrawer({ children }) {
           sx={{ pl: 3 }}
           onClick={() => {
             router.push(item.route);
+            router.refresh()
             handleDrawerClose();
           }}
         >
@@ -259,7 +260,6 @@ export default function ClippedDrawer({ children }) {
               </>
             )
           }
-
           {
             authRole("broker") && (
               <>

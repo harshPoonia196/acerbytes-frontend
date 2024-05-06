@@ -19,7 +19,7 @@ import {
   Card,
   Button
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { capitalLizeName, getComparator, stableSort } from "utills/CommonFunction";
@@ -337,6 +337,10 @@ function MyLeadsTable({ setLeadsCount }) {
     }
     firstLoad.current = false;
   }, [rowsPerPage, page]);
+
+  React.useEffect(() => {
+      refetch();
+  }, []);
 
   const handleSearch = (e) => {
     e.persist();

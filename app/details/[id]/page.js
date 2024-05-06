@@ -1,9 +1,10 @@
 import React from "react";
 import PropertyDetailsPage from "../PropertyDetailsPage";
 import { notFound } from "next/navigation";
-import Head from "next/head";
+
 
 export async function generateMetadata({ params }) {
+ 
   // read route params
   const parts = params.id.split("-");
   const paramsId = parts[parts.length - 1];
@@ -18,15 +19,15 @@ export async function generateMetadata({ params }) {
   }
   const title = product?.data?.marketing?.tagLine ?? ""
   const description = product?.data?.marketing?.description ?? ""
-  const imageUrl = product?.data?.marketing?.image ?? "default-image-url.jpg"
+  const imageUrl = product?.data?.marketing?.image ?? "";
 
   return {
     title,
     description,
-    openGraph: {
+    openGraph: {  
       title,
       description,
-      images: [{ url: imageUrl, width: 500, height: 500}]
+      images: [{ url: imageUrl, width: 300, height: 200}]
     }
   };
 }
