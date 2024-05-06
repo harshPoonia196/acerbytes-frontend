@@ -97,6 +97,7 @@ export const ToasterMessages = {
   ORDER_COMPLETED_SUCCESS: "Order completed succesfully!",
   LINK_COPIED_SUCCESS: "Link copied to clipboard succesfully!",
   ROLE_UPDATE_SUCCESS: "Role updated succesfully!",
+  NOTE_CREATED_SUCCESS: "Notes created succesfully!"
 };
 
 export const BuyingCreditPoints = [
@@ -593,3 +594,8 @@ export const NOTES_STATUS = [
   { value: 'Didn\'t Pick Call', label: 'Didn\'t Pick Call' },
   { value: 'Purchsed', label: 'Purchsed' }
 ];
+
+export const NOTES_TYPE = {
+  COMPLETED: "Completed",
+  NEXT: "Next"
+}

@@ -38,6 +38,10 @@ export const getMyLeadsCustomer = () => {
   );
 };
 
+export const createNote = (data) => {
+  return axiosInstance.post(`/broker/addNote`, data);
+};
+
 export const getBrokerSuggestedLeads = ({ limit, page, search }) => {
   return axiosInstance.get(
     `/broker/suggestedLeads?limit=${limit || ""}&page=${page || 0}&search=${
