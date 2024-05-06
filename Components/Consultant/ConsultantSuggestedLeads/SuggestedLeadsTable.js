@@ -25,7 +25,7 @@ import { visuallyHidden } from "@mui/utils";
 import { capitalLizeName, getComparator, stableSort } from "utills/CommonFunction";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
-import {  buySuggestedLeads, getBrokerBalance, getBrokerSuggestedLeads } from "api/Broker.api";
+import { buySuggestedLeads, getBrokerBalance, getBrokerSuggestedLeads } from "api/Broker.api";
 import { debounce } from "lodash";
 import { DEBOUNCE_TIMER, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
@@ -139,32 +139,32 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
             style={{ textDecoration: "none" }}
           >
             {row?.properties?.overview?.projectName ?
-            `${capitalLizeName(row?.properties?.overview?.projectName)}`
-            : "-"}
+              `${capitalLizeName(row?.properties?.overview?.projectName)}`
+              : "-"}
           </a>
         )}
       </TableCell>
       <TableCell> <IconButton
-          sx={{ fontSize: "1rem !important" }}
-          aria-label="more"
-          id="long-button"
-          aria-controls={open ? "long-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-haspopup="true"
-          onClick={() => {
-            setSelectedRowData(row);
-            setViewLeadsDetails(true);
-          }}
-          size="small"
-        >
-          <VisibilityIcon fontSize="1rem" />
-        </IconButton>
+        sx={{ fontSize: "1rem !important" }}
+        aria-label="more"
+        id="long-button"
+        aria-controls={open ? "long-menu" : undefined}
+        aria-expanded={open ? "true" : undefined}
+        aria-haspopup="true"
+        onClick={() => {
+          setSelectedRowData(row);
+          setViewLeadsDetails(true);
+        }}
+        size="small"
+      >
+        <VisibilityIcon fontSize="1rem" />
+      </IconButton>
       </TableCell>
-        <TableCell>
-          <Button onClick={()=> manageBuyNow(row?._id)}> 
-            Buy Now
-            </Button>
-            </TableCell>
+      <TableCell>
+        <Button onClick={() => manageBuyNow(row?._id)}>
+          Buy Now
+        </Button>
+      </TableCell>
     </TableRow>
   );
 }
@@ -256,9 +256,9 @@ function SuggestedLeadsTable({ setLeadsCount }) {
       setSearch(tempsearch);
       setPage(0);
     }, DEBOUNCE_TIMER);
-  
+
     handleSearch();
-  
+
     return () => {
       handleSearch.cancel();
     };
@@ -291,7 +291,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
 
   const manageBuyNow = async (leadId) => {
     try {
-      let response = await buySuggestedLeads({leadId, brokerId: userDetails?._id, googleID: userDetails?.googleID});
+      let response = await buySuggestedLeads({ leadId, brokerId: userDetails?._id, googleID: userDetails?.googleID });
       if (response.status === 200) {
         setBuyModalOpen(true);
         setBuyNowResponseMessage(response.data.message || "Fetched leads successfully please check my leads");
@@ -299,7 +299,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     } catch (error) {
       setBuyNowResponseMessage(error?.response?.data?.message || error?.message || "Error processing purchase");
       setBuyModalOpen(true);
-    } 
+    }
   };
 
   const closeBuyResponseModal = () => {
@@ -323,7 +323,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button  variant="h6"
+        <Button variant="h6"
           sx={{
             fontWeight: 600,
             color: "white",
@@ -402,6 +402,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </TableContainer>
+
       ) : (
         <NoDataCard title={"No data found"} />
       )}

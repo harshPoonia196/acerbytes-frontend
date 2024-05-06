@@ -7,6 +7,7 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { useAuth } from 'utills/AuthContext';
+import { LEADS_TAB } from "utills/Constants";
 
 function Enquiries() {
   const [search, setSearch] = useState("");
@@ -41,9 +42,7 @@ function Enquiries() {
               overflowX: 'auto',
             }}
           >
-            <ToggleButton size='small' value="" sx={{ flex: 1, border: 'none', padding: '10px' }}>All</ToggleButton>
-            <ToggleButton size='small' value="pending" sx={{ flex: 1, border: 'none', padding: '10px' }}>Pending </ToggleButton>
-            <ToggleButton size='small' value="reviewed" sx={{ flex: 1, border: 'none', padding: '10px' }}>Reviewed</ToggleButton>
+            {LEADS_TAB.map((tab => <ToggleButton size='small' value={tab.value} sx={{ flex: 1, border: 'none', padding: '10px' }}>{tab.label}</ToggleButton>))}
           </ToggleButtonGroup>
         </Card>
       </Container>
@@ -51,7 +50,7 @@ function Enquiries() {
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput value={search} onChange={handleSearch} />
         </Card>
-        <EnquiriesTable search={search} setCounts={setCounts} alignment={alignment} page={page} setPage={setPage} />
+        <EnquiriesTable search={search} setCounts={setCounts} alignment={alignment} page={page} setPage={setPage}/>
       </Container>
     </>
   );

@@ -24,13 +24,14 @@ import { capitalLizeName, formatAmount, getComparator, stableSort } from "utills
 import { useQueries } from "utills/ReactQueryContext";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getLeads } from "api/Admin.api";
-import { LINK, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
+import { LEADS_TAB, LINK, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 // const rows = [
@@ -115,6 +116,10 @@ const headCells = [
     label: "Source",
   },
   {
+    id: "creditValue",
+    label: "Credit Value",
+  },
+  {
     id: "action",
     label: "Action",
   },
@@ -122,7 +127,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } = props;
+  const { order, orderBy, onRequestSort, alignment } = props;
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -131,33 +136,38 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
+        {headCells.map((headCell) => {
+          if (headCell.id !== 'creditValue' || (headCell.id === 'creditValue' && alignment === LEADS_TAB[2].value)) {
+            return <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? "right" : "left"}
+              padding={headCell.disablePadding ? "none" : "normal"}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          } else {
+            return null
+          }
+        }
+        )}
       </TableRow>
     </TableHead>
   );
 }
 
-function RowStructure({ row, handlePropertyView, router }) {
+function RowStructure({ row, handlePropertyView, router, alignment }) {
   const user = row?.user || {};
   const userDetail = row?.userDetail || {};
 
@@ -205,7 +215,9 @@ function RowStructure({ row, handlePropertyView, router }) {
       <TableCell>{row?.name?.firstName} {row?.name?.lastName}</TableCell>
 
       <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}&nbsp;
-        {row.isVerified && <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' />}</TableCell>
+        {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
+          <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='error' />}
+      </TableCell>
       <TableCell>{user.email || "-"}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
 
@@ -213,6 +225,7 @@ function RowStructure({ row, handlePropertyView, router }) {
       {/* <TableCell>{user.role}</TableCell> */}
       <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell>
       <TableCell>{row.source}</TableCell>
+      {alignment === LEADS_TAB[2].value ? <TableCell>{row?.userDetail?.userCreditValue?.toLocaleString('en-IN')}</TableCell> : null}
       <TableCell sx={{ py: 0 }}>
         <IconButton
           onClick={handleClick}
@@ -355,6 +368,7 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}
+                alignment={alignment}
                 onRequestSort={handleRequestSort}
               />
               <TableBody>
@@ -367,7 +381,7 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
                   } else if (!adId && !brokerId && userId) {
                     row.source = LINK.acrebytes;
                   }
-                  return <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} router={router} />
+                  return <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} router={router} alignment={alignment} />
                 })}
               </TableBody>
             </Table>

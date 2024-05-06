@@ -140,3 +140,43 @@ export const validatePhoneNumber = (phoneNumber) => {
   console.log(phoneNumber, "valid")
   return (phoneNumber?.number?.toString().length === 10);
 }
+
+export const ratingLabels = (rating) => {
+  if (rating <= 0.5) {
+    return "Useless";
+  }
+  if (rating <= 1) {
+    return "Useless+";
+  }
+  if (rating <= 1.5) {
+    return "Poor";
+  }
+  if (rating <= 1.5) {
+    return "Poor";
+  }
+  if (rating <= 1.5) {
+    return "Poor";
+  }
+  if (rating <= 2) {
+    return "Poor+";
+  }
+  if (rating <= 2.5) {
+    return "Ok";
+  }
+  if (rating <= 3) {
+    return "Ok+";
+  }
+  if (rating <= 3.5) {
+    return "Good";
+  }
+  if (rating <= 4) {
+    return "Good+";
+  }
+  if (rating <= 4.5) {
+    return "Excellent";
+  }
+  if (rating <= 5) {
+    return "Excellent+";
+  }
+  return "";
+};

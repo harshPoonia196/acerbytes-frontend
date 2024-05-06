@@ -48,7 +48,7 @@ const BrokerFeedBack = ({ review }) => {
                             {review?.note}
                         </Typography>
                     </Box> */}
-                    <Grid container spacing={1} sx={{ p: 2 }}>
+                    <Grid container spacing={1} sx={{ p: 2 }} style={{minWidth: '525px'}}>
 
                         {review?.ratings?.map((rating) => {
                             return (
