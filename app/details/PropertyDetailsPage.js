@@ -70,6 +70,7 @@ import {
 
 import BottomFooterConsultant from "Components/DetailsPage/BottomFooterConsultant";
 import BottomFooterUser from "Components/DetailsPage/BottomFooterUser";
+import MoreSimilarPropertyCard from "Components/Admin/Property/SubComponents/MoreSimilarPropertyCard";
 
 const tabHeight = 200;
 
@@ -757,6 +758,7 @@ const PropertyDetailsPage = ({ params }) => {
               handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
             />
+            <MoreSimilarPropertyCard />
           </Grid>
 
           {/* Dont Touch this */}
