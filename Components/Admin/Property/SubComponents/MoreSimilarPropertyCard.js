@@ -17,7 +17,7 @@ function MoreSimilarPropertyCard() {
                             <Card sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }}>
                                 <Typography variant='h2'>6</Typography>
                                 <Typography variant='h6'>
-                                    By Supertech
+                                    More by Supertech
                                 </Typography>
                             </Card>
                         </Grid>
@@ -25,7 +25,15 @@ function MoreSimilarPropertyCard() {
                             <Card sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }}>
                                 <Typography variant='h2'>4</Typography>
                                 <Typography variant='h6'>
-                                    From Noida
+                                    More in Noida
+                                </Typography>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Card sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }}>
+                                <Typography variant='h2'>4</Typography>
+                                <Typography variant='h6'>
+                                    More in Noida sector 15
                                 </Typography>
                             </Card>
                         </Grid>
