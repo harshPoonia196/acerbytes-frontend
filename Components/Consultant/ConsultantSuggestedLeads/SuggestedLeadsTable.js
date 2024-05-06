@@ -27,7 +27,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
 import { buySuggestedLeads, getBrokerBalance, getBrokerSuggestedLeads } from "api/Broker.api";
 import { debounce } from "lodash";
-import { DEBOUNCE_TIMER, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS, reactQueryKey } from "utills/Constants";
+import { DEBOUNCE_TIMER, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
@@ -189,8 +189,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [buyNowResponseMessage, setBuyNowResponseMessage] = useState("");
 
-  const { data, isLoading, error, refetch } = useQueries(
-    [search, reactQueryKey.broker.myLeads],
+  const { data, isLoading, error, refetch } = useQueries([search],
     async () => {
       try {
         const response = await getBrokerSuggestedLeads({ limit: rowsPerPage, page, search });
