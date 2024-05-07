@@ -14,7 +14,7 @@ import { useSnackbar } from 'utills/SnackbarContext';
 import { createNote, getMyLeadsCustomer } from 'api/Broker.api';
 import { ToasterMessages } from "utills/Constants";
 
-function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
+function UpdateLeadStatus({ open, handleClose, isUserSelected, getList: getNotesList }) {
     const [loading, setLoading] = useState(false),
         [myLeadsCustomer, setMyLeadsCustomer] = useState([]),
         [errors, setErrors] = useState({ status: false, time: false, note: false, userId: false, statusNext: false, timeNext: false, noteNext: false }),
@@ -139,8 +139,8 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                     const response = await createNote(data);
                     if (response.status == 200) {
                         showToaterMessages(ToasterMessages.NOTE_CREATED_SUCCESS, "success");
-                        handleClose();
-                        reset()
+                        handlePopClose();
+                        getNotesList()
                     }
                 } catch (error) {
                     showToaterMessages(
@@ -153,11 +153,16 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                     setLoading(false);
                 }
             }
+        },
+
+        handlePopClose = () => {
+            reset();
+            handleClose();
         }
 
     return (
-        <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handleClose}>
-            <DialogTitle onClose={handleClose}>
+        <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handlePopClose}>
+            <DialogTitle onClose={handlePopClose}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
                     Add Notes
                 </Typography>
@@ -235,7 +240,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                         // startIcon={<GoogleIcon />}
                         variant="outlined"
                         sx={{ mr: 2 }}
-                        onClick={handleClose}
+                        onClick={handlePopClose}
                         ButtonText={"Cancel"}
 
                     />
@@ -243,7 +248,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected }) {
                         // startIcon={<DoneIcon />}
                         variant="contained"
                         onClick={() => {
-                            handleClose();
+                            handlePopClose();
                         }}
                     >
                         Submit

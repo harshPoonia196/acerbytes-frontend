@@ -12,7 +12,7 @@ function LeadStatusCard({ name, actionType, status, comment, time }) {
                         <span style={{ color: colors.BLUE, fontWeight: 600 }}>{name}</span> &#183; {actionType} &#183; {status} &#183; &nbsp;
                         <span style={{ color: colors.DISABLED }}>{comment}</span>
                     </Typography>
-                    <Typography variant="body2">{time} (7 days remaining)</Typography>
+                    <Typography variant="body2">{time}</Typography>
                 </Box>
                 <Box>
                     <IconButton size='small'>

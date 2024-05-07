@@ -17,30 +17,65 @@ import { useRouter } from "next/navigation";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { useSnackbar } from "utills/SnackbarContext";
+import { getNotes } from "api/Broker.api";
+import { DEBOUNCE_TIMER } from "utills/Constants";
+import { debounce } from "lodash";
 function MyNotes() {
-
   const router = useRouter();
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
+  const [list, setList] = useState({ rows: [], notesCount: 0 });
+  const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [alignment, setAlignment] = React.useState('All');
 
-  const handleOpenUpdatePopup = () => {
-    setOpenUpdatePopup(true);
-  };
+  useEffect(() => {
+    debouncedSearch();
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchTerm, alignment])
 
-  const handleCloseUpdatePopup = () => {
-    setOpenUpdatePopup(false);
-  };
-
-  const [alignment, setAlignment] = React.useState("notes");
+  function performSearch() {
+    getList()
+  }
 
   const handleChange = (event, newAlignment) => {
-    newAlignment != null && setAlignment(newAlignment);
-  };
+    setAlignment(newAlignment);
+  },
+
+    { openSnackbar } = useSnackbar(),
+    showToaterMessages = (message, severity) => {
+      openSnackbar(message, severity);
+    },
+
+    getList = async () => {
+      try {
+        const { data: { data: { data = [], notesCount = 0 } } } = await getNotes({ search: searchTerm, alignment })
+        setList({ rows: data, notesCount })
+      } catch (error) {
+        showToaterMessages(error.message, "error");
+      }
+    },
+
+    handleOpenUpdatePopup = () => {
+      setOpenUpdatePopup(true);
+    },
+
+    handleCloseUpdatePopup = () => {
+      setOpenUpdatePopup(false);
+    },
+
+    handleSearch = (event) => {
+      const term = event.target.value.toLowerCase();
+      setSearchTerm(term);
+    };
 
   return (
     <>
       <CustomConsultantBreadScrumbs text="My notes" />
       <InfoBox
-        dataList={[{ label: 'Notes', value: '100' }]}
+        dataList={[{ label: 'Notes', value: list?.notesCount ?? 0 }]}
         label={'My Notes'}
         button={<CustomButton
           variant="contained"
@@ -53,6 +88,7 @@ function MyNotes() {
         <UpdateLeadStatus
           open={openUpdatePopup}
           handleClose={handleCloseUpdatePopup}
+          getList={getList}
         />
         {/* <Card sx={{ mb: 2 }}>
           <ToggleButtonGroup
@@ -81,7 +117,8 @@ function MyNotes() {
             </ToggleButton>
           </ToggleButtonGroup>
         </Card> */}
-        <MyLeadsStatus />
+        <MyLeadsStatus list={list.rows} searchTerm={searchTerm}
+          handleSearch={handleSearch} alignment={alignment} handleChange={handleChange} />
       </Container>
     </>
   );
