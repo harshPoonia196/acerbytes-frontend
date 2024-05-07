@@ -16,9 +16,10 @@ export async function generateMetadata({ params, searchParams }, parent) {
   const title = product?.data?.[0]?.propertyData?.marketing?.tagLine ?? ""
   const description = product?.data?.[0]?.propertyData?.marketing?.description ?? ""
   const imageUrl = product?.data?.[0]?.propertyData?.marketing?.image ?? "vercel.svg"
+  const mainTitle = product?.data[0]?.title ?? ""
 
   return {
-    title,
+    title : mainTitle,
     description,
     openGraph: {
       title,
