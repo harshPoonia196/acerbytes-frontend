@@ -24,7 +24,7 @@ export async function generateMetadata({ params, searchParams }, parent) {
     openGraph: {
       title,
       description,
-      images: [{ url: imageUrl, width: 500, height: 500}]
+      images: [{ url: imageUrl, width: 300, height: 200}]
     }
   }
 }
