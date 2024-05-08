@@ -111,7 +111,7 @@ const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams();
   const url = new URL(window.location.href);
   const name = searchParams.get("name");
-  const { isLogged, userDetails, brokerBalance } = useAuth();
+  const { isLogged, userDetails, brokerBalance, setBrokerPoints } = useAuth();
   const router = useRouter();
 
   // Split the id string into an array of parts based on the hyphen delimiter
@@ -599,6 +599,7 @@ const PropertyDetailsPage = ({ params }) => {
         handleClose={handleCloseActivateAdsPopup}
         brokerBalance={brokerBalance}
         propertyUrl={propertyUrl}
+        setBrokerPoints={setBrokerPoints}
       />
       <DisableActivateAdsPopup
         open={disablePersonalizeAds}
