@@ -5,7 +5,7 @@ import { Card, Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import colors from 'styles/theme/colors';
 import LeadStatusCard from './LeadStatusCard';
 import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
-export default function MyLeadsStatus({ list = [], searchTerm, handleSearch, alignment, handleChange }) {
+export default function MyLeadsStatus({ list = [], searchTerm, handleSearch, alignment, handleChange, handleOpenUpdatePopup, onNoteDelete }) {
     return (
         <>
             <Grid container>
@@ -36,7 +36,13 @@ export default function MyLeadsStatus({ list = [], searchTerm, handleSearch, ali
                 {list.map((res) => <LeadStatusCard
                     name={res.fullName} actionType={res.type + ' action'} status={res.status}
                     comment={res.note}
-                    time={new Date(res?.time).toLocaleString()} />)}
+                    type={res.type}
+                    userId={res?.user?._id}
+                    noteId={res?._id}
+                    time={new Date(res?.time).toLocaleString()}
+                    handleOpenUpdatePopup={handleOpenUpdatePopup}
+                    onNoteDelete={onNoteDelete}
+                />)}
             </Grid>
         </>
     );

@@ -42,6 +42,10 @@ export const createNote = (data) => {
   return axiosInstance.post(`/broker/addNote`, data);
 };
 
+export const deleteNote = (noteId) => {
+  return axiosInstance.delete(`/broker/deleteNote/${noteId}`);
+}
+
 export const getNotes = ({ search, alignment }) => {
   return axiosInstance.get(
     `/broker/getNotes?search=${search || ""}&alignment=${alignment}`

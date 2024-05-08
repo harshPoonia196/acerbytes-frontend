@@ -26,6 +26,7 @@ function NewSelectTextFieldStructure({
   showInfo = false,
   infoText = "Info",
   helperText = "",
+  disabled
 }) {
   const [rating, setRating] = useState(0);
   useEffect(() => {
@@ -99,6 +100,7 @@ function NewSelectTextFieldStructure({
       </Box>
       {isEdit ? (
         <TextField
+          disabled={disabled}
           select
           name={name}
           variant={variant ? variant : "outlined"}

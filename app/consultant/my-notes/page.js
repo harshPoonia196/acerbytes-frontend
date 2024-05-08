@@ -18,8 +18,8 @@ import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsult
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useSnackbar } from "utills/SnackbarContext";
-import { getNotes } from "api/Broker.api";
-import { DEBOUNCE_TIMER } from "utills/Constants";
+import { deleteNote, getNotes } from "api/Broker.api";
+import { DEBOUNCE_TIMER, NOTES_TYPE, ToasterMessages } from "utills/Constants";
 import { debounce } from "lodash";
 function MyNotes() {
   const router = useRouter();
@@ -27,7 +27,9 @@ function MyNotes() {
   const [list, setList] = useState({ rows: [], notesCount: 0 });
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [searchTerm, setSearchTerm] = useState("");
-  const [alignment, setAlignment] = React.useState('All');
+  const [alignment, setAlignment] = useState('All');
+  const [isEdit, setIsEdit] = useState(false);
+  const [editData, setEditData] = useState(null);
 
   useEffect(() => {
     debouncedSearch();
@@ -58,8 +60,12 @@ function MyNotes() {
       }
     },
 
-    handleOpenUpdatePopup = () => {
-      setOpenUpdatePopup(true);
+    handleOpenUpdatePopup = (isEdit = false, editData = null) => {
+      setEditData(editData)
+      setIsEdit(isEdit);
+      setTimeout(() => {
+        setOpenUpdatePopup(true);
+      });
     },
 
     handleCloseUpdatePopup = () => {
@@ -69,7 +75,19 @@ function MyNotes() {
     handleSearch = (event) => {
       const term = event.target.value.toLowerCase();
       setSearchTerm(term);
-    };
+    },
+
+    onNoteDelete = async (id) => {
+      try {
+        const res = await deleteNote(id);
+        showToaterMessages(ToasterMessages.NOTE_DELETED_SUCCESS, "success");
+        getList()
+      } catch (error) {
+        showToaterMessages(error.message, "error");
+      }
+    }
+
+
 
   return (
     <>
@@ -80,15 +98,18 @@ function MyNotes() {
         button={<CustomButton
           variant="contained"
           size="small"
-          onClick={handleOpenUpdatePopup}
+          onClick={() => handleOpenUpdatePopup()}
           ButtonText={"Add notes"}
         />}
       />
       <Container>
         <UpdateLeadStatus
+          isEdit={isEdit}
+          editData={editData}
           open={openUpdatePopup}
           handleClose={handleCloseUpdatePopup}
           getList={getList}
+          setIsEdit={setIsEdit}
         />
         {/* <Card sx={{ mb: 2 }}>
           <ToggleButtonGroup
@@ -118,7 +139,7 @@ function MyNotes() {
           </ToggleButtonGroup>
         </Card> */}
         <MyLeadsStatus list={list.rows} searchTerm={searchTerm}
-          handleSearch={handleSearch} alignment={alignment} handleChange={handleChange} />
+          handleSearch={handleSearch} alignment={alignment} handleChange={handleChange} handleOpenUpdatePopup={handleOpenUpdatePopup} onNoteDelete={onNoteDelete} />
       </Container>
     </>
   );

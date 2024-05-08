@@ -13,12 +13,26 @@ import { NOTES_STATUS, NOTES_TYPE } from 'utills/Constants';
 import { useSnackbar } from 'utills/SnackbarContext';
 import { createNote, getMyLeadsCustomer } from 'api/Broker.api';
 import { ToasterMessages } from "utills/Constants";
+import dayjs from 'dayjs';
 
-function UpdateLeadStatus({ open, handleClose, isUserSelected, getList: getNotesList }) {
+function UpdateLeadStatus({ open, handleClose, getList: getNotesList, isEdit, editData, setIsEdit }) {
     const [loading, setLoading] = useState(false),
         [myLeadsCustomer, setMyLeadsCustomer] = useState([]),
         [errors, setErrors] = useState({ status: false, time: false, note: false, userId: false, statusNext: false, timeNext: false, noteNext: false }),
         [formValue, setFormValue] = useState({ completed: {}, next: {}, userId: '' })
+
+    useEffect(() => {
+        if (isEdit) {
+            const { comment: note, name, status, time, type, userId } = editData;
+            if (type === NOTES_TYPE.COMPLETED) {
+                setFormValue({ completed: { note, name, status, time }, next: {}, userId: userId })
+            } else {
+                setFormValue({ completed: {}, next: { note, name, status, time }, userId: userId })
+            }
+            setFormValue
+        }
+    }, [isEdit])
+
 
     useEffect(() => {
         getList()
@@ -64,7 +78,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected, getList: getNotes
         },
 
         userChange = (e) => {
-            const val = e.target.value
+            const val = e.target.value;
             setFormValue((value) => {
                 return { ...value, userId: val };
             })
@@ -79,6 +93,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected, getList: getNotes
         },
 
         reset = () => {
+            setIsEdit(false)
             setErrors({ status: false, time: false, note: false, userId: false, statusNext: false, timeNext: false, noteNext: false })
             setFormValue({ completed: {}, next: {}, userId: '' })
         },
@@ -126,6 +141,11 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected, getList: getNotes
 
             if (!isError) {
                 const data = { userId }
+
+                if (isEdit) {
+                    data._id = editData?.noteId;
+                }
+
                 if (time && status && note) {
                     data.completed = { time, status, note, type: NOTES_TYPE.COMPLETED }
                 }
@@ -138,7 +158,7 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected, getList: getNotes
                     setLoading(true);
                     const response = await createNote(data);
                     if (response.status == 200) {
-                        showToaterMessages(ToasterMessages.NOTE_CREATED_SUCCESS, "success");
+                        showToaterMessages(isEdit ? ToasterMessages.NOTE_UPDATED_SUCCESS : ToasterMessages.NOTE_CREATED_SUCCESS, "success");
                         handlePopClose();
                         getNotesList()
                     }
@@ -164,69 +184,82 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected, getList: getNotes
         <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handlePopClose}>
             <DialogTitle onClose={handlePopClose}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    Add Notes
+                    {isEdit ? 'Edit Note' : 'Add Note'}
                 </Typography>
             </DialogTitle>
             <DialogContent>
                 <Grid container spacing={2}>
-                    {!isUserSelected && <NewSelectTextFieldStructure label='Customer' isEdit={true} full list={myLeadsCustomer} value={formValue?.userId ?? null} handleChange={(e) => userChange(e)} error={errors.userId} />}
-                    <Grid item xs={12}>
-                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                            Current status (Completed)
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <SelectTextFields label='Status' value={formValue?.completed?.status ?? null} list={NOTES_STATUS} error={errors.status} handleChange={(e) => handleChange(e, 'status', NOTES_TYPE.COMPLETED)} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
-                                <DateTimePicker
-                                    value={formValue?.completed?.time ?? null}
-                                    onChange={(date) => handleChange(date, 'time', NOTES_TYPE.COMPLETED)}
-                                    label="Time"
-                                    viewRenderers={{
-                                        hours: renderTimeViewClock,
-                                        minutes: renderTimeViewClock,
-                                        seconds: renderTimeViewClock,
-                                    }}
-                                    slotProps={{
-                                        textField: {
-                                            size: 'small', fullWidth: true,
-                                            minWidth: '200px !important', error: errors.time
-                                        }, dialog: { backgroundColor: 'red' }
-                                    }}
-                                />
-                            </DemoContainer>
-                        </LocalizationProvider>
-                    </Grid>
-                    <InputField variant='outlined' value={formValue?.completed?.note ?? ''} multiline rows={2} label='Add note' error={errors.note} handleChange={(e) => handleChange(e, 'note', NOTES_TYPE.COMPLETED)} />
-                    <Grid item xs={12}>
-                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                            Next action (Follow up / plan)
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <SelectTextFields value={formValue?.next?.status ?? ''} label='Status' list={NOTES_STATUS} error={errors.statusNext} handleChange={(e) => handleChange(e, 'status', NOTES_TYPE.NEXT)} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
-                                <DateTimePicker
-                                    value={formValue?.next?.time ?? null}
-                                    onChange={(date) => handleChange(date, 'time', NOTES_TYPE.NEXT)}
-                                    label="Time"
-                                    viewRenderers={{
-                                        hours: renderTimeViewClock,
-                                        minutes: renderTimeViewClock,
-                                        seconds: renderTimeViewClock,
-                                    }}
-                                    slotProps={{ textField: { size: 'small', fullWidth: true, error: errors.timeNext }, dialog: { backgroundColor: 'red' } }}
-                                />
-                            </DemoContainer>
-                        </LocalizationProvider>
-                    </Grid>
-                    <InputField variant='outlined' value={formValue?.next?.note ?? ''} multiline rows={2} label='Add note' error={errors.noteNext} handleChange={(e) => handleChange(e, 'note', NOTES_TYPE.NEXT)} />
+                    {<NewSelectTextFieldStructure disabled={isEdit} label='Customer' isEdit={true} full list={myLeadsCustomer} value={formValue?.userId ?? null} handleChange={(e) => userChange(e)} error={errors.userId} />}
+
+                    {!isEdit || (isEdit && editData?.type === NOTES_TYPE.COMPLETED) ?
+                        <>
+                            <Grid item xs={12}>
+                                <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                    Current status (Completed)
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <SelectTextFields label='Status' value={formValue?.completed?.status ?? null} list={NOTES_STATUS} error={errors.status} handleChange={(e) => handleChange(e, 'status', NOTES_TYPE.COMPLETED)} />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
+                                        <DateTimePicker
+                                            value={formValue?.completed?.time ? dayjs(formValue?.completed?.time) : null}
+                                            onChange={(date) => handleChange(date, 'time', NOTES_TYPE.COMPLETED)}
+                                            label="Time"
+                                            viewRenderers={{
+                                                hours: renderTimeViewClock,
+                                                minutes: renderTimeViewClock,
+                                                seconds: renderTimeViewClock,
+                                            }}
+                                            slotProps={{
+                                                textField: {
+                                                    size: 'small', fullWidth: true,
+                                                    minWidth: '200px !important', error: errors.time
+                                                }, dialog: { backgroundColor: 'red' }
+                                            }}
+                                        />
+                                    </DemoContainer>
+                                </LocalizationProvider>
+                            </Grid>
+                            <InputField variant='outlined' value={formValue?.completed?.note ?? ''} multiline rows={2} label='Add note' error={errors.note} handleChange={(e) => handleChange(e, 'note', NOTES_TYPE.COMPLETED)} />
+                        </> : null
+                    }
+
+
+                    {
+                        !isEdit || (isEdit && editData?.type === NOTES_TYPE.NEXT) ?
+                            <>
+                                <Grid item xs={12}>
+                                    <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                        Next action (Follow up / plan)
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <SelectTextFields value={formValue?.next?.status ?? ''} label='Status' list={NOTES_STATUS} error={errors.statusNext} handleChange={(e) => handleChange(e, 'status', NOTES_TYPE.NEXT)} />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <DemoContainer sx={{ p: 0, overflow: "unset" }} components={['DateTimePicker', 'DateTimePicker']}>
+                                            <DateTimePicker
+                                                value={formValue?.next?.time ? dayjs(formValue?.next?.time) : null}
+                                                onChange={(date) => handleChange(date, 'time', NOTES_TYPE.NEXT)}
+                                                label="Time"
+                                                viewRenderers={{
+                                                    hours: renderTimeViewClock,
+                                                    minutes: renderTimeViewClock,
+                                                    seconds: renderTimeViewClock,
+                                                }}
+                                                slotProps={{ textField: { size: 'small', fullWidth: true, error: errors.timeNext }, dialog: { backgroundColor: 'red' } }}
+                                            />
+                                        </DemoContainer>
+                                    </LocalizationProvider>
+                                </Grid>
+                                <InputField variant='outlined' value={formValue?.next?.note ?? ''} multiline rows={2} label='Add note' error={errors.noteNext} handleChange={(e) => handleChange(e, 'note', NOTES_TYPE.NEXT)} />
+                            </> : null
+                    }
+
                 </Grid>
             </DialogContent>
             <DialogActions>
@@ -237,22 +270,12 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected, getList: getNotes
                     }}
                 >
                     <CustomButton
-                        // startIcon={<GoogleIcon />}
                         variant="outlined"
                         sx={{ mr: 2 }}
                         onClick={handlePopClose}
                         ButtonText={"Cancel"}
 
                     />
-                    {/* <Button
-                        // startIcon={<DoneIcon />}
-                        variant="contained"
-                        onClick={() => {
-                            handlePopClose();
-                        }}
-                    >
-                        Submit
-                    </Button> */}
                     <CustomButton
                         loading={loading}
                         onClick={onSave}
@@ -260,8 +283,6 @@ function UpdateLeadStatus({ open, handleClose, isUserSelected, getList: getNotes
                         color="primary"
                         ButtonText={"Submit"}
                     />
-
-
                 </Box>
             </DialogActions>
         </Dialog >

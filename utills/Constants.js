@@ -97,7 +97,9 @@ export const ToasterMessages = {
   ORDER_COMPLETED_SUCCESS: "Order completed succesfully!",
   LINK_COPIED_SUCCESS: "Link copied to clipboard succesfully!",
   ROLE_UPDATE_SUCCESS: "Role updated succesfully!",
-  NOTE_CREATED_SUCCESS: "Notes created succesfully!"
+  NOTE_CREATED_SUCCESS: "Notes created succesfully!",
+  NOTE_UPDATED_SUCCESS: "Notes updated succesfully!",
+  NOTE_DELETED_SUCCESS: "Notes deleted succesfully!",
 };
 
 export const BuyingCreditPoints = [
