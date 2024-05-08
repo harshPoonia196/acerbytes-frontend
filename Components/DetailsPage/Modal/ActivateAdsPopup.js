@@ -8,7 +8,6 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import PaymentIcon from '@mui/icons-material/Payment';
 import DoneIcon from "@mui/icons-material/Done";
 import { useRouter } from "next/navigation";
 import AddCardIcon from '@mui/icons-material/AddCard';
@@ -17,14 +16,14 @@ import colors from "styles/theme/colors";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import { activeadCreate } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
-import { ToasterMessages } from "utills/Constants";
-import Loader from "Components/CommonLayouts/Loading";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { listOfPages } from "Components/NavBar/Links";
+import { getBrokerBalance } from "api/Broker.api";
 
-function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetProperty, brokerBalance, propertyUrl }) {
+function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetProperty, brokerBalance, propertyUrl, setBrokerPoints }) {
 
   const router = useRouter();
+  
   const tempList = [
     { label: '1 month', value: '1' },
     { label: '2 months', value: '2' },
@@ -32,11 +31,19 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
     { label: '4 months', value: '4' }
   ]
 
+  const pointsMapping = {
+    '1': 2500,
+    '2': 4500,
+    '3': 6000,
+    '4': 7000,
+  };
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    duration: ''
+    duration: '1'
   });
+  const [pointsRequired, setPointsRequired] = useState(pointsMapping[formData.duration]);
   const [isLoading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [submitAttempted, setSubmitAttempted] = useState(false);
@@ -53,6 +60,9 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       ...prevState,
       [name]: value
     }));
+    if (name === 'duration') {
+      setPointsRequired(pointsMapping[value]);
+    }
   };
 
   const validateForm = () => {
@@ -104,6 +114,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
         showToaterMessages(response?.data.message, "success");
         detailsGetProperty()
         handleClose()
+        getBrokerpointBalance()
       }
     } catch (error) {
       showToaterMessages(
@@ -117,6 +128,23 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
     }
 
   }
+
+  const getBrokerpointBalance = async () => {
+    try {
+      const response = await getBrokerBalance();
+      if (response.status == 200) {
+        setBrokerPoints(response?.data?.data?.balance || 0);
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error getbroker balance request",
+        "error"
+      );
+    }
+  };
+
   const { openSnackbar } = useSnackbar();
   const showToaterMessages = (message, severity) => {
     openSnackbar(message, severity);
@@ -196,7 +224,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
           />
           <Typography variant="subtitle2"
             sx={{ alignSelf: "center", color: colors.GRAY }}>
-            10,000 points required
+           {pointsRequired.toLocaleString()} points required
           </Typography>
         </Box>
       </DialogActions>

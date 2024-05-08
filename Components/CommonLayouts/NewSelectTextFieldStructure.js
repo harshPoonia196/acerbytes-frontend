@@ -64,7 +64,7 @@ function NewSelectTextFieldStructure({
       <Box sx={{ display: "flex" }}>
         <Typography
           variant="subtitle2"
-          sx={{ alignSelf: "center", color: colors.GRAY }}
+          sx={{ alignSelf: "center", color: colors.GRAY, flex: 1 }}
         >
           {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
@@ -77,7 +77,7 @@ function NewSelectTextFieldStructure({
             defaultValue={0}
             precision={0.5}
             size="small"
-            sx={{ alignSelf: "center", marginLeft: "5px" }}
+            sx={{ alignSelf: "center", marginLeft: "4px", fontSize: '1rem' }}
 
           />
 

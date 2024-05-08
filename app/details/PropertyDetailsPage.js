@@ -70,6 +70,7 @@ import {
 
 import BottomFooterConsultant from "Components/DetailsPage/BottomFooterConsultant";
 import BottomFooterUser from "Components/DetailsPage/BottomFooterUser";
+import MoreSimilarPropertyCard from "Components/Admin/Property/SubComponents/MoreSimilarPropertyCard";
 
 const tabHeight = 200;
 
@@ -110,7 +111,7 @@ const PropertyDetailsPage = ({ params }) => {
   const searchParams = useSearchParams();
   const url = new URL(window.location.href);
   const name = searchParams.get("name");
-  const { isLogged, userDetails, brokerBalance } = useAuth();
+  const { isLogged, userDetails, brokerBalance, setBrokerPoints } = useAuth();
   const router = useRouter();
 
   // Split the id string into an array of parts based on the hyphen delimiter
@@ -598,6 +599,7 @@ const PropertyDetailsPage = ({ params }) => {
         handleClose={handleCloseActivateAdsPopup}
         brokerBalance={brokerBalance}
         propertyUrl={propertyUrl}
+        setBrokerPoints={setBrokerPoints}
       />
       <DisableActivateAdsPopup
         open={disablePersonalizeAds}
@@ -757,6 +759,7 @@ const PropertyDetailsPage = ({ params }) => {
               handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
             />
+            <MoreSimilarPropertyCard />
           </Grid>
 
           {/* Dont Touch this */}

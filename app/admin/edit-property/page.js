@@ -17,7 +17,7 @@ import { makeStyles, withStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
 import BankCard from "Components/Admin/Property/SubComponents/BankCard";
-import { getAllOptions, getAllProperty,getCities } from "api/Property.api";
+import { getAllOptions, getAllProperty, getCities } from "api/Property.api";
 
 import {
   Schema,
@@ -83,30 +83,30 @@ function useThrottledOnScroll(callback, delay) {
 
 function AddProperty() {
   const router = useSearchParams();
-  const [cities,setCities]=useState([]) 
+  const [cities, setCities] = useState([])
   const routerNavigation = useRouter();
   const [editPage, setEditPage] = useState(false);
   const [brokerList, setBrokerList] = useState([]);
-  const [amentiesStarsScore,setAmentiesStarScore]=useState([]);
-  const [amentiesStars,setAmentiesStar]=useState([]);
-  const [locationStars,setLocationStars]=useState([]);
-  const [regulatoryCount,setRegulatoryCount]=useState(0)
-  const[totalRating,setTotalRating]=useState(80)
-  const [tagField,setTagField]=useState({
-    builder:"",
-    projectName:"",
-    projectCategory:"",
-    projectType:"",
-    area:"",
-    sector:"",
-    city:""
+  const [amentiesStarsScore, setAmentiesStarScore] = useState([]);
+  const [amentiesStars, setAmentiesStar] = useState([]);
+  const [locationStars, setLocationStars] = useState([]);
+  const [regulatoryCount, setRegulatoryCount] = useState(0)
+  const [totalRating, setTotalRating] = useState(80)
+  const [tagField, setTagField] = useState({
+    builder: "",
+    projectName: "",
+    projectCategory: "",
+    projectType: "",
+    area: "",
+    sector: "",
+    city: ""
   })
-  const [locationStarsScore,setLocationStarsScore]=useState([]);
+  const [locationStarsScore, setLocationStarsScore] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [formUpdated, setFormUpdated] = useState(false);
   const [activeState, setActiveState] = React.useState(null);
   const detailsPropertyId = router.get("id");
- 
+
   let itemsServer = listOfTabsInAddProperty.map((tab) => {
     const hash = tab.value;
     return {
@@ -195,16 +195,16 @@ function AddProperty() {
 
   const countLocationAssessmentItems = (data) => {
     const items = [];
-  
+
     Object.entries(data.location.assessment).forEach(([name, item]) => {
       if (item.rating > 0 && item.isApplicable) {
         items.push({ name, rating: item.rating });
       }
     });
-  
+
     return items;
   };
-  
+
   // Function to count items with ratings > 0 and isApplicable true in amenities data
   const countAmenitiesDataItems = (data) => {
     const items = [];
@@ -215,78 +215,78 @@ function AddProperty() {
         }
       });
     });
-  
+
     return items;
   };
 
- 
+
 
 
   let getProp = async () => {
     try {
       let res = await detailsProperty(detailsPropertyId);
-        if (res.status === 200) {
-          setFormUpdated(false)
-            let data = removeIds(res.data?.data);
-            delete data.__v;
-            handleUIHide(data.overview.projectType, "overview", "projectType")
-            setEditForm(true);
+      if (res.status === 200) {
+        setFormUpdated(false)
+        let data = removeIds(res.data?.data);
+        delete data.__v;
+        handleUIHide(data.overview.projectType, "overview", "projectType")
+        setEditForm(true);
 
-           let assignTagLine = {
-              builder:data.overview.builder,
-              projectName:data.overview.projectName,
-              projectCategory:data.overview.projectCategory,
-              projectType:data.overview.projectType,
-              area:data.location.area,
-              sector:data.location.sector,
-              city:data.location.city
-            }
-
-            setTagField(assignTagLine)
-            setForm({ ...data });
-
-            let countLocationItems = countLocationAssessmentItems(data)
-            let AmentiesCount = countAmenitiesDataItems(data)
-            let updateTotalCount = 0
-            if (AmentiesCount.length > 0) {
-                let count = AmentiesCount.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
-                let names = AmentiesCount.map(item => item.name)
-                updateTotalCount += (AmentiesCount.length * 5)
-                // setTotalRating(totalRating+count)
-                // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
-                setAmentiesStarScore([...amentiesStarsScore, ...names])
-            }
-            if (countLocationItems.length > 0) {
-                let count = countLocationItems.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
-                let names = countLocationItems.map(item => item.name)
-
-                //  setTotalRating(totalRating+count)
-                updateTotalCount += (countLocationItems.length * 5)
-                setLocationStarsScore([...locationStarsScore, ...names])
-            }
-          let countYes=0
-          Object.values(data.regulatoryClearance).forEach(value => {
-            if (value === 'Yes') {
-              countYes++;
-            }
-          });
-          setRegulatoryCount(countYes)
-          setTotalRating(totalRating + updateTotalCount)
-      
-    setFormUpdated(true)
+        let assignTagLine = {
+          builder: data.overview.builder,
+          projectName: data.overview.projectName,
+          projectCategory: data.overview.projectCategory,
+          projectType: data.overview.projectType,
+          area: data.location.area,
+          sector: data.location.sector,
+          city: data.location.city
         }
-    } 
-   catch (error) {
-    showToaterMessages(
-      error?.response?.data?.message ||
-      error?.message ||
-      "Error fetching state list",
-      "error"
-    );
-  }
-  finally {
-    setLoading(false);
-  }
+
+        setTagField(assignTagLine)
+        setForm({ ...data });
+
+        let countLocationItems = countLocationAssessmentItems(data)
+        let AmentiesCount = countAmenitiesDataItems(data)
+        let updateTotalCount = 0
+        if (AmentiesCount.length > 0) {
+          let count = AmentiesCount.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
+          let names = AmentiesCount.map(item => item.name)
+          updateTotalCount += (AmentiesCount.length * 5)
+          // setTotalRating(totalRating+count)
+          // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
+          setAmentiesStarScore([...amentiesStarsScore, ...names])
+        }
+        if (countLocationItems.length > 0) {
+          let count = countLocationItems.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
+          let names = countLocationItems.map(item => item.name)
+
+          //  setTotalRating(totalRating+count)
+          updateTotalCount += (countLocationItems.length * 5)
+          setLocationStarsScore([...locationStarsScore, ...names])
+        }
+        let countYes = 0
+        Object.values(data.regulatoryClearance).forEach(value => {
+          if (value === 'Yes') {
+            countYes++;
+          }
+        });
+        setRegulatoryCount(countYes)
+        setTotalRating(totalRating + updateTotalCount)
+
+        setFormUpdated(true)
+      }
+    }
+    catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    }
+    finally {
+      setLoading(false);
+    }
   };
   const brokersList = async (rowsPerPage, page, search) => {
     try {
@@ -295,19 +295,19 @@ function AddProperty() {
         const { success, data, message } = response.data;
         if (success) {
           let getValue = data.data.map((i) => {
-          
+
             let u = {
               fullName: i.fullName.replace(/\b\w/g, (match) => match.toUpperCase()),
               type: "consultant",
-              phone:i.phone,
+              phone: i.phone,
               rating: i.rating,
-              profilePicture:i?.brokerPic?.profilePicture?i?.brokerPic?.profilePicture:"",
+              profilePicture: i?.brokerPic?.profilePicture ? i?.brokerPic?.profilePicture : "",
               id: i._id,
             };
             return u;
           });
-         
-            setBrokerList([...getValue]);
+
+          setBrokerList([...getValue]);
           // setBrokerList([...data.data]);
           //   return data;
         } else {
@@ -324,83 +324,83 @@ function AddProperty() {
     openSnackbar(message, severity);
   };
 
-const getCitiesList=async()=>{
-  try{
-    let res = await getCities();
-    if (res.status == 200) {
-      delete res.data.data[0]._id
-setCities(res.data.data[0])
+  const getCitiesList = async () => {
+    try {
+      let res = await getCities();
+      if (res.status == 200) {
+        delete res.data.data[0]._id
+        setCities(res.data.data[0])
+      }
     }
-  }
-  catch (error) {
-    showToaterMessages(
-      error?.response?.data?.message ||
-      error?.message ||
-      "Error fetching state list",
-      "error"
-    );
-  }
-  finally {
-    setLoading(false);
-  }
- 
+    catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    }
+    finally {
+      setLoading(false);
+    }
 
-}
+
+  }
 
   const getAllOptionDataList = async () => {
     try {
       let res = await getAllOptions();
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data)
-        console.log(res.data.data,'datt')
-        let temp={}
+        console.log(res.data.data, 'datt')
+        let temp = {}
         const filteredData = res.data.data.filter(item => item.name !== "Assesment" && item.name !== "Amenities");
         const transformFiltered = transformDocuments(filteredData)
         setSelectOption({ ...transformFiltered })
         transform["assesment"].map((thing) => {
           temp[thing] = {
-              isApplicable: false,
-              rating: 0
+            isApplicable: false,
+            rating: 0
           }
-
-      })
-
-      const amenities = transform.amenities.reduce((acc, item) => {
-        acc[item] = {};
-        return acc;
-      }, {});
-
-      transform.amenities.map((item)=>{
-        transform[item.toLowerCase()].map((thing) => {
-          amenities[item][thing] = {
-                isApplicable: false,
-                rating: 0
-            }
 
         })
-      })  
 
-      const sumItems = (obj, excludedFields) => {
-        let sum = 0;
-        for (let key in obj) {
-          if (!excludedFields.includes(key) && typeof obj[key] === 'object') {
-            sum += Object.keys(obj[key]).length;
+        const amenities = transform.amenities.reduce((acc, item) => {
+          acc[item] = {};
+          return acc;
+        }, {});
+
+        transform.amenities.map((item) => {
+          transform[item.toLowerCase()].map((thing) => {
+            amenities[item][thing] = {
+              isApplicable: false,
+              rating: 0
+            }
+
+          })
+        })
+
+        const sumItems = (obj, excludedFields) => {
+          let sum = 0;
+          for (let key in obj) {
+            if (!excludedFields.includes(key) && typeof obj[key] === 'object') {
+              sum += Object.keys(obj[key]).length;
+            }
           }
-        }
-        return sum;
-      };
+          return sum;
+        };
 
-      let amentiesSatrCount = sumItems({sectionScore:0,pointsGained:0,...amenities},['sectionScore', 'pointsGained'])
-  
-      // setForm((prevForm) => ({
-      //   ...prevForm,
-      //   location: {
-      //     ...prevForm.location,
-      //     assessment: temp,
-          
-      //   },
-      //   amenitiesData:{sectionScore:0,pointsGained:0,...amenities}
-      // }));
+        let amentiesSatrCount = sumItems({ sectionScore: 0, pointsGained: 0, ...amenities }, ['sectionScore', 'pointsGained'])
+
+        // setForm((prevForm) => ({
+        //   ...prevForm,
+        //   location: {
+        //     ...prevForm.location,
+        //     assessment: temp,
+
+        //   },
+        //   amenitiesData:{sectionScore:0,pointsGained:0,...amenities}
+        // }));
         // setSelectOption({ ...temp })
       }
     } catch (error) {
@@ -423,7 +423,7 @@ setCities(res.data.data[0])
       getAllOptionDataList()
 
     }
-    else{
+    else {
       getAllOptionDataList()
     }
     getCitiesList();
@@ -455,7 +455,7 @@ setCities(res.data.data[0])
       status: "",
       constructionProgress: "",
       sectionScore: '',
-      pointsGained:0
+      pointsGained: 0
     },
     regulatoryClearance: {
       reraApproved: "",
@@ -468,7 +468,7 @@ setCities(res.data.data[0])
       fresh: "",
       resale: "",
       sectionScore: 0,
-      pointsGained:0
+      pointsGained: 0
     },
     layout: {
       numberOfBuildings: "",
@@ -478,7 +478,7 @@ setCities(res.data.data[0])
       totalUnits: "",
       areaUnit: "Acres",
       area: "",
-      areaInSqft:0,
+      areaInSqft: 0,
       greenArea: "",
       unitDensity: "",
       unitDensityScore: "",
@@ -487,15 +487,15 @@ setCities(res.data.data[0])
       constructionQuality: 0,
       interiorQuality: 0,
       sectionScore: 0,
-      pointsGained:0
+      pointsGained: 0
     },
     unitsPlan: {
       averagePrice: 0,
       minPriceRange: 0,
       maxPriceRange: 0,
       uniqueLayouts: [],
-      totalAreaSqft:0,
-      totalPrice:0,
+      totalAreaSqft: 0,
+      totalPrice: 0,
       planList: [
         // {
         //   propertyType: "",
@@ -517,8 +517,8 @@ setCities(res.data.data[0])
       state: "",
       city: "",
       sector: "",
-      sectionScore:0,
-      pointsGained:0,
+      sectionScore: 0,
+      pointsGained: 0,
       area: "",
       pinCode: "",
       googleMapLink: "",
@@ -531,8 +531,8 @@ setCities(res.data.data[0])
       appTillNow: 0,
       expectedFurtherApp: 0,
       forEndUse: 0,
-      pointsGained:0,
-      sectionScore:0
+      pointsGained: 0,
+      sectionScore: 0
     },
     consultants: [],
     overallAssessment: {
@@ -561,9 +561,9 @@ setCities(res.data.data[0])
       },
     },
     published: false,
-    tag:"",
+    tag: "",
     marketing: {
-      image:"",
+      image: "",
       tagLine: "",
       description: "",
       metaDescription: ""
@@ -584,7 +584,7 @@ setCities(res.data.data[0])
     }, {});
   }
   const [selectOptions, setSelectOption] = useState({})
-const [hide,setHide]=useState([])
+  const [hide, setHide] = useState([])
 
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
 
@@ -636,8 +636,8 @@ const [hide,setHide]=useState([])
         totalScored =
           form.overallAssessment.scoredRating - Math.abs(difference);
       }
-    } 
-  
+    }
+
     else {
       totalScored =
         form.overallAssessment.scoredRating + parseInt(incomingValue);
@@ -650,7 +650,7 @@ const [hide,setHide]=useState([])
         ...form[firstKeyName],
         [secondKeyName]: e.target.value,
         ["sectionScore"]: moduleScore.calc,
-        ["pointsGained"]:moduleScore.totalScored
+        ["pointsGained"]: moduleScore.totalScored
       },
       overallAssessment: {
         ...form.overallAssessment,
@@ -667,7 +667,7 @@ const [hide,setHide]=useState([])
 
 
 
-  const moduleScoreCalc = (e, firstKeyName, secondKeyName,seperateCalc,thirdKeyName) => {
+  const moduleScoreCalc = (e, firstKeyName, secondKeyName, seperateCalc, thirdKeyName) => {
     let totalRatingModule;
     let totalScored;
     switch (firstKeyName.toLowerCase()) {
@@ -675,27 +675,27 @@ const [hide,setHide]=useState([])
         totalRatingModule = 10;
         break;
       case "regulatoryclearance":
-        totalRatingModule = regulatoryCount*5;
+        totalRatingModule = regulatoryCount * 5;
         break;
       case "layout":
         totalRatingModule = 20;
         break;
       case "location":
-        totalRatingModule = locationStarsScore.length*5;
+        totalRatingModule = locationStarsScore.length * 5;
         break;
-      case "valueformoney" :
+      case "valueformoney":
         totalRatingModule = 15;
         break;
-        case "amenitiesdata" :
-          totalRatingModule = +amentiesStarsScore.length*5;
+      case "amenitiesdata":
+        totalRatingModule = +amentiesStarsScore.length * 5;
         break;
       default:
         totalRatingModule = 10;
     }
 
 
-    function chechAlpahbeValues(value){
-      let returnValue=0
+    function chechAlpahbeValues(value) {
+      let returnValue = 0
       switch (value.toLowerCase()) {
         case "yes":
           returnValue = 5;
@@ -727,10 +727,10 @@ const [hide,setHide]=useState([])
     if (isNotAlphabet(e.target.value)) {
       incomingValue = e.target.value;
     } else {
-     
-     let val=  chechAlpahbeValues(e.target.value)
-     incomingValue=val
-    
+
+      let val = chechAlpahbeValues(e.target.value)
+      incomingValue = val
+
     }
     // if (form.overallAssessment.rated?.[secondKeyName] > 0) {
     //   console.log('isinn')
@@ -751,159 +751,159 @@ const [hide,setHide]=useState([])
     //   }
     // } 
 
-    if(secondKeyName==="assessment" || firstKeyName==="amenitiesData"){
+    if (secondKeyName === "assessment" || firstKeyName === "amenitiesData") {
 
       let difference =
-      +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(incomingValue);
-    let compare =
-    form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(incomingValue);
-    if (compare) {
-      totalScored =
-      +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
-    } else {
-      totalScored =
-      +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
-    }
-    }
-    
-    else if(firstKeyName==="regulatoryClearance" ){
-
-      if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
-        totalRatingModule=totalRatingModule+5
-        setRegulatoryCount(regulatoryCount+1)
+        +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(incomingValue);
+      let compare =
+        form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(incomingValue);
+      if (compare) {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
+      } else {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
       }
-      else if(form?.[firstKeyName]?.[secondKeyName].toLowerCase()!==`don't know` && e.target.value.toLowerCase()===`don't know`){
-        totalRatingModule=totalRatingModule-5
-        setRegulatoryCount(regulatoryCount-1)
+    }
+
+    else if (firstKeyName === "regulatoryClearance") {
+
+      if (form?.[firstKeyName]?.[secondKeyName].toLowerCase() === `don't know` && e.target.value.toLowerCase() !== `don't know`) {
+        totalRatingModule = totalRatingModule + 5
+        setRegulatoryCount(regulatoryCount + 1)
+      }
+      else if (form?.[firstKeyName]?.[secondKeyName].toLowerCase() !== `don't know` && e.target.value.toLowerCase() === `don't know`) {
+        totalRatingModule = totalRatingModule - 5
+        setRegulatoryCount(regulatoryCount - 1)
       }
       let difference =
-      chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) - parseInt(incomingValue);
-    let compare =
-    chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) < parseInt(incomingValue);
-    if (compare) {
-      totalScored =
-      +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
-    } else {
-      totalScored =
-      +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
-    }
+        chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) - parseInt(incomingValue);
+      let compare =
+        chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) < parseInt(incomingValue);
+      if (compare) {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
+      } else {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
+      }
     }
 
     else {
       let difference
-     let compare
-     if(secondKeyName==="constructionProgress"){
-       difference = 
-      (form?.[firstKeyName]?.[secondKeyName]=="" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() ==="delay"?0:5) - parseInt(incomingValue);
-     compare =
-    (form?.[firstKeyName]?.[secondKeyName]=="" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() ==="delay"?0:5) < parseInt(incomingValue);
-     }
-     else{
-       difference =
-      +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
-     compare =
-    form?.[firstKeyName]?.[secondKeyName] < parseInt(incomingValue);
-     }
+      let compare
+      if (secondKeyName === "constructionProgress") {
+        difference =
+          (form?.[firstKeyName]?.[secondKeyName] == "" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay" ? 0 : 5) - parseInt(incomingValue);
+        compare =
+          (form?.[firstKeyName]?.[secondKeyName] == "" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay" ? 0 : 5) < parseInt(incomingValue);
+      }
+      else {
+        difference =
+          +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
+        compare =
+          form?.[firstKeyName]?.[secondKeyName] < parseInt(incomingValue);
+      }
 
-    if (compare) {
-      totalScored =
-      +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
-    } else {
+      if (compare) {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
+      } else {
 
-      totalScored =
-      +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
-    }
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
+      }
     }
 
 
     let calc = (totalScored / totalRatingModule) * 10;
 
-    if(seperateCalc){
+    if (seperateCalc) {
       setForm({
         ...form,
         [firstKeyName]: {
           ...form[firstKeyName],
           [secondKeyName]: e.target.value,
           ["sectionScore"]: calc,
-          ["pointsGained"]:totalScored
+          ["pointsGained"]: totalScored
         }
       });
     }
-    
-    return {calc,totalScored}
+
+    return { calc, totalScored }
 
   }
 
-const handleUIHide=(e,firstKeyName,secondKeyName)=>{
-if(form?.[firstKeyName][secondKeyName].some(item => item.value.toLowerCase() !== 'land' && form?.[firstKeyName].projectCategory.toLowerCase()!=="commercial")){
- setHide([]) 
-}
-else if(form?.[firstKeyName].projectCategory.toLowerCase()==="commercial"){
-  setHide([ 
-    "numberOfBuildings",
-   "layoutType",
-  "floors",
-  "greenArea", 
-  "greenDensity",
-  ]) 
-}
-else{
-  let lastValue = e[e.length - 1]?.value.toLowerCase()
-  let value= lastValue?.replace(/\s/g, '')
-  switch (value) {
-    case "restaurant":
-      setHide([ 
+  const handleUIHide = (e, firstKeyName, secondKeyName) => {
+    if (form?.[firstKeyName][secondKeyName].some(item => item.value.toLowerCase() !== 'land' && form?.[firstKeyName].projectCategory.toLowerCase() !== "commercial")) {
+      setHide([])
+    }
+    else if (form?.[firstKeyName].projectCategory.toLowerCase() === "commercial") {
+      setHide([
         "numberOfBuildings",
-       "layoutType",
-      "floors",
-      "greenArea", 
-      "greenDensity",
-      ]) 
-      break;
-    case "shop":
-      setHide([ 
-        "numberOfBuildings",
-       "layoutType",
-      "floors",
-      "greenArea", 
-      "greenDensity",
-      ]) 
-      break;
-      case "foodcourt":
-        setHide([ 
-          "numberOfBuildings",
-         "layoutType",
+        "layoutType",
         "floors",
-        "greenArea", 
+        "greenArea",
         "greenDensity",
-        ]) 
-        break;
-    case "land":
-      setHide([ 
-        "numberOfBuildings",
-       "layoutType",
-      "floors",
-      "unitsPlanUnit"]) 
-      break;
-    default:
-    setHide([])
+      ])
+    }
+    else {
+      let lastValue = e[e.length - 1]?.value.toLowerCase()
+      let value = lastValue?.replace(/\s/g, '')
+      switch (value) {
+        case "restaurant":
+          setHide([
+            "numberOfBuildings",
+            "layoutType",
+            "floors",
+            "greenArea",
+            "greenDensity",
+          ])
+          break;
+        case "shop":
+          setHide([
+            "numberOfBuildings",
+            "layoutType",
+            "floors",
+            "greenArea",
+            "greenDensity",
+          ])
+          break;
+        case "foodcourt":
+          setHide([
+            "numberOfBuildings",
+            "layoutType",
+            "floors",
+            "greenArea",
+            "greenDensity",
+          ])
+          break;
+        case "land":
+          setHide([
+            "numberOfBuildings",
+            "layoutType",
+            "floors",
+            "unitsPlanUnit"])
+          break;
+        default:
+          setHide([])
+      }
+    }
+
   }
-}
 
-}
-
-const handleCategoryHide = (e)=>{
-if(e.target.value.toLowerCase()==="commercial"){
-setHide([ 
-  "numberOfBuildings",
- "layoutType",
-"floors",
-"greenArea", 
-"greenDensityScore",
-"greenDensity",
-])
-}
-}
+  const handleCategoryHide = (e) => {
+    if (e.target.value.toLowerCase() === "commercial") {
+      setHide([
+        "numberOfBuildings",
+        "layoutType",
+        "floors",
+        "greenArea",
+        "greenDensityScore",
+        "greenDensity",
+      ])
+    }
+  }
 
   const handleChange = async (
     e,
@@ -954,12 +954,12 @@ setHide([
           case "dont know":
             incomingValue = 0;
             total = totalRating - 5
-              setTotalRating(total)
+            setTotalRating(total)
             break;
           case "don't know":
             incomingValue = 0;
             total = totalRating - 5
-             setTotalRating(total)
+            setTotalRating(total)
             break;
           case "on time":
             incomingValue = 5;
@@ -972,51 +972,51 @@ setHide([
         }
       }
 
-if (firstKeyName==="location" || firstKeyName === "amenitiesData"){
-  if (form.overallAssessment.rated?.[firstKeyName].length > 0) {
-    let difference =
-      form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] -
-      parseInt(incomingValue);
-    let compare =
-      form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] <
-      parseInt(incomingValue);
-    if (compare) {
-      totalScored =
-        form.overallAssessment.scoredRating + Math.abs(difference);
-    } else {
-      totalScored =
-        form.overallAssessment.scoredRating - Math.abs(difference);
-    }
-  } else {
-    totalScored =
-      form.overallAssessment.scoredRating + parseInt(incomingValue);
-  } 
-}
+      if (firstKeyName === "location" || firstKeyName === "amenitiesData") {
+        if (form.overallAssessment.rated?.[firstKeyName].length > 0) {
+          let difference =
+            form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] -
+            parseInt(incomingValue);
+          let compare =
+            form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] <
+            parseInt(incomingValue);
+          if (compare) {
+            totalScored =
+              form.overallAssessment.scoredRating + Math.abs(difference);
+          } else {
+            totalScored =
+              form.overallAssessment.scoredRating - Math.abs(difference);
+          }
+        } else {
+          totalScored =
+            form.overallAssessment.scoredRating + parseInt(incomingValue);
+        }
+      }
 
-else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
-  total = totalRating + 5
-  setTotalRating(total)
+      else if (firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase() === `don't know` && e.target.value.toLowerCase() !== `don't know`) {
+        total = totalRating + 5
+        setTotalRating(total)
 
-  if(form.overallAssessment.rated?.[secondKeyName] > 0){
-    let difference =
-    form.overallAssessment.rated?.[secondKeyName] -
-    parseInt(incomingValue);
-  let compare =
-    form.overallAssessment.rated?.[secondKeyName] <
-    parseInt(incomingValue);
-  if (compare) {
-    totalScored =
-      form.overallAssessment.scoredRating + Math.abs(difference);
-  } else {
-    totalScored =
-      form.overallAssessment.scoredRating - Math.abs(difference);
-  }
-  }
-  else{
-    totalScored =
-    form.overallAssessment.scoredRating + parseInt(incomingValue);
-  }
-}
+        if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+          let difference =
+            form.overallAssessment.rated?.[secondKeyName] -
+            parseInt(incomingValue);
+          let compare =
+            form.overallAssessment.rated?.[secondKeyName] <
+            parseInt(incomingValue);
+          if (compare) {
+            totalScored =
+              form.overallAssessment.scoredRating + Math.abs(difference);
+          } else {
+            totalScored =
+              form.overallAssessment.scoredRating - Math.abs(difference);
+          }
+        }
+        else {
+          totalScored =
+            form.overallAssessment.scoredRating + parseInt(incomingValue);
+        }
+      }
       else if (form.overallAssessment.rated?.[secondKeyName] > 0) {
         let difference =
           form.overallAssessment.rated?.[secondKeyName] -
@@ -1036,9 +1036,9 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
           form.overallAssessment.scoredRating + parseInt(incomingValue);
       }
 
-if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()==="don't know"){
-  totalScored -= 5
-}
+      if (e.target.value.toLowerCase() === "dont know" || e.target.value.toLowerCase() === "don't know") {
+        totalScored -= 5
+      }
       let calc = (totalScored / total) * 100;
 
       setForm({
@@ -1047,7 +1047,7 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
           ...form[firstKeyName],
           [secondKeyName]: e.target.value,
           ["sectionScore"]: moduleScore.calc,
-          ["pointsGained"]:moduleScore.totalScored
+          ["pointsGained"]: moduleScore.totalScored
         },
         overallAssessment: {
           ...form.overallAssessment,
@@ -1059,30 +1059,33 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
           },
         },
       });
-    } 
-    else if(secondKeyName.toLowerCase() === "projecttype" ){
-      let  projectType=e.map(item => item.value).join('-');
-     let formattedTagLine= formatTagLine(projectType,secondKeyName)
-       setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e }
-        ,marketing: {...form.marketing,tagLine:formattedTagLine}
-      });
-     }
-    else if(secondKeyName.toLowerCase() === "builder" || secondKeyName.toLowerCase() ==="city"){
-      let formattedTagLine= formatTagLine(e,secondKeyName)
-      setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e }
-        ,marketing: {...form.marketing,tagLine:formattedTagLine}
-      });
-    
     }
-    else if(secondKeyName.toLowerCase() === "projectcategory" || secondKeyName.toLowerCase() === "state"|| secondKeyName.toLowerCase() === "area"||secondKeyName.toLowerCase() === "projectname"){
-        let formattedTagLine= formatTagLine(e.target.value,secondKeyName)
-        setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e.target.value }
-          ,marketing: {...form.marketing,tagLine:formattedTagLine}
-        });
-      
+    else if (secondKeyName.toLowerCase() === "projecttype") {
+      let projectType = e.map(item => item.value).join('-');
+      let formattedTagLine = formatTagLine(projectType, secondKeyName)
+      setForm({
+        ...form, [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e }
+        , marketing: { ...form.marketing, tagLine: formattedTagLine }
+      });
     }
-    
-    
+    else if (secondKeyName.toLowerCase() === "builder" || secondKeyName.toLowerCase() === "city") {
+      let formattedTagLine = formatTagLine(e, secondKeyName)
+      setForm({
+        ...form, [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e }
+        , marketing: { ...form.marketing, tagLine: formattedTagLine }
+      });
+
+    }
+    else if (secondKeyName.toLowerCase() === "projectcategory" || secondKeyName.toLowerCase() === "state" || secondKeyName.toLowerCase() === "area" || secondKeyName.toLowerCase() === "projectname") {
+      let formattedTagLine = formatTagLine(e.target.value, secondKeyName)
+      setForm({
+        ...form, [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e.target.value }
+        , marketing: { ...form.marketing, tagLine: formattedTagLine }
+      });
+
+    }
+
+
     else {
       if (thirdKeyName === "checked") {
         setForm((prevForm) => {
@@ -1104,7 +1107,7 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
                 ...updatedForm[firstKeyName][secondKeyName][autoFillField],
                 rating: e.target.value,
               };
-              updatedForm["overallAssessment"]= {
+              updatedForm["overallAssessment"] = {
                 ...form.overallAssessment,
                 score: Math.floor(getCalc.calc),
                 scoredRating: getCalc.totalScored,
@@ -1124,17 +1127,17 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
                 rating: e.target.value,
               };
             }
-          
-       
-  
+
+
+
           } else {
-            if(secondKeyName==="assessment" && (!locationStars.includes(autoFillField))){
-                setLocationStars([...locationStars,autoFillField])
-              }
-              else if(firstKeyName==="amenitiesData" && (!amentiesStars.includes(autoFillField))){
-              setAmentiesStar([...amentiesStars,autoFillField])
-              }
-          
+            if (secondKeyName === "assessment" && (!locationStars.includes(autoFillField))) {
+              setLocationStars([...locationStars, autoFillField])
+            }
+            else if (firstKeyName === "amenitiesData" && (!amentiesStars.includes(autoFillField))) {
+              setAmentiesStar([...amentiesStars, autoFillField])
+            }
+
             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
               ...updatedForm[firstKeyName][secondKeyName][autoFillField],
               isApplicable: e.target.checked,
@@ -1142,22 +1145,22 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
           }
           return updatedForm;
         });
-      } 
-     // tagline will be added here
-     else if(firstKeyName==="marketing" && secondKeyName==="image"){
-      setForm({
-        ...form,marketing:{...form.marketing,image:e}
-      })
-            }
+      }
+      // tagline will be added here
+      else if (firstKeyName === "marketing" && secondKeyName === "image") {
+        setForm({
+          ...form, marketing: { ...form.marketing, image: e }
+        })
+      }
       else if (firstKeyName === "layout" && secondKeyName === "area") {
 
-        let totalArea = +e.target.value 
-        if(form.layout.areaUnit.toLowerCase()==='acres'){
+        let totalArea = +e.target.value
+        if (form.layout.areaUnit.toLowerCase() === 'acres') {
           const sqftPerAcre = 43560
-           totalArea = +e.target.value * sqftPerAcre
+          totalArea = +e.target.value * sqftPerAcre
         }
         setForm({
-          ...form, layout: { ...form.layout, area: e.target.value,areaInSqft:totalArea }
+          ...form, layout: { ...form.layout, area: e.target.value, areaInSqft: totalArea }
         })
       }
       else {
@@ -1166,18 +1169,18 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
             ? e.target.checked
             : e.target.value
           : e;
-          if(secondKeyName==="maxFloors" || secondKeyName === "minFloors"){
-              value=+value
-            
-           
-          }
+        if (secondKeyName === "maxFloors" || secondKeyName === "minFloors") {
+          value = +value
+
+
+        }
         if (secondKeyName === "projectCategory" && form?.[firstKeyName][secondKeyName].toLowerCase() !== e.target.value.toLowerCase()) {
           setForm((prev) => ({
             ...prev,
             [firstKeyName]: { ...form?.[firstKeyName], projectCategory: e.target.value, projectType: [] }
           }))
           handleCategoryHide(e)
-        } 
+        }
         setForm((prev) => ({
           ...prev,
           [firstKeyName]: !secondKeyName
@@ -1195,19 +1198,19 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
       }
     }
 
-    if(firstKeyName==="overview" && secondKeyName==="projectType"){
-      let hideValue=handleUIHide(e,firstKeyName,secondKeyName)
+    if (firstKeyName === "overview" && secondKeyName === "projectType") {
+      let hideValue = handleUIHide(e, firstKeyName, secondKeyName)
     }
-    if(firstKeyName==="overview" && secondKeyName==="status" && e.target.value.toLowerCase() ==="underconstruction"){
+    if (firstKeyName === "overview" && secondKeyName === "status" && e.target.value.toLowerCase() === "underconstruction") {
       let total = totalRating + 5
       setTotalRating(total)
     }
   };
 
-  let formatTagLine = (value,key)=>{
+  let formatTagLine = (value, key) => {
 
     let obj = {
-      ...tagField,[key]:value
+      ...tagField, [key]: value
     }
     let output = '';
     setTagField(obj)
@@ -1226,38 +1229,38 @@ if(e.target.value.toLowerCase()==="dont know" || e.target.value.toLowerCase()===
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
     let total = totalRating
     let checkField = firstKeyName.toLowerCase() === "location" ? locationStarsScore : amentiesStarsScore
-        const findItemByKey = (array, searchKey) => {
-      return array.find(item =>item === searchKey);
+    const findItemByKey = (array, searchKey) => {
+      return array.find(item => item === searchKey);
     };
     const foundItem = findItemByKey(checkField, autoFillField);
-if(!foundItem){
-  let fieldName = autoFillField
+    if (!foundItem) {
+      let fieldName = autoFillField
       if (firstKeyName === "amenitiesData") {
-        total=totalRating+5
+        total = totalRating + 5
         setTotalRating(total)
-        setAmentiesStarScore([...amentiesStarsScore,fieldName])
+        setAmentiesStarScore([...amentiesStarsScore, fieldName])
         // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
       }
       else {
-        total=totalRating+5
+        total = totalRating + 5
         setTotalRating(total)
-        setLocationStarsScore([...locationStarsScore,  fieldName ])
+        setLocationStarsScore([...locationStarsScore, fieldName])
         // setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
       }
-}
+    }
     let totalScored;
 
     let difference =
-    +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(e.target.value);
-  let compare =
-    form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(e.target.value);
-  if (compare) {
-    totalScored =
-      +form.overallAssessment.scoredRating+ Math.abs(difference);
-  } else {
-    totalScored =
-      +form.overallAssessment.scoredRating - Math.abs(difference);
-  }
+      +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(e.target.value);
+    let compare =
+      form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(e.target.value);
+    if (compare) {
+      totalScored =
+        +form.overallAssessment.scoredRating + Math.abs(difference);
+    } else {
+      totalScored =
+        +form.overallAssessment.scoredRating - Math.abs(difference);
+    }
 
 
     // let checkField = firstKeyName === "location" ? locationStarsScore : amentiesStarsScore
@@ -1306,7 +1309,7 @@ if(!foundItem){
 
   const validateForm = (publish) => {
     const { error } = Schema?.validate(form, { abortEarly: false });
-   
+
     let store = [
       "constructionQuality",
       "interiorQuality",
@@ -1340,30 +1343,30 @@ if(!foundItem){
         } else {
           label = item.context.key;
         }
-        console.log(label,'labbal')
-switch (label.toLowerCase()) {
-  case "constructionquality":
-    label = "Construction Quality";
-    break;
-  case "interiorquality":
-    label = "Interior Quality";
-    break;
-    
-  case "apptillnow":
-    label = "Appreciation till now";
-    break;
-    case "expectedFurtherApp":
-    label = "Expected further appreciation";
-    break;
-  case "forenduse":
-    label = "For End Use";
-    break;
-    default:
-      label ;
-}
+        console.log(label, 'labbal')
+        switch (label.toLowerCase()) {
+          case "constructionquality":
+            label = "Construction Quality";
+            break;
+          case "interiorquality":
+            label = "Interior Quality";
+            break;
+
+          case "apptillnow":
+            label = "Appreciation till now";
+            break;
+          case "expectedFurtherApp":
+            label = "Expected further appreciation";
+            break;
+          case "forenduse":
+            label = "For End Use";
+            break;
+          default:
+            label;
+        }
         openSnackbar(`Ratings needs to be provided for ${label}`, "error");
       }
-      else if(item.context.key==="image"){
+      else if (item.context.key === "image") {
         openSnackbar(`${item.context.key} needs to be uploaded for the property`, "error");
       }
     });
@@ -1397,7 +1400,7 @@ switch (label.toLowerCase()) {
             abortEarly: false,
           });
           if (!error) {
-            
+
             setForm({ ...form, published: true })
             CreateProperty({ ...form, published: true })
               .then((res) => {
@@ -1412,17 +1415,17 @@ switch (label.toLowerCase()) {
             openSnackbar(`Please check the RERA Approval`, "error");
           }
         }
-        else{
+        else {
           CreateProperty({ ...form })
-          .then((res) => {
-            openSnackbar(`Property added successfully`, "success");
-            routerNavigation.push(`/admin/property-list`);
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
+            .then((res) => {
+              openSnackbar(`Property added successfully`, "success");
+              routerNavigation.push(`/admin/property-list`);
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
         }
-       
+
 
       } else {
 
@@ -1477,9 +1480,9 @@ switch (label.toLowerCase()) {
         </Card>
       </nav>
 
-      <Container>
+      <Container maxWidth='md'>
 
-       { isLoading===false && formUpdated && <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+        {isLoading === false && formUpdated && <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
           <ProjectCard
             errors={errors}
             form={form}
@@ -1507,17 +1510,17 @@ switch (label.toLowerCase()) {
             handleChange={handleChange}
             isEdit={isEdit}
           />
-          { !hide.includes("unitsPlan")
-          && <FloorPlanCard
-            errors={errors}
-            hide={hide}
-            form={form}
-            editForm={editForm}
-            handleChange={handleChange}
-            selectOptions={selectOptions}
-            handleUnitsPlan={handleUnitsPlan}
-            isEdit={isEdit}
-          />}
+          {!hide.includes("unitsPlan")
+            && <FloorPlanCard
+              errors={errors}
+              hide={hide}
+              form={form}
+              editForm={editForm}
+              handleChange={handleChange}
+              selectOptions={selectOptions}
+              handleUnitsPlan={handleUnitsPlan}
+              isEdit={isEdit}
+            />}
           <FacilitiesCard
             errors={errors}
             hide={hide}
@@ -1556,7 +1559,7 @@ switch (label.toLowerCase()) {
             list={brokerList}
             handleChange={handleChange}
           />
-          <OverallAssessmentCard  hide={hide} isEdit={isEdit} form={form} />
+          <OverallAssessmentCard hide={hide} isEdit={isEdit} form={form} />
           {/* <BankCard isEdit={isEdit} /> */}
           <MarketingCard
             errors={errors}
@@ -1566,8 +1569,8 @@ switch (label.toLowerCase()) {
             isEdit={isEdit}
           />
           <Grid item xs={12} sx={{ textAlign: "end" }}>
-           { !form.published && <CustomButton onClick={() => validateForm(false)} variant="contained"
-              ButtonText={editPage ? "Update" : "Save"} /> }
+            {!form.published && <CustomButton onClick={() => validateForm(false)} variant="contained"
+              ButtonText={editPage ? "Update" : "Save"} />}
             <CustomButton onClick={() => validateForm(true)} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
           </Grid>
         </Grid>}

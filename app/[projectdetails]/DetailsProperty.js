@@ -59,6 +59,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
 import { submitEnquiry, submitEnquiryUnauth, updateEnquiryVerified, updateEnquiryVerifiedByUserId } from "api/UserProfile.api";
 import { clearItem, getItem, setItem } from "utills/utills";
+import MoreSimilarPropertyCard from "Components/Admin/Property/SubComponents/MoreSimilarPropertyCard";
 
 const tabHeight = 200;
 
@@ -612,6 +613,7 @@ const PropertyDetails = ({ params }) => {
               handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
             />
+            <MoreSimilarPropertyCard />
           </Grid>
 
           {/* Dont Touch this */}
@@ -644,7 +646,7 @@ const PropertyDetails = ({ params }) => {
                 variant="outlined"
                 href={`https://web.whatsapp.com/send?text=${encodeURIComponent(
                   url?.href ? url?.href : ''
-                    )}`}
+                )}`}
                 target="_blank"
                 data-action="share/whatsapp/share"
                 startIcon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
@@ -710,8 +712,8 @@ const PropertyDetails = ({ params }) => {
                   variant="extended"
                   sx={{ mb: 1, justifyContent: "flex-start" }}
                   href={`https://web.whatsapp.com/send?text=${encodeURIComponent(
-                  url?.href ? url?.href : ''
-                    )}`}
+                    url?.href ? url?.href : ''
+                  )}`}
                   target="_blank"
                   data-action="share/whatsapp/share"
                 >

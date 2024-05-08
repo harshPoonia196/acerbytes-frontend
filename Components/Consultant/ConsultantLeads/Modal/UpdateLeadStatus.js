@@ -34,9 +34,9 @@ function UpdateLeadStatus({ open, handleClose, getList: getNotesList, isEdit, ed
     }, [isEdit])
 
 
-    useEffect(() => {
-        getList()
-    }, [])
+    // useEffect(() => {
+    //     // getList()
+    // }, [])
 
     const { openSnackbar } = useSnackbar(),
         showToaterMessages = (message, severity) => {

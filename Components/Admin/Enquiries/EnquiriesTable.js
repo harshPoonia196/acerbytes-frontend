@@ -31,6 +31,7 @@ import { countryCodeFormating } from "utills/utills";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 // const rows = [
@@ -214,7 +215,9 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
       <TableCell>{row?.name?.firstName} {row?.name?.lastName}</TableCell>
 
       <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}&nbsp;
-        {row.isVerified && <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' />}</TableCell>
+        {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
+          <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='error' />}
+      </TableCell>
       <TableCell>{user.email || "-"}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
 
