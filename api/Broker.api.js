@@ -38,6 +38,20 @@ export const getMyLeadsCustomer = () => {
   );
 };
 
+export const createNote = (data) => {
+  return axiosInstance.post(`/broker/addNote`, data);
+};
+
+export const deleteNote = (noteId) => {
+  return axiosInstance.delete(`/broker/deleteNote/${noteId}`);
+}
+
+export const getNotes = ({ search, alignment }) => {
+  return axiosInstance.get(
+    `/broker/getNotes?search=${search || ""}&alignment=${alignment}`
+  );
+};
+
 export const getBrokerSuggestedLeads = ({ limit, page, search }) => {
   return axiosInstance.get(
     `/broker/suggestedLeads?limit=${limit || ""}&page=${page || 0}&search=${
@@ -47,6 +61,6 @@ export const getBrokerSuggestedLeads = ({ limit, page, search }) => {
 };
 export const buySuggestedLeads = (data) => {
   return axiosInstance.put(
-    "/broker/leadBrokerUpdate",data
+    "/broker/leadBrokerUpdate", data
   );
 };
