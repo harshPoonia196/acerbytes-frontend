@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import moment from "moment";
+import { ROLES } from "./Constants";
 
 function capitalLizeName(text) {
   let words = text?.split(" ");
@@ -230,6 +231,11 @@ const getFirstCharacterOfFirstOfFullName = (fname) => {
   return listOfWords[0].charAt(0) + listOfWords[listOfWords.length - 1].charAt(0)
 }
 
+const getRoleLabelByValue = (value) => {
+  const role = ROLES.find(role => role.value === value);
+  return role ? role.label : null;
+}
+
 export {
   upperCaseName,
   capitalLizeName,
@@ -252,5 +258,6 @@ export {
   monthList,
   getColorForProgressBar,
   shortPriceFormatter,
-  getFirstCharacterOfFirstOfFullName
+  getFirstCharacterOfFirstOfFullName,
+  getRoleLabelByValue
 };

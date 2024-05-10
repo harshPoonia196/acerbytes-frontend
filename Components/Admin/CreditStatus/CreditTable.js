@@ -28,6 +28,7 @@ import {
   objectToQueryString,
   getComparator,
   stableSort,
+  formatAmount,
 } from "utills/CommonFunction";
 import { useAuth } from "utills/AuthContext";
 import { useSnackbar } from "utills/SnackbarContext";
@@ -163,7 +164,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
         <TableCell>{formatPoints(row.newPoints)}</TableCell>
         <TableCell>{formatPoints(row.openingPoints)}</TableCell>
         <TableCell>{formatPoints(row.consumedPoints)}</TableCell>
-        <TableCell>{formatPoints(row?.brokerBalance?.balance || 0)}</TableCell>
+        <TableCell>{formatAmount(row?.brokerBalance?.balance || 0)}</TableCell>
         <TableCell>
           <IconButton
             aria-label="more"
