@@ -170,7 +170,6 @@ function MarketingSection(props) {
 
   return (
     <>
-      {console.log(overviewData)}
       <Container maxWidth='md'>
         <Box id='project' >
           <Card sx={{ height: 'fit-content' }}>

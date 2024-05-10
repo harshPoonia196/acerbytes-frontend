@@ -120,6 +120,38 @@ export const BuyingCreditPoints = [
   },
 ];
 
+
+export const BuyConsultanttPoints = [
+  {
+    amount: 2000,
+    month: '1 month',
+    value: '1',
+    discount: 0,
+    discountAmount: 2000
+  },
+  {
+    amount: 4000,
+    month: '2 month',
+    value: '2',
+    discount: 10,
+    discountAmount: 3600
+  },
+  {
+    amount: 6000,
+    month: '3 month',
+    value: '3',
+    discount: 20,
+    discountAmount: 4800
+  },
+  {
+    amount: 8000,
+    month: '4 month',
+    value: '4',
+    discount: 30,
+    discountAmount: 5600
+  },
+];
+
 export const ORDER_STATUS = {
   PENDING: "PENDING",
   COMPLETED: "COMPLETED",

@@ -71,6 +71,7 @@ import {
 import BottomFooterConsultant from "Components/DetailsPage/BottomFooterConsultant";
 import BottomFooterUser from "Components/DetailsPage/BottomFooterUser";
 import MoreSimilarPropertyCard from "Components/Admin/Property/SubComponents/MoreSimilarPropertyCard";
+import ConsultantPopup from "Components/DetailsPage/Modal/ConsultantPopup";
 
 const tabHeight = 200;
 
@@ -123,6 +124,8 @@ const PropertyDetailsPage = ({ params }) => {
   const [propertyData, setPropertyData] = useState({});
   const [leadId, setLeadId] = useState("");
   const [enquiredInfo, setEnquiredInfo] = useState(null);
+  const [consultantsDialog, setConsultantsDialog] = useState(false);
+
   const shuffle = (a) => {
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -156,6 +159,10 @@ const PropertyDetailsPage = ({ params }) => {
       setLoading(false);
     }
   };
+
+  const handleCloseConsultantDetails = () => {
+    setConsultantsDialog(false)
+  }
 
   const handlefavClick = async () => {
     const adData = {
@@ -606,7 +613,8 @@ const PropertyDetailsPage = ({ params }) => {
         handleOpen={handleOpenPersonalizeAds}
         handleClose={handleClosePersonalizeAds}
       />
-      {userDetails?.role === "broker" && (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
+      {userDetails?.role === "broker" &&
+      (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
         <AdsSection
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
           handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
@@ -615,8 +623,8 @@ const PropertyDetailsPage = ({ params }) => {
         />
       ) : null}
       {userDetails?.role !== "admin" &&
-        userDetails?.role !== "superAdmin" &&
-        propertyData.isActiveAd ? (
+      userDetails?.role !== "superAdmin" &&
+      propertyData.isActiveAd ? (
         <AdsSection
           SinglePropertyId={propertyData?.propertyBroker[0]}
           propertyData={propertyData}
@@ -635,8 +643,11 @@ const PropertyDetailsPage = ({ params }) => {
         />
       </nav>
       <Box>
-        <MarketingSection overviewData={propertyData} activeState={activeState} />
-        <Container maxWidth="md" sx={{ pt: '0 !important' }}>
+        <MarketingSection
+          overviewData={propertyData}
+          activeState={activeState}
+        />
+        <Container maxWidth="md" sx={{ pt: "0 !important" }}>
           {openEnquiryForm && (
             <EnquireNow
               propertyData={propertyData}
@@ -645,7 +656,6 @@ const PropertyDetailsPage = ({ params }) => {
               handleAction={handleOpenVerifyPopup}
               submitEnquiry={handleSubmitEnquiry}
               submitEnquiryUnath={handleSubmitEnquiryUnauth}
-
             />
           )}
           <OtpVerify
@@ -679,7 +689,7 @@ const PropertyDetailsPage = ({ params }) => {
               valueForMoneyData={propertyData?.valueForMoney}
             />
             {/* <FloorPlanSection /> */}
-            {propertyData?.consultants?.length > 0 &&
+            {propertyData?.consultants?.length > 0 && (
               <Grid item xs={12} id="propertyConsultants">
                 <Card>
                   <Box sx={{ display: "flex", p: 2 }}>
@@ -720,34 +730,48 @@ const PropertyDetailsPage = ({ params }) => {
                   {userDetails?.role === "broker" && (
                     <Box sx={{
                       p: 2,
-                      display: 'flex',
-                      flexDirection: { xs: "column", sm: 'row' },
-                      gap: 1
-                    }}>
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        gap: 1,
+                      }}
+                    >
                       <Box sx={{ flex: 1, alignSelf: "center" }}>
-                        <Typography
-                          variant="body2"
-                          sx={{ flex: 1, }}
-                        >
-                          Are you a <span style={{ fontWeight: 700 }}>Property Consultant?</span> let Customers reach you
+                        <Typography variant="body2" sx={{ flex: 1 }}>
+                          Are you a{" "}
+                          <span style={{ fontWeight: 700 }}>
+                            Property Consultant?
+                          </span>{" "}
+                          let Customers reach you
                         </Typography>
                       </Box>
-                      <Box sx={{ alignSelf: { xs: 'end' } }}>
-                        <a href={`https://wa.me/+919818690582`}>
+                      {propertyData?.isConsultant === false && (
+                        <Box sx={{ alignSelf: { xs: "end" } }}>
                           <Chip
                             label="Yes, show me here !"
                             icon={<PersonAddIcon fontSize="small" />}
                             size="small"
                             sx={{ fontSize: "0.875rem" }}
-                            onClick={() => { }}
+                            onClick={() => {
+                              setConsultantsDialog(true);
+                            }}
                           />
-                        </a>
-                      </Box>
+                        </Box>
+                      )}
                     </Box>
                   )}
                 </Card>
               </Grid>
-            }
+            )}
+
+            {consultantsDialog && (
+              <ConsultantPopup
+                open={consultantsDialog}
+                handleClose={handleCloseConsultantDetails}
+                detailsPropertyId={detailsPropertyId}
+                detailsGetProperty={detailsGetProperty}
+              />
+            )}
+
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
@@ -763,23 +787,28 @@ const PropertyDetailsPage = ({ params }) => {
           </Grid>
 
           {/* Dont Touch this */}
-          {
-            userDetails?.role !== "admin" &&
+          {userDetails?.role !== "admin" &&
             userDetails?.role !== "superAdmin" &&
-            userDetails?.role !== "broker" &&
-            <Toolbar
-              sx={{
-                display: { xs: "flex", evmd: "none" },
-                height: heightOfFooter,
-              }}
-            />
-          }
+            userDetails?.role !== "broker" && (
+              <Toolbar
+                sx={{
+                  display: { xs: "flex", evmd: "none" },
+                  height: heightOfFooter,
+                }}
+              />
+            )}
           {userDetails?.role !== "admin" &&
             userDetails?.role !== "superAdmin" &&
             userDetails?.role !== "broker" && (
               <>
-                <BottomFooterUser isLogged={isLogged} propertyData={propertyData} url={url}
-                  divRef={divRef} handlefavClick={handlefavClick} handleOpenEnquiryForm={handleOpenEnquiryForm} />
+                <BottomFooterUser
+                  isLogged={isLogged}
+                  propertyData={propertyData}
+                  url={url}
+                  divRef={divRef}
+                  handlefavClick={handlefavClick}
+                  handleOpenEnquiryForm={handleOpenEnquiryForm}
+                />
                 {/* <Card
                   sx={{
                     p: 2,
@@ -925,19 +954,18 @@ const PropertyDetailsPage = ({ params }) => {
               </>
             )}
 
-          {
-            userDetails?.role === "broker" && (
-              <>
-                <Toolbar
-                  sx={{
-                    display: { xs: "flex", evmd: "none" },
-                  }}
-                />
-                <BottomFooterConsultant />
-              </>
-            )}
-        </Container >
-      </Box >
+          {userDetails?.role === "broker" && (
+            <>
+              <Toolbar
+                sx={{
+                  display: { xs: "flex", evmd: "none" },
+                }}
+              />
+              <BottomFooterConsultant />
+            </>
+          )}
+        </Container>
+      </Box>
     </>
   );
 };
