@@ -57,9 +57,10 @@ import colors from "styles/theme/colors";
 import { checkTokenAPI } from "api/Auth.api";
 import { useAuth } from "utills/AuthContext";
 import { getBrokerBalance } from "api/Broker.api";
-import { ROLE_CONSTANTS } from "utills/Constants";
+import { ROLES, ROLE_CONSTANTS } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { getRoleLabelByValue } from "utills/CommonFunction";
 
 const drawerWidth = 240;
 
@@ -216,7 +217,7 @@ export default function ClippedDrawer({ children }) {
   };
 
   const DrawerContent = () => {
-    
+
     const isSalesRole = authRole(ROLE_CONSTANTS.sales);
     return (
       <>
@@ -330,7 +331,7 @@ export default function ClippedDrawer({ children }) {
             )
           }
           {
-          isSalesRole && (
+            isSalesRole && (
               <>
                 <List
                   subheader={
@@ -525,6 +526,9 @@ export default function ClippedDrawer({ children }) {
                     {userDetails?.role == ROLE_CONSTANTS.broker && (
                       <Chip label={`Points: ${brokerBalance}`} size="small"
                         onClick={() => router.push(listOfPages.consultantPaymentHistory)} />
+                    )}
+                    {(userDetails?.role == ROLE_CONSTANTS.admin || userDetails?.role == ROLE_CONSTANTS.sales || userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
+                      <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" />
                     )}
                   </Box>
                 </Box>
