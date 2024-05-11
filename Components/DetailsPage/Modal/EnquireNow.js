@@ -22,7 +22,7 @@ import {
 } from "utills/utills";
 import React from "react";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
-import { countries, enquiryFormKey,enquiryFormOpen, propertyRedirectKey } from "utills/Constants";
+import { countries, enquiryFormKey, enquiryFormOpen, propertyRedirectKey } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { getAllOptions, getCities } from "api/Property.api";
 
@@ -182,9 +182,15 @@ function EnquireNow(props) {
               onClick={() => {
                 console.log("formData: ", formData);
                 if (token) {
-                  submitEnquiry(formData);
+                  submitEnquiry({
+                    ...formData,
+                    brokerCollectionId: props?.brokerCollectionId || "",
+                  });
                 } else {
-                  submitEnquiryUnath(formData);
+                  submitEnquiryUnath({
+                    ...formData,
+                    brokerCollectionId: props?.brokerCollectionId || "",
+                  });
                   setItem(enquiryFormKey, formData);
                   handleAction();
                 }
