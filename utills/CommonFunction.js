@@ -236,6 +236,13 @@ const getRoleLabelByValue = (value) => {
   return role ? role.label : null;
 }
 
+const indianNumberingSystem = (number) => {
+  // Format the number using Indian numbering system
+  const formatted = Number(number).toLocaleString('en-IN');
+return formatted;
+};
+
+
 export {
   upperCaseName,
   capitalLizeName,
@@ -259,5 +266,6 @@ export {
   getColorForProgressBar,
   shortPriceFormatter,
   getFirstCharacterOfFirstOfFullName,
-  getRoleLabelByValue
+  getRoleLabelByValue,
+  indianNumberingSystem
 };
