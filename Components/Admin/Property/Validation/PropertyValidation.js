@@ -297,6 +297,7 @@ const layoutSchema = Joi.object({
 });
 
 export const Schema = Joi.object({
+  property_id: Joi.string().optional().allow(""),
   overview: overviewSchema,
   regulatoryClearance: Joi.object().keys({
     reraApproved: Joi.string().required(),
