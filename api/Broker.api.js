@@ -59,8 +59,13 @@ export const getBrokerSuggestedLeads = ({ limit, page, search }) => {
     }`
   );
 };
+
 export const buySuggestedLeads = (data) => {
   return axiosInstance.put(
     "/broker/leadBrokerUpdate", data
   );
+};
+
+export const buyNotesPoints = (data) => {
+  return axiosInstance.put(`/broker/buyNotesPoints`, data);
 };

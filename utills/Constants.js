@@ -152,6 +152,37 @@ export const BuyConsultanttPoints = [
   },
 ];
 
+export const BuyConsultantsNotePoints = [
+  {
+    amount: 5000,
+    month: '1 month',
+    value: 1,
+    discount: 0,
+    discountAmount: 5000
+  },
+  {
+    amount: 10000,
+    month: '2 month',
+    value: 2,
+    discount: 10,
+    discountAmount: 9000
+  },
+  {
+    amount: 15000,
+    month: '3 month',
+    value: 3,
+    discount: 20,
+    discountAmount: 12000
+  },
+  {
+    amount: 20000,
+    month: '4 month',
+    value: 4,
+    discount: 30,
+    discountAmount: 14000
+  },
+];
+
 export const ORDER_STATUS = {
   PENDING: "PENDING",
   COMPLETED: "COMPLETED",
