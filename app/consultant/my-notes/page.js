@@ -9,6 +9,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Card,
+  Grid,
 } from "@mui/material";
 import UpdateLeadStatus from "Components/Consultant/ConsultantLeads/Modal/UpdateLeadStatus";
 import MyLeadsStatus from "Components/Consultant/ConsultantLeads/MyLeadsStatus";
@@ -21,15 +22,17 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { deleteNote, getNotes } from "api/Broker.api";
 import { DEBOUNCE_TIMER, NOTES_TYPE, ToasterMessages } from "utills/Constants";
 import { debounce } from "lodash";
+import NoteSubscription from "./NoteSubscription";
 function MyNotes() {
   const router = useRouter();
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
-  const [list, setList] = useState({ rows: [], notesCount: 0 });
+  const [list, setList] = useState({ rows: [], notesCount: 0, showSubscribeButton: false, needSubscribe: false });
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [searchTerm, setSearchTerm] = useState("");
   const [alignment, setAlignment] = useState('All');
   const [isEdit, setIsEdit] = useState(false);
   const [editData, setEditData] = useState(null);
+  const [consultantsDialog, setConsultantsDialog] = useState(false);
 
   useEffect(() => {
     debouncedSearch();
@@ -53,8 +56,8 @@ function MyNotes() {
 
     getList = async () => {
       try {
-        const { data: { data: { data = [], notesCount = 0 } } } = await getNotes({ search: searchTerm, alignment })
-        setList({ rows: data, notesCount })
+        const { data: { data: { data = [], notesCount = 0, showSubscribeButton = false, needSubscribe = false } } } = await getNotes({ search: searchTerm, alignment })
+        setList({ rows: data, notesCount, showSubscribeButton, needSubscribe })
       } catch (error) {
         showToaterMessages(error.message, "error");
       }
@@ -85,6 +88,10 @@ function MyNotes() {
       } catch (error) {
         showToaterMessages(error.message, "error");
       }
+    },
+
+    handleCloseConsultantDetails = () => {
+      setConsultantsDialog(false)
     }
 
 
@@ -95,12 +102,26 @@ function MyNotes() {
       <InfoBox
         dataList={[{ label: 'Notes', value: list?.notesCount ?? 0 }]}
         label={'My Notes'}
-        button={<CustomButton
-          variant="contained"
-          size="small"
-          onClick={() => handleOpenUpdatePopup()}
-          ButtonText={"Add notes"}
-        />}
+        button={<div style={{ display: 'flex', gap: '10px' }}>
+
+          {list.showSubscribeButton &&
+            <CustomButton
+              variant="contained"
+              size="small"
+              onClick={() => {
+                setConsultantsDialog(true);
+              }}
+              ButtonText={"Subscribe"}
+            />
+          }
+
+          {!list?.needSubscribe && <CustomButton
+            variant="contained"
+            size="small"
+            onClick={() => handleOpenUpdatePopup()}
+            ButtonText={"Add notes"}
+          />}
+        </div>}
       />
       <Container>
         <UpdateLeadStatus
@@ -138,8 +159,23 @@ function MyNotes() {
             </ToggleButton>
           </ToggleButtonGroup>
         </Card> */}
-        <MyLeadsStatus list={list.rows} searchTerm={searchTerm}
-          handleSearch={handleSearch} alignment={alignment} handleChange={handleChange} handleOpenUpdatePopup={handleOpenUpdatePopup} onNoteDelete={onNoteDelete} />
+        <NoteSubscription
+          open={consultantsDialog}
+          handleClose={handleCloseConsultantDetails}
+          getList={getList}
+        />
+        {!list?.needSubscribe ? (!!list?.rows?.length ?
+          < MyLeadsStatus list={list.rows} searchTerm={searchTerm}
+            handleSearch={handleSearch} alignment={alignment} handleChange={handleChange} handleOpenUpdatePopup={handleOpenUpdatePopup} onNoteDelete={onNoteDelete} />
+          : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
+            <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
+              No data found!
+            </Typography>
+          </Grid>) : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
+          <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
+            To see notes, you need to subscribe.
+          </Typography>
+        </Grid>}
       </Container>
     </>
   );
