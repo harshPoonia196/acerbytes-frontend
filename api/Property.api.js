@@ -100,3 +100,7 @@ export const getBrokerCityList = () => {
 export const getReviews = (id) => {
   return axiosInstance.get(`/property/getReviews?brokerId=${id}`);
 };
+
+export const PropertyPlanPoints = (detailsPropertyId, data) => {
+  return axiosInstance.put(`/property/consultant-update/${detailsPropertyId}`, data);
+};
