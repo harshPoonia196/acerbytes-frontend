@@ -22,7 +22,7 @@ import { visuallyHidden } from "@mui/utils";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
 import Footer from "Components/Footer";
-import { getComparator, stableSort } from "utills/CommonFunction";
+import { capitalLizeName, getComparator, indianNumberingSystem, stableSort } from "utills/CommonFunction";
 import { listOfPages } from "Components/NavBar/Links";
 import { reactQueryKey } from "utills/Constants";
 import { useQueries } from "utills/ReactQueryContext";
@@ -30,22 +30,43 @@ import { getEnquiries } from "api/Util.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { countryCodeFormating, maskPhoneNumber } from "utills/utills";
 
 function Row(props) {
   const { row, history } = props;
   const [open, setOpen] = React.useState(false);
-
+const handlePropertyView = (link) => {
+  const baseUrl = window.location.origin;
+  const fullLink = `${baseUrl}/${link}`;
+  window.open(fullLink, "_blank");
+}
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>{row.project}</TableCell>
         <TableCell>{row.location}</TableCell>
         <TableCell>{row.phone}</TableCell>
-        <TableCell>{row.urgency}</TableCell>
+        <TableCell>
+        {row.propertyLink && (
+          <a
+            href={row.propertyLink}
+            onClick={(e) => {
+              e.preventDefault();
+              handlePropertyView(row.propertyLink);
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            {row?.project ?
+              `${capitalLizeName(row?.project)}`
+              : "-"}
+          </a>
+        )}
+          </TableCell>
+        {/* <TableCell>{row.urgency}</TableCell>
         <TableCell>{row.buyingType}</TableCell>
         <TableCell>{row.price}</TableCell>
         <TableCell>{row.enquired}</TableCell>
-        <TableCell>{row.consultedBy}</TableCell>
+        <TableCell>{row.consultedBy}</TableCell> */}
         <TableCell>
           <Chip
             label="View contact"
@@ -116,41 +137,49 @@ const headCells = [
     label: "Phone",
   },
   {
-    id: "urgency",
-    numeric: true,
-    disablePadding: false,
-    label: "Urgency",
+    id: "PropertyLink",
+    label: "Property link",
   },
   {
-    id: "buyingType",
-    numeric: true,
-    disablePadding: false,
-    label: "Buying type",
+    id: "ViewDetails",
+    label: "View",
   },
-  {
-    id: "budget",
-    numeric: true,
-    disablePadding: false,
-    label: "Max budget",
-  },
-  {
-    id: "enquired",
-    numeric: true,
-    disablePadding: false,
-    label: "Enquired",
-  },
-  {
-    id: "consultedBy",
-    numeric: true,
-    disablePadding: false,
-    label: "Consulted by",
-  },
-  {
-    id: "action",
-    numeric: true,
-    disablePadding: false,
-    label: "Action",
-  },
+  // {
+  //   id: "urgency",
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: "Urgency",
+  // },
+  // {
+  //   id: "buyingType",
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: "Buying type",
+  // },
+  // {
+  //   id: "budget",
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: "Max budget",
+  // },
+  // {
+  //   id: "enquired",
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: "Enquired",
+  // },
+  // {
+  //   id: "consultedBy",
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: "Consulted by",
+  // },
+  // {
+  //   id: "action",
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: "Action",
+  // },
 ];
 
 function EnhancedTableHead(props) {
@@ -212,18 +241,21 @@ export default function Enquiries() {
         if (success) {
           return data?.map((enquiry) => {
             return {
-              project: enquiry?.property?.overview?.projectName || "",
-              phone: `+${enquiry?.broker?.countryCode} ${enquiry?.broker?.startNumber
-                }${enquiry?.broker?.numberLength > 2
-                  ? new Array(enquiry?.broker?.numberLength - 1).join("*")
-                  : ""
-                }`,
+              project: enquiry?.property[0]?.overview?.projectName || "",
+              // phone: `+${enquiry.phone?.countryCode} ${enquiry?.broker?.startNumber
+              //   }${enquiry?.broker?.numberLength > 2
+              //     ? new Array(enquiry?.broker?.numberLength - 1).join("*")
+              //     : ""
+              //   }`,
+              phone: `${countryCodeFormating(enquiry.phone?.countryCode)} ${maskPhoneNumber(enquiry.phone?.number)}`,
+              propertyLink: enquiry.propertyLink,
               urgency: "Medium",
               price: enquiry?.property?.unitsPlan?.[0]?.bsp || "",
               enquired: enquiry?.leads?.length || 0,
               buyingType: enquiry?.property?.unitsPlan?.[0]?.propertyType || "",
               consultedBy: enquiry?.property?.consultants?.length || 0,
-              location: `${enquiry?.property?.location?.area} ${enquiry?.property?.location?.sector} ${enquiry?.property?.location?.state} ${enquiry?.property?.location?.city}`,
+              // location: `${enquiry?.property[0]?.location?.area} ${enquiry?.property[0]?.location?.sector} ${enquiry?.property[0]?.location?.state} ${enquiry?.property[0]?.location?.city}`,
+              location: `${enquiry?.property[0]?.location?.city}`,
               next: "yes",
             };
           });
@@ -259,7 +291,7 @@ export default function Enquiries() {
                   history.push(listOfPages.consultantJoinNow);
                 }}
               >
-                5,433
+                {indianNumberingSystem(rows?.length || 0)}
               </span>{" "}
               open real estate queries. Your next customer is just a click away
             </Typography>

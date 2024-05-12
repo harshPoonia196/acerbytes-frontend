@@ -180,3 +180,18 @@ export const ratingLabels = (rating) => {
   }
   return "";
 };
+
+export const maskPhoneNumber= (phoneNumber)=> {
+  // Check if the phoneNumber is valid
+  if (phoneNumber.length !== 10) {
+    return phoneNumber;
+  }
+
+  // Replace characters from index 2 to 9 with asterisks
+  const maskedDigits = phoneNumber.slice(2, 9).replace(/\d/g, '*');
+
+  // Concatenate the first two digits and masked digits
+  const maskedNumber = phoneNumber.slice(0, 2) + maskedDigits;
+
+  return maskedNumber;
+}
