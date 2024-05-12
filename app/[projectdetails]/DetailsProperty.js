@@ -545,6 +545,7 @@ const PropertyDetails = ({ params }) => {
         <EnquireNow
           open={openEnquiryForm}
           propertyData={propertyData[0]?.propertyData}
+          brokerCollectionId={propertyData[0]?.broker_collection_id}
           handleClose={handleCloseEnquiryForm}
           handleAction={handleOpenVerifyPopup}
           submitEnquiry={handleSubmitEnquiry}

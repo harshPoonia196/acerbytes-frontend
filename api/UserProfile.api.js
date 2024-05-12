@@ -39,7 +39,7 @@ export const submitEnquiry = (data) => {
     phone: { countryCode: data?.countryCode, number: `${data?.number}` },
     adId: data?.adId,
     propertyLink: data?.propertyLink,
-    brokerId: data?.brokerId,
+    brokerId: data?.brokerCollectionId || data?.brokerId || "",
     // userId: userDetail?._id,
   });
 };
