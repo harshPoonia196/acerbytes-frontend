@@ -52,6 +52,10 @@ const headCells = [
     label: "Project",
   },
   {
+    id: "property_id",
+    label: "Property id",
+  },
+  {
     id: "city",
     label: "City",
   },
@@ -168,6 +172,7 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
       >
         {row.project}
       </TableCell>
+      <TableCell>{row.propertyId ? row.propertyId : '-'}</TableCell>
       <TableCell>{row.city}</TableCell>
       <TableCell>{row.area}</TableCell>
       <TableCell>{row.sector}</TableCell>
@@ -256,7 +261,8 @@ const PropertyListTable = ({ setCount }) => {
       sector: item.location?.sector,
       status: item.overview?.status,
       modifiedData: item?.modifiedAt,
-      published: item?.published
+      published: item?.published,
+      propertyId: item?.property_id
     }));
   };
 
