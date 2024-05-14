@@ -111,9 +111,12 @@ export default function ClippedDrawer({ children }) {
   };
 
   const redirectUser = (url) => {
-    router.replace(url);
+    const {
+       search
+   } = window?.location
+    router.replace(url + (search ?? ""));
   };
-
+  
   const checkUserUrlAccess = (tempUserDetails) => {
     checkUrlAccess(
       isLoggedIn(),

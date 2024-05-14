@@ -783,7 +783,7 @@ const PropertyDetailsPage = ({ params }) => {
               handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
             />
-            <MoreSimilarPropertyCard />
+            <MoreSimilarPropertyCard propertyData={propertyData} />
           </Grid>
 
           {/* Dont Touch this */}
