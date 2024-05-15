@@ -59,6 +59,10 @@ const headCells = [
     label: "Name",
   },
   {
+    id: "consultant_id",
+    label: "Consultant ID",
+  },
+  {
     id: "mobileNumber",
     label: "Mobile number",
   },
@@ -156,6 +160,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           {row?.brokerDetails?.name?.firstName}{" "}
           {row?.brokerDetails?.name?.lastName}
         </TableCell>
+        <TableCell>{row?.consultant_id}</TableCell>
         <TableCell>
           {countryCodeFormating(row?.brokerDetails?.phone?.countryCode)}{" "}
           {row?.brokerDetails?.phone?.number}
