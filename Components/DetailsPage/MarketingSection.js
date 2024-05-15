@@ -17,6 +17,7 @@ import BusinessIcon from '@mui/icons-material/Business'
 import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { shortPriceFormatter } from "utills/CommonFunction";
+import DOMPurify from 'dompurify';
 
 function MarketingSection(props) {
   const { overviewData } = props;
@@ -179,6 +180,9 @@ function MarketingSection(props) {
             <OverviewRatingCard />
           </Box>
         </Box>
+        <Card sx={{ p: 2, mb: 2 }}>
+          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(overviewData?.marketing?.metaDescription) }} />
+        </Card>
         <Card id="builder" >
           <Box sx={{ display: "flex", p: 2 }}>
             <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>

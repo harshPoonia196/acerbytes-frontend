@@ -42,6 +42,7 @@ function RowStructure({ row, router }) {
       >
         <TableCell>{row?.name.firstName}</TableCell>
         <TableCell>{row?.name.lastName}</TableCell>
+        <TableCell>{row?.consultant_id}</TableCell>
         <TableCell>{row?.serviceDetails?.company || ''}</TableCell>
         <TableCell>{`${(row?.phone?.countryCode) ? '+' + row?.phone?.countryCode : ''}${row?.phone?.number}`}</TableCell>
         <TableCell>{row?.serviceDetails?.reraNumber || ''}</TableCell>
