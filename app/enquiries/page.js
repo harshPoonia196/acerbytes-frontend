@@ -247,7 +247,7 @@ export default function Enquiries() {
               //     ? new Array(enquiry?.broker?.numberLength - 1).join("*")
               //     : ""
               //   }`,
-              phone: `${countryCodeFormating(enquiry.phone?.countryCode)} ${maskPhoneNumber(enquiry.phone?.number)}`,
+              phone: `${countryCodeFormating(enquiry.phone?.countryCode)} ${enquiry.phone?.number}********`,
               propertyLink: enquiry.propertyLink,
               urgency: "Medium",
               price: enquiry?.property?.unitsPlan?.[0]?.bsp || "",
@@ -279,8 +279,8 @@ export default function Enquiries() {
   return (
     <>
       {isLoading && <Loader />}
-      <Box sx={{ backgroundColor: "white" }}>
-        <Container maxWidth="lg" sx={{ pb: "0 !important" }}>
+      <Box sx={{ backgroundColor: "white" }} >
+        <Container maxWidth="lg" sx={{ pb: "0 !important" }} >
           <Box sx={{ py: 4 }}>
             <Typography variant="h1" sx={{ color: "#000", fontWeight: 300 }}>
               Explore a world of possibilities with{" "}
@@ -326,7 +326,7 @@ export default function Enquiries() {
           </Box>
         </Container>
       </Box>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" >
         <Typography
           variant="h6"
           sx={{
@@ -339,8 +339,11 @@ export default function Enquiries() {
         >
           Leads panel
         </Typography>
-        <TableContainer component={Paper}>
-          <Table aria-label="collapsible table" size="small">
+        <TableContainer component={Paper} style={{     maxHeight: "350px",
+    overflowY: "auto",
+    padding: "10px",
+    border: "1px solid #ccc"}} >
+          <Table aria-label="collapsible table" size="small" >
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -360,6 +363,7 @@ export default function Enquiries() {
           </Table>
         </TableContainer>
       </Container>
+      <div style={{    paddingBottom: "70px" }} ></div>
       <Footer />
     </>
   );
