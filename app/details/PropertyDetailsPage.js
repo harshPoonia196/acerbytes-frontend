@@ -248,7 +248,7 @@ const PropertyDetailsPage = ({ params }) => {
           `${detailsPropertyId}${userDetails?._id ? `?userId=${userDetails?._id}` : ""}`
         );
         if (res.status === 200) {
-          if (res.data?.data?._id) {
+          if (res.data?.data) {
             setEnquiredInfo(res.data?.data);
           }
         }
