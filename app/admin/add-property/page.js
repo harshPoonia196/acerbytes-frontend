@@ -740,7 +740,6 @@ function AddProperty() {
       }
     
     }
-
     else {
       let difference =
         +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
@@ -758,7 +757,16 @@ function AddProperty() {
     //   totalScored =
     //     form.overallAssessment.scoredRating + parseInt(incomingValue);
     // }
+
     let calc = (totalScored / totalRatingModule) * 10;
+
+    if (firstKeyName === "overview"){
+      if (secondKeyName === "constructionProgress" && thirdKeyName === "builderScore") {
+        calc = ((+form?.[firstKeyName]?.[thirdKeyName] / 5) * 10 ) + incomingValue;
+      } else {
+        calc = (incomingValue / 5) * 10;
+      }
+    }
     if (seperateCalc) {
       setForm({
         ...form,
@@ -876,7 +884,7 @@ function AddProperty() {
     else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
     } else if (score === true) {
-      let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
+      let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName, false, thirdKeyName)
       let total = totalRating
       // let totalRating = form.overview.status ==="underconstruction"? 75:80;
       let totalScored;

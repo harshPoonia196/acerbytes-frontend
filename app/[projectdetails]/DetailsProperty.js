@@ -46,7 +46,7 @@ import {
   propertyUserVerifiedKey,
   userLeadId,
 } from "utills/Constants";
-import { activeAdGet, checkEnquiryOnActiveLink, favPropertyCreate } from "api/Property.api";
+import { activeAdGet, activedViewCount, checkEnquiryOnActiveLink, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
@@ -234,6 +234,29 @@ const PropertyDetails = ({ params }) => {
       clearInterval(timer);
       clearTimeout(expiredModalTimeout);
     };
+  }, []);
+
+
+  const getViewCount = async () => {
+    try {
+      setLoading(true);
+      let response = await activedViewCount(getId);
+      if (response.status === 200) {
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getViewCount()
   }, []);
 
   useEffect(() => {
