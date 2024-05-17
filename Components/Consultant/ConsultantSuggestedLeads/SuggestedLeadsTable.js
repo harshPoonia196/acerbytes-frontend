@@ -290,7 +290,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
 
   const manageBuyNow = async (leadId) => {
     try {
-      let response = await buySuggestedLeads({ leadId, brokerId: userDetails?._id, googleID: userDetails?.googleID });
+      let response = await buySuggestedLeads({ leadId, googleID: userDetails?.googleID });
       if (response.status === 200) {
         setBuyModalOpen(true);
         setBuyNowResponseMessage(response.data.message || "Fetched leads successfully please check my leads");
