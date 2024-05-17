@@ -45,14 +45,14 @@ function MoreSimilarPropertyCard({propertyData}) {
                                 </Typography>
                             </Card>
                         </Grid>
-                        <Grid item xs={4}>
+                        {/* <Grid item xs={4}>
                             <Card sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }}>
                                 <Typography variant='h2'>4</Typography>
                                 <Typography variant='h6'>
                                     Residental studios
                                 </Typography>
                             </Card>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </Box>
             </Card>

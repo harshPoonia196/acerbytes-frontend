@@ -17,7 +17,7 @@ function PropertyList() {
     <>
       <CustomAdminBreadScrumbs text='Property list' />
       <InfoBox dataList={[{ label: 'Published', value: count?.noOfProperties },
-      { label: 'Drafted', value: count?.noOfProperties + '(static)' }]} />
+      { label: 'Drafted', value: count?.noOfProperties }]} />
       <Container>
         <PropertyListTable setCount={setCount} />
       </Container>

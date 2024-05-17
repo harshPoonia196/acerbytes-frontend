@@ -348,7 +348,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide,select
                       e,
                       "overview",
                       "constructionProgress",
-                      undefined,
+                      "builderScore",
                       undefined,
                       undefined,
                       undefined,
