@@ -373,14 +373,15 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
               />
               <TableBody>
                 {rows.map((row) => {
-                  const { adId = null, brokerId = null, userId = null } = row;
-                  if (adId && brokerId && userId) {
+                  const { adId = null, brokerId = [], userId = null } = row;
+                  if (adId && !!brokerId?.length && userId) {
                     row.source = LINK.unique;
-                  } else if (!adId && brokerId && userId) {
+                  } else if (!adId && !!brokerId?.length && userId) {
                     row.source = LINK.consultant;
-                  } else if (!adId && !brokerId && userId) {
+                  } else if (!adId && !brokerId?.length && userId) {
                     row.source = LINK.acrebytes;
                   }
+                  
                   return <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} router={router} alignment={alignment} />
                 })}
               </TableBody>
