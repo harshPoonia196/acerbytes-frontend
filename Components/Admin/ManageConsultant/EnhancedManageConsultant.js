@@ -6,6 +6,7 @@ import {
     TableCell,
     TableSortLabel,
 } from "@mui/material";
+import { visuallyHidden } from "@mui/utils";
 import React from "react";
 
 const headCells = [
@@ -16,6 +17,10 @@ const headCells = [
     {
         id: "LastName",
         label: "Last name",
+    },
+    {
+        id: "consultant_id",
+        label: "Consultant ID",
     },
     {
         id: "CompanyName",

@@ -49,6 +49,10 @@ const headCells = [
     label: "Property name",
   },
   {
+    id: "pageViewCount",
+    label: "Page View",
+  },
+  {
     id: "link",
     label: "Link",
   },
@@ -137,6 +141,7 @@ function RowStructure({ row, alignmentValue, history }) {
       <TableCell>{row?.phone}</TableCell>
       <TableCell>{row?.propertyType}</TableCell>
       <TableCell>{row?.propertyName}</TableCell>
+      <TableCell>{row?.PageViewCount || "-"}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy consultant property link">
           <IconButton sx={{ fontSize: "1rem !important" }}
@@ -221,7 +226,8 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
         status: item?.status,
         validFrom: item?.created_at,
         validTo: item?.expired_at,
-        expiresIn: item?.expired_at
+        expiresIn: item?.expired_at,
+        PageViewCount: item?.viewCount
       }
     });
   };

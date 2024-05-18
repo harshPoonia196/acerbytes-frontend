@@ -52,7 +52,7 @@ function PropertyList({ params }) {
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const inputRef = useRef(null);
   const [selectedOptions, setSelectedOptions] = useState(
-    params.location ? { city: decodeURIComponent(params.location) } : {}
+    {}
   );
   const [propertyvalue, setPropertyvalue] = useState("");
   const [selectOption, setSelectOption] = useState({});
@@ -132,6 +132,9 @@ function PropertyList({ params }) {
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data);
         setSelectOption({ ...transform });
+        if(params.location && transform?.builder.includes(decodeURIComponent(params.location))){
+          setSelectedOptions((pre => ({...pre, builder: decodeURIComponent(params.location) })));
+        }
       }
     } catch (error) {
       showToaterMessages(
@@ -151,6 +154,20 @@ function PropertyList({ params }) {
           newdata?.some(item => item.city === cityDetail.city));
         let transformLocation = transformDocumentsLocation(filteredCityDetails);
         setLocationData({ ...transformLocation });
+        if(params.location && Object.keys(transformLocation).includes(decodeURIComponent(decodeURIComponent(params.location)))){
+          setSelectedOptions({city: decodeURIComponent(params.location)});
+          setLocationDisable(false);
+        } else{
+          let a = Object.keys(transformLocation)
+          for (let index = 0; index < a.length; index++) {
+            const element = transformLocation[a[index]];
+            if(element.includes(decodeURIComponent(params.location))){
+              setSelectedOptions({city: a[index], 
+              location: decodeURIComponent(params.location)});
+              setLocationDisable(false);
+            }
+          }
+        }
         setCities(Object.keys(transformLocation));
       } else {
         console.log("err");

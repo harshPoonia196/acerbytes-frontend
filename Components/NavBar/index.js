@@ -111,9 +111,12 @@ export default function ClippedDrawer({ children }) {
   };
 
   const redirectUser = (url) => {
-    router.replace(url);
+    const {
+       search
+   } = window?.location
+    router.replace(url + (search ?? ""));
   };
-
+  
   const checkUserUrlAccess = (tempUserDetails) => {
     checkUrlAccess(
       isLoggedIn(),
@@ -161,7 +164,7 @@ export default function ClippedDrawer({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {(userDetails.role !== "admin" && userDetails.role !== 'superAdmin') && (
+      {(userDetails.role !== "admin" && userDetails.role !== 'superAdmin' && userDetails.role !== ROLE_CONSTANTS.customerSupport) && (
         <MenuItem
           onClick={() => {
             router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);

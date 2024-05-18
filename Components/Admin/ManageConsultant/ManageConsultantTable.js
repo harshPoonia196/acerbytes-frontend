@@ -118,15 +118,17 @@ function ManageConsultantTable({ user }) {
       />
 
       <Container>
-        <Grid sx={{ display: "flex", gap: '2%', mb: 2 }}>
-          <Card sx={{ width: '49%' }}>
-            <CustomSearchInput sx={{ mt: 1 }} value={searchTerm}
-              onChange={handleSearch}
-            />
-          </Card>
-          <Card sx={{ width: '49%' }} className={'select_city_consultant'}>
+        <Grid container spacing={2} sx={{ mb: 2 }}>
+          <Grid item xs={6}>
+            <Card>
+              <CustomSearchInput value={searchTerm}
+                onChange={handleSearch}
+              />
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
             <SelectTextFields
-              sx={{ mt: 1 }}
+              sx={{ border: 'none' }}
               // isEdit={true}
               label="Select City"
               name={"city"}
@@ -136,11 +138,12 @@ function ManageConsultantTable({ user }) {
               }
               list={citiesOptions}
             />
-          </Card>
+          </Grid>
         </Grid>
 
         {!!consultantList.rows.length ? (
           <TableContainer component={Paper}>
+            {console.log(consultantList)}
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <EnhancedTableHead
                 order={order}

@@ -60,15 +60,15 @@ export const CommonMenuList = [
 ];
 export const ToBeRemoved = [
   {
-    label: "Leads panel tbr",
+    label: "Leads panel",
     route: listOfPages.commonEnquiries,
     icon: <TableRowsIcon fontSize="small" />,
   },
-  {
-    label: "Page not found tbr",
-    route: listOfPages.pageNotFound,
-    icon: <CloseIcon fontSize="small" />,
-  },
+  // {
+  //   label: "Page not found tbr",
+  //   route: listOfPages.pageNotFound,
+  //   icon: <CloseIcon fontSize="small" />,
+  // },
 ];
 
 export const UserMenuList = [
@@ -100,11 +100,11 @@ export const ConsultantMenuList = [
     route: listOfPages.consultantRatings,
     icon: <AccountCircleIcon fontSize="small" />,
   },
-  {
-    label: "My leads",
-    route: listOfPages.consultantMyLeads,
-    icon: <PlaylistAddCheckIcon fontSize="small" />,
-  },
+  // {
+  //   label: "My leads",
+  //   route: listOfPages.consultantMyLeads,
+  //   icon: <PlaylistAddCheckIcon fontSize="small" />,
+  // },
   {
     label: "My notes",
     route: listOfPages.consultantMyNotes,

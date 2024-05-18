@@ -127,7 +127,7 @@ const PropertyDetailsPage = ({ params }) => {
   const [consultantsDialog, setConsultantsDialog] = useState(false);
 
   const shuffle = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
+    for (let i = a?.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
     }
@@ -149,6 +149,7 @@ const PropertyDetailsPage = ({ params }) => {
         setPropertyData({ ...data });
       }
     } catch (error) {
+      console.log(error.message)
       showToaterMessages(
         error?.response?.data?.message ||
         error?.message ||
@@ -247,7 +248,7 @@ const PropertyDetailsPage = ({ params }) => {
           `${detailsPropertyId}${userDetails?._id ? `?userId=${userDetails?._id}` : ""}`
         );
         if (res.status === 200) {
-          if (res.data?.data?._id) {
+          if (res.data?.data) {
             setEnquiredInfo(res.data?.data);
           }
         }
@@ -783,7 +784,7 @@ const PropertyDetailsPage = ({ params }) => {
               handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
             />
-            <MoreSimilarPropertyCard />
+            <MoreSimilarPropertyCard propertyData={propertyData} />
           </Grid>
 
           {/* Dont Touch this */}

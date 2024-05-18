@@ -53,6 +53,7 @@ function PropertyCard(props) {
   }, [propertyDetails])
 
   const layoutData = useMemo(() => {
+    console.log(propertyDetails?.unitsPlan?.uniqueLayouts, propertyDetails?._id)
     const withoutUniqueLayout = [...propertyDetails?.unitsPlan?.planList?.filter(item => !item.propertyLayout)]?.map((item) => `${item?.width}*${item?.length}`)
     return [...propertyDetails?.unitsPlan?.uniqueLayouts, ...withoutUniqueLayout]
   }, [propertyDetails])
