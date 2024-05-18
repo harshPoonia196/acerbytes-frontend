@@ -100,11 +100,11 @@ export const ConsultantMenuList = [
     route: listOfPages.consultantRatings,
     icon: <AccountCircleIcon fontSize="small" />,
   },
-  // {
-  //   label: "My leads",
-  //   route: listOfPages.consultantMyLeads,
-  //   icon: <PlaylistAddCheckIcon fontSize="small" />,
-  // },
+  {
+    label: "My leads",
+    route: listOfPages.consultantMyLeads,
+    icon: <PlaylistAddCheckIcon fontSize="small" />,
+  },
   {
     label: "My notes",
     route: listOfPages.consultantMyNotes,
