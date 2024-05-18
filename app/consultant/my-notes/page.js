@@ -132,50 +132,13 @@ function MyNotes() {
           getList={getList}
           setIsEdit={setIsEdit}
         />
-        {/* <Card sx={{ mb: 2 }}>
-          <ToggleButtonGroup
-            color="primary"
-            value={alignment}
-            exclusive
-            aria-label="Platform"
-            sx={{ display: "flex" }}
-          >
-            <ToggleButton
-              size="small"
-              value="all"
-              sx={{ flex: 1, border: "none" }}
-              onClick={() => {
-                router.push(listOfPages.consultantMyLeads);
-              }}
-            >
-              All (10 static)
-            </ToggleButton>
-            <ToggleButton
-              size="small"
-              value="notes"
-              sx={{ flex: 1, border: "none" }}
-            >
-              Notes (10 static)
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Card> */}
         <NoteSubscription
           open={consultantsDialog}
           handleClose={handleCloseConsultantDetails}
           getList={getList}
         />
-        {!list?.needSubscribe ? (!!list?.rows?.length ?
-          < MyLeadsStatus list={list.rows} searchTerm={searchTerm}
+        < MyLeadsStatus list={list} searchTerm={searchTerm}
             handleSearch={handleSearch} alignment={alignment} handleChange={handleChange} handleOpenUpdatePopup={handleOpenUpdatePopup} onNoteDelete={onNoteDelete} />
-          : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
-            <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
-              No data found!
-            </Typography>
-          </Grid>) : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
-          <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
-            To see notes, you need to subscribe.
-          </Typography>
-        </Grid>}
       </Container>
     </>
   );
