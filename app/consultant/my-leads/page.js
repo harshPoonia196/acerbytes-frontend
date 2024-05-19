@@ -46,7 +46,6 @@ function MyLeads() {
       <InfoBox
         dataList={[{ label: 'Leads', value: leadsCount }]}
         label={'My Leads'}
-        button={<CustomButton variant="contained" size="small" onClick={handleOpenUpdatePopup} ButtonText={"Add Notes"} />}
       />
       <Container>
         <UpdateLeadStatus

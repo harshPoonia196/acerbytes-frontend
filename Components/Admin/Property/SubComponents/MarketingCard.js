@@ -10,6 +10,8 @@ import {
   Divider,
   IconButton,
   Button,
+  Tooltip,
+  Fade,
 } from "@mui/material";
 import Image from "next/image";
 
@@ -28,6 +30,9 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 function MarketingCard({ isEdit, errors, form, handleChange }) {
+
+  const imageDoc = `image at least 200x200 pixels, Image aspect ratio of 1:1, file size under 300 KB`;
+
   const { tagLine, description, image, metaDescription } = form.marketing;
   const { openSnackbar } = useSnackbar();
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
@@ -107,39 +112,43 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                 src={image}
               />
             )}
-            <Card sx={{ display: "flex", p: 2 }}>
-              <Typography sx={{ flex: 1, alignSelf: "center" }}>
-                Upload
-              </Typography>
-              <>
-                <input
-                  id="contained-button-file"
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleImageSelect}
-                  accept="image/x-png,image/gif,image/jpeg"
-                  style={{ display: "none" }}
-                />
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-end",
-                  }}
-                >
-                  <label htmlFor="contained-button-file">
-                    <Button
-                      variant="contained"
-                      component="span"
-                      startIcon={<AttachFileIcon />}
-                    >
-                      Banner Image
-                    </Button>
-                  </label>
-                  {/* <Typography sx={{ flex: 1, alignSelf: 'center', marginTop: "5px" }}>{selectedImage ? selectedImage : image}</Typography> */}
-                </div>
-              </>
-            </Card>
+              <Tooltip title={imageDoc} TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}>
+              <Card sx={{ display: "flex", p: 2 }}>
+                  <Typography sx={{ flex: 1, alignSelf: "center" }}>
+                    Upload
+                  </Typography>
+                
+                <>
+                  <input
+                    id="contained-button-file"
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageSelect}
+                    accept="image/x-png,image/gif,image/jpeg"
+                    style={{ display: "none" }}
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-end",
+                    }}
+                  >
+                    <label htmlFor="contained-button-file">
+                      <Button
+                        variant="contained"
+                        component="span"
+                        startIcon={<AttachFileIcon />}
+                      >
+                        Banner Image
+                      </Button>
+                    </label>
+                    {/* <Typography sx={{ flex: 1, alignSelf: 'center', marginTop: "5px" }}>{selectedImage ? selectedImage : image}</Typography> */}
+                  </div>
+                </>
+              </Card>
+            </Tooltip>
           </Grid>
           <NewInputFieldStructure
             label="Tag line"

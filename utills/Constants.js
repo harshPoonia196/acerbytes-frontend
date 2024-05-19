@@ -664,3 +664,11 @@ export const NOTES_TYPE = {
   COMPLETED: "Completed",
   NEXT: "Next"
 }
+
+export const transactionType = {
+  PAYMENT_ADD: 'payment_add',
+  SUGGESTED_LEAD_BUY: 'suggested_lead_buy',
+  CONSULTANT_SUBSCRIPTION: 'consultant_subscription',
+  ACTIVATE_URL: 'activate_url',
+  NOTE_SUBSCRIPTION: 'note_subscription'
+}

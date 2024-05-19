@@ -2,25 +2,20 @@
 
 import {
   Container,
-  Typography,
   Card,
-  CardContent,
-  CardMedia,
   Grid,
-  Divider,
-  Tabs,
-  Tab,
   Box,
-  Chip,
-  Rating,
   Toolbar,
-  Avatar,
   Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import Fab from "@mui/material/Fab";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
@@ -41,7 +36,7 @@ import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 // import { useSearchParams } from 'next/navigation'
 // import { useRouter } from 'next/router';
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { makeStyles, withStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import {
   enquiryFormKey,
@@ -51,15 +46,17 @@ import {
   propertyUserVerifiedKey,
   userLeadId,
 } from "utills/Constants";
-import { activeAdGet, checkEnquiryOnActiveLink, favPropertyCreate } from "api/Property.api";
+import { activeAdGet, activedViewCount, checkEnquiryOnActiveLink, favPropertyCreate } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import UserDetailsAd from "Components/DetailsPage/UserDetailsAd";
 import { submitEnquiry, submitEnquiryUnauth, updateEnquiryVerified, updateEnquiryVerifiedByUserId } from "api/UserProfile.api";
-import { clearItem, getItem, setItem } from "utills/utills";
+import { clearItem, getItem } from "utills/utills";
 import MoreSimilarPropertyCard from "Components/Admin/Property/SubComponents/MoreSimilarPropertyCard";
+import colors from "styles/theme/colors";
+import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpinner";
 
 const tabHeight = 200;
 
@@ -105,7 +102,10 @@ const PropertyDetails = ({ params }) => {
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([]);
   const [contactPermissionToView, setContactPermissionToView] = useState(false);
+  const [progressCount, setProgressCount] = useState(6);
   const [leadId, setLeadId] = useState("");
+  const expiredModalOpenRef = useRef(false)
+  let expiredModalTimeout;
 
   const linkIdData = params.projectdetails;
   const parts = linkIdData.split("-");
@@ -135,9 +135,14 @@ const PropertyDetails = ({ params }) => {
   const activeAdGetProperty = async () => {
     try {
       setLoading(true);
-      let res = await activeAdGet(
-        `${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ""}`
-      );
+      let res;
+      if(isLogged && userDetails?._id) {
+       let url = `${getId}${`?brokerId=${userDetails?._id}`}`
+        res = await activeAdGet(url);
+      }else{
+       let url = `${getId}`
+        res = await activeAdGet(url);
+      }
       if (res.status === 200) {
         setPropertyData(res.data?.data);
         const expiredAt = new Date(res?.data?.data[0]?.expired_at);
@@ -145,8 +150,11 @@ const PropertyDetails = ({ params }) => {
         const brokerData = res.data.data[0]?.brokerData;
         if (brokerData && (brokerData?.isBlocked || brokerData.role !== 'broker')) {
           router.push(`details/${constructPropertyUrl(res.data?.data[0])}`);
-        } else if (expiredAt && now > expiredAt) {
-          router.push(`details/${constructPropertyUrl(res.data?.data[0])}`);
+        } else if (expiredAt && (now > expiredAt) && !expiredModalOpenRef.current) {
+          expiredModalOpenRef.current = true
+          expiredModalTimeout = setTimeout(() => {
+            router.push(`details/${constructPropertyUrl(res.data?.data[0])}`);
+          }, 5000);
         }
       }
     } catch (error) {
@@ -160,15 +168,22 @@ const PropertyDetails = ({ params }) => {
       setLoading(false);
     }
   };
+  const handleDetailsPageClick = () =>{
+    router.push(`details/${constructPropertyUrl(propertyData?.[0])}`);
+  }
 
   const checkPropertyIsEnquired = async () => {
     try {
       setLoading(true);
-      let res = await checkEnquiryOnActiveLink(
-        `${getId}${userDetails?._id ? `?brokerId=${userDetails?._id}` : ""}`
-      );
+      let url = "";
+      if(userDetails?._id) {
+        url = `${getId}${`?brokerId=${userDetails?._id}`}`
+      } 
+      if(userDetails?._id == undefined){
+        url = `${getId}`
+      }
+      let res = await checkEnquiryOnActiveLink(url);
       if (res.status === 200) {
-        // console.log("res.data?.data: ", res.data?.data?._id);
         setContactPermissionToView(!!res.data?.data?._id);
       }
     } catch (error) {
@@ -208,6 +223,41 @@ const PropertyDetails = ({ params }) => {
   const showToaterMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
+
+   useEffect(() => {
+    const timer = setInterval(() => {
+      setProgressCount((prevProgress) => (prevProgress <= 0 ? 6 : prevProgress - 1)); // Countdown from 6 to 0
+    }, 1000);
+
+    // Clear the timeout when the component unmounts
+    return () => {
+      clearInterval(timer);
+      clearTimeout(expiredModalTimeout);
+    };
+  }, []);
+
+
+  const getViewCount = async () => {
+    try {
+      setLoading(true);
+      let response = await activedViewCount(getId);
+      if (response.status === 200) {
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getViewCount()
+  }, []);
 
   useEffect(() => {
     activeAdGetProperty();
@@ -742,6 +792,46 @@ const PropertyDetails = ({ params }) => {
               </Box>
             )}
         </Container>
+        {expiredModalOpenRef.current && <Dialog open={expiredModalOpenRef.current}>
+            
+          <DialogContent sx={{ padding: "25px 30px !important", minWidth: "415px" }}>
+            <Grid sx={{display: "flex", alignItems: "center", gap: "10px"}}>
+              <CircularProgressSpinner value={progressCount} />
+              <DialogContentText>
+                Link is not available please check details page
+              </DialogContentText>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="h6"
+              sx={{
+                fontWeight: 600,
+                color: "white",
+                backgroundColor: colors?.BLACK,
+                "&:hover": {
+                  backgroundColor: colors?.BLACK,
+                  boxShadow: "none",
+                },
+              }} onClick={()=> { expiredModalOpenRef.current = false}}  color="primary">
+              Close
+            </Button>
+            <Button
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                color: "white",
+                backgroundColor: colors?.BLACK,
+                "&:hover": {
+                  backgroundColor: colors?.BLACK,
+                  boxShadow: "none",
+                },
+              }}
+              onClick={handleDetailsPageClick}
+            >
+              Details Page
+            </Button>
+          </DialogActions>
+        </Dialog> }
       </Box>
     </>
   );

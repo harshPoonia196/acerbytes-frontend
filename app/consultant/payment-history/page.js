@@ -13,6 +13,7 @@ import Loading from "Components/CommonLayouts/Loading";
 import { listOfPages } from "Components/NavBar/Links";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { transactionType } from "utills/Constants";
 
 function PaymentHistory(props) {
   const { setBrokerPoints, brokerBalance, userDetails } = useAuth();
@@ -48,6 +49,21 @@ function PaymentHistory(props) {
   const showToaterMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
+
+  const filterTransaction = (transaction) => {
+    const data = [];
+    let latest_index = 0;
+    for (let i = 0; i < transaction.length; i++) {
+      const history = transaction[i];
+      if(history?.transactionType === transactionType.PAYMENT_ADD){
+         data.push({...history, childTransaction: []})
+         latest_index = data.length - 1;
+      } else {
+        data?.[latest_index]?.childTransaction?.push(history);
+      }
+    }
+    return data.reverse();
+  }
 
 
 
@@ -112,7 +128,7 @@ function PaymentHistory(props) {
 
       />
       <Container>
-        {paymentHistory?.map((history, index) => {
+        {filterTransaction(paymentHistory)?.map((history, index) => {
           return <Card sx={{ mb: 1 }}>
             <HistoryCard history={history} key={index} />
           </Card>

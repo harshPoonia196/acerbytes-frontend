@@ -38,11 +38,8 @@ import {
 import { debounce } from "lodash";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import CustomSearch from "Components/CommonLayouts/CustomSearch";
-import { useSearchParams } from "next/navigation";
 
 function PropertyList({ params }) {
-  const searchParams = useSearchParams();
-  let builderData = searchParams.get("builder");
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [alignment, setAlignment] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -157,9 +154,8 @@ function PropertyList({ params }) {
           newdata?.some(item => item.city === cityDetail.city));
         let transformLocation = transformDocumentsLocation(filteredCityDetails);
         setLocationData({ ...transformLocation });
-        console.log(params.location);
         if (params.location && Object.keys(transformLocation).includes(decodeURIComponent(decodeURIComponent(params.location)))) {
-          setSelectedOptions({ city: decodeURIComponent(params.location), ...(builderData ? { builder: builderData } : {}) });
+          setSelectedOptions({ city: decodeURIComponent(params.location) });
           setLocationDisable(false);
         } else {
           let a = Object.keys(transformLocation)
@@ -168,7 +164,7 @@ function PropertyList({ params }) {
             if (element.includes(decodeURIComponent(params.location))) {
               setSelectedOptions({
                 city: a[index],
-                location: decodeURIComponent(params.location), ...(builderData ? { builder: builderData } : {})
+                location: decodeURIComponent(params.location)
               });
               setLocationDisable(false);
             }

@@ -104,3 +104,7 @@ export const getReviews = (id) => {
 export const PropertyPlanPoints = (detailsPropertyId, data) => {
   return axiosInstance.put(`/property/consultant-update/${detailsPropertyId}`, data);
 };
+
+export const activedViewCount = (id) => {
+  return axiosInstance.get(`/activeAd/viewCount/${id}`);
+};

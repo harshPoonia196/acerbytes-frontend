@@ -5,7 +5,7 @@ import { Card, Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import colors from 'styles/theme/colors';
 import LeadStatusCard from './LeadStatusCard';
 import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
-export default function MyLeadsStatus({ list = [], searchTerm, handleSearch, alignment, handleChange, handleOpenUpdatePopup, onNoteDelete }) {
+export default function MyLeadsStatus({ list: { rows = [], notesCount = 0, showSubscribeButton = false, needSubscribe = false } = {}, searchTerm, handleSearch, alignment, handleChange, handleOpenUpdatePopup, onNoteDelete }) {
     return (
         <>
             <Grid container>
@@ -33,16 +33,28 @@ export default function MyLeadsStatus({ list = [], searchTerm, handleSearch, ali
                         </ToggleButtonGroup>
                     </Card>
                 </Grid>
-                {list.map((res) => <LeadStatusCard
-                    name={res.fullName} actionType={res.type + ' action'} status={res.status}
-                    comment={res.note}
-                    type={res.type}
-                    userId={res?.user?._id}
-                    noteId={res?._id}
-                    time={new Date(res?.time).toLocaleString()}
-                    handleOpenUpdatePopup={handleOpenUpdatePopup}
-                    onNoteDelete={onNoteDelete}
-                />)}
+                {
+                    !needSubscribe ? (!!rows?.length ?
+                        rows.map((res) => <LeadStatusCard
+                            name={res.fullName} actionType={res.type + ' action'} status={res.status}
+                            comment={res.note}
+                            type={res.type}
+                            userId={res?.user?._id}
+                            noteId={res?._id}
+                            time={new Date(res?.time).toLocaleString()}
+                            handleOpenUpdatePopup={handleOpenUpdatePopup}
+                            onNoteDelete={onNoteDelete}
+                        />)
+                        : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
+                            <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
+                                No data found!
+                            </Typography>
+                        </Grid>
+                    ) : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
+                        <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
+                            To see notes, you need to subscribe.
+                        </Typography>
+                    </Grid>}
             </Grid>
         </>
     );

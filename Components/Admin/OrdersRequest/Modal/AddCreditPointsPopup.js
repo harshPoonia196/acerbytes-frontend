@@ -89,7 +89,7 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             </Typography>
           </Grid>
           <InputField
-            type="number"
+            type="text"
             label="Enter received payment"
             handleChange={handleChange}
             value={receivedPayment}

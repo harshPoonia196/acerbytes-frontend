@@ -51,6 +51,10 @@ const headCells = [
     label: "City",
   },
   {
+    id: "pageViewCount",
+    label: "Page View",
+  },
+  {
     id: "link",
     label: "Link",
   },
@@ -147,6 +151,7 @@ function RowStructure({ row, history }) {
       <TableCell>{row?.propertyType}</TableCell>
       <TableCell>{row?.propertyName}</TableCell>
       <TableCell>{'city static'}</TableCell>
+      <TableCell>{row?.PageViewCount || "-"}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy link">
           <IconButton sx={{ fontSize: "1rem !important" }}
@@ -225,7 +230,8 @@ function MyLinksTable({ setCount }) {
         status: item?.status,
         validFrom: item?.created_at,
         validTo: item?.expired_at,
-        expiresIn: item?.expired_at
+        expiresIn: item?.expired_at,
+        PageViewCount: item?.viewCount
       };
     });
   };
