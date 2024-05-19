@@ -11,7 +11,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import colors from 'styles/theme/colors';
 
-function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc,scoreChange }) {
+function InvestmentCard({ isEdit, form, handleChange, moduleScoreCalc, scoreChange }) {
 
     const { forEndUse, expectedFurtherApp, appTillNow } = form.valueForMoney
 
@@ -27,32 +27,32 @@ function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc,scoreChange
                     </Typography>
 
                     <Box sx={{ alignSelf: "center" }}>
-              <Card
-                sx={{
-                  width: "fit-content",
-                  backgroundColor: colors?.BLACK,
-                  borderRadius: "4px !important",
-                  m: 0,
-                  ml: "auto !important",
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: 600,
-                    width: "fit-content",
-                    color: "white",
-                    p: 0.5,
-                    px: 1,
-                    cursor: "pointer",
-                  }}
-                >
-                  {form?.valueForMoney.sectionScore
-                    ? form?.valueForMoney.sectionScore.toFixed()
-                    : "00"}
-                </Typography>
-              </Card>
-            </Box>
+                        <Card
+                            sx={{
+                                width: "fit-content",
+                                backgroundColor: colors?.BLACK,
+                                borderRadius: "4px !important",
+                                m: 0,
+                                ml: "auto !important",
+                            }}
+                        >
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontWeight: 600,
+                                    width: "fit-content",
+                                    color: "white",
+                                    p: 0.5,
+                                    px: 1,
+                                    cursor: "pointer",
+                                }}
+                            >
+                                {form?.valueForMoney.sectionScore
+                                    ? form?.valueForMoney.sectionScore.toFixed()
+                                    : "00"}
+                            </Typography>
+                        </Card>
+                    </Box>
 
 
                 </Box>
@@ -81,8 +81,8 @@ function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc,scoreChange
                             </Typography>
                         </Box>
                         <Rating value={expectedFurtherApp} onChange={(e) =>
-                               scoreChange(e, "valueForMoney", "expectedFurtherApp")
-                            } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                            scoreChange(e, "valueForMoney", "expectedFurtherApp")
+                        } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                     <Grid item xs={6}>
                         <Box>
@@ -93,11 +93,10 @@ function InvestmentCard({ isEdit, form, handleChange,moduleScoreCalc,scoreChange
                                 For end use
                             </Typography>
                         </Box>
-                        <Rating value={forEndUse} onChange={(e) => 
-                            {
-                                scoreChange(e, "valueForMoney", "forEndUse")
+                        <Rating value={forEndUse} onChange={(e) => {
+                            scoreChange(e, "valueForMoney", "forEndUse")
                         }
-                            } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
+                        } name="construction-quality" defaultValue={0} precision={0.5} size='small' sx={{ alignSelf: 'center', mt: 1 }} />
                     </Grid>
                 </Grid>
             </Card>

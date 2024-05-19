@@ -43,7 +43,7 @@ function PropertyList({ params }) {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [alignment, setAlignment] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(20);
+  const [pageLimit, setPageLimit] = useState(50);
 
   const [property, setProperty] = useState([]);
   const [count, setCount] = useState({});
@@ -80,7 +80,7 @@ function PropertyList({ params }) {
     propertyvalue
   ) => {
     try {
-      setLoading(res => ({...res, loader1: true}));
+      setLoading(res => ({ ...res, loader1: true }));
       let data = {};
       Object.keys(selectedOptions).forEach((key) => {
         const value = selectedOptions[key];
@@ -122,7 +122,7 @@ function PropertyList({ params }) {
         "error"
       );
     } finally {
-      setLoading(res => ({...res, loader1: false}));
+      setLoading(res => ({ ...res, loader1: false }));
     }
   };
 
@@ -132,8 +132,8 @@ function PropertyList({ params }) {
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data);
         setSelectOption({ ...transform });
-        if(params.location && transform?.builder.includes(decodeURIComponent(params.location))){
-          setSelectedOptions((pre => ({...pre, builder: decodeURIComponent(params.location) })));
+        if (params.location && transform?.builder.includes(decodeURIComponent(params.location))) {
+          setSelectedOptions((pre => ({ ...pre, builder: decodeURIComponent(params.location) })));
         }
       }
     } catch (error) {
@@ -154,16 +154,18 @@ function PropertyList({ params }) {
           newdata?.some(item => item.city === cityDetail.city));
         let transformLocation = transformDocumentsLocation(filteredCityDetails);
         setLocationData({ ...transformLocation });
-        if(params.location && Object.keys(transformLocation).includes(decodeURIComponent(decodeURIComponent(params.location)))){
-          setSelectedOptions({city: decodeURIComponent(params.location)});
+        if (params.location && Object.keys(transformLocation).includes(decodeURIComponent(decodeURIComponent(params.location)))) {
+          setSelectedOptions({ city: decodeURIComponent(params.location) });
           setLocationDisable(false);
-        } else{
+        } else {
           let a = Object.keys(transformLocation)
           for (let index = 0; index < a.length; index++) {
             const element = transformLocation[a[index]];
-            if(element.includes(decodeURIComponent(params.location))){
-              setSelectedOptions({city: a[index], 
-              location: decodeURIComponent(params.location)});
+            if (element.includes(decodeURIComponent(params.location))) {
+              setSelectedOptions({
+                city: a[index],
+                location: decodeURIComponent(params.location)
+              });
               setLocationDisable(false);
             }
           }
@@ -179,7 +181,7 @@ function PropertyList({ params }) {
 
   const getAllPropertyByCity = async () => {
     try {
-      setLoading(res => ({...res, loader2: true}));
+      setLoading(res => ({ ...res, loader2: true }));
       let res = await propertyByCity();
       if (res.status === 200) {
         getLocationsCall(res.data.data);
@@ -194,7 +196,7 @@ function PropertyList({ params }) {
         "error"
       );
     } finally {
-      setLoading(res => ({...res, loader2: false}));
+      setLoading(res => ({ ...res, loader2: false }));
     }
   };
 
@@ -364,7 +366,7 @@ function PropertyList({ params }) {
                 container
                 sx={{ display: "flex", flexDirection: "row-reverse" }}
               >
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                   <Card sx={{ boxShadow: "none" }}>
                     <iframe
                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1899016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
@@ -374,9 +376,9 @@ function PropertyList({ params }) {
                       loading="lazy"
                     />
                   </Card>
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <Card
                     sx={{
                       p: 2,

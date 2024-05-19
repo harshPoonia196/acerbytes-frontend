@@ -129,7 +129,6 @@ input[type="number"] {
 
 .urlStylingBackground {
   background-color: inherit;
-  cursor: pointer
 }
 
 .urlStylingBackground>a:hover {
