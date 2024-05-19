@@ -9,6 +9,7 @@ import SubAccordionOfHistoryCard from './SubAccordionOfHistoryCard';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PriceFormatter from 'Components/CommonLayouts/PriceFormatter';
 import { formatPoints, formatDate, formatAmount } from 'utills/CommonFunction';
+import { transactionType } from 'utills/Constants';
 
 function HistoryCard({ history }) {
     const [isExpanded, setIsExpanded] = React.useState(false);
@@ -26,6 +27,28 @@ function HistoryCard({ history }) {
         setAnchorElMenuState(null);
     };
 
+    const calculateConsumedPoints = (childTransaction = []) => {
+        let totalConsumedPoints = 0;
+        for (let i = 0; i < childTransaction.length; i++) {
+            const { consumedPoints = 0 } = childTransaction[i];
+            totalConsumedPoints = totalConsumedPoints + Number(consumedPoints);
+        }
+
+        return totalConsumedPoints;
+    }
+
+    const calculateItems = (childTransaction = [], type) => {
+        let data = []
+        for (let i = 0; i < childTransaction.length; i++) {
+            const history = childTransaction[i];
+            if (type === history?.transactionType) {
+                data.push(history)
+            }
+        }
+
+        return data;
+    }
+
 
     return (
         <CustomAccordion expanded={isExpanded} >
@@ -39,7 +62,7 @@ function HistoryCard({ history }) {
                         {/* <Typography variant='h6' sx={{ color: colors.BLUE }}>Balance: 32,000</Typography> */}
                     </Box>
                     <Typography variant='subtitle2'>
-                        New points: {formatPoints(history?.newPoints)} | Opening: {formatPoints(history?.openingPoints)} | Consumed: {formatPoints(history?.consumedPoints)}
+                        New points: {formatPoints(Number(history?.openingPoints) - calculateConsumedPoints(history?.childTransaction))} | Opening: {formatPoints(history?.openingPoints)} | Consumed: {formatPoints(calculateConsumedPoints(history?.childTransaction))}
                     </Typography>
                 </Box>
                 <Box>
@@ -69,17 +92,20 @@ function HistoryCard({ history }) {
                     <Grid item xs={12}>
                         <Box sx={{ display: 'flex', px: 2, mb: 2 }}>
                             <Typography variant='subtitle2' sx={{ flex: 1 }}>Credit points consumed</Typography>
-                            <Typography variant='h6'>12,000</Typography>
+                            <Typography variant='h6'>{formatPoints(calculateConsumedPoints(history?.childTransaction))}</Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Activated links" value="(1 link) 5,000" />
+                        <SubAccordionOfHistoryCard title="Activated links" data={calculateItems(history?.childTransaction, transactionType.ACTIVATE_URL)} type='Links' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Activated leads" value="(25 contacts) 7,000" />
+                        <SubAccordionOfHistoryCard title="Activated leads" data={calculateItems(history?.childTransaction, transactionType.SUGGESTED_LEAD_BUY)} type='Leads' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Notes panel" value="(3 months) 25,000" />
+                        <SubAccordionOfHistoryCard title="Consultant subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Consultant Subscriptions' />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Note Subscriptions' />
                     </Grid>
                 </Grid>
             </CustomAccordionDetails>

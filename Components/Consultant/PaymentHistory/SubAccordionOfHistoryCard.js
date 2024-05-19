@@ -1,13 +1,23 @@
 import { Box, Typography } from '@mui/material';
 import { CustomAccordion, CustomAccordionDetails, CustomAccordionSummary } from 'Components/CommonLayouts/CommonAccordion'
 import React from 'react'
+import { formatPoints, formatDate } from 'utills/CommonFunction';
 
-function SubAccordionOfHistoryCard({ title, value }) {
+function SubAccordionOfHistoryCard({ title, data = [], type = '' }) {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleChange = () => {
         setExpanded(!expanded);
     };
+
+    const calculateConsumedPoints = (childTransaction = []) => {
+        let totalConsumedPoints = 0;
+        for (let i = 0; i < childTransaction.length; i++) {
+            const { consumedPoints = 0 } = childTransaction[i];
+            totalConsumedPoints = totalConsumedPoints + Number(consumedPoints);
+        }
+        return totalConsumedPoints;
+    }
 
     return (
         <CustomAccordion expanded={expanded} onChange={handleChange}>
@@ -16,18 +26,18 @@ function SubAccordionOfHistoryCard({ title, value }) {
                     <Typography variant='subtitle2'>{title}</Typography>
                 </Box>
                 <Typography variant='subtitle2'>
-                    {value}
+                    {data.length + ' ' + type}, Consumed Points: {formatPoints(calculateConsumedPoints(data))}
                 </Typography>
             </CustomAccordionSummary>
             <CustomAccordionDetails>
-                <Box sx={{ display: 'flex' }}>
-                    <Typography variant='subtitle2' sx={{ flex: 1 }}>Item one</Typography>
-                    <Typography variant='h6'>2,500</Typography>
-                </Box>
-                <Box sx={{ display: 'flex' }}>
-                    <Typography variant='subtitle2' sx={{ flex: 1 }}>Item two</Typography>
-                    <Typography variant='h6'>2,500</Typography>
-                </Box>
+                {data.map((res) => {
+                    const { createdAt, consumedPoints, details } = res;
+                    return <Box sx={{ display: 'flex' }}>
+                        <Typography variant='subtitle2' sx={{ flex: 1 }}>{details + ' on ' + formatDate(createdAt)}</Typography>
+                        <Typography variant='h6'>{consumedPoints}</Typography>
+                    </Box>
+                })
+                }
             </CustomAccordionDetails>
         </CustomAccordion>
     )
