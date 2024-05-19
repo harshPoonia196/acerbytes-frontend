@@ -15,7 +15,7 @@ function ClearanceSection(props) {
         switch (type) {
             case 'Yes':
                 return <Box sx={{ display: 'flex', width: 'fit-content', ml: 'auto' }}>
-                    <CheckBoxIcon fontSize='small' /><p style={{ alignSelf: 'center' }}>{type}</p>
+                    <CheckBoxIcon fontSize='small' /><p style={{ alignSelf: 'left' }}>{type}</p>
                 </Box>
             case "Don't know":
                 return <Box sx={{ display: 'flex', width: 'fit-content', ml: 'auto' }}>
@@ -64,8 +64,11 @@ function ClearanceSection(props) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <NewKeyValuePairStructure label="RERA approved" value={getTextToDisplay(regulatoryClearanceData?.reraApproved)} />
-                    <NewKeyValuePairStructure label="RERA" value={getTextToDisplay(regulatoryClearanceData?.reraNumber)} />
+                    <NewKeyValuePairStructure label="RERA approved"
+                        value={getTextToDisplay(regulatoryClearanceData?.reraApproved)}
+                    />
+                    <NewKeyValuePairStructure label="RERA" value={getTextToDisplay(regulatoryClearanceData?.reraNumber)}
+                    />
                     <NewKeyValuePairStructure label="CC" value={getTextToDisplay(regulatoryClearanceData?.cc)} />
                     <NewKeyValuePairStructure label="OC" value={getTextToDisplay(regulatoryClearanceData?.oc)} />
                     <NewKeyValuePairStructure label="Authority registration" value={regulatoryClearanceData?.authorityRegistration} />
