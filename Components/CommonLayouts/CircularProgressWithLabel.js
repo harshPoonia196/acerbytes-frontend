@@ -3,6 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { getColorForProgressBar } from 'utills/CommonFunction';
+import { Tooltip } from '@mui/material';
 
 function CircularProgressWithLabel(props) {
     return (
@@ -20,15 +21,19 @@ function CircularProgressWithLabel(props) {
                     justifyContent: 'center',
                 }}
             >
-                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                {props.tooltipText ? <Tooltip title={props.tooltipText}>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                        {`${Math.round(props.value)}`}
+                    </Typography>
+                </Tooltip> : <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                     {`${Math.round(props.value)}`}
-                </Typography>
+                </Typography>}
             </Box>
         </Box>
     );
 }
 
-export default function CircularWithValueLabel({ progress }) {
+export default function CircularWithValueLabel({ progress, tooltipText }) {
 
-    return <CircularProgressWithLabel value={progress} color={getColorForProgressBar(progress)} />;
+    return <CircularProgressWithLabel value={progress} color={getColorForProgressBar(progress)} tooltipText={tooltipText} />
 }

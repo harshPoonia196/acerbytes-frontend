@@ -19,6 +19,7 @@ import { propertyRedirectKey } from "utills/Constants";
 import { propertyByCity } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 export default function Home() {
   const router = useRouter();
@@ -74,12 +75,11 @@ export default function Home() {
           <Typography
             variant="h1"
             sx={{
-              color: "#000",
               fontWeight: 300,
               fontSize: { sm: "2em !important", md: "4rem !important" },
             }}
           >
-            Empowering better Real Estate decisions
+            <span style={{ color: colors.BLUE }}>Empowering better</span> Real Estate decisions
           </Typography>
 
           <Box
@@ -129,14 +129,17 @@ export default function Home() {
         <Box>
           <Grid container spacing={2} sx={{ justifyContent: "center" }}>
             <Grid item xs={12} sx={{ textAlign: "center", justifyContent: "center" }}>
-              <Typography
-                variant="h5"
-                sx={{ textTransform: "lowercase" }}
-                className="urlStylingBackground"
-              >
-                get insights into <a style={{ color: colors.BLUE, cursor: "pointer" }} onClick={() => router.push(listOfPages.commonPropertyList)}>real estate projects</a>{' '}
-                across the cities below
-              </Typography>
+              <Box sx={{ display: 'flex', gap: 1, width: 'fit-content', m: 'auto' }}>
+                <AutoAwesomeIcon />
+                <Typography
+                  variant="h5"
+                  sx={{ textTransform: "lowercase" }}
+                  className="urlStylingBackground"
+                >
+                  get insights into <a style={{ color: colors.BLUE, cursor: "pointer" }} onClick={() => router.push(listOfPages.commonPropertyList)}>real estate projects</a>{' '}
+                  across the cities below
+                </Typography>
+              </Box>
             </Grid>
             {cityRoute?.map((city) => (
               <Grid item xs={6} sm={4} md={3} key={city?.city}>

@@ -8,6 +8,7 @@ import {
   CardActions,
   Chip,
   Divider,
+  Tooltip,
 } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import colors from "styles/theme/colors";
@@ -78,7 +79,7 @@ function PropertyCard(props) {
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
-                  {propertyDetails?.location?.city}
+                  {propertyDetails?.location?.city} &#183; PRS &#183; OE14253
                 </Typography>
                 <Typography variant="subtitle2" sx={{ textTransform: 'capitalize' }}>
                   {propertyDetails?.overview?.builder + ' ' + propertyDetails?.overview?.projectName}
@@ -116,7 +117,7 @@ function PropertyCard(props) {
             <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
               ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyUrl}`)} />
+              onClick={() => router.push(`/details/${propertyUrl}`)} tooltipText={`AB scores *`} />
           </Grid>
           <Grid item xs={8} sm={8} lg={3}
             onClick={() => router.push(`/details/${propertyUrl}`)}
@@ -165,7 +166,7 @@ function PropertyCard(props) {
             <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
               ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyUrl}`)} />
+              onClick={() => router.push(`/details/${propertyUrl}`)} tooltipText={`AB scores *`} />
           </Grid>
           {/* <Grid
             item
