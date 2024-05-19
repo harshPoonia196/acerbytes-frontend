@@ -13,6 +13,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import EnquireNow from "./Modal/EnquireNow";
 import { useAuth } from "utills/AuthContext";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import { companyName } from "Components/NavBar/Links";
 
 function OverallAssesmentSection({
   refCallback,
@@ -86,11 +87,14 @@ function OverallAssesmentSection({
               {' / 100'}
             </Typography>
           </Box>
-          <Typography variant="body2" >
-            Our authorized professional consultants help you decide whether to
-            buy as Investor / End user.
+          <Typography variant="body2">
+            Our authorized real estate consultants help you to take a better decide as
+            an Investor / End user.
           </Typography>
-          <Chip label="Contact us now" icon={<WhatsAppIcon />} size='small' sx={{ mt: 1 }} />
+          <Typography variant="body2">
+            Know more about Builder, Project, Layouts and Plans
+          </Typography>
+          <Chip label="Contact us now" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />} sx={{ mt: 1 }} />
           {userDetails?.role === "user" && (
             <Chip
               sx={{ mt: 2 }}
@@ -109,15 +113,15 @@ function OverallAssesmentSection({
           submitEnquiry={handleSubmitEnquiry}
         />}
         <Divider />
-        <Box sx={{ p: 1, display: "flex" }}>
-          <Chip label="Disclaimer" size="small" />
-          &nbsp;&nbsp;
+        <Box sx={{ p: 1 }}>
           <Typography
             variant="subtitle2"
-            style={{ fontSize: "0.75rem", alignSelf: "center" }}
+            style={{ fontSize: "0.675rem", alignSelf: "center", lineHeight: 'normal', color: 'gray' }}
           >
-            AcresByte.com acts as a inside research and marketing
-            platform, doesnt take any responsibility on the accuracy
+            <i>
+              Disclaimer: The property score is provided by {companyName} is for informational purposes only
+              and should not only be relied upon for any financial or investment decisions.
+            </i>
           </Typography>
         </Box>
       </Card>

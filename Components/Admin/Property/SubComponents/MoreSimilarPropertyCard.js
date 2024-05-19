@@ -1,4 +1,4 @@
-import { Box, Card, Divider, Grid, Typography } from '@mui/material'
+import { Box, Card, CardActionArea, Divider, Grid, Typography } from '@mui/material'
 import React from 'react'
 import { useRouter } from "next/navigation";
 import { listOfPages } from 'Components/NavBar/Links';
@@ -19,33 +19,39 @@ function MoreSimilarPropertyCard({ propertyData }) {
                 <Box sx={{ p: 2 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
-                            <Card sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }} onClick={() => {
+                            <Card onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${overviewData?.builder}`)
                             }}>
-                                <Typography variant='h2'>{Alldata?.builderPropertyCount}</Typography>
-                                <Typography variant='h6'>
-                                    More by {overviewData?.builder}
-                                </Typography>
+                                <CardActionArea sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }}>
+                                    <Typography variant='h2'>{Alldata?.builderPropertyCount}</Typography>
+                                    <Typography variant='h4'>
+                                        by {overviewData?.builder}
+                                    </Typography>
+                                </CardActionArea>
                             </Card>
                         </Grid>
                         <Grid item xs={4}>
-                            <Card sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }} onClick={() => {
+                            <Card onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${locationData?.city}`)
                             }}>
-                                <Typography variant='h2'>{Alldata?.cityPropertyCount}</Typography>
-                                <Typography variant='h6'>
-                                    More in {locationData?.city}
-                                </Typography>
+                                <CardActionArea sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }}>
+                                    <Typography variant='h2'>{Alldata?.cityPropertyCount}</Typography>
+                                    <Typography variant='h4'>
+                                        in {locationData?.city}
+                                    </Typography>
+                                </CardActionArea>
                             </Card>
                         </Grid>
                         <Grid item xs={4}>
-                            <Card sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }} onClick={() => {
+                            <Card onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${locationData?.area}`)
                             }}>
-                                <Typography variant='h2'>{Alldata?.sectorPropertyCount}</Typography>
-                                <Typography variant='h6'>
-                                    More in {locationData?.area}
-                                </Typography>
+                                <CardActionArea sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }}>
+                                    <Typography variant='h2'>{Alldata?.sectorPropertyCount}</Typography>
+                                    <Typography variant='h4'>
+                                        in {locationData?.area}
+                                    </Typography>
+                                </CardActionArea>
                             </Card>
                         </Grid>
                         {/* <Grid item xs={4}>

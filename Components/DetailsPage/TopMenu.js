@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 import Image from 'next/image'
 import CircularWithValueLabel from 'Components/CommonLayouts/CircularProgressWithLabel'
+import { boxShadowBottom } from 'utills/Constants'
 
 function TopMenu(props) {
     const { value, handleChange, list, topMenu } = props
@@ -52,7 +53,7 @@ function TopMenu(props) {
                     <Box sx={{ display: { xs: 'none', sm: 'flex' }, flexDirection: 'column', gap: 1 }}>
                         <Box>
                             <CircularWithValueLabel onClick={() => router.push("/research")}
-                                progress={topMenu?.overallAssessment?.score} />
+                                progress={topMenu?.overallAssessment?.score} islarge />
                         </Box>
                     </Box>
                 </Box>
@@ -80,6 +81,7 @@ function TopMenu(props) {
                     [`& .${tabsClasses.scrollButtons}`]: {
                         '&.Mui-disabled': { opacity: 0.3 },
                     },
+                    boxShadow: boxShadowBottom
                 }}
             >
                 {

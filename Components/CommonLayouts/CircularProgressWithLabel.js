@@ -8,7 +8,7 @@ import { Tooltip } from '@mui/material';
 function CircularProgressWithLabel(props) {
     return (
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-            <CircularProgress variant="determinate" thickness={4} size={40} {...props} />
+            <CircularProgress variant="determinate" thickness={4} size={props.islarge ? 50 : 40} {...props} />
             <Box
                 sx={{
                     top: 0,
@@ -22,18 +22,18 @@ function CircularProgressWithLabel(props) {
                 }}
             >
                 {props.tooltipText ? <Tooltip title={props.tooltipText}>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant={props.islarge ? 'h3' : 'body1'} sx={{ fontWeight: 'bold' }}>
                         {`${Math.round(props.value)}`}
                     </Typography>
-                </Tooltip> : <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                </Tooltip> : <Typography variant={props.islarge ? 'h3' : 'body1'} sx={{ fontWeight: 'bold' }}>
                     {`${Math.round(props.value)}`}
                 </Typography>}
             </Box>
-        </Box>
+        </Box >
     );
 }
 
-export default function CircularWithValueLabel({ progress, tooltipText }) {
+export default function CircularWithValueLabel({ progress, tooltipText, islarge }) {
 
-    return <CircularProgressWithLabel value={progress} color={getColorForProgressBar(progress)} tooltipText={tooltipText} />
+    return <CircularProgressWithLabel value={progress} islarge={islarge} color={getColorForProgressBar(progress)} tooltipText={tooltipText} />
 }
