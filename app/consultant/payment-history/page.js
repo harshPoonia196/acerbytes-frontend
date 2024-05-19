@@ -59,7 +59,7 @@ function PaymentHistory(props) {
          data.push({...history, childTransaction: []})
          latest_index = data.length - 1;
       } else {
-        data[latest_index].childTransaction.push(history);
+        data?.[latest_index]?.childTransaction?.push(history);
       }
     }
     return data.reverse();
