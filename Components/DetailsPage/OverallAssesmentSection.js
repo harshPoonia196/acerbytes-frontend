@@ -82,7 +82,7 @@ function OverallAssesmentSection({
               margin: "auto",
             }}
           >
-            <Typography variant="h1" sx={{ mr: 1 }}>{overallAssessment?.score}</Typography>
+            <Typography variant="h1" sx={{ mr: 1, fontWeight: 600 }}>{overallAssessment?.score}</Typography>
             <Typography variant="h5" sx={{ alignSelf: "center" }}>
               {' / 100'}
             </Typography>
