@@ -228,10 +228,10 @@ function AddProperty() {
       if (res.status === 200) {
         setFormUpdated(false)
         let data = removeIds(res.data?.data);
+        delete data?.data
         delete data.__v;
         handleUIHide(data.overview.projectType, "overview", "projectType")
         setEditForm(true);
-
         let assignTagLine = {
           builder: data.overview.builder,
           projectName: data.overview.projectName,
