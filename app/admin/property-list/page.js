@@ -7,7 +7,7 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 
 function PropertyList() {
-  const [count, setCount] = useState({ noOfProperties: 0 });
+  const [count, setCount] = useState({ noOfPublished: 0, noOfDraft: 0 });
 
   useEffect(() => {
 
@@ -16,8 +16,8 @@ function PropertyList() {
   return (
     <>
       <CustomAdminBreadScrumbs text='Property list' />
-      <InfoBox dataList={[{ label: 'Published', value: count?.noOfProperties },
-      { label: 'Drafted', value: count?.noOfProperties }]} />
+      <InfoBox dataList={[{ label: 'Published', value: count?.noOfPublished },
+      { label: 'Drafted', value: count?.noOfDraft }]} />
       <Container>
         <PropertyListTable setCount={setCount} />
       </Container>
