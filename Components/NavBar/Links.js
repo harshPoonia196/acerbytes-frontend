@@ -26,7 +26,7 @@ export const listOfPages = {
   userShortlist: '/user/shortlist',
   userMyConsultant: '/user/my-consultants',
   consultantProfile: '/consultant/profile',
-  consultantRatings: '/property-consultant/review',
+  consultantRatings: '/consultant/review',
   consultantMyLeads: "/consultant/my-leads",
   suggestedLeads: "/consultant/suggested-leads",
   consultantLinks: "/consultant/my-links",
