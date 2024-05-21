@@ -167,7 +167,8 @@ function PropertyCard(props) {
             <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
               ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyUrl}`)} tooltipText={`AB scores Excellent *`}
+              onClick={() => router.push(`/details/${propertyUrl}`)}
+              tooltipText={`AB scores Excellent *`}
             />
           </Grid>
           {/* <Grid
