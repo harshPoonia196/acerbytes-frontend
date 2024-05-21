@@ -380,6 +380,7 @@ const PropertyDetails = ({ params }) => {
           // hasEnquired();
           setBrokerContact({});
           setLeadId(response.data?.data[0]?._id);
+          setContactPermissionToView(true);
         } else {
           openSnackbar(message, "error");
         }
