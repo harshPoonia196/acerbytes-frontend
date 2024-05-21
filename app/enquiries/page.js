@@ -31,6 +31,8 @@ import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { countryCodeFormating, maskPhoneNumber } from "utills/utills";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
 
 function Row(props) {
   const { row, history } = props;
@@ -45,7 +47,8 @@ const handlePropertyView = (link) => {
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>{row.project}</TableCell>
         <TableCell>{row.location}</TableCell>
-        <TableCell>{row.phone}</TableCell>
+        <TableCell>{row.phone} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
+          <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='error' />}</TableCell>
         <TableCell>
         {row.propertyLink && (
           <a
@@ -241,6 +244,7 @@ export default function Enquiries() {
         if (success) {
           return data?.map((enquiry) => {
             return {
+              isVerified: enquiry?.isVerified || false,
               project: enquiry?.property[0]?.overview?.projectName || "",
               // phone: `+${enquiry.phone?.countryCode} ${enquiry?.broker?.startNumber
               //   }${enquiry?.broker?.numberLength > 2

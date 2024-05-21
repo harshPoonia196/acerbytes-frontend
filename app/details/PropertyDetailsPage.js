@@ -383,15 +383,16 @@ const PropertyDetailsPage = ({ params }) => {
           // hasEnquired();
           setBrokerContact({});
           setLeadId(response.data?.data[0]?._id);
-          setEnquiredInfo(
-            [
-              ...enquiredInfo,
-              {
-                isNew: true,
-                _id: response.data?.data[0]?._id,
-              },
-            ]
-          );
+          // setEnquiredInfo(
+          //   [
+          //     ...enquiredInfo,
+          //     {
+          //       isNew: true,
+          //       ...response.data?.data[0],
+          //       _id: response.data?.data[0]?._id,
+          //     },
+          //   ]
+          // );
         } else {
           openSnackbar(message, "error");
         }
@@ -605,7 +606,7 @@ const PropertyDetailsPage = ({ params }) => {
       console.log("Height of the div:", divHeight);
     }
   }, []);
-
+console.log("enquiredInfo: ", enquiredInfo);
   return (
     <>
       {isLoading && <Loader />}
