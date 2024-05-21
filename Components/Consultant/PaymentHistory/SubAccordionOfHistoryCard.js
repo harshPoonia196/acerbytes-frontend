@@ -34,7 +34,7 @@ function SubAccordionOfHistoryCard({ title, data = [], type = '' }) {
                     const { createdAt, consumedPoints, details } = res;
                     return <Box sx={{ display: 'flex' }}>
                         <Typography variant='subtitle2' sx={{ flex: 1 }}>{details + ' on ' + formatDate(createdAt)}</Typography>
-                        <Typography variant='h6'>{consumedPoints}</Typography>
+                        <Typography variant='h6'>{formatPoints(consumedPoints)}</Typography>
                     </Box>
                 })
                 }

@@ -29,12 +29,13 @@ function ManageUser() {
   };
 
   const generateSubtitle = () => {
-    console.log(dashboardInfo)
     let result = []
     let subtitle = "";
     if (Object.keys(dashboardInfo).length > 0) {
       if (value === 0) {
-        result.push({ label: 'Super admins', value: dashboardInfo.noOfSuperAdmins })
+        if (userDetails.role === 'superAdmin') {
+          result.push({ label: 'Super admins', value: dashboardInfo.noOfSuperAdmins });
+        }
         result.push({ label: 'Admins', value: dashboardInfo.noOfAdmin })
         result.push({ label: 'Brokers', value: dashboardInfo.noOfBroker })
         result.push({ label: 'Users', value: dashboardInfo.noOfUsers })
