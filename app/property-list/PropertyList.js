@@ -560,13 +560,18 @@ function PropertyList({ params }) {
               </Grid>
             </Card>
             <Box sx={{ flex: 1 }}>
-              <Card sx={{ mb: 2 }}>
-                {params.location ? (
-                  <Grid
-                    container
-                    sx={{ display: "flex", flexDirection: "row-reverse" }}
-                  >
-                    {/* <Grid item xs={12} sm={6}>
+
+
+
+
+              <Grid container spacing={2}>
+                {params.location && (<Grid item xs={36}>
+                  <Card>
+                    <Grid
+                      container
+                      sx={{ display: "flex", flexDirection: "row-reverse" }}
+                    >
+                      {/* <Grid item xs={12} sm={6}>
                   <Card sx={{ boxShadow: "none" }}>
                     <iframe
                       src="https://www.google.com/maps/embed?pb=!1m12!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1299016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
@@ -578,34 +583,29 @@ function PropertyList({ params }) {
                   </Card>
                 </Grid> */}
 
-                    <Grid item xs={12}>
-                      <Card
-                        sx={{
-                          p: 2,
-                          height: "100%",
-                          boxShadow: "none",
-                        }}
-                      >
-                        <Typography variant="h2">
-                          {decodeURIComponent(params.location)}
-                        </Typography>
-                        <Typography variant="caption">
-                          Noida's strategic location, robust infrastructure, and
-                          flourishing business environment have contributed to its
-                          status as a vibrant and attractive real estate destination
-                          in the NCR region.
-                        </Typography>
-                      </Card>
+                      <Grid item xs={12}>
+                        <Card
+                          sx={{
+                            p: 2,
+                            height: "100%",
+                            boxShadow: "none",
+                          }}
+                        >
+                          <Typography variant="h2">
+                            {decodeURIComponent(params.location)}
+                          </Typography>
+                          <Typography variant="caption">
+                            Noida's strategic location, robust infrastructure, and
+                            flourishing business environment have contributed to its
+                            status as a vibrant and attractive real estate destination
+                            in the NCR region.
+                          </Typography>
+                        </Card>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                ) : (
-                  ""
-                )}
-              </Card>
-
-
-
-              <Grid container spacing={2}>
+                  </Card>
+                </Grid>)
+                }
                 <Grid item xs={36}>
                   <Card>
                     <CustomSearch
