@@ -34,14 +34,26 @@ function NewPhoneInputFieldStructure({
     setCountryCode(countries);
   }, []);
 
+   // Regex pattern to match only digits
+   const numberRegex = /^[0-9]+$/;
+
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
 
     // Limit the length to 10 digits
     const limitedValue = inputValue.slice(0, 10);
 
+    // Check if the input matches the regex pattern (only digits)
+    if (numberRegex.test(limitedValue)) {
+      // Update the input value only if it's valid
+      event.target.value = limitedValue;
+    } else {
+      // Prevent invalid characters from being entered
+      event.target.value = limitedValue.replace(/[^0-9]/g, "");
+    }
+
     // Update the input value
-    event.target.value = limitedValue;
+    // event.target.value = limitedValue;
 
     // Handle the input change if needed
     console.log(limitedValue);
@@ -62,7 +74,7 @@ function NewPhoneInputFieldStructure({
         <TextField
           name={name2}
           value={value2}
-          type="number"
+          type="text"
           onChange={handleInputChange}
           variant={variant ? variant : "standard"}
           fullWidth
