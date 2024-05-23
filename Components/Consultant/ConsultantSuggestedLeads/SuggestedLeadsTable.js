@@ -304,19 +304,19 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const closeBuyResponseModal = () => {
     setBuyModalOpen(false)
     getBrokerpointBalance()
-    refetch() 
+    refetch()
   }
 
   const handleViewMyLeadClick = () => {
-    setBuyModalOpen(false); 
-    getBrokerpointBalance(); 
+    setBuyModalOpen(false);
+    getBrokerpointBalance();
     refetch();
     router.push(listOfPages.consultantMyLeads)
   };
 
   const BuyResponseModal = () => (
     <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
-      <DialogContent sx={{ padding: "25px 30px !important", minWidth: "415px" }}>
+      <DialogContent sx={{ padding: "36px !important", minWidth: "415px" }}>
         <DialogContentText>
           {buyNowResponseMessage}
         </DialogContentText>

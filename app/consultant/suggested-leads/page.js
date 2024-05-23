@@ -20,10 +20,7 @@ function MyLeads() {
         label={'My Suggested Leads'}
       />
       <Container>
-        <Box sx={{ textAlign: 'end', mb: 2 }}>
-
-        </Box>
-        <SuggestedLeadsTable setLeadsCount={setLeadsCount} /> 
+        <SuggestedLeadsTable setLeadsCount={setLeadsCount} />
       </Container>
     </>
   );
