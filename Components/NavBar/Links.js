@@ -145,7 +145,7 @@ export const AdminMenuList = [
   },
   {
     label: "Leads reviewed (Pending)",
-    route: "/leads",
+    route: listOfPages.adminEnquiries,
     icon: <ChecklistRtlIcon fontSize="small" />,
   },
   {
