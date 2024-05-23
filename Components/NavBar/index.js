@@ -61,6 +61,9 @@ import { ROLES, ROLE_CONSTANTS } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { getRoleLabelByValue } from "utills/CommonFunction";
+import Logo from 'public/images/icon.svg';
+import Image from "next/image";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -112,11 +115,11 @@ export default function ClippedDrawer({ children }) {
 
   const redirectUser = (url) => {
     const {
-       search
-   } = window?.location
+      search
+    } = window?.location
     router.replace(url + (search ?? ""));
   };
-  
+
   const checkUserUrlAccess = (tempUserDetails) => {
     checkUrlAccess(
       isLoggedIn(),
@@ -493,24 +496,27 @@ export default function ClippedDrawer({ children }) {
                 <MenuIcon fontSize="small" />
               </IconButton>
             </Box>
-            <Box sx={{ alignSelf: "center", height: "fit-content" }}>
-              <a
-                href={listOfPages.home}
-                style={{ textDecoration: "none", lineHeight: "normal" }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: "#000",
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                    lineHeight: 1,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {companyName}
-                </Typography>
-              </a>
+            <Box sx={{ alignSelf: "center", }}>
+              <Link href={listOfPages.home} prefetch={true} style={{ textDecoration: 'none' }}>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Box sx={{ height: 25, background: colors?.BLUE }}>
+                    <Image priority height={25} width={25} src={Logo} alt="Dashboard" />
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "#000",
+                      fontSize: "1rem",
+                      fontWeight: 600,
+                      lineHeight: 1,
+                      textTransform: "uppercase",
+                      alignSelf: 'center'
+                    }}
+                  >
+                    {companyName}
+                  </Typography>
+                </Box>
+              </Link>
             </Box>
           </Box>
           <Box sx={{ display: "flex" }}>
