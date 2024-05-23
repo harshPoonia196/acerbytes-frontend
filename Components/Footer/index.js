@@ -12,9 +12,11 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { boxShadowTop } from 'utills/Constants';
+import { useAuth } from "utills/AuthContext";
 
 function Footer({ paymentPage }) {
     const history = useRouter()
+    const { isLogged } = useAuth();
 
     const handleWhatsappShare = () => {
         window.open('whatsapp://send?text=Hi, I would like to invite u to a better place to get a clients.')
@@ -75,7 +77,7 @@ function Footer({ paymentPage }) {
                         }} />
                         Invite&nbsp;-&nbsp;Consultant
                     </MenuItem>
-                    <MenuItem onClick={() => {
+                    {!isLogged && <MenuItem onClick={() => {
                         handleClose()
                         history.push(listOfPages.consultantJoinNow)
                     }}>
@@ -83,7 +85,7 @@ function Footer({ paymentPage }) {
                             mr: 1
                         }} />
                         Register&nbsp;-&nbsp;Consultant
-                    </MenuItem>
+                    </MenuItem>}
                     <MenuItem onClick={() => {
                         handleClose()
                         history.push(listOfPages.termsAndCondition)

@@ -374,8 +374,13 @@ const PropertyDetailsPage = ({ params }) => {
       const response = await submitEnquiryUnauth({
         ...data,
         propertyId: detailsPropertyId,
-        propertyLink: `details/${params.id}`
+        propertyLink: `details/${params.id}`,
+        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined
       });
+
+      if (enquireWithBrokerId) {
+        setEnquireWithBrokerId("");
+      }
       if (response.status == 200) {
         const { success, message } = response.data;
         if (success) {
@@ -606,7 +611,7 @@ const PropertyDetailsPage = ({ params }) => {
       console.log("Height of the div:", divHeight);
     }
   }, []);
-console.log("enquiredInfo: ", enquiredInfo);
+
   return (
     <>
       {isLoading && <Loader />}
@@ -625,7 +630,7 @@ console.log("enquiredInfo: ", enquiredInfo);
         handleClose={handleClosePersonalizeAds}
       />
       {userDetails?.role === "broker" &&
-      (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
+        (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
         <AdsSection
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
           handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
@@ -634,8 +639,8 @@ console.log("enquiredInfo: ", enquiredInfo);
         />
       ) : null}
       {userDetails?.role !== "admin" &&
-      userDetails?.role !== "superAdmin" &&
-      propertyData.isActiveAd ? (
+        userDetails?.role !== "superAdmin" &&
+        propertyData.isActiveAd ? (
         <AdsSection
           SinglePropertyId={propertyData?.propertyBroker[0]}
           propertyData={propertyData}
@@ -741,10 +746,10 @@ console.log("enquiredInfo: ", enquiredInfo);
                   {userDetails?.role === "broker" && (
                     <Box sx={{
                       p: 2,
-                        display: "flex",
-                        flexDirection: { xs: "column", sm: "row" },
-                        gap: 1,
-                      }}
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                      gap: 1,
+                    }}
                     >
                       <Box sx={{ flex: 1, alignSelf: "center" }}>
                         <Typography variant="body2" sx={{ flex: 1 }}>
