@@ -54,7 +54,6 @@ function PropertyCard(props) {
   }, [propertyDetails])
 
   const layoutData = useMemo(() => {
-    console.log(propertyDetails?.unitsPlan?.uniqueLayouts, propertyDetails?._id)
     const withoutUniqueLayout = [...propertyDetails?.unitsPlan?.planList?.filter(item => !item.propertyLayout)]?.map((item) => `${item?.width}*${item?.length}`)
     return [...propertyDetails?.unitsPlan?.uniqueLayouts, ...withoutUniqueLayout]
   }, [propertyDetails])
@@ -118,7 +117,7 @@ function PropertyCard(props) {
             <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
               ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyUrl}`)} tooltipText={`AB scores *`} />
+              onClick={() => router.push(`/details/${propertyUrl}`)} tooltiptext={`AB scores *`} />
           </Grid>
           <Grid item xs={8} sm={8} lg={3}
             onClick={() => router.push(`/details/${propertyUrl}`)}
@@ -167,7 +166,7 @@ function PropertyCard(props) {
             <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
               ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyUrl}`)} tooltipText={`AB scores *`} />
+              onClick={() => router.push(`/details/${propertyUrl}`)} tooltiptext={`AB scores *`} />
           </Grid>
           {/* <Grid
             item

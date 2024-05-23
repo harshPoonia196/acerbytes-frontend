@@ -88,7 +88,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                 <Divider sx={{ borderColor: 'whitesmoke' }} />
                 <Box sx={{ alignSelf: 'center', p: 2, py: 1, display: 'flex' }}>
                     <Box sx={{ flex: 1 }}>
-                        <Typography variant='body2' nowrap sx={{ display: 'block' }}>
+                        <Typography variant='body2' nowrap={String(true)} sx={{ display: 'block' }}>
                             {propertyUrl}
                         </Typography>
                     </Box>

@@ -27,7 +27,6 @@ function DisableActivateAdsPopup({ open, handleClose }) {
   const [checked, setChecked] = useState('');
 
   const handleToggle = (value) => () => {
-    // console.log(value)
     setChecked(value);
   };
 

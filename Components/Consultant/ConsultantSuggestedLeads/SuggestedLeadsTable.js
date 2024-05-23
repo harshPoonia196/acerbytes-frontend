@@ -379,7 +379,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
               {rows.map((row) => (
                 <RowStructure
                   row={row}
-                  key={row.firstName}
+                  key={row._id}
                   handlePropertyView={handlePropertyView}
                   setViewLeadsDetails={setViewLeadsDetails}
                   setSelectedRowData={setSelectedRowData}

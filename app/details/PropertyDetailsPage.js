@@ -149,7 +149,6 @@ const PropertyDetailsPage = ({ params }) => {
         setPropertyData({ ...data });
       }
     } catch (error) {
-      console.log(error.message)
       showToaterMessages(
         error?.response?.data?.message ||
         error?.message ||
@@ -603,10 +602,8 @@ const PropertyDetailsPage = ({ params }) => {
     if (divRef.current) {
       const divHeight = divRef.current.clientHeight;
       setHeightOfFooter(divHeight);
-      console.log("Height of the div:", divHeight);
     }
   }, []);
-console.log("enquiredInfo: ", enquiredInfo);
   return (
     <>
       {isLoading && <Loader />}
@@ -731,7 +728,7 @@ console.log("enquiredInfo: ", enquiredInfo);
                     <Grid container spacing={2}>
                       {propertyData?.consultants?.length > 0 &&
                         propertyData?.consultants?.slice(0, 2).map((broker) => (
-                          <Grid item xs={12} sm={6} key={broker?.name}>
+                          <Grid item xs={12} sm={6} key={broker?.id}>
                             <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
                           </Grid>
                         ))}

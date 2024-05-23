@@ -32,7 +32,7 @@ function NewKeyValuePairStructure({
                 name="half-rating"
                 {...(value ? {} : { defaultValue: 2.5 })}
                 precision={0.5}
-                value={value}
+                value={typeof value === 'number' ? value : parseFloat(value) || 0}
                 readOnly={isRatingReadOnly && true}
                 size="small"
                 sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}

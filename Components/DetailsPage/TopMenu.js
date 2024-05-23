@@ -1,7 +1,6 @@
 import React from 'react'
 import { Tabs, Tab, Card, Box, Typography, tabsClasses, Chip } from '@mui/material'
 import { useRouter } from 'next/navigation'
-import colors from 'styles/theme/colors'
 import Image from 'next/image'
 import CircularWithValueLabel from 'Components/CommonLayouts/CircularProgressWithLabel'
 import { boxShadowBottom } from 'utills/Constants'
@@ -9,7 +8,8 @@ import { boxShadowBottom } from 'utills/Constants'
 function TopMenu(props) {
     const { value, handleChange, list, topMenu } = props
     const router = useRouter()
-    // console.log(value)
+    const defaultValue = list.length > 0 ? list[0].hash : undefined;
+
     return (
         <>
             <Card
@@ -53,7 +53,7 @@ function TopMenu(props) {
                     <Box sx={{ display: { xs: 'none', sm: 'flex' }, flexDirection: 'column', gap: 1 }}>
                         <Box>
                             <CircularWithValueLabel onClick={() => router.push("/research")}
-                                progress={topMenu?.overallAssessment?.score} islarge />
+                                progress={topMenu?.overallAssessment?.score} islarge={String(true)} />
                         </Box>
                     </Box>
                 </Box>
@@ -71,7 +71,7 @@ function TopMenu(props) {
             </Card>
 
             <Tabs
-                value={value}
+                value={value || defaultValue}
                 // onChange={handleChange}
                 variant="scrollable"
                 scrollButtons
@@ -86,7 +86,7 @@ function TopMenu(props) {
             >
                 {
                     list.map((current) => (
-                        <Tab label={current.text} value={current.hash} onClick={handleChange(current.hash)} />
+                        <Tab key={current.hash} label={current.text} value={current.hash} onClick={handleChange(current.hash)} />
                     ))
                 }
             </Tabs >

@@ -32,8 +32,6 @@ export default function Home() {
       let res = await propertyByCity();
       if (res.status === 200) {
         setCityRoute(res?.data?.data);
-      } else {
-        console.log("err");
       }
     } catch (error) {
       showToaterMessages(
