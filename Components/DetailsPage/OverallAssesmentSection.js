@@ -94,17 +94,45 @@ function OverallAssesmentSection({
           <Typography variant="body2">
             Know more about Builder, Project, Layouts and Plans
           </Typography>
-          <Chip label="Contact us now" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />} sx={{ mt: 1 }} />
-          {userDetails?.role === "user" && (
-            <Chip
-              sx={{ mt: 2 }}
-              color='primary'
-              icon={<AssignmentIcon />}
-              label="Enquire now"
-              size="small"
-              onClick={handleOpenEnquiryForm}
-            />
-          )}
+          <Box sx={{ mt: 1 }}>
+            <Chip label="Contact us now" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />}
+              sx={{
+                background: colors.GRADIENT,
+                color: colors?.BLACK,
+                '& .MuiChip-icon': {
+                  color: colors?.BLACK,
+                },
+                '& .MuiChip-label': {
+                  color: colors?.BLACK,
+                },
+                '&:hover': {
+                  background: colors.GRADIENT,
+                },
+
+                animation: 'floatAnimation 2s ease-in-out infinite', // Apply floating animation
+                '@keyframes floatAnimation': {
+                  '0%': {
+                    transform: 'translateY(0)',
+                  },
+                  '50%': {
+                    transform: 'translateY(-5px)', // Adjust the float height
+                  },
+                  '100%': {
+                    transform: 'translateY(0)',
+                  },
+                },
+              }} />
+            {userDetails?.role === "user" && (
+              <Chip
+                sx={{ ml: 2 }}
+                color='primary'
+                icon={<AssignmentIcon />}
+                label="Enquire now"
+                size="small"
+                onClick={handleOpenEnquiryForm}
+              />
+            )}
+          </Box>
         </Box>
         {open && <EnquireNow
           open={open}
