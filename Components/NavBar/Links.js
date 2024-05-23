@@ -44,6 +44,7 @@ export const listOfPages = {
   adminConsultantLinks: '/admin/links-consultant',
   adminUpdateProfileLinks: '/admin/updateProfile',
   adminUpdateConsultantProfileLinks: '/admin/updateConsultantProfile',
+  approvalPendingPage: '/approval-pending'
 };
 
 export const CommonMenuList = [
@@ -144,7 +145,7 @@ export const AdminMenuList = [
     icon: <RecentActorsIcon fontSize="small" />,
   },
   {
-    label: "Leads reviewed (Pending)",
+    label: "Leads reviewed",
     route: listOfPages.adminEnquiries,
     icon: <ChecklistRtlIcon fontSize="small" />,
   },

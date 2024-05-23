@@ -90,15 +90,15 @@ function AddProperty() {
   const [amentiesStarsScore, setAmentiesStarScore] = useState([]);
   const [amentiesStars, setAmentiesStar] = useState([]);
   const [locationStars, setLocationStars] = useState([]);
-  const[tagProjectName,setTagProjectName]=useState('');
-  const [tagField,setTagField]=useState({
-    builder:"",
-    projectName:"",
-    projectCategory:"",
-    projectType:"",
-    area:"",
-    sector:"",
-    city:""
+  const [tagProjectName, setTagProjectName] = useState('');
+  const [tagField, setTagField] = useState({
+    builder: "",
+    projectName: "",
+    projectCategory: "",
+    projectType: "",
+    area: "",
+    sector: "",
+    city: ""
   })
   const [totalRating, setTotalRating] = useState(80)
   const [locationStarsScore, setLocationStarsScore] = useState([]);
@@ -279,7 +279,7 @@ function AddProperty() {
               type: "consultant",
               phone: i.phone,
               rating: i.rating,
-              profilePicture:i?.brokerPic?.profilePicture?i?.brokerPic?.profilePicture:"",
+              profilePicture: i?.brokerPic?.profilePicture ? i?.brokerPic?.profilePicture : "",
               id: i._id,
             };
             return u;
@@ -331,7 +331,7 @@ function AddProperty() {
         setLoading(true)
         let transform = transformDocuments(res.data.data)
         setSelectOption({ ...transform })
-        let temp={}
+        let temp = {}
         transform["assesment"].map((thing) => {
           temp[thing] = {
             isApplicable: false,
@@ -452,7 +452,7 @@ function AddProperty() {
       totalUnits: "",
       areaUnit: "Acres",
       area: "",
-      areaInSqft:0,
+      areaInSqft: 0,
       greenArea: "",
       unitDensity: "",
       unitDensityScore: "",
@@ -498,7 +498,7 @@ function AddProperty() {
       sectionScore: 0
     },
     consultants: [],
-    tag:'',
+    tag: '',
     overallAssessment: {
       score: 0,
       scoredRating: 0,
@@ -738,7 +738,7 @@ function AddProperty() {
         totalScored =
           +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
       }
-    
+
     }
     else {
       let difference =
@@ -760,9 +760,9 @@ function AddProperty() {
 
     let calc = (totalScored / totalRatingModule) * 10;
 
-    if (firstKeyName === "overview"){
+    if (firstKeyName === "overview") {
       if (secondKeyName === "constructionProgress" && thirdKeyName === "builderScore") {
-        calc = ((+form?.[firstKeyName]?.[thirdKeyName] / 5) * 10 ) + incomingValue;
+        calc = ((+form?.[firstKeyName]?.[thirdKeyName] / 5) * 10) + incomingValue;
       } else {
         calc = (incomingValue / 5) * 10;
       }
@@ -866,6 +866,10 @@ function AddProperty() {
     unitsPlanValue,
     score
   ) => {
+    if ((firstKeyName === "location" && (secondKeyName === 'city' || secondKeyName === 'area' || secondKeyName === 'sector')) ||
+      (firstKeyName === 'overview' && (secondKeyName === 'projectName' || secondKeyName === 'phase'))) {
+      e.target.value = capitalLizeName(e.target.value)
+    }
     if (autoFill) {
       let innerObj = {
         [secondKeyName]: e.target.value,
@@ -877,10 +881,10 @@ function AddProperty() {
       });
     } else if (firstKeyName === "consultant") {
       setForm({ ...form, consultants: [...e] });
-   
-   
-    } 
-   
+
+
+    }
+
     else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
     } else if (score === true) {
@@ -946,30 +950,30 @@ function AddProperty() {
             form.overallAssessment.scoredRating + parseInt(incomingValue);
         }
       }
-else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase()===`don't know` && e.target.value.toLowerCase()!==`don't know`){
-  total = totalRating + 5
-  setTotalRating(total)
+      else if (firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase() === `don't know` && e.target.value.toLowerCase() !== `don't know`) {
+        total = totalRating + 5
+        setTotalRating(total)
 
-  if(form.overallAssessment.rated?.[secondKeyName] > 0){
-    let difference =
-    form.overallAssessment.rated?.[secondKeyName] -
-    parseInt(incomingValue);
-  let compare =
-    form.overallAssessment.rated?.[secondKeyName] <
-    parseInt(incomingValue);
-  if (compare) {
-    totalScored =
-      form.overallAssessment.scoredRating + Math.abs(difference);
-  } else {
-    totalScored =
-      form.overallAssessment.scoredRating - Math.abs(difference);
-  }
-  }
-  else{
-    totalScored =
-    form.overallAssessment.scoredRating + parseInt(incomingValue);
-  }
-}
+        if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+          let difference =
+            form.overallAssessment.rated?.[secondKeyName] -
+            parseInt(incomingValue);
+          let compare =
+            form.overallAssessment.rated?.[secondKeyName] <
+            parseInt(incomingValue);
+          if (compare) {
+            totalScored =
+              form.overallAssessment.scoredRating + Math.abs(difference);
+          } else {
+            totalScored =
+              form.overallAssessment.scoredRating - Math.abs(difference);
+          }
+        }
+        else {
+          totalScored =
+            form.overallAssessment.scoredRating + parseInt(incomingValue);
+        }
+      }
 
       else if (form.overallAssessment.rated?.[secondKeyName] > 0) {
         let difference =
@@ -1013,30 +1017,33 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
           },
         },
       });
-    } 
-    else if(secondKeyName.toLowerCase() === "projecttype" ){
-      let  projectType=e.map(item => item.value).join('-');
-     let formattedTagLine= formatTagLine(projectType,secondKeyName)
-       setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e }
-        ,marketing: {...form.marketing,tagLine:formattedTagLine}
-      });
-     }
-    else if(secondKeyName.toLowerCase() === "builder" || secondKeyName.toLowerCase() ==="city"){
-      let formattedTagLine= formatTagLine(e,secondKeyName)
-      setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e }
-        ,marketing: {...form.marketing,tagLine:formattedTagLine}
-      });
-    
     }
-    else if(secondKeyName.toLowerCase() === "projectcategory" || secondKeyName.toLowerCase() === "state"|| secondKeyName.toLowerCase() === "area"||secondKeyName.toLowerCase() === "projectname"|| secondKeyName.toLowerCase() === "sector"){
-        let formattedTagLine= formatTagLine(e.target.value,secondKeyName)
-        setForm({ ...form,[firstKeyName]:{...form?.[firstKeyName],[secondKeyName]:e.target.value }
-          ,marketing: {...form.marketing,tagLine:formattedTagLine}
-        });
-      
+    else if (secondKeyName.toLowerCase() === "projecttype") {
+      let projectType = e.map(item => item.value).join('-');
+      let formattedTagLine = formatTagLine(projectType, secondKeyName)
+      setForm({
+        ...form, [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e }
+        , marketing: { ...form.marketing, tagLine: formattedTagLine }
+      });
     }
-    
-    
+    else if (secondKeyName.toLowerCase() === "builder" || secondKeyName.toLowerCase() === "city") {
+      let formattedTagLine = formatTagLine(e, secondKeyName)
+      setForm({
+        ...form, [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e }
+        , marketing: { ...form.marketing, tagLine: formattedTagLine }
+      });
+
+    }
+    else if (secondKeyName.toLowerCase() === "projectcategory" || secondKeyName.toLowerCase() === "state" || secondKeyName.toLowerCase() === "area" || secondKeyName.toLowerCase() === "projectname" || secondKeyName.toLowerCase() === "sector") {
+      let formattedTagLine = formatTagLine(e.target.value, secondKeyName)
+      setForm({
+        ...form, [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e.target.value }
+        , marketing: { ...form.marketing, tagLine: formattedTagLine }
+      });
+
+    }
+
+
     else {
       if (thirdKeyName === "checked") {
         setForm((prevForm) => {
@@ -1098,7 +1105,7 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
       }
       // tagline will be added here
       else if (firstKeyName === "marketing" && secondKeyName === "image") {
-      //  let projectType=form.projectType.map(item => item.value).join('-');
+        //  let projectType=form.projectType.map(item => item.value).join('-');
         // setForm({
         //   ...form,tag:`${form.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} `,marketing: { ...form.marketing, image: e }
         // })
@@ -1108,13 +1115,13 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
         })
       }
       else if (firstKeyName === "layout" && secondKeyName === "area") {
-        let totalArea = +e.target.value 
-        if(form.layout.areaUnit.toLowerCase()==='acres'){
+        let totalArea = +e.target.value
+        if (form.layout.areaUnit.toLowerCase() === 'acres') {
           const sqftPerAcre = 43560
-           totalArea = +e.target.value * sqftPerAcre
+          totalArea = +e.target.value * sqftPerAcre
         }
         setForm({
-          ...form, layout: { ...form.layout, area: e.target.value,areaInSqft:totalArea }
+          ...form, layout: { ...form.layout, area: e.target.value, areaInSqft: totalArea }
         })
       }
       else {
@@ -1135,10 +1142,8 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
           }))
           handleCategoryHide(e)
         }
-        if ((firstKeyName === "location" && (secondKeyName === 'city' || secondKeyName === 'area' || secondKeyName === 'sector')) ||
-          (firstKeyName === 'overview' && (secondKeyName === 'projectName' || secondKeyName === 'phase'))) {
-          value = capitalLizeName(value)
-        }
+
+
 
         setForm((prev) => ({
           ...prev,
@@ -1164,16 +1169,16 @@ else if(firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondK
       let total = totalRating + 5
       setTotalRating(total)
     }
-  
+
   };
 
-  let formatTagLine = (value,key)=>{
+  let formatTagLine = (value, key) => {
 
     let obj = {
-      ...tagField,[key]:value
+      ...tagField, [key]: value
     }
     let output = '';
-setTagField(obj)
+    setTagField(obj)
     Object.entries(obj).forEach(([key, value]) => {
       if (value) {
         if (output) {
@@ -1191,40 +1196,40 @@ setTagField(obj)
     // let totalRating = form.overview.status ==="underconstruction"? 75:80;
     let total = totalRating
     let checkField = firstKeyName.toLowerCase() === "location" ? locationStarsScore : amentiesStarsScore
-        const findItemByKey = (array, searchKey) => {
+    const findItemByKey = (array, searchKey) => {
       return array.find(item => item === searchKey);
     };
     const foundItem = findItemByKey(checkField, autoFillField);
 
-if(!foundItem){
-  let fieldName = autoFillField
+    if (!foundItem) {
+      let fieldName = autoFillField
       if (firstKeyName === "amenitiesData") {
-        total=totalRating+5
+        total = totalRating + 5
         setTotalRating(total)
-        setAmentiesStarScore([...amentiesStarsScore,  fieldName ])
+        setAmentiesStarScore([...amentiesStarsScore, fieldName])
         // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
       }
       else {
-        total=totalRating+5
+        total = totalRating + 5
         setTotalRating(total)
-        / setLocationStarsScore([...locationStarsScore,  fieldName ])
+          / setLocationStarsScore([...locationStarsScore, fieldName])
 
         // setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
       }
-}
+    }
     let totalScored;
 
     let difference =
-    +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(e.target.value);
-  let compare =
-    form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(e.target.value);
-  if (compare) {
-    totalScored =
-      +form.overallAssessment.scoredRating+ Math.abs(difference);
-  } else {
-    totalScored =
-      +form.overallAssessment.scoredRating - Math.abs(difference);
-  }
+      +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(e.target.value);
+    let compare =
+      form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(e.target.value);
+    if (compare) {
+      totalScored =
+        +form.overallAssessment.scoredRating + Math.abs(difference);
+    } else {
+      totalScored =
+        +form.overallAssessment.scoredRating - Math.abs(difference);
+    }
 
 
     // let checkField = firstKeyName === "location" ? locationStarsScore : amentiesStarsScore
@@ -1274,9 +1279,9 @@ if(!foundItem){
   }
 
   const validateForm = (publish) => {
-    let projectType=form.overview.projectType.map(item => item.value).join('-');
+    let projectType = form.overview.projectType.map(item => item.value).join('-');
     setForm({
-      ...form,tag:`${form.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} `
+      ...form, tag: `${form.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} `
     })
 
 
@@ -1342,7 +1347,7 @@ if(!foundItem){
       }
     });
     console.log(form, "formmmm", error, "errrr");
-    console.log(totalRating,'totalss')
+    console.log(totalRating, 'totalss')
 
     if (error) {
       // console.log("🚀 ~ validateForm ~ error:", error.details)
@@ -1372,8 +1377,8 @@ if(!foundItem){
             abortEarly: false,
           });
           if (!error) {
-            setForm({ ...form, published: true,tag:`${form.overview.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} ` })
-            CreateProperty({ ...form, published: true,tag:`${form.overview.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} ` })
+            setForm({ ...form, published: true, tag: `${form.overview.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} ` })
+            CreateProperty({ ...form, published: true, tag: `${form.overview.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} ` })
               .then((res) => {
                 openSnackbar(`Property Published successfully`, "success");
                 routerNavigation.push(`/admin/property-list`);
@@ -1387,9 +1392,9 @@ if(!foundItem){
           }
         }
         else {
-          CreateProperty({ ...form, tag:`${form.overview.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} ` })
+          CreateProperty({ ...form, tag: `${form.overview.projectCategory}-${projectType}-${form.location.city}-${form.location.sector}-${form.location.area}-${form.overview.builder}-${form.overview.projectName} ` })
 
-          // CreateProperty({ ...form })
+            // CreateProperty({ ...form })
             .then((res) => {
               openSnackbar(`Property added successfully`, "success");
               routerNavigation.push(`/admin/property-list`);

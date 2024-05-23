@@ -80,7 +80,7 @@ function PropertyCard(props) {
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
-                  {propertyDetails?.location?.city} &#183; PRS &#183; OE14253
+                  {propertyDetails?.location?.city}&#183;PRS&#183;{propertyDetails?.property_id}
                 </Typography>
                 <Typography variant="subtitle2" sx={{ textTransform: 'capitalize' }}>
                   {propertyDetails?.overview?.builder + ' ' + propertyDetails?.overview?.projectName}
@@ -167,7 +167,9 @@ function PropertyCard(props) {
             <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
               ? propertyDetails?.overallAssessment?.score.toFixed() : 0}
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyUrl}`)} tooltipText={`AB scores *`} />
+              onClick={() => router.push(`/details/${propertyUrl}`)}
+              tooltipText={`AB scores Excellent *`}
+            />
           </Grid>
           {/* <Grid
             item

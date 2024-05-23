@@ -20,6 +20,7 @@ import { useAuth } from "utills/AuthContext";
 import { getItem } from "utills/utills";
 import { ROLE_CONSTANTS, countries, enquiryFormKey, enquiryFormOpen, propertyUserVerifiedKey, } from "utills/Constants";
 import { isLoggedIn } from "utills/utills";
+import { listOfPages } from "Components/NavBar/Links";
 
 function Login() {
   const { login } = useAuth();
@@ -131,10 +132,10 @@ function Login() {
           } else if (!userDetails?.isApproved) {
             setLoading(false);
             openSnackbar("Please try again after some time because permission is still waiting.", "warning");
-            router.push("/approval-pending-request");
+            router.push(listOfPages?.approvalPendingPage);
             return;
-          } 
-          
+          }
+
           else {
             login(userDetails, token);
             router.push("/");
@@ -200,7 +201,7 @@ function Login() {
       };
       const res = await verifyOtpAPI(payload);
       const isEnquireyFormOpen = getItem(enquiryFormOpen) || getItem(propertyUserVerifiedKey);
-      if(isEnquireyFormOpen){
+      if (isEnquireyFormOpen) {
         createUserFun()
       }
 
@@ -256,11 +257,11 @@ function Login() {
         if (userDetails?.isBlocked) {
           openSnackbar("You are blocked", "warning");
           return;
-        }else if (!userDetails?.isApproved){
+        } else if (!userDetails?.isApproved) {
           openSnackbar("Please try again after some time because permission is still waiting.", "warning");
-          router.push("/approval-pending-request");
+          router.push(listOfPages?.approvalPendingPage);
           return;
-        }else {
+        } else {
           login(userDetails, token);
           router.push("/");
         }
