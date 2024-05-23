@@ -53,8 +53,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
     titleCase = (string) => {
       return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
     },
-
-    currentEnquiredBroker = enquiredInfo?.find((enquiry) => enquiry.brokerId[0] === broker.id),
+    currentEnquiredBroker = enquiredInfo?.find((enquiry) => enquiry?.brokerId?.[0] === broker.id || enquiry.isNew),
     isEnquiredByCurrentBroker = currentEnquiredBroker?._id  ? true: false,
     handleCallClick = () => {
       if (typeof handleEnquireWithBroker === 'function') {

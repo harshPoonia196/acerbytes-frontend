@@ -1,22 +1,25 @@
-import { Box, Card, Chip, Divider, IconButton, Rating, Typography } from '@mui/material'
-import StarIcon from "@mui/icons-material/Star";
 import React from 'react'
-import { Close } from '@mui/icons-material';
+import { Box, Card, Chip, Divider, IconButton, Typography } from '@mui/material'
+import { Close, ContentCopy as ContentCopyIcon, AccountCircle, Phone as PhoneIcon, AddLink as AddLinkIcon } from '@mui/icons-material';
 import colors from 'styles/theme/colors';
-import PhoneIcon from '@mui/icons-material/Phone';
-import AddLinkIcon from '@mui/icons-material/AddLink';
 import { useSnackbar } from 'utills/SnackbarContext';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import { formatDateAndDaysRemaining } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
 import { ToasterMessages } from 'utills/Constants';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isConsultant, SinglePropertyId, propertyData, id }) {
     const { userDetails } = useAuth();
     const brokerData = SinglePropertyId?.brokerData
     const locationData = propertyData?.location;
+
+    const name = brokerData?.name?.firstName && brokerData?.name?.lastName
+        ? `${brokerData.name.firstName} ${brokerData.name.lastName}`
+        : `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}`;
+
+    const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
+        ? `${brokerData.phone.countryCode}-${brokerData.phone.number}`
+        : `${userDetails?.phone?.countryCode}-${userDetails?.phone?.number}`;
 
     const constructPropertyUrl = (property) => {
         const overview = property?.overview;
@@ -35,22 +38,13 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
 
         const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
 
-        return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${brokerId}`;
+        return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${name.replace(/\s+/g, '-')}-${phoneNumber.replace(/\s+/g, '-')}-${brokerId}`;
     };
 
     const propertyUrl = constructPropertyUrl(propertyData)
-
-    const name = brokerData?.name?.firstName && brokerData?.name?.lastName ? `${brokerData.name.firstName}  ${brokerData?.name?.lastName}` : `${userDetails?.name?.firstName}  ${userDetails?.name?.lastName}`
-    const city = locationData?.city ? locationData.city : "Godrejforest"
-    const sector = locationData?.sector ? locationData.sector : "Sector"
     const pinCode = locationData?.pinCode ? locationData.pinCode : "132"
     const state = locationData?.state ? locationData.state : "Noida"
-    const projectName = propertyData?.overview?.projectName ? propertyData?.overview?.projectName : ""
-    const builderName = propertyData?.overview?.builder
 
-    const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
-        ? `${brokerData.phone.countryCode} ${brokerData.phone.number}`
-        : `${userDetails?.phone?.countryCode}  ${userDetails?.phone?.number}`
     const description = SinglePropertyId?.description ? `${SinglePropertyId.description}` : "Our commitment to addressing escalating environmental issues led us to develop a sustainability strategy which creates long-term value for all our stakeholders, including the planet we live on";
 
     const copyToClipboard = (text) => {
@@ -72,7 +66,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                 <Box sx={{ p: 1, px: 2, gap: 1, background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue', }}>
                     <Box sx={{ flex: 1, alignSelf: { xs: 'start', sm: 'center' }, alignItems: "start" }}>
                         <Typography variant='h5'>
-                            {builderName}&#183;{projectName}&#183;{city}&#183;{sector}
+                            {`${propertyData?.overview?.builder} · ${propertyData?.overview?.projectName} · ${locationData?.city || 'Godrejforest'} · ${locationData?.sector || 'Sector'}`}
                         </Typography>
 
                         <Box sx={{ display: 'flex', width: '100%' }}>
@@ -101,7 +95,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                     {isConsultant ? (
                         <ContentCopyIcon fontSize='1rem' sx={{ color: colors.BLUE, cursor: 'not-allowed' }} />
                     ) : (
-                        <ContentCopyIcon fontSize='1rem' sx={{ color: colors.BLUE, cursor: 'not-allowed' }} onClick={() => copyToClipboard(propertyUrl)} />
+                        <ContentCopyIcon fontSize='1rem' sx={{ color: colors.BLUE, }} onClick={() => copyToClipboard(propertyUrl)} />
                     )}
                 </Box>
                 <Divider sx={{ borderColor: 'whitesmoke' }} />

@@ -615,7 +615,7 @@ const PropertyDetails = ({ params }) => {
         handleClose={handleCloseAlternateSignIn}
         leadId={leadId}
       />
-      <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={contactPermissionToView} handleOpenEnquiryForm={handleOpenEnquiryForm} />
+      <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={isLogged ? contactPermissionToView: true} handleOpenEnquiryForm={handleOpenEnquiryForm} />
       <nav className={classes.demo2}>
         <TopMenu
           topMenu={propertyData[0]?.propertyData}
