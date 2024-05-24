@@ -52,7 +52,8 @@ export const submitEnquiryUnauth = (data) => {
     name: { firstName: data?.firstName, lastName: data?.lastName },
     phone: { countryCode: data?.countryCode, number: `${data?.number}` },
     otp: data?.otp,
-    propertyLink: data?.propertyLink
+    propertyLink: data?.propertyLink,
+    brokerId: data?.brokerId || "",
   });
 };
 

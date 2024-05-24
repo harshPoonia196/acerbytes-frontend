@@ -14,17 +14,10 @@ function ClearanceSection(props) {
     const getTextToDisplay = (type) => {
         switch (type) {
             case 'Yes':
-                return <Box sx={{ display: 'flex', width: 'fit-content', ml: 'auto' }}>
-                    <CheckBoxIcon fontSize='small' /><p style={{ alignSelf: 'center' }}>{type}</p>
-                </Box>
+                return <CheckBoxIcon fontSize='small' />
+
             case "Don't know":
-                return <Box sx={{ display: 'flex', width: 'fit-content', ml: 'auto' }}>
-                    <QuestionMarkIcon fontSize='1.25rem' /><p style={{ alignSelf: 'center' }}>{type}</p>
-                </Box>
-            default:
-                return <Box sx={{ display: 'flex', width: 'fit-content', ml: 'auto' }}>
-                    <p style={{ alignSelf: 'center' }}>{type}</p>
-                </Box>
+                return <QuestionMarkIcon fontSize='1.25rem' />
         }
     }
 
@@ -64,14 +57,18 @@ function ClearanceSection(props) {
                 </Box>
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
-                    <NewKeyValuePairStructure label="RERA approved" value={getTextToDisplay(regulatoryClearanceData?.reraApproved)} />
-                    <NewKeyValuePairStructure label="RERA" value={getTextToDisplay(regulatoryClearanceData?.reraNumber)} />
-                    <NewKeyValuePairStructure label="CC" value={getTextToDisplay(regulatoryClearanceData?.cc)} />
-                    <NewKeyValuePairStructure label="OC" value={getTextToDisplay(regulatoryClearanceData?.oc)} />
-                    <NewKeyValuePairStructure label="Authority registration" value={regulatoryClearanceData?.authorityRegistration} />
-                    <NewKeyValuePairStructure label="Government bank loan" value={regulatoryClearanceData?.governmentLoan} />
-                    <NewKeyValuePairStructure label="Private bank loan" value={regulatoryClearanceData?.privateBankLoan} />
-                    <NewKeyValuePairStructure label="Resale" value={regulatoryClearanceData?.resale} />
+                    <NewKeyValuePairStructure label="RERA approved"
+                        labelIcon={getTextToDisplay(regulatoryClearanceData?.reraApproved)}
+                        value={regulatoryClearanceData?.reraApproved}
+                    />
+                    <NewKeyValuePairStructure label="RERA" value={(regulatoryClearanceData?.reraNumber)}
+                    />
+                    <NewKeyValuePairStructure label="CC" labelIcon={getTextToDisplay(regulatoryClearanceData?.cc)} value={(regulatoryClearanceData?.cc)} />
+                    <NewKeyValuePairStructure label="OC" labelIcon={getTextToDisplay(regulatoryClearanceData?.oc)} value={(regulatoryClearanceData?.oc)} />
+                    <NewKeyValuePairStructure label="Authority registration" labelIcon={getTextToDisplay(regulatoryClearanceData?.authorityRegistration)} value={regulatoryClearanceData?.authorityRegistration} />
+                    <NewKeyValuePairStructure label="Government bank loan" labelIcon={getTextToDisplay(regulatoryClearanceData?.governmentLoan)} value={regulatoryClearanceData?.governmentLoan} />
+                    <NewKeyValuePairStructure label="Private bank loan" labelIcon={getTextToDisplay(regulatoryClearanceData?.privateBankLoan)} value={regulatoryClearanceData?.privateBankLoan} />
+                    <NewKeyValuePairStructure label="Resale" labelIcon={getTextToDisplay(regulatoryClearanceData?.resale)} value={regulatoryClearanceData?.resale} />
                 </Grid>
             </Card>
         </Grid>
