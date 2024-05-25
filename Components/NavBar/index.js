@@ -167,7 +167,7 @@ export default function ClippedDrawer({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {(userDetails.role !== "admin" && userDetails.role !== 'superAdmin' && userDetails.role !== ROLE_CONSTANTS.customerSupport) && (
+      {(userDetails.role !== "admin" && userDetails.role !== 'superAdmin' && userDetails.role !== ROLE_CONSTANTS.customerSupport && userDetails.role !== ROLE_CONSTANTS.sales) && (
         <MenuItem
           onClick={() => {
             router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);

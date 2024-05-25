@@ -35,6 +35,7 @@ export const listOfPages = {
   consultantPaymentHistory: "/consultant/payment-history",
   consultantJoinNow: "/consultant/join-now",
   adminEnquiries: '/admin/enquiries',
+  adminReviewedEnquiries: '/admin/reviewed-enquiries',
   adminOrdersRequest: '/admin/orders-request',
   adminCreditStatus: '/admin/credit-status',
   adminAddProperty: '/admin/add-property',
@@ -146,7 +147,7 @@ export const AdminMenuList = [
   },
   {
     label: "Leads reviewed",
-    route: listOfPages.adminEnquiries,
+    route: listOfPages.adminReviewedEnquiries,
     icon: <ChecklistRtlIcon fontSize="small" />,
   },
   {
