@@ -638,7 +638,7 @@ const PropertyDetailsPage = ({ params }) => {
           propertyData={propertyData}
         />
       ) : null}
-      {userDetails?.role !== "admin" &&
+      {/* {userDetails?.role !== "admin" &&
         userDetails?.role !== "superAdmin" &&
         propertyData.isActiveAd ? (
         <AdsSection
@@ -648,7 +648,7 @@ const PropertyDetailsPage = ({ params }) => {
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
           handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
         />
-      ) : null}
+      ) : null} */}
 
       <nav className={classes.demo2}>
         <TopMenu

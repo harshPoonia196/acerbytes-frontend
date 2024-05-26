@@ -791,7 +791,9 @@ const PropertyDetails = ({ params }) => {
               </Box>
             )}
         </Container>
-        <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={isLogged ? contactPermissionToView : true} handleOpenEnquiryForm={handleOpenEnquiryForm} />
+        <UserDetailsAd AllPropertyData={propertyData[0]}
+          contactPermissionToView={isLogged ? contactPermissionToView : true}
+          handleOpenEnquiryForm={handleOpenEnquiryForm} />
         {expiredModalOpenRef.current && <Dialog open={expiredModalOpenRef.current}>
           <DialogContent sx={{ padding: "25px 30px !important", minWidth: "415px" }}>
             <Grid sx={{ display: "flex", alignItems: "center", gap: "10px" }}>

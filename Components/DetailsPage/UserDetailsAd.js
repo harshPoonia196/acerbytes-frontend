@@ -11,6 +11,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import { countryCodeFormating } from "utills/utills";
 import { boxShadowTop } from "utills/Constants";
 import Phone from "@mui/icons-material/Phone";
+import DoneIcon from '@mui/icons-material/Done';
 
 function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnquiryForm }) {
   const { userDetails } = useAuth();
@@ -85,7 +86,7 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
                     </Typography>
                   </Box>
                   <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "block", md: 'none' } }}>
-                    <Button variant='contained' disabled sx={{}}>
+                    <Button variant='contained' size="small" startIcon={<DoneIcon />} disabled sx={{}}>
                       Activated
                     </Button>
                     {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
@@ -99,7 +100,7 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
               </Box>
             </Box>
             <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "none", md: 'block' } }}>
-              <Button variant='contained' sx={{ mb: 1 }}>
+              <Button variant='contained' startIcon={<DoneIcon />} disabled sx={{ mb: 1 }}>
                 Activated
               </Button>
               {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
