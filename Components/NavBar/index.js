@@ -239,15 +239,15 @@ export default function ClippedDrawer({ children }) {
             ))}
           </List>}
           <Divider />
-          {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole && <List subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              To be removed
-            </ListSubheader>
-          }>
-            {ToBeRemoved.map((item) => (
-              <DrawerListItem key={`toberemoved-${item.label}`} item={item} />
-            ))}
-          </List>}
+          {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole &&
+            <>
+              {
+                ToBeRemoved.map((item) => (
+                  <DrawerListItem key={`toberemoved-${item.label}`} item={item} />
+                ))
+              }
+            </>
+          }
           <Divider />
           {
             authRole("user") && (
@@ -499,7 +499,7 @@ export default function ClippedDrawer({ children }) {
             <Box sx={{ alignSelf: "center", }}>
               <Link href={listOfPages.home} prefetch={true} style={{ textDecoration: 'none' }}>
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Box sx={{ height: 30, width: 30, background: 'lightblue' }}>
+                  <Box sx={{ height: 30, width: 30, background: 'whitesmoke', borderRadius: '4px' }}>
                     <Image priority height={25} width={25} src={Logo} style={{ margin: '2.5px' }} alt="Dashboard" />
                   </Box>
                   <Typography

@@ -34,6 +34,20 @@ function UnitsPlanSection(props) {
     );
   };
 
+  const getListOfUnitsWithPriceSorted = () => {
+    let listOfUnitsWithPriceSorted = [];
+    if (unitsPlan?.planList) {
+      console.log('i m in ')
+      listOfUnitsWithPriceSorted = unitsPlan?.planList.sort(
+        (a, b) => a.totalPrice - b.totalPrice
+      );
+    }
+    console.log(listOfUnitsWithPriceSorted)
+    return listOfUnitsWithPriceSorted;
+  }
+
+  console.log(unitsPlan)
+
   return (
     <Grid item xs={12} ref={refCallback} id='unitsPlan' >
       <Card>
@@ -71,7 +85,7 @@ function UnitsPlanSection(props) {
         <Divider />
         <Box sx={{ p: 2 }}>
           <Grid container spacing={2}>
-            {unitsPlan?.planList.length && unitsPlan?.planList?.map((unit, index) => (
+            {unitsPlan?.planList.length && getListOfUnitsWithPriceSorted(unitsPlan?.planList).map((unit, index) => (
               <GridItemWithCard
                 key={unit._id}
                 xs={6}
