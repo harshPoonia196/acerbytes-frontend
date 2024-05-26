@@ -136,11 +136,11 @@ const PropertyDetails = ({ params }) => {
     try {
       setLoading(true);
       let res;
-      if(isLogged && userDetails?._id) {
-       let url = `${getId}${`?brokerId=${userDetails?._id}`}`
+      if (isLogged && userDetails?._id) {
+        let url = `${getId}${`?brokerId=${userDetails?._id}`}`
         res = await activeAdGet(url);
-      }else{
-       let url = `${getId}`
+      } else {
+        let url = `${getId}`
         res = await activeAdGet(url);
       }
       if (res.status === 200) {
@@ -168,7 +168,7 @@ const PropertyDetails = ({ params }) => {
       setLoading(false);
     }
   };
-  const handleDetailsPageClick = () =>{
+  const handleDetailsPageClick = () => {
     router.push(`details/${constructPropertyUrl(propertyData?.[0])}`);
   }
 
@@ -176,10 +176,10 @@ const PropertyDetails = ({ params }) => {
     try {
       setLoading(true);
       let url = "";
-      if(userDetails?._id) {
+      if (userDetails?._id) {
         url = `${getId}${`?brokerId=${userDetails?._id}`}`
-      } 
-      if(userDetails?._id == undefined){
+      }
+      if (userDetails?._id == undefined) {
         url = `${getId}`
       }
       let res = await checkEnquiryOnActiveLink(url);
@@ -224,7 +224,7 @@ const PropertyDetails = ({ params }) => {
     openSnackbar(message, severity);
   };
 
-   useEffect(() => {
+  useEffect(() => {
     const timer = setInterval(() => {
       setProgressCount((prevProgress) => (prevProgress <= 0 ? 6 : prevProgress - 1)); // Countdown from 6 to 0
     }, 1000);
@@ -615,7 +615,6 @@ const PropertyDetails = ({ params }) => {
         handleClose={handleCloseAlternateSignIn}
         leadId={leadId}
       />
-      <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={isLogged ? contactPermissionToView: true} handleOpenEnquiryForm={handleOpenEnquiryForm} />
       <nav className={classes.demo2}>
         <TopMenu
           topMenu={propertyData[0]?.propertyData}
@@ -668,7 +667,7 @@ const PropertyDetails = ({ params }) => {
           </Grid>
 
           {/* Dont Touch this */}
-          <Toolbar sx={{ display: { xs: "flex", md: "none" } }} />
+          <Toolbar sx={{ display: { xs: "flex" } }} />
 
           <Card
             sx={{
@@ -792,10 +791,10 @@ const PropertyDetails = ({ params }) => {
               </Box>
             )}
         </Container>
+        <UserDetailsAd AllPropertyData={propertyData[0]} contactPermissionToView={isLogged ? contactPermissionToView : true} handleOpenEnquiryForm={handleOpenEnquiryForm} />
         {expiredModalOpenRef.current && <Dialog open={expiredModalOpenRef.current}>
-            
           <DialogContent sx={{ padding: "25px 30px !important", minWidth: "415px" }}>
-            <Grid sx={{display: "flex", alignItems: "center", gap: "10px"}}>
+            <Grid sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <CircularProgressSpinner value={progressCount} />
               <DialogContentText>
                 Link is not available please check details page
@@ -812,7 +811,7 @@ const PropertyDetails = ({ params }) => {
                   backgroundColor: colors?.BLACK,
                   boxShadow: "none",
                 },
-              }} onClick={()=> { expiredModalOpenRef.current = false}}  color="primary">
+              }} onClick={() => { expiredModalOpenRef.current = false }} color="primary">
               Close
             </Button>
             <Button
@@ -831,7 +830,7 @@ const PropertyDetails = ({ params }) => {
               Details Page
             </Button>
           </DialogActions>
-        </Dialog> }
+        </Dialog>}
       </Box>
     </>
   );

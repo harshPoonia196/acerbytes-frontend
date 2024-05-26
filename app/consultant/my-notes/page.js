@@ -104,7 +104,7 @@ function MyNotes() {
         label={'My Notes'}
         button={<div style={{ display: 'flex', gap: '10px' }}>
 
-          {list.showSubscribeButton &&
+          {!list.showSubscribeButton &&
             <CustomButton
               variant="contained"
               size="small"
@@ -138,7 +138,7 @@ function MyNotes() {
           getList={getList}
         />
         < MyLeadsStatus list={list} searchTerm={searchTerm}
-            handleSearch={handleSearch} alignment={alignment} handleChange={handleChange} handleOpenUpdatePopup={handleOpenUpdatePopup} onNoteDelete={onNoteDelete} />
+          handleSearch={handleSearch} alignment={alignment} handleChange={handleChange} handleOpenUpdatePopup={handleOpenUpdatePopup} onNoteDelete={onNoteDelete} />
       </Container>
     </>
   );

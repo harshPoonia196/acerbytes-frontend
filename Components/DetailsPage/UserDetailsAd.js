@@ -1,13 +1,16 @@
-import { Box, Button, Card, Chip, Divider, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, Chip, Container, Divider, Toolbar, Typography } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import React, { useEffect, useState } from "react";
 import colors from "styles/theme/colors";
 import PhoneIcon from "@mui/icons-material/Phone";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from "utills/AuthContext";
+import GoogleIcon from "@mui/icons-material/Google";
 import CloseIcon from "@mui/icons-material/Close";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { countryCodeFormating } from "utills/utills";
+import { boxShadowTop } from "utills/Constants";
+import Phone from "@mui/icons-material/Phone";
 
 function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnquiryForm }) {
   const { userDetails } = useAuth();
@@ -49,8 +52,71 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
   }, [contactPermissionToView, showContact])
 
   return (
-    <Box sx={{ m: 2, mb: 0 }}>
-      <Card sx={{ border: `2px solid ${colors.BLUE}` }}>
+    <Box>
+      <Box sx={{ position: 'fixed', bottom: 0, width: '100%', }}>
+        <Container maxWidth='md' sx={{ p: { xs: '0 !important', md: '16px !important' }, pb: { md: '0 !important' } }}>
+          <Box sx={{ display: 'flex', p: 2, background: 'white', boxShadow: boxShadowTop }}>
+            <Avatar src="" sx={{ height: { xs: 24, md: 40 }, width: { xs: 24, md: 40 }, fontSize: { xs: '0.75rem', md: '1rem' } }}>FD</Avatar>
+            <Box sx={{ ml: 2, flex: 1 }}>
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                <Typography variant='h6'>
+                  first last | Project name | Noida
+                </Typography>
+                <Box>
+                  <Typography variant='h6'>
+                    +91 9625555559
+                  </Typography>
+                  <Typography variant='h6' sx={{ mt: 1 }}>
+                    4.5 | 12 ratings
+                  </Typography>
+                </Box>
+              </Box>
+              <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                <Typography variant='subtitle2'>
+                  first last | Project name | Noida
+                </Typography>
+                <Box sx={{ display: 'flex' }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant='subtitle2'>
+                      +91 9625555559
+                    </Typography>
+                    <Typography variant='subtitle2' sx={{ mt: 1 }}>
+                      4.5 | 12 ratings
+                    </Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "block", md: 'none' } }}>
+                    <Button variant='contained' disabled sx={{}}>
+                      Activated
+                    </Button>
+                    {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
+                Call First
+              </Button>
+              <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
+                Log in
+              </Button> */}
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+            <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "none", md: 'block' } }}>
+              <Button variant='contained' sx={{ mb: 1 }}>
+                Activated
+              </Button>
+              {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
+                Call First
+              </Button>
+              <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
+                Log in
+              </Button> */}
+              <p style={{ fontSize: '0.75rem' }}>26 days remaining</p>
+            </Box>
+            <Box sx={{ textAlign: 'end', alignSelf: 'center' }}>
+
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+      <Card sx={{ border: `2px solid ${colors.BLUE}`, display: 'none' }}>
         <Box
           sx={{
             display: "flex",

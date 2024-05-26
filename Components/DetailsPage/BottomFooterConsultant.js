@@ -1,9 +1,10 @@
-import { BottomNavigation, BottomNavigationAction, Box, Fab, Menu, MenuItem } from '@mui/material'
+import { Avatar, BottomNavigation, BottomNavigationAction, Box, Chip, Fab, IconButton, Menu, MenuItem, Rating, Typography } from '@mui/material'
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React from 'react';
 import { boxShadowTop } from 'utills/Constants';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function BottomFooterConsultant() {
     const [value, setValue] = React.useState(0);
@@ -26,51 +27,57 @@ function BottomFooterConsultant() {
                     bottom: 0,
                     left: 0,
                     zIndex: 1000,
-                    display: { xs: "block", evmd: "none" },
+                    display: { xs: "flex", evmd: "none" },
+                    background: 'white',
+                    p: 1,
                     boxShadow: boxShadowTop
                 }}
             >
-                <BottomNavigation
-                    showLabels
-                    sx={{
-                        justifyContent: 'space-evenly',
-                        '& .MuiBottomNavigationAction-root': { padding: 1, width: '100%' },
-                        '& .MuiBottomNavigationAction-label': {
-                            fontSize: { xs: '0.75rem !important', sm: '0.8rem !important' },
-                        },
-                        '& .Mui-selected': {
-                            fontSize: { xs: '0.75rem !important', sm: '0.8rem !important' },
-                        },
-                        '& .MuiSvgIcon-root': {
-                            fontSize: '1.25rem',
-                        },
-                    }}
-                    value={value}
-                    onChange={(event, newValue) => {
-                        setValue(newValue);
+
+                <Box sx={{ display: 'flex', flex: 1 }}>
+                    <Box sx={{ display: 'flex', flex: 1 }}>
+                        <Avatar src='' sx={{ mr: 1 }}>ff</Avatar>
+                        <Box>
+                            <Typography variant='h6'>Helllo</Typography>
+                            <Rating
+                                name="read-only"
+                                size="small"
+                                value={4}
+                                readOnly
+                            />
+                        </Box>
+                    </Box>
+                    <Chip
+                        // size="small"
+                        sx={{
+                            backgroundColor: "lightgoldenrodyellow",
+                            border: "2px solid gold",
+                            alignSelf: 'center',
+                            mr: 1,
+                        }}
+                        label="👆 Activate your ad link"
+                    // onClick={() => handleOpenActivateAdsPopup(propertyUrl)}
+                    />
+                </Box>
+                <Box sx={{ alignSelf: 'center' }}>
+                    <IconButton onClick={handleClick}>
+                        <MoreVertIcon />
+                    </IconButton>
+                </Box>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
                     }}
                 >
-                    <BottomNavigationAction sx={{ flex: '0 1 auto', minWidth: 0 }}
-                        label="Activate link" icon={<AddLinkIcon />} />
-                    <BottomNavigationAction sx={{ flex: '0 1 auto', minWidth: 0 }}
-                        label="View leads" icon={<FormatListBulletedIcon />} />
-                    <BottomNavigationAction sx={{ flex: '0 1 auto', minWidth: 0 }}
-                        label="More" icon={<MoreHorizIcon />} onClick={handleClick} />
-                    <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                        }}
-                    >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                    </Menu>
-                </BottomNavigation>
-            </Box>
+
+                    <MenuItem onClick={handleClose}>Activate link</MenuItem>
+                    <MenuItem onClick={handleClose}>View leads</MenuItem>
+                </Menu>
+            </Box >
             <Box
                 sx={{
                     position: "fixed",
