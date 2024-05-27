@@ -214,7 +214,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption" sx={{ textTransform: "capitalize" }}
+              <Typography variant="caption" sx={{ textTransform: "capitalize" ,fontWeight: "bold" }}
               >{capitalLizeName(headCell.label)}</Typography>
 
               {orderBy === headCell.id ? (
@@ -342,9 +342,10 @@ export default function Enquiries(props) {
               <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
                 ButtonText={"View suggested leads"}
               />
+              {brokerBalance?
               <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
                 ButtonText={brokerBalance}
-              />
+              />:""}
             </Box>
           </Box>
         </Container>

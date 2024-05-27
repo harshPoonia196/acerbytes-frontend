@@ -128,8 +128,8 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption">
-                {capitalLizeName(headCell.label)}
+              <Typography variant="caption" sx={{textTransform:"capitalize",fontWeight:"bold"}}>
+                {(headCell.label)}
               </Typography>
 
               {orderBy === headCell.id ? (
@@ -179,6 +179,8 @@ function RowStructure({ row, handlePropertyView }) {
     <TableRow
       key={row?._id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
     >
       <UpdateLeadStatus
         open={openUpdatePopup}
@@ -276,9 +278,9 @@ function RowStructure({ row, handlePropertyView }) {
           </a>
         )}
       </TableCell>
-      {/* <TableCell>
-        {"date"}
-      </TableCell> */}
+      <TableCell>
+        27/05/2024
+      </TableCell>
 
     </TableRow>
   );
