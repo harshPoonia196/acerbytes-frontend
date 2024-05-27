@@ -19,6 +19,7 @@ import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsult
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from 'utills/AuthContext';
+import Enquiries from "app/enquiries/page";
 
 function MyLeads() {
   const { userDetails } = useAuth();
@@ -39,6 +40,7 @@ function MyLeads() {
   const handleChange = (event, newAlignment) => {
     newAlignment != null && setAlignment(newAlignment);
   };
+
 
   return (
     <>
@@ -84,6 +86,7 @@ function MyLeads() {
         </Box>
         {alignment === "all" ? <MyLeadsTable setLeadsCount={setLeadsCount} /> : <MyLeadsStatus />}
       </Container>
+
     </>
   );
 }

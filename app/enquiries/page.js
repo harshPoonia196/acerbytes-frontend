@@ -33,15 +33,16 @@ import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { countryCodeFormating, maskPhoneNumber } from "utills/utills";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
-
+import { useAuth } from 'utills/AuthContext';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 function Row(props) {
   const { row, history } = props;
   const [open, setOpen] = React.useState(false);
-const handlePropertyView = (link) => {
-  const baseUrl = window.location.origin;
-  const fullLink = `${baseUrl}/${link}`;
-  window.open(fullLink, "_blank");
-}
+  const handlePropertyView = (link) => {
+    const baseUrl = window.location.origin;
+    const fullLink = `${baseUrl}/${link}`;
+    window.open(fullLink, "_blank");
+  }
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -50,35 +51,44 @@ const handlePropertyView = (link) => {
         <TableCell>{row.phone} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
           <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='error' />}</TableCell>
         <TableCell>
-        {row.propertyLink && (
-          <a
-            href={row.propertyLink}
-            onClick={(e) => {
-              e.preventDefault();
-              handlePropertyView(row.propertyLink);
-            }}
-            style={{ textDecoration: "none" }}
-          >
-            {row?.project ?
-              `${capitalLizeName(row?.project)}`
-              : "-"}
-          </a>
-        )}
-          </TableCell>
+          {row.propertyLink && (
+            <a
+              href={row.propertyLink}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePropertyView(row.propertyLink);
+              }}
+              style={{ textDecoration: "none" }}
+            >
+              {row?.project ?
+                `${capitalLizeName(row?.project)}`
+                : "-"}
+            </a>
+          )}
+        </TableCell>
+
         {/* <TableCell>{row.urgency}</TableCell>
         <TableCell>{row.buyingType}</TableCell>
         <TableCell>{row.price}</TableCell>
-        <TableCell>{row.enquired}</TableCell>
+    
         <TableCell>{row.consultedBy}</TableCell> */}
         <TableCell>
-          <Chip
-            label="View contact"
-            size="small"
+
+          <a
+            href={"consultant/suggested-leads"}
             onClick={() => {
-              history.push(listOfPages.consultantJoinNow);
+              history.push(listOfPages.suggestedLeads);
             }}
-          />
+            style={{ textDecoration: "none", }}
+          > <LocalPhoneIcon fontSize="1rem" sx={{ mr: "0.1rem" }} />
+            View contact
+
+
+          </a>
+
+
         </TableCell>
+        <TableCell>{row.enquired}</TableCell>
       </TableRow>
     </React.Fragment>
   );
@@ -165,12 +175,12 @@ const headCells = [
   //   disablePadding: false,
   //   label: "Max budget",
   // },
-  // {
-  //   id: "enquired",
-  //   numeric: true,
-  //   disablePadding: false,
-  //   label: "Enquired",
-  // },
+  {
+    id: "enquired",
+    numeric: true,
+    disablePadding: false,
+    label: "Enquired On date",
+  },
   // {
   //   id: "consultedBy",
   //   numeric: true,
@@ -204,7 +214,8 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption">{headCell.label}</Typography>
+              <Typography variant="caption" sx={{ textTransform: "capitalize" }}
+              >{capitalLizeName(headCell.label)}</Typography>
 
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
@@ -219,7 +230,8 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function Enquiries() {
+export default function Enquiries(props) {
+
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
 
@@ -228,7 +240,8 @@ export default function Enquiries() {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-
+  const { brokerBalance } =
+    useAuth();
   const { openSnackbar } = useSnackbar();
 
   const {
@@ -242,6 +255,7 @@ export default function Enquiries() {
       if (response.status == 200) {
         const { success, data, message } = response.data;
         if (success) {
+
           return data?.map((enquiry) => {
             return {
               isVerified: enquiry?.isVerified || false,
@@ -261,7 +275,9 @@ export default function Enquiries() {
               // location: `${enquiry?.property[0]?.location?.area} ${enquiry?.property[0]?.location?.sector} ${enquiry?.property[0]?.location?.state} ${enquiry?.property[0]?.location?.city}`,
               location: `${enquiry?.property[0]?.location?.city}`,
               next: "yes",
+
             };
+
           });
         } else {
           openSnackbar(message, "error");
@@ -279,7 +295,7 @@ export default function Enquiries() {
   });
 
   const history = useRouter();
-
+  console.log(props, "userdjbdj")
   return (
     <>
       {isLoading && <Loader />}
@@ -321,10 +337,13 @@ export default function Enquiries() {
                 variant="h3"
                 sx={{ flex: 1, alignSelf: "center", my: 2 }}
               >
-                Be a part of approved consultants community
+                View  my {rows?.length} leads
               </Typography>
-              <CustomButton variant="contained" sx={{ alignSelf: 'center' }} onClick={() => { history.push(listOfPages.consultantJoinNow) }}
-                ButtonText={"Join as real estate consultant"}
+              <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
+                ButtonText={"View suggested leads"}
+              />
+              <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
+                ButtonText={brokerBalance}
               />
             </Box>
           </Box>
@@ -343,10 +362,12 @@ export default function Enquiries() {
         >
           Leads panel
         </Typography>
-        <TableContainer component={Paper} style={{     maxHeight: "350px",
-    overflowY: "auto",
-    padding: "10px",
-    border: "1px solid #ccc"}} >
+        <TableContainer component={Paper} style={{
+          maxHeight: "350px",
+          overflowY: "auto",
+          padding: "10px",
+          border: "1px solid #ccc"
+        }} >
           <Table aria-label="collapsible table" size="small" >
             <EnhancedTableHead
               order={order}
@@ -367,7 +388,7 @@ export default function Enquiries() {
           </Table>
         </TableContainer>
       </Container>
-      <div style={{    paddingBottom: "70px" }} ></div>
+      <div style={{ paddingBottom: "70px" }} ></div>
       <Footer />
     </>
   );
