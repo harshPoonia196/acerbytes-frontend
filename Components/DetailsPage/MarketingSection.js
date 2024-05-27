@@ -16,8 +16,9 @@ import HandshakeIcon from '@mui/icons-material/Handshake'
 import BusinessIcon from '@mui/icons-material/Business'
 import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import { shortPriceFormatter } from "utills/CommonFunction";
+import { shortPriceFormatter, capitalLizeName } from "utills/CommonFunction";
 import DOMPurify from 'dompurify';
+
 
 function MarketingSection(props) {
   const { overviewData } = props;
@@ -225,7 +226,7 @@ function MarketingSection(props) {
             />
             <NewKeyValuePairStructure
               label="Project name"
-              value={alloverviewData?.projectName}
+              value={capitalLizeName(alloverviewData?.projectName)}
             />
             <NewKeyValuePairStructure
               label="Project type"
