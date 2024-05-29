@@ -23,7 +23,7 @@ function MoreSimilarPropertyCard({ propertyData }) {
                     id="panel1-header"
                     >
                 <Box sx={{ p: 2, display: "flex" }}>
-                    <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }} onClick={onClick}>
+                    <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
                         View Similar properties
                     </Typography>
                 </Box>
