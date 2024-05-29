@@ -42,7 +42,7 @@ import { listOfPages } from "Components/NavBar/Links";
 
 const headCells = [
   {
-    id: "Name",
+    id: "name",
     label: "Name",
   },
   {
@@ -54,11 +54,15 @@ const headCells = [
     label: "Phone",
   },
   {
-    id: "PropertyLink",
+    id: "propertyLink",
     label: "Property link",
   },
   {
-    id: "ViewDetails",
+    id: "maxBuget",
+    label: "Max Buget",
+  },
+  {
+    id: "vewDetails",
     label: "View",
   },
 ];
@@ -144,6 +148,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
           </a>
         )}
       </TableCell>
+      <TableCell>{row?.userDetail?.budget?.maximumBudget?.value}</TableCell>
       <TableCell> <IconButton
         sx={{ fontSize: "1rem !important" }}
         aria-label="more"
