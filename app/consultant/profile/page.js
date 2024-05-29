@@ -477,7 +477,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
 
     if (!brokerProfileInfo?.serviceDetails?.company) {
       error['company'] = true;
-      isError= true;
+      isError = true;
     } else {
       error['company'] = false;
     }

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import CircularWithValueLabel from 'Components/CommonLayouts/CircularProgressWithLabel'
 import { boxShadowBottom } from 'utills/Constants'
+import { capitalLizeName } from 'utills/CommonFunction'
 
 function TopMenu(props) {
     const { value, handleChange, list, topMenu } = props
@@ -29,7 +30,7 @@ function TopMenu(props) {
                                     variant="h2"
                                     sx={{ fontWeight: "700 !important", display: { xs: 'none', sm: 'block' } }}
                                 >
-                                    {topMenu?.overview?.builder} · {topMenu?.overview?.projectName}
+                                    {topMenu?.overview?.builder} · {capitalLizeName(topMenu?.overview?.projectName)}
                                 </Typography>
                                 <Typography
                                     variant="h3"

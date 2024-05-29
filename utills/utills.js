@@ -181,7 +181,7 @@ export const ratingLabels = (rating) => {
   return "";
 };
 
-export const maskPhoneNumber= (phoneNumber)=> {
+export const maskPhoneNumber = (phoneNumber) => {
   // Check if the phoneNumber is valid
   if (phoneNumber.length !== 10) {
     return phoneNumber;

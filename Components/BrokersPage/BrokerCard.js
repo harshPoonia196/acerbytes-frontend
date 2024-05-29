@@ -81,7 +81,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           {getFirstCharacterOfFirstOfFullName(broker?.fullName)}
         </Avatar>
         <Box sx={{ flex: 1 }}>
-          <Typography variant="h6">
+          <Typography variant="h5">
             <div style={{ display: "flex", gap: '5px', cursor: 'pointer' }} onClick={hasReviews ? handleOpenReviews : null}>
               {titleCase(broker?.fullName)}
               <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center" }} />
@@ -205,7 +205,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       ) : null} */}
       {/* {isLogged ? ( */}
       {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCallClick}  >
-        <IconButton>
+        <IconButton sx={{ backgroundColor: "#e0e0e0" }}>
           <CallIcon fontSize="small" />
         </IconButton>
       </Box>) :

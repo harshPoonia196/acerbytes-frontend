@@ -89,25 +89,23 @@ function OverallAssesmentSection({
           </Box>
           <Typography variant="body2">
             Our authorized real estate consultants help you to take a better decide as
-            an Investor / End user.
+            an Investor / End user. Know more about Builder, Project, Layouts and Plans
           </Typography>
-          <Typography variant="body2">
-            Know more about Builder, Project, Layouts and Plans
-          </Typography>
+          
           <Box sx={{ mt: 1 }}>
             <Chip label="Contact us now" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />}
               sx={{
-                background: colors.GRADIENT,
-                color: colors?.BLACK,
-                '& .MuiChip-icon': {
-                  color: colors?.BLACK,
-                },
-                '& .MuiChip-label': {
-                  color: colors?.BLACK,
-                },
-                '&:hover': {
-                  background: colors.GRADIENT,
-                },
+                // background: colors.GRADIENT,
+                // color: colors?.BLACK,
+                // '& .MuiChip-icon': {
+                //   color: colors?.BLACK,
+                // },
+                // '& .MuiChip-label': {
+                //   color: colors?.BLACK,
+                // },
+                // '&:hover': {
+                //   background: colors.GRADIENT,
+                // },
 
                 animation: 'floatAnimation 2s ease-in-out infinite', // Apply floating animation
                 '@keyframes floatAnimation': {

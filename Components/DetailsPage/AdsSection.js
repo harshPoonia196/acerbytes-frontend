@@ -4,7 +4,7 @@ import { Close, ContentCopy as ContentCopyIcon, AccountCircle, Phone as PhoneIco
 import colors from 'styles/theme/colors';
 import { useSnackbar } from 'utills/SnackbarContext';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
-import { formatDateAndDaysRemaining } from 'utills/CommonFunction';
+import { formatDateAndDaysRemaining, capitalLizeName } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
 import { ToasterMessages } from 'utills/Constants';
 
@@ -66,7 +66,7 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                 <Box sx={{ p: 1, px: 2, gap: 1, background: isConsultant ? 'lightgoldenrodyellow' : 'aliceblue', }}>
                     <Box sx={{ flex: 1, alignSelf: { xs: 'start', sm: 'center' }, alignItems: "start" }}>
                         <Typography variant='h5'>
-                            {`${propertyData?.overview?.builder} · ${propertyData?.overview?.projectName} · ${locationData?.city || 'Godrejforest'} · ${locationData?.sector || 'Sector'}`}
+                            {`${propertyData?.overview?.builder} · ${capitalLizeName(propertyData?.overview?.projectName)} · ${locationData?.city || 'Godrejforest'} · ${locationData?.sector || 'Sector'}`}
                         </Typography>
 
                         <Box sx={{ display: 'flex', width: '100%' }}>

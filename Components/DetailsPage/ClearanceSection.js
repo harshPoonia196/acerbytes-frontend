@@ -1,10 +1,10 @@
 import React from 'react'
-import { Grid, Card, Typography, Box, Divider, Rating } from '@mui/material'
+import { Grid, Card, Typography, Box, Divider, Rating, Tooltip } from '@mui/material'
 import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairStructure'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import ErrorIcon from '@mui/icons-material/Error';
 
 function ClearanceSection(props) {
     const { refCallback, regulatoryClearanceData } = props;
@@ -14,10 +14,10 @@ function ClearanceSection(props) {
     const getTextToDisplay = (type) => {
         switch (type) {
             case 'Yes':
-                return <CheckBoxIcon fontSize='small' />
+                return <CheckBoxIcon fontSize='small' sx={{ fontSize: { xs: '0.95rem !important' }, position: 'relative', top: '2px' }} />
 
             case "Don't know":
-                return <QuestionMarkIcon fontSize='1.25rem' />
+                return <Tooltip title="No information Found" sx={{ fontSize: { xs: '0.95rem !important', position: 'relative', top: '2px' } }}><ErrorIcon fontSize='1.25rem' /></Tooltip>
         }
     }
 

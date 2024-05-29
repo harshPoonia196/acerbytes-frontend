@@ -68,11 +68,7 @@ function NoteSubscription({ open, handleClose, getList }) {
   return (
     <Dialog
       sx={{
-        "& .MuiDialog-paper": {
-          borderRadius: "8px !important",
-          maxHeight: "500px",
-          overflowY: "scroll",
-        },
+        "& .MuiDialog-paper": { borderRadius: "8px !important" }
       }}
       open={open}
       onClose={handleClose}
@@ -82,11 +78,8 @@ function NoteSubscription({ open, handleClose, getList }) {
           Request for Plan Subscribe
         </Typography>
       </DialogTitle>
-      <DialogContent
-        sx={{ maxWidth: "100%", width: "100%", overflowY: "scroll" }}
-      >
-        <Grid container spacing={1} sx={{ p: 2 }}>
-
+      <DialogContent>
+        <Grid container spacing={1} >
           {BuyConsultantsNotePoints?.map((credit, index) => {
             return (
               <>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Grid, Rating, Box } from "@mui/material";
+import { Typography, Grid, Rating, Box, Tooltip } from "@mui/material";
 
 function NewKeyValuePairStructure({
   label,
@@ -13,15 +13,16 @@ function NewKeyValuePairStructure({
     <>
       {value ? (
         <>
-          <Grid item xs={middleValue === undefined ? 8 : 5}>
+          <Grid item xs={middleValue === undefined ? 7 : 5}>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Typography variant="h6"
                 sx={{ fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
               >{label}
               </Typography>
-              {
-                labelIcon && labelIcon
-              }
+              
+                {labelIcon && labelIcon}
+              
+              
             </Box>
 
           </Grid>
@@ -30,7 +31,7 @@ function NewKeyValuePairStructure({
               <Typography variant="body2">{middleValue}</Typography>
             </Grid>
           )}
-          <Grid item xs={4} sx={{ textAlign: "end" }}>
+          <Grid item xs={5} sx={{ textAlign: "end" }}>
             {isRating === undefined ? (
               <Typography variant="body2" sx={{ alignSelf: "center", flex: 1, fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}>
                 {value}

@@ -17,7 +17,7 @@ function MyLeads() {
       <CustomConsultantBreadScrumbs text="Suggested Leads" />
       <InfoBox
         dataList={[{ label: 'Suggested Leads', value: leadsCount }]}
-        label={'My Suggested Leads'}
+        label={' Suggested Leads'}
       />
       <Container>
         <SuggestedLeadsTable setLeadsCount={setLeadsCount} />

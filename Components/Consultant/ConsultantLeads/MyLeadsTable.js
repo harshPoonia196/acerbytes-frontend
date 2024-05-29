@@ -17,12 +17,13 @@ import {
   MenuItem,
   Grid,
   Card,
-  Button
+  Button,
+  Typography
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
-import { capitalLizeName, getComparator, stableSort } from "utills/CommonFunction";
+import { capitalLizeName, getComparator, stableSort, formatNumberWithCommas } from "utills/CommonFunction";
 import UpdateLeadStatus from "./Modal/UpdateLeadStatus";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
@@ -32,6 +33,10 @@ import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
+
+
 
 // const rows = [
 //   {
@@ -70,10 +75,10 @@ const headCells = [
     id: "phone",
     label: "phone",
   },
-  {
-    id: "numberVerified",
-    label: "Number Verified",
-  },
+  // {
+  //   id: "numberVerified",
+  //   label: "Number Verified",
+  // },
   {
     id: "email",
     label: "email",
@@ -94,6 +99,10 @@ const headCells = [
     id: "property",
     label: "Property",
   },
+  {
+    id: "enquired",
+    label: "Enquired on date",
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -112,13 +121,17 @@ function EnhancedTableHead(props) {
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
+          // sx={{ fontWeight: 900 }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+              <Typography variant="caption" sx={{textTransform:"capitalize",fontWeight:"bold"}}>
+                {(headCell.label)}
+              </Typography>
+
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -166,13 +179,15 @@ function RowStructure({ row, handlePropertyView }) {
     <TableRow
       key={row?._id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
     >
       <UpdateLeadStatus
         open={openUpdatePopup}
         handleClose={handleCloseUpdatePopup}
         isUserSelected
       />
-      <TableCell>{row?.fullName}</TableCell>
+      <TableCell>{(row?.fullName)}</TableCell>
       <TableCell>{row?.property?.location?.city}</TableCell>
       {/* <TableCell>
         <Chip
@@ -222,19 +237,23 @@ function RowStructure({ row, handlePropertyView }) {
           <MenuItem onClick={handleOpenUpdatePopup}>Logout</MenuItem>
         </Menu>
       </TableCell> */}
-      <TableCell>
+      <TableCell>{countryCodeFormating(row.phone?.countryCode)} {row.phone?.number} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
+        <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='error' />}</TableCell>
+
+      {/* <TableCell>
         {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}
       </TableCell>
       <TableCell>
         {row.isVerified ? "Yes" : "No"}
-      </TableCell>
+      </TableCell> */}
       <TableCell>
         {user.email || "-"}
-        {/* {row.email}({row.emailVerified ? "Yes" : "No"}) */}
+        {/* {row.email} */}
+        {/* ({row.emailVerified ? "Yes" : "No"}) */}
       </TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
       {/* <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell> */}
-      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
+      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${formatNumberWithCommas(userDetail?.budget?.maximumBudget?.value)}` : "-"}</TableCell>
       {/* <TableCell>
         <Chip
           label={row.notesUpdated}
@@ -254,11 +273,15 @@ function RowStructure({ row, handlePropertyView }) {
             style={{ textDecoration: 'none' }}
           >
             {row?.property?.overview?.projectName ?
-              `${capitalLizeName(row?.property?.overview?.projectName)}.${capitalLizeName(row?.property?.overview?.builder)}`
+              `${capitalLizeName(row?.property?.overview?.builder)}.${capitalLizeName(row?.property?.overview?.projectName)}`
               : "-"}
           </a>
         )}
       </TableCell>
+      <TableCell>
+        27/05/2024
+      </TableCell>
+
     </TableRow>
   );
 }
@@ -267,7 +290,7 @@ function MyLeadsTable({ setLeadsCount }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(PAGINATION_LIMIT);
+  const [rowsPerPage, setRowsPerPage] = React.useState(50);
   const [rows, setRows] = React.useState([]);
   const [totalCount, setTotalCount] = React.useState(0);
   const firstLoad = React.useRef(true);
@@ -338,7 +361,7 @@ function MyLeadsTable({ setLeadsCount }) {
   }, [rowsPerPage, page]);
 
   React.useEffect(() => {
-      refetch();
+    refetch();
   }, []);
 
   const handleSearch = (e) => {
