@@ -20,7 +20,7 @@ import {
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
-import { capitalLizeName, formatAmount, getComparator, stableSort } from "utills/CommonFunction";
+import { capitalLizeName, filterText, getComparator, stableSort,formatNumberWithCommas } from "utills/CommonFunction";
 import { useQueries } from "utills/ReactQueryContext";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getLeads } from "api/Admin.api";
@@ -123,6 +123,14 @@ const headCells = [
     id: "action",
     label: "Action",
   },
+  {
+    id: "status",
+    label: "Status",
+  },
+  {
+    id: "enquired date",
+    label: "Enquired Date",
+  },
 
 ];
 
@@ -135,7 +143,7 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow>
+      <TableRow  >
         {headCells.map((headCell) => {
           if (headCell.id !== 'creditValue' || (headCell.id === 'creditValue' && alignment === LEADS_TAB[2].value)) {
             return <TableCell
@@ -149,7 +157,9 @@ function EnhancedTableHead(props) {
                 direction={orderBy === headCell.id ? order : "asc"}
                 onClick={createSortHandler(headCell.id)}
               >
-                {headCell.label}
+               <Typography sx={{textTransform:"capitalize",fontWeight:"bold"}}>
+                {(headCell.label)}
+              </Typography>
                 {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -198,6 +208,8 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
     <TableRow
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
     >
       <TableCell className="urlStylingBackground">
         {row.propertyLink && (
@@ -207,7 +219,7 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
               handlePropertyView(row.propertyLink);
             }}
           >
-            {capitalLizeName(row?.property?.overview?.builder)} {capitalLizeName(row?.property?.overview?.projectName)}
+             {capitalLizeName(filterText(row?.property?.overview?.builder))} {capitalLizeName(filterText(row?.property?.overview?.projectName))}
           </a>
         )}
       </TableCell>
@@ -221,7 +233,7 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
       <TableCell>{user.email || "-"}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
 
-      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${userDetail?.budget?.maximumBudget?.value}` : "-"}</TableCell>
+      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${formatNumberWithCommas(userDetail?.budget?.maximumBudget?.value)}` : "-"}</TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
       <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell>
       <TableCell>{row.source}</TableCell>
@@ -259,10 +271,13 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
           </MenuItem>
         </Menu>
       </TableCell>
-
+      <TableCell>{row.pendingStatus}
+      </TableCell>
+      <TableCell>23/04/23
+      </TableCell>
 
       {/* <TableCell>{row.closedStatus}</TableCell>
-      <TableCell>{row.pendingStatus}</TableCell> */}
+      // <TableCell>{row.pendingStatus}</TableCell> */}
 
       {/* <TableCell>{row.updatedBy}</TableCell>
       <TableCell>
