@@ -29,7 +29,7 @@ function BottomFooterConsultant() {
             }}>
                 <Container maxWidth='md' sx={{ px: { xs: '0 !important', evmd: '1rem !important' }, py: "0 !important" }}>
                     <Box sx={{
-                        display: 'flex', background: 'white',
+                        display: 'flex', background: 'ghostwhite',
                         boxShadow: boxShadowTop, p: 2
                     }}>
                         <Box sx={{ display: 'flex', flex: 1 }}>
@@ -79,7 +79,7 @@ function BottomFooterConsultant() {
               <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
                 Log in
               </Button> */}
-                                <p style={{ fontSize: '0.75rem' }}>26 days remaining</p>
+                                <Typography variant="p">26 days remaining</Typography>
                             </Box>
                         </Box>
                         <Box sx={{ alignSelf: 'end' }}>

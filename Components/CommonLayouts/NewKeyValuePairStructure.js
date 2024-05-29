@@ -35,7 +35,7 @@ function NewKeyValuePairStructure({
           
             {isRating === undefined ? (
               <Typography variant="body2" sx={{ alignSelf: "center", flex: 1, fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}>
-                {labelIcon && labelIcon} {value}
+                 {value} {labelIcon && labelIcon}
               </Typography>
             ) : (
               <Rating

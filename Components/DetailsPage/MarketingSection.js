@@ -182,7 +182,7 @@ function MarketingSection(props) {
           </Box>
         </Box>
         <Card sx={{ p: 2, mb: 2 }}>
-          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(overviewData?.marketing?.metaDescription) }} />
+          <div className="innerhtmlFont" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(overviewData?.marketing?.metaDescription) }} />
         </Card>
         <Card id="builder" >
           <Box sx={{ display: "flex", p: 2 }}>

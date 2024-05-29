@@ -1,24 +1,38 @@
 import { Box, Card, CardActionArea, Divider, Grid, Typography } from '@mui/material'
-import React from 'react'
+import React, {useState} from 'react'
 import { useRouter } from "next/navigation";
 import { listOfPages } from 'Components/NavBar/Links';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 
 function MoreSimilarPropertyCard({ propertyData }) {
     const router = useRouter();
     const { data: Alldata, location: locationData, overview: overviewData } = propertyData;
-
+    
     return (
         <Grid item xs={12}>
             <Card>
+            <Accordion>
+            <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                    >
                 <Box sx={{ p: 2, display: "flex" }}>
-                    <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
-                        Similar properties
+                    <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }} onClick={onClick}>
+                        View Similar properties
                     </Typography>
                 </Box>
+                </AccordionSummary>
                 <Divider />
+                <AccordionDetails>
                 <Box sx={{ p: 2 }}>
                     <Grid container spacing={2} sx={{ justifyContent: "center"}}>
-                        <Grid item sm={4} xs={6}>
+                        <Grid item sm={4} xs={12}>
                             <Card sx={{ height: '100%' }} onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${overviewData?.builder}`)
                             }}>
@@ -30,7 +44,7 @@ function MoreSimilarPropertyCard({ propertyData }) {
                                 </CardActionArea>
                             </Card>
                         </Grid>
-                        <Grid item sm={4} xs={6}>
+                        <Grid item sm={4} xs={12}>
                             <Card sx={{ height: '100%' }} onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${locationData?.city}`)
                             }}>
@@ -42,7 +56,7 @@ function MoreSimilarPropertyCard({ propertyData }) {
                                 </CardActionArea>
                             </Card>
                         </Grid>
-                        <Grid item sm={4} xs={6}>
+                        <Grid item sm={4} xs={12}>
                             <Card  sx={{ height: '100%' }} onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${locationData?.area}`)
                             }}>
@@ -64,6 +78,8 @@ function MoreSimilarPropertyCard({ propertyData }) {
                         </Grid> */}
                     </Grid>
                 </Box>
+                </AccordionDetails>
+                </Accordion>
             </Card>
         </Grid>
     )
