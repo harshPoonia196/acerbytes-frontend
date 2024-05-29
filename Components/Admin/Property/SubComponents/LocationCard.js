@@ -20,6 +20,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 
 
 function LocationCard({ isEdit, form, handleChange, errors, selectOptions,moduleScoreCalc,cities,formUpdated }) {
+    console.log(cities);
     const { openSnackbar } = useSnackbar()
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
 useEffect(()=>{
@@ -71,6 +72,7 @@ useEffect(()=>{
 
                         list={
                             Object.keys(cities).map((item) => {
+                                console.log(cities, "ddddddddddddddd");
                                 return {
                                     label: item,
                                     value: item,

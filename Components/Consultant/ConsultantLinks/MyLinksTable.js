@@ -150,7 +150,7 @@ function RowStructure({ row, history }) {
       <TableCell>{row?.phone}</TableCell>
       <TableCell>{row?.propertyType}</TableCell>
       <TableCell>{row?.propertyName}</TableCell>
-      <TableCell>{'city static'}</TableCell>
+      <TableCell>{row?.city}</TableCell>
       <TableCell>{row?.PageViewCount || "-"}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy link">
@@ -231,7 +231,8 @@ function MyLinksTable({ setCount }) {
         validFrom: item?.created_at,
         validTo: item?.expired_at,
         expiresIn: item?.expired_at,
-        PageViewCount: item?.viewCount
+        PageViewCount: item?.viewCount,
+        city: item?.propertyData?.location?.city,
       };
     });
   };
