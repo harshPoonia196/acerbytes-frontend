@@ -13,6 +13,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import EnquireNow from "./Modal/EnquireNow";
 import { useAuth } from "utills/AuthContext";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import CallIcon from "@mui/icons-material/Call";
 import { companyName } from "Components/NavBar/Links";
 
 function OverallAssesmentSection({
@@ -93,8 +94,9 @@ function OverallAssesmentSection({
           </Typography>
           
           <Box sx={{ mt: 1 }}>
-            <Chip label="Contact us now" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />}
+            <Chip label="Whatsapp" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />}
               sx={{
+                marginRight: "10px"
                 // background: colors.GRADIENT,
                 // color: colors?.BLACK,
                 // '& .MuiChip-icon': {
@@ -107,19 +109,21 @@ function OverallAssesmentSection({
                 //   background: colors.GRADIENT,
                 // },
 
-                animation: 'floatAnimation 2s ease-in-out infinite', // Apply floating animation
-                '@keyframes floatAnimation': {
-                  '0%': {
-                    transform: 'translateY(0)',
-                  },
-                  '50%': {
-                    transform: 'translateY(-5px)', // Adjust the float height
-                  },
-                  '100%': {
-                    transform: 'translateY(0)',
-                  },
-                },
+                // animation: 'floatAnimation 2s ease-in-out infinite', // Apply floating animation
+                // '@keyframes floatAnimation': {
+                //   '0%': {
+                //     transform: 'translateY(0)',
+                //   },
+                //   '50%': {
+                //     transform: 'translateY(-5px)', // Adjust the float height
+                //   },
+                //   '100%': {
+                //     transform: 'translateY(0)',
+                //   },
+                // },
               }} />
+              <Chip label="Get a Call Back" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<CallIcon fontSize="small" />}
+              />
             {userDetails?.role === "user" && (
               <Chip
                 sx={{ ml: 2 }}

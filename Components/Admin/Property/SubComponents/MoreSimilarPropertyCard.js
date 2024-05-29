@@ -17,8 +17,8 @@ function MoreSimilarPropertyCard({ propertyData }) {
                 </Box>
                 <Divider />
                 <Box sx={{ p: 2 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={4}>
+                    <Grid container spacing={2} sx={{ justifyContent: "center"}}>
+                        <Grid item sm={4} xs={6}>
                             <Card sx={{ height: '100%' }} onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${overviewData?.builder}`)
                             }}>
@@ -30,8 +30,8 @@ function MoreSimilarPropertyCard({ propertyData }) {
                                 </CardActionArea>
                             </Card>
                         </Grid>
-                        <Grid item xs={4}>
-                            <Card onClick={() => {
+                        <Grid item sm={4} xs={6}>
+                            <Card sx={{ height: '100%' }} onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${locationData?.city}`)
                             }}>
                                 <CardActionArea sx={{ p: 2, textAlign: 'center', cursor: 'pointer' }}>
@@ -42,7 +42,7 @@ function MoreSimilarPropertyCard({ propertyData }) {
                                 </CardActionArea>
                             </Card>
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item sm={4} xs={6}>
                             <Card  sx={{ height: '100%' }} onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${locationData?.area}`)
                             }}>

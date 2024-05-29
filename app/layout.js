@@ -30,6 +30,9 @@ export default function RootLayout({ children }) {
           crossOrigin="true"
         />
         <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+        <title>It’s acrebytes.com</title>
+        <meta name="description" content="It’s acrebytes.com"></meta>
+        <meta name="keywords" content="It’s acrebytes.com"></meta>
       </head>
       <body className={ibm_plex_sans.className}>
         <ReactQueryClientProvider>

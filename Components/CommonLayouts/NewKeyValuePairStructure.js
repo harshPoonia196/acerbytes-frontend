@@ -20,21 +20,22 @@ function NewKeyValuePairStructure({
               >{label}
               </Typography>
               
-                {labelIcon && labelIcon}
+                
               
               
             </Box>
 
           </Grid>
           {!(middleValue === undefined) && (
-            <Grid item xs={3} sx={{ textAlign: "center" }}>
+            <Grid item xs={2} sx={{ textAlign: "center" }}>
               <Typography variant="body2">{middleValue}</Typography>
             </Grid>
           )}
           <Grid item xs={5} sx={{ textAlign: "end" }}>
+          
             {isRating === undefined ? (
               <Typography variant="body2" sx={{ alignSelf: "center", flex: 1, fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}>
-                {value}
+                {labelIcon && labelIcon} {value}
               </Typography>
             ) : (
               <Rating
