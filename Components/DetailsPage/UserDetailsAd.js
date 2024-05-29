@@ -54,39 +54,64 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
 
   return (
     <Box>
-      <Box sx={{ position: 'fixed', bottom: 0, width: '100%', }}>
-        <Container maxWidth='md' sx={{ p: { xs: '0 !important', md: '16px !important' }, pb: { md: '0 !important' } }}>
-          <Box sx={{ display: 'flex', p: 2, background: 'white', boxShadow: boxShadowTop }}>
-            <Avatar src="" sx={{ height: { xs: 24, md: 40 }, width: { xs: 24, md: 40 }, fontSize: { xs: '0.75rem', md: '1rem' } }}>FD</Avatar>
+      <Box sx={{ position: "fixed", bottom: 0, width: "100%" }}>
+        <Container
+          maxWidth="md"
+          sx={{
+            p: { xs: "0 !important", md: "16px !important" },
+            pb: { md: "0 !important" },
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              p: 2,
+              background: "white",
+              boxShadow: boxShadowTop,
+            }}
+          >
+            <Avatar
+              src=""
+              sx={{
+                height: { xs: 24, md: 40 },
+                width: { xs: 24, md: 40 },
+                fontSize: { xs: "0.75rem", md: "1rem" },
+              }}
+            ></Avatar>
             <Box sx={{ ml: 2, flex: 1 }}>
-              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                <Typography variant='h6'>
-                  first last | Project name | Noida
-                </Typography>
+              <Box sx={{ display: { xs: "none", md: "block" } }}>
+                <Typography variant="h6">{name}</Typography>
                 <Box>
-                  <Typography variant='h6'>
-                    +91 9625555559
-                  </Typography>
-                  <Typography variant='h6' sx={{ mt: 1 }}>
-                    4.5 | 12 ratings
+                  <Typography variant="h6">
+                    {projectName} | {city} | {sector} | {state}
                   </Typography>
                 </Box>
-              </Box>
-              <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-                <Typography variant='subtitle2'>
-                  first last | Project name | Noida
+                <Typography variant="body2" sx={{ p: 2, py: 1 }}>
+                  {description}
                 </Typography>
-                <Box sx={{ display: 'flex' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant='subtitle2'>
-                      +91 9625555559
+              </Box>
+              <Box sx={{ display: { xs: "block", md: "none" } }}>
+                <Typography variant="subtitle2">
+                  {projectName} | {city} | {sector} | {state}
+                </Typography>
+                <Box sx={{ display: "flex" }}>
+                    <Typography variant="body2" sx={{ p: 2, py: 1 }}>
+                      {description}
                     </Typography>
-                    <Typography variant='subtitle2' sx={{ mt: 1 }}>
-                      4.5 | 12 ratings
-                    </Typography>
-                  </Box>
-                  <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "block", md: 'none' } }}>
-                    <Button variant='contained' size="small" startIcon={<DoneIcon />} disabled sx={{}}>
+                  <Box
+                    sx={{
+                      textAlign: "end",
+                      alignSelf: "end",
+                      display: { xs: "block", md: "none" },
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      size="small"
+                      startIcon={<DoneIcon />}
+                      disabled
+                      sx={{}}
+                    >
                       Activated
                     </Button>
                     {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
@@ -99,20 +124,26 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
                 </Box>
               </Box>
             </Box>
-            <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "none", md: 'block' } }}>
-              <Button variant='contained' startIcon={<DoneIcon />} disabled sx={{ mb: 1 }}>
-                Activated
-              </Button>
+            <Box
+              sx={{
+                textAlign: "center",
+                alignSelf: "center",
+                display: { xs: "none", md: "block" },
+              }}
+            >
+              <Chip
+                    icon={showContact ? null : <PhoneIcon />}
+                    label={showContact ? phoneNumber : "View Contact"}
+                    size="small"
+                    onClick={handleViewContactClick}
+                  />
               {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
                 Call First
               </Button>
               <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
                 Log in
               </Button> */}
-              <p style={{ fontSize: '0.75rem' }}>26 days remaining</p>
-            </Box>
-            <Box sx={{ textAlign: 'end', alignSelf: 'center' }}>
-
+              {/* <p style={{ fontSize: "0.75rem" }}>26 days remaining</p> */}
             </Box>
           </Box>
         </Container>
@@ -128,26 +159,30 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
             flexDirection: { xs: "column", sm: "row" },
           }}
         >
-          <Box sx={{ display: 'flex', flex: 1, }}>
-            <AccountCircle fontSize='small' sx={{ mr: 1 }} />
+          <Box sx={{ display: "flex", flex: 1 }}>
+            <AccountCircle fontSize="small" sx={{ mr: 1 }} />
             <Box sx={{ flex: 1 }}>
-              <Box sx={{ display: 'flex' }}>
-                <Typography variant='h5' sx={{ flex: 1 }}>
+              <Box sx={{ display: "flex" }}>
+                <Typography variant="h5" sx={{ flex: 1 }}>
                   {name}
                 </Typography>
                 <Box>
-                  <Chip icon={showContact ? null : <PhoneIcon />}
+                  <Chip
+                    icon={showContact ? null : <PhoneIcon />}
                     label={showContact ? phoneNumber : "View Contact"}
-                    size='small' onClick={handleViewContactClick} />
+                    size="small"
+                    onClick={handleViewContactClick}
+                  />
                 </Box>
               </Box>
-              <Typography variant='h6'>{projectName}&#183;{city}&#183;{sector}&#183;
+              <Typography variant="h6">
+                {projectName}&#183;{city}&#183;{sector}&#183;
                 {state}
               </Typography>
             </Box>
           </Box>
         </Box>
-        <Divider sx={{ borderColor: 'whitesmoke' }} />
+        <Divider sx={{ borderColor: "whitesmoke" }} />
         <Typography variant="body2" sx={{ p: 2, py: 1 }}>
           {description}
         </Typography>
