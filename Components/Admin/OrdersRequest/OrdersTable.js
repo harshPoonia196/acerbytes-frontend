@@ -150,7 +150,10 @@ function EnhancedTableHead(props) {
                 direction={orderBy === headCell.id ? order : "asc"}
                 onClick={createSortHandler(headCell.id)}
               >
-                {headCell.label}
+                <Typography sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+                  {(headCell.label)}
+                </Typography>
+
                 {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === "desc"
@@ -248,6 +251,8 @@ function RowStructure({
       <TableRow
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
       >
         <TableCell>{row.orderNumber}</TableCell>
         <TableCell>

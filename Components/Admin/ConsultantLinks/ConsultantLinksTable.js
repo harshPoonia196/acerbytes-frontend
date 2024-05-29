@@ -13,6 +13,7 @@ import {
   IconButton,
   Chip,
   Menu,
+  Typography,
   MenuItem,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -83,8 +84,8 @@ function EnhancedTableHead(props) {
 
   return (
     <>
-      <TableHead>
-        <TableRow>
+      <TableHead >
+        <TableRow >
           {headCells.map((headCell) => (
             (headCell.id !== 'expiresIn' || alignmentValue === "Active" || alignmentValue === "" || alignmentValue === "Expiring Soon") && (
               <TableCell
@@ -92,8 +93,11 @@ function EnhancedTableHead(props) {
                 align={headCell.numeric ? "right" : "left"}
                 padding={headCell.disablePadding ? "none" : "normal"}
                 sortDirection={orderBy === headCell.id ? order : false}
+                sx={{ textTransform: "capitalize", fontWeight: "bold", }}
               >
+
                 {headCell.label}
+
               </TableCell>
             )
           ))}

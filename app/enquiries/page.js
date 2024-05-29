@@ -45,7 +45,9 @@ function Row(props) {
   }
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}
+        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}>
         <TableCell>{row.project}</TableCell>
         <TableCell>{row.location}</TableCell>
         <TableCell>{row.phone} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
@@ -179,7 +181,7 @@ const headCells = [
     id: "enquired",
     numeric: true,
     disablePadding: false,
-    label: "Enquired On date",
+    label: "Enquired  date",
   },
   // {
   //   id: "consultedBy",
@@ -203,19 +205,22 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow>
+      <TableRow
+
+      >
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             sortDirection={orderBy === headCell.id ? order : false}
+            sx={{ textTransform: "capitalize", fontWeight: "bold" }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption" sx={{ textTransform: "capitalize" ,fontWeight: "bold" }}
-              >{capitalLizeName(headCell.label)}</Typography>
+
+              {headCell.label}
 
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
@@ -342,10 +347,10 @@ export default function Enquiries(props) {
               <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
                 ButtonText={"View suggested leads"}
               />
-              {brokerBalance?
-              <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
-                ButtonText={brokerBalance}
-              />:""}
+              {brokerBalance ?
+                <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
+                  ButtonText={brokerBalance}
+                /> : ""}
             </Box>
           </Box>
         </Container>

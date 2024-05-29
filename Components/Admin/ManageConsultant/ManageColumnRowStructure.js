@@ -39,6 +39,8 @@ function RowStructure({ row, router }) {
       <TableRow
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
       >
         <TableCell>{row?.name.firstName}</TableCell>
         <TableCell>{row?.name.lastName}</TableCell>

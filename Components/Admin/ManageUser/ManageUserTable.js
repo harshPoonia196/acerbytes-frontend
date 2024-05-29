@@ -87,13 +87,17 @@ function EnhancedTableHead(props) {
               align={headCell.numeric ? "right" : "left"}
               padding={headCell.disablePadding ? "none" : "normal"}
               sortDirection={orderBy === headCell.id ? order : false}
+              sx={{ textTransform: "capitalize", fontWeight: "bold" }}
             >
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : "asc"}
                 onClick={createSortHandler(headCell.id)}
               >
+
                 {headCell.label}
+
+
                 {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -103,8 +107,8 @@ function EnhancedTableHead(props) {
             </TableCell>
           )
         ))}
-        {(selectedTabValue === 0) && <TableCell>Action</TableCell>}
-        {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{ textAlign: "center" }}>Approval Request</TableCell>}
+        {(selectedTabValue === 0) && <TableCell sx={{ textTransform: "capitalize", }}>Action</TableCell>}
+        {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{ textAlign: "center", textTransform: "capitalize" }}>Approval Request</TableCell>}
       </TableRow>
     </TableHead>
   );
@@ -221,6 +225,8 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
       key={row.name}
       style={row.isBlocked ? { backgroundColor: 'whitesmoke' } : null}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
     >
       <TableCell>
         {row?.name?.firstName} {row?.name?.lastName}

@@ -101,7 +101,7 @@ const headCells = [
   },
   {
     id: "enquired",
-    label: "Enquired on date",
+    label: "Enquired  date",
   },
 ];
 
@@ -128,7 +128,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption" sx={{textTransform:"capitalize",fontWeight:"bold"}}>
+              <Typography variant="caption" sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
                 {(headCell.label)}
               </Typography>
 
