@@ -84,7 +84,8 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                         display: 'flex', background: 'white',
                         boxShadow: boxShadowTop, p: 2,
                         alignItems: "center",
-                        gap: "10px"
+                        gap: "10px",
+                        border: propertyData?.isActiveAd ? `2px solid ${colors.BLUE}` : `2px solid gold`
                     }}>
                          <Avatar src="" sx={{ height: { xs: 24, evmd: 40 }, width: { xs: 24, evmd: 40 }, fontSize: { xs: '0.75rem', evmd: '1rem' } }}></Avatar>
                             <Box sx={{ display: 'flex', flex: 1 }}>
@@ -128,15 +129,20 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                             <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "block", evmd: 'none' } }}>
                                                 {propertyData?.isActiveAd ? 
                                                     <Button  sx={{
-                                                        backgroundColor: "lightgoldenrodyellow",
-                                                        border: "1px solid rgba(39, 110, 241, 0.5)",
+                                                        border: `2px solid ${colors.BLUE}`,
                                                         mr: 1,
-                                                        color: "#276ef1"
-                                                    }} disabled variant='contained' size="small" startIcon={<DoneIcon />}>
+                                                        '&:hover': {
+                                                            backgroundColor: "inherit",
+                                                            border: "2px solid gold",
+                                                        }
+                                                    }} disabled variant='outlined' size="small" startIcon={<DoneIcon />}>
                                                         Activated
                                                     </Button> 
                                                     : 
-                                                    <Button sx={{ color: "#000", border: "2px solid gold", }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />}>
+                                                    <Button sx={{ color: "#000", border: "2px solid gold",  '&:hover': {
+                                                        backgroundColor: "inherit",
+                                                        border: "2px solid gold",
+                                                    }}} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />}>
                                                         Activate link
                                                     </Button>
                                                     }
@@ -147,15 +153,20 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                             <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "none", evmd: 'block' } }}>
                                 {propertyData?.isActiveAd ?
                                     <Button  sx={{
-                                        backgroundColor: "lightgoldenrodyellow",
-                                        border: "1px solid rgba(39, 110, 241, 0.5)",
+                                        border: `2px solid ${colors.BLUE}`,
                                         mr: 1,
-                                        color: "#276ef1"
-                                        }} variant='contained' startIcon={<DoneIcon />} disabled>
+                                        color: "#000", '&:hover': {
+                                            backgroundColor: "inherit",
+                                            border: `2px solid ${colors.BLUE}`,
+                                        }
+                                        }} variant='outlined' startIcon={<DoneIcon />} disabled>
                                         Activated
                                     </Button>
                                  : 
-                                    <Button sx={{ color: "#000", border: "2px solid gold", }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />} >
+                                    <Button sx={{ color: "#000", border: "2px solid gold",  '&:hover': {
+                                        backgroundColor: "inherit",
+                                        border: "2px solid gold",
+                                    } }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />} >
                                         Activate link
                                     </Button>
                                  }
