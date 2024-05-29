@@ -241,7 +241,9 @@ const indianNumberingSystem = (number) => {
   const formatted = Number(number).toLocaleString('en-IN');
 return formatted;
 };
-
+const filterText = (text) => {
+  return text.replace(/[^a-zA-Z\s]/g, '');
+};
 
 export {
   upperCaseName,
@@ -267,5 +269,6 @@ export {
   shortPriceFormatter,
   getFirstCharacterOfFirstOfFullName,
   getRoleLabelByValue,
-  indianNumberingSystem
+  indianNumberingSystem,
+  filterText
 };
