@@ -80,12 +80,12 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
             ></Avatar>
             <Box sx={{ ml: 2, flex: 1 }}>
               <Box sx={{ display: { xs: "none", md: "block" } }}>
-                <Typography variant="h6">{name}</Typography>
                 <Box>
                   <Typography variant="h6">
                     {projectName} | {city} | {sector} | {state}
                   </Typography>
                 </Box>
+                <Typography variant="h6">{name}</Typography>
                 <Typography variant="body2" sx={{ p: 2, py: 1 }}>
                   {description}
                 </Typography>
@@ -94,7 +94,8 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
                 <Typography variant="subtitle2">
                   {projectName} | {city} | {sector} | {state}
                 </Typography>
-                <Box sx={{ display: "flex" }}>
+                <Box sx={{ flex: 1 }}>
+                <Typography variant="h6">{name}</Typography>
                     <Typography variant="body2" sx={{ p: 2, py: 1 }}>
                       {description}
                     </Typography>

@@ -868,7 +868,11 @@ function AddProperty() {
   ) => {
     if ((firstKeyName === "location" && (secondKeyName === 'city' || secondKeyName === 'area' || secondKeyName === 'sector')) ||
       (firstKeyName === 'overview' && (secondKeyName === 'projectName' || secondKeyName === 'phase'))) {
-      e.target.value = capitalLizeName(e?.target?.value)
+        if(e?.target?.value){
+          e.target.value = capitalLizeName(e?.target?.value)
+        } else {
+          e = capitalLizeName(e)
+        }
     }
     if (autoFill) {
       let innerObj = {
