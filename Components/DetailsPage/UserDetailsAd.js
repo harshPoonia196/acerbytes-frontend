@@ -54,7 +54,7 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
 
   return (
     <Box>
-      <Box sx={{ position: "fixed", bottom: 0, width: "100%" }}>
+      <Box sx={{ position: "fixed", bottom: 0, width: "100%"}}>
         <Container
           maxWidth="md"
           sx={{
@@ -68,6 +68,7 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
               p: 2,
               background: "white",
               boxShadow: boxShadowTop,
+              border: `2px solid ${colors.BLUE}`
             }}
           >
             <Avatar
