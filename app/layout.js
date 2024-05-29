@@ -31,8 +31,8 @@ export default function RootLayout({ children }) {
         />
         <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
         <title>It’s acrebytes.com</title>
-        <meta name="description" content="It’s acrebytes.com"></meta>
-        <meta name="keywords" content="It’s acrebytes.com"></meta>
+        <meta name="description" content="Empowering better Real Estate decisions"></meta>
+        <meta name="keywords" content="acrebytes, property, leads, Real estate"></meta>
       </head>
       <body className={ibm_plex_sans.className}>
         <ReactQueryClientProvider>
