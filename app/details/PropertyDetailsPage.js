@@ -634,7 +634,7 @@ const PropertyDetailsPage = ({ params }) => {
         handleOpen={handleOpenPersonalizeAds}
         handleClose={handleClosePersonalizeAds}
       />
-      {/* {userDetails?.role === "broker" &&
+       {/* {userDetails?.role === "broker" &&
       (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
         <AdsSection
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
@@ -642,7 +642,7 @@ const PropertyDetailsPage = ({ params }) => {
           isConsultant
           propertyData={propertyData}
         />
-      ) : null} */}
+      ) : null}  */}
       {/* {userDetails?.role !== "admin" &&
         userDetails?.role !== "superAdmin" &&
         propertyData.isActiveAd ? (
@@ -980,8 +980,7 @@ const PropertyDetailsPage = ({ params }) => {
                 </Box> */}
               </>
             )}
-
-          {userDetails?.role === "broker" && (
+          {!isLoading && userDetails?.role === "broker" && (
             <>
               <Toolbar
                 sx={{
@@ -995,6 +994,7 @@ const PropertyDetailsPage = ({ params }) => {
               />
             </>
           )}
+         
         </Container>
       </Box>
     </>
