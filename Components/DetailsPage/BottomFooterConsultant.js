@@ -129,14 +129,14 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                 {propertyData?.isActiveAd ? 
                                                     <Button  sx={{
                                                         backgroundColor: "lightgoldenrodyellow",
-                                                        border: "2px solid gold",
+                                                        border: "1px solid rgba(39, 110, 241, 0.5)",
                                                         mr: 1,
-                                                        color: "#000"
+                                                        color: "#276ef1"
                                                     }} disabled variant='contained' size="small" startIcon={<DoneIcon />}>
                                                         Activated
                                                     </Button> 
                                                     : 
-                                                    <Button sx={{ color: "#276ef1", border: "1px solid rgba(39, 110, 241, 0.5)" }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />}>
+                                                    <Button sx={{ color: "#000", border: "2px solid gold", }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />}>
                                                         Activate link
                                                     </Button>
                                                     }
@@ -148,14 +148,14 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                 {propertyData?.isActiveAd ?
                                     <Button  sx={{
                                         backgroundColor: "lightgoldenrodyellow",
-                                        border: "2px solid gold",
+                                        border: "1px solid rgba(39, 110, 241, 0.5)",
                                         mr: 1,
-                                        color: "#000"
+                                        color: "#276ef1"
                                         }} variant='contained' startIcon={<DoneIcon />} disabled>
                                         Activated
                                     </Button>
                                  : 
-                                    <Button sx={{ color: "#276ef1", border: "1px solid rgba(39, 110, 241, 0.5)" }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />} >
+                                    <Button sx={{ color: "#000", border: "2px solid gold", }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />} >
                                         Activate link
                                     </Button>
                                  }
