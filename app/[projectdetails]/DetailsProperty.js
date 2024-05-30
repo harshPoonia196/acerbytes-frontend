@@ -726,6 +726,7 @@ const PropertyDetails = ({ params }) => {
             userDetails?.role !== "superAdmin" &&
             userDetails?.role !== "broker" && (
               <Box
+              className="detailFab"
                 sx={{
                   position: "fixed",
                   right: 16,

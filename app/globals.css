@@ -196,3 +196,9 @@ html {
 .innerhtmlFont{
   font-family: 'IBM Plex Sans', 'Roboto', 'Titillium Web', 'Inter', 'Almarai', 'Arial', 'sans-serif', 'Roboto Mono';
 }
+.detailFab{
+  z-index: 2;
+}
+.consultantFooter{
+  z-index: 0 !important;
+}
