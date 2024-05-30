@@ -181,7 +181,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                 <div><Typography variant="h6">{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get your customer enquiries" }</Typography></div>
                             </Box>
                         </Box>
-                        <Box sx={{ alignSelf: 'start'}}>
+                        <Box sx={{ alignSelf: 'center'}}>
                             <IconButton onClick={handleClick}>
                                 <MoreVertIcon />
                             </IconButton>

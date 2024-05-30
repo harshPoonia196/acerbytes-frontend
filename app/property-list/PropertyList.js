@@ -476,13 +476,13 @@ function PropertyList({ params }) {
                     exclusive
                     onChange={handleChangeData}
                     aria-label="Platform"
-                    sx={{ display: "flex" }}
+                    sx={{ display: "flex"}}
                     size="small"
                   >
                     <ToggleButton
                       value="score"
                       selected={propertyvalue === "score"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "space-around", padding: "5px 4px", fontSize: "13px" }}
                     >
                       Score{" "}
                       {propertyvalue === "score" &&
@@ -495,7 +495,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="price"
                       selected={propertyvalue === "price"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "space-around", padding: "5px 4px", fontSize: "13px" }}
                     >
                       Price{" "}
                       {propertyvalue === "price" &&
@@ -508,7 +508,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="area"
                       selected={propertyvalue === "area"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "space-around", padding: "5px 4px", fontSize: "13px" }}
                     >
                       Area{" "}
                       {propertyvalue === "area" &&
@@ -521,7 +521,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="completion"
                       selected={propertyvalue === "completion"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "space-around", padding: "5px 4px", fontSize: "13px" }}
                     >
                       Completion{" "}
                       {propertyvalue === "completion" &&

@@ -66,7 +66,7 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
             sx={{
               display: "flex",
               p: 2,
-              background: "white",
+              background: "ghostwhite",
               boxShadow: boxShadowTop,
               border: `2px solid ${colors.BLUE}`
             }}
@@ -87,7 +87,7 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
                   </Typography>
                 </Box>
                 <Typography variant="h6">{name}</Typography>
-                <Typography variant="body2" sx={{ p: 2, py: 1 }}>
+                <Typography variant="body2" sx={{ py: 1 }}>
                   {description}
                 </Typography>
               </Box>
@@ -97,13 +97,13 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
                 </Typography>
                 <Box sx={{ flex: 1 }}>
                 <Typography variant="h6">{name}</Typography>
-                    <Typography variant="body2" sx={{ p: 2, py: 1 }}>
+                    <Typography variant="body2" sx={{ py: 1 }}>
                       {description}
                     </Typography>
                   <Box
                     sx={{
-                      textAlign: "end",
-                      alignSelf: "end",
+                      textAlign: {xs: "start", md: "end"},
+                      alignSelf: {xs: "start", md: "end"},
                       display: { xs: "block", md: "none" },
                     }}
                   >
@@ -185,7 +185,7 @@ function UserDetailsAd({ AllPropertyData, contactPermissionToView, handleOpenEnq
           </Box>
         </Box>
         <Divider sx={{ borderColor: "whitesmoke" }} />
-        <Typography variant="body2" sx={{ p: 2, py: 1 }}>
+        <Typography variant="body2" sx={{ py: 1 }}>
           {description}
         </Typography>
       </Card>
