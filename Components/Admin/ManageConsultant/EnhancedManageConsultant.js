@@ -34,7 +34,7 @@ const headCells = [
 
     {
         id: "RERANumber",
-        label: "RERA #",
+        label: "Rera #",
     },
     {
         id: "NoOfActiveLinks",

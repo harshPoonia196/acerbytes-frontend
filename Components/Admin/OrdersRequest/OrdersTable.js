@@ -144,15 +144,16 @@ function EnhancedTableHead(props) {
               align={headCell.numeric ? "right" : "left"}
               padding={headCell.disablePadding ? "none" : "normal"}
               sortDirection={orderBy === headCell.id ? order : false}
+              sx={{ textTransform: "capitalize", fontWeight: "bold" }}
             >
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : "asc"}
                 onClick={createSortHandler(headCell.id)}
               >
-                <Typography sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
-                  {(headCell.label)}
-                </Typography>
+                
+                  {headCell.label}
+               
 
                 {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
