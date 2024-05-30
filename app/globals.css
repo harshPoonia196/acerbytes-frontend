@@ -180,7 +180,7 @@ html {
 }
 
 @media only screen and (min-width: 1199px) {
-  .makeStyles-demo2-1 .MuiTabs-scrollButtons{
+  .propertyTabs .MuiTabs-scrollButtons{
     display: none;
   }
 }
@@ -193,7 +193,8 @@ html {
   font-size: 17px !important;
 }
 
-.innerhtmlFont{
+.innerhtmlFont, .innerhtmlFont p{
+  font-size: 0.875rem;
   font-family: 'IBM Plex Sans', 'Roboto', 'Titillium Web', 'Inter', 'Almarai', 'Arial', 'sans-serif', 'Roboto Mono';
 }
 .detailFab{
