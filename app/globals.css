@@ -178,3 +178,21 @@ html {
   font-weight: 500;
   color: #878787;
 }
+
+@media only screen and (min-width: 1199px) {
+  .makeStyles-demo2-1 .MuiTabs-scrollButtons{
+    display: none;
+  }
+}
+
+.openArrow{
+  transform: rotate(180deg);
+}
+
+.customBtn{
+  font-size: 17px !important;
+}
+
+.innerhtmlFont{
+  font-family: 'IBM Plex Sans', 'Roboto', 'Titillium Web', 'Inter', 'Almarai', 'Arial', 'sans-serif', 'Roboto Mono';
+}

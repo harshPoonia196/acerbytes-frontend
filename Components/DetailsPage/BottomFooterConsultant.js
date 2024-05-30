@@ -81,7 +81,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
             }}>
                 <Container maxWidth='md' sx={{ px: { xs: '0 !important', evmd: '1rem !important' }, py: "0 !important" }}>
                     <Box sx={{
-                        display: 'flex', background: 'white',
+                        display: 'flex', background: 'ghostwhite',
                         boxShadow: boxShadowTop, p: 2,
                         alignItems: "center",
                         gap: "10px",
@@ -176,7 +176,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
               <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
                 Log in
               </Button> */}
-                                <p style={{ fontSize: '0.75rem' }}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get your customer enquiries "}</p>
+                                <Typography variant='p'>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get your customer enquiries "}</Typography>
                             </Box>
                         </Box>
                         <Box sx={{ alignSelf: 'end' }}>
