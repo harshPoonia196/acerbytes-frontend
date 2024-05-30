@@ -131,6 +131,9 @@ const PropertyDetailsPage = ({ params }) => {
   const [enquiredInfo, setEnquiredInfo] = useState([]);
   const [consultantsDialog, setConsultantsDialog] = useState(false);
 
+  const userInfo = JSON.parse(localStorage.getItem("userDetails"));
+  const token = localStorage.getItem("token");
+
   const shuffle = (a) => {
     for (let i = a?.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -142,10 +145,14 @@ const PropertyDetailsPage = ({ params }) => {
   const detailsGetProperty = async () => {
     try {
       setLoading(true);
-      let res = await detailsProperty(
-        `${detailsPropertyId}${userDetails._id ? `?brokerId=${userDetails._id}` : ""
-        }`
-      );
+      let res;
+      if(token){
+         res = await detailsProperty(
+          `${detailsPropertyId}?brokerId=${userInfo?._id}`
+        );
+      }else{
+         res = await detailsProperty(detailsPropertyId);
+      }
       if (res.status === 200) {
         const data = {
           ...res.data?.data,
@@ -198,6 +205,9 @@ const PropertyDetailsPage = ({ params }) => {
 
   useEffect(() => {
     detailsGetProperty();
+  }, []);
+
+  useEffect(() => {
     checkPropertyIsEnquired();
   }, [userDetails._id]);
 
