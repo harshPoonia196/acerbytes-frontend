@@ -68,7 +68,7 @@ useEffect(()=>{
                         label="State"
                         isEdit={isEdit}
                         value={state}
-
+                        name='state'
                         list={
                             Object.keys(cities).map((item) => {
                                 return {
@@ -93,6 +93,7 @@ useEffect(()=>{
                     <NewAutocompleteAddOptionToList
                         label="City"
                         value={city}
+                        name='city'
                         disabled={state == undefined||state ==""}
                         error={errors?.["location.city"]}
                         options={

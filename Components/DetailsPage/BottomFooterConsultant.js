@@ -1,14 +1,66 @@
-import { Avatar, BottomNavigation, BottomNavigationAction, Box, Button, Chip, Container, Fab, IconButton, Menu, MenuItem, Rating, Typography } from '@mui/material'
+import { Avatar, Box, Button, Chip, Container, Fab, IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import AddLinkIcon from '@mui/icons-material/AddLink';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { ContentCopy as ContentCopyIcon, Phone as PhoneIcon,  } from '@mui/icons-material';
 import React from 'react';
 import { boxShadowTop } from 'utills/Constants';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DoneIcon from '@mui/icons-material/Done';
+import { capitalLizeName, formatDateAndDaysRemaining } from 'utills/CommonFunction';
+import { useAuth } from 'utills/AuthContext';
+import { useSnackbar } from 'utills/SnackbarContext';
+import { ToasterMessages } from 'utills/Constants';
+import colors from 'styles/theme/colors';
 
-function BottomFooterConsultant() {
-    const [value, setValue] = React.useState(0);
+
+function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, SinglePropertyId }) {
+    const { userDetails } = useAuth();
+    const locationData = propertyData?.location;
+    const brokerData = SinglePropertyId?.brokerData
+
+    const name = brokerData?.name?.firstName && brokerData?.name?.lastName
+        ? `${brokerData.name.firstName} ${brokerData.name.lastName}`
+        : `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}`;
+
+    const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
+        ? `${brokerData.phone.countryCode}-${brokerData.phone.number}`
+        : `${userDetails?.phone?.countryCode}-${userDetails?.phone?.number}`;
+
+        const constructPropertyUrl = (property) => {
+            const overview = property?.overview;
+            const location = property?.location;
+            const brokerId = propertyData?.propertyBroker?.[0]?._id ?? 'defaultBrokerId'
+    
+            const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+            let projectType;
+            if (overview?.projectType?.length > 0) {
+                projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+            }
+            const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
+            const sector = (location?.sector.trim() ?? 'sector').replace(/\s+/g, '-');
+            const area = (location?.area.trim() ?? 'area').replace(/\s+/g, '-');
+            const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+    
+            const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
+    
+            return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${name.replace(/\s+/g, '-')}-${phoneNumber.replace(/\s+/g, '-')}-${brokerId}`;
+        };
+    
+    const propertyUrl = constructPropertyUrl(propertyData)
+
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text).then(() => {
+            showToaterMessages(ToasterMessages?.LINK_COPIED_SUCCESS);
+        }).catch(err => {
+            showToaterMessages('Failed to copy the link: ', err);
+        });
+    };
+    
+    const { openSnackbar } = useSnackbar();
+    const showToaterMessages = (message, severity) => {
+        openSnackbar(message, severity);
+    };
+    // const [value, setValue] = React.useState(0);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -30,56 +82,101 @@ function BottomFooterConsultant() {
                 <Container maxWidth='md' sx={{ px: { xs: '0 !important', evmd: '1rem !important' }, py: "0 !important" }}>
                     <Box sx={{
                         display: 'flex', background: 'white',
-                        boxShadow: boxShadowTop, p: 2
+                        boxShadow: boxShadowTop, p: 2,
+                        alignItems: "center",
+                        gap: "10px",
+                        border: propertyData?.isActiveAd ? `2px solid ${colors.BLUE}` : `2px solid gold`
                     }}>
-                        <Box sx={{ display: 'flex', flex: 1 }}>
-                            <Avatar src="" sx={{ height: { xs: 24, evmd: 40 }, width: { xs: 24, evmd: 40 }, fontSize: { xs: '0.75rem', evmd: '1rem' } }}>FD</Avatar>
-                            <Box sx={{ ml: 1, flex: 1 }}>
-                                <Box sx={{ display: { xs: 'none', evmd: 'block' } }}>
-                                    <Typography variant='h6'>
-                                        first last | Project name | Noida
-                                    </Typography>
-                                    <Box>
+                         <Avatar src="" sx={{ height: { xs: 24, evmd: 40 }, width: { xs: 24, evmd: 40 }, fontSize: { xs: '0.75rem', evmd: '1rem' } }}></Avatar>
+                            <Box sx={{ display: 'flex', flex: 1 }}>
+                                <Box sx={{ ml: 1, flex: 1 }}>
+                                    <Box sx={{ display: { xs: 'none', evmd: 'block' } }}>
                                         <Typography variant='h6'>
-                                            +91 9625555559
+                                        {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                                         </Typography>
-                                        <Typography variant='h6' sx={{ mt: 1 }}>
-                                            4.5 | 12 ratings
+                                        <Box>
+                                        <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
+                                            {name}
                                         </Typography>
-                                    </Box>
-                                </Box>
-                                <Box sx={{ display: { xs: 'block', evmd: 'none' } }}>
-                                    <Typography variant='subtitle2'>
-                                        first last | Project name | Noida
-                                    </Typography>
-                                    <Box sx={{ display: 'flex' }}>
-                                        <Box sx={{ flex: 1 }}>
-                                            <Typography variant='subtitle2'>
-                                                +91 9625555559
+                                            <Typography variant='h6'>
+                                                <a href={`tel:${phoneNumber}`}>
+                                                    <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' onClick={() => { }} />
+                                                </a>
                                             </Typography>
-                                            <Typography variant='subtitle2' sx={{ mt: 1 }}>
+                                            {/* <Typography variant='h6' sx={{ mt: 1 }}>
                                                 4.5 | 12 ratings
-                                            </Typography>
+                                            </Typography> */}
                                         </Box>
-                                        <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "block", evmd: 'none' } }}>
-                                            <Button variant='contained' size="small" startIcon={<DoneIcon />} disabled sx={{}}>
-                                                Activated
-                                            </Button>
+                                    </Box>
+                                    <Box sx={{ display: { xs: 'block', evmd: 'none' } }}>
+                                        <Typography variant='subtitle2'>
+                                            {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
+                                        </Typography>
+                                        <Box sx={{ display: 'flex' }}>
+                                            <Box sx={{ flex: 1 }}>
+                                            <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
+                                                {name}
+                                            </Typography>
+                                                <Typography variant='subtitle2'>
+                                                    <a href={`tel:${phoneNumber}`}>
+                                                        <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' onClick={() => { }} />
+                                                    </a>
+                                                </Typography>
+                                                {/* <Typography variant='subtitle2' sx={{ mt: 1 }}>
+                                                    4.5 | 12 ratings
+                                                </Typography> */}
+                                            </Box>
+                                            <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "block", evmd: 'none' } }}>
+                                                {propertyData?.isActiveAd ? 
+                                                    <Button  sx={{
+                                                        border: `2px solid ${colors.BLUE}`,
+                                                        mr: 1,
+                                                        '&:hover': {
+                                                            backgroundColor: "inherit",
+                                                            border: "2px solid gold",
+                                                        }
+                                                    }} disabled variant='outlined' size="small" startIcon={<DoneIcon />}>
+                                                        Activated
+                                                    </Button> 
+                                                    : 
+                                                    <Button sx={{ color: "#000", border: "2px solid gold",  '&:hover': {
+                                                        backgroundColor: "inherit",
+                                                        border: "2px solid gold",
+                                                    }}} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />}>
+                                                        Activate link
+                                                    </Button>
+                                                    }
+                                            </Box>
                                         </Box>
                                     </Box>
                                 </Box>
-                            </Box>
                             <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "none", evmd: 'block' } }}>
-                                <Button variant='contained' startIcon={<DoneIcon />} disabled sx={{ mb: 1 }}>
-                                    Activated
-                                </Button>
+                                {propertyData?.isActiveAd ?
+                                    <Button  sx={{
+                                        border: `2px solid ${colors.BLUE}`,
+                                        mr: 1,
+                                        color: "#000", '&:hover': {
+                                            backgroundColor: "inherit",
+                                            border: `2px solid ${colors.BLUE}`,
+                                        }
+                                        }} variant='outlined' startIcon={<DoneIcon />} disabled>
+                                        Activated
+                                    </Button>
+                                 : 
+                                    <Button sx={{ color: "#000", border: "2px solid gold",  '&:hover': {
+                                        backgroundColor: "inherit",
+                                        border: "2px solid gold",
+                                    } }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />} >
+                                        Activate link
+                                    </Button>
+                                 }
                                 {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
                 Call First
               </Button>
               <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
                 Log in
               </Button> */}
-                                <p style={{ fontSize: '0.75rem' }}>26 days remaining</p>
+                                <p style={{ fontSize: '0.75rem' }}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get your customer enquiries "}</p>
                             </Box>
                         </Box>
                         <Box sx={{ alignSelf: 'end' }}>
@@ -97,8 +194,8 @@ function BottomFooterConsultant() {
                             }}
                         >
 
-                            <MenuItem onClick={handleClose}>Activate link</MenuItem>
-                            <MenuItem onClick={handleClose}>View leads</MenuItem>
+                            <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}>{propertyData?.isActiveAd ? "Extend" : "Activate link"} </MenuItem>
+                            <MenuItem onClick={() => copyToClipboard(propertyUrl)}>share</MenuItem>
                         </Menu>
                     </Box>
                 </Container>

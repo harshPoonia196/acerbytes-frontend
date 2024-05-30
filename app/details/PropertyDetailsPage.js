@@ -8,9 +8,10 @@ import {
   Box,
   Chip,
   Toolbar,
-  Button, Divider,
+  Button,
+  Divider,
   BottomNavigation,
-  BottomNavigationAction
+  BottomNavigationAction,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -53,7 +54,11 @@ import {
 } from "utills/Constants";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
-import { checkEnquiryOnPropertyLink, detailsProperty, favPropertyCreate } from "api/Property.api";
+import {
+  checkEnquiryOnPropertyLink,
+  detailsProperty,
+  favPropertyCreate,
+} from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
@@ -629,15 +634,15 @@ const PropertyDetailsPage = ({ params }) => {
         handleOpen={handleOpenPersonalizeAds}
         handleClose={handleClosePersonalizeAds}
       />
-      {userDetails?.role === "broker" &&
-        (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
+       {/* {userDetails?.role === "broker" &&
+      (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
         <AdsSection
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
           handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
           isConsultant
           propertyData={propertyData}
         />
-      ) : null}
+      ) : null}  */}
       {/* {userDetails?.role !== "admin" &&
         userDetails?.role !== "superAdmin" &&
         propertyData.isActiveAd ? (
@@ -736,20 +741,26 @@ const PropertyDetailsPage = ({ params }) => {
                     <Grid container spacing={2}>
                       {propertyData?.consultants?.length > 0 &&
                         propertyData?.consultants?.slice(0, 2).map((broker) => (
-                          <Grid item xs={12} sm={6} key={broker?.name}>
-                            <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
+                          <Grid item xs={12} sm={6} key={broker?.id}>
+                            <BrokerCard
+                              broker={broker}
+                              noReview
+                              enquiredInfo={enquiredInfo}
+                              handleEnquireWithBroker={handleEnquireWithBroker}
+                            />
                           </Grid>
                         ))}
                     </Grid>
                   </Box>
                   <Divider />
                   {userDetails?.role === "broker" && (
-                    <Box sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: { xs: "column", sm: "row" },
-                      gap: 1,
-                    }}
+                    <Box
+                      sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        gap: 1,
+                      }}
                     >
                       <Box sx={{ flex: 1, alignSelf: "center" }}>
                         <Typography variant="body2" sx={{ flex: 1 }}>
@@ -969,17 +980,21 @@ const PropertyDetailsPage = ({ params }) => {
                 </Box> */}
               </>
             )}
-
-          {userDetails?.role === "broker" && (
+          {!isLoading && userDetails?.role === "broker" && (
             <>
               <Toolbar
                 sx={{
                   display: { xs: "flex", evmd: "none" },
                 }}
               />
-              <BottomFooterConsultant />
+              <BottomFooterConsultant
+                SinglePropertyId={propertyData?.propertyBroker ? propertyData?.propertyBroker[0] : ""}
+                handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+                propertyData={propertyData}
+              />
             </>
           )}
+         
         </Container>
       </Box>
     </>
