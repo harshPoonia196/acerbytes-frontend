@@ -83,7 +83,7 @@ function UserDetailsAd({
             sx={{
               display: "flex",
               p: 2,
-              background: "white",
+              background: "ghostwhite",
               boxShadow: boxShadowTop,
               border: `2px solid ${colors.BLUE}`,
             }}
@@ -129,8 +129,8 @@ function UserDetailsAd({
                   </Typography>
                   <Box
                     sx={{
-                      textAlign: "end",
-                      alignSelf: "end",
+                      textAlign: {xs: "start", md: "end"},
+                      alignSelf: {xs: "start", md: "end"},
                       display: { xs: "block", md: "none" },
                     }}
                   >
