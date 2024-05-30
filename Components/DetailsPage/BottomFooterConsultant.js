@@ -88,7 +88,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                         borderTop: propertyData?.isActiveAd ? `2px solid ${colors.BLUE}` : `2px solid gold`
                     }}>
                         <Box sx={{ display: { xs: 'block', evmd: 'none' } }}>
-                            <Typography variant='body2'>
+                            <Typography variant='body2' sx={{ marginBottom: "5px"}}>
                                 {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                             </Typography>
                         </Box>
@@ -97,7 +97,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                             <Box sx={{ display: 'flex', flex: 1 }}>
                                     <Box sx={{ ml: 1, flex: 1 }}>
                                         <Box sx={{ display: { xs: 'none', evmd: 'block' } }}>
-                                            <Typography variant='body2'>
+                                            <Typography variant='body2' sx={{marginBottom: '5px'}}>
                                             {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                                             </Typography>
                                             <Box>
@@ -131,7 +131,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                         4.5 | 12 ratings
                                                     </Typography> */}
                                                 </Box>
-                                            <Box sx={{ display: 'flex' }}>
+                                            {/* <Box sx={{ display: 'flex' }}> */}
                                             {/* <Typography variant='subtitle2'>
                                                 {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                                             </Typography> */}
@@ -156,7 +156,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                         </Button>
                                                         }
                                                 </Box> */}
-                                            </Box>
+                                            {/* </Box> */}
                                         </Box>
                                     </Box>
                                 <Box sx={{ textAlign: 'end', alignSelf: 'start', display: { xs: "block", evmd: 'block' } }}>

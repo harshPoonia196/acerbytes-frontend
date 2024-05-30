@@ -299,7 +299,7 @@ export default function Enquiries(props) {
   return (
     <>
       {isLoading && <Loader />}
-      <Box sx={{ backgroundColor: "white" }} >
+      <Box sx={{ backgroundColor: "white", boxShadow: "-1px -2px 6px 2px gainsboro !important", }} >
         <Container maxWidth="lg" sx={{ pb: "0 !important" }} >
           <Box sx={{ py: 4 }}>
             <Typography variant="h1" sx={{ color: "#000", fontWeight: 300 }}>
@@ -344,7 +344,7 @@ export default function Enquiries(props) {
               />
               {brokerBalance?
               <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
-                ButtonText={brokerBalance}
+                ButtonText={`Points: ${brokerBalance}`}
               />:""}
             </Box>
           </Box>

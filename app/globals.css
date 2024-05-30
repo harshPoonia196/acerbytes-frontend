@@ -183,6 +183,12 @@ html {
   .propertyTabs .MuiTabs-scrollButtons{
     display: none;
   }
+  .detailFab{
+    z-index: 2;
+  }
+  .consultantFooter{
+    z-index: 0 !important;
+  }
 }
 
 .openArrow{
@@ -196,10 +202,4 @@ html {
 .innerhtmlFont, .innerhtmlFont p{
   font-size: 0.875rem;
   font-family: 'IBM Plex Sans', 'Roboto', 'Titillium Web', 'Inter', 'Almarai', 'Arial', 'sans-serif', 'Roboto Mono';
-}
-.detailFab{
-  z-index: 2;
-}
-.consultantFooter{
-  z-index: 0 !important;
 }
