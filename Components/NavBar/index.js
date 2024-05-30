@@ -499,8 +499,8 @@ export default function ClippedDrawer({ children }) {
             <Box sx={{ alignSelf: "center", }}>
               <Link href={listOfPages.home} prefetch={true} style={{ textDecoration: 'none' }}>
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Box sx={{ height: 30, width: 30, background: 'whitesmoke', '&:hover': { background: 'gainsboro' }, borderRadius: '4px' }}>
-                    <Image priority height={25} width={25} src={Logo} style={{ margin: '2.5px' }} alt="It’s acrebytes.com" />
+                  <Box sx={{ height: 30, width: 30, background: 'gainsboro', '&:hover': { background: 'gainsboro' }, borderRadius: '4px' }}>
+                    <Image priority height={25} width={25} src={Logo} style={{ margin: '2.5px' }} alt="acrebytes" />
                   </Box>
                   <Typography
                     variant="h6"

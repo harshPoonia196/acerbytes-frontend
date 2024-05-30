@@ -73,7 +73,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
 
     return (
         <>
-            <Box sx={{
+            <Box className="consultantFooter" sx={{
                 width: '100%', position: 'fixed',
                 bottom: 0,
                 left: 0,
@@ -96,13 +96,15 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                         </Typography>
                                         <Box>
                                         <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
-                                            {name}
+                                        <a href={`tel:${phoneNumber}`}>
+                                                    <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' onClick={() => { }} />
+                                                </a> {name}
                                         </Typography>
-                                            <Typography variant='h6'>
+                                            {/* <Typography variant='h6'>
                                                 <a href={`tel:${phoneNumber}`}>
                                                     <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' onClick={() => { }} />
                                                 </a>
-                                            </Typography>
+                                            </Typography> */}
                                             {/* <Typography variant='h6' sx={{ mt: 1 }}>
                                                 4.5 | 12 ratings
                                             </Typography> */}
@@ -176,10 +178,10 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
               <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
                 Log in
               </Button> */}
-                                <Typography variant='p'>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get your customer enquiries "}</Typography>
+                                <div><Typography variant="h6">{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get your customer enquiries" }</Typography></div>
                             </Box>
                         </Box>
-                        <Box sx={{ alignSelf: 'end' }}>
+                        <Box sx={{ alignSelf: 'start'}}>
                             <IconButton onClick={handleClick}>
                                 <MoreVertIcon />
                             </IconButton>
@@ -201,6 +203,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                 </Container>
             </Box>
             <Box
+            className="detailFab"
                 sx={{
                     position: "fixed",
                     right: 16,
