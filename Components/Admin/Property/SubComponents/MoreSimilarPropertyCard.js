@@ -14,7 +14,7 @@ function MoreSimilarPropertyCard({ propertyData }) {
     const { data: Alldata, location: locationData, overview: overviewData } = propertyData;
     
     return (
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={{ paddingBottom: "90px"}}> 
             <Card>
             <Accordion>
             <AccordionSummary

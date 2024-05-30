@@ -88,33 +88,34 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                         borderTop: propertyData?.isActiveAd ? `2px solid ${colors.BLUE}` : `2px solid gold`
                     }}>
                         <Box sx={{ display: { xs: 'block', evmd: 'none' } }}>
-                            <Typography variant='body2'>
+                            <Typography variant='body2' sx={{ marginBottom: "5px"}}>
                                 {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                             </Typography>
                         </Box>
                         <Box sx={{ display: 'flex'}}>
                             <Avatar src={propertyData?.brokerDetais?.profilePicture} sx={{ height: { xs: 24, evmd: 40 }, width: { xs: 24, evmd: 40 }, fontSize: { xs: '0.75rem', evmd: '1rem' } }}></Avatar>
-                            <Box sx={{ display: 'flex', flex: 1 }}>
-                                    <Box sx={{ ml: 1, flex: 1 }}>
-                                        <Box sx={{ display: { xs: 'none', evmd: 'block' } }}>
-                                            <Typography variant='body2'>
+                            <Box sx={{ display: 'flex', flex: 1, justifyContent: "space-between", marginLeft: "10px" }}>
+                                   
+                                <Box sx={{ display: { xs: 'none', evmd: 'block' } }}>
+                                    <Typography variant='body2' sx={{ marginBottom: "5px"}}>
+                                    {`${capitalLizeName(propertyData?.overview?.builder || "builder")}  | ${capitalLizeName(propertyData?.overview?.projectName|| "projectName")} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
+                                    </Typography>
+                                    
+                                    <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
+                                    <a href={`tel:${phoneNumber}`}>
+                                                <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' />
+                                            </a> {name}
+                                    </Typography>
+                                    <Typography variant='h6' sx={{ mt: 1 }}>
+                                    {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} rating
+                                    </Typography>
+                                    
+                                </Box>
+                                    
+                                <Box sx={{ display: { xs: 'block', evmd: 'none' } }}>
+                                        {/* <Typography variant='subtitle2'>
                                             {`${capitalLizeName(propertyData?.overview?.builder || "builder")}  | ${capitalLizeName(propertyData?.overview?.projectName|| "projectName")} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
-                                            </Typography>
-                                            <Box>
-                                            <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
-                                            <a href={`tel:${phoneNumber}`}>
-                                                        <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' />
-                                                    </a> {name}
-                                            </Typography>
-                                            <Typography variant='h6' sx={{ mt: 1 }}>
-                                               {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} rating
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-                                    <Box sx={{ display: { xs: 'block', evmd: 'none' } }}>
-                                        <Typography variant='subtitle2'>
-                                            {`${capitalLizeName(propertyData?.overview?.builder || "builder")}  | ${capitalLizeName(propertyData?.overview?.projectName|| "projectName")} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
-                                        </Typography>
+                                        </Typography> */}
                                         <Box sx={{ display: 'flex' }}>
                                             <Box sx={{ flex: 1 }}>
                                                 <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
@@ -129,7 +130,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                         {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} rating
                                                     </Typography>
                                                 </Box>
-                                            <Box sx={{ display: 'flex' }}>
+                                            {/* <Box sx={{ display: 'flex' }}> */}
                                             {/* <Typography variant='subtitle2'>
                                                 {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                                             </Typography> */}
@@ -154,58 +155,65 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                         </Button>
                                                         }
                                                 </Box> */}
-                                            </Box>
+                                            {/* </Box> */}
                                         </Box>
                                     </Box>
-                                <Box sx={{textAlign: 'center', alignSelf: 'center', display: { xs: "block", evmd: 'block' } }}>
-                                    {propertyData?.isActiveAd ?
-                                        <Button  sx={{
-                                            border: `2px solid ${colors.BLUE}`,
-                                            fontSize: "14px", padding: "3px 5px",
-                                            color: "#000", '&:hover': {
-                                                backgroundColor: "inherit",
-                                                border: `2px solid ${colors.BLUE}`,
-                                            }
-                                            }} variant='outlined' startIcon={<DoneIcon />} disabled>
-                                            Activated
-                                        </Button>
-                                    : 
-                                        <Button sx={{ color: "#000", border: "2px solid gold", fontSize: "14px", padding: "3px 5px", '&:hover': {
-                                            backgroundColor: "inherit",
-                                            border: "2px solid gold",
-                                        } }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />} >
-                                            Activate link
-                                        </Button>
-                                    }
-                                    {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
-                    Call First
-                </Button>
-                <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
-                    Log in
-                </Button> */}
-                                    <div><Typography variant='body2' sx={{ marginTop: '5px'}}>Get leads</Typography></div>
-                                    {/* <div><Typography variant="body2" sx={{ lineHeight: '1.3', marginTop: '5px'}}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get customer enquiries" }</Typography></div> */}
-                                </Box>
-                            </Box>
-                            <Box sx={{ alignSelf: 'center'}}>
-                                <IconButton onClick={handleClick} sx={{ padding: "0"}}>
-                                    <MoreVertIcon />
-                                </IconButton>
-                            </Box>
-                            <Menu
-                                id="basic-menu"
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={handleClose}
-                                MenuListProps={{
-                                    'aria-labelledby': 'basic-button',
-                                }}
-                            >
 
-                                <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}>{propertyData?.isActiveAd ? "Extend" : "Activate link"} </MenuItem>
-                                <MenuItem onClick={() => copyToClipboard(propertyUrl)}>Share</MenuItem>
-                            </Menu>
-                        </Box>
+
+
+                                <Box sx={{ display: 'flex'}}>
+                                    <Box sx={{textAlign: 'center', alignSelf: 'start', display: { xs: "block", evmd: 'block' } }}>
+                                        {propertyData?.isActiveAd ?
+                                            <Button  sx={{
+                                                border: `2px solid ${colors.BLUE}`,
+                                                fontSize: "14px", padding: "3px 5px",
+                                                color: "#000", '&:hover': {
+                                                    backgroundColor: "inherit",
+                                                    border: `2px solid ${colors.BLUE}`,
+                                                }
+                                                }} variant='outlined' startIcon={<DoneIcon />} disabled>
+                                                Activated
+                                            </Button>
+                                        : 
+                                            <Button sx={{ color: "#000", border: "2px solid gold", fontSize: "14px", padding: "3px 5px", '&:hover': {
+                                                backgroundColor: "inherit",
+                                                border: "2px solid gold",
+                                            } }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />} >
+                                                Activate link
+                                            </Button>
+                                        }
+                                        {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
+                        Call First
+                    </Button>
+                    <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
+                        Log in
+                    </Button> */}
+                                        <div><Typography variant='body2' sx={{ marginTop: '5px'}}>Get leads</Typography></div>
+                                        {/* <div><Typography variant="body2" sx={{ lineHeight: '1.3', marginTop: '5px'}}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get customer enquiries" }</Typography></div> */}
+                                    </Box>
+
+                                    <Box sx={{ alignSelf: 'start'}}>
+                                        <IconButton onClick={handleClick} sx={{ padding: "0"}}>
+                                            <MoreVertIcon />
+                                        </IconButton>
+                                    </Box>
+                                    <Menu
+                                        id="basic-menu"
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'basic-button',
+                                        }}
+                                    >
+
+                                        <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}>{propertyData?.isActiveAd ? "Extend" : "Activate link"} </MenuItem>
+                                        <MenuItem onClick={() => copyToClipboard(propertyUrl)}>Share</MenuItem>
+                                    </Menu>
+                                </Box>
+                            
+                                
+                            </Box>
                         </Box>
                     </Box>
                 </Container>
