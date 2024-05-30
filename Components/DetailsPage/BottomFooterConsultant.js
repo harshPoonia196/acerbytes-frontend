@@ -83,16 +83,15 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                     <Box sx={{
                         display: 'flex', background: 'white',
                         boxShadow: boxShadowTop, p: 2,
-                        alignItems: "center",
                         gap: "10px",
                         border: propertyData?.isActiveAd ? `2px solid ${colors.BLUE}` : `2px solid gold`
                     }}>
-                         <Avatar src="" sx={{ height: { xs: 24, evmd: 40 }, width: { xs: 24, evmd: 40 }, fontSize: { xs: '0.75rem', evmd: '1rem' } }}></Avatar>
+                         <Avatar src={propertyData?.brokerDetais?.profilePicture} sx={{ height: { xs: 24, evmd: 40 }, width: { xs: 24, evmd: 40 }, fontSize: { xs: '0.75rem', evmd: '1rem' } }}></Avatar>
                             <Box sx={{ display: 'flex', flex: 1 }}>
                                 <Box sx={{ ml: 1, flex: 1 }}>
                                     <Box sx={{ display: { xs: 'none', evmd: 'block' } }}>
                                         <Typography variant='h6'>
-                                        {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
+                                        {`${capitalLizeName(propertyData?.overview?.builder || "builder")}  | ${capitalLizeName(propertyData?.overview?.projectName|| "projectName")} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                                         </Typography>
                                         <Box>
                                         <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
@@ -100,17 +99,17 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                         </Typography>
                                             <Typography variant='h6'>
                                                 <a href={`tel:${phoneNumber}`}>
-                                                    <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' onClick={() => { }} />
+                                                    <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' />
                                                 </a>
                                             </Typography>
-                                            {/* <Typography variant='h6' sx={{ mt: 1 }}>
-                                                4.5 | 12 ratings
-                                            </Typography> */}
+                                            <Typography variant='h6' sx={{ mt: 1 }}>
+                                               {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} rating
+                                            </Typography>
                                         </Box>
                                     </Box>
                                     <Box sx={{ display: { xs: 'block', evmd: 'none' } }}>
                                         <Typography variant='subtitle2'>
-                                            {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
+                                            {`${capitalLizeName(propertyData?.overview?.builder || "builder")}  | ${capitalLizeName(propertyData?.overview?.projectName|| "projectName")} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                                         </Typography>
                                         <Box sx={{ display: 'flex' }}>
                                             <Box sx={{ flex: 1 }}>
@@ -119,14 +118,14 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                             </Typography>
                                                 <Typography variant='subtitle2'>
                                                     <a href={`tel:${phoneNumber}`}>
-                                                        <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' onClick={() => { }} />
+                                                        <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' />
                                                     </a>
                                                 </Typography>
-                                                {/* <Typography variant='subtitle2' sx={{ mt: 1 }}>
-                                                    4.5 | 12 ratings
-                                                </Typography> */}
+                                                <Typography variant='subtitle2' sx={{ mt: 1 }}>
+                                                    {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} rating
+                                                </Typography>
                                             </Box>
-                                            <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "block", evmd: 'none' } }}>
+                                            <Box sx={{ textAlign: 'center', alignSelf: 'center', display: { xs: "block", evmd: 'none' } }}>
                                                 {propertyData?.isActiveAd ? 
                                                     <Button  sx={{
                                                         border: `2px solid ${colors.BLUE}`,
@@ -150,7 +149,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                         </Box>
                                     </Box>
                                 </Box>
-                            <Box sx={{ textAlign: 'end', alignSelf: 'end', display: { xs: "none", evmd: 'block' } }}>
+                            <Box sx={{ textAlign: 'center', alignSelf: 'center', display: { xs: "none", evmd: 'block' } }}>
                                 {propertyData?.isActiveAd ?
                                     <Button  sx={{
                                         border: `2px solid ${colors.BLUE}`,
@@ -176,14 +175,13 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
               <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
                 Log in
               </Button> */}
-                                <p style={{ fontSize: '0.75rem' }}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get your customer enquiries "}</p>
+                                <p style={{ fontSize: '0.75rem' }}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : " "}</p>
                             </Box>
                         </Box>
-                        <Box sx={{ alignSelf: 'end' }}>
+                        <Box sx={{ alignSelf: 'center' }}>
                             <IconButton onClick={handleClick}>
                                 <MoreVertIcon />
                             </IconButton>
-                        </Box>
                         <Menu
                             id="basic-menu"
                             anchorEl={anchorEl}
@@ -195,8 +193,9 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                         >
 
                             <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}>{propertyData?.isActiveAd ? "Extend" : "Activate link"} </MenuItem>
-                            <MenuItem onClick={() => copyToClipboard(propertyUrl)}>share</MenuItem>
+                            <MenuItem onClick={() => copyToClipboard(propertyUrl)}>Share</MenuItem>
                         </Menu>
+                        </Box>
                     </Box>
                 </Container>
             </Box>
