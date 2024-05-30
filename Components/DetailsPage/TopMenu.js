@@ -78,6 +78,7 @@ function TopMenu(props) {
                 scrollButtons
                 allowScrollButtonsMobile
                 aria-label="visible arrows tabs example"
+                className='propertyTabs'
                 sx={{
                     [`& .${tabsClasses.scrollButtons}`]: {
                         '&.Mui-disabled': { opacity: 0.3 },
