@@ -40,6 +40,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import { useAuth } from 'utills/AuthContext';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+
 import Qrimage from "../../public/images/demo.webp"
 
 const enquiries = [
@@ -71,6 +72,7 @@ const enquiries = [
 
 function Row(props) {
   const { row, history } = props;
+  
   const [open, setOpen] = React.useState(false);
   const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
