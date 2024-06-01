@@ -3,7 +3,6 @@ import { Typography, Box, Rating } from "@mui/material";
 import { ratingLabels } from "utills/utills";
 
 function getLabelText(value) {
-  console.log(value, '*************');
   return `${value} Star${value !== 1 ? "s" : ""}, ${ratingLabels(value)}`;
 }
 

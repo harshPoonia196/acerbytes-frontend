@@ -142,7 +142,6 @@ export const validatePhoneNumber = (phoneNumber) => {
 }
 
 export const ratingLabels = (rating) => {
-  console.log(rating, '*************************');
   let value = '';
 
   if (rating > 0 && rating <= 1) {
