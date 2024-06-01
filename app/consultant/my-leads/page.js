@@ -19,7 +19,7 @@ import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsult
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useAuth } from 'utills/AuthContext';
-import Enquiries from "app/enquiries/page";
+import Enquiries from "app/generate-real-estate-leads-growth/page";
 
 function MyLeads() {
   const { userDetails } = useAuth();

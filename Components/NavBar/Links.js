@@ -21,7 +21,7 @@ export const listOfPages = {
   privacy: '/privacy',
   commonPropertyList: "/property-list",
   commonAllBrokers: '/all-brokers',
-  commonEnquiries: '/enquiries',
+  commonEnquiries: '/generate-real-estate-leads-growth',
   userProfile: '/user/profile',
   userShortlist: '/user/shortlist',
   userMyConsultant: '/user/my-consultants',
