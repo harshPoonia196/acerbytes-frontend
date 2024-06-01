@@ -61,7 +61,7 @@ export const CommonMenuList = [
 ];
 export const ToBeRemoved = [
   {
-    label: "Leads panel",
+    label: " Leads growth (marketing)",
     route: listOfPages.commonEnquiries,
     icon: <TableRowsIcon fontSize="small" />,
   },
