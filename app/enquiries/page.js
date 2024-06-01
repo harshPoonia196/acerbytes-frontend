@@ -41,7 +41,6 @@ import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import { useAuth } from 'utills/AuthContext';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Qrimage from "../../public/images/demo.webp"
-import Image from "next/image";
 
 const enquiries = [
   {
@@ -69,6 +68,7 @@ const enquiries = [
     image: "https://images.pexels.com/photos/210617/pexels-photo-210617.jpeg"
   }
 ]
+
 function Row(props) {
   const { row, history } = props;
   const [open, setOpen] = React.useState(false);
