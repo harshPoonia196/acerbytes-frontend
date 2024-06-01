@@ -370,8 +370,8 @@ export default function Enquiries(props) {
               fontSize: { sm: "2em !important", md: "4rem !important" },
               marginBottom: "35px", textAlign: "center"
             }}>
-            <span style={{ color: colors.GRAY, fontWeight: "bold" }}>Are you Real estate Consultant? </span>
-            Grow your Business with AcreBytes
+            <span style={{ color: colors.GRAY, fontWeight: "bold" }}>AcreBytes | Are you a real estate consultant ? </span>
+            Get an easy way to generate real estate leads and business growth with AcreBytes
             </Typography>
             <Grid container spacing={2}>
               {enquiries.map(enquiry => {
