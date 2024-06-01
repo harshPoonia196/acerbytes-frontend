@@ -46,27 +46,27 @@ import Qrimage from "../../public/images/demo.webp"
 const enquiries = [
   {
     id: "1",
-    title: "Lead Generation Link",
+    title: "Lead generation link",
     description: "Get own property page linked with your contact, receive unlimited inquiries",
-    image: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg"
+    image: "https://www.kundans.com/wp-content/uploads/2023/02/property-purchasing-1024x640.jpg"
   },
   {
     id: "2",
-    title: "Lead Inquiries Management",
+    title: "Lead inquiries management",
     description: "Get paanel to manage your client status and notes",
-    image: "https://images.pexels.com/photos/10827220/pexels-photo-10827220.jpeg"
+    image: "https://kathygroverrealestateagenthighlandvillagetx.com/wp-content/uploads/2019/10/Property-Business0.jpg"
   },
   {
     id: "3",
-    title: "Increase your Presence and Visibility",
+    title: "Increase your presence and visibility",
     description: "Get your profile linked to listed property",
-    image: "https://images.pexels.com/photos/14509975/pexels-photo-14509975.jpeg"
+    image: "https://www.businessinsider.in/_next/image?url=https%3A%2F%2Fstaticbiassets.in%2Fthumb%2Fmsid-52322577%2Cwidth-700%2Cresizemode-4%2Cimgsize-135930%2Findian-property-sector-uprise.jpg&w=1920&q=75"
   },
   {
     id: "4",
-    title: "Access Active and Verified Customer enquiries",
+    title: "Access active and verified customer enquiries",
     description: "improve your chances of leads conversion with better leads",
-    image: "https://images.pexels.com/photos/210617/pexels-photo-210617.jpeg"
+    image: "https://smallbiztrends.com/ezoimgfmt/media.smallbiztrends.com/2022/05/real-estate-business-ideas-850x476.png?ezimgfmt=ng%3Awebp%2Fngcb12"
   }
 ]
 
@@ -276,10 +276,10 @@ const EnquiryCard = ({enquiry}) => {
           title={enquiry.title}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div" sx={{ minHeight: "47px"}}>
+          <Typography gutterBottom variant="h5" component="div">
             {enquiry.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body1" color="text.secondary">
             {enquiry.description}
           </Typography>
         </CardContent>
@@ -463,9 +463,9 @@ export default function Enquiries(props) {
                   <Row key={row.name} row={row} history={history} />
                 ))
               ) : (
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <Typography variant="body2" style={{ display: "flex", justifyContent: "center", marginTop: "5px" }}>
                   No Data
-                </div>
+                </Typography>
               )}
             </TableBody>
           </Table>
