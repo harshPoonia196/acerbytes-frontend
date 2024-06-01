@@ -40,37 +40,39 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import { useAuth } from 'utills/AuthContext';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+
 import Qrimage from "../../public/images/demo.webp"
-import Image from "next/image";
 
 const enquiries = [
   {
     id: "1",
     title: "Lead Generation Link",
     description: "Get own property page linked with your contact, receive unlimited inquiries",
-    image: Qrimage.src
+    image: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg"
   },
   {
     id: "2",
     title: "Lead Inquiries Management",
     description: "Get paanel to manage your client status and notes",
-    image: Qrimage.src
+    image: "https://images.pexels.com/photos/10827220/pexels-photo-10827220.jpeg"
   },
   {
     id: "3",
     title: "Increase your Presence and Visibility",
     description: "Get your profile linked to listed property",
-    image: Qrimage.src
+    image: "https://images.pexels.com/photos/14509975/pexels-photo-14509975.jpeg"
   },
   {
     id: "4",
     title: "Access Active and Verified Customer enquiries",
     description: "improve your chances of leads conversion with better leads",
-    image: Qrimage.src
+    image: "https://images.pexels.com/photos/210617/pexels-photo-210617.jpeg"
   }
 ]
+
 function Row(props) {
   const { row, history } = props;
+  
   const [open, setOpen] = React.useState(false);
   const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
