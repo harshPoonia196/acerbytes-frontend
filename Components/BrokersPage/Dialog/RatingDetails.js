@@ -1,21 +1,10 @@
 import React, { useState } from "react";
 import { Typography, Box, Rating } from "@mui/material";
-
-const labels = {
-  0.5: "",
-  1: "",
-  1.5: "Poor",
-  2: "Poor+",
-  2.5: "Ok",
-  3: "Ok+",
-  3.5: "Good",
-  4: "Good+",
-  4.5: "Excellent",
-  5: "Excellent+",
-};
+import { ratingLabels } from "utills/utills";
 
 function getLabelText(value) {
-  return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
+  console.log(value, '*************');
+  return `${value} Star${value !== 1 ? "s" : ""}, ${ratingLabels(value)}`;
 }
 
 const RatingDetails = (props) => {
@@ -47,7 +36,7 @@ const RatingDetails = (props) => {
             }}
           />
           {value !== null && (
-            <Box sx={{}}>{labels[hover !== -1 ? hover : value]}</Box>
+            <Box sx={{}}>{ratingLabels(hover !== -1 ? hover : value)}</Box>
           )}
         </Box>
       </Box>

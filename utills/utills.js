@@ -142,46 +142,33 @@ export const validatePhoneNumber = (phoneNumber) => {
 }
 
 export const ratingLabels = (rating) => {
-  if (rating <= 0.5) {
-    return "";
+  console.log(rating, '*************************');
+  let value = '';
+
+  if (rating > 0 && rating <= 1) {
+    value = "Poor";
   }
-  if (rating <= 1) {
-    return "";
+
+  if (rating > 1 && rating <= 2) {
+    value = "Average";
   }
-  if (rating <= 1.5) {
-    return "Poor";
+
+  if (rating > 2 && rating <= 3) {
+    value = "Good";
   }
-  if (rating <= 1.5) {
-    return "Poor";
+
+  if (rating > 3 && rating <= 4) {
+    value = "Very good";
   }
-  if (rating <= 1.5) {
-    return "Poor";
+
+  if (rating > 4) {
+    value = "Excellent";
   }
-  if (rating <= 2) {
-    return "Poor+";
-  }
-  if (rating <= 2.5) {
-    return "Ok";
-  }
-  if (rating <= 3) {
-    return "Ok+";
-  }
-  if (rating <= 3.5) {
-    return "Good";
-  }
-  if (rating <= 4) {
-    return "Good+";
-  }
-  if (rating <= 4.5) {
-    return "Excellent";
-  }
-  if (rating <= 5) {
-    return "Excellent+";
-  }
-  return "";
+
+  return value;
 };
 
-export const maskPhoneNumber= (phoneNumber)=> {
+export const maskPhoneNumber = (phoneNumber) => {
   // Check if the phoneNumber is valid
   if (phoneNumber.length !== 10) {
     return phoneNumber;
