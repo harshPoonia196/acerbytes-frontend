@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Typography, Box, Rating } from "@mui/material";
 
 const labels = {
-  0.5: "Useless",
-  1: "Useless+",
+  0.5: "",
+  1: "",
   1.5: "Poor",
   2: "Poor+",
   2.5: "Ok",

@@ -143,10 +143,10 @@ export const validatePhoneNumber = (phoneNumber) => {
 
 export const ratingLabels = (rating) => {
   if (rating <= 0.5) {
-    return "Useless";
+    return "";
   }
   if (rating <= 1) {
-    return "Useless+";
+    return "";
   }
   if (rating <= 1.5) {
     return "Poor";
