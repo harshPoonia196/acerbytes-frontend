@@ -26,7 +26,8 @@ const NewMultiSelectAutoCompleteInputStructure = ({
   isEdit,
   error,
   xs,
-  sm, md
+  sm, md,
+  isRequired
 }) => {
   return (
     <>
@@ -36,7 +37,7 @@ const NewMultiSelectAutoCompleteInputStructure = ({
             variant="subtitle2"
             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
           >
-            {label}
+            {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
           </Typography>
         </Box>
 

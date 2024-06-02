@@ -37,13 +37,16 @@ function UnitsPlanSection(props) {
   const getListOfUnitsWithPriceSorted = () => {
     let listOfUnitsWithPriceSorted = [];
     if (unitsPlan?.planList) {
+      console.log('i m in ')
       listOfUnitsWithPriceSorted = unitsPlan?.planList.sort(
         (a, b) => a.totalPrice - b.totalPrice
       );
     }
+    console.log(listOfUnitsWithPriceSorted)
     return listOfUnitsWithPriceSorted;
   }
 
+  console.log(unitsPlan)
 
   return (
     <Grid item xs={12} ref={refCallback} id='unitsPlan' >
@@ -90,8 +93,8 @@ function UnitsPlanSection(props) {
                 boxStyles={{ backgroundColor: "none" }}
               >
                 <Typography variant="h6">{unit?.name}</Typography>
-                <Typography variant="h4">{unit?.propertyLayout ? unit?.propertyLayout : `${unit?.width}*${unit?.length}`}</Typography>
-                <Typography variant="h3" sx={{ fontWeight: 600, marginBottom: "5px" }}>{formatPoints(unit?.area)} {unit?.areaUnit}</Typography>
+                <Typography variant="h4">{formatPoints(unit?.area)} {unit?.areaUnit}</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 600, marginBottom: "5px" }}>{unit?.propertyLayout ? unit?.propertyLayout : `${unit?.width}*${unit?.length}`}</Typography>
                 
                 
                 <Typography variant="h3" sx={{ fontWeight: 600 }}>

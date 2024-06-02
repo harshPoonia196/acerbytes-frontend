@@ -202,4 +202,9 @@ html {
 .innerhtmlFont, .innerhtmlFont p{
   font-size: 0.875rem;
   font-family: 'IBM Plex Sans', 'Roboto', 'Titillium Web', 'Inter', 'Almarai', 'Arial', 'sans-serif', 'Roboto Mono';
+  color: #333;
+}
+
+.activeLinkURL textarea{
+  font-size: 0.875rem;
 }
