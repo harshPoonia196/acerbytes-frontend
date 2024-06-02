@@ -21,7 +21,7 @@ export const listOfPages = {
   privacy: '/privacy',
   commonPropertyList: "/property-list",
   commonAllBrokers: '/all-brokers',
-  commonEnquiries: '/enquiries',
+  commonEnquiries: '/generate-real-estate-leads-growth',
   userProfile: '/user/profile',
   userShortlist: '/user/shortlist',
   userMyConsultant: '/user/my-consultants',
@@ -35,6 +35,7 @@ export const listOfPages = {
   consultantPaymentHistory: "/consultant/payment-history",
   consultantJoinNow: "/consultant/join-now",
   adminEnquiries: '/admin/enquiries',
+  adminReviewedEnquiries: '/admin/reviewed-enquiries',
   adminOrdersRequest: '/admin/orders-request',
   adminCreditStatus: '/admin/credit-status',
   adminAddProperty: '/admin/add-property',
@@ -61,7 +62,7 @@ export const CommonMenuList = [
 ];
 export const ToBeRemoved = [
   {
-    label: "Leads panel",
+    label: " Leads growth (marketing)",
     route: listOfPages.commonEnquiries,
     icon: <TableRowsIcon fontSize="small" />,
   },
@@ -146,7 +147,7 @@ export const AdminMenuList = [
   },
   {
     label: "Leads reviewed",
-    route: listOfPages.adminEnquiries,
+    route: listOfPages.adminReviewedEnquiries,
     icon: <ChecklistRtlIcon fontSize="small" />,
   },
   {
