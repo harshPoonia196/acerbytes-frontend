@@ -182,7 +182,7 @@ function EnhancedTableHead(props) {
 function RowStructure({ row, handlePropertyView, router, alignment }) {
   const user = row?.user || {};
   const userDetail = row?.userDetail || {};
-
+  console.log("rowsss", row)
   const handleBrokerProfileClick = (googleID) => {
     if (googleID) {
       router.push(listOfPages.adminUpdateConsultantProfileLinks + `/${googleID}`);

@@ -245,7 +245,7 @@ export default function Enquiries(props) {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  const { brokerBalance } =
+  const { brokerBalance, isLogged } =
     useAuth();
   const { openSnackbar } = useSnackbar();
 
@@ -344,9 +344,13 @@ export default function Enquiries(props) {
               >
                 View  my {rows?.length} leads
               </Typography>
-              <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
-                ButtonText={"View suggested leads"}
-              />
+              {
+                isLogged ?
+                  <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
+                    ButtonText={"View suggested leads"}
+                  /> : <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
+                    ButtonText={" Join as real state consultant "}
+                  />}
               {brokerBalance ?
                 <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
                   ButtonText={brokerBalance}

@@ -10,6 +10,7 @@ import {
   Grid,
   Divider,
   Dialog,
+  Tooltip
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import CallIcon from "@mui/icons-material/Call";
@@ -54,7 +55,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
     },
     currentEnquiredBroker = enquiredInfo?.find((enquiry) => enquiry?.brokerId?.[0] === broker.id || enquiry.isNew),
-    isEnquiredByCurrentBroker = currentEnquiredBroker?._id  ? true: false,
+    isEnquiredByCurrentBroker = currentEnquiredBroker?._id ? true : false,
     handleCallClick = () => {
       if (typeof handleEnquireWithBroker === 'function') {
         if (isEnquiredByCurrentBroker) {
@@ -232,9 +233,13 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           >
             <Typography variant="h6">Status: </Typography>
             {broker?.reviews?.isPrivate ? (
-              <ShieldIcon color="primary" fontSize="1rem" />
+              <Tooltip title="status review">
+                <ShieldIcon color="primary" fontSize="1rem" />
+              </Tooltip>
             ) : (
-              <RemoveModeratorIcon color="primary" fontSize="1rem" />
+              <Tooltip title="status review ">
+                <RemoveModeratorIcon color="primary" fontSize="1rem" />
+              </Tooltip>
             )}
           </Grid>
           {broker?.reviews?.ratings?.map((rating) => {

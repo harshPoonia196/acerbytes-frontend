@@ -175,6 +175,7 @@ function RowStructure({ row, handlePropertyView }) {
     setAnchorElNext(null);
   };
 
+
   return (
     <TableRow
       key={row?._id}
@@ -237,9 +238,25 @@ function RowStructure({ row, handlePropertyView }) {
           <MenuItem onClick={handleOpenUpdatePopup}>Logout</MenuItem>
         </Menu>
       </TableCell> */}
-      <TableCell>{countryCodeFormating(row.phone?.countryCode)} {row.phone?.number} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
-        <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='error' />}</TableCell>
-
+      <TableCell>
+        {row.phone?.countryCode && row.phone?.number && (
+          <a
+            href={`https://www.phonepe.com/how-to-pay/pay-by-phonepe/web/`} // Prevent default link behavior
+            onClick={(e) => {
+              e.preventDefault();
+              handlePhonePeRedirect(`${row.phone?.countryCode}${row.phone?.number}`);
+            }}
+            style={{ textDecoration: 'none' }}
+          >
+            {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}
+          </a>
+        )}
+        {row.isVerified ? (
+          <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color="success" />
+        ) : (
+          <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color="error" />
+        )}
+      </TableCell>
       {/* <TableCell>
         {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}
       </TableCell>
