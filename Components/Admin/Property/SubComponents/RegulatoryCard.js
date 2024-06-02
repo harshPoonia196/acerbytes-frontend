@@ -107,6 +107,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <NewSelectTextFieldStructure
+                        isRequired={true}
                         label="RERA approved"
                         isEdit={isEdit}
                         value={reraApproved}
@@ -127,6 +128,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                         handleChange={(e) => handleChange(e, "regulatoryClearance", "reraApproved", undefined, undefined, undefined, undefined, undefined, undefined, true)}
                     />
                     <NewInputFieldStructure
+                        isRequired={true}
                         label="RERA number"
                         variant="outlined"
                         isEdit={isEdit}
@@ -136,6 +138,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                         handleChange={(value) => handleChange(value, "regulatoryClearance", "reraNumber")}
                     />
                     <NewSelectTextFieldStructure
+                        isRequired={true}
                         label="CC"
                         isEdit={isEdit}
                         value={cc}
@@ -155,6 +158,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                         handleChange={(e) => handleChange(e, "regulatoryClearance", "cc", undefined, undefined, undefined, undefined, undefined, undefined, true)}
                     />
                     <NewSelectTextFieldStructure
+                        isRequired={true}
                         label="OC"
                         isEdit={isEdit}
                         value={oc}
@@ -174,6 +178,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                         handleChange={(e) => handleChange(e, "regulatoryClearance", "oc", undefined, undefined, undefined, undefined, undefined, undefined, true)}
                     />
                     <NewSelectTextFieldStructure
+                        isRequired={true}
                         label="Authority registration"
                         isEdit={isEdit}
                         value={authorityRegistration}
@@ -186,6 +191,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                         handleChange={(e) => handleChange(e, "regulatoryClearance", "authorityRegistration", undefined, undefined, undefined, undefined, undefined, undefined, true)}
                     />
                     <NewSelectTextFieldStructure
+                        isRequired={true}
                         label="Government Loan"
                         isEdit={isEdit}
                         value={governmentLoan}
@@ -205,6 +211,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                         handleChange={(e) => handleChange(e, "regulatoryClearance", "governmentLoan", undefined, undefined, undefined, undefined, undefined, undefined, true)}
                     />
                     <NewSelectTextFieldStructure
+                        isRequired={true}
                         label="Private Bank loan"
                         isEdit={isEdit}
                         value={privateBankLoan}
@@ -225,6 +232,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                         handleChange={(e) => handleChange(e, "regulatoryClearance", "privateBankLoan", undefined, undefined, undefined, undefined, undefined, undefined, true)}
                     />
                     <NewSelectTextFieldStructure
+                        isRequired={true}
                         label="Fresh"
                         isEdit={isEdit}
                         value={fresh}
@@ -244,6 +252,7 @@ function RegulatoryCard({ isEdit, form, handleChange, errors,selectOptions }) {
                         handleChange={(e) => handleChange(e, "regulatoryClearance", "fresh", undefined, undefined, undefined, undefined, undefined, undefined, true)}
                     />
                     <NewSelectTextFieldStructure
+                        isRequired={true}
                         label="Resale"
                         isEdit={isEdit}
                         value={resale}

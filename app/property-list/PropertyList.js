@@ -483,7 +483,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="score"
                       selected={propertyvalue === "score"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
                       Score{" "}
                       {propertyvalue === "score" &&
@@ -496,7 +496,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="price"
                       selected={propertyvalue === "price"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
                       Price{" "}
                       {propertyvalue === "price" &&
@@ -509,7 +509,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="area"
                       selected={propertyvalue === "area"}
-                      sx={{ flex: 1, justifyContent: "space-around"}}
+                      sx={{ flex: 1, justifyContent: "flex-start"}}
                     >
                       Area{" "}
                       {propertyvalue === "area" &&
@@ -522,7 +522,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="completion"
                       selected={propertyvalue === "completion"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
                       Completion{" "}
                       {propertyvalue === "completion" &&

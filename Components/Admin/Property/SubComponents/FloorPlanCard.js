@@ -411,7 +411,7 @@ function FloorPlanCard({
             columnSpacing={2}
             columns={18}
           >
-            <NewSelectTextFieldStructure
+            <NewSelectTextFieldStructure isRequired={true}
               label="Unit type"
               isEdit={isEdit}
               list={projectType}
@@ -429,7 +429,7 @@ function FloorPlanCard({
               }
             />
             {(!["commercial"].includes(form.overview.projectCategory.toLowerCase())) && (selectedItem.propertyType.toLowerCase() != "land") ?
-              <NewSelectTextFieldStructure
+              <NewSelectTextFieldStructure isRequired={true}
                 label="Unit"
                 isEdit={isEdit}
                 name="propertyLayout"
@@ -448,7 +448,7 @@ function FloorPlanCard({
               />
               :
               <>
-                <NewInputFieldStructure
+                <NewInputFieldStructure isRequired={true}
                   label="Length"
                   variant="outlined"
                   isEdit={isEdit}
@@ -466,7 +466,7 @@ function FloorPlanCard({
                     // setSelectedItem((prev) => ({ ...prev, length: e.target.value }))
                   }
                 />
-                <NewInputFieldStructure
+                <NewInputFieldStructure isRequired={true}
                   label="Width"
                   variant="outlined"
                   isEdit={isEdit}
@@ -486,7 +486,7 @@ function FloorPlanCard({
 
 
             }
-            <NewInputFieldStructure
+            <NewInputFieldStructure isRequired={true}
               label="Name #"
               variant="outlined"
               isEdit={isEdit}
@@ -503,6 +503,7 @@ function FloorPlanCard({
             />
    
             <NewUnitAreaInputField
+              isRequired={true}
               label="Area (Per Unit)"
               name="area"
               type={"number"}
@@ -526,7 +527,7 @@ function FloorPlanCard({
               handleChange={handleUnitArea}
             />
 
-            <NewInputFieldStructure
+            <NewInputFieldStructure isRequired={true}
               label={`Base Selling Price  (Per ${selectedItem.areaUnit})`}
               variant="outlined"
               type={"number"}
@@ -554,7 +555,7 @@ function FloorPlanCard({
             />
 
 
-            <NewInputFieldStructure
+            <NewInputFieldStructure isRequired={true}
               label="Total Units"
               variant="outlined"
               isEdit={isEdit}
@@ -580,7 +581,7 @@ function FloorPlanCard({
 
 
 
-            <NewInputFieldStructure
+            <NewInputFieldStructure isRequired={true}
               label="Total Price"
               variant="outlined"
               isEdit={isEdit}
@@ -600,7 +601,7 @@ function FloorPlanCard({
             // }
             />
 
-            <NewSelectTextFieldStructure
+            <NewSelectTextFieldStructure isRequired={true}
               label="Applicable Year"
               name="applicableYear"
               error={
@@ -627,7 +628,7 @@ function FloorPlanCard({
                 }))
               }
             />
-            <NewSelectTextFieldStructure
+            <NewSelectTextFieldStructure isRequired={true}
               label="Applicable Month"
               name="applicableMonth"
               error={

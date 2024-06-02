@@ -7,6 +7,8 @@ import {
   DialogTitle,
   Typography,
   Box,
+  Button,
+  Chip
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import { useRouter } from "next/navigation";
@@ -167,14 +169,14 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
               Balance: {brokerBalance} points
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignSelf: 'end', }}>
+          <Box sx={{ display: 'flex', alignSelf: { xs: 'center', sm: 'end'}}}>
             <Box sx={{ ml: 1, textAlign: 'end' }}>
               <CustomButton
                 startIcon={<AddCardIcon fontSize="small" />}
                 variant="outlined"
                 size="small"
                 onClick={() => router.push(listOfPages.consultantPaymentHistory)}
-                ButtonText={"Add"}
+                ButtonText={"Add points"}
               />
               <Typography variant="subtitle2"
                 sx={{ alignSelf: "center", color: colors.GRAY, display: { xs: 'none', sm: 'block' } }}>
@@ -186,23 +188,23 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       </DialogTitle>
       <DialogContent sx={{ minWidth: 300, }}>
         <Grid container spacing={2}>
-          <NewInputFieldStructure isFull disabled isMultiline={true} label={'Your personalized link to share'} isEdit={true} value={propertyUrl ? propertyUrl : ""}
+          <NewInputFieldStructure className="activeLinkURL" isFull disabled isMultiline={true} label={'Your personalized link to share'} isEdit={true} value={propertyUrl ? propertyUrl : ""}
           />
-          <NewInputFieldStructure label='Title (10 words)' isFull
+          <NewInputFieldStructure label='Title (10 words)' isFull variant="outlined"
             name="title"
             error={submitAttempted && !!errors.title}
             helperText={submitAttempted && errors.title ? errors.title : ''}
             value={formData.title}
             onChange={handleInputChange}
           />
-          <NewInputFieldStructure label='Description (50 words)' isFull multiline
+          <NewInputFieldStructure label='Description (50 words)' isFull multiline variant="outlined"
             name="description"
             error={submitAttempted && !!errors.description}
             helperText={submitAttempted && errors.description ? errors.description : ''}
             value={formData.description}
             onChange={handleInputChange}
           />
-          <NewSelectTextFieldStructure label='Duration (Months)' isEdit={true} variant='standard'
+          <NewSelectTextFieldStructure label='Duration (Months)' isEdit={true} full variant="outlined"
             name="duration"
             error={submitAttempted && !!errors.duration}
             helperText={submitAttempted && errors.duration ? errors.duration : ''}
@@ -213,7 +215,12 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Box sx={{ textAlign: "end" }}>
+        <Box sx={{ textAlign: "end", paddingTop: "10px", justifyContent: "space-between", display: "flex", width: "100%" }}>
+          
+          <Chip variant="contained" sx={{ marginRight: "10px", alignSelf: "flex-start"}} color="primary" label={`Balance: ${brokerBalance} points`}>
+            
+            </Chip>
+            <Box>
           <CustomButton
             startIcon={<DoneIcon fontSize="small" />}
             variant="contained"
@@ -222,10 +229,12 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
             disabled={isLoading}
             ButtonText={isLoading ? 'Activating' : 'Activate'}
           />
+          
           <Typography variant="subtitle2"
             sx={{ alignSelf: "center", color: colors.GRAY }}>
            {pointsRequired.toLocaleString()} points required
           </Typography>
+          </Box>
         </Box>
       </DialogActions>
     </Dialog >
