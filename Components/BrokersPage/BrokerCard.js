@@ -206,7 +206,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       ) : null} */}
       {/* {isLogged ? ( */}
       {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCallClick}  >
-        <IconButton sx={{ backgroundColor: "#e0e0e0" }}>
+        <IconButton sx={{ boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)" }}>
           <CallIcon fontSize="small" />
         </IconButton>
       </Box>) :

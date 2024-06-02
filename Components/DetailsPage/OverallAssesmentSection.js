@@ -6,6 +6,7 @@ import {
   Box,
   Divider,
   Chip,
+  Button
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
@@ -13,6 +14,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import EnquireNow from "./Modal/EnquireNow";
 import { useAuth } from "utills/AuthContext";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import CallIcon from "@mui/icons-material/Call";
 import { companyName } from "Components/NavBar/Links";
 
 function OverallAssesmentSection({
@@ -87,14 +89,18 @@ function OverallAssesmentSection({
               {' / 100'}
             </Typography>
           </Box>
-          <Typography variant="body2">
+          <Typography variant="body2" sx={{ margin: "10px 0"}}>
             Our authorized real estate consultants help you to take a better decide as
             an Investor / End user. Know more about Builder, Project, Layouts and Plans
           </Typography>
           
           <Box sx={{ mt: 1 }}>
-            <Chip label="Contact us now" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />}
+            <Button variant="outlined" onClick={() => { router.push('http://wa.me/+919323996997') }} startIcon={<WhatsAppIcon sx={{ position: 'relative', top: '-2px'}} />} sx={{
+                marginRight: "10px"}}>WhatsApp</Button>
+            <Button variant="contained" onClick={() => { router.push('http://wa.me/+919323996997') }} startIcon={<CallIcon />}>Get a Call back</Button>
+            {/* <Chip label="WhatsApp" className="customBtn" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />}
               sx={{
+                marginRight: "10px"
                 // background: colors.GRADIENT,
                 // color: colors?.BLACK,
                 // '& .MuiChip-icon': {
@@ -107,19 +113,21 @@ function OverallAssesmentSection({
                 //   background: colors.GRADIENT,
                 // },
 
-                animation: 'floatAnimation 2s ease-in-out infinite', // Apply floating animation
-                '@keyframes floatAnimation': {
-                  '0%': {
-                    transform: 'translateY(0)',
-                  },
-                  '50%': {
-                    transform: 'translateY(-5px)', // Adjust the float height
-                  },
-                  '100%': {
-                    transform: 'translateY(0)',
-                  },
-                },
+                // animation: 'floatAnimation 2s ease-in-out infinite', // Apply floating animation
+                // '@keyframes floatAnimation': {
+                //   '0%': {
+                //     transform: 'translateY(0)',
+                //   },
+                //   '50%': {
+                //     transform: 'translateY(-5px)', // Adjust the float height
+                //   },
+                //   '100%': {
+                //     transform: 'translateY(0)',
+                //   },
+                // },
               }} />
+              <Chip label="Get a Call back" className="customBtn" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<CallIcon fontSize="small" />}
+              /> */}
             {userDetails?.role === "user" && (
               <Chip
                 sx={{ ml: 2 }}

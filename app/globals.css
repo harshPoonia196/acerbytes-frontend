@@ -178,3 +178,28 @@ html {
   font-weight: 500;
   color: #878787;
 }
+
+@media only screen and (min-width: 1199px) {
+  .propertyTabs .MuiTabs-scrollButtons{
+    display: none;
+  }
+  .detailFab{
+    z-index: 2;
+  }
+  .consultantFooter{
+    z-index: 0 !important;
+  }
+}
+
+.openArrow{
+  transform: rotate(180deg);
+}
+
+.customBtn{
+  font-size: 17px !important;
+}
+
+.innerhtmlFont, .innerhtmlFont p{
+  font-size: 0.875rem;
+  font-family: 'IBM Plex Sans', 'Roboto', 'Titillium Web', 'Inter', 'Almarai', 'Arial', 'sans-serif', 'Roboto Mono';
+}

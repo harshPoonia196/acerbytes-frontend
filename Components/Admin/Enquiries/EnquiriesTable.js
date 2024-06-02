@@ -301,7 +301,7 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
     { openSnackbar } = useSnackbar(),
 
     { data, isLoading, error, refetch } = useQueries(
-      [search, reactQueryKey.broker.myLeads],
+      [reactQueryKey.broker.myLeads],
       async () => {
         try {
           const response = await getLeads({ limit: rowsPerPage, page, search, status: alignment });
@@ -367,7 +367,7 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
       refetch();
     }
     firstLoad.current = false;
-  }, [rowsPerPage, page, alignment]);
+  }, [rowsPerPage, page, alignment, search]);
 
   const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;

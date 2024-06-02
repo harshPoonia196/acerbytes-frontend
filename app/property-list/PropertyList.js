@@ -476,8 +476,9 @@ function PropertyList({ params }) {
                     exclusive
                     onChange={handleChangeData}
                     aria-label="Platform"
-                    sx={{ display: "flex" }}
+                    sx={{ display: "flex"}}
                     size="small"
+                    orientation="vertical"
                   >
                     <ToggleButton
                       value="score"
@@ -508,7 +509,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="area"
                       selected={propertyvalue === "area"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "space-around"}}
                     >
                       Area{" "}
                       {propertyvalue === "area" &&
