@@ -119,6 +119,7 @@ function UserDetailsAd({
                     name="half-rating"
                     {...AllPropertyData?.brokerRating?.rating}
                     precision={0.5}
+                    defaultValue={AllPropertyData?.brokerRating?.rating}
                     value={AllPropertyData?.brokerRating?.rating}
                     readOnly
                     size="small"
@@ -150,6 +151,7 @@ function UserDetailsAd({
                     {...AllPropertyData?.brokerRating?.rating}
                     precision={0.5}
                     value={AllPropertyData?.brokerRating?.rating}
+                    defaultValue={AllPropertyData?.brokerRating?.rating}
                     readOnly
                     size="small"
                     sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
