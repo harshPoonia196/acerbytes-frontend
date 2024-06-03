@@ -19,6 +19,7 @@ import { useAuth } from "utills/AuthContext";
 import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
 import { getColorForProgressBar, shortPriceFormatter } from "utills/CommonFunction";
 import Image from "next/image";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 function PropertyCard(props) {
   const { userDetails } = useAuth();
@@ -64,7 +65,7 @@ function PropertyCard(props) {
     <Card>
       <CardActionArea sx={{ p: 2 }}>
         <Grid container spacing={1} columns={16}>
-          <Grid item xs={16} sm={8} lg={4.5} sx={{ display: 'flex' }}>
+          <Grid item xs={16} sm={8} lg={5} sx={{ display: 'flex' }}>
             <Box
               sx={{ display: "flex", flex: 1 }}
               onClick={() => router.push(`/details/${propertyUrl}`)}
@@ -80,7 +81,7 @@ function PropertyCard(props) {
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
-                  {propertyDetails?.location?.city}&#183;PRS&#183;{propertyDetails?.property_id}
+                  <LocationOnIcon sx={{ fontSize: "12px", position: "relative", top: "1px"}}/> {propertyDetails?.location?.city}&#183;PRS&#183;{propertyDetails?.property_id}
                 </Typography>
                 <Typography variant="subtitle2" sx={{ textTransform: 'capitalize' }}>
                   {propertyDetails?.overview?.builder + ' ' + propertyDetails?.overview?.projectName}
@@ -108,11 +109,11 @@ function PropertyCard(props) {
             <Typography variant="caption">
               {propertyDetails?.layout?.totalUnits} Units
             </Typography>
-            <Typography variant="subtitle2">{`${propertyDetails?.layout?.area
+            {/* <Typography variant="subtitle2">{`${propertyDetails?.layout?.area
               } ${propertyDetails?.layout?.areaUnit
                 ? propertyDetails?.layout?.areaUnit
                 : ""
-              }`}</Typography>
+              }`}</Typography> */}
           </Grid>
           <Grid item sm={1.5} sx={{ display: { xs: 'none', sm: 'block', lg: 'none' }, textAlign: 'end' }}>
             <CircularWithValueLabel progress={propertyDetails?.overallAssessment?.score
@@ -152,7 +153,7 @@ function PropertyCard(props) {
             </Typography>
           </Grid>
 
-          <Grid item xs={8} sm={4} lg={2}
+          <Grid item xs={8} sm={4} lg={1.5}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
