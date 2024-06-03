@@ -18,6 +18,7 @@ import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { shortPriceFormatter, capitalLizeName } from "utills/CommonFunction";
 import DOMPurify from 'dompurify';
+import { memo } from "react";
 
 
 function MarketingSection(props) {
@@ -271,4 +272,4 @@ function MarketingSection(props) {
   );
 }
 
-export default MarketingSection;
+export default memo(MarketingSection);
