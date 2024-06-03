@@ -11,6 +11,7 @@ import { useAuth } from 'utills/AuthContext';
 import { useSnackbar } from 'utills/SnackbarContext';
 import { ToasterMessages } from 'utills/Constants';
 import colors from 'styles/theme/colors';
+import { countryCodeFormating } from 'utills/utills';
 
 
 function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, SinglePropertyId }) {
@@ -23,8 +24,10 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
         : `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}`;
 
     const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
-        ? `${brokerData.phone.countryCode}-${brokerData.phone.number}`
-        : `${userDetails?.phone?.countryCode}-${userDetails?.phone?.number}`;
+        ? `${countryCodeFormating(brokerData.phone.countryCode)} ${
+            brokerData.phone.number
+          }`
+        : `${countryCodeFormating(userDetails?.phone?.countryCode)}-${userDetails?.phone?.number}`;
 
         const constructPropertyUrl = (property) => {
             const overview = property?.overview;
@@ -43,7 +46,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
     
             const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
     
-            return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${name.replace(/\s+/g, '-')}-${phoneNumber.replace(/\s+/g, '-')}-${brokerId}`;
+            return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${brokerId}`;
         };
     
     const propertyUrl = constructPropertyUrl(propertyData)
@@ -103,7 +106,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                     
                                     <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
                                     <a href={`tel:${phoneNumber}`}>
-                                                <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' />
+                                                <Chip icon={<PhoneIcon />} label={phoneNumber} size='small' />
                                             </a> {name}
                                     </Typography>
                                     <Typography variant='h6' sx={{ mt: 1 }}>
@@ -123,7 +126,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                 </Typography>
                                                     <Typography variant='subtitle2'>
                                                         <a href={`tel:${phoneNumber}`}>
-                                                            <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' />
+                                                            <Chip icon={<PhoneIcon />} label={phoneNumber} size='small' />
                                                         </a>
                                                     </Typography>
                                                     <Typography variant='subtitle2' sx={{ mt: 1 }}>
