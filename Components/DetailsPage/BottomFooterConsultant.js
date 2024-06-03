@@ -119,8 +119,10 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                     </Typography>
                                     <Rating
                                         name="half-rating"
+                                        {...propertyData?.brokerDetais?.rating}
                                         precision={0.5}
                                         value={propertyData?.brokerDetais?.rating}
+                                        defaultValue={propertyData?.brokerDetais?.rating}
                                         size="small"
                                         readOnly
                                         sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
@@ -149,8 +151,10 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                     </Typography>
                                                     <Rating
                                                         name="half-rating"
+                                                        {...propertyData?.brokerDetais?.rating}
                                                         precision={0.5}
                                                         value={propertyData?.brokerDetais?.rating}
+                                                        defaultValue={propertyData?.brokerDetais?.rating}
                                                         size="small"
                                                         readOnly
                                                         sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
