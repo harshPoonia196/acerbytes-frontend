@@ -865,7 +865,6 @@ function AddProperty() {
     unitsPlanValue,
     score
   ) => {
-    console.log(" ===========>");
     if (
       (firstKeyName === "location" &&
         (secondKeyName === "city" ||
