@@ -34,7 +34,6 @@ export const getToken = () => {
   if (typeof window !== "undefined") {
     return localStorage.getItem("token");
   }
-  return "";
 };
 
 export const getGoogleId = () => {
@@ -45,8 +44,21 @@ export const getGoogleId = () => {
   return "";
 };
 
-const publicRoutes = ["/", "/login", '/property-list', '/all-brokers', '/enquiries', '/details/:id', "/consultant/make-payment",
-  "/page-not-found", "/terms-and-condition", "/privacy", "/consultant/join-now", "/property-list/:location", "/:projectdetails"];
+const publicRoutes = [
+  "/",
+  "/login",
+  "/property-list",
+  "/all-brokers",
+  "/enquiries",
+  "/details/:id",
+  "/consultant/make-payment",
+  "/page-not-found",
+  "/terms-and-condition",
+  "/privacy",
+  "/consultant/join-now",
+  "/property-list/:location",
+  "/:projectdetails",
+];
 
 const scopes = {
   user: {
@@ -55,7 +67,7 @@ const scopes = {
 };
 
 export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
-  const isPublicRoute = publicRoutes.some(publicRoute => {
+  const isPublicRoute = publicRoutes.some((publicRoute) => {
     if (publicRoute.includes("/:")) {
       const parts = publicRoute.split("/:");
       const baseRoute = parts[0];
@@ -74,11 +86,43 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
 
   if (isLogged) {
     const urls = [
-      { baseUrl: '/admin', access_roles: [{ sub_urls: [], role: 'admin', home: '/', is_public_restric: false }, { sub_urls: [], role: 'superAdmin', home: '/', is_public_restric: false }, { sub_urls: ['enquiries', 'updateProfile'], role: 'customerSupport', home: '/admin/enquiries', is_public_restric: true }, { sub_urls: ['manage-consultant', 'updateConsultantProfile'], role: 'sales', home: '/admin/manage-consultant', is_public_restric: true }] },
-      { baseUrl: '/user', access_roles: [{ sub_urls: [], role: 'user', home: '/', is_public_restric: false }] },
-      { baseUrl: '/consultant', access_roles: [{ sub_urls: [], role: 'broker', home: '/', is_public_restric: false }] }
-    ]
-
+      {
+        baseUrl: "/admin",
+        access_roles: [
+          { sub_urls: [], role: "admin", home: "/", is_public_restric: false },
+          {
+            sub_urls: [],
+            role: "superAdmin",
+            home: "/",
+            is_public_restric: false,
+          },
+          {
+            sub_urls: ["enquiries", "updateProfile"],
+            role: "customerSupport",
+            home: "/admin/enquiries",
+            is_public_restric: true,
+          },
+          {
+            sub_urls: ["manage-consultant", "updateConsultantProfile"],
+            role: "sales",
+            home: "/admin/manage-consultant",
+            is_public_restric: true,
+          },
+        ],
+      },
+      {
+        baseUrl: "/user",
+        access_roles: [
+          { sub_urls: [], role: "user", home: "/", is_public_restric: false },
+        ],
+      },
+      {
+        baseUrl: "/consultant",
+        access_roles: [
+          { sub_urls: [], role: "broker", home: "/", is_public_restric: false },
+        ],
+      },
+    ];
 
     function isHasSubUrl(subUrl) {
       return url.includes(subUrl);
@@ -87,15 +131,20 @@ export const checkUrlAccess = (isLogged, url, redirectUser, role) => {
     /* Returing to baseurl if user has not access */
     for (let i = 0, len = urls.length; i < len; i++) {
       const { baseUrl, access_roles = [] } = urls[i],
-        data = access_roles.find(item => item.role === role);
+        data = access_roles.find((item) => item.role === role);
       if (data) {
-        const { sub_urls = [], home = '', is_public_restric = false, role: user_role } = data;
+        const {
+          sub_urls = [],
+          home = "",
+          is_public_restric = false,
+          role: user_role,
+        } = data;
         if (url.includes(baseUrl)) {
           if (sub_urls.length) {
             if (!sub_urls.some(isHasSubUrl)) {
               redirectUser(home);
-            };
-          };
+            }
+          }
         } else {
           if (isPublicRoute) {
             is_public_restric ? redirectUser(home) : redirectUser(url);
@@ -137,12 +186,12 @@ export const validateEmail = (email) => {
   );
 };
 export const validatePhoneNumber = (phoneNumber) => {
-  console.log(phoneNumber, "valid")
-  return (phoneNumber?.number?.toString().length === 10);
-}
+  console.log(phoneNumber, "valid");
+  return phoneNumber?.number?.toString().length === 10;
+};
 
 export const ratingLabels = (rating) => {
-  let value = '';
+  let value = "";
 
   if (rating > 0 && rating <= 1) {
     value = "Poor";
@@ -174,10 +223,10 @@ export const maskPhoneNumber = (phoneNumber) => {
   }
 
   // Replace characters from index 2 to 9 with asterisks
-  const maskedDigits = phoneNumber.slice(2, 9).replace(/\d/g, '*');
+  const maskedDigits = phoneNumber.slice(2, 9).replace(/\d/g, "*");
 
   // Concatenate the first two digits and masked digits
   const maskedNumber = phoneNumber.slice(0, 2) + maskedDigits;
 
   return maskedNumber;
-}
+};
