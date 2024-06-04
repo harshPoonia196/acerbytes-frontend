@@ -352,7 +352,6 @@ function AddProperty() {
       let res = await getAllOptions();
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data)
-        console.log(res.data.data, 'datt')
         let temp = {}
         const filteredData = res.data.data.filter(item => item.name !== "Assesment" && item.name !== "Amenities");
         const transformFiltered = transformDocuments(filteredData)

@@ -181,3 +181,24 @@ export const maskPhoneNumber = (phoneNumber) => {
 
   return maskedNumber;
 }
+
+
+export const constructPropertyUrl = (property) => {
+  const overview = property?.overview;
+  const location = property?.location;
+  const brokerId = property?.propertyBroker?.[0]?._id ?? 'defaultBrokerId'
+
+  const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+  let projectType;
+  if (overview?.projectType?.length > 0) {
+      projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+  }
+  const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
+  const sector = (location?.sector.trim() ?? 'sector').replace(/\s+/g, '-');
+  const area = (location?.area.trim() ?? 'area').replace(/\s+/g, '-');
+  const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+
+  const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
+
+  return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${brokerId}`;
+};
