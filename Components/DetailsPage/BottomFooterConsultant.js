@@ -12,7 +12,6 @@ import { useSnackbar } from 'utills/SnackbarContext';
 import { ToasterMessages } from 'utills/Constants';
 import colors from 'styles/theme/colors';
 import ShareIcon from '@mui/icons-material/Share';
-import LinkIcon from '@mui/icons-material/Link';
 import { countryCodeFormating } from 'utills/utills';
 
 
@@ -238,8 +237,8 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                         }}
                                     >
 
-                                        <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}><DoneIcon sx={{ fontSize: "20px"}}/> {propertyData?.isActiveAd ? "Extend" : "Activate link"} </MenuItem>
-                                        <MenuItem onClick={() => copyToClipboard(propertyUrl)}><ShareIcon sx={{ fontSize: "19px"}} /> Share</MenuItem>
+                                        <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}><AddLinkIcon sx={{ fontSize: "20px", marginRight: "10px"}}/> {propertyData?.isActiveAd ? "Extend" : "Activate link"} </MenuItem>
+                                        <MenuItem onClick={() => copyToClipboard(propertyUrl)}><ShareIcon sx={{ fontSize: "18px", marginRight: "10px"}} /> Share</MenuItem>
                                     </Menu>
                                 </Box>
                             
