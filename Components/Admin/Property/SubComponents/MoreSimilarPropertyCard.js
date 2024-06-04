@@ -7,14 +7,15 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import { useAuth } from "utills/AuthContext";
 
 function MoreSimilarPropertyCard({ propertyData }) {
     const router = useRouter();
+    const { userDetails } = useAuth();
     const { data: Alldata, location: locationData, overview: overviewData } = propertyData;
     
     return (
-        <Grid item xs={12} sx={{ paddingBottom: {xs: "74px", sm: "106px"}}}> 
+        <Grid item xs={12} sx={{ paddingBottom: {xs: `${userDetails?.role !== "broker" ? "6px": "62px"}`, sm: `${userDetails?.role !== "broker" ? "6px": "106px"}`}}}> 
             <Card>
             <Accordion>
             <AccordionSummary

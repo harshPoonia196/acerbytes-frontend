@@ -191,12 +191,12 @@ function UserDetailsAd({
                 display: { xs: "none", md: "block" },
               }}
             >
-              {/* <Chip
+              <Chip
                 icon={showContact ? null : <PhoneIcon />}
                 label={showContact ? phoneNumber : "View Contact"}
                 size="small"
                 onClick={handleViewContactClick}
-              /> */}
+              />
               {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
                 Call First
               </Button>

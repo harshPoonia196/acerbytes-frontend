@@ -208,3 +208,7 @@ html {
 .activeLinkURL textarea{
   font-size: 0.875rem;
 }
+
+.MuiAlert-message{
+  padding: 12px 0px 10px 0;
+}
