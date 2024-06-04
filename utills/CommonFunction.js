@@ -3,7 +3,7 @@ import moment from "moment";
 import { ROLES } from "./Constants";
 
 function capitalLizeName(text) {
-  if (text.length >= 0) {
+  if (text && text.length >= 0) {
     let words = text?.split(" ");
     // Capitalize the first letter of each word
     let formattedName = words?.map(
