@@ -218,5 +218,5 @@ html {
 }
 
 .MuiTableCell-head{
-  text-transform: capitalize;
+  text-transform: capitalize !important;
 }
