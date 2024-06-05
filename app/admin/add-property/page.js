@@ -200,7 +200,6 @@ function AddProperty() {
   const [amentiesStarsScore, setAmentiesStarScore] = useState([]);
   const [amentiesStars, setAmentiesStar] = useState([]);
   const [locationStars, setLocationStars] = useState([]);
-  const [tagProjectName, setTagProjectName] = useState("");
   const [tagField, setTagField] = useState({
     builder: "",
     projectName: "",
@@ -471,11 +470,6 @@ function AddProperty() {
           return sum;
         };
 
-        let amentiesSatrCount = sumItems(
-          { sectionScore: "", pointsGained: 0, ...amenities },
-          ["sectionScore", "pointsGained"]
-        );
-
         setForm((prevForm) => ({
           ...prevForm,
           location: {
@@ -484,7 +478,6 @@ function AddProperty() {
           },
           amenitiesData: { sectionScore: 0, pointsGained: 0, ...amenities },
         }));
-        // setSelectOption({ ...temp })
         setLoading(false);
       }
     } catch (error) {

@@ -120,7 +120,7 @@ function PropertyCard(props) {
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
-                  {propertyDetails?.location?.city}&#183;PRS&#183;
+                  {propertyDetails?.location?.city}{" "}
                   {propertyDetails?.property_id}
                 </Typography>
                 <Typography
@@ -238,6 +238,7 @@ function PropertyCard(props) {
                 ? `${layoutCount} layout`
                 : `${layoutCount} layouts`}
             </Typography>
+            {/* {console.log("layoutData ===========>", layoutData)} */}
             <Typography variant="subtitle2">{layoutData.join(", ")}</Typography>
           </Grid>
 

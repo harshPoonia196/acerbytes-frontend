@@ -106,7 +106,6 @@ function PropertyList({ params }) {
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
-        console.log(" res.data?.data ===========>", res.data?.data);
         setCount(res.totalCount);
       }
     } catch (error) {
@@ -456,7 +455,6 @@ function PropertyList({ params }) {
     <>
       <>
         {(isLoading?.loader1 || isLoading?.loader2) && <Loader />}
-        {}
         <Container maxWidth="lg" sx={{ height: "100%" }}>
           <Box sx={{ display: "flex", gap: 2 }}>
             <Card
