@@ -10,6 +10,7 @@ import { debounce } from "lodash";
 import { DEBOUNCE_TIMER } from 'utills/Constants';
 import NoDataCard from 'Components/CommonLayouts/CommonDataCard';
 import SelectTextFields from 'Components/CommonLayouts/SelectTextFields';
+import { Padding } from '@mui/icons-material';
 
 const page = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -131,7 +132,7 @@ const page = () => {
           }
           )}
         </Grid>
-        {!brokersList?.rows.length ? <NoDataCard title={"No data found"} /> : null}
+        {!brokersList?.rows.length ? <div sx={{ PaddingTop: "16px" }}><NoDataCard title={"No data found"} /></div> : null}
       </Container>
     </>
   )

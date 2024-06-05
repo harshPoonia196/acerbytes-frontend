@@ -88,6 +88,10 @@ input[type="number"] {
     height: auto;
     max-height: 280px;
   }
+  .gridUnit .MuiGrid-item{
+   max-width: 100%;
+   flex-basis: 100%; 
+  }
 }
 
 .react-swipeable-view-container>div {
@@ -211,4 +215,8 @@ html {
 
 .MuiAlert-message{
   padding: 12px 0px 10px 0;
+}
+
+.MuiTableCell-head{
+  text-transform: capitalize;
 }
