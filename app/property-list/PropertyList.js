@@ -460,7 +460,7 @@ function PropertyList({ params }) {
         }
         <Container maxWidth="lg" sx={{ height: "100%" }}>
           <Box sx={{ display: "flex", gap: 2 }}>
-            <Card sx={{ display: { xs: 'none', md: 'block' }, p: 2, width: 220, height: "max-content", overflowY: "scroll" }}>
+            <Card sx={{ display: { xs: 'none', md: 'block' }, pl: 2, pt:2, pr:1, width: 220, height: "max-content", overflowY: "scroll" }}>
               <Grid container spacing={2}>
                 {getFilterFields()}
                 <Grid item xs={12} sx={{ alignSelf: "center" }}>
