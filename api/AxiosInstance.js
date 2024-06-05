@@ -1,16 +1,14 @@
-import axios from 'axios';
-import { getToken, logoutUser } from 'utills/utills';
-
+import axios from "axios";
+import { getToken } from "utills/utills";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  timeout: 5000, 
+  timeout: 5000,
   headers: {
-    'Content-Type': 'application/json',
-    "Authorization": `Bearer ${getToken()}`
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getToken()}`,
   },
 });
-
 
 axiosInstance.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${getToken()}`;

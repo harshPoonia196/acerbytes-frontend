@@ -24,8 +24,8 @@ const NewAutoCompleteInputStructure = ({
       <Box>
         <Typography
           variant='subtitle2'
-          sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
-        >
+          sx={{ alignSelf: "center", flex: 1 }}>
+            {/* ,color: colors.GRAY */}
           {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
       </Box>
