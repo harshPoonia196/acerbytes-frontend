@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
