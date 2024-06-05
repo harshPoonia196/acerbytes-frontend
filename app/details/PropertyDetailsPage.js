@@ -94,8 +94,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
-
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
     () => (callback ? throttle(callback, delay) : noop),
@@ -146,12 +144,12 @@ const PropertyDetailsPage = ({ params }) => {
     try {
       setLoading(true);
       let res;
-      if(token){
-         res = await detailsProperty(
+      if (token) {
+        res = await detailsProperty(
           `${detailsPropertyId}?brokerId=${userInfo?._id}`
         );
-      }else{
-         res = await detailsProperty(detailsPropertyId);
+      } else {
+        res = await detailsProperty(detailsPropertyId);
       }
       if (res.status === 200) {
         const data = {
@@ -161,11 +159,11 @@ const PropertyDetailsPage = ({ params }) => {
         setPropertyData({ ...data });
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -174,8 +172,8 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   const handleCloseConsultantDetails = () => {
-    setConsultantsDialog(false)
-  }
+    setConsultantsDialog(false);
+  };
 
   const handlefavClick = async () => {
     const adData = {
@@ -189,8 +187,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error generating fav Property",
+          error?.message ||
+          "Error generating fav Property",
         "error"
       );
     } finally {
@@ -260,7 +258,9 @@ const PropertyDetailsPage = ({ params }) => {
       setLoading(true);
       if (userDetails?._id) {
         let res = await checkEnquiryOnPropertyLink(
-          `${detailsPropertyId}${userDetails?._id ? `?userId=${userDetails?._id}` : ""}`
+          `${detailsPropertyId}${
+            userDetails?._id ? `?userId=${userDetails?._id}` : ""
+          }`
         );
         if (res.status === 200) {
           if (res.data?.data) {
@@ -271,14 +271,13 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
       setLoading(false);
     }
-
   };
 
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -315,7 +314,7 @@ const PropertyDetailsPage = ({ params }) => {
         leadId: leadId,
         userId: userDetails?._id,
         adId: "",
-        propertyId: detailsPropertyId
+        propertyId: detailsPropertyId,
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -328,14 +327,13 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
     }
   };
-
 
   useEffect(() => {
     if (getItem(enquiryFormOpen)) {
@@ -359,7 +357,7 @@ const PropertyDetailsPage = ({ params }) => {
         ...data,
         propertyId: detailsPropertyId,
         propertyLink: `details/${params.id}`,
-        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined
+        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined,
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -376,8 +374,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -390,7 +388,7 @@ const PropertyDetailsPage = ({ params }) => {
         ...data,
         propertyId: detailsPropertyId,
         propertyLink: `details/${params.id}`,
-        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined
+        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined,
       });
 
       if (enquireWithBrokerId) {
@@ -420,8 +418,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -438,8 +436,8 @@ const PropertyDetailsPage = ({ params }) => {
         otp: data.otp,
         phone: {
           countryCode: data.countryCode,
-          number: data.number
-        }
+          number: data.number,
+        },
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -456,8 +454,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -517,7 +515,7 @@ const PropertyDetailsPage = ({ params }) => {
   const handleEnquireWithBroker = (brokerId) => {
     handleOpenEnquiryForm();
     setEnquireWithBrokerId(brokerId);
-  }
+  };
 
   const classes = useStyles();
 
@@ -570,9 +568,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -644,7 +642,7 @@ const PropertyDetailsPage = ({ params }) => {
         handleOpen={handleOpenPersonalizeAds}
         handleClose={handleClosePersonalizeAds}
       />
-       {/* {userDetails?.role === "broker" &&
+      {/* {userDetails?.role === "broker" &&
       (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
         <AdsSection
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
@@ -998,13 +996,16 @@ const PropertyDetailsPage = ({ params }) => {
                 }}
               />
               <BottomFooterConsultant
-                SinglePropertyId={propertyData?.propertyBroker ? propertyData?.propertyBroker[0] : ""}
+                SinglePropertyId={
+                  propertyData?.propertyBroker
+                    ? propertyData?.propertyBroker[0]
+                    : ""
+                }
                 handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
                 propertyData={propertyData}
               />
             </>
           )}
-         
         </Container>
       </Box>
     </>
