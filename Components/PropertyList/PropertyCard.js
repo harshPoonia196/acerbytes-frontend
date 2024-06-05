@@ -95,6 +95,10 @@ function PropertyCard(props) {
     ];
   }, [propertyDetails]);
 
+  const numbers = layoutData.map((item) => item.split(" ")[0]).sort();
+  const suffix = layoutData[0].split(" ").slice(1).join(" ");
+
+  const formattedBHK = `${numbers.join(", ")} ${suffix}`;
   return (
     <Card>
       <CardActionArea sx={{ p: 2 }}>
@@ -238,8 +242,8 @@ function PropertyCard(props) {
                 ? `${layoutCount} layout`
                 : `${layoutCount} layouts`}
             </Typography>
-            {/* {console.log("layoutData ===========>", layoutData)} */}
-            <Typography variant="subtitle2">{layoutData.join(", ")}</Typography>
+            <Typography variant="subtitle2">{formattedBHK}</Typography>
+            {/* <Typography variant="subtitle2">{layoutData.split(" ")}</Typography> */}
           </Grid>
 
           <Grid
