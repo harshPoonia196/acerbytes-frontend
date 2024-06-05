@@ -15,7 +15,6 @@ export const getAllAdminProperty = (queryParams) => {
   );
 };
 
-
 export const getAllPropertyByAdmin = (queryParams) => {
   return axiosInstance.get(
     `property/admin/getProperties` + (queryParams ? `?${queryParams}` : "")
@@ -28,7 +27,7 @@ export const getCities = () => {
 
 export const deleteProperty = (propertyId) => {
   return axiosInstance.delete(`property/delete/${propertyId}`);
-}
+};
 
 export const detailsProperty = (detailsPropertyId) => {
   return axiosInstance.get(`property/getProperty/${detailsPropertyId}`);
@@ -68,29 +67,31 @@ export const getAllOptionData = (data) => {
 };
 
 export const getAllOptions = () => {
-  return axiosInstance.get("/category/get-all-options")
-}
-
-export const getLocations = () => {
-  return axiosInstance.get(`/category/get-locations`)
-}
-
-export const propertyByCity = () => {
-  return axiosInstance.get(`/category/propertyByCity`)
-}
-
-export const managePublishData = (propertyId, publishStatus) => {
-  return axiosInstance.put(`/property/managePublish/${propertyId}/${publishStatus}`);
+  return axiosInstance.get("/category/get-all-options");
 };
 
-export const getBrokersList = (search, city = 'all') => {
+export const getLocations = () => {
+  return axiosInstance.get(`/category/get-locations`);
+};
+
+export const propertyByCity = () => {
+  return axiosInstance.get(`/category/propertyByCity`);
+};
+
+export const managePublishData = (propertyId, publishStatus) => {
+  return axiosInstance.put(
+    `/property/managePublish/${propertyId}/${publishStatus}`
+  );
+};
+
+export const getBrokersList = (search, city = "all") => {
   let query = `search=${search || ""}&&`;
 
-  if (city != 'all') {
-    query += `city=${city}&&`
+  if (city != "all") {
+    query += `city=${city}&&`;
   }
 
-  return axiosInstance.get(`/property/brokerList${query ? '?' + query : ''}`);
+  return axiosInstance.get(`/property/brokerList${query ? "?" + query : ""}`);
 };
 
 export const getBrokerCityList = () => {
@@ -102,7 +103,10 @@ export const getReviews = (id) => {
 };
 
 export const PropertyPlanPoints = (detailsPropertyId, data) => {
-  return axiosInstance.put(`/property/consultant-update/${detailsPropertyId}`, data);
+  return axiosInstance.put(
+    `/property/consultant-update/${detailsPropertyId}`,
+    data
+  );
 };
 
 export const activedViewCount = (id) => {
