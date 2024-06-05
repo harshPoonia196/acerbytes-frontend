@@ -64,7 +64,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { clearItem, getItem, getLoggedInUser } from "utills/utills";
+import { clearItem, constructPropertyUrl, getItem, getLoggedInUser } from "utills/utills";
 import {
   isEnquired,
   submitEnquiry,
@@ -142,7 +142,7 @@ const PropertyDetailsPage = ({ params }) => {
     return a;
   };
 
-  const detailsGetProperty = async () => {
+  const detailsGetProperty = async (isNavigate = false) => {
     try {
       setLoading(true);
       let res;
@@ -159,6 +159,10 @@ const PropertyDetailsPage = ({ params }) => {
           consultants: shuffle(res.data?.data?.consultants),
         };
         setPropertyData({ ...data });
+        if (isNavigate) {
+          const url = constructPropertyUrl({ ...data });
+          router.push(url);
+        }
       }
     } catch (error) {
       console.log(error.message)

@@ -37,16 +37,13 @@ function UnitsPlanSection(props) {
   const getListOfUnitsWithPriceSorted = () => {
     let listOfUnitsWithPriceSorted = [];
     if (unitsPlan?.planList) {
-      console.log('i m in ')
       listOfUnitsWithPriceSorted = unitsPlan?.planList.sort(
         (a, b) => a.totalPrice - b.totalPrice
       );
     }
-    console.log(listOfUnitsWithPriceSorted)
     return listOfUnitsWithPriceSorted;
   }
 
-  console.log(unitsPlan)
 
   return (
     <Grid item xs={12} ref={refCallback} id='unitsPlan' >

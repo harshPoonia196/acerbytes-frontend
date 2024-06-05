@@ -114,7 +114,7 @@ function ActivateAdsPopup({ open, handleClose, SinglePropertyId, detailsGetPrope
       const response = await activeadCreate(adData);
       if (response.status == 200) {
         showToaterMessages(response?.data.message, "success");
-        detailsGetProperty()
+        detailsGetProperty(true)
         handleClose()
         getBrokerpointBalance()
       }
