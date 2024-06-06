@@ -276,7 +276,7 @@ const EnquiryCard = ({ enquiry }) => {
           title={enquiry.title}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h5" component="div" sx={{ fontWeight: "bold"}}>
             {enquiry.title}
           </Typography>
           <Typography variant="body1" color="text.secondary">

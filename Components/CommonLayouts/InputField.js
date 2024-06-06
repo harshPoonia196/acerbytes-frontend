@@ -45,6 +45,7 @@ const InputField = ({
         InputLabelProps={{ shrink: (isAmount || value) && true }}
         InputProps={{
           startAdornment: isAmount && <InputAdornment position="start">₹</InputAdornment>,
+          startAdornment: isPoint && <InputAdornment position="start"></InputAdornment>,
         }}
         {...props}
       />

@@ -29,8 +29,8 @@ function Enquiries() {
     <>
       <CustomAdminBreadScrumbs text='List of leads' />
       <InfoBox dataList={[{ label: 'Leads', value: counts.leadCounts }, { label: 'Pending', value: counts.pending }, { label: 'Reviewed', value: counts.reviewed }]} />
-      <Container>
-        <Card sx={{ mb: 2 }}>
+      <Container sx={{ paddingBottom: "0px !important"}}>
+        <Card sx={{ mb: 0 }}>
           <ToggleButtonGroup
             color="primary"
             value={alignment}

@@ -36,6 +36,7 @@ const NewUnitAreaInputField = ({
   isPrice,
   unitValue,
   units,
+  isRequired,
   showInfo = false,
   infoText = "Info",
   helperText = "",
@@ -51,7 +52,7 @@ const NewUnitAreaInputField = ({
           variant="subtitle2"
           sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
         >
-          {label}
+          {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
         </Typography>
         {showInfo && <span><Tooltip title={infoText}>
           <InfoIcon sx={{ fontSize: '1rem', cursor: "pointer", ml: 1, color: colors.GRAY }} />

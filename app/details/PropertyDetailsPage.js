@@ -64,7 +64,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { clearItem, getItem, getLoggedInUser } from "utills/utills";
+import { clearItem, constructPropertyUrl, getItem, getLoggedInUser } from "utills/utills";
 import {
   isEnquired,
   submitEnquiry,
@@ -93,8 +93,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -142,16 +141,16 @@ const PropertyDetailsPage = ({ params }) => {
     return a;
   };
 
-  const detailsGetProperty = async () => {
+  const detailsGetProperty = async (isNavigate = false) => {
     try {
       setLoading(true);
       let res;
-      if(token){
-         res = await detailsProperty(
+      if (token) {
+        res = await detailsProperty(
           `${detailsPropertyId}?brokerId=${userInfo?._id}`
         );
-      }else{
-         res = await detailsProperty(detailsPropertyId);
+      } else {
+        res = await detailsProperty(detailsPropertyId);
       }
       if (res.status === 200) {
         const data = {
@@ -159,13 +158,16 @@ const PropertyDetailsPage = ({ params }) => {
           consultants: shuffle(res.data?.data?.consultants),
         };
         setPropertyData({ ...data });
+        if (isNavigate) {
+          const url = constructPropertyUrl({ ...data });
+          router.push(url);
+        }
       }
     } catch (error) {
-      console.log(error.message)
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -174,8 +176,8 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   const handleCloseConsultantDetails = () => {
-    setConsultantsDialog(false)
-  }
+    setConsultantsDialog(false);
+  };
 
   const handlefavClick = async () => {
     const adData = {
@@ -189,8 +191,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error generating fav Property",
+          error?.message ||
+          "Error generating fav Property",
         "error"
       );
     } finally {
@@ -260,7 +262,9 @@ const PropertyDetailsPage = ({ params }) => {
       setLoading(true);
       if (userDetails?._id) {
         let res = await checkEnquiryOnPropertyLink(
-          `${detailsPropertyId}${userDetails?._id ? `?userId=${userDetails?._id}` : ""}`
+          `${detailsPropertyId}${
+            userDetails?._id ? `?userId=${userDetails?._id}` : ""
+          }`
         );
         if (res.status === 200) {
           if (res.data?.data) {
@@ -271,14 +275,13 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
       setLoading(false);
     }
-
   };
 
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -315,7 +318,7 @@ const PropertyDetailsPage = ({ params }) => {
         leadId: leadId,
         userId: userDetails?._id,
         adId: "",
-        propertyId: detailsPropertyId
+        propertyId: detailsPropertyId,
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -328,14 +331,13 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
     }
   };
-
 
   useEffect(() => {
     if (getItem(enquiryFormOpen)) {
@@ -359,7 +361,7 @@ const PropertyDetailsPage = ({ params }) => {
         ...data,
         propertyId: detailsPropertyId,
         propertyLink: `details/${params.id}`,
-        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined
+        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined,
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -376,8 +378,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -390,7 +392,7 @@ const PropertyDetailsPage = ({ params }) => {
         ...data,
         propertyId: detailsPropertyId,
         propertyLink: `details/${params.id}`,
-        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined
+        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined,
       });
 
       if (enquireWithBrokerId) {
@@ -420,8 +422,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -438,8 +440,8 @@ const PropertyDetailsPage = ({ params }) => {
         otp: data.otp,
         phone: {
           countryCode: data.countryCode,
-          number: data.number
-        }
+          number: data.number,
+        },
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -456,8 +458,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -517,7 +519,7 @@ const PropertyDetailsPage = ({ params }) => {
   const handleEnquireWithBroker = (brokerId) => {
     handleOpenEnquiryForm();
     setEnquireWithBrokerId(brokerId);
-  }
+  };
 
   const classes = useStyles();
 
@@ -570,9 +572,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -623,7 +625,6 @@ const PropertyDetailsPage = ({ params }) => {
     if (divRef.current) {
       const divHeight = divRef.current.clientHeight;
       setHeightOfFooter(divHeight);
-      console.log("Height of the div:", divHeight);
     }
   }, []);
 
@@ -644,7 +645,7 @@ const PropertyDetailsPage = ({ params }) => {
         handleOpen={handleOpenPersonalizeAds}
         handleClose={handleClosePersonalizeAds}
       />
-       {/* {userDetails?.role === "broker" &&
+      {/* {userDetails?.role === "broker" &&
       (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
         <AdsSection
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
@@ -819,6 +820,7 @@ const PropertyDetailsPage = ({ params }) => {
               open={OverallAssesmentOpenEnquiryForm}
               handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
+              submitEnquiryUnath={handleSubmitEnquiryUnauth}
             />
             <MoreSimilarPropertyCard propertyData={propertyData} />
           </Grid>
@@ -998,13 +1000,16 @@ const PropertyDetailsPage = ({ params }) => {
                 }}
               />
               <BottomFooterConsultant
-                SinglePropertyId={propertyData?.propertyBroker ? propertyData?.propertyBroker[0] : ""}
+                SinglePropertyId={
+                  propertyData?.propertyBroker
+                    ? propertyData?.propertyBroker[0]
+                    : ""
+                }
                 handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
                 propertyData={propertyData}
               />
             </>
           )}
-         
         </Container>
       </Box>
     </>

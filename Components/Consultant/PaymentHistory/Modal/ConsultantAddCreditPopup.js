@@ -17,6 +17,7 @@ import { companyName } from "Components/NavBar/Links";
 import { BuyingCreditPoints } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { formatAmount, formatPoints } from "utills/CommonFunction";
+import Link from "next/link";
 
 function ConsultantAddCreditPopup({ open, handleClose }) {
   const [openCreditRequestPaymentPopup, setCreditRequestPaymentPopup] =
@@ -52,6 +53,7 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
           <Typography variant="body1">
             Potential to buy leads from the panel
           </Typography>
+          
         </DialogTitle>
         <DialogContent>
           {BuyingCreditPoints?.map((credit) => {
@@ -98,9 +100,13 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
               />
             </Typography>
           </Box>
+          <Box sx={{ display: "flex", justifyContent: "space-between"}}>
           <Typography variant="body2">
             Property consultant can use above credits to activate below services
           </Typography>
+          <Link href="/generate-real-estate-leads-growth" style={{ textDecoration: "none"}}><Typography variant="body2" >Know more</Typography></Link>
+          
+          </Box>
           <ul style={{ marginLeft: "16px" }}>
             <li>
               <Typography variant="body2">

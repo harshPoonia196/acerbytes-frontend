@@ -1,16 +1,18 @@
-import { Avatar, Box, Button, Chip, Container, Fab, IconButton, Menu, MenuItem, Typography } from '@mui/material'
+import { Avatar, Box, Button, Chip, Container, Fab, IconButton, Menu, MenuItem, Typography, Rating } from '@mui/material'
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { ContentCopy as ContentCopyIcon, Phone as PhoneIcon,  } from '@mui/icons-material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { boxShadowTop } from 'utills/Constants';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DoneIcon from '@mui/icons-material/Done';
-import { capitalLizeName, formatDateAndDaysRemaining } from 'utills/CommonFunction';
+import { capitalLizeName } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
 import { useSnackbar } from 'utills/SnackbarContext';
 import { ToasterMessages } from 'utills/Constants';
 import colors from 'styles/theme/colors';
+import ShareIcon from '@mui/icons-material/Share';
+import { countryCodeFormating } from 'utills/utills';
 
 
 function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, SinglePropertyId }) {
@@ -23,13 +25,15 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
         : `${userDetails?.name?.firstName} ${userDetails?.name?.lastName}`;
 
     const phoneNumber = brokerData?.phone?.countryCode && brokerData?.phone?.number
-        ? `${brokerData.phone.countryCode}-${brokerData.phone.number}`
-        : `${userDetails?.phone?.countryCode}-${userDetails?.phone?.number}`;
+        ? `${countryCodeFormating(brokerData.phone.countryCode)} ${
+            brokerData.phone.number
+          }`
+        : `${countryCodeFormating(userDetails?.phone?.countryCode)}-${userDetails?.phone?.number}`;
 
         const constructPropertyUrl = (property) => {
             const overview = property?.overview;
             const location = property?.location;
-            const brokerId = propertyData?.propertyBroker?.[0]?._id ?? 'defaultBrokerId'
+            const brokerId = property?.propertyBroker?.[0]?._id ?? 'defaultBrokerId'
     
             const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
             let projectType;
@@ -43,7 +47,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
     
             const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
     
-            return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${name.replace(/\s+/g, '-')}-${phoneNumber.replace(/\s+/g, '-')}-${brokerId}`;
+            return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${brokerId}`;
         };
     
     const propertyUrl = constructPropertyUrl(propertyData)
@@ -87,7 +91,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                         gap: "0px",
                         borderTop: propertyData?.isActiveAd ? `2px solid ${colors.BLUE}` : `2px solid gold`
                     }}>
-                        <Box sx={{ display: { xs: 'block', evmd: 'none' } }}>
+                        <Box>
                             <Typography variant='body2' sx={{ marginBottom: "5px"}}>
                                 {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                             </Typography>
@@ -97,18 +101,32 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                             <Box sx={{ display: 'flex', flex: 1, justifyContent: "space-between", marginLeft: "10px" }}>
                                    
                                 <Box sx={{ display: { xs: 'none', evmd: 'block' } }}>
-                                    <Typography variant='body2' sx={{ marginBottom: "5px"}}>
+                                    {/* <Typography variant='body2' sx={{ marginBottom: "5px"}}>
                                     {`${capitalLizeName(propertyData?.overview?.builder || "builder")}  | ${capitalLizeName(propertyData?.overview?.projectName|| "projectName")} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
-                                    </Typography>
+                                    </Typography> */}
                                     
-                                    <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
+                                    <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center', display: "inline-block", marginRight: "5px" }}>
+                                     {name}
+                                    </Typography>
                                     <a href={`tel:${phoneNumber}`}>
-                                                <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' />
-                                            </a> {name}
+                                                <Chip icon={<PhoneIcon />} label={phoneNumber} size='small' />
+                                            </a>
+                                    
+                                    <Box>
+                                    <Typography variant='body2' sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "5px" }}>
+                                    {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating}
                                     </Typography>
-                                    <Typography variant='h6' sx={{ mt: 1 }}>
-                                    {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} rating
-                                    </Typography>
+                                    <Rating
+                                        name="half-rating"
+                                        {...propertyData?.brokerDetais?.rating}
+                                        precision={0.5}
+                                        value={propertyData?.brokerDetais?.rating}
+                                        defaultValue={propertyData?.brokerDetais?.rating}
+                                        size="small"
+                                        readOnly
+                                        sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
+                                    />
+                                    </Box>
                                     
                                 </Box>
                                     
@@ -118,17 +136,29 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                         </Typography> */}
                                         <Box sx={{ display: 'flex' }}>
                                             <Box sx={{ flex: 1 }}>
-                                                <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center' }}>
+                                                <Typography variant='h6' sx={{ flex: 1, alignSelf: 'center', marginRight: "5px" }}>
                                                     {name}
                                                 </Typography>
                                                     <Typography variant='subtitle2'>
                                                         <a href={`tel:${phoneNumber}`}>
-                                                            <Chip icon={<PhoneIcon />} label={'+' + phoneNumber} size='small' />
+                                                            <Chip icon={<PhoneIcon />} label={phoneNumber} size='small' />
                                                         </a>
                                                     </Typography>
-                                                    <Typography variant='subtitle2' sx={{ mt: 1 }}>
-                                                        {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} rating
+                                                    <Box>
+                                                    <Typography variant='subtitle2' sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "5px" }}>
+                                                        {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} 
                                                     </Typography>
+                                                    <Rating
+                                                        name="half-rating"
+                                                        {...propertyData?.brokerDetais?.rating}
+                                                        precision={0.5}
+                                                        value={propertyData?.brokerDetais?.rating}
+                                                        defaultValue={propertyData?.brokerDetais?.rating}
+                                                        size="small"
+                                                        readOnly
+                                                        sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
+                                                    />
+                                                    </Box>
                                                 </Box>
                                             {/* <Box sx={{ display: 'flex' }}> */}
                                             {/* <Typography variant='subtitle2'>
@@ -207,8 +237,8 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                         }}
                                     >
 
-                                        <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}>{propertyData?.isActiveAd ? "Extend" : "Activate link"} </MenuItem>
-                                        <MenuItem onClick={() => copyToClipboard(propertyUrl)}>Share</MenuItem>
+                                        <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}><AddLinkIcon sx={{ fontSize: "20px", marginRight: "10px"}}/> {propertyData?.isActiveAd ? "Extend" : "Activate link"} </MenuItem>
+                                        <MenuItem onClick={() => copyToClipboard(propertyUrl)}><ShareIcon sx={{ fontSize: "18px", marginRight: "10px"}} /> Share</MenuItem>
                                     </Menu>
                                 </Box>
                             

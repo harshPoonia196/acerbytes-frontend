@@ -8,6 +8,7 @@ import {
   Divider,
   Toolbar,
   Typography,
+  Rating
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import React, { useEffect, useState } from "react";
@@ -79,44 +80,60 @@ function UserDetailsAd({
             pb: { md: "0 !important" },
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
+          <Box sx={{
+              
               p: 2,
               background: "ghostwhite",
               boxShadow: boxShadowTop,
-              border: `2px solid ${colors.BLUE}`,
-            }}
+              borderTop: `2px solid ${colors.BLUE}`
+            }}>
+          <Box>
+                  <Typography variant="body2" sx={{marginBottom: "3px"}}>
+                    {capitalLizeName(builder)} | {capitalLizeName(projectName)} | {city} | {sector}
+                  </Typography>
+                </Box>
+          <Box
+            sx={{display: "flex"}}
           >
             <Avatar
               src={AllPropertyData?.brokerProfilePic?.profilePicture}
               sx={{
-                height: { xs: 24, md: 40 },
-                width: { xs: 24, md: 40 },
+                height: { md: 40 },
+                width: { md: 40 },
                 fontSize: { xs: "0.75rem", md: "1rem" },
               }}
             ></Avatar>
             <Box sx={{ ml: 2, flex: 1 }}>
               <Box sx={{ display: { xs: "none", md: "block" } }}>
-                <Box>
-                  <Typography variant="h6">
-                    {capitalLizeName(builder)} | {capitalLizeName(projectName)} | {city} | {sector}
-                  </Typography>
-                </Box>
-                <Typography variant="h6">{name}</Typography>
-                <a href={`tel:${phoneNumber}`}>
+                
+                 <Typography variant="h6" sx={{ display: "inline-block", marginRight: "5px"}}>{name}</Typography>
+                 <a href={`tel:${phoneNumber}`}>
                   <Chip icon={<PhoneIcon />} label={phoneNumber} size="small" />
                 </a>
-                <Typography variant="h6" sx={{ mt: 1 }}>
-                  {AllPropertyData?.brokerRating?.rating} rating
+                
+                <Box>
+                <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
+                   {AllPropertyData?.brokerRating?.rating}
                 </Typography>
+                  <Rating
+                    name="half-rating"
+                    {...AllPropertyData?.brokerRating?.rating}
+                    precision={0.5}
+                    defaultValue={AllPropertyData?.brokerRating?.rating}
+                    value={AllPropertyData?.brokerRating?.rating}
+                    readOnly
+                    size="small"
+                    sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
+                  />
+                </Box>
               </Box>
               <Box sx={{ display: { xs: "block", md: "none" } }}>
-                <Typography variant="subtitle2">
+                {/* <Typography variant="subtitle2">
                   {capitalLizeName(builder)} | {capitalLizeName(projectName)} | {city} | {sector}
-                </Typography>
+                </Typography> */}
+                <Box sx={{ display: "flex"}}>
                 <Box sx={{ flex: 1 }}>
-                  <Typography variant="h6">{name}</Typography>
+                  <Typography variant="h6" sx={{ display: "inline-block", marginRight: "5px"}}>{name}</Typography>
                   <a href={`tel:${phoneNumber}`}>
                     <Chip
                       icon={<PhoneIcon />}
@@ -124,9 +141,23 @@ function UserDetailsAd({
                       size="small"
                     />
                   </a>
-                  <Typography variant="h6" sx={{ mt: 1 }}>
-                    {AllPropertyData?.brokerRating?.rating} rating
+                  
+                  <Box>
+                  <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
+                    {AllPropertyData?.brokerRating?.rating}
                   </Typography>
+                  <Rating
+                    name="half-rating"
+                    {...AllPropertyData?.brokerRating?.rating}
+                    precision={0.5}
+                    value={AllPropertyData?.brokerRating?.rating}
+                    defaultValue={AllPropertyData?.brokerRating?.rating}
+                    readOnly
+                    size="small"
+                    sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
+                  />
+                </Box>
+                </Box>
                   <Box
                     sx={{
                       textAlign: {xs: "start", md: "end"},
@@ -150,7 +181,7 @@ function UserDetailsAd({
                 Log in
               </Button> */}
                   </Box>
-                </Box>
+                  </Box>
               </Box>
             </Box>
             <Box
@@ -174,6 +205,7 @@ function UserDetailsAd({
               </Button> */}
               {/* <p style={{ fontSize: "0.75rem" }}>26 days remaining</p> */}
             </Box>
+          </Box>
           </Box>
         </Container>
       </Box>

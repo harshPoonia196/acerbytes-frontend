@@ -36,7 +36,7 @@ function ConsultantsViewAll({ open, handleClose, propertyData, enquiredInfo, han
           sx={{ width: "100%", minWidth: 550, bgcolor: "background.paper", maxWidth: "100%", }}
         >
           {propertyData?.map((broker) => (
-            <Grid item xs={12} sm={12} key={broker?.name}>
+            <Grid item xs={12} sm={12} key={broker?.id}>
               <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
             </Grid>
           ))}

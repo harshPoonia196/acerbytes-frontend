@@ -83,7 +83,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Avatar>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h5">
-            <div style={{ display: "flex", gap: '5px', cursor: 'pointer' }} onClick={hasReviews ? handleOpenReviews : null}>
+            <Box sx={{ display: {sm: "flex", xs: "block"}, gap: "5px", cursor: "pointer"}} onClick={hasReviews ? handleOpenReviews : null}>
               {titleCase(broker?.fullName)}
               <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center" }} />
               {showRating ?
@@ -97,11 +97,11 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
                       precision={0.5}
                       value={broker?.rating ?? 0}
                     />
-
-                  </div><div className="rating-count"> {broker?.ratingCount ?? 0} Ratings</div>
+                    <div className="rating-count"> {broker?.ratingCount ?? 0} Ratings</div>
+                  </div>
                 </>
                 : null}
-            </div>
+            </Box>
           </Typography>
           <Typography variant="body2">
             {broker?.currentAddress?.city || ""}{" "}
@@ -186,7 +186,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       <Dialog
         sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
         open={openReviews}
-        fullWidth={"xsm"}
+        fullWidth={true}
         onClose={handleCloseOpenReviews}
       >
         <Reviews broker={broker} />
@@ -205,7 +205,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Box>
       ) : null} */}
       {/* {isLogged ? ( */}
-      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCallClick}  >
+      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:10, sm:8}, right: 8 }} onClick={handleCallClick}  >
         <IconButton sx={{ boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)" }}>
           <CallIcon fontSize="small" />
         </IconButton>

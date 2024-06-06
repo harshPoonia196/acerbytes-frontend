@@ -48,11 +48,11 @@ const BrokerFeedBack = ({ review }) => {
                             {review?.note}
                         </Typography>
                     </Box> */}
-                    <Grid container spacing={1} sx={{ p: 2 }} style={{minWidth: '525px'}}>
+                    <Grid container spacing={1} sx={{ p: 2 }}>
 
                         {review?.ratings?.map((rating) => {
                             return (
-                                <Grid item xs={4} key={rating?.type}>
+                                <Grid item xs={12} sm={4} key={rating?.type}>
                                     <Typography variant="h6">{rating?.type}</Typography>
                                     <Rating
                                         name="text-feedback"

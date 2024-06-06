@@ -3,11 +3,15 @@ import moment from "moment";
 import { ROLES } from "./Constants";
 
 function capitalLizeName(text) {
-  let words = text?.split(" ");
-  // Capitalize the first letter of each word
-  let formattedName = words?.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
-  // Join the words back into a string
-  return formattedName?.join(" ");
+  if (text && text.length >= 0) {
+    let words = text?.split(" ");
+    // Capitalize the first letter of each word
+    let formattedName = words?.map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    );
+    // Join the words back into a string
+    return formattedName?.join(" ");
+  }
 }
 
 function upperCaseName(text) {
@@ -33,7 +37,7 @@ function toCamelCase(input) {
       return word.charAt(0).toUpperCase() + word.slice(1);
     }
   });
-  return camelCaseWords.join('');
+  return camelCaseWords.join("");
 }
 
 function transformDocuments(documents) {
@@ -66,7 +70,6 @@ function formatNumber(number) {
     return `hundred`;
   }
 }
-
 
 function transformDocumentsLocation(documents) {
   return documents.reduce((result, document) => {
@@ -123,8 +126,23 @@ let formatDateAndDaysRemaining = (expiryDate) => {
   const daysRemaining = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
 
   const day = expiry.getDate();
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const nth = (d) => ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d - 20) % 10 < 1 ? d % 10 : 0] || "th";
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const nth = (d) =>
+    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d - 20) % 10 < 1 ? d % 10 : 0] ||
+    "th";
   const formattedDate = `${day}${nth(day)} ${monthNames[expiry.getMonth()]}`;
 
   return `${formattedDate} (${daysRemaining} days remaining)`;
@@ -132,20 +150,21 @@ let formatDateAndDaysRemaining = (expiryDate) => {
 
 const formatAmount = (amount) => {
   // const numericAmount = Number(amount.replace(/,/g, ''));
-  const numericAmount = Number(String(amount).replace(/,/g, ''));
+  const numericAmount = Number(String(amount).replace(/,/g, ""));
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 0,
-  }).format(numericAmount).replace("₹", "₹ ");
+  })
+    .format(numericAmount)
+    .replace("₹", "₹ ");
 };
 
 const formatPoints = (points) => {
   // const numericAmount = Number(points?.replace(/,/g, ''));
-  const numericAmount = Number(String(points).replace(/,/g, ''));
+  const numericAmount = Number(String(points).replace(/,/g, ""));
   return numericAmount.toLocaleString("en-IN");
 };
-
 
 function formatNumberWithCommas(number) {
   // Convert the number to a string for easier manipulation
@@ -153,17 +172,17 @@ function formatNumberWithCommas(number) {
 
   // Check if the number is negative and remove the negative sign temporarily
   let isNegative = false;
-  if (numberString[0] === '-') {
+  if (numberString[0] === "-") {
     isNegative = true;
     numberString = numberString.slice(1);
   }
 
   // Separate the number into groups based on units
-  let crores = '';
-  let lakhs = '';
-  let tenThousands = '';
-  let thousands = '';
-  let hundreds = '';
+  let crores = "";
+  let lakhs = "";
+  let tenThousands = "";
+  let thousands = "";
+  let hundreds = "";
 
   if (numberString.length > 7) {
     crores = numberString.slice(0, -7);
@@ -182,68 +201,75 @@ function formatNumberWithCommas(number) {
   }
 
   // Add commas to separate units
-  crores = crores ? crores + ',' : '';
-  lakhs = lakhs ? lakhs + ',' : '';
-  tenThousands = tenThousands ? tenThousands + ',' : '';
-  thousands = thousands ? thousands + ',' : '';
-  hundreds = hundreds ? hundreds + ',' : '';
+  crores = crores ? crores + "," : "";
+  lakhs = lakhs ? lakhs + "," : "";
+  tenThousands = tenThousands ? tenThousands + "," : "";
+  thousands = thousands ? thousands + "," : "";
+  hundreds = hundreds ? hundreds + "," : "";
 
   // Combine the formatted parts and add back the negative sign if needed
   let formattedNumber = crores + lakhs + tenThousands + thousands + hundreds;
   if (isNegative) {
-    formattedNumber = '-' + formattedNumber;
+    formattedNumber = "-" + formattedNumber;
   }
-  let finalValue = formattedNumber.replace(/,$/, '')
+  let finalValue = formattedNumber.replace(/,$/, "");
   return finalValue;
 }
 
-const yearList = Array.from(
-  { length: 41 }, (_, index) => { return { label: index > 9 ? `20${index}` : `200${index}`, value: index > 9 ? `20${index}` : `200${index}` } })
+const yearList = Array.from({ length: 41 }, (_, index) => {
+  return {
+    label: index > 9 ? `20${index}` : `200${index}`,
+    value: index > 9 ? `20${index}` : `200${index}`,
+  };
+});
 
 const monthList = Array.from({ length: 12 }, (_, index) => {
   return {
-    label: (index + 1).toString().padStart(2, '0'),
-    value: (index + 1).toString().padStart(2, '0'),
-  }
+    label: (index + 1).toString().padStart(2, "0"),
+    value: (index + 1).toString().padStart(2, "0"),
+  };
 });
 
 const getColorForProgressBar = (input) => {
-  let data = parseInt(input)
+  let data = parseInt(input);
   if (data > 70) {
-    return 'success'
+    return "success";
   } else if (data > 40) {
-    return 'warning'
+    return "warning";
   } else {
-    return 'error'
+    return "error";
   }
-}
+};
 
 const shortPriceFormatter = (value) => {
-  const val = Math.abs(value)
-  if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`
-  if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`
-  if (val >= 1000) return `${(value / 1000).toFixed(2)}k`
+  const val = Math.abs(value);
+  if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`;
+  if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`;
+  if (val >= 1000) return `${(value / 1000).toFixed(2)}k`;
   return value;
-}
+};
 
 const getFirstCharacterOfFirstOfFullName = (fname) => {
-  let listOfWords = fname.split(' ');
-  return listOfWords[0].charAt(0) + listOfWords[listOfWords.length - 1].charAt(0)
-}
+  let listOfWords = fname.split(" ");
+  return (
+    listOfWords[0].charAt(0) + listOfWords[listOfWords.length - 1].charAt(0)
+  );
+};
 
 const getRoleLabelByValue = (value) => {
-  const role = ROLES.find(role => role.value === value);
+  const role = ROLES.find((role) => role.value === value);
   return role ? role.label : null;
-}
+};
 
 const indianNumberingSystem = (number) => {
   // Format the number using Indian numbering system
-  const formatted = Number(number).toLocaleString('en-IN');
-return formatted;
+  const formatted = Number(number).toLocaleString("en-IN");
+  return formatted;
 };
 const filterText = (text) => {
   return text.replace(/[^a-zA-Z\s]/g, '');
 };
+
 
 export {
   upperCaseName,

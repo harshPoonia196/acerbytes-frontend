@@ -356,8 +356,8 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
               alignmentValue={alignmentValue}
             />
             <TableBody>
-              {activeAdData?.map((row) => (
-                <RowStructure row={row} alignmentValue={alignmentValue} history={history} />
+              {activeAdData?.map((row, index) => (
+                <RowStructure key={index} row={row} alignmentValue={alignmentValue} history={history} />
               ))}
             </TableBody>
           </Table>

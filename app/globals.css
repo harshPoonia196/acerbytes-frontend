@@ -88,6 +88,10 @@ input[type="number"] {
     height: auto;
     max-height: 280px;
   }
+  .gridUnit .MuiGrid-item{
+   max-width: 100%;
+   flex-basis: 100%; 
+  }
 }
 
 .react-swipeable-view-container>div {
@@ -199,7 +203,20 @@ html {
   font-size: 17px !important;
 }
 
-.innerhtmlFont, .innerhtmlFont p{
+.innerhtmlFont, .innerhtmlFont p, .innerhtmlFont span{
   font-size: 0.875rem;
   font-family: 'IBM Plex Sans', 'Roboto', 'Titillium Web', 'Inter', 'Almarai', 'Arial', 'sans-serif', 'Roboto Mono';
+  color: #333 !important;
+}
+
+.activeLinkURL textarea{
+  font-size: 0.875rem;
+}
+
+.MuiAlert-message{
+  padding: 12px 0px 10px 0;
+}
+
+.MuiTableCell-head{
+  text-transform: capitalize !important;
 }

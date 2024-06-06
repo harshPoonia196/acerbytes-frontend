@@ -50,6 +50,7 @@ import { listOfPages } from "Components/NavBar/Links";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import RoleConfirmationDialog from "Components/CommonLayouts/RoleConfirmationDialog";
+import moment from 'moment/moment';
 
 const headCells = [
   {
@@ -67,6 +68,10 @@ const headCells = [
   {
     id: "role",
     label: "Role",
+  },
+  {
+    id: "registeredAt",
+    label: "Registered At",
   },
 ];
 
@@ -247,6 +252,13 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
             />}
         </TableCell>
       )}
+      <TableCell>{row.createdAt
+        ? moment(row.createdAt).format(
+          "DD MMM, YYYY, h:mm a"
+        )
+        : ""}</TableCell>
+
+
       {selectedTabValue === 0 && (
         <TableCell sx={{ py: 0 }}>
           <IconButton

@@ -150,7 +150,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
               </Card>
             </Tooltip>
           </Grid>
-          <NewInputFieldStructure
+          <NewInputFieldStructure isRequired={true}
             label="Tag line"
             variant="outlined"
             isEdit={isEdit}
@@ -159,7 +159,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
             value={tagLine}
             handleChange={(e) => handleChange(e, "marketing", "tagLine")}
           />
-          <NewInputFieldStructure
+          <NewInputFieldStructure isRequired={true}
             label="Description"
             variant="outlined"
             isEdit={isEdit}

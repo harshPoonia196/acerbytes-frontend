@@ -7,14 +7,15 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import { useAuth } from "utills/AuthContext";
 
 function MoreSimilarPropertyCard({ propertyData }) {
     const router = useRouter();
+    const { userDetails } = useAuth();
     const { data: Alldata, location: locationData, overview: overviewData } = propertyData;
     
     return (
-        <Grid item xs={12} sx={{ paddingBottom: "90px"}}> 
+        <Grid item xs={12} sx={{ paddingBottom: {xs: `${userDetails?.role !== "broker" ? "6px": "62px"}`, sm: `${userDetails?.role !== "broker" ? "6px": "106px"}`}}}> 
             <Card>
             <Accordion>
             <AccordionSummary
@@ -30,9 +31,9 @@ function MoreSimilarPropertyCard({ propertyData }) {
                 </AccordionSummary>
                 <Divider />
                 <AccordionDetails>
-                <Box sx={{ p: 2 }}>
+                <Box>
                     <Grid container spacing={2} sx={{ justifyContent: "center"}}>
-                        <Grid item sm={4} xs={12}>
+                        <Grid item sm={4} xs={12} sx={{ paddingTop: "22px"}}>
                             <Card sx={{ height: '100%' }} onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${overviewData?.builder}`)
                             }}>
