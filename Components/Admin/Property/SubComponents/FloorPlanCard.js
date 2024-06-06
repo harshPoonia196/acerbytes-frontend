@@ -556,7 +556,6 @@ function FloorPlanCard({
               }}
             />
 
-{console.log(' ===========>', );}
             <NewInputFieldStructure isRequired={true}
               label="Total Units"
               variant="outlined"
