@@ -25,19 +25,13 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import {
-  getComparator,
   getApprovedDiscountPercentage,
   objectToQueryString,
-  stableSort,
   formatPoints,
   formatAmount,
 } from "utills/CommonFunction";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import { ToasterMessages } from "utills/Constants";
-import Loading from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import {
   completeOrderRequest,

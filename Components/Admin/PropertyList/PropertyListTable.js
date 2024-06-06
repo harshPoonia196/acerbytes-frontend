@@ -177,13 +177,13 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
       <TableCell>{row.area}</TableCell>
       <TableCell>{row.sector}</TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton sx={{ fontSize: "1rem !important" }}>
-          <EditIcon fontSize="1rem" onClick={() => handleEdit(row.id)} />
+        <IconButton sx={{ fontSize: "1rem !important" }} onClick={() => handleEdit(row.id)}>
+          <EditIcon fontSize="1rem"/>
         </IconButton>
       </TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton sx={{ fontSize: "1rem !important" }}>
-          <DeleteIcon fontSize="1rem" onClick={() => handleDelete(row.id)} />
+        <IconButton sx={{ fontSize: "1rem !important" }} onClick={() => handleDelete(row.id)}>
+          <DeleteIcon fontSize="1rem" />
         </IconButton>
       </TableCell>
       <TableCell>
@@ -197,8 +197,8 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
         />
       </TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton sx={{ fontSize: "1rem !important" }}>
-          <MoreVertIcon onClick={handleClick} fontSize="1rem" />
+        <IconButton sx={{ fontSize: "1rem !important" }} onClick={handleClick}>
+          <MoreVertIcon fontSize="1rem" />
         </IconButton>
         <Menu
           id="basic-menu"
@@ -454,6 +454,7 @@ const PropertyListTable = ({ setCount }) => {
               <TableBody>
                 {propertyList?.map((row) => (
                   <RowStructure
+                    key={row?.id}
                     row={row}
                     router={router}
                     handleDelete={handleDelete}

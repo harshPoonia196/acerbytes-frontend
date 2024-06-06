@@ -18,8 +18,6 @@ export const SnackbarProvider = ({ children }) => {
     setSnackbarOpen(true);
   };
 
-  console.log(snackbarSeverity)
-
   const closeSnackbar = () => {
     setSnackbarOpen(false);
   };

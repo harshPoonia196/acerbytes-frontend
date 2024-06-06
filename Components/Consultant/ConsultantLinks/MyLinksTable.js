@@ -357,7 +357,7 @@ function MyLinksTable({ setCount }) {
               />
               <TableBody>
                 {activeAdData?.map((row) => (
-                  <RowStructure row={row} history={history} />
+                  <RowStructure row={row} key={row?.id} history={history} />
                 ))}
               </TableBody>
             </Table>

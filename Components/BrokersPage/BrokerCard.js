@@ -185,7 +185,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       <Dialog
         sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
         open={openReviews}
-        fullWidth={"xsm"}
+        fullWidth={true}
         onClose={handleCloseOpenReviews}
       >
         <Reviews broker={broker} />

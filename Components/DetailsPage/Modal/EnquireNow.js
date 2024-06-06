@@ -180,7 +180,6 @@ function EnquireNow(props) {
               startIcon={<DoneIcon />}
               variant="contained"
               onClick={() => {
-                console.log("formData: ", formData);
                 if (token) {
                   submitEnquiry({
                     ...formData,

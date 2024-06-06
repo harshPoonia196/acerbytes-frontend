@@ -21,7 +21,7 @@ function CircularProgressWithLabel(props) {
                     justifyContent: 'center',
                 }}
             >
-                {props.tooltipText ? <Tooltip title={props.tooltipText}>
+                {props.tooltiptext ? <Tooltip title={props.tooltiptext}>
                     <Typography variant={props.islarge ? 'h3' : 'body1'} sx={{ fontWeight: 'bold' }}>
                         {`${Math.round(props.value)}`}
                     </Typography>
@@ -33,7 +33,8 @@ function CircularProgressWithLabel(props) {
     );
 }
 
-export default function CircularWithValueLabel({ progress, tooltipText, islarge }) {
+export default function CircularWithValueLabel({ progress, tooltiptext, islarge }) {
+    const numericProgress = parseFloat(progress);
 
-    return <CircularProgressWithLabel value={progress} islarge={islarge} color={getColorForProgressBar(progress)} tooltipText={tooltipText} />
+    return <CircularProgressWithLabel value={numericProgress} islarge={islarge} color={getColorForProgressBar(numericProgress)} tooltiptext={tooltiptext} />
 }
