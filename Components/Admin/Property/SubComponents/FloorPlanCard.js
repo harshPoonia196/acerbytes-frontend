@@ -556,11 +556,11 @@ function FloorPlanCard({
               }}
             />
 
-
+{console.log(' ===========>', );}
             <NewInputFieldStructure isRequired={true}
               label="Total Units"
               variant="outlined"
-              isEdit={isEdit}
+              isEdit={isEdit} 
               type={"number"}
               name="totalUnits"
               value={selectedItem.totalUnits}
