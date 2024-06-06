@@ -569,15 +569,13 @@ function FloorPlanCard({
                 errors?.["unitsPlan.planList[0].totalUnits"]
               }
               handleChange={(e) => {
-                // let totalPriceCalc = e.target.value * selectedItem.area * selectedItem.bsp
-                // let priceUnitValue = formatNumber(totalPriceCalc)
-                let finalValue = formatNumberWithCommas(totalPriceCalc)
-                setSelectedItem((prev) => ({
-                  ...prev,
-                  totalUnits: e.target.value,
-                  // totalPrice: totalPriceCalc,
-                  // priceUnit: priceUnitValue
-                }))
+                const v = e.target.value;
+                if (/^\d*$/.test(v)) {
+                  setSelectedItem((prev) => ({
+                    ...prev,
+                    totalUnits: v,
+                  }));
+                }
               }}
             />
 
