@@ -80,20 +80,9 @@ function PropertyCard(props) {
   }, [propertyDetails]);
 
   const layoutData = useMemo(() => {
-    console.log(
-      propertyDetails?.unitsPlan?.uniqueLayouts,
-      propertyDetails?._id
-    );
-    const withoutUniqueLayout = [
-      ...propertyDetails?.unitsPlan?.planList?.filter(
-        (item) => !item.propertyLayout
-      ),
-    ]?.map((item) => `${item?.width}*${item?.length}`);
-    return [
-      ...propertyDetails?.unitsPlan?.uniqueLayouts,
-      ...withoutUniqueLayout,
-    ];
-  }, [propertyDetails]);
+    const withoutUniqueLayout = [...propertyDetails?.unitsPlan?.planList?.filter(item => !item.propertyLayout)]?.map((item) => `${item?.width}*${item?.length}`)
+    return [...propertyDetails?.unitsPlan?.uniqueLayouts, ...withoutUniqueLayout]
+  }, [propertyDetails])
 
   const numbers = layoutData.map((item) => item.split(" ")[0]).sort();
   const suffix = layoutData[0].split(" ").slice(1).join(" ");
@@ -200,9 +189,7 @@ function PropertyCard(props) {
                   : 0
               }
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltipText={`AB scores *`}
-            />
+              onClick={() => router.push(`/details/${propertyUrl}`)} tooltiptext={`AB scores *`} />
           </Grid>
           <Grid
             item
@@ -276,7 +263,7 @@ function PropertyCard(props) {
               }
               // onClick={() => router.push("/research")}
               onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltipText={`AB scores Excellent *`}
+              tooltiptext={`AB scores Excellent *`}
             />
           </Grid>
           {/* <Grid

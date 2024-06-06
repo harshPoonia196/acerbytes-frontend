@@ -460,7 +460,7 @@ function PropertyList({ params }) {
             <Card
               sx={{
                 display: { xs: "none", md: "block" },
-                p: 2,
+                pl: 2, pt:2, pr:1, pb:2,
                 width: 220,
                 height: "max-content",
                 overflowY: "scroll",
@@ -633,7 +633,7 @@ function PropertyList({ params }) {
                   ) : (
                     <Grid container spacing={1}>
                       {property?.map((propertyDetails) => (
-                        <Grid item xs={12} key={propertyDetails?.id}>
+                        <Grid item xs={12} key={propertyDetails?._id} key={propertyDetails?.id}>
                           <PropertyCard
                             createdDate={propertyDetails?.created_at}
                             isShortListPageCard={propertyDetails?.isFav}
@@ -652,7 +652,7 @@ function PropertyList({ params }) {
                   <TablePagination
                     rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
                     component="div"
-                    count={count?.totalCount}
+                    count={count?.totalCount || 0}
                     rowsPerPage={pageLimit}
                     page={currentPage - 1}
                     onPageChange={handleChangePage}

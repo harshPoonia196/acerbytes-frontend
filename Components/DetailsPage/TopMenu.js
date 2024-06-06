@@ -18,6 +18,7 @@ import { capitalLizeName, shortPriceFormatter } from "utills/CommonFunction";
 function TopMenu(props) {
   const { value, handleChange, list, topMenu } = props;
   const router = useRouter();
+  const defaultValue = list.length > 0 ? list[0].hash : undefined;
   // console.log(value)
   return (
     <>
@@ -129,7 +130,7 @@ function TopMenu(props) {
       </Card>
 
       <Tabs
-        value={value}
+        value={value || defaultValue}
         // onChange={handleChange}
         variant="scrollable"
         scrollButtons
@@ -145,6 +146,7 @@ function TopMenu(props) {
       >
         {list.map((current) => (
           <Tab
+            key={current.hash}
             label={current.text}
             value={current.hash}
             onClick={handleChange(current.hash)}

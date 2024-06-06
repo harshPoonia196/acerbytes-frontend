@@ -410,6 +410,7 @@ function FloorPlanCard({
             rowSpacing={1}
             columnSpacing={2}
             columns={18}
+            className="gridUnit"
           >
             <NewSelectTextFieldStructure isRequired={true}
               label="Unit type"
@@ -427,6 +428,7 @@ function FloorPlanCard({
                   propertyType: e.target.value,
                 }))
               }
+              
             />
             {(!["commercial"].includes(form.overview.projectCategory.toLowerCase())) && (selectedItem.propertyType.toLowerCase() != "land") ?
               <NewSelectTextFieldStructure isRequired={true}

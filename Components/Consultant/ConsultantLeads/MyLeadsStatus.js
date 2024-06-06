@@ -5,6 +5,7 @@ import { Card, Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import colors from 'styles/theme/colors';
 import LeadStatusCard from './LeadStatusCard';
 import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
+import NoDataCard from 'Components/CommonLayouts/CommonDataCard';
 export default function MyLeadsStatus({ list: { rows = [], notesCount = 0, showSubscribeButton = false, needSubscribe = false } = {}, searchTerm, handleSearch, alignment, handleChange, handleOpenUpdatePopup, onNoteDelete }) {
     return (
         <>
@@ -45,10 +46,11 @@ export default function MyLeadsStatus({ list: { rows = [], notesCount = 0, showS
                             handleOpenUpdatePopup={handleOpenUpdatePopup}
                             onNoteDelete={onNoteDelete}
                         />)
-                        : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
-                            <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
+                        : <Grid item xs={12} justifyContent={"center"}>
+                            {/* <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
                                 No data found!
-                            </Typography>
+                            </Typography> */}
+                            <NoDataCard title={"No data found"} />
                         </Grid>
                     ) : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
                         <Typography variant="h3" sx={{ my: 2, ml: 2 }}>

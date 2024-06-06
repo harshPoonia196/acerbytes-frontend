@@ -128,9 +128,13 @@ useEffect(()=>{
                         variant="outlined"
                         isEdit={isEdit}
                         value={pinCode}
-                        type={"number"}
+                        type="text"
                         error={errors?.["location.pinCode"]}
                         handleChange={(e) => handleChange(e, "location", "pinCode")}
+                        InputProps={{
+                            inputMode: 'numeric',
+                            pattern: '[0-9]*',
+                        }}
                     />
                     <NewInputFieldStructure isRequired={true}
                         label="Google map link"

@@ -26,6 +26,7 @@ function OverallAssesmentSection({
   handleClose,
   handleAction,
   AllPropertyData,
+  submitEnquiryUnath
 }) {
   const { userDetails } = useAuth();
   const router = useRouter();
@@ -98,8 +99,7 @@ function OverallAssesmentSection({
           {userDetails?.role !== "broker" && (<>
             <Button variant="outlined" onClick={() => { router.push('http://wa.me/+919323996997') }} startIcon={<WhatsAppIcon sx={{ position: 'relative', top: '-2px'}} />} sx={{
                 marginRight: "10px"}}>WhatsApp</Button>
-            <Button variant="contained" onClick={() => { router.push('http://wa.me/+919323996997') }} startIcon={<CallIcon />}>Get a Call back</Button></>)}
-            
+            <Button variant="contained" onClick={handleOpenEnquiryForm} startIcon={<CallIcon />}>Get a Call back</Button></>)}
             {/* <Chip label="WhatsApp" className="customBtn" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />}
               sx={{
                 marginRight: "10px"
@@ -147,6 +147,7 @@ function OverallAssesmentSection({
           handleClose={handleClose}
           handleAction={handleAction}
           submitEnquiry={handleSubmitEnquiry}
+          submitEnquiryUnath={submitEnquiryUnath}
         />}
         <Divider />
         <Box sx={{ p: 1 }}>

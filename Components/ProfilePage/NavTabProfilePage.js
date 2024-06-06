@@ -1,5 +1,4 @@
 import { Tab, Tabs } from '@mui/material'
-import { tabsClasses } from '@mui/material/Tabs'
 import React from 'react'
 
 function NavTabProfilePage({ value, handleChange, list }) {

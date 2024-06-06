@@ -9,6 +9,7 @@ import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
 import { getReviews } from 'api/Broker.api';
 import { useSnackbar } from "utills/SnackbarContext";
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 const page = () => {
 
@@ -65,10 +66,11 @@ const page = () => {
             </Grid>
           </Container></>
 
-        : <Grid item xs={12} display={"flex"} justifyContent={"center"}>
-          <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
+        : <Grid item xs={12} justifyContent={"center"}>
+          {/* <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
             No data found!
-          </Typography>
+          </Typography> */}
+          <NoDataCard title={"No data found"} />
         </Grid>
       }
     </>

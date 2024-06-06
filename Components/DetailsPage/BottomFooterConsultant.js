@@ -2,11 +2,11 @@ import { Avatar, Box, Button, Chip, Container, Fab, IconButton, Menu, MenuItem, 
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { ContentCopy as ContentCopyIcon, Phone as PhoneIcon,  } from '@mui/icons-material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { boxShadowTop } from 'utills/Constants';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DoneIcon from '@mui/icons-material/Done';
-import { capitalLizeName, formatDateAndDaysRemaining } from 'utills/CommonFunction';
+import { capitalLizeName } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
 import { useSnackbar } from 'utills/SnackbarContext';
 import { ToasterMessages } from 'utills/Constants';
@@ -33,7 +33,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
         const constructPropertyUrl = (property) => {
             const overview = property?.overview;
             const location = property?.location;
-            const brokerId = propertyData?.propertyBroker?.[0]?._id ?? 'defaultBrokerId'
+            const brokerId = property?.propertyBroker?.[0]?._id ?? 'defaultBrokerId'
     
             const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
             let projectType;

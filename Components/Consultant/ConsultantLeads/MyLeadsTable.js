@@ -322,7 +322,6 @@ function MyLeadsTable({ setLeadsCount }) {
       }
     }
   );
-  console.log("DATA: ", data);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -403,7 +402,7 @@ function MyLeadsTable({ setLeadsCount }) {
                   } else if (!adId && !brokerId?.length && userId) {
                     row.source = LINK.acrebytes;
                   }
-                  return <RowStructure row={row} key={row.firstName} handlePropertyView={handlePropertyView} />
+                  return <RowStructure row={row} key={row?._id} handlePropertyView={handlePropertyView} />
                 }
                 )}
               </TableBody>

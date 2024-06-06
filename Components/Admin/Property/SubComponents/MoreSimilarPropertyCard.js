@@ -31,9 +31,9 @@ function MoreSimilarPropertyCard({ propertyData }) {
                 </AccordionSummary>
                 <Divider />
                 <AccordionDetails>
-                <Box sx={{ p: 2 }}>
+                <Box>
                     <Grid container spacing={2} sx={{ justifyContent: "center"}}>
-                        <Grid item sm={4} xs={12}>
+                        <Grid item sm={4} xs={12} sx={{ paddingTop: "22px"}}>
                             <Card sx={{ height: '100%' }} onClick={() => {
                                 router.push(listOfPages.commonPropertyList + `/${overviewData?.builder}`)
                             }}>
