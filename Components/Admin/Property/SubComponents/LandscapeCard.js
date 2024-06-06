@@ -108,7 +108,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
         </Box>
         <Divider />
         <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-          {!hide.includes("numberOfBuildings") && <NewInputFieldStructure
+          {!hide.includes("numberOfBuildings") && <NewInputFieldStructure isRequired={true}
             label="No of buildings"
             name="numberOfBuildings"
             variant="outlined"
@@ -118,7 +118,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
             error={errors?.["layout.numberOfBuildings"]}
             handleChange={(e) => handleChange(e, "layout", "numberOfBuildings")}
           />}
-          {!hide.includes("layoutType") && <NewMultiSelectAutoCompleteInputStructure
+          {!hide.includes("layoutType") && <NewMultiSelectAutoCompleteInputStructure isRequired={true}
             label="Layout type"
             isEdit={isEdit}
             name="layoutType"
@@ -147,7 +147,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
               handleChange(newValue, "layout", "layoutType")
             }
           />}
-          {!hide.includes("floors") && <NewInputFieldStructure
+          {!hide.includes("floors") && <NewInputFieldStructure isRequired={true}
             label="Floors (Min)"
             name="minFloors"
             type={"number"}
@@ -157,7 +157,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
             error={errors?.["layout.minFloors"]}
             handleChange={(e) => handleChange(e, "layout", "minFloors")}
           />}
-          {!hide.includes("floors") && <NewInputFieldStructure
+          {!hide.includes("floors") && <NewInputFieldStructure isRequired={true}
             label="Floors (Max)"
             name="maxFloors"
             variant="outlined"
@@ -168,7 +168,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
             handleChange={(e) => handleChange(e, "layout", "maxFloors")}
           />}
 
-          {!hide.includes("area") && <NewUnitAreaInputField
+          {!hide.includes("area") && <NewUnitAreaInputField isRequired={true}
             label="Area"
             name="area"
             variant="outlined"
@@ -194,7 +194,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
               ||
               [{ label: "acres", value: "Acres" }]}
           />}
-          {!hide.includes("totalUnits") && <NewInputFieldStructure
+          {!hide.includes("totalUnits") && <NewInputFieldStructure isRequired={true}
             label="Units (Total)"
             name="totalUnits"
             type={"number"}
@@ -215,7 +215,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
               )
             }
           />}
-          {!hide.includes("greenArea") && <NewUnitAreaInputField
+          {!hide.includes("greenArea") && <NewUnitAreaInputField isRequired={true}
             label="Green area"
             name="greenArea"
             type={"number"}
@@ -271,7 +271,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
                 variant="subtitle2"
                 sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
               >
-                Score
+                Score <span style={{ color: colors.ERROR }}>*</span>
               </Typography>
             </Box>
             <Rating
@@ -307,7 +307,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
                 variant="subtitle2"
                 sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
               >
-                Score
+                Score <span style={{ color: colors.ERROR }}>*</span>
               </Typography>
             </Box>
             <Rating
@@ -325,7 +325,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
                 variant="subtitle2"
                 sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
               >
-                Construction Quality
+                Construction Quality <span style={{ color: colors.ERROR }}>*</span>
               </Typography>
             </Box>
             <Rating
@@ -345,7 +345,7 @@ function LandscapeCard({ isEdit, form, handleChange, errors, scoreChange, hide,s
                 variant="subtitle2"
                 sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
               >
-                Interior Quality
+                Interior Quality <span style={{ color: colors.ERROR }}>*</span>
               </Typography>
             </Box>
             <Rating

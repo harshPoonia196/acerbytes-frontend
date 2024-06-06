@@ -103,10 +103,12 @@ function ManageConsultantTable({ user }) {
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
+    setPage(0);
     setSearchTerm(term);
   },
 
     handleCityChange = (event) => {
+      setPage(0)
       setCity(event.target.value)
     }
 

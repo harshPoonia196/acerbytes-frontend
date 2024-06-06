@@ -77,7 +77,7 @@ export default function Home() {
               fontSize: { sm: "2em !important", md: "4rem !important" },
             }}
           >
-            <span style={{ color: colors.BLUE }}>Empowering better</span> Real Estate decisions
+            <span style={{ color: colors.GRAY, fontWeight: "bold" }}>Empowering better</span> Real Estate decisions
           </Typography>
 
           <Box
@@ -148,7 +148,7 @@ export default function Home() {
                       router.push(listOfPages.commonPropertyList + `/${city?.city}`);
                     }}
                   >
-                    <Typography variant="h3">{city?.city}</Typography>
+                    <Typography variant="h3" sx={{ fontWeight: "bold"}}>{city?.city}</Typography>
                     <Typography variant="h6">{city?.propertyCount} Properties</Typography>
                   </CardActionArea>
                 </Card>

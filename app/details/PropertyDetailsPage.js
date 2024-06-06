@@ -8,9 +8,10 @@ import {
   Box,
   Chip,
   Toolbar,
-  Button, Divider,
+  Button,
+  Divider,
   BottomNavigation,
-  BottomNavigationAction
+  BottomNavigationAction,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -53,13 +54,17 @@ import {
 } from "utills/Constants";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import colors from "styles/theme/colors";
-import { checkEnquiryOnPropertyLink, detailsProperty, favPropertyCreate } from "api/Property.api";
+import {
+  checkEnquiryOnPropertyLink,
+  detailsProperty,
+  favPropertyCreate,
+} from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { clearItem, getItem, getLoggedInUser } from "utills/utills";
+import { clearItem, constructPropertyUrl, getItem, getLoggedInUser } from "utills/utills";
 import {
   isEnquired,
   submitEnquiry,
@@ -88,8 +93,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -126,6 +130,9 @@ const PropertyDetailsPage = ({ params }) => {
   const [enquiredInfo, setEnquiredInfo] = useState([]);
   const [consultantsDialog, setConsultantsDialog] = useState(false);
 
+  const userInfo = JSON.parse(localStorage.getItem("userDetails"));
+  const token = localStorage.getItem("token");
+
   const shuffle = (a) => {
     for (let i = a?.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -134,25 +141,33 @@ const PropertyDetailsPage = ({ params }) => {
     return a;
   };
 
-  const detailsGetProperty = async () => {
+  const detailsGetProperty = async (isNavigate = false) => {
     try {
       setLoading(true);
-      let res = await detailsProperty(
-        `${detailsPropertyId}${userDetails._id ? `?brokerId=${userDetails._id}` : ""
-        }`
-      );
+      let res;
+      if (token) {
+        res = await detailsProperty(
+          `${detailsPropertyId}?brokerId=${userInfo?._id}`
+        );
+      } else {
+        res = await detailsProperty(detailsPropertyId);
+      }
       if (res.status === 200) {
         const data = {
           ...res.data?.data,
           consultants: shuffle(res.data?.data?.consultants),
         };
         setPropertyData({ ...data });
+        if (isNavigate) {
+          const url = constructPropertyUrl({ ...data });
+          router.push(url);
+        }
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -161,8 +176,8 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   const handleCloseConsultantDetails = () => {
-    setConsultantsDialog(false)
-  }
+    setConsultantsDialog(false);
+  };
 
   const handlefavClick = async () => {
     const adData = {
@@ -176,8 +191,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error generating fav Property",
+          error?.message ||
+          "Error generating fav Property",
         "error"
       );
     } finally {
@@ -192,6 +207,9 @@ const PropertyDetailsPage = ({ params }) => {
 
   useEffect(() => {
     detailsGetProperty();
+  }, []);
+
+  useEffect(() => {
     checkPropertyIsEnquired();
   }, [userDetails._id]);
 
@@ -244,7 +262,9 @@ const PropertyDetailsPage = ({ params }) => {
       setLoading(true);
       if (userDetails?._id) {
         let res = await checkEnquiryOnPropertyLink(
-          `${detailsPropertyId}${userDetails?._id ? `?userId=${userDetails?._id}` : ""}`
+          `${detailsPropertyId}${
+            userDetails?._id ? `?userId=${userDetails?._id}` : ""
+          }`
         );
         if (res.status === 200) {
           if (res.data?.data) {
@@ -255,14 +275,13 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
       setLoading(false);
     }
-
   };
 
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -299,7 +318,7 @@ const PropertyDetailsPage = ({ params }) => {
         leadId: leadId,
         userId: userDetails?._id,
         adId: "",
-        propertyId: detailsPropertyId
+        propertyId: detailsPropertyId,
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -312,14 +331,13 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
     }
   };
-
 
   useEffect(() => {
     if (getItem(enquiryFormOpen)) {
@@ -343,7 +361,7 @@ const PropertyDetailsPage = ({ params }) => {
         ...data,
         propertyId: detailsPropertyId,
         propertyLink: `details/${params.id}`,
-        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined
+        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined,
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -360,8 +378,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -374,7 +392,7 @@ const PropertyDetailsPage = ({ params }) => {
         ...data,
         propertyId: detailsPropertyId,
         propertyLink: `details/${params.id}`,
-        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined
+        brokerId: enquireWithBrokerId ? enquireWithBrokerId : undefined,
       });
 
       if (enquireWithBrokerId) {
@@ -404,8 +422,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -422,8 +440,8 @@ const PropertyDetailsPage = ({ params }) => {
         otp: data.otp,
         phone: {
           countryCode: data.countryCode,
-          number: data.number
-        }
+          number: data.number,
+        },
       });
       if (response.status == 200) {
         const { success, message } = response.data;
@@ -440,8 +458,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -501,7 +519,7 @@ const PropertyDetailsPage = ({ params }) => {
   const handleEnquireWithBroker = (brokerId) => {
     handleOpenEnquiryForm();
     setEnquireWithBrokerId(brokerId);
-  }
+  };
 
   const classes = useStyles();
 
@@ -554,9 +572,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -627,15 +645,15 @@ const PropertyDetailsPage = ({ params }) => {
         handleOpen={handleOpenPersonalizeAds}
         handleClose={handleClosePersonalizeAds}
       />
-      {userDetails?.role === "broker" &&
-        (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
+      {/* {userDetails?.role === "broker" &&
+      (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
         <AdsSection
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
           handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
           isConsultant
           propertyData={propertyData}
         />
-      ) : null}
+      ) : null}  */}
       {/* {userDetails?.role !== "admin" &&
         userDetails?.role !== "superAdmin" &&
         propertyData.isActiveAd ? (
@@ -735,19 +753,25 @@ const PropertyDetailsPage = ({ params }) => {
                       {propertyData?.consultants?.length > 0 &&
                         propertyData?.consultants?.slice(0, 2).map((broker) => (
                           <Grid item xs={12} sm={6} key={broker?.id}>
-                            <BrokerCard broker={broker} noReview enquiredInfo={enquiredInfo} handleEnquireWithBroker={handleEnquireWithBroker} />
+                            <BrokerCard
+                              broker={broker}
+                              noReview
+                              enquiredInfo={enquiredInfo}
+                              handleEnquireWithBroker={handleEnquireWithBroker}
+                            />
                           </Grid>
                         ))}
                     </Grid>
                   </Box>
                   <Divider />
                   {userDetails?.role === "broker" && (
-                    <Box sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: { xs: "column", sm: "row" },
-                      gap: 1,
-                    }}
+                    <Box
+                      sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        gap: 1,
+                      }}
                     >
                       <Box sx={{ flex: 1, alignSelf: "center" }}>
                         <Typography variant="body2" sx={{ flex: 1 }}>
@@ -967,15 +991,22 @@ const PropertyDetailsPage = ({ params }) => {
                 </Box> */}
               </>
             )}
-
-          {userDetails?.role === "broker" && (
+          {!isLoading && userDetails?.role === "broker" && (
             <>
               <Toolbar
                 sx={{
                   display: { xs: "flex", evmd: "none" },
                 }}
               />
-              <BottomFooterConsultant />
+              <BottomFooterConsultant
+                SinglePropertyId={
+                  propertyData?.propertyBroker
+                    ? propertyData?.propertyBroker[0]
+                    : ""
+                }
+                handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+                propertyData={propertyData}
+              />
             </>
           )}
         </Container>

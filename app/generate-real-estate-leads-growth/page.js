@@ -17,6 +17,11 @@ import {
   Button,
   AvatarGroup,
   Avatar,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Grid 
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { useRouter } from "next/navigation";
@@ -35,8 +40,39 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import { useAuth } from 'utills/AuthContext';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+
+import Qrimage from "../../public/images/demo.webp"
+
+const enquiries = [
+  {
+    id: "1",
+    title: "Lead generation link",
+    description: "Get own property page linked with your contact, receive unlimited inquiries",
+    image: "https://www.kundans.com/wp-content/uploads/2023/02/property-purchasing-1024x640.jpg"
+  },
+  {
+    id: "2",
+    title: "Lead inquiries management",
+    description: "Get paanel to manage your client status and notes",
+    image: "https://kathygroverrealestateagenthighlandvillagetx.com/wp-content/uploads/2019/10/Property-Business0.jpg"
+  },
+  {
+    id: "3",
+    title: "Increase your presence and visibility",
+    description: "Get your profile linked to listed property",
+    image: "https://www.businessinsider.in/_next/image?url=https%3A%2F%2Fstaticbiassets.in%2Fthumb%2Fmsid-52322577%2Cwidth-700%2Cresizemode-4%2Cimgsize-135930%2Findian-property-sector-uprise.jpg&w=1920&q=75"
+  },
+  {
+    id: "4",
+    title: "Access active and verified customer enquiries",
+    description: "improve your chances of leads conversion with better leads",
+    image: "https://smallbiztrends.com/ezoimgfmt/media.smallbiztrends.com/2022/05/real-estate-business-ideas-850x476.png?ezimgfmt=ng%3Awebp%2Fngcb12"
+  }
+]
+
 function Row(props) {
   const { row, history } = props;
+  
   const [open, setOpen] = React.useState(false);
   const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
@@ -230,6 +266,32 @@ function EnhancedTableHead(props) {
   );
 }
 
+const EnquiryCard = ({enquiry}) => {
+  return(
+    <Card sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
+      <Box>
+        <CardMedia
+          sx={{ height: 140 }}
+          image={enquiry.image}
+          title={enquiry.title}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div" sx={{ fontWeight: "bold"}}>
+            {enquiry.title}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            {enquiry.description}
+          </Typography>
+        </CardContent>
+      </Box>
+      <CardActions>
+        {/* <Button size="small">Share</Button> */}
+        <Button size="small">Learn More</Button>
+      </CardActions>
+    </Card>
+  )
+}
+
 export default function Enquiries(props) {
 
   const [order, setOrder] = React.useState("asc");
@@ -296,11 +358,31 @@ export default function Enquiries(props) {
 
   const history = useRouter();
   console.log(props, "userdjbdj")
+
   return (
     <>
       {isLoading && <Loader />}
-      <Box sx={{ backgroundColor: "white" }} >
+      <Box sx={{ backgroundColor: "white", boxShadow: "-1px -2px 6px 2px gainsboro !important", }} >
         <Container maxWidth="lg" sx={{ pb: "0 !important" }} >
+          <Box sx={{ py: 2 }}>
+            <Typography variant="h1" sx={{
+              fontWeight: 300,
+              fontSize: { sm: "2em !important", md: "4rem !important" },
+              marginBottom: "35px", textAlign: "center"
+            }}>
+            <span style={{ color: colors.GRAY, fontWeight: "bold" }}>AcreBytes | Are you a real estate consultant ? </span>
+            Get an easy way to generate real estate leads and business growth with AcreBytes
+            </Typography>
+            <Grid container spacing={2}>
+              {enquiries.map(enquiry => {
+                return (
+                  <Grid item xs={12} sm={6} lg={3}>
+                    <EnquiryCard key={enquiry.id} enquiry={enquiry} />
+                  </Grid>
+                )
+              })}
+          </Grid>
+          </Box>
           <Box sx={{ py: 4 }}>
             <Typography variant="h1" sx={{ color: "#000", fontWeight: 300 }}>
               Explore a world of possibilities with{" "}
@@ -344,7 +426,7 @@ export default function Enquiries(props) {
               />
               {brokerBalance?
               <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
-                ButtonText={brokerBalance}
+                ButtonText={`Points: ${brokerBalance}`}
               />:""}
             </Box>
           </Box>
@@ -381,9 +463,9 @@ export default function Enquiries(props) {
                   <Row key={row.name} row={row} history={history} />
                 ))
               ) : (
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <Typography variant="body2" style={{ display: "flex", justifyContent: "center", marginTop: "5px" }}>
                   No Data
-                </div>
+                </Typography>
               )}
             </TableBody>
           </Table>

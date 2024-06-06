@@ -151,6 +151,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
           <Divider />
           <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
             <NewAutoCompleteInputStructure
+              isRequired={true}
               label="Builder"
               name="builder"
               variant="outlined"
@@ -175,7 +176,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
                   variant="subtitle2"
                   sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
                 >
-                  Score
+                  Score <span style={{ color: colors.ERROR }}>*</span>
                 </Typography>
               </Box>
               <Rating
@@ -201,6 +202,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
               />
             </Grid>
             <NewInputFieldStructure
+              isRequired={true}
               label={capitalLizeName("Project name")}
               variant="outlined"
               isEdit={isEdit}
@@ -211,6 +213,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
               }}
             />
             <NewSelectTextFieldStructure
+              isRequired={true}
               label="Project category"
               name="projectCategory"
               isEdit={isEdit}
@@ -232,6 +235,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
               }
             />
             <NewMultiSelectAutoCompleteInputStructure
+              isRequired={true}
               label="Project type"
               isEdit={isEdit}
               value={projectType}
@@ -265,6 +269,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
               }
             />
             <NewInputFieldStructure
+              isRequired={true}
               label="Phase"
               variant="outlined"
               isEdit={isEdit}
@@ -273,6 +278,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
               handleChange={(e) => handleChange(e, "overview", "phase")}
             />
             <NewSelectTextFieldStructure
+              isRequired={true}
               label="Launch"
               isEdit={isEdit}
               value={launchYear}
@@ -288,6 +294,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
               handleChange={(e) => handleChange(e, "overview", "launchYear")}
             />
             <NewSelectTextFieldStructure
+              isRequired={true}
               label="Completion"
               isEdit={isEdit}
               value={completionYear}
@@ -305,6 +312,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
               }
             />
             <NewSelectTextFieldStructure
+              isRequired={true}
               label="Status"
               isEdit={isEdit}
               value={status}
@@ -336,6 +344,7 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
 
             {status.toLowerCase() === "under construction" && (
               <NewSelectTextFieldStructure
+                isRequired={true}
                 label="Construction Progress"
                 isEdit={isEdit}
                 value={constructionProgress}

@@ -64,11 +64,11 @@ useEffect(()=>{
                 </Box>
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
-                    <NewSelectTextFieldStructure
+                    <NewSelectTextFieldStructure isRequired={true}
                         label="State"
                         isEdit={isEdit}
                         value={state}
-
+                        name='state'
                         list={
                             Object.keys(cities).map((item) => {
                                 return {
@@ -82,7 +82,7 @@ useEffect(()=>{
                         error={errors?.["location.state"]}
                         handleChange={(e) => handleChange(e, "location", "state")}
                     />
-                    {/* <NewInputFieldStructure
+                    {/* <NewInputFieldStructure isRequired={true}
                         label="City"
                         variant="outlined"
                         isEdit={isEdit}
@@ -90,9 +90,10 @@ useEffect(()=>{
                         error={errors?.["location.city"]}
                         handleChange={(e) => handleChange(e, "location", "city")}
                     /> */}
-                    <NewAutocompleteAddOptionToList
+                    <NewAutocompleteAddOptionToList isRequired={true}
                         label="City"
                         value={city}
+                        name='city'
                         disabled={state == undefined||state ==""}
                         error={errors?.["location.city"]}
                         options={
@@ -106,7 +107,7 @@ useEffect(()=>{
                         handleChange={(e) => handleChange(e, "location", "city")}
                     />
 
-                    <NewInputFieldStructure
+                    <NewInputFieldStructure isRequired={true}
                         label="Area"
                         variant="outlined"
                         isEdit={isEdit}
@@ -114,7 +115,7 @@ useEffect(()=>{
                         error={errors?.["location.area"]}
                         handleChange={(e) => handleChange(e, "location", "area")}
                     />
-                    <NewInputFieldStructure
+                    <NewInputFieldStructure isRequired={true}
                         label="Sector / Locality / Sub area"
                         variant="outlined"
                         isEdit={isEdit}
@@ -122,16 +123,20 @@ useEffect(()=>{
                         error={errors?.["location.sector"]}
                         handleChange={(e) => handleChange(e, "location", "sector")}
                     />
-                    <NewInputFieldStructure
+                    <NewInputFieldStructure isRequired={true}
                         label="Pincode"
                         variant="outlined"
                         isEdit={isEdit}
                         value={pinCode}
-                        type={"number"}
+                        type="text"
                         error={errors?.["location.pinCode"]}
                         handleChange={(e) => handleChange(e, "location", "pinCode")}
+                        InputProps={{
+                            inputMode: 'numeric',
+                            pattern: '[0-9]*',
+                        }}
                     />
-                    <NewInputFieldStructure
+                    <NewInputFieldStructure isRequired={true}
                         label="Google map link"
                         variant="outlined"
                         isEdit={isEdit}
@@ -139,7 +144,7 @@ useEffect(()=>{
                         error={errors?.["location.googleMapLink"]}
                         handleChange={(e) => handleChange(e, "location", "googleMapLink")}
                     />
-                    <NewInputFieldStructure
+                    <NewInputFieldStructure isRequired={true}
                         label="Geo longitude"
                         variant="outlined"
                         isEdit={isEdit}
@@ -148,7 +153,7 @@ useEffect(()=>{
                         error={errors?.["location.longitude"]}
                         handleChange={(e) => handleChange(e, "location", "longitude")}
                     />
-                    <NewInputFieldStructure
+                    <NewInputFieldStructure isRequired={true}
                         label="Geo latitude"
                         variant="outlined"
                         isEdit={isEdit}

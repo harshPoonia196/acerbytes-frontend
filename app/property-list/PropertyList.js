@@ -9,7 +9,7 @@ import {
   Typography,
   TablePagination,
   Button,
-  Box
+  Box,
 } from "@mui/material";
 import PropertyCard from "Components/PropertyList/PropertyCard";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -24,11 +24,7 @@ import {
 } from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
-import {
-  DEBOUNCE_TIMER,
-  PAGINATION_LIMIT,
-  PAGINATION_LIMIT_OPTIONS,
-} from "utills/Constants";
+import { DEBOUNCE_TIMER, PAGINATION_LIMIT_OPTIONS } from "utills/Constants";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import colors from "styles/theme/colors";
 import {
@@ -52,9 +48,7 @@ function PropertyList({ params }) {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const inputRef = useRef(null);
-  const [selectedOptions, setSelectedOptions] = useState(
-    {}
-  );
+  const [selectedOptions, setSelectedOptions] = useState({});
   const [propertyvalue, setPropertyvalue] = useState("");
   const [selectOption, setSelectOption] = useState({});
   const [isDisablePropertyType, setIsDisablePropertyType] = useState(true);
@@ -72,7 +66,6 @@ function PropertyList({ params }) {
     setCurrentPage(1);
   };
 
-
   const getUserPropertyList = async (
     pageOptions,
     // searchTerm,
@@ -81,7 +74,7 @@ function PropertyList({ params }) {
     propertyvalue
   ) => {
     try {
-      setLoading(res => ({ ...res, loader1: true }));
+      setLoading((res) => ({ ...res, loader1: true }));
       let data = {};
       Object.keys(selectedOptions).forEach((key) => {
         const value = selectedOptions[key];
@@ -113,17 +106,17 @@ function PropertyList({ params }) {
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
-        setCount(res.data);
+        setCount(res.totalCount);
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
-      setLoading(res => ({ ...res, loader1: false }));
+      setLoading((res) => ({ ...res, loader1: false }));
     }
   };
 
@@ -133,15 +126,21 @@ function PropertyList({ params }) {
       if (res.status === 200) {
         let transform = transformDocuments(res.data.data);
         setSelectOption({ ...transform });
-        if (params.location && transform?.builder.includes(decodeURIComponent(params.location))) {
-          setSelectedOptions((pre => ({ ...pre, builder: decodeURIComponent(params.location) })));
+        if (
+          params.location &&
+          transform?.builder.includes(decodeURIComponent(params.location))
+        ) {
+          setSelectedOptions((pre) => ({
+            ...pre,
+            builder: decodeURIComponent(params.location),
+          }));
         }
       }
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     }
@@ -151,21 +150,27 @@ function PropertyList({ params }) {
     try {
       let res = await getLocations();
       if (res.status === 200) {
-        const filteredCityDetails = res?.data?.data?.filter(cityDetail =>
-          newdata?.some(item => item.city === cityDetail.city));
+        const filteredCityDetails = res?.data?.data?.filter((cityDetail) =>
+          newdata?.some((item) => item.city === cityDetail.city)
+        );
         let transformLocation = transformDocumentsLocation(filteredCityDetails);
         setLocationData({ ...transformLocation });
-        if (params.location && Object.keys(transformLocation).includes(decodeURIComponent(decodeURIComponent(params.location)))) {
+        if (
+          params.location &&
+          Object.keys(transformLocation).includes(
+            decodeURIComponent(decodeURIComponent(params.location))
+          )
+        ) {
           setSelectedOptions({ city: decodeURIComponent(params.location) });
           setLocationDisable(false);
         } else {
-          let a = Object.keys(transformLocation)
+          let a = Object.keys(transformLocation);
           for (let index = 0; index < a.length; index++) {
             const element = transformLocation[a[index]];
             if (element.includes(decodeURIComponent(params.location))) {
               setSelectedOptions({
                 city: a[index],
-                location: decodeURIComponent(params.location)
+                location: decodeURIComponent(params.location),
               });
               setLocationDisable(false);
             }
@@ -182,7 +187,7 @@ function PropertyList({ params }) {
 
   const getAllPropertyByCity = async () => {
     try {
-      setLoading(res => ({ ...res, loader2: true }));
+      setLoading((res) => ({ ...res, loader2: true }));
       let res = await propertyByCity();
       if (res.status === 200) {
         getLocationsCall(res.data.data);
@@ -192,12 +197,12 @@ function PropertyList({ params }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
-      setLoading(res => ({ ...res, loader2: false }));
+      setLoading((res) => ({ ...res, loader2: false }));
     }
   };
 
@@ -209,7 +214,10 @@ function PropertyList({ params }) {
     } else if (key === "category") {
       setIsDisablePropertyType(false);
       setIsDisableLayoutType(true);
-    } else if (key === "propertyType" && selectedOptions.category === 'Residential') {
+    } else if (
+      key === "propertyType" &&
+      selectedOptions.category === "Residential"
+    ) {
       setIsDisableLayoutType(false);
       setLayoutTypeApplicable(value);
     }
@@ -360,27 +368,26 @@ function PropertyList({ params }) {
     return (
       <>
         <NewAutoCompleteInputStructure
-          xs={12} md={12}
+          xs={12}
+          md={12}
           label="Builder"
           list={selectOption?.builder}
-          handleChange={(event, value) =>
-            handleOptionChange("builder", value)
-          }
+          handleChange={(event, value) => handleOptionChange("builder", value)}
           value={selectedOptions.builder ? selectedOptions.builder : ""}
           clearable
         />
         <NewAutoCompleteInputStructure
-          xs={12} md={12}
+          xs={12}
+          md={12}
           label="Category"
           list={selectOption?.projectCategory}
-          handleChange={(event, value) =>
-            handleOptionChange("category", value)
-          }
+          handleChange={(event, value) => handleOptionChange("category", value)}
           value={selectedOptions.category ? selectedOptions.category : ""}
           clearable
         />
         <NewAutoCompleteInputStructure
-          xs={12} md={12}
+          xs={12}
+          md={12}
           label="Property type"
           disabled={isDisablePropertyType}
           list={
@@ -392,14 +399,13 @@ function PropertyList({ params }) {
             handleOptionChange("propertyType", value)
           }
           value={
-            selectedOptions?.propertyType
-              ? selectedOptions?.propertyType
-              : ""
+            selectedOptions?.propertyType ? selectedOptions?.propertyType : ""
           }
           clearable
         />
         <NewAutoCompleteInputStructure
-          xs={12} md={12}
+          xs={12}
+          md={12}
           label="Layout type"
           disabled={isDisableLayoutType}
           list={
@@ -409,58 +415,57 @@ function PropertyList({ params }) {
               ? selectOption.layoutType
               : ""
           }
-          handleChange={(event, value) =>
-            handleOptionChange("unitType", value)
-          }
+          handleChange={(event, value) => handleOptionChange("unitType", value)}
           value={selectedOptions.unitType ? selectedOptions.unitType : ""}
           clearable
         />
         <NewAutoCompleteInputStructure
-          xs={12} md={12}
+          xs={12}
+          md={12}
           label="City"
           list={cities}
-          handleChange={(event, value) =>
-            handleOptionChange("city", value)
-          }
+          handleChange={(event, value) => handleOptionChange("city", value)}
           value={selectedOptions.city ? selectedOptions.city : ""}
           clearable
         />
         <NewAutoCompleteInputStructure
-          xs={12} md={12}
+          xs={12}
+          md={12}
           label="Location"
           disabled={locationDisable}
           list={selectedCity ? locationData[selectedCity] : []}
-          handleChange={(event, value) =>
-            handleOptionChange("location", value)
-          }
+          handleChange={(event, value) => handleOptionChange("location", value)}
           value={selectedOptions.location ? selectedOptions.location : ""}
           clearable
         />
         <NewAutoCompleteInputStructure
-          xs={12} md={12}
+          xs={12}
+          md={12}
           label="Status"
           list={selectOption?.status}
-          handleChange={(event, value) =>
-            handleOptionChange("status", value)
-          }
+          handleChange={(event, value) => handleOptionChange("status", value)}
           value={selectedOptions.status ? selectedOptions.status : ""}
           clearable
         />
       </>
-    )
-  }
-
+    );
+  };
 
   return (
     <>
       <>
         {(isLoading?.loader1 || isLoading?.loader2) && <Loader />}
-        {
-
-        }
         <Container maxWidth="lg" sx={{ height: "100%" }}>
           <Box sx={{ display: "flex", gap: 2 }}>
-            <Card sx={{ display: { xs: 'none', md: 'block' }, p: 2, width: 220, height: "max-content", overflowY: "scroll" }}>
+            <Card
+              sx={{
+                display: { xs: "none", md: "block" },
+                pl: 2, pt:2, pr:1, pb:2,
+                width: 220,
+                height: "max-content",
+                overflowY: "scroll",
+              }}
+            >
               <Grid container spacing={2}>
                 {getFilterFields()}
                 <Grid item xs={12} sx={{ alignSelf: "center" }}>
@@ -478,11 +483,12 @@ function PropertyList({ params }) {
                     aria-label="Platform"
                     sx={{ display: "flex" }}
                     size="small"
+                    orientation="vertical"
                   >
                     <ToggleButton
                       value="score"
                       selected={propertyvalue === "score"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
                       Score{" "}
                       {propertyvalue === "score" &&
@@ -495,7 +501,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="price"
                       selected={propertyvalue === "price"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
                       Price{" "}
                       {propertyvalue === "price" &&
@@ -508,7 +514,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="area"
                       selected={propertyvalue === "area"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
                       Area{" "}
                       {propertyvalue === "area" &&
@@ -521,7 +527,7 @@ function PropertyList({ params }) {
                     <ToggleButton
                       value="completion"
                       selected={propertyvalue === "completion"}
-                      sx={{ flex: 1, justifyContent: "space-around" }}
+                      sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
                       Completion{" "}
                       {propertyvalue === "completion" &&
@@ -560,18 +566,15 @@ function PropertyList({ params }) {
               </Grid>
             </Card>
             <Box sx={{ flex: 1 }}>
-
-
-
-
               <Grid container spacing={2}>
-                {params.location && (<Grid item xs={36}>
-                  <Card>
-                    <Grid
-                      container
-                      sx={{ display: "flex", flexDirection: "row-reverse" }}
-                    >
-                      {/* <Grid item xs={12} sm={6}>
+                {params.location && (
+                  <Grid item xs={36}>
+                    <Card>
+                      <Grid
+                        container
+                        sx={{ display: "flex", flexDirection: "row-reverse" }}
+                      >
+                        {/* <Grid item xs={12} sm={6}>
                   <Card sx={{ boxShadow: "none" }}>
                     <iframe
                       src="https://www.google.com/maps/embed?pb=!1m12!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1299016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
@@ -583,38 +586,41 @@ function PropertyList({ params }) {
                   </Card>
                 </Grid> */}
 
-                      <Grid item xs={12}>
-                        <Card
-                          sx={{
-                            p: 2,
-                            height: "100%",
-                            boxShadow: "none",
-                          }}
-                        >
-                          <Typography variant="h2">
-                            {decodeURIComponent(params.location)}
-                          </Typography>
-                          <Typography variant="caption">
-                            Noida's strategic location, robust infrastructure, and
-                            flourishing business environment have contributed to its
-                            status as a vibrant and attractive real estate destination
-                            in the NCR region.
-                          </Typography>
-                        </Card>
+                        <Grid item xs={12}>
+                          <Card
+                            sx={{
+                              p: 2,
+                              height: "100%",
+                              boxShadow: "none",
+                            }}
+                          >
+                            <Typography variant="h2">
+                              {decodeURIComponent(params.location)}
+                            </Typography>
+                            <Typography variant="caption">
+                              Noida's strategic location, robust infrastructure,
+                              and flourishing business environment have
+                              contributed to its status as a vibrant and
+                              attractive real estate destination in the NCR
+                              region.
+                            </Typography>
+                          </Card>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </Card>
-                </Grid>)
-                }
+                    </Card>
+                  </Grid>
+                )}
                 <Grid item xs={36}>
                   <Card>
                     <CustomSearch
                       value={searchTerm}
-                      onChange={(event) => setSearchTerm(event.target.value.toLowerCase())}
+                      onChange={(event) =>
+                        setSearchTerm(event.target.value.toLowerCase())
+                      }
                       onSearchButtonClick={handleSearchButtonClick}
                       inputRef={inputRef}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
+                        if (e.key === "Enter") {
                           handleSearchButtonClick();
                         }
                       }}
@@ -638,7 +644,11 @@ function PropertyList({ params }) {
                     </Grid>
                   )}
                 </Grid>
-                <Grid item xs={36} sx={{ marginLeft: "auto", marginRight: "0" }}>
+                <Grid
+                  item
+                  xs={36}
+                  sx={{ marginLeft: "auto", marginRight: "0" }}
+                >
                   <TablePagination
                     rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
                     component="div"

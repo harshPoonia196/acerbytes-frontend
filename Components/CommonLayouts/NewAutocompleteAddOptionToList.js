@@ -16,7 +16,8 @@ const NewAutocompleteAddOptionToList = ({
   isEdit,
   options,
   error,
-  list
+  list,
+  isRequired
 }) => {
 
   return (
@@ -27,7 +28,7 @@ const NewAutocompleteAddOptionToList = ({
             variant='subtitle2'
             sx={{ alignSelf: "center", flex: 1, color: colors.GRAY }}
           >
-            {label}
+            {label} {isRequired && <span style={{ color: colors.ERROR }}>*</span>}
           </Typography>
         </Box>
         <Autocomplete

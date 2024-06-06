@@ -14,10 +14,12 @@ function ClearanceSection(props) {
     const getTextToDisplay = (type) => {
         switch (type) {
             case 'Yes':
-                return <CheckBoxIcon fontSize='small' sx={{ fontSize: { xs: '0.95rem !important' }, position: 'relative', top: '2px' }} />
+                return <Tooltip title="Yes" sx={{ fontSize: { xs: '0.95rem !important', position: 'relative', top: '2px' } }}>
+                        <CheckBoxIcon fontSize='small' sx={{ fontSize: { xs: '0.95rem !important' }, position: 'relative', top: '2px', color: "#696969" }} />
+                        </Tooltip>
 
             case "Don't know":
-                return <Tooltip title="No information Found" sx={{ fontSize: { xs: '0.95rem !important', position: 'relative', top: '2px' } }}><ErrorIcon fontSize='1.25rem' /></Tooltip>
+                return <Tooltip title="No information found" sx={{ fontSize: { xs: '0.95rem !important' } }}><ErrorIcon fontSize='1.25rem' sx={{ color: "#696969", position: 'relative', top: '2px'}}/></Tooltip>
         }
     }
 

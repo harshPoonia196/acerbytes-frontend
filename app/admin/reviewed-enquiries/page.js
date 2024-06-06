@@ -6,13 +6,12 @@ import EnquiriesTable from "Components/Admin/Enquiries/EnquiriesTable";
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
-import { useAuth } from 'utills/AuthContext';
 import { LEADS_TAB } from "utills/Constants";
 
 function Enquiries() {
   const [search, setSearch] = useState("");
   const [counts, setCounts] = useState({ leadCounts: 0, pending: 0, reviewed: 0 });
-  const [alignment, setAlignment] = useState(''),
+  const [alignment, setAlignment] = useState(LEADS_TAB[2].value),
     [page, setPage] = useState(0),
 
     handleSearch = (e) => {
@@ -28,9 +27,9 @@ function Enquiries() {
   return (
     <>
       <CustomAdminBreadScrumbs text='List of leads' />
-      <InfoBox dataList={[{ label: 'Leads', value: counts.leadCounts }, { label: 'Pending', value: counts.pending }, { label: 'Reviewed', value: counts.reviewed }]} />
-      <Container sx={{ paddingBottom: "0px !important"}}>
-        <Card sx={{ mb: 0 }}>
+      <InfoBox dataList={[{ label: 'Reviewed', value: counts.reviewed }]} />
+      {/* <Container>
+        <Card sx={{ mb: 2 }}>
           <ToggleButtonGroup
             color="primary"
             value={alignment}
@@ -42,10 +41,10 @@ function Enquiries() {
               overflowX: 'auto',
             }}
           >
-            {LEADS_TAB.map((tab => <ToggleButton size='small' value={tab.value} sx={{ flex: 1, border: 'none', padding: '10px' }}>{tab.label}</ToggleButton>))}
+            <ToggleButton size='small' value={LEADS_TAB[2].value} sx={{ flex: 1, border: 'none', padding: '10px' }}>{LEADS_TAB[2].label}</ToggleButton>
           </ToggleButtonGroup>
         </Card>
-      </Container>
+      </Container> */}
       <Container>
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput value={search} onChange={handleSearch} />
