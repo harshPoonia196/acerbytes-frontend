@@ -23,6 +23,13 @@ function ClearanceSection(props) {
         }
     }
 
+    const checkData = (text)=>{
+        if(text === "Don't know"){
+            return "-"
+        }
+        return text
+    }
+
     return (
         <Grid item xs={12} ref={refCallback} id='clearance' >
             <Card>
@@ -52,6 +59,7 @@ function ClearanceSection(props) {
                                     cursor: 'pointer'
                                 }}
                             >
+                               
                                 {regulatoryClearanceData?.sectionScore ? regulatoryClearanceData?.sectionScore.toFixed() : "00"}
                             </Typography>
                         </Card>
@@ -61,16 +69,16 @@ function ClearanceSection(props) {
                 <Grid container spacing={1} sx={{ p: 2 }}>
                     <NewKeyValuePairStructure label="RERA approved"
                         labelIcon={getTextToDisplay(regulatoryClearanceData?.reraApproved)}
-                        value={regulatoryClearanceData?.reraApproved}
+                        value={checkData(regulatoryClearanceData?.reraApproved)}
                     />
-                    <NewKeyValuePairStructure label="RERA" value={(regulatoryClearanceData?.reraNumber)}
+                    <NewKeyValuePairStructure label="RERA" value={checkData(regulatoryClearanceData?.reraNumber)}
                     />
-                    <NewKeyValuePairStructure label="CC" labelIcon={getTextToDisplay(regulatoryClearanceData?.cc)} value={(regulatoryClearanceData?.cc)} />
-                    <NewKeyValuePairStructure label="OC" labelIcon={getTextToDisplay(regulatoryClearanceData?.oc)} value={(regulatoryClearanceData?.oc)} />
-                    <NewKeyValuePairStructure label="Authority registration" labelIcon={getTextToDisplay(regulatoryClearanceData?.authorityRegistration)} value={regulatoryClearanceData?.authorityRegistration} />
-                    <NewKeyValuePairStructure label="Government bank loan" labelIcon={getTextToDisplay(regulatoryClearanceData?.governmentLoan)} value={regulatoryClearanceData?.governmentLoan} />
-                    <NewKeyValuePairStructure label="Private bank loan" labelIcon={getTextToDisplay(regulatoryClearanceData?.privateBankLoan)} value={regulatoryClearanceData?.privateBankLoan} />
-                    <NewKeyValuePairStructure label="Resale" labelIcon={getTextToDisplay(regulatoryClearanceData?.resale)} value={regulatoryClearanceData?.resale} />
+                    <NewKeyValuePairStructure label="CC" labelIcon={getTextToDisplay(regulatoryClearanceData?.cc)} value={checkData(regulatoryClearanceData?.cc)} />
+                    <NewKeyValuePairStructure label="OC" labelIcon={getTextToDisplay(regulatoryClearanceData?.oc)} value={checkData(regulatoryClearanceData?.oc)} />
+                    <NewKeyValuePairStructure label="Authority registration" labelIcon={getTextToDisplay(regulatoryClearanceData?.authorityRegistration)} value={checkData(regulatoryClearanceData?.authorityRegistration)} />
+                    <NewKeyValuePairStructure label="Government bank loan" labelIcon={getTextToDisplay(regulatoryClearanceData?.governmentLoan)} value={checkData(regulatoryClearanceData?.governmentLoan)} />
+                    <NewKeyValuePairStructure label="Private bank loan" labelIcon={getTextToDisplay(regulatoryClearanceData?.privateBankLoan)} value={checkData(regulatoryClearanceData?.privateBankLoan)} />
+                    <NewKeyValuePairStructure label="Resale" labelIcon={getTextToDisplay(regulatoryClearanceData?.resale)} value={checkData(regulatoryClearanceData?.resale)} />
                 </Grid>
             </Card>
         </Grid>
