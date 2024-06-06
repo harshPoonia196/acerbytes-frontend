@@ -78,7 +78,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell
+          <TableCell sx={{ textTransform: "capitalize" }}
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}

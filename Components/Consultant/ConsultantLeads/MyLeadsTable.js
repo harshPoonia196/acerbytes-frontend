@@ -101,7 +101,7 @@ const headCells = [
   },
   {
     id: "enquired",
-    label: "Enquired on date",
+    label: "Enquired  date",
   },
 ];
 
@@ -128,7 +128,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption" sx={{textTransform:"capitalize",fontWeight:"bold"}}>
+              <Typography variant="caption" sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
                 {(headCell.label)}
               </Typography>
 
@@ -174,6 +174,7 @@ function RowStructure({ row, handlePropertyView }) {
   const handleCloseNext = () => {
     setAnchorElNext(null);
   };
+
 
   return (
     <TableRow
@@ -237,9 +238,25 @@ function RowStructure({ row, handlePropertyView }) {
           <MenuItem onClick={handleOpenUpdatePopup}>Logout</MenuItem>
         </Menu>
       </TableCell> */}
-      <TableCell>{countryCodeFormating(row.phone?.countryCode)} {row.phone?.number} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
-        <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='error' />}</TableCell>
-
+      <TableCell>
+        {row.phone?.countryCode && row.phone?.number && (
+          <a
+            href={`https://www.phonepe.com/how-to-pay/pay-by-phonepe/web/`} // Prevent default link behavior
+            onClick={(e) => {
+              e.preventDefault();
+              handlePhonePeRedirect(`${row.phone?.countryCode}${row.phone?.number}`);
+            }}
+            style={{ textDecoration: 'none' }}
+          >
+            {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}
+          </a>
+        )}
+        {row.isVerified ? (
+          <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color="success" />
+        ) : (
+          <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color="error" />
+        )}
+      </TableCell>
       {/* <TableCell>
         {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}
       </TableCell>
