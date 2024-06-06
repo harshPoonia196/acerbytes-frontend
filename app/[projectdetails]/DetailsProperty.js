@@ -702,6 +702,7 @@ const PropertyDetails = ({ params }) => {
               open={OverallAssesmentOpenEnquiryForm}
               handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
+              submitEnquiryUnath={handleSubmitEnquiryUnauth}
             />
             {/* <MoreSimilarPropertyCard /> */}
           </Grid>
