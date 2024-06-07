@@ -26,6 +26,7 @@ function OverallAssesmentSection({
   handleClose,
   handleAction,
   AllPropertyData,
+  submitEnquiryUnath
 }) {
   const { userDetails } = useAuth();
   const router = useRouter();
@@ -146,6 +147,7 @@ function OverallAssesmentSection({
           handleClose={handleClose}
           handleAction={handleAction}
           submitEnquiry={handleSubmitEnquiry}
+          submitEnquiryUnath={submitEnquiryUnath}
         />}
         <Divider />
         <Box sx={{ p: 1 }}>

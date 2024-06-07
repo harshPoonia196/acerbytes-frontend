@@ -25,19 +25,13 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import {
-  getComparator,
   getApprovedDiscountPercentage,
   objectToQueryString,
-  stableSort,
   formatPoints,
   formatAmount,
 } from "utills/CommonFunction";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import { ToasterMessages } from "utills/Constants";
-import Loading from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import {
   completeOrderRequest,
@@ -144,13 +138,17 @@ function EnhancedTableHead(props) {
               align={headCell.numeric ? "right" : "left"}
               padding={headCell.disablePadding ? "none" : "normal"}
               sortDirection={orderBy === headCell.id ? order : false}
+              sx={{ textTransform: "capitalize", fontWeight: "bold" }}
             >
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : "asc"}
                 onClick={createSortHandler(headCell.id)}
               >
-                {headCell.label}
+                
+                  {headCell.label}
+               
+
                 {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === "desc"
@@ -248,6 +246,8 @@ function RowStructure({
       <TableRow
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
       >
         <TableCell>{row.orderNumber}</TableCell>
         <TableCell>

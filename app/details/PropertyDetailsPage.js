@@ -164,7 +164,6 @@ const PropertyDetailsPage = ({ params }) => {
         }
       }
     } catch (error) {
-      console.log(error.message);
       showToaterMessages(
         error?.response?.data?.message ||
           error?.message ||
@@ -626,7 +625,6 @@ const PropertyDetailsPage = ({ params }) => {
     if (divRef.current) {
       const divHeight = divRef.current.clientHeight;
       setHeightOfFooter(divHeight);
-      console.log("Height of the div:", divHeight);
     }
   }, []);
 
@@ -822,6 +820,7 @@ const PropertyDetailsPage = ({ params }) => {
               open={OverallAssesmentOpenEnquiryForm}
               handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
+              submitEnquiryUnath={handleSubmitEnquiryUnauth}
             />
             <MoreSimilarPropertyCard propertyData={propertyData} />
           </Grid>

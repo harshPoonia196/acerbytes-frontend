@@ -87,7 +87,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell
+          <TableCell sx={{ textTransform: "capitalize" }}
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
@@ -357,7 +357,7 @@ function MyLinksTable({ setCount }) {
               />
               <TableBody>
                 {activeAdData?.map((row) => (
-                  <RowStructure row={row} history={history} />
+                  <RowStructure row={row} key={row?.id} history={history} />
                 ))}
               </TableBody>
             </Table>

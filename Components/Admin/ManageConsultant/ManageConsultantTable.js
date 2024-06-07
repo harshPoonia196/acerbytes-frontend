@@ -145,7 +145,6 @@ function ManageConsultantTable({ user }) {
 
         {!!consultantList.rows.length ? (
           <TableContainer component={Paper}>
-            {console.log(consultantList)}
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <EnhancedTableHead
                 order={order}

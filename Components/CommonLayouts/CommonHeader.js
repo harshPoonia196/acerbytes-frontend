@@ -21,8 +21,8 @@ const InfoBox = ({ label, button, dataList }) => {
             </Grid>
           }
           {
-            dataList?.map((data) => (
-              <Grid item xs={6} sm={4} md={2}>
+            dataList?.map((data, index) => (
+              <Grid key={index} item xs={6} sm={4} md={2}>
                 <Card sx={{ p: 2, textAlign: 'center' }}>
                   <Typography variant="h3">{data?.value}</Typography>
                   <Typography variant="h6">{data?.label}</Typography>

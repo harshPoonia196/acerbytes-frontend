@@ -78,7 +78,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell
+          <TableCell sx={{ textTransform: "capitalize" }}
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
@@ -384,7 +384,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
               {rows.map((row) => (
                 <RowStructure
                   row={row}
-                  key={row.firstName}
+                  key={row._id}
                   handlePropertyView={handlePropertyView}
                   setViewLeadsDetails={setViewLeadsDetails}
                   setSelectedRowData={setSelectedRowData}

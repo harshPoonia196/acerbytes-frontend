@@ -16,6 +16,7 @@ import {
   CircularProgress,
   Stack,
   Card,
+  Typography
 } from "@mui/material";
 import React, {
   forwardRef,
@@ -101,6 +102,7 @@ function EnhancedTableHead(props) {
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
+            sx={{ textTransform: "capitalize", fontWeight: "bold" }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -115,7 +117,9 @@ function EnhancedTableHead(props) {
                 },
               }}
             >
+
               {headCell.label}
+
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -124,7 +128,7 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell>Action</TableCell>
+        <TableCell sx={{ textTransform: "capitalize", fontWeight: "bold" }}>Action</TableCell>
       </TableRow>
     </TableHead>
   );
@@ -155,6 +159,9 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
     <TableRow
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
+
     >
       <TableCell
         onClick={() => {
@@ -177,13 +184,13 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
       <TableCell>{row.area}</TableCell>
       <TableCell>{row.sector}</TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton sx={{ fontSize: "1rem !important" }}>
-          <EditIcon fontSize="1rem" onClick={() => handleEdit(row.id)} />
+        <IconButton sx={{ fontSize: "1rem !important" }} onClick={() => handleEdit(row.id)}>
+          <EditIcon fontSize="1rem"/>
         </IconButton>
       </TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton sx={{ fontSize: "1rem !important" }}>
-          <DeleteIcon fontSize="1rem" onClick={() => handleDelete(row.id)} />
+        <IconButton sx={{ fontSize: "1rem !important" }} onClick={() => handleDelete(row.id)}>
+          <DeleteIcon fontSize="1rem" />
         </IconButton>
       </TableCell>
       <TableCell>
@@ -197,8 +204,8 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
         />
       </TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton sx={{ fontSize: "1rem !important" }}>
-          <MoreVertIcon onClick={handleClick} fontSize="1rem" />
+        <IconButton sx={{ fontSize: "1rem !important" }} onClick={handleClick}>
+          <MoreVertIcon fontSize="1rem" />
         </IconButton>
         <Menu
           id="basic-menu"
@@ -454,6 +461,7 @@ const PropertyListTable = ({ setCount }) => {
               <TableBody>
                 {propertyList?.map((row) => (
                   <RowStructure
+                    key={row?.id}
                     row={row}
                     router={router}
                     handleDelete={handleDelete}

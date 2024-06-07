@@ -21,7 +21,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Grid 
+  Grid
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { useRouter } from "next/navigation";
@@ -72,7 +72,7 @@ const enquiries = [
 
 function Row(props) {
   const { row, history } = props;
-  
+
   const [open, setOpen] = React.useState(false);
   const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
@@ -250,7 +250,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption" sx={{ textTransform: "capitalize" ,fontWeight: "bold" }}
+              <Typography variant="caption" sx={{ textTransform: "capitalize", fontWeight: "bold" }}
               >{capitalLizeName(headCell.label)}</Typography>
 
               {orderBy === headCell.id ? (
@@ -266,9 +266,9 @@ function EnhancedTableHead(props) {
   );
 }
 
-const EnquiryCard = ({enquiry}) => {
-  return(
-    <Card sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
+const EnquiryCard = ({ enquiry }) => {
+  return (
+    <Card sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
       <Box>
         <CardMedia
           sx={{ height: 140 }}
@@ -370,8 +370,8 @@ export default function Enquiries(props) {
               fontSize: { sm: "2em !important", md: "4rem !important" },
               marginBottom: "35px", textAlign: "center"
             }}>
-            <span style={{ color: colors.GRAY, fontWeight: "bold" }}>AcreBytes | Are you a real estate consultant ? </span>
-            Get an easy way to generate real estate leads and business growth with AcreBytes
+              <span style={{ color: colors.GRAY, fontWeight: "bold" }}>AcreBytes | Are you a real estate consultant ? </span>
+              Get an easy way to generate real estate leads and business growth with AcreBytes
             </Typography>
             <Grid container spacing={2}>
               {enquiries.map(enquiry => {
@@ -381,7 +381,7 @@ export default function Enquiries(props) {
                   </Grid>
                 )
               })}
-          </Grid>
+            </Grid>
           </Box>
           <Box sx={{ py: 4 }}>
             <Typography variant="h1" sx={{ color: "#000", fontWeight: 300 }}>
@@ -424,10 +424,10 @@ export default function Enquiries(props) {
               <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
                 ButtonText={"View suggested leads"}
               />
-              {brokerBalance?
-              <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
-                ButtonText={`Points: ${brokerBalance}`}
-              />:""}
+              {brokerBalance ?
+                <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
+                  ButtonText={`Points: ${brokerBalance}`}
+                /> : ""}
             </Box>
           </Box>
         </Container>
