@@ -30,7 +30,7 @@ function UserDetailsAd({
   contactPermissionToView,
   handleOpenEnquiryForm,
 }) {
-  const { userDetails } = useAuth();
+  const { userDetails, isLoggedIn } = useAuth();
   const overviewData = AllPropertyData?.propertyData?.overview;
   const [showContact, setShowContact] = useState(false);
 
@@ -191,12 +191,14 @@ function UserDetailsAd({
                 display: { xs: "none", md: "block" },
               }}
             >
+              { isLoggedIn && 
               <Chip
                 icon={showContact ? null : <PhoneIcon />}
                 label={showContact ? phoneNumber : "View Contact"}
                 size="small"
                 onClick={handleViewContactClick}
               />
+              }
               {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
                 Call First
               </Button>
@@ -227,14 +229,14 @@ function UserDetailsAd({
                 <Typography variant="h5" sx={{ flex: 1 }}>
                   {name}
                 </Typography>
-                <Box>
+                { isLoggedIn &&<Box>
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
                     label={showContact ? phoneNumber : "View Contact"}
                     size="small"
                     onClick={handleViewContactClick}
                   />
-                </Box>
+                </Box>}
               </Box>
               <Typography variant="h6">
                 {builder}&#183;{projectName}&#183;{city}&#183;{sector}&#183;
