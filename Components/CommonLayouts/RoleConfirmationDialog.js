@@ -23,7 +23,7 @@ const RoleViewerDropdown = ({ row, setuserApproveStatusConfirmationDialog, isApp
   return (
     <Box >
       {isApproved?.isApproved && (
-      <FormControl size="small" variant="standard" >
+      <FormControl size="small" variant="standard" sx={{ width: "100%" }}>
         <Typography variant="body" component="label" sx={{paddingBottom: "5px"}}>Role</Typography>
         <Select
           labelId="dropdown-label"
@@ -32,6 +32,7 @@ const RoleViewerDropdown = ({ row, setuserApproveStatusConfirmationDialog, isApp
           value={row?.role}
           onChange={handleChange}
           label="Select role"
+          sx= {{ width: "100%" }}
         >
           {ROLES?.filter((rs) => rs.isVisible)?.map((rs) => {
             return <MenuItem value={rs.value}>{rs.label}</MenuItem>;
@@ -69,7 +70,9 @@ const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserAp
       }}
 
       >
-        <DialogTitle>Confirmation</DialogTitle>
+        <DialogTitle>
+          <Typography variant="h4" sx={{ fontWeight: 700 }}>Confirmation</Typography>
+        </DialogTitle>
         <DialogContent >
           <RoleViewerDropdown row={selectedRowData?.data?.row} setuserApproveStatusConfirmationDialog={setuserApproveStatusConfirmationDialog} isApproved={selectedRowData?.data}/>
           <DialogContentText sx={paddingTopStyle}>
