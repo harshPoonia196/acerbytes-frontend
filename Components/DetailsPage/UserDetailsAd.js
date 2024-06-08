@@ -31,7 +31,7 @@ function UserDetailsAd({
   handleOpenEnquiryForm,
 }) {
   const { userDetails, isLoggedIn } = useAuth();
-  // console.log("AllPropertyData?.brokerRating?.rating", AllPropertyData?.brokerRating?.rating);
+
   const overviewData = AllPropertyData?.propertyData?.overview;
   const [showContact, setShowContact] = useState(false);
 
