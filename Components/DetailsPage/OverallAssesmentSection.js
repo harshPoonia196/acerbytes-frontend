@@ -96,7 +96,7 @@ function OverallAssesmentSection({
           </Typography>
           
           <Box sx={{ mt: 1 }}>
-          {userDetails?.role === "user" && (<>
+          {userDetails?.role !== "broker" && userDetails?.role !== "admin" && userDetails?.role !== "superAdmin"&& (<>
             <Button variant="outlined" onClick={() => { router.push('http://wa.me/+919323996997') }} startIcon={<WhatsAppIcon sx={{ position: 'relative', top: '-2px'}} />} sx={{
                 marginRight: "10px"}}>WhatsApp</Button>
             <Button variant="contained" onClick={handleOpenEnquiryForm} startIcon={<CallIcon />}>Get a Call back</Button></>)}

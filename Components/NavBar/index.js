@@ -373,7 +373,7 @@ export default function ClippedDrawer({ children }) {
           }}
         >
           <List>
-            <ListItem sx={{ paddingLeft: "25px"}}><Typography variant="body2">Helpline - 457856954</Typography></ListItem>
+            <ListItem sx={{ paddingLeft: "25px"}}><Typography variant="body2" sx={{ cursor: "pointer" }} onClick={() => { router.push('http://wa.me/+919323996997') }}>Helpline - 457856954</Typography></ListItem>
             <ListItem
               disablePadding
               secondaryAction={
@@ -526,12 +526,12 @@ export default function ClippedDrawer({ children }) {
               {userDetails && Object.keys(userDetails).length ? (
                 <Box>
                   <Box>
-                    <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, flex: 1, color: colors.BLUE }}>
+                    <Typography variant='body1' sx={{ display: { sm: 'flex' }, flex: 1, color: colors.BLUE }}>
                       {userDetails?.name?.firstName} {userDetails?.name?.lastName}
                     </Typography>
-                    <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, flex: 1, color: colors.BLUE }}>
+                    {/* <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, flex: 1, color: colors.BLUE }}>
                       {userDetails?.name?.firstName}
-                    </Typography>
+                    </Typography> */}
                   </Box>
                   <Box sx={{ alignSelf: "center", textAlign: "right" }}>
                     {userDetails?.role == ROLE_CONSTANTS.broker && (

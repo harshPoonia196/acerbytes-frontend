@@ -1087,7 +1087,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
               </Card>
             </Grid>
 
-            <Grid item xs={12} id="setting">
+            {/* <Grid item xs={12} id="setting">
               <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
                   <Typography
@@ -1140,7 +1140,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                   </Grid>
                 </Grid>
               </Card>
-            </Grid>
+            </Grid> */}
           </Grid>
           <Box
             sx={{
