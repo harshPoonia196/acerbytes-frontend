@@ -108,13 +108,17 @@ function EnhancedTableHead(props) {
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
+            sx={{ textTransform: "capitalize", fontWeight: "bold" }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+           
+                {headCell.label}
+            
+
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -155,6 +159,8 @@ function RowStructure({ row, adminAssignPointsHandler }) {
       <TableRow
         key={row._id}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
       >
         <TableCell>
           {row?.brokerDetails?.name?.firstName}{" "}

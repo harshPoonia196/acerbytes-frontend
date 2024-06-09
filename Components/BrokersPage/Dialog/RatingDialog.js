@@ -65,17 +65,17 @@ const RatingDialog = (props) => {
     subRatings: [
       {
         type: "Professionalism",
-        description: "This includes Communication",
+        description: "This  based on their dedication, responsibilty and commitemnt to the job",
         rating: 0,
       },
       {
         type: "Communication",
-        description: "This includes Communication",
+        description: "This based on their clarity,responsiveness,and ability to effectively convey important information",
         rating: 0,
       },
       {
         type: "Real estate knowledge",
-        description: "This includes Communication",
+        description: "This includes by evaluating their understanding of the market, property details, legal aspects, and ability to answer your questions comprehensively",
         rating: 0,
       },
     ],
@@ -157,9 +157,8 @@ const RatingDialog = (props) => {
           {!submitReview ? (
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
               Rate and review for{" "}
-              <span style={{ color: colors.BLUE }}>{`${
-                broker?.name?.firstName || ""
-              } ${broker?.name?.lastName || ""}`}</span>
+              <span style={{ color: colors.BLUE }}>{`${broker?.name?.firstName || ""
+                } ${broker?.name?.lastName || ""}`}</span>
             </Typography>
           ) : (
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
@@ -213,7 +212,7 @@ const RatingDialog = (props) => {
                   onClick={handelReviewSubmit}
                   startIcon={<DoneIcon />}
                   variant="contained"
-                ButtonText={"Submit"}
+                  ButtonText={"Submit"}
                 />
               </Box>
             </Box>
