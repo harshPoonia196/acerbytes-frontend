@@ -24,12 +24,13 @@ import Enquiries from "app/generate-real-estate-leads-growth/page";
 function MyLeads() {
   const { userDetails } = useAuth();
 
-  const router = useRouter();
+  // const router = useRouter();
   const [leadsCount, setLeadsCount] = useState("");
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const handleOpenUpdatePopup = () => {
     setOpenUpdatePopup(true);
   };
+
 
   const handleCloseUpdatePopup = () => {
     setOpenUpdatePopup(false);

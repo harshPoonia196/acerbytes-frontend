@@ -25,7 +25,7 @@ const BrokerFeedBack = ({ review }) => {
                         src={review?.profilePic?.[0]}
                     />
                 </Box>
-                <Box>
+                <Box sx={{ width: "100%"}}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Box>
                             <Typography variant="h6">{review?.fullName ?? ''}</Typography>
@@ -48,7 +48,7 @@ const BrokerFeedBack = ({ review }) => {
                             {review?.note}
                         </Typography>
                     </Box> */}
-                    <Grid container spacing={1} sx={{ p: 2 }}>
+                    <Grid container spacing={1} sx={{ pt: 2 }}>
 
                         {review?.ratings?.map((rating) => {
                             return (
@@ -75,10 +75,10 @@ const BrokerFeedBack = ({ review }) => {
                             <Grid item xs={12} sx={{ mt: 1 }}>
                                 <Box sx={{ background: "whitesmoke", p: 2 }}>
                                     <Typography variant="caption">
-                                        Review given
+                                        
                                         {review?.createdAt
                                             ? moment(review?.createdAt).format(
-                                                " on DD MMM, YYYY"
+                                                " DD MMM, YYYY"
                                             )
                                             : ""}
                                     </Typography>

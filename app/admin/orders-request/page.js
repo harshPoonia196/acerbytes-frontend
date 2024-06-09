@@ -21,7 +21,7 @@ function OrderRequest() {
             <CustomAdminBreadScrumbs text='Orders request' />
 
             <InfoBox dataList={[{ label: 'Pending', value: dashboardInfo.pendingOrders },
-            { label: 'Completed', value: dashboardInfo.completedOrders }]} />
+            { label: 'Completed', value: dashboardInfo.completedOrders }]}/>
 
             <Container>
                 <OrdersTable onDashboardDataUpdate={handleDashboardDataUpdate} />
