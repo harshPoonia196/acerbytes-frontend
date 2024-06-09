@@ -8,33 +8,21 @@ import {
   Box,
   Chip,
   Toolbar,
-  Button,
   Divider,
-  BottomNavigation,
-  BottomNavigationAction,
 } from "@mui/material";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import Fab from "@mui/material/Fab";
 import React, { useState, useEffect, useRef } from "react";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import GroupIcon from "@mui/icons-material/Group";
-import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";
-// import FloorPlanSection from "Components/DetailsPage/FloorPlanSection";
 import AmenitiesSection from "Components/DetailsPage/AmenitiesSection";
 import ClearanceSection from "Components/DetailsPage/ClearanceSection";
 import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
-// import PricingSection from 'Components/DetailsPage/PricingSection'
-// import ResaleSection from "Components/DetailsPage/ResaleSection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
@@ -43,7 +31,6 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
-import AdsSection from "Components/DetailsPage/AdsSection";
 import {
   enquiryFormKey,
   enquiryFormOpen,
@@ -53,7 +40,6 @@ import {
   userLeadId,
 } from "utills/Constants";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import colors from "styles/theme/colors";
 import {
   checkEnquiryOnPropertyLink,
   detailsProperty,
@@ -62,11 +48,9 @@ import {
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
-import { listOfPages } from "Components/NavBar/Links";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { clearItem, constructPropertyUrl, getItem, getLoggedInUser } from "utills/utills";
+import { constructPropertyUrl, getItem } from "utills/utills";
 import {
-  isEnquired,
   submitEnquiry,
   submitEnquiryUnauth,
   updateEnquiryVerified,
@@ -632,7 +616,7 @@ const PropertyDetailsPage = ({ params }) => {
     <>
       {isLoading && <Loader />}
       <ActivateAdsPopup
-        SinglePropertyId={propertyData}
+        propertyData={propertyData}
         detailsGetProperty={detailsGetProperty}
         open={activateAdsPopupState}
         handleClose={handleCloseActivateAdsPopup}

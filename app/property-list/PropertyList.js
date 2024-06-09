@@ -460,7 +460,10 @@ function PropertyList({ params }) {
             <Card
               sx={{
                 display: { xs: "none", md: "block" },
-                pl: 2, pt:2, pr:1, pb:2,
+                pl: 2,
+                pt: 2,
+                pr: 1,
+                pb: 2,
                 width: 220,
                 height: "max-content",
                 overflowY: "scroll",

@@ -4,22 +4,21 @@ import {
   Container,
   Grid,
   Typography,
-  Divider, Chip
+  Divider,
+  Chip,
 } from "@mui/material";
 import NewKeyValuePairStructure from "Components/CommonLayouts/NewKeyValuePairStructure";
 import React from "react";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import colors from "styles/theme/colors";
-import CircularProgressWithIcon from 'Components/CommonLayouts/CircularProgressWithIcon'
-import CircularProgressWithLabel from 'Components/CommonLayouts/CircularProgressWithLabel'
-import HandshakeIcon from '@mui/icons-material/Handshake'
-import BusinessIcon from '@mui/icons-material/Business'
-import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import CircularProgressWithIcon from "Components/CommonLayouts/CircularProgressWithIcon";
+import CircularProgressWithLabel from "Components/CommonLayouts/CircularProgressWithLabel";
+import HandshakeIcon from "@mui/icons-material/Handshake";
+import BusinessIcon from "@mui/icons-material/Business";
+import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import { shortPriceFormatter, capitalLizeName } from "utills/CommonFunction";
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 import { memo } from "react";
-
 
 function MarketingSection(props) {
   const { overviewData } = props;
@@ -30,162 +29,212 @@ function MarketingSection(props) {
   const extractUrl = (htmlString) => {
     const matches = htmlString?.match(/src="([^"]+)"/);
     return matches ? matches[1] : null;
-  }
-
+  };
   const mapUrl = extractUrl(AllLocationData?.googleMapLink);
 
   const categorizeScore = (score) => {
-    if (score >= 0 && score <= 20) return 'Poor';
-    if (score >= 21 && score <= 40) return 'Average';
-    if (score >= 41 && score <= 60) return 'Good';
-    if (score >= 61 && score <= 80) return 'Very good';
-    if (score >= 81 && score <= 90) return 'Excellent';
-    if (score >= 91 && score <= 100) return 'Outstanding';
-    return 'invalid';
+    if (score >= 0 && score <= 20) return "Poor";
+    if (score >= 21 && score <= 40) return "Average";
+    if (score >= 41 && score <= 60) return "Good";
+    if (score >= 61 && score <= 80) return "Very good";
+    if (score >= 81 && score <= 90) return "Excellent";
+    if (score >= 91 && score <= 100) return "Outstanding";
+    return "invalid";
   };
 
-
   const MapFrame = ({ mapUrl }) => {
-    return <iframe
-      src={mapUrl}
-      style={{ border: 0 }}
-      height="100%"
-      width="100%"
-      loading="lazy"
-    />
-  }
+    return (
+      <iframe
+        src={mapUrl}
+        style={{ border: 0 }}
+        height="100%"
+        width="100%"
+        loading="lazy"
+      />
+    );
+  };
 
   const OverviewRatingCard = () => {
-    return <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }} >
-      <Card sx={{ width: '100%' }}>
-        <MapFrame mapUrl={mapUrl} />
-      </Card>
-      <Card sx={{ p: 2, textAlign: "center", width: '100%' }}>
-        <CircularProgressWithLabel progress={overviewData?.overallAssessment?.score} />
-        <Typography variant="h4" sx={{ mb: 2 }}>
-          {categorizeScore(overviewData?.overallAssessment?.score)}
-        </Typography>
-        <Grid container spacing={1}>
-          <Grid item xs={6}>
-            <Box sx={{ display: 'flex' }}>
-              <Box sx={{ mr: 1 }}>
-                <CircularProgressWithIcon score={alloverviewData?.sectionScore} outOf={10}
-                  icon={<HandshakeIcon fontSize="1rem" />} />
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="h6">Performance</Typography>
-                <Typography variant="h4">
-                  {alloverviewData?.sectionScore
-                    ? alloverviewData?.sectionScore.toFixed()
-                    : "0"}
-                  <Typography variant="h6" component="span">
-                    {' / 10'}
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: 2,
+        }}
+      >
+        <Card sx={{ width: "100%" }}>
+          <MapFrame mapUrl={mapUrl} />
+        </Card>
+
+        <Card sx={{ p: 2, textAlign: "center", width: "100%" }}>
+          {overviewData?.overallAssessment?.score && (
+            <CircularProgressWithLabel
+              progress={overviewData?.overallAssessment?.score}
+            />
+          )}
+
+          <Typography variant="h4" sx={{ mb: 2 }}>
+            {categorizeScore(overviewData?.overallAssessment?.score)}
+          </Typography>
+          <Grid container spacing={1}>
+            <Grid item xs={6}>
+              <Box sx={{ display: "flex" }}>
+                <Box sx={{ mr: 1 }}>
+                  <CircularProgressWithIcon
+                    score={alloverviewData?.sectionScore}
+                    outOf={10}
+                    icon={<HandshakeIcon fontSize="1rem" />}
+                  />
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h6">Performance</Typography>
+                  <Typography variant="h4">
+                    {alloverviewData?.sectionScore
+                      ? alloverviewData?.sectionScore.toFixed()
+                      : "0"}
+                    <Typography variant="h6" component="span">
+                      {" / 10"}
+                    </Typography>
                   </Typography>
-                </Typography>
+                </Box>
               </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box sx={{ display: 'flex' }}>
-              <Box sx={{ mr: 1 }}>
-                <CircularProgressWithIcon icon={<BusinessIcon fontSize="1rem" />}
-                  score={overviewData?.layout?.sectionScore.toFixed()} outOf={10} />
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="h6">Layout and amenities</Typography>
-                <Typography variant="h4">
-                  {overviewData?.layout?.sectionScore
-                    ? overviewData?.layout?.sectionScore.toFixed()
-                    : "0"}
-                  <Typography variant="h6" component="span">
-                    {' / 10'}
+            </Grid>
+            <Grid item xs={6}>
+              <Box sx={{ display: "flex" }}>
+                <Box sx={{ mr: 1 }}>
+                  <CircularProgressWithIcon
+                    icon={<BusinessIcon fontSize="1rem" />}
+                    score={overviewData?.layout?.sectionScore.toFixed()}
+                    outOf={10}
+                  />
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h6">Layout and amenities</Typography>
+                  <Typography variant="h4">
+                    {overviewData?.layout?.sectionScore
+                      ? overviewData?.layout?.sectionScore.toFixed()
+                      : "0"}
+                    <Typography variant="h6" component="span">
+                      {" / 10"}
+                    </Typography>
                   </Typography>
-                </Typography>
+                </Box>
               </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box sx={{ display: 'flex' }}>
-              <Box sx={{ mr: 1 }}>
-                <CircularProgressWithIcon icon={<WhereToVoteIcon fontSize="1rem" />}
-                  score={overviewData?.location?.sectionScore.toFixed()} outOf={10} />
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="h6">Location</Typography>
-                <Typography variant="h4">
-                  {overviewData?.location?.sectionScore
-                    ? overviewData?.location?.sectionScore.toFixed()
-                    : '0'}
-                  <Typography variant="h6" component="span">
-                    {' / 10'}
+            </Grid>
+            <Grid item xs={6}>
+              <Box sx={{ display: "flex" }}>
+                <Box sx={{ mr: 1 }}>
+                  <CircularProgressWithIcon
+                    icon={<WhereToVoteIcon fontSize="1rem" />}
+                    score={overviewData?.location?.sectionScore.toFixed()}
+                    outOf={10}
+                  />
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h6">Location</Typography>
+                  <Typography variant="h4">
+                    {overviewData?.location?.sectionScore
+                      ? overviewData?.location?.sectionScore.toFixed()
+                      : "0"}
+                    <Typography variant="h6" component="span">
+                      {" / 10"}
+                    </Typography>
                   </Typography>
-                </Typography>
+                </Box>
               </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box sx={{ display: 'flex' }}>
-              <Box sx={{ mr: 1 }}>
-                <CircularProgressWithIcon icon={<CurrencyRupeeIcon fontSize="1rem" />}
-                  score={overviewData?.valueForMoney?.sectionScore.toFixed()} outOf={10} />
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="h6">Value for money</Typography>
-                <Typography variant="h4">
-                  {overviewData?.valueForMoney?.sectionScore
-                    ? overviewData?.valueForMoney?.sectionScore.toFixed()
-                    : "0"}
-                  <Typography variant="h6" component="span">
-                    {' / 10'}
+            </Grid>
+            <Grid item xs={6}>
+              <Box sx={{ display: "flex" }}>
+                <Box sx={{ mr: 1 }}>
+                  <CircularProgressWithIcon
+                    icon={<CurrencyRupeeIcon fontSize="1rem" />}
+                    score={overviewData?.valueForMoney?.sectionScore.toFixed()}
+                    outOf={10}
+                  />
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h6">Value for money</Typography>
+                  <Typography variant="h4">
+                    {overviewData?.valueForMoney?.sectionScore
+                      ? overviewData?.valueForMoney?.sectionScore.toFixed()
+                      : "0"}
+                    <Typography variant="h6" component="span">
+                      {" / 10"}
+                    </Typography>
                   </Typography>
-                </Typography>
+                </Box>
               </Box>
-            </Box>
+            </Grid>
+            <Grid item xs={6}>
+              {overviewData?.overview?.status && (
+                <Chip
+                  label={overviewData?.overview?.status}
+                  color="primary"
+                  size="small"
+                />
+              )}
+              {(overviewData?.overview?.launchYear ||
+                overviewData?.overview?.completionYear) && (
+                <Typography variant="h6">
+                  {overviewData?.overview?.launchYear} -{" "}
+                  {overviewData?.overview?.completionYear}
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={6}>
+              {(overviewData?.unitsPlan?.minPriceRange ||
+                overviewData?.unitsPlan?.maxPriceRange) && (
+                <Chip
+                  label={`₹ ${shortPriceFormatter(
+                    overviewData?.unitsPlan?.minPriceRange
+                  )} - ₹ 
+            ${shortPriceFormatter(overviewData?.unitsPlan?.maxPriceRange)}`}
+                  color="primary"
+                  size="small"
+                />
+              )}
+              {(overviewData?.unitsPlan?.averagePrice ||
+                overviewData?.unitsPlan?.planList[0]) && (
+                <Typography variant="h6">
+                  {"₹ " +
+                    overviewData?.unitsPlan?.averagePrice.toLocaleString() +
+                    "/" +
+                    overviewData?.unitsPlan?.planList[0]?.areaUnit}
+                </Typography>
+              )}
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            {overviewData?.overview?.status &&
-              <Chip label={overviewData?.overview?.status} color='primary' size='small' />}
-            {
-              (overviewData?.overview?.launchYear || overviewData?.overview?.completionYear) &&
-              <Typography variant="h6">
-                {overviewData?.overview?.launchYear} -{" "}
-                {overviewData?.overview?.completionYear}
-              </Typography>
-            }
-          </Grid>
-          <Grid item xs={6}>
-            {(overviewData?.unitsPlan?.minPriceRange || overviewData?.unitsPlan?.maxPriceRange) &&
-              <Chip label={`₹ ${shortPriceFormatter(overviewData?.unitsPlan?.minPriceRange)} - ₹ 
-            ${shortPriceFormatter(overviewData?.unitsPlan?.maxPriceRange)}`} color='primary' size='small' />
-            }
-            {(overviewData?.unitsPlan?.averagePrice || overviewData?.unitsPlan?.planList[0]) &&
-              <Typography variant="h6">
-                {'₹ ' + overviewData?.unitsPlan?.averagePrice.toLocaleString() +
-                  "/" +
-                  overviewData?.unitsPlan?.planList[0]?.areaUnit}
-              </Typography>
-            }
-          </Grid>
-        </Grid>
-      </Card>
-    </Box >
-  }
+        </Card>
+      </Box>
+    );
+  };
 
   return (
     <>
-      <Container maxWidth='md'>
-        <Box id='project' >
-          <Card sx={{ height: 'fit-content' }}>
-            <img src={overviewData?.marketing?.image} style={{ width: '100%' }} />
+      <Container maxWidth="md">
+        <Box id="project">
+          <Card sx={{ height: "fit-content" }}>
+            <img
+              src={overviewData?.marketing?.image}
+              style={{ width: "100%" }}
+            />
           </Card>
           <Box sx={{ my: 2 }}>
             <OverviewRatingCard />
           </Box>
         </Box>
         <Card sx={{ p: 2, mb: 2 }}>
-          <div className="innerhtmlFont" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(overviewData?.marketing?.metaDescription) }} />
+          <div
+            className="innerhtmlFont"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(
+                overviewData?.marketing?.metaDescription
+              ),
+            }}
+          />
         </Card>
-        <Card id="builder" >
+        <Card id="builder">
           <Box sx={{ display: "flex", p: 2 }}>
             <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
               Overview
@@ -231,9 +280,11 @@ function MarketingSection(props) {
             />
             <NewKeyValuePairStructure
               label="Project type"
-              value={Array.from(new Set(AllUnitsPlan?.planList
-                ?.map((item) => item?.propertyType)))
-                .join(", ")}
+              value={Array.from(
+                new Set(
+                  AllUnitsPlan?.planList?.map((item) => item?.propertyType)
+                )
+              ).join(", ")}
             />
             <NewKeyValuePairStructure
               label="Project category"

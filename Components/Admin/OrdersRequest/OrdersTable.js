@@ -145,9 +145,7 @@ function EnhancedTableHead(props) {
                 direction={orderBy === headCell.id ? order : "asc"}
                 onClick={createSortHandler(headCell.id)}
               >
-                
-                  {headCell.label}
-               
+                {headCell.label}
 
                 {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
@@ -246,15 +244,20 @@ function RowStructure({
       <TableRow
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = "#f5f5f5";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = "transparent";
+        }}
       >
         <TableCell>{row.orderNumber}</TableCell>
         <TableCell>
           {row?.brokerId?.name?.firstName} {row?.brokerId?.name?.lastName}
         </TableCell>
         <TableCell>
-          {countryCodeFormating(row?.brokerId?.phone?.countryCode)} {row?.brokerId?.phone?.number}
+          {countryCodeFormating(row?.brokerId?.phone?.countryCode)}{" "}
+          {row?.brokerId?.phone?.number}
         </TableCell>
         <TableCell>{formatAmount(row.amount)}</TableCell>
         <TableCell>{formatPoints(row.points)}</TableCell>
@@ -276,7 +279,7 @@ function RowStructure({
               aria-expanded={open ? "true" : undefined}
               aria-haspopup="true"
               onClick={handleClick}
-              size='small'
+              size="small"
               sx={{ p: 0 }}
             >
               <MoreVertIcon fontSize="1rem" />
@@ -310,11 +313,7 @@ function CustomTabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 2 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
     </div>
   );
 }
@@ -388,8 +387,8 @@ function TableView({
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error creating order request",
+          error?.message ||
+          "Error creating order request",
         "error"
       );
     } finally {
@@ -424,49 +423,51 @@ function TableView({
     getOrderRequestList(pageOptions, searchTerm);
   };
 
-  return <>
-    <Card sx={{ mb: 2 }}>
-      <CustomSearchInput value={searchTerm} onChange={handleSearch} />
-    </Card>
-    {orderRequests?.list?.length > 0 ? (
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-            isCompleted={status === ORDER_STATUS.COMPLETED}
+  return (
+    <>
+      <Card sx={{ mb: 2 }}>
+        <CustomSearchInput value={searchTerm} onChange={handleSearch} />
+      </Card>
+      {orderRequests?.list?.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+              isCompleted={status === ORDER_STATUS.COMPLETED}
+            />
+            <TableBody>
+              {orderRequests?.list?.map((row, index) => (
+                <RowStructure
+                  row={row}
+                  userDetails={userDetails}
+                  key={index}
+                  isCompleted={status === ORDER_STATUS.COMPLETED}
+                  handleOrderRequest={handleOrderRequest}
+                  salesPersons={salesPersons}
+                />
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            sx={{
+              overflow: "hidden",
+            }}
+            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+            component="div"
+            count={orderRequests.totalCount}
+            rowsPerPage={rowsPerPage}
+            page={page - 1}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          <TableBody>
-            {orderRequests?.list?.map((row, index) => (
-              <RowStructure
-                row={row}
-                userDetails={userDetails}
-                key={index}
-                isCompleted={status === ORDER_STATUS.COMPLETED}
-                handleOrderRequest={handleOrderRequest}
-                salesPersons={salesPersons}
-              />
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          sx={{
-            overflow: "hidden",
-          }}
-          rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-          component="div"
-          count={orderRequests.totalCount}
-          rowsPerPage={rowsPerPage}
-          page={page - 1}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
-    ) : (
-      <NoDataCard title={"No data found"} />
-    )}
-  </>;
+        </TableContainer>
+      ) : (
+        <NoDataCard title={"No data found"} />
+      )}
+    </>
+  );
 }
 
 function OrdersTable({ onDashboardDataUpdate }) {
@@ -490,8 +491,7 @@ function OrdersTable({ onDashboardDataUpdate }) {
   };
 
   const handleChange = (event, newValue) => {
-    if (newValue !== null)
-      setValue(newValue);
+    if (newValue !== null) setValue(newValue);
   };
 
   const adminAssignPointsHandler = ({
@@ -534,8 +534,8 @@ function OrdersTable({ onDashboardDataUpdate }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error creating order request",
+          error?.message ||
+          "Error creating order request",
         "error"
       );
     } finally {
@@ -569,7 +569,7 @@ function OrdersTable({ onDashboardDataUpdate }) {
         });
         onDashboardDataUpdate({
           countInfo: response?.data?.dashboardInfo || {},
-          userDetails
+          userDetails,
         });
       }
     } catch (error) {
@@ -582,8 +582,8 @@ function OrdersTable({ onDashboardDataUpdate }) {
       });
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error creating order request",
+          error?.message ||
+          "Error creating order request",
         "error"
       );
     } finally {
@@ -633,54 +633,50 @@ function OrdersTable({ onDashboardDataUpdate }) {
           sx={{ display: "flex" }}
           onChange={handleChange}
         >
-          <ToggleButton
-            size="small"
-            value={0}
-            sx={{ flex: 1, border: "none" }}
-          >
+          <ToggleButton size="small" value={0} sx={{ flex: 1, border: "none" }}>
             Pending
           </ToggleButton>
-          <ToggleButton
-            size="small"
-            value={1}
-            sx={{ flex: 1, border: "none" }}
-          >
+          <ToggleButton size="small" value={1} sx={{ flex: 1, border: "none" }}>
             Completed
           </ToggleButton>
         </ToggleButtonGroup>
       </Card>
 
-      {value == 0 ? <TableView
-        status={ORDER_STATUS.PENDING}
-        userDetails={userDetails}
-        isLoading={isLoading}
-        setLoading={setLoading}
-        setPage={setPage}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        handleOrderRequest={handleOrderRequest}
-        showToaterMessages={showToaterMessages}
-        setRowsPerPage={setRowsPerPage}
-        initialMount={initialMount}
-        orderRequests={orderRequests}
-        setInitialMount={setInitialMount}
-        getOrderRequestList={getOrderRequestList}
-      /> : <TableView
-        status={ORDER_STATUS.COMPLETED}
-        userDetails={userDetails}
-        isLoading={isLoading}
-        setLoading={setLoading}
-        setRowsPerPage={setRowsPerPage}
-        setPage={setPage}
-        page={page}
-        orderRequests={orderRequests}
-        rowsPerPage={rowsPerPage}
-        handleOrderRequest={handleOrderRequest}
-        showToaterMessages={showToaterMessages}
-        getOrderRequestList={getOrderRequestList}
-        initialMount={initialMount}
-        setInitialMount={setInitialMount}
-      />}
+      {value == 0 ? (
+        <TableView
+          status={ORDER_STATUS.PENDING}
+          userDetails={userDetails}
+          isLoading={isLoading}
+          setLoading={setLoading}
+          setPage={setPage}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          handleOrderRequest={handleOrderRequest}
+          showToaterMessages={showToaterMessages}
+          setRowsPerPage={setRowsPerPage}
+          initialMount={initialMount}
+          orderRequests={orderRequests}
+          setInitialMount={setInitialMount}
+          getOrderRequestList={getOrderRequestList}
+        />
+      ) : (
+        <TableView
+          status={ORDER_STATUS.COMPLETED}
+          userDetails={userDetails}
+          isLoading={isLoading}
+          setLoading={setLoading}
+          setRowsPerPage={setRowsPerPage}
+          setPage={setPage}
+          page={page}
+          orderRequests={orderRequests}
+          rowsPerPage={rowsPerPage}
+          handleOrderRequest={handleOrderRequest}
+          showToaterMessages={showToaterMessages}
+          getOrderRequestList={getOrderRequestList}
+          initialMount={initialMount}
+          setInitialMount={setInitialMount}
+        />
+      )}
     </Box>
   );
 }
