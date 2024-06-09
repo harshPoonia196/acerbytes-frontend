@@ -62,6 +62,7 @@ import { clearItem, getItem } from "utills/utills";
 import colors from "styles/theme/colors";
 import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpinner";
 import { getCountsByProperty } from "api/Broker.api";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 const tabHeight = 200;
 
@@ -878,6 +879,34 @@ const PropertyDetails = ({ params }) => {
             </DialogActions>
           </Dialog>
         )}
+        <Box
+            className="detailFab"
+                sx={{
+                    position: "fixed",
+                    right: 16,
+                    bottom: 16,
+                    display: { xs: "none", evmd: "flex" },
+                    gap: 2,
+                    flexDirection: "column",
+                }}
+            >
+                {/* <Fab
+                    // size="small"
+                    variant="extended"
+                    sx={{ justifyContent: "flex-start" }}
+                >
+                    <AddLinkIcon fontSize='small' sx={{ mr: 1 }} />
+                    Activate link
+                </Fab> */}
+                {userDetails.role === 'broker' && <Fab
+                    // size="small"
+                    variant="extended"
+                    sx={{ justifyContent: "flex-start" }}
+                >
+                    <FormatListBulletedIcon fontSize='small' sx={{ mr: 1 }} />
+                    {leadsCount} Enquiries received
+                </Fab>}
+            </Box>
       </Box>
     </>
   );

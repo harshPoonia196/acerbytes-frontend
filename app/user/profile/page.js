@@ -173,7 +173,7 @@ function Profile({ id, isAdminUpdate }) {
       purchase: "",
       demographic: "",
       interestedForLoan: "",
-      paymentStatus
+      paymentStatus: ""
     },
     settings: {
       dnd: false,
