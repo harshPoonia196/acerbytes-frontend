@@ -114,7 +114,7 @@ function UserDetailsAd({
                 
                 <Box>
                 <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
-                   {AllPropertyData?.brokerRating?.rating}
+                   {AllPropertyData?.brokerRating?.rating && AllPropertyData?.brokerRating?.rating}
                 </Typography>
                   {AllPropertyData?.brokerRating?.rating && (<Rating
                       name="half-rating"
@@ -145,7 +145,7 @@ function UserDetailsAd({
                   
                   <Box>
                   <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
-                    {AllPropertyData?.brokerRating?.rating}
+                    {AllPropertyData?.brokerRating?.rating && AllPropertyData?.brokerRating?.rating}
                   </Typography>
                   {AllPropertyData?.brokerRating?.rating && (<Rating
                     name="half-rating"
