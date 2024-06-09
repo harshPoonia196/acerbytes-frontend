@@ -38,7 +38,11 @@ import { useAuth } from "utills/AuthContext";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
 import { listOfPages } from "Components/NavBar/Links";
-
+import {
+  formatPoints,
+  formatAmount,
+} from "utills/CommonFunction";
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
 const headCells = [
   {
@@ -148,7 +152,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
           </a>
         )}
       </TableCell>
-      <TableCell>{row?.userDetail?.budget?.maximumBudget?.value}</TableCell>
+      <TableCell>{formatAmount(row?.userDetail?.budget?.maximumBudget?.value)}</TableCell>
       <TableCell> <IconButton
         sx={{ fontSize: "1rem !important" }}
         aria-label="more"

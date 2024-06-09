@@ -35,6 +35,7 @@ import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
+import LinkIcon from '@mui/icons-material/Link';
 import moment from "moment";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SuggesredLeadsDetails from "../ConsultantSuggestedLeads/Modal/SuggesredLeadsDetails";
@@ -61,10 +62,6 @@ const headCells = [
   {
     id: "Name",
     label: "Name",
-  },
-  {
-    id: "propertyCity",
-    label: "Property city",
   },
   // {
   //   id: "currentStatus",
@@ -103,6 +100,10 @@ const headCells = [
     label: "Property",
   },
   {
+    id: "propertyCity",
+    label: "Property city",
+  },
+  {
     id: "userDetails",
     label: "User Details",
   },
@@ -135,7 +136,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption" sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+              <Typography variant="caption" sx={{ textTransform: "capitalize", fontWeight: "bold", fontSize: "12px" }}>
                 {(headCell.label)}
               </Typography>
 
@@ -196,7 +197,6 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
         isUserSelected
       />
       <TableCell>{(row?.fullName)}</TableCell>
-      <TableCell>{row?.property?.location?.city}</TableCell>
       {/* <TableCell>
         <Chip
           label={row.currentStatus}
@@ -259,9 +259,9 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
           </a>
         )}
         {row.isVerified ? (
-          <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color="success" />
+          <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", left: "2px" }} fontSize="1rem" color="success" />
         ) : (
-          <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color="error" />
+          <UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", left: "2px" }} fontSize="1rem" color="error" />
         )}
       </TableCell>
       {/* <TableCell>
@@ -296,12 +296,15 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
             }}
             style={{ textDecoration: 'none' }}
           >
-            {row?.property?.overview?.projectName ?
+             <LinkIcon sx={{ fontSize: "17px", position: "relative", top: "4px"}} fontSize="small"/> {row?.property?.overview?.projectName ?
               `${capitalLizeName(row?.property?.overview?.builder)}.${capitalLizeName(row?.property?.overview?.projectName)}`
               : "-"}
           </a>
         )}
       </TableCell>
+
+      <TableCell>{row?.property?.location?.city}</TableCell>
+
       <TableCell> 
         {
           row?.userDetail && <IconButton

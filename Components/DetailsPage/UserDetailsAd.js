@@ -116,16 +116,16 @@ function UserDetailsAd({
                 <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
                    {AllPropertyData?.brokerRating?.rating}
                 </Typography>
-                  <Rating
-                    name="half-rating"
-                    {...AllPropertyData?.brokerRating?.rating}
-                    precision={0.5}
-                    defaultValue={AllPropertyData?.brokerRating?.rating}
-                    value={AllPropertyData?.brokerRating?.rating}
-                    readOnly
-                    size="small"
-                    sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
-                  />
+                  {AllPropertyData?.brokerRating?.rating && (<Rating
+                      name="half-rating"
+                      {...AllPropertyData?.brokerRating?.rating}
+                      precision={0.5}
+                      defaultValue={AllPropertyData?.brokerRating?.rating}
+                      value={AllPropertyData?.brokerRating?.rating}
+                      readOnly
+                      size="small"
+                      sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
+                  />)}
                 </Box>
               </Box>
               <Box sx={{ display: { xs: "block", md: "none" } }}>
@@ -147,7 +147,7 @@ function UserDetailsAd({
                   <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
                     {AllPropertyData?.brokerRating?.rating}
                   </Typography>
-                  <Rating
+                  {AllPropertyData?.brokerRating?.rating && (<Rating
                     name="half-rating"
                     {...AllPropertyData?.brokerRating?.rating}
                     precision={0.5}
@@ -156,7 +156,7 @@ function UserDetailsAd({
                     readOnly
                     size="small"
                     sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
-                  />
+                  />)}
                 </Box>
                 </Box>
                 { isLoggedIn && userDetails.role === 'broker' && <Box
