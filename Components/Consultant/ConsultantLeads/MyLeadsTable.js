@@ -36,6 +36,10 @@ import { countryCodeFormating } from "utills/utills";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import LinkIcon from '@mui/icons-material/Link';
+import moment from "moment";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import SuggesredLeadsDetails from "../ConsultantSuggestedLeads/Modal/SuggesredLeadsDetails";
+
 
 
 // const rows = [
@@ -100,6 +104,10 @@ const headCells = [
     label: "Property city",
   },
   {
+    id: "userDetails",
+    label: "User Details",
+  },
+  {
     id: "enquired",
     label: "Enquired  date",
   },
@@ -145,7 +153,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, handlePropertyView }) {
+function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelectedRowData }) {
   const user = row?.user || {};
   const userDetail = row?.userDetail || {};
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
@@ -294,9 +302,30 @@ function RowStructure({ row, handlePropertyView }) {
           </a>
         )}
       </TableCell>
+
       <TableCell>{row?.property?.location?.city}</TableCell>
+
+      <TableCell> 
+        {
+          row?.userDetail && <IconButton
+          sx={{ fontSize: "1rem !important" }}
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={() => {
+            setSelectedRowData(row);
+            setViewLeadsDetails(true);
+          }}
+          size="small"
+        >
+          <VisibilityIcon fontSize="1rem" />
+        </IconButton>
+        }
+      </TableCell>
       <TableCell>
-        27/05/2024
+        {moment(row.createdAt).format("DD/MM/YY hh:ss A")}
       </TableCell>
 
     </TableRow>
@@ -312,8 +341,15 @@ function MyLeadsTable({ setLeadsCount }) {
   const [totalCount, setTotalCount] = React.useState(0);
   const firstLoad = React.useRef(true);
   const [search, setSearch] = React.useState("");
+  const [selectedRowData, setSelectedRowData] = React.useState({});
+  const [viewLeadsDetails, setViewLeadsDetails] = useState(false);
 
   const { openSnackbar } = useSnackbar();
+
+  const handleCloseViewLeadsDetails = () => {
+    setViewLeadsDetails(false)
+  }
+
 
   const { data, isLoading, error, refetch } = useQueries(
     [search, reactQueryKey.broker.myLeads],
@@ -419,7 +455,10 @@ function MyLeadsTable({ setLeadsCount }) {
                   } else if (!adId && !brokerId?.length && userId) {
                     row.source = LINK.acrebytes;
                   }
-                  return <RowStructure row={row} key={row?._id} handlePropertyView={handlePropertyView} />
+                  return <RowStructure
+                    setViewLeadsDetails={setViewLeadsDetails}
+                    setSelectedRowData={setSelectedRowData}
+                    row={row} key={row?._id} handlePropertyView={handlePropertyView} />
                 }
                 )}
               </TableBody>
@@ -438,6 +477,14 @@ function MyLeadsTable({ setLeadsCount }) {
             />
           </TableContainer>
         ) : <NoDataCard title={"No data found"} />}
+
+      {viewLeadsDetails && (
+        <SuggesredLeadsDetails
+          open={viewLeadsDetails}
+          handleClose={handleCloseViewLeadsDetails}
+          selectedRowData={selectedRowData}
+        />
+      )}
 
     </>
   );

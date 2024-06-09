@@ -33,6 +33,7 @@ import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import moment from "moment";
 
 // const rows = [
 //   {
@@ -107,10 +108,10 @@ const headCells = [
   //   id: "lastModified",
   //   label: "last Modified",
   // },
-  {
-    id: "brokerInfo",
-    label: "Broker",
-  },
+  // {
+  //   id: "brokerInfo",
+  //   label: "Broker",
+  // },
   {
     id: "source",
     label: "Source",
@@ -120,10 +121,6 @@ const headCells = [
     label: "Credit Value",
   },
   {
-    id: "action",
-    label: "Action",
-  },
-  {
     id: "status",
     label: "Status",
   },
@@ -131,7 +128,10 @@ const headCells = [
     id: "enquired date",
     label: "Enquired Date",
   },
-
+  {
+    id: "action",
+    label: "Action",
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -237,9 +237,16 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
 
       <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${formatNumberWithCommas(userDetail?.budget?.maximumBudget?.value)}` : "-"}</TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
-      <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell>
+      {/* <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell> */}
       <TableCell>{row.source}</TableCell>
       {alignment === LEADS_TAB[2].value ? <TableCell>{row?.userDetail?.userCreditValue?.toLocaleString('en-IN')}</TableCell> : null}
+     
+      <TableCell>{row?.userDetail?.status?.toUpperCase() || "-"}
+      </TableCell>
+      <TableCell>
+        {moment(row.createdAt).format("DD/MM/YY hh:ss A")}
+      </TableCell>
+
       <TableCell sx={{ py: 0 }}>
         <IconButton
           onClick={handleClick}
@@ -272,10 +279,6 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
             Edit Profile
           </MenuItem>
         </Menu>
-      </TableCell>
-      <TableCell>{row.pendingStatus}
-      </TableCell>
-      <TableCell>23/04/23
       </TableCell>
 
       {/* <TableCell>{row.closedStatus}</TableCell>
@@ -355,6 +358,8 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
       leadCounts = data?.leadsCount ?? 0,
       reviewed = data?.reviewed ?? 0,
       pending = data?.pending ?? 0;
+    
+      console.log(records)
 
     setRows(records);
     setTotalCount(totalCount);
