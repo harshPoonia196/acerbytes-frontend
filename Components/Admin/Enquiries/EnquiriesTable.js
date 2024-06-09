@@ -229,8 +229,8 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
       <TableCell>{row?.name?.firstName} {row?.name?.lastName}</TableCell>
 
       <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}&nbsp;
-        {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
-          <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='error' />}
+        {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='success' /> :
+          <UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='error' />}
       </TableCell>
       <TableCell>{user.email || "-"}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}

@@ -373,6 +373,7 @@ export default function ClippedDrawer({ children }) {
           }}
         >
           <List>
+            <ListItem sx={{ paddingLeft: "25px"}}><Typography variant="body2">Helpline - 457856954</Typography></ListItem>
             <ListItem
               disablePadding
               secondaryAction={
@@ -381,6 +382,7 @@ export default function ClippedDrawer({ children }) {
                 </IconButton>
               }
             >
+              
               {isLogged ? (
                 <ListItemButton
                   onClick={() => logout()}
@@ -531,7 +533,7 @@ export default function ClippedDrawer({ children }) {
                       {userDetails?.name?.firstName}
                     </Typography>
                   </Box>
-                  <Box sx={{ alignSelf: "center" }}>
+                  <Box sx={{ alignSelf: "center", textAlign: "right" }}>
                     {userDetails?.role == ROLE_CONSTANTS.broker && (
                       <Chip label={`Points: ${brokerBalance}`} size="small"
                         onClick={() => router.push(listOfPages.consultantPaymentHistory)} />
@@ -539,6 +541,7 @@ export default function ClippedDrawer({ children }) {
                     {(userDetails?.role == ROLE_CONSTANTS.admin || userDetails?.role == ROLE_CONSTANTS.sales || userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
                       <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" />
                     )}
+                    <Chip label={`${userDetails?.role}`} size="small" sx={{ marginLeft: "5px"}} />
                   </Box>
                 </Box>
               ) : (

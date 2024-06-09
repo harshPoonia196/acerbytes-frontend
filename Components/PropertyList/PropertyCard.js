@@ -16,6 +16,7 @@ import { useAuth } from "utills/AuthContext";
 import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
 import { shortPriceFormatter } from "utills/CommonFunction";
 import Image from "next/image";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 function PropertyCard(props) {
   const router = useRouter();
@@ -113,6 +114,7 @@ function PropertyCard(props) {
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
+                  <LocationOnIcon sx={{ fontSize: "12px", position: "relative", top: "1.5px"}} />
                   {propertyDetails?.location?.city}{" "}
                   {propertyDetails?.property_id}
                 </Typography>
@@ -209,7 +211,7 @@ function PropertyCard(props) {
             )}
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
-              <Typography variant="subtitle2">
+              <Typography variant="subtitle2" sx={{fontWeight: "bold"}}>
                 ₹{" "}
                 {shortPriceFormatter(propertyDetails?.unitsPlan?.minPriceRange)}{" "}
                 - ₹{" "}
