@@ -200,6 +200,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                 <Box sx={{ display: 'flex'}}>
                                     <Box sx={{textAlign: 'center', alignSelf: 'start', display: { xs: "block", evmd: 'block' } }}>
                                         {propertyData?.isActiveAd ?
+                                        <>
                                             <Button  sx={{
                                                 border: `2px solid ${colors.BLUE}`,
                                                 fontSize: "14px", padding: "3px 5px",
@@ -210,6 +211,8 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                 }} variant='outlined' startIcon={<DoneIcon />} disabled>
                                                 Activated
                                             </Button>
+                                            <ContentCopyIcon sx={{ marginLeft: "5px"}} fontSize="1rem" />
+                                            </>
                                         : 
                                             <Button sx={{ color: "#000", border: "2px solid gold", fontSize: "14px", padding: "3px 5px", '&:hover': {
                                                 backgroundColor: "#fffade",
@@ -228,11 +231,11 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                         {/* <div><Typography variant="body2" sx={{ lineHeight: '1.3', marginTop: '5px'}}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get customer enquiries" }</Typography></div> */}
                                     </Box>
 
-                                    <Box sx={{ alignSelf: 'start'}}>
+                                    {/* <Box sx={{ alignSelf: 'start'}}>
                                         <IconButton onClick={handleClick} sx={{ padding: "0"}}>
                                             <MoreVertIcon />
                                         </IconButton>
-                                    </Box>
+                                    </Box> */}
                                     <Menu
                                         id="basic-menu"
                                         anchorEl={anchorEl}

@@ -173,6 +173,7 @@ function Profile({ id, isAdminUpdate }) {
       purchase: "",
       demographic: "",
       interestedForLoan: "",
+      paymentStatus
     },
     settings: {
       dnd: false,
@@ -1172,6 +1173,16 @@ function Profile({ id, isAdminUpdate }) {
                     );
                   })}
                 </NewToggleButtonStructure>
+                <NewSelectTextFieldStructure
+                  label="Payment status"
+                  isEdit={isEdit}
+                  handleChange={(e) =>
+                    handleChange(e, "budget", "paymentStatus")
+                  }
+                  name={"paymentStatus"}
+                  // list={allDropdownOptions?.find(rs => rs.name == "Service Type")?.childSub || []}
+                  value={profileInfo?.budget?.paymentStatus}
+                />
               </Grid>
             </Card>
           </Grid>

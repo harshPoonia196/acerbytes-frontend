@@ -40,8 +40,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import { useAuth } from 'utills/AuthContext';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-
-import Qrimage from "../../public/images/demo.webp"
+import HomeIcon from '@mui/icons-material/Home';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 const enquiries = [
   {
@@ -72,7 +72,7 @@ const enquiries = [
 
 function Row(props) {
   const { row, history } = props;
-
+  
   const [open, setOpen] = React.useState(false);
   const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
@@ -88,23 +88,29 @@ function Row(props) {
           <UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='error' />}</TableCell>
         <TableCell>
           {row.propertyLink && (
-            <a
-              href={row.propertyLink}
-              onClick={(e) => {
-                e.preventDefault();
-                handlePropertyView(row.propertyLink);
-              }}
-              style={{ textDecoration: "none" }}
-            >
-              {row?.project ?
-                `${capitalLizeName(row?.project)}`
-                : "-"}
-            </a>
+            <>
+              <a
+                href={row.propertyLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePropertyView(row.propertyLink);
+                }}
+                style={{ textDecoration: "none" }}
+              >
+                {row?.project ?
+                  `${capitalLizeName(row?.project)}`
+                  : "-"}
+              </a>
+              {row.brokerId?.length > 0 ? <HomeIcon sx={{ fontSize: "14px", position: "relative", top: "2px", left: "3px"}}/> : 
+              <SupportAgentIcon sx={{ fontSize: "14px", position: "relative", top: "2px", left: "3px"}}/>}
+            </>
           )}
         </TableCell>
 
-        {/* <TableCell>{row.urgency}</TableCell>
-        <TableCell>{row.buyingType}</TableCell>
+        <TableCell>{row.urgency}</TableCell>
+        <TableCell>budget</TableCell>
+        <TableCell>purchase</TableCell>
+        {/* <TableCell>{row.buyingType}</TableCell>
         <TableCell>{row.price}</TableCell>
     
         <TableCell>{row.consultedBy}</TableCell> */}
@@ -190,15 +196,28 @@ const headCells = [
     label: "Property link",
   },
   {
+    id: "urgency",
+    numeric: true,
+    disablePadding: false,
+    label: "Urgency",
+  },
+  {
+    id: "budget",
+    numeric: true,
+    disablePadding: false,
+    label: "Budget",
+  },
+  {
+    id: "purpose_of_purchase",
+    numeric: true,
+    disablePadding: false,
+    label: "Purpose of purchase",
+  },
+  {
     id: "ViewDetails",
     label: "View",
   },
-  // {
-  //   id: "urgency",
-  //   numeric: true,
-  //   disablePadding: false,
-  //   label: "Urgency",
-  // },
+  
   // {
   //   id: "buyingType",
   //   numeric: true,
@@ -296,7 +315,7 @@ export default function Enquiries(props) {
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
-
+  const { userDetails } = useAuth();
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -316,9 +335,11 @@ export default function Enquiries(props) {
       const response = await getEnquiries();
       if (response.status == 200) {
         const { success, data, message } = response.data;
+        console.log("data", data);
         if (success) {
 
           return data?.map((enquiry) => {
+            console.log("enquiry", enquiry);
             return {
               isVerified: enquiry?.isVerified || false,
               project: enquiry?.property[0]?.overview?.projectName || "",
@@ -337,7 +358,7 @@ export default function Enquiries(props) {
               // location: `${enquiry?.property[0]?.location?.area} ${enquiry?.property[0]?.location?.sector} ${enquiry?.property[0]?.location?.state} ${enquiry?.property[0]?.location?.city}`,
               location: `${enquiry?.property[0]?.location?.city}`,
               next: "yes",
-
+              brokerId: enquiry?.brokerId
             };
 
           });
@@ -358,7 +379,7 @@ export default function Enquiries(props) {
 
   const history = useRouter();
   console.log(props, "userdjbdj")
-
+  console.log("rows", rows);
   return (
     <>
       {isLoading && <Loader />}
@@ -398,7 +419,7 @@ export default function Enquiries(props) {
               open real estate queries. Your next customer is just a click away
             </Typography>
             <Box sx={{ mt: 2, textAlign: "center" }}>
-              <Box sx={{ width: "fit-content", margin: "auto" }}>
+              {/* <Box sx={{ width: "fit-content", margin: "auto" }}>
                 <AvatarGroup total={5}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                   <Avatar
@@ -414,37 +435,47 @@ export default function Enquiries(props) {
                     src="/static/images/avatar/5.jpg"
                   />
                 </AvatarGroup>
-              </Box>
-              <Typography
+              </Box> */}
+              {/* <Typography
                 variant="h3"
                 sx={{ flex: 1, alignSelf: "center", my: 2 }}
               >
                 View  my {rows?.length} leads
-              </Typography>
-              <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
-                ButtonText={"View suggested leads"}
-              />
-              {brokerBalance ?
-                <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
-                  ButtonText={`Points: ${brokerBalance}`}
-                /> : ""}
+              </Typography> */}
+              
             </Box>
           </Box>
         </Container>
       </Box>
       <Container maxWidth="lg" >
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#000",
-            fontSize: "1rem",
-            fontWeight: 900,
-            lineHeight: 1,
-            mb: 2,
-          }}
-        >
-          Leads panel
-        </Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2}}>
+          <Typography
+            variant="h6"
+            sx={{
+              color: "#000",
+              fontSize: "1rem",
+              fontWeight: 900,
+              lineHeight: 1
+            }}
+          >
+            Leads panel
+            
+          </Typography>
+          <Box>
+          { userDetails.role === 'broker' && (
+                  <>
+                <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
+                  ButtonText={"View suggested leads"}
+                />
+                
+                {brokerBalance ?
+                  <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
+                    ButtonText={`Points: ${brokerBalance}`}
+                  /> : ""}
+                  </>
+                )}
+          </Box>
+        </Box>
         <TableContainer component={Paper} style={{
           maxHeight: "350px",
           overflowY: "auto",
