@@ -74,7 +74,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
     const handleClose = () => {
         setAnchorEl(null);
     };
-
+    console.log("propertyData?.brokerDetais?.rating", propertyData?.brokerDetais?.rating);
     return (
         <>
             <Box className="consultantFooter" sx={{
@@ -116,16 +116,21 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                     <Typography variant='body2' sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "5px" }}>
                                     {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating}
                                     </Typography>
-                                    <Rating
-                                        name="half-rating"
-                                        {...propertyData?.brokerDetais?.rating}
-                                        precision={0.5}
-                                        value={propertyData?.brokerDetais?.rating}
-                                        defaultValue={propertyData?.brokerDetais?.rating}
-                                        size="small"
-                                        readOnly
-                                        sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
-                                    />
+                                    {
+                                        propertyData?.brokerDetais?.rating && (
+                                            <Rating
+                                                name="half-rating"
+                                                {...propertyData?.brokerDetais?.rating}
+                                                precision={0.5}
+                                                value={propertyData?.brokerDetais?.rating}
+                                                defaultValue={propertyData?.brokerDetais?.rating}
+                                                size="small"
+                                                readOnly
+                                                sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
+                                            />
+                                        )
+                                    }
+                                    
                                     </Box>
                                     
                                 </Box>
@@ -148,7 +153,8 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                     <Typography variant='subtitle2' sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "5px" }}>
                                                         {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} 
                                                     </Typography>
-                                                    <Rating
+                                                    {
+                                                        propertyData?.brokerDetais?.rating && (<Rating
                                                         name="half-rating"
                                                         {...propertyData?.brokerDetais?.rating}
                                                         precision={0.5}
@@ -157,7 +163,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                         size="small"
                                                         readOnly
                                                         sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
-                                                    />
+                                                    />)}
                                                     </Box>
                                                 </Box>
                                             {/* <Box sx={{ display: 'flex' }}> */}
