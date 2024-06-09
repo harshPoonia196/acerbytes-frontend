@@ -48,9 +48,14 @@ function UpdateLeadStatus({ open, handleClose, getList: getNotesList, isEdit, ed
             const { data: { data: { data = [] } } } = await getMyLeadsCustomer(),
                 list = []
             for (let i = 0; i < data.length; i++) {
-                const { userId, fullName } = data[i]
-                if (!list?.find(user => user.value === userId))
-                    list.push({ value: userId, label: fullName })
+                const { userId, fullName, _id } = data[i];
+                if (userId) {
+                    if (!list?.find(user => user.value === userId))
+                        list.push({ value: userId, label: fullName, isNonLogin: false })
+                } else {
+                    if (!list?.find(user => user.value === _id))
+                        list.push({ value: _id, label: fullName, isNonLogin: true })
+                }
             }
             setMyLeadsCustomer(list)
         } catch (error) {
@@ -141,6 +146,11 @@ function UpdateLeadStatus({ open, handleClose, getList: getNotesList, isEdit, ed
 
             if (!isError) {
                 const data = { userId }
+                if (userId) {
+                    const { isNonLogin, label } = myLeadsCustomer.find(res => res.value === userId);
+                    data.isNonLogin = isNonLogin;
+                    data.fullName = label;
+                }
 
                 if (isEdit) {
                     data._id = editData?.noteId;
