@@ -67,6 +67,7 @@ import { clearItem, getItem } from "utills/utills";
 import MoreSimilarPropertyCard from "Components/Admin/Property/SubComponents/MoreSimilarPropertyCard";
 import colors from "styles/theme/colors";
 import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpinner";
+import { getCountsByProperty } from "api/Broker.api";
 
 const tabHeight = 200;
 
@@ -111,6 +112,7 @@ const PropertyDetails = ({ params }) => {
   const name = searchParams.get("name");
   const [isLoading, setLoading] = useState(false);
   const [propertyData, setPropertyData] = useState([]);
+  const [leadsCount, setLeadsCount] = useState(0);
   const [contactPermissionToView, setContactPermissionToView] = useState(false);
   const [progressCount, setProgressCount] = useState(6);
   const [leadId, setLeadId] = useState("");
@@ -178,6 +180,8 @@ const PropertyDetails = ({ params }) => {
       }
       if (res.status === 200) {
         setPropertyData(res.data?.data);
+        const result = await getCountsByProperty(res.data?.data?.[0]?.property_id, res.data?.data?.[0]?.broker_collection_id)
+        setLeadsCount(result?.data?.count)
         const expiredAt = new Date(res?.data?.data[0]?.expired_at);
         const now = new Date();
         const brokerData = res.data.data[0]?.brokerData;
@@ -623,6 +627,7 @@ const PropertyDetails = ({ params }) => {
 
   React.useEffect(
     () => () => {
+      
       clearTimeout(unsetClickedRef.current);
     },
     []
