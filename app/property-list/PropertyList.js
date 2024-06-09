@@ -633,7 +633,7 @@ function PropertyList({ params }) {
                   ) : (
                     <Grid container spacing={1}>
                       {property?.map((propertyDetails) => (
-                        <Grid item xs={12} key={propertyDetails?._id} key={propertyDetails?.id}>
+                        <Grid item xs={12} key={propertyDetails?._id}>
                           <PropertyCard
                             createdDate={propertyDetails?.created_at}
                             isShortListPageCard={propertyDetails?.isFav}

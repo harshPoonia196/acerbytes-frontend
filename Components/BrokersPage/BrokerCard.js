@@ -27,6 +27,7 @@ import { listOfPages } from "Components/NavBar/Links";
 import { countryCodeFormating } from "utills/utills";
 import { capitalLizeName, getFirstCharacterOfFirstOfFullName } from "utills/CommonFunction";
 import Reviews from "./reviews";
+import PhoneIcon from '@mui/icons-material/Phone';
 
 function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, showRating = false, hasReviews = false }) {
   const [openDialog, setOpenDialog] = useState(false),
@@ -85,7 +86,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           <Typography variant="h5">
             <Box sx={{ display: {sm: "flex", xs: "block"}, gap: "5px", cursor: "pointer"}} onClick={hasReviews ? handleOpenReviews : null}>
               {titleCase(broker?.fullName)}
-              <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center" }} />
+              <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center", position: "relative", top: "1px", left: "2px" }} />
               {showRating ?
                 <>
                   <div className="rating">
@@ -205,13 +206,13 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Box>
       ) : null} */}
       {/* {isLogged ? ( */}
-      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:10, sm:8}, right: 8 }} onClick={handleCallClick}  >
+      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:10, sm:13}, right: 8 }} onClick={handleCallClick}  >
         <IconButton sx={{ boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)" }}>
           <CallIcon fontSize="small" />
         </IconButton>
       </Box>) :
         <Box sx={{ position: "absolute", top: 8, right: 8, cursor: "pointer", color: "blue" }} onClick={handleCallClick} >
-          {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}
+          <PhoneIcon sx={{ position: "relative", top: "5px", fontSize: "19px" }} fontSize="small"/> {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}
         </Box>
       }
       {/* // : (

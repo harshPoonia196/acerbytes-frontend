@@ -84,8 +84,8 @@ function Row(props) {
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>{row.project}</TableCell>
         <TableCell>{row.location}</TableCell>
-        <TableCell>{row.phone} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='success' /> :
-          <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color='error' />}</TableCell>
+        <TableCell>{row.phone} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='success' /> :
+          <UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='error' />}</TableCell>
         <TableCell>
           {row.propertyLink && (
             <a

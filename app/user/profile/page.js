@@ -1279,7 +1279,7 @@ function Profile({ id, isAdminUpdate }) {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={12} id="setting">
+          {/* <Grid item xs={12} id="setting">
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography
@@ -1332,7 +1332,7 @@ function Profile({ id, isAdminUpdate }) {
                 </Grid>
               </Box>
             </Card>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
       <Box

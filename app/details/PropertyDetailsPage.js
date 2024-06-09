@@ -743,7 +743,7 @@ const PropertyDetailsPage = ({ params }) => {
                         icon={<GroupIcon fontSize="small" />}
                         size="small"
                         onClick={handleOpenConsultantsViewAll}
-                        sx={{ fontSize: "0.875rem !important" }}
+                        sx={{ fontSize: "0.875rem !important", padding: "5px" }}
                       />
                     </Box>
                   </Box>

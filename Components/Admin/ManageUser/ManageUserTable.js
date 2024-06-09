@@ -307,8 +307,8 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
         </TableCell>
       )}
       {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{ justifyContent: "center", display: "flex", gap: "12px" }}>
-        <CheckCircleIcon onClick={() => UserApproveupdate(row.googleID, true, row)} sx={{ color: colors.SUCCESS }} />
-        <CancelIcon onClick={() => UserApproveupdate(row.googleID, false, row)} sx={{ color: colors.ERROR }} />
+        <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", color: colors.SUCCESS}} onClick={() => UserApproveupdate(row.googleID, true, row)}/>
+        <CancelIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", color: colors.ERROR}} onClick={() => UserApproveupdate(row.googleID, false, row)}/>
       </TableCell>}
     </TableRow>
   );

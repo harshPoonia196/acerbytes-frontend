@@ -30,7 +30,8 @@ function UserDetailsAd({
   contactPermissionToView,
   handleOpenEnquiryForm,
 }) {
-  const { userDetails } = useAuth();
+  const { userDetails, isLoggedIn } = useAuth();
+
   const overviewData = AllPropertyData?.propertyData?.overview;
   const [showContact, setShowContact] = useState(false);
 
@@ -107,9 +108,9 @@ function UserDetailsAd({
               <Box sx={{ display: { xs: "none", md: "block" } }}>
                 
                  <Typography variant="h6" sx={{ display: "inline-block", marginRight: "5px"}}>{name}</Typography>
-                 <a href={`tel:${phoneNumber}`}>
+                 { !isLoggedIn &&<a href={`tel:${phoneNumber}`}>
                   <Chip icon={<PhoneIcon />} label={phoneNumber} size="small" />
-                </a>
+                </a>}
                 
                 <Box>
                 <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
@@ -134,13 +135,13 @@ function UserDetailsAd({
                 <Box sx={{ display: "flex"}}>
                 <Box sx={{ flex: 1 }}>
                   <Typography variant="h6" sx={{ display: "inline-block", marginRight: "5px"}}>{name}</Typography>
-                  <a href={`tel:${phoneNumber}`}>
+                  { !isLoggedIn && <a href={`tel:${phoneNumber}`}>
                     <Chip
                       icon={<PhoneIcon />}
                       label={phoneNumber}
                       size="small"
                     />
-                  </a>
+                  </a> }
                   
                   <Box>
                   <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
@@ -158,7 +159,7 @@ function UserDetailsAd({
                   />
                 </Box>
                 </Box>
-                  <Box
+                { isLoggedIn && userDetails.role === 'broker' && <Box
                     sx={{
                       textAlign: {xs: "start", md: "end"},
                       alignSelf: {xs: "start", md: "end"},
@@ -180,23 +181,26 @@ function UserDetailsAd({
               <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
                 Log in
               </Button> */}
-                  </Box>
+                  </Box>}
                   </Box>
               </Box>
             </Box>
             <Box
               sx={{
                 textAlign: "center",
-                alignSelf: "center",
-                display: { xs: "none", md: "block" },
+                alignSelf: "start",
+                display: { md: "block" },
               }}
             >
+              { isLoggedIn && 
               <Chip
                 icon={showContact ? null : <PhoneIcon />}
                 label={showContact ? phoneNumber : "View Contact"}
                 size="small"
                 onClick={handleViewContactClick}
+                sx={{marginLeft: "5px"}}
               />
+              }
               {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
                 Call First
               </Button>
@@ -227,14 +231,14 @@ function UserDetailsAd({
                 <Typography variant="h5" sx={{ flex: 1 }}>
                   {name}
                 </Typography>
-                <Box>
+                { isLoggedIn &&<Box>
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
                     label={showContact ? phoneNumber : "View Contact"}
                     size="small"
                     onClick={handleViewContactClick}
                   />
-                </Box>
+                </Box>}
               </Box>
               <Typography variant="h6">
                 {builder}&#183;{projectName}&#183;{city}&#183;{sector}&#183;

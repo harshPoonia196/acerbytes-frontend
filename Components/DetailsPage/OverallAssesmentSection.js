@@ -96,7 +96,7 @@ function OverallAssesmentSection({
           </Typography>
           
           <Box sx={{ mt: 1 }}>
-          {userDetails?.role !== "broker" && (<>
+          {userDetails?.role === "user" && (<>
             <Button variant="outlined" onClick={() => { router.push('http://wa.me/+919323996997') }} startIcon={<WhatsAppIcon sx={{ position: 'relative', top: '-2px'}} />} sx={{
                 marginRight: "10px"}}>WhatsApp</Button>
             <Button variant="contained" onClick={handleOpenEnquiryForm} startIcon={<CallIcon />}>Get a Call back</Button></>)}
@@ -130,7 +130,7 @@ function OverallAssesmentSection({
               }} />
               <Chip label="Get a Call back" className="customBtn" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<CallIcon fontSize="small" />}
               /> */}
-            {userDetails?.role === "user" && (
+            {/* {userDetails?.role === "user" && (
               <Chip
                 sx={{ ml: 2 }}
                 color='primary'
@@ -139,7 +139,7 @@ function OverallAssesmentSection({
                 size="small"
                 onClick={handleOpenEnquiryForm}
               />
-            )}
+            )} */}
           </Box>
         </Box>
         {open && <EnquireNow

@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 const InfoBox = ({ label, button, dataList }) => {
   return (
-    <Box sx={{ backgroundColor: "white" }}>
+    <Box sx={{ backgroundColor: "white", boxShadow: "1px 2px 2px -2px gainsboro!important" }}>
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           {label &&

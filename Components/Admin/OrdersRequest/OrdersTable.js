@@ -64,7 +64,7 @@ const headCells = [
   },
   {
     id: "name",
-    label: "Name",
+    label: "Property consultant name",
     isCompleteView: true,
     isPendingView: true,
   },

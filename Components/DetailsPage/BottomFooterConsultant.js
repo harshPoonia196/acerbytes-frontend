@@ -74,7 +74,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
     const handleClose = () => {
         setAnchorEl(null);
     };
-
+    
     return (
         <>
             <Box className="consultantFooter" sx={{
@@ -116,16 +116,21 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                     <Typography variant='body2' sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "5px" }}>
                                     {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating}
                                     </Typography>
-                                    <Rating
-                                        name="half-rating"
-                                        {...propertyData?.brokerDetais?.rating}
-                                        precision={0.5}
-                                        value={propertyData?.brokerDetais?.rating}
-                                        defaultValue={propertyData?.brokerDetais?.rating}
-                                        size="small"
-                                        readOnly
-                                        sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
-                                    />
+                                    {
+                                        propertyData?.brokerDetais?.rating && (
+                                            <Rating
+                                                name="half-rating"
+                                                {...propertyData?.brokerDetais?.rating}
+                                                precision={0.5}
+                                                value={propertyData?.brokerDetais?.rating}
+                                                defaultValue={propertyData?.brokerDetais?.rating}
+                                                size="small"
+                                                readOnly
+                                                sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
+                                            />
+                                        )
+                                    }
+                                    
                                     </Box>
                                     
                                 </Box>
@@ -148,7 +153,8 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                     <Typography variant='subtitle2' sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "5px" }}>
                                                         {propertyData?.brokerDetais?.rating && propertyData?.brokerDetais?.rating} 
                                                     </Typography>
-                                                    <Rating
+                                                    {
+                                                        propertyData?.brokerDetais?.rating && (<Rating
                                                         name="half-rating"
                                                         {...propertyData?.brokerDetais?.rating}
                                                         precision={0.5}
@@ -157,7 +163,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                         size="small"
                                                         readOnly
                                                         sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
-                                                    />
+                                                    />)}
                                                     </Box>
                                                 </Box>
                                             {/* <Box sx={{ display: 'flex' }}> */}
@@ -198,7 +204,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                 border: `2px solid ${colors.BLUE}`,
                                                 fontSize: "14px", padding: "3px 5px",
                                                 color: "#000", '&:hover': {
-                                                    backgroundColor: "inherit",
+                                                    // backgroundColor: "inherit",
                                                     border: `2px solid ${colors.BLUE}`,
                                                 }
                                                 }} variant='outlined' startIcon={<DoneIcon />} disabled>
@@ -206,9 +212,9 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                             </Button>
                                         : 
                                             <Button sx={{ color: "#000", border: "2px solid gold", fontSize: "14px", padding: "3px 5px", '&:hover': {
-                                                backgroundColor: "inherit",
+                                                backgroundColor: "#fffade",
                                                 border: "2px solid gold",
-                                            } }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<DoneIcon />} >
+                                            } }} onClick={() => handleOpenActivateAdsPopup(propertyUrl)} variant='outlined' size="small" startIcon={<AddLinkIcon />} >
                                                 Activate link
                                             </Button>
                                         }
@@ -273,7 +279,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                     sx={{ justifyContent: "flex-start" }}
                 >
                     <FormatListBulletedIcon fontSize='small' sx={{ mr: 1 }} />
-                    Enquiries
+                    {userDetails.role === 'broker' ? "Enquiries received": "Enquiries"}
                 </Fab>
             </Box>
         </>
