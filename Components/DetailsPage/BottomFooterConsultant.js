@@ -74,7 +74,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
     const handleClose = () => {
         setAnchorEl(null);
     };
-    console.log("propertyData?.brokerDetais?.rating", propertyData?.brokerDetais?.rating);
+    
     return (
         <>
             <Box className="consultantFooter" sx={{
