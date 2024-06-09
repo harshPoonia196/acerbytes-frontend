@@ -69,3 +69,8 @@ export const buySuggestedLeads = (data) => {
 export const buyNotesPoints = (data) => {
   return axiosInstance.put(`/broker/buyNotesPoints`, data);
 };
+
+
+export const getCountsByProperty = (propertyId, brokerId) => {
+  return axiosInstance.get(`/broker/getLeadsCount?propertyId=${propertyId}&brokerId=${brokerId}`);
+};

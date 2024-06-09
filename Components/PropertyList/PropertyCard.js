@@ -11,15 +11,16 @@ import {
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "utills/AuthContext";
 import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
 import { shortPriceFormatter } from "utills/CommonFunction";
 import Image from "next/image";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 function PropertyCard(props) {
   const router = useRouter();
+  const [priceRange, setAmount] = useState({});
   const { userDetails } = useAuth();
   const { propertyDetails, isShortListPageCard, createdDate } = props;
   const constructPropertyUrl = (propertyDetailsData) => {
@@ -81,14 +82,44 @@ function PropertyCard(props) {
   }, [propertyDetails]);
 
   const layoutData = useMemo(() => {
-    const withoutUniqueLayout = [...propertyDetails?.unitsPlan?.planList?.filter(item => !item.propertyLayout)]?.map((item) => `${item?.width}*${item?.length}`)
-    return [...propertyDetails?.unitsPlan?.uniqueLayouts, ...withoutUniqueLayout]
-  }, [propertyDetails])
+    const withoutUniqueLayout = [
+      ...propertyDetails?.unitsPlan?.planList?.filter(
+        (item) => !item.propertyLayout
+      ),
+    ]?.map((item) => `${item?.width}*${item?.length}`);
+    return [
+      ...propertyDetails?.unitsPlan?.uniqueLayouts,
+      ...withoutUniqueLayout,
+    ];
+  }, [propertyDetails]);
 
   const numbers = layoutData.map((item) => item.split(" ")[0]).sort();
   const suffix = layoutData[0].split(" ").slice(1).join(" ");
 
+  useEffect(() => {
+    const getPriceTag = shortPriceFormatter(
+      propertyDetails?.unitsPlan?.minPriceRange
+    );
+
+    const [minPrice, tag] = getPriceTag.split(" ");
+    const finalMinPrice = Math.round(minPrice * 10) / 10;
+
+    const getMaxPriceTag = shortPriceFormatter(
+      propertyDetails?.unitsPlan?.maxPriceRange
+    );
+
+    const [maxPrice, maxTag] = getMaxPriceTag.split(" ");
+    const finalMaxPrice = Math.round(maxPrice * 10) / 10;
+
+    setAmount({
+      ...priceRange,
+      minPrice: { price: finalMinPrice, tag },
+      maxPrice: { price: finalMaxPrice, tag: maxTag },
+    });
+  }, []);
+
   const formattedBHK = `${numbers.join(", ")} ${suffix}`;
+
   return (
     <Card>
       <CardActionArea sx={{ p: 2 }}>
@@ -114,7 +145,13 @@ function PropertyCard(props) {
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
-                  <LocationOnIcon sx={{ fontSize: "12px", position: "relative", top: "1.5px"}} />
+                  <LocationOnIcon
+                    sx={{
+                      fontSize: "12px",
+                      position: "relative",
+                      top: "1.5px",
+                    }}
+                  />
                   {propertyDetails?.location?.city}{" "}
                   {propertyDetails?.property_id}
                 </Typography>
@@ -191,7 +228,9 @@ function PropertyCard(props) {
                   : 0
               }
               // onClick={() => router.push("/research")}
-              onClick={() => router.push(`/details/${propertyUrl}`)} tooltiptext={`AB scores *`} />
+              onClick={() => router.push(`/details/${propertyUrl}`)}
+              tooltiptext={`AB scores *`}
+            />
           </Grid>
           <Grid
             item
@@ -211,11 +250,9 @@ function PropertyCard(props) {
             )}
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
-              <Typography variant="subtitle2" sx={{fontWeight: "bold"}}>
-                ₹{" "}
-                {shortPriceFormatter(propertyDetails?.unitsPlan?.minPriceRange)}{" "}
-                - ₹{" "}
-                {shortPriceFormatter(propertyDetails?.unitsPlan?.maxPriceRange)}
+              <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+                ₹ {priceRange?.minPrice?.price} {priceRange?.minPrice?.tag} - ₹{" "}
+                {priceRange?.maxPrice?.price} {priceRange?.maxPrice?.tag}
               </Typography>
             )}
           </Grid>

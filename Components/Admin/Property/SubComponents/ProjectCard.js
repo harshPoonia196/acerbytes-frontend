@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Typography,
@@ -11,7 +11,8 @@ import {
 
 import {
   capitalLizeName,
-  transformDocuments, yearList
+  transformDocuments,
+  yearList,
 } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import { getAllOptions } from "api/Property.api";
@@ -19,12 +20,19 @@ import { useSnackbar } from "utills/SnackbarContext";
 
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
-import NewAutoCompleteInputStructure from 'Components/CommonLayouts/NewAutoCompleteInputStructure';
-import NewMultiSelectAutoCompleteInputStructure from 'Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure';
-import colors from 'styles/theme/colors';
+import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
+import NewMultiSelectAutoCompleteInputStructure from "Components/CommonLayouts/NewMultiSelectAutoCompleteInputStructure";
+import colors from "styles/theme/colors";
 
-function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selectOptions }) {
-
+function ProjectCard({
+  isEdit,
+  form,
+  editPage,
+  handleChange,
+  errors,
+  hide,
+  selectOptions,
+}) {
   const {
     builder,
     projectName,
@@ -39,13 +47,13 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
 
   const formatDate = (dateString) => {
     const dateObject = new Date(dateString);
-    const formattedDate = dateObject.toLocaleString('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
+    const formattedDate = dateObject.toLocaleString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
     });
-    return formattedDate
-  }
+    return formattedDate;
+  };
 
   // const { openSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
@@ -53,30 +61,6 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
   const showToaterMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
-  const getAllOptionDataList = async () => {
-    try {
-      let res = await getAllOptions();
-      if (res.status === 200) {
-        let transform = transformDocuments(res.data.data)
-        setSelectOption({ ...transform })
-      }
-    } catch (error) {
-      console.log(error, 'err')
-      showToaterMessages(
-        error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
-        "error"
-      );
-    }
-    finally {
-      setLoading(false);
-    }
-  };
-
-
-
-
 
   return (
     <>
@@ -108,7 +92,6 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
       )}
       <Grid item xs={12}>
         <Card>
-
           <Box sx={{ display: "flex", p: 2, py: 1 }}>
             <Typography
               variant="subtitle1"
@@ -116,8 +99,6 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
             >
               Overview
             </Typography>
-
-
 
             <Box sx={{ alignSelf: "center" }}>
               <Card
@@ -376,4 +357,4 @@ function ProjectCard({ isEdit, form, editPage, handleChange, errors, hide, selec
   );
 }
 
-export default ProjectCard
+export default ProjectCard;
