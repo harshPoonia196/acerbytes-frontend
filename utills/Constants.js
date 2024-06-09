@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import FiberManualRecord from "@mui/icons-material/FiberManualRecord";
 import colors from "styles/theme/colors";
-export const boxShadowTop = '-1px -2px 6px -2px gainsboro !important';
-export const boxShadowBottom = '1px 2px 2px -2px gainsboro !important';
+export const boxShadowTop = "-1px -2px 6px -2px gainsboro !important";
+export const boxShadowBottom = "1px 2px 2px -2px gainsboro !important";
 export const menuMaxHeight = 150;
 export const FILE_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 
@@ -23,7 +23,7 @@ export const ROLE_CONSTANTS = {
   user: "user",
   broker: "broker",
   sales: "sales",
-  customerSupport: "customerSupport"
+  customerSupport: "customerSupport",
 };
 
 export const ROLES = [
@@ -120,66 +120,65 @@ export const BuyingCreditPoints = [
   },
 ];
 
-
 export const BuyConsultanttPoints = [
   {
     amount: 2000,
-    month: '1 month',
-    value: '1',
+    month: "1 month",
+    value: "1",
     discount: 0,
-    discountAmount: 2000
+    discountAmount: 2000,
   },
   {
     amount: 4000,
-    month: '2 month',
-    value: '2',
+    month: "2 month",
+    value: "2",
     discount: 10,
-    discountAmount: 3600
+    discountAmount: 3600,
   },
   {
     amount: 6000,
-    month: '3 month',
-    value: '3',
+    month: "3 month",
+    value: "3",
     discount: 20,
-    discountAmount: 4800
+    discountAmount: 4800,
   },
   {
     amount: 8000,
-    month: '4 month',
-    value: '4',
+    month: "4 month",
+    value: "4",
     discount: 30,
-    discountAmount: 5600
+    discountAmount: 5600,
   },
 ];
 
 export const BuyConsultantsNotePoints = [
   {
     amount: 5000,
-    month: '1 month',
+    month: "1 month",
     value: 1,
     discount: 0,
-    discountAmount: 5000
+    discountAmount: 5000,
   },
   {
     amount: 10000,
-    month: '2 month',
+    month: "2 month",
     value: 2,
     discount: 10,
-    discountAmount: 9000
+    discountAmount: 9000,
   },
   {
     amount: 15000,
-    month: '3 month',
+    month: "3 month",
     value: 3,
     discount: 20,
-    discountAmount: 12000
+    discountAmount: 12000,
   },
   {
     amount: 20000,
-    month: '4 month',
+    month: "4 month",
     value: 4,
     discount: 30,
-    discountAmount: 14000
+    discountAmount: 14000,
   },
 ];
 
@@ -406,22 +405,32 @@ const listOfPropertyDetailsTab = [
     label: "Value for money",
     value: "value",
   },
-  {
-    label: "Property consultants",
-    value: "propertyConsultants",
-  },
+  // {
+  //   label: "Property consultants",
+  //   value: "propertyConsultants",
+  // },
   {
     label: "Assesment",
     value: "assesment",
   },
 ];
 
-export const showStarFor = ["RERA approved", "CC", "OC", "Construction Progress", "Authority registration", "Government Loan", "Private Bank loan", "Fresh", "Resale"]
+export const showStarFor = [
+  "RERA approved",
+  "CC",
+  "OC",
+  "Construction Progress",
+  "Authority registration",
+  "Government Loan",
+  "Private Bank loan",
+  "Fresh",
+  "Resale",
+];
 
 const reactQueryKey = {
   broker: {
     profile: (uniqueKey) => "broker-profile-" + uniqueKey,
-    myLeads: "broker-leads"
+    myLeads: "broker-leads",
   },
   user: {
     myConsultant: "my-consultant",
@@ -456,13 +465,8 @@ export const generateContent = () => (
     </Typography>
     <List disablePadding>
       <ListItem disablePadding>
-        <ListItemIcon
-          sx={{ minWidth: "0px", mr: "0.5rem" }}
-        >
-          <FiberManualRecord
-            fontSize="1rem"
-            sx={{ color: colors.BLACK }}
-          />
+        <ListItemIcon sx={{ minWidth: "0px", mr: "0.5rem" }}>
+          <FiberManualRecord fontSize="1rem" sx={{ color: colors.BLACK }} />
         </ListItemIcon>
         <ListItemText>
           <Typography variant="body1">
@@ -473,13 +477,8 @@ export const generateContent = () => (
         </ListItemText>
       </ListItem>
       <ListItem disablePadding>
-        <ListItemIcon
-          sx={{ minWidth: "0px", mr: "0.5rem" }}
-        >
-          <FiberManualRecord
-            fontSize="1rem"
-            sx={{ color: colors.BLACK }}
-          />
+        <ListItemIcon sx={{ minWidth: "0px", mr: "0.5rem" }}>
+          <FiberManualRecord fontSize="1rem" sx={{ color: colors.BLACK }} />
         </ListItemIcon>
         <ListItemText>
           <Typography variant="body1">
@@ -491,13 +490,8 @@ export const generateContent = () => (
         </ListItemText>
       </ListItem>
       <ListItem disablePadding>
-        <ListItemIcon
-          sx={{ minWidth: "0px", mr: "0.5rem" }}
-        >
-          <FiberManualRecord
-            fontSize="1rem"
-            sx={{ color: colors.BLACK }}
-          />
+        <ListItemIcon sx={{ minWidth: "0px", mr: "0.5rem" }}>
+          <FiberManualRecord fontSize="1rem" sx={{ color: colors.BLACK }} />
         </ListItemIcon>
         <ListItemText>
           <Typography variant="body2">
@@ -571,14 +565,28 @@ export const termsData = [
   },
 ];
 export const privacyContent = () => (
-  <Typography variant='body2'>
-    We may collect information from you, through your use of the Website or by joining the Nobroker community on social media websites, or which is provided to one of our marketing partners or through any engagement with Nobroker. We may collect and process personal information provided by you, including but not limited to:
+  <Typography variant="body2">
+    We may collect information from you, through your use of the Website or by
+    joining the Nobroker community on social media websites, or which is
+    provided to one of our marketing partners or through any engagement with
+    Nobroker. We may collect and process personal information provided by you,
+    including but not limited to:
     <br />
-    Information that you provide at the time of registration including any information that identifies or can be used to identify, contact or locate the user such as name, address, email address, property photos, bank details, and phone number.
+    Information that you provide at the time of registration including any
+    information that identifies or can be used to identify, contact or locate
+    the user such as name, address, email address, property photos, bank
+    details, and phone number.
     <br />
-    Any data that is automatically captured by the Website such as your mobile phone operating system every computer / mobile device connected to the internet is given a domain name and a set of numbers that serve as that computer's Internet Protocol or “IP” address. When you request a page from any page within the Website, our web servers automatically recognize your domain name and IP address. The domain name and IP address reveal nothing personal about you other than the IP address from which you have accessed the Website.
+    Any data that is automatically captured by the Website such as your mobile
+    phone operating system every computer / mobile device connected to the
+    internet is given a domain name and a set of numbers that serve as that
+    computer's Internet Protocol or “IP” address. When you request a page from
+    any page within the Website, our web servers automatically recognize your
+    domain name and IP address. The domain name and IP address reveal nothing
+    personal about you other than the IP address from which you have accessed
+    the Website.
   </Typography>
-)
+);
 export const privacyData = [
   {
     id: 1,
@@ -638,37 +646,37 @@ export const privacyData = [
 ];
 
 export const SORTING = {
-  asc: 'asc',
-  desc: 'desc'
-}
+  asc: "asc",
+  desc: "desc",
+};
 
 export const LINK = {
-  unique: 'Unique Link',
-  consultant: 'Consultant Card',
-  acrebytes: 'Acrebytes Property Link',
-}
+  unique: "Unique Link",
+  consultant: "Consultant Card",
+  acrebytes: "Acrebytes Property Link",
+};
 
 export const LEADS_TAB = [
-  { value: '', label: 'All' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'reviewed', label: 'Reviewed' }
-]
+  { value: "", label: "All" },
+  { value: "pending", label: "Pending" },
+  { value: "reviewed", label: "Reviewed" },
+];
 
 export const NOTES_STATUS = [
-  { value: 'Contact Done', label: 'Contact Done' },
-  { value: 'Didn\'t Pick Call', label: 'Didn\'t Pick Call' },
-  { value: 'Purchsed', label: 'Purchsed' }
+  { value: "Contact Done", label: "Contact Done" },
+  { value: "Didn't Pick Call", label: "Didn't Pick Call" },
+  { value: "Purchsed", label: "Purchsed" },
 ];
 
 export const NOTES_TYPE = {
   COMPLETED: "Completed",
-  NEXT: "Next"
-}
+  NEXT: "Next",
+};
 
 export const transactionType = {
-  PAYMENT_ADD: 'payment_add',
-  SUGGESTED_LEAD_BUY: 'suggested_lead_buy',
-  CONSULTANT_SUBSCRIPTION: 'consultant_subscription',
-  ACTIVATE_URL: 'activate_url',
-  NOTE_SUBSCRIPTION: 'note_subscription'
-}
+  PAYMENT_ADD: "payment_add",
+  SUGGESTED_LEAD_BUY: "suggested_lead_buy",
+  CONSULTANT_SUBSCRIPTION: "consultant_subscription",
+  ACTIVATE_URL: "activate_url",
+  NOTE_SUBSCRIPTION: "note_subscription",
+};

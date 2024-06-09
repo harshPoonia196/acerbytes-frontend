@@ -267,9 +267,8 @@ const indianNumberingSystem = (number) => {
   return formatted;
 };
 const filterText = (text) => {
-  return text.replace(/[^a-zA-Z\s]/g, '');
+  return text.replace(/[^a-zA-Z\s]/g, "");
 };
-
 
 export {
   upperCaseName,
@@ -296,5 +295,5 @@ export {
   getFirstCharacterOfFirstOfFullName,
   getRoleLabelByValue,
   indianNumberingSystem,
-  filterText
+  filterText,
 };

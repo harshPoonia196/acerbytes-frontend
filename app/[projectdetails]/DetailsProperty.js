@@ -25,16 +25,11 @@ import TopMenu from "Components/DetailsPage/TopMenu";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";
-// import FloorPlanSection from "Components/DetailsPage/FloorPlanSection";
 import AmenitiesSection from "Components/DetailsPage/AmenitiesSection";
 import ClearanceSection from "Components/DetailsPage/ClearanceSection";
 import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
-// import PricingSection from 'Components/DetailsPage/PricingSection'
-// import ResaleSection from "Components/DetailsPage/ResaleSection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
-// import { useSearchParams } from 'next/navigation'
-// import { useRouter } from 'next/router';
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
@@ -64,7 +59,6 @@ import {
   updateEnquiryVerifiedByUserId,
 } from "api/UserProfile.api";
 import { clearItem, getItem } from "utills/utills";
-import MoreSimilarPropertyCard from "Components/Admin/Property/SubComponents/MoreSimilarPropertyCard";
 import colors from "styles/theme/colors";
 import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpinner";
 import { getCountsByProperty } from "api/Broker.api";
@@ -355,16 +349,8 @@ const PropertyDetails = ({ params }) => {
 
   const [currentTab, setCurrentTab] = React.useState(0);
 
-  const handleTabChange = (event, newValue) => {
-    setCurrentTab(newValue);
-  };
-
   const [amenitiesTabs, setAmenitiesTab] = React.useState(0);
   const param = useParams();
-  const [brokerContact, setBrokerContact] = React.useState(null);
-  const handleAmenitiesTabChange = (event, newValue) => {
-    setAmenitiesTab(newValue);
-  };
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
