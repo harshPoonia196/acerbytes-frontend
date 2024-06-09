@@ -31,7 +31,7 @@ function SuggesredLeadsDetails({ open, handleClose, selectedRowData }) {
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Suggested lead Details
+          User Details
         </Typography>
       </DialogTitle>
       <DialogContent
