@@ -268,22 +268,22 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                     flexDirection: "column",
                 }}
             >
-                <Fab
+                {/* <Fab
                     // size="small"
                     variant="extended"
                     sx={{ justifyContent: "flex-start" }}
                 >
                     <AddLinkIcon fontSize='small' sx={{ mr: 1 }} />
                     Activate link
-                </Fab>
-                <Fab
+                </Fab> */}
+                {/* <Fab
                     // size="small"
                     variant="extended"
                     sx={{ justifyContent: "flex-start" }}
                 >
                     <FormatListBulletedIcon fontSize='small' sx={{ mr: 1 }} />
                     {userDetails.role === 'broker' ? "Enquiries received": "Enquiries"}
-                </Fab>
+                </Fab> */}
             </Box>
         </>
     )
