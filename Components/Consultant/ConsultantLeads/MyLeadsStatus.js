@@ -40,7 +40,7 @@ export default function MyLeadsStatus({ list: { rows = [], notesCount = 0, showS
                             name={res.fullName} actionType={res.type + ' action'} status={res.status}
                             comment={res.note}
                             type={res.type}
-                            userId={res?.user?._id}
+                            userId={res?.user?._id ?? res?.userId}
                             noteId={res?._id}
                             time={new Date(res?.time).toLocaleString()}
                             handleOpenUpdatePopup={handleOpenUpdatePopup}
