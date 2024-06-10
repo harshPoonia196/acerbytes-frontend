@@ -174,11 +174,11 @@ export default function ClippedDrawer({ children }) {
             handleMenuClose();
           }}
         >
-          Profile
+          <AccountCircle fontSize="14px" sx={{ mr:1}}/> Profile
         </MenuItem>
       )}
       {isLogged ? (
-        <MenuItem onClick={() => logoutUser()}>Log out</MenuItem>
+        <MenuItem onClick={() => logoutUser()}><LogoutIcon fontSize="14px" sx={{ mr:1}} /> Log out</MenuItem>
       ) : null}
     </Menu>
   );
