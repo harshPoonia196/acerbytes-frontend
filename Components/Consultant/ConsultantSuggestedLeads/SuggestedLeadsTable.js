@@ -130,6 +130,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
 
   return (
     <TableRow
+      hover
       key={row?._id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >

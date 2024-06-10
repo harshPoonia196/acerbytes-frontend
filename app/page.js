@@ -61,7 +61,7 @@ export default function Home() {
   return (
     <>
       {isLoading && <Loader />}
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ paddingBottom: { xs: "110px !important", sm: "90px !important"} }}>
         <Box
           sx={{
             px: { xs: 2, sm: 4 },

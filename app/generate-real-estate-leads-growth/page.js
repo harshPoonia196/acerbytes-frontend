@@ -81,7 +81,7 @@ function Row(props) {
   }
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>{row.project}</TableCell>
         <TableCell>{row.location}</TableCell>
         <TableCell>{row.phone} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='success' /> :
@@ -269,7 +269,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption" sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+              <Typography variant="body2" sx={{ textTransform: "capitalize", fontWeight: "800" }}
               >{capitalLizeName(headCell.label)}</Typography>
 
               {orderBy === headCell.id ? (
@@ -479,10 +479,10 @@ export default function Enquiries(props) {
         <TableContainer component={Paper} style={{
           maxHeight: "350px",
           overflowY: "auto",
-          padding: "10px",
-          border: "1px solid #ccc"
+          // padding: "10px",
+          // border: "1px solid #ccc"
         }} >
-          <Table aria-label="collapsible table" size="small" >
+          <Table aria-label="collapsible table">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}

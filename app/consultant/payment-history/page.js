@@ -122,7 +122,7 @@ function PaymentHistory(props) {
           size="small"
           variant="contained"
           onClick={handleOpenAddCredit}
-          ButtonText={"Add credits "} />}
+          ButtonText={"Add Points credits "} />}
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
 

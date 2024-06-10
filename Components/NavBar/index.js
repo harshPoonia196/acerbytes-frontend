@@ -64,6 +64,7 @@ import { getRoleLabelByValue } from "utills/CommonFunction";
 import Logo from 'public/images/icon.svg';
 import Image from "next/image";
 import Link from "next/link";
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 const drawerWidth = 240;
 
@@ -174,11 +175,11 @@ export default function ClippedDrawer({ children }) {
             handleMenuClose();
           }}
         >
-          Profile
+          <AccountCircle fontSize="14px" sx={{ mr:1}}/> Profile
         </MenuItem>
       )}
       {isLogged ? (
-        <MenuItem onClick={() => logoutUser()}>Log out</MenuItem>
+        <MenuItem onClick={() => logoutUser()}><LogoutIcon fontSize="14px" sx={{ mr:1}} /> Log out</MenuItem>
       ) : null}
     </Menu>
   );
@@ -373,7 +374,14 @@ export default function ClippedDrawer({ children }) {
           }}
         >
           <List>
-            <ListItem sx={{ paddingLeft: "25px"}}><Typography variant="body2" sx={{ cursor: "pointer" }} onClick={() => { router.push('http://wa.me/+919323996997') }}>Helpline - 457856954</Typography></ListItem>
+            <ListItemButton
+                  onClick={() => { router.push('http://wa.me/+919323996997') }}
+                  sx={{ pl: 3 }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <WhatsAppIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText secondary="Helpline - +919818106472" />
+                </ListItemButton>
             <ListItem
               disablePadding
               secondaryAction={
@@ -526,7 +534,7 @@ export default function ClippedDrawer({ children }) {
               {userDetails && Object.keys(userDetails).length ? (
                 <Box>
                   <Box>
-                    <Typography variant='body1' sx={{ display: { sm: 'flex' }, flex: 1, color: colors.BLUE }}>
+                    <Typography variant='body1' sx={{ display: { sm: 'flex' }, flex: 1, color: colors.BLUE, textTransform: 'capitalize' }}>
                       {userDetails?.name?.firstName} {userDetails?.name?.lastName}
                     </Typography>
                     {/* <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, flex: 1, color: colors.BLUE }}>
@@ -541,7 +549,7 @@ export default function ClippedDrawer({ children }) {
                     {(userDetails?.role == ROLE_CONSTANTS.admin || userDetails?.role == ROLE_CONSTANTS.sales || userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
                       <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" />
                     )}
-                    <Chip label={`${userDetails?.role}`} size="small" sx={{ marginLeft: "5px"}} />
+                    <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" sx={{ marginLeft: "5px"}} />
                   </Box>
                 </Box>
               ) : (
