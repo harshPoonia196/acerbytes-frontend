@@ -49,7 +49,7 @@ import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { constructPropertyUrl, getItem } from "utills/utills";
+import { getItem } from "utills/utills";
 import {
   submitEnquiry,
   submitEnquiryUnauth,
@@ -61,6 +61,7 @@ import BottomFooterConsultant from "Components/DetailsPage/BottomFooterConsultan
 import BottomFooterUser from "Components/DetailsPage/BottomFooterUser";
 import MoreSimilarPropertyCard from "Components/Admin/Property/SubComponents/MoreSimilarPropertyCard";
 import ConsultantPopup from "Components/DetailsPage/Modal/ConsultantPopup";
+import { constructPropertyUrl } from "utills/CommonFunction";
 
 const tabHeight = 200;
 
@@ -143,7 +144,7 @@ const PropertyDetailsPage = ({ params }) => {
         };
         setPropertyData({ ...data });
         if (isNavigate) {
-          const url = constructPropertyUrl({ ...data });
+          const url = constructPropertyUrl({ ...data }, userInfo);
           router.push(url);
         }
       }
