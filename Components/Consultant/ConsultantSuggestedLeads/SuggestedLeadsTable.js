@@ -18,8 +18,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Chip,
+  Typography
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { capitalLizeName, getComparator, stableSort } from "utills/CommonFunction";
@@ -43,7 +45,7 @@ import {
   formatAmount,
 } from "utills/CommonFunction";
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-
+import EditIcon from '@mui/icons-material/Edit';
 const headCells = [
   {
     id: "name",
@@ -128,6 +130,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
 
   return (
     <TableRow
+      hover
       key={row?._id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
@@ -197,6 +200,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const { openSnackbar } = useSnackbar();
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [buyNowResponseMessage, setBuyNowResponseMessage] = useState("");
+  const [targetedCities, setTargetedCities] = useState([]);
 
   const { data, isLoading, error, refetch } = useQueries([search],
     async () => {
@@ -362,10 +366,40 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     </Dialog>
   );
 
+  const handleEdit = () => {
+    // console.log("handle")
+    router.push('/consultant/profile');
+  }
+
+  
+    useEffect(() => {
+      let data = []
+      rows.map(row => {
+        data.push(row.properties.location.city)
+      })
+      setTargetedCities([...new Set(data)])
+      // console.log(targetedCities)
+    }, [rows])
+  
 
   return (
     <>
       {isLoading && <Loader />}
+      <Box sx={{ mb: 2}}>
+        <Typography variant="h6">Your targeted city are:</Typography>
+        {targetedCities.map((item, Iindex) => {
+          return(
+            <Chip
+              key={Iindex}
+              label={item}
+              onDelete={() => handleEdit()}
+              deleteIcon={<EditIcon fontSize="14px"/>}
+              sx={{ marginRight: "5px"}}
+            />
+          )
+        })}
+          
+        </Box>
       <Grid item xs={12}>
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput

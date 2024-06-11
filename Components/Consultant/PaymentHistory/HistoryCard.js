@@ -91,8 +91,8 @@ function HistoryCard({ history }) {
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
                         <Box sx={{ display: 'flex', px: 2, mb: 2 }}>
-                            <Typography variant='subtitle2' sx={{ flex: 1 }}>Credit points consumed</Typography>
-                            <Typography variant='h6'>{formatPoints(calculateConsumedPoints(history?.childTransaction))}</Typography>
+                            <Typography variant='h5' sx={{ flex: 1 }}>Credit points consumed</Typography>
+                            <Typography variant='h6'>{formatPoints(calculateConsumedPoints(history?.childTransaction))} Points</Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
@@ -102,10 +102,10 @@ function HistoryCard({ history }) {
                         <SubAccordionOfHistoryCard title="Activated leads" data={calculateItems(history?.childTransaction, transactionType.SUGGESTED_LEAD_BUY)} type='Leads' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Consultant subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Consultant Subscriptions' />
+                        <SubAccordionOfHistoryCard title="Consultant subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Consultant subscriptions' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Note Subscriptions' />
+                        <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Note' />
                     </Grid>
                 </Grid>
             </CustomAccordionDetails>

@@ -143,7 +143,7 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow  >
+      <TableRow>
         {headCells.map((headCell) => {
           if (headCell.id !== 'creditValue' || (headCell.id === 'creditValue' && alignment === LEADS_TAB[2].value)) {
             return <TableCell
@@ -208,6 +208,7 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
 
   return (
     <TableRow
+      hover
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
       onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}

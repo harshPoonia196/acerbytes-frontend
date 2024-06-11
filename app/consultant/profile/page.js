@@ -1009,7 +1009,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                                 }-${index}`}
                               label={label}
                               size="small"
-                              sx={{ ml: 1, mt: 1 }}
+                              sx={{ ml: 1, py: 2, px: 1 }}
                               onDelete={() => {
                                 handleRemoveTargetCustomer(index);
                               }}
