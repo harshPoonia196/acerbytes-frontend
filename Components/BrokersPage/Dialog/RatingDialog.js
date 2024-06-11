@@ -65,17 +65,17 @@ const RatingDialog = (props) => {
     subRatings: [
       {
         type: "Professionalism",
-        description: "This  based on their dedication, responsibilty and commitemnt to the job",
+        description: "Based on dedication, responsibilty and commitemnt to the job",
         rating: 0,
       },
       {
         type: "Communication",
-        description: "This based on their clarity,responsiveness,and ability to effectively convey important information",
+        description: "Based on clarity, responsiveness and ability to effectively convey important information",
         rating: 0,
       },
       {
         type: "Real estate knowledge",
-        description: "This includes by evaluating their understanding of the market, property details, legal aspects, and ability to answer your questions comprehensively",
+        description: "Based on understanding of the market, property details, legal aspects, and ability to answer your questions",
         rating: 0,
       },
     ],
@@ -157,7 +157,7 @@ const RatingDialog = (props) => {
           {!submitReview ? (
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
               Rate and review for{" "}
-              <span style={{ color: colors.BLUE }}>{`${broker?.name?.firstName || ""
+              <span style={{ color: colors.GRAY }}>{`${broker?.name?.firstName || ""
                 } ${broker?.name?.lastName || ""}`}</span>
             </Typography>
           ) : (
@@ -185,7 +185,7 @@ const RatingDialog = (props) => {
 
               <Grid container spacing={2}>
                 <NewInputFieldStructure
-                  label="Comment"
+                  label="Review"
                   multiline
                   rows={2}
                   variant="outlined"

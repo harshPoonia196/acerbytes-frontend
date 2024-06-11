@@ -39,7 +39,7 @@ const page = () => {
   return (
     <>
 
-      <CustomConsultantBreadScrumbs text="List of reviews" />
+      <CustomConsultantBreadScrumbs text="Reviews received" />
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"

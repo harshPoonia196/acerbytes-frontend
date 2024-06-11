@@ -44,6 +44,7 @@ const BrokerDetails = (props) => {
             <Avatar
               alt="Remy Sharp"
               src={data?.profilePicture}
+              sx={{ width: "56px", height: "56px"}}
             />
             
             <div>

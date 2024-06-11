@@ -195,7 +195,7 @@ function UserDetailsAd({
               { isLoggedIn && 
               <Chip
                 icon={showContact ? null : <PhoneIcon />}
-                label={showContact ? phoneNumber : "View Contact"}
+                label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
                 size="small"
                 onClick={handleViewContactClick}
                 sx={{marginLeft: "5px"}}
@@ -234,7 +234,7 @@ function UserDetailsAd({
                 { isLoggedIn &&<Box>
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
-                    label={showContact ? phoneNumber : "View Contact"}
+                    label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
                     size="small"
                     onClick={handleViewContactClick}
                   />

@@ -331,7 +331,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
       <DialogContent sx={{ padding: "36px !important", minWidth: "415px" }}>
         <DialogContentText>
-          {buyNowResponseMessage}
+        <Typography variant="body1">{buyNowResponseMessage}</Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

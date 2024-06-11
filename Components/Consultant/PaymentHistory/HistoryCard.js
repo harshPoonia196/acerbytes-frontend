@@ -52,7 +52,7 @@ function HistoryCard({ history }) {
 
     return (
         <CustomAccordion expanded={isExpanded} >
-            <CustomAccordionSummary handleIconClick={handleExpandedStateChange}>
+            <CustomAccordionSummary handleIconClick={handleExpandedStateChange} sx={{ pt: 2, pb: 2}}>
                 <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant='h5' sx={{ flex: 1 }}>
@@ -92,7 +92,7 @@ function HistoryCard({ history }) {
                     <Grid item xs={12}>
                         <Box sx={{ display: 'flex', px: 2, mb: 2 }}>
                             <Typography variant='h5' sx={{ flex: 1 }}>Credit points consumed</Typography>
-                            <Typography variant='h6'>{formatPoints(calculateConsumedPoints(history?.childTransaction))} Points</Typography>
+                            <Typography variant='h5'>{formatPoints(calculateConsumedPoints(history?.childTransaction))} Points</Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={12}>

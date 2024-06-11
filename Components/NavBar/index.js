@@ -374,13 +374,13 @@ export default function ClippedDrawer({ children }) {
           }}
         >
           <List>
-            <ListItemButton
+            <ListItemButton 
                   onClick={() => { router.push('http://wa.me/+919323996997') }}
-                  sx={{ pl: 3 }}>
+                  sx={{ pl: 3, backgroundColor: 'whitesmoke' }}>
                   <ListItemIcon sx={{ minWidth: 40 }}>
                     <WhatsAppIcon fontSize="small" />
                   </ListItemIcon>
-                  <ListItemText secondary="Helpline - +919818106472" />
+                  <ListItemText secondary="Support:  +919818106472" />
                 </ListItemButton>
             <ListItem
               disablePadding
@@ -394,7 +394,7 @@ export default function ClippedDrawer({ children }) {
               {isLogged ? (
                 <ListItemButton
                   onClick={() => logout()}
-                  sx={{ pl: 3 }}
+                  sx={{ pl: 3, backgroundColor: 'whitesmoke', borderTop: 'solid 1px gainsboro' }}
                   role={undefined}
                 >
                   <ListItemIcon sx={{ minWidth: 40 }}>
