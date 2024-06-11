@@ -122,7 +122,7 @@ const UploadMarketingImage = ({
 
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle onClose={handleClose}>Crop the image</DialogTitle>
+            <DialogTitle onClose={handleClose}><Typography variant="h4" sx={{ fontWeight: 700 }}>Crop the image</Typography></DialogTitle>
             <DialogContent>
                 <Box sx={{ my: 1 }}>
                     {image && (

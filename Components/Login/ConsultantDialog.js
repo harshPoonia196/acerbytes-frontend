@@ -51,7 +51,7 @@ const ConsultantDialog = ({ loading, createUserFun, form, handleChange, showCons
             maxWidth="sm"
         >
             <DialogTitle onClose={() => setShowConsultantDetailsPopup(false)}>
-                Additional Details for Real Estate Consultant
+                <Typography variant="h4">Additional Details for Real Estate Consultant</Typography>
             </DialogTitle>
             <DialogContent>
                 <Grid container spacing={2}>
