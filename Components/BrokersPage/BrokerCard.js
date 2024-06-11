@@ -28,17 +28,19 @@ import { countryCodeFormating } from "utills/utills";
 import { capitalLizeName, getFirstCharacterOfFirstOfFullName } from "utills/CommonFunction";
 import Reviews from "./reviews";
 import PhoneIcon from '@mui/icons-material/Phone';
+import LockIcon from '@mui/icons-material/Lock';
+import PublicIcon from '@mui/icons-material/Public';
 
 function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, showRating = false, hasReviews = false }) {
   const [openDialog, setOpenDialog] = useState(false),
     [openReviews, setOpenReviews] = useState(false),
     { userDetails, isLogged } = useAuth(),
     router = useRouter(),
-
+   
     handleDialogOpen = () => {
       setOpenDialog(true);
     },
-
+  
     handleOpenReviews = () => {
       setOpenReviews(true);
     },
@@ -72,6 +74,24 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       }
     }
 
+    const handlePhoneClick = () => {
+      // console.log("handlePhoneClick");
+      const callHref = `tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")}`;
+      if (callHref) {
+        window.location.href = callHref;
+      }
+    }
+
+    const getTime = (time) => {
+      const startDate = new Date(time),
+          diffDate = new Date(new Date() - startDate),
+          years = diffDate && diffDate?.toISOString().slice(0, 4) - 1970,
+          months = diffDate?.getMonth(),
+          days = diffDate?.getDate() - 1
+          
+      return years ? `${years + (years > 1 ? ' years ago' : ' year ago')}` : months ? `${months + (months > 1 ? ' months ago' : ' month ago')}` : `${(days === 0 ? 'Today' : days + (days > 1 ? ' days ago' : ' day ago'))}`
+  }
+    
   return (
     <Card sx={{ position: "relative" }}>
       <Box sx={{ display: "flex", p: 2 }}>
@@ -84,24 +104,26 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Avatar>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h5">
-            <Box sx={{ display: {sm: "flex", xs: "block"}, gap: "5px", cursor: "pointer"}} onClick={hasReviews ? handleOpenReviews : null}>
+            <Box sx={{ gap: "5px", cursor: "pointer"}} onClick={hasReviews ? handleOpenReviews : null}>
               {titleCase(broker?.fullName)}
               <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center", position: "relative", top: "1px", left: "2px" }} />
-              {showRating ?
-                <>
-                  <div className="rating">
+              <Box>
+                {showRating ?
+                  <>
+                    <div className="rating">
 
-                    <Rating
-                      readOnly
-                      size="small"
-                      name="hover-feedback"
-                      precision={0.5}
-                      value={broker?.rating ?? 0}
-                    />
-                    <div className="rating-count"> {broker?.ratingCount ?? 0} Ratings</div>
-                  </div>
-                </>
-                : null}
+                      <Rating
+                        readOnly
+                        size="small"
+                        name="hover-feedback"
+                        precision={0.5}
+                        value={broker?.rating ?? 0}
+                      />
+                      <div className="rating-count"> {broker?.ratingCount ?? 0} Ratings</div>
+                    </div>
+                  </>
+                  : null}
+              </Box>
             </Box>
           </Typography>
           <Typography variant="body2">
@@ -146,7 +168,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
                 <i>{broker?.clients || 50} clients served</i>
               </Typography>
             </Box> */}
-            {
+            {/* {
               !noReview ? (
                 <Box sx={{ alignSelf: "end" }}>
                   {type ? (
@@ -179,7 +201,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
               //     </Button>
               //   </Box>
               // )
-            }
+            } */}
           </Box>
         </Box>
       </Box>
@@ -207,12 +229,12 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       ) : null} */}
       {/* {isLogged ? ( */}
       { userDetails.role !== 'broker' && userDetails.role !== 'admin' && userDetails.role !== 'superAdmin' && <>
-      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:10, sm:13}, right: 8 }} onClick={handleCallClick}  >
+      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:10, sm:13}, right: 16 }} onClick={handlePhoneClick}  >
         <IconButton sx={{ boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)" }}>
           <CallIcon fontSize="small" />
         </IconButton>
       </Box>) :
-        <Box sx={{ position: "absolute", top: 8, right: 8, cursor: "pointer", color: "blue" }} onClick={handleCallClick} >
+        <Box sx={{ position: "absolute", top: 8, right: 8, cursor: "pointer", color: "blue" }} onClick={handlePhoneClick} >
           <PhoneIcon sx={{ position: "relative", top: "5px", fontSize: "19px" }} fontSize="small"/> {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}
         </Box>
       }</>
@@ -227,7 +249,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       <Divider />
       {!noReview && (
         <Grid container spacing={1} sx={{ p: 2 }}>
-          <Grid
+          {/* <Grid
             item
             xs={12}
             alignItems={"center"}
@@ -244,7 +266,60 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
                 <RemoveModeratorIcon color="primary" fontSize="1rem" />
               </Tooltip>
             )}
+          </Grid> */}
+          <Grid
+            item
+            xs={12}
+            alignItems={"flex-start"}
+            display={"flex"}
+            justifyContent={broker?.reviews?.ratings.length > 0 ? "space-between" : 'flex-end'}
+          >
+            {broker?.reviews?.ratings.length > 0 && (
+            <Box sx={{ display: "flex", p: 2, pb: 1 }}>
+              <Avatar
+                alt={titleCase(userDetails?.name.firstName)}
+                src={userDetails?.googleDetails.profilePicture}
+                sx={{ mr: 2, width: 40, height: 40 }}
+              >
+                {getFirstCharacterOfFirstOfFullName(broker?.name.firstName)}
+              </Avatar>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="h5">
+                  <Box sx={{ gap: "5px", cursor: "pointer"}} onClick={hasReviews ? handleOpenReviews : null}>
+                    {titleCase(userDetails?.name.firstName)} {titleCase(userDetails?.name.lastName)}
+                  </Box>
+                </Typography>
+                <Typography variant="body2">
+                  {getTime(broker?.reviews?.createdAt)}
+                </Typography>
+              </Box>
+            </Box>
+            )}
+            <Box sx={{ alignSelf: "flex-start" }}>
+              {type ? (
+                <CustomButton
+                  onClick={() => handleViewReview(broker?.name)}
+                  size="small"
+                  variant="outlined"
+                  ButtonText={"View Reviews"}
+                />
+              ) : (
+                <CustomButton
+                  onClick={handleDialogOpen}
+                  size="small"
+                  variant="outlined"
+                  ButtonText={broker?.reviews?.ratings.length > 0 ? "Rated": "Rate your experience"}
+                />
+              )}
+              {/* <Box>
+              {broker?.reviews?.isPrivate ? <LockIcon fontSize="small"/> : <PublicIcon fontSize="small"/>}
+              </Box> */}
+            </Box>
           </Grid>
+          <Grid
+            item
+            xs={12}>
+          <Grid container spacing={1} sx={{ pl: "71px" }}>
           {broker?.reviews?.ratings?.map((rating) => {
             return (
               <Grid item xs={4} key={rating?.type}>
@@ -268,12 +343,11 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           })}
           {broker?.reviews?.note ? (
             <Grid item xs={12} sx={{ mt: 1 }}>
-              <Box sx={{ background: "whitesmoke", p: 2 }}>
+              <Box sx={{ background: "whitesmoke", p: 2, pt: 1 }}>
                 <Typography variant="caption">
-                  Review given
                   {broker?.reviews?.createdAt
                     ? moment(broker?.reviews?.createdAt).format(
-                      " on DD MMM, YYYY"
+                      " DD MMM, YYYY"
                     )
                     : ""}
                 </Typography>
@@ -283,6 +357,8 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
               </Box>
             </Grid>
           ) : null}
+          </Grid>
+          </Grid>
         </Grid>
       )}
 
