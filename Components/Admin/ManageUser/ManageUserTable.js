@@ -84,7 +84,7 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow>
+      <TableRow hover>
         {headCells.map((headCell) => (
           (headCell.id !== 'role' || selectedTabValue === 0) && (
             <TableCell
@@ -227,6 +227,7 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
 
   return (
     <TableRow
+      hover
       key={row.name}
       style={row.isBlocked ? { backgroundColor: 'whitesmoke' } : null}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

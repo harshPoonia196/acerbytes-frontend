@@ -703,6 +703,7 @@ function FloorPlanCard({
             <TableBody>
               {rows?.map((row, index) => (
                 <TableRow
+                  hover
                   key={row.name + index}
                 >
                   {row.propertyType && (

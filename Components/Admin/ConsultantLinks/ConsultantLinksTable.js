@@ -85,7 +85,7 @@ function EnhancedTableHead(props) {
   return (
     <>
       <TableHead >
-        <TableRow >
+        <TableRow>
           {headCells.map((headCell) => (
             (headCell.id !== 'expiresIn' || alignmentValue === "Active" || alignmentValue === "" || alignmentValue === "Expiring Soon") && (
               <TableCell
@@ -137,7 +137,7 @@ function RowStructure({ row, alignmentValue, history }) {
   };
 
   return (
-    <TableRow
+    <TableRow hover
       key={row?.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >

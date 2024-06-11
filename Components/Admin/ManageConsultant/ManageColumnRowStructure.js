@@ -37,6 +37,7 @@ function RowStructure({ row, router }) {
   return (
     <>
       <TableRow
+        hover
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
