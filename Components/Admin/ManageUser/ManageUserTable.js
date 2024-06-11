@@ -84,7 +84,7 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow hover>
+      <TableRow>
         {headCells.map((headCell) => (
           (headCell.id !== 'role' || selectedTabValue === 0) && (
             <TableCell

@@ -55,7 +55,7 @@ function EnhancedTableHead(props) {
 
     return (
         <TableHead>
-            <TableRow hover>
+            <TableRow>
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
