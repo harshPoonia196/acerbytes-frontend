@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { boxShadowTop } from 'utills/Constants';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DoneIcon from '@mui/icons-material/Done';
-import { capitalLizeName } from 'utills/CommonFunction';
+import { capitalLizeName, formatDateAndDaysRemaining } from 'utills/CommonFunction';
 import { useAuth } from 'utills/AuthContext';
 import { useSnackbar } from 'utills/SnackbarContext';
 import { ToasterMessages } from 'utills/Constants';
@@ -47,7 +47,16 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
     
             const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
     
-            return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${brokerId}`;
+            let url = `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}`;
+
+            if(userDetails?.role === "broker" && propertyData?.isActiveAd){
+                const expireTime =  formatDateAndDaysRemaining(SinglePropertyId?.expired_at, 'long')
+                url += `-${expireTime}`;
+            }
+            url += `-${brokerId}`;
+
+            return url;
+
         };
     
     const propertyUrl = constructPropertyUrl(propertyData)
@@ -93,7 +102,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                     }}>
                         <Box>
                             <Typography variant='body2' sx={{ marginBottom: "5px"}}>
-                                {`${propertyData?.overview?.builder}  | ${capitalLizeName(propertyData?.overview?.projectName)} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
+                                {`${capitalLizeName(propertyData?.overview?.builder || "builder")}  | ${capitalLizeName(propertyData?.overview?.projectName|| "projectName")} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
                             </Typography>
                         </Box>
                         <Box sx={{ display: 'flex'}}>
@@ -211,7 +220,6 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                                 }} variant='outlined' startIcon={<DoneIcon />} disabled>
                                                 Activated
                                             </Button>
-                                            <ContentCopyIcon sx={{ marginLeft: "5px"}} fontSize="1rem" />
                                             </>
                                         : 
                                             <Button sx={{ color: "#000", border: "2px solid gold", fontSize: "14px", padding: "3px 5px", '&:hover': {
@@ -228,14 +236,14 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                         Log in
                     </Button> */}
                                         <div><Typography variant='body2' sx={{ marginTop: '5px'}}>Get leads</Typography></div>
-                                        {/* <div><Typography variant="body2" sx={{ lineHeight: '1.3', marginTop: '5px'}}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at) : "Get customer enquiries" }</Typography></div> */}
+                                        <div><Typography variant="body2" sx={{ lineHeight: '1.3', marginTop: '5px'}}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at, "short") : "Get customer enquiries" }</Typography></div>
                                     </Box>
 
-                                    {/* <Box sx={{ alignSelf: 'start'}}>
+                                    <Box sx={{ alignSelf: 'start'}}>
                                         <IconButton onClick={handleClick} sx={{ padding: "0"}}>
                                             <MoreVertIcon />
                                         </IconButton>
-                                    </Box> */}
+                                    </Box>
                                     <Menu
                                         id="basic-menu"
                                         anchorEl={anchorEl}
@@ -245,9 +253,12 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                             'aria-labelledby': 'basic-button',
                                         }}
                                     >
-
                                         <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}><AddLinkIcon sx={{ fontSize: "20px", marginRight: "10px"}}/> {propertyData?.isActiveAd ? "Extend" : "Activate link"} </MenuItem>
-                                        <MenuItem onClick={() => copyToClipboard(propertyUrl)}><ShareIcon sx={{ fontSize: "18px", marginRight: "10px"}} /> Share</MenuItem>
+                                       { propertyData?.isActiveAd ? (
+                                           <MenuItem onClick={() => copyToClipboard(propertyUrl)}><ShareIcon sx={{ fontSize: "18px", marginRight: "10px"}} /> Share</MenuItem>
+                                       ) : (
+                                           <MenuItem sx={{cursor: 'not-allowed'}}><ShareIcon sx={{ fontSize: "18px", marginRight: "10px"}} /> Share</MenuItem>
+                                       )}
                                     </Menu>
                                 </Box>
                             

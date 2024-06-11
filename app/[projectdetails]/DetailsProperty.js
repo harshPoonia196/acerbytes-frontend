@@ -175,8 +175,10 @@ const PropertyDetails = ({ params }) => {
       }
       if (res.status === 200) {
         setPropertyData(res.data?.data);
-        const result = await getCountsByProperty(res.data?.data?.[0]?.property_id, res.data?.data?.[0]?.broker_collection_id)
-        setLeadsCount(result?.data?.count)
+        if(userDetails.role === "broker" && isLogged){
+          const result = await getCountsByProperty(res.data?.data?.[0]?.property_id, res.data?.data?.[0]?.broker_collection_id)
+          setLeadsCount(result?.data?.count)
+        }
         const expiredAt = new Date(res?.data?.data[0]?.expired_at);
         const now = new Date();
         const brokerData = res.data.data[0]?.brokerData;
