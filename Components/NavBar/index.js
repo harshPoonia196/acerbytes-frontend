@@ -373,10 +373,10 @@ export default function ClippedDrawer({ children }) {
             width: "100%",
           }}
         >
-          <List>
+          <List sx={{pb: 0}}>
             <ListItemButton 
                   onClick={() => { router.push('http://wa.me/+919323996997') }}
-                  sx={{ pl: 3, backgroundColor: 'whitesmoke' }}>
+                  sx={{ pl: 3, backgroundColor: 'whitesmoke', borderTop: 'solid 1px gainsboro' }}>
                   <ListItemIcon sx={{ minWidth: 40 }}>
                     <WhatsAppIcon fontSize="small" />
                   </ListItemIcon>

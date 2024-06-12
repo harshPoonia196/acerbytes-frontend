@@ -7,6 +7,7 @@ import {
   CardActions,
   Chip,
   Divider,
+  Tooltip
 } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useRouter } from "next/navigation";
@@ -145,13 +146,14 @@ function PropertyCard(props) {
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
-                  <LocationOnIcon
+                <Tooltip title="Location"><LocationOnIcon
                     sx={{
                       fontSize: "12px",
                       position: "relative",
                       top: "1.5px",
                     }}
                   />
+                  </Tooltip>
                   {propertyDetails?.location?.city}{" "}
                   {propertyDetails?.property_id}
                 </Typography>

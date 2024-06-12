@@ -16,6 +16,8 @@ import {
   Chip,
   Menu,
   MenuItem,
+  ListItemIcon,
+  Tooltip 
 } from "@mui/material";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -34,7 +36,7 @@ import { useRouter } from "next/navigation";
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import moment from "moment";
-
+import EditIcon from '@mui/icons-material/Edit';
 // const rows = [
 //   {
 //     firstName: "Anand",
@@ -61,7 +63,7 @@ const headCells = [
   },
   {
     id: "propertyCity",
-    label: "city",
+    label: "City",
   },
   {
     id: "name",
@@ -69,7 +71,7 @@ const headCells = [
   },
   {
     id: "phone",
-    label: "phone",
+    label: "Phone",
   },
   // {
   //   id: "phoneVerified",
@@ -77,7 +79,7 @@ const headCells = [
   // },
   {
     id: "email",
-    label: "email",
+    label: "Email",
   },
   // {
   //   id: "emailVerified",
@@ -85,7 +87,8 @@ const headCells = [
   // },
   {
     id: "maxBudget",
-    label: "max Budget",
+    label: "Max budget",
+    numeric: true
   },
   // {
   //   id: "role",
@@ -118,7 +121,8 @@ const headCells = [
   },
   {
     id: "creditValue",
-    label: "Credit Value",
+    label: "Credit value",
+    numeric: true
   },
   {
     id: "status",
@@ -126,7 +130,7 @@ const headCells = [
   },
   {
     id: "enquired date",
-    label: "Enquired Date",
+    label: "Enquired date",
   },
   {
     id: "action",
@@ -151,7 +155,7 @@ function EnhancedTableHead(props) {
               align={headCell.numeric ? "right" : "left"}
               padding={headCell.disablePadding ? "none" : "normal"}
               sortDirection={orderBy === headCell.id ? order : false}
-              sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+              sx={{ fontWeight: "bold" }}
             >
               <TableSortLabel
                 active={orderBy === headCell.id}
@@ -214,9 +218,9 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
       onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
       onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
     >
-      <TableCell className="urlStylingBackground">
+      <TableCell>
         {row.propertyLink && (
-          <a sx={{ cursor: 'pointer' }}
+          <a href="#" style={{ cursor: 'pointer', textDecoration: "none" }}
             onClick={(e) => {
               e.preventDefault();
               handlePropertyView(row.propertyLink);
@@ -230,17 +234,17 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
       <TableCell>{row?.name?.firstName} {row?.name?.lastName}</TableCell>
 
       <TableCell>{countryCodeFormating(row?.phone?.countryCode)} {row?.phone?.number}&nbsp;
-        {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='success' /> :
-          <UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='error' />}
+        {row.isVerified ? <Tooltip title="Verified"><CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='success' /></Tooltip> :
+          <Tooltip title="Not Verified"><UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='error' /></Tooltip>}
       </TableCell>
       <TableCell>{user.email || "-"}</TableCell>
       {/* <TableCell>{row.emailVerified ? "Yes" : "No"}</TableCell> */}
 
-      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${formatNumberWithCommas(userDetail?.budget?.maximumBudget?.value)}` : "-"}</TableCell>
+      <TableCell align="right">{userDetail?.budget?.maximumBudget?.value ? `₹${formatNumberWithCommas(userDetail?.budget?.maximumBudget?.value)}` : "-"}</TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
       {/* <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell> */}
       <TableCell>{row.source}</TableCell>
-      {alignment === LEADS_TAB[2].value ? <TableCell>{row?.userDetail?.userCreditValue?.toLocaleString('en-IN')}</TableCell> : null}
+      {alignment === LEADS_TAB[2].value ? <TableCell align="right">{row?.userDetail?.userCreditValue?.toLocaleString('en-IN')}</TableCell> : null}
      
       <TableCell>{row?.userDetail?.status?.toUpperCase() || "-"}
       </TableCell>
@@ -249,6 +253,7 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
       </TableCell>
 
       <TableCell sx={{ py: 0 }}>
+      <Tooltip title="More">
         <IconButton
           onClick={handleClick}
           disabled={
@@ -258,6 +263,7 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
         >
           <MoreVertIcon fontSize="1rem" />
         </IconButton>
+        </Tooltip>
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -277,7 +283,7 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
           }}
         >
           <MenuItem onClick={() => editProfile(row?.user?.googleID)} >
-            Edit Profile
+            <ListItemIcon><EditIcon fontSize="1"/></ListItemIcon> Edit Profile
           </MenuItem>
         </Menu>
       </TableCell>
@@ -387,7 +393,7 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
       {
         rows.length > 0 ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}

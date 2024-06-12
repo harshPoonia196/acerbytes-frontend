@@ -73,7 +73,7 @@ const headCells = [
   // },
   {
     id: "phone",
-    label: "phone",
+    label: "Phone",
   },
   // {
   //   id: "numberVerified",
@@ -81,7 +81,7 @@ const headCells = [
   // },
   {
     id: "email",
-    label: "email",
+    label: "Email",
   },
   // {
   //   id: "role",
@@ -89,7 +89,8 @@ const headCells = [
   // },
   {
     id: "maxBudget",
-    label: "max Budget",
+    label: "Max budget",
+    numeric: true
   },
   {
     id: "source",
@@ -136,7 +137,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption" sx={{ textTransform: "capitalize", fontWeight: "bold", fontSize: "12px" }}>
+              <Typography variant="caption" sx={{ fontWeight: "bold", fontSize: "12px" }}>
                 {(headCell.label)}
               </Typography>
 
@@ -278,7 +279,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
       </TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
       {/* <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell> */}
-      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${formatNumberWithCommas(userDetail?.budget?.maximumBudget?.value)}` : "-"}</TableCell>
+      <TableCell align="right">{userDetail?.budget?.maximumBudget?.value ? `₹${formatNumberWithCommas(userDetail?.budget?.maximumBudget?.value)}` : "-"}</TableCell>
       {/* <TableCell>
         <Chip
           label={row.notesUpdated}
@@ -440,7 +441,7 @@ function MyLeadsTable({ setLeadsCount }) {
       {
         rows.length > 0 ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}

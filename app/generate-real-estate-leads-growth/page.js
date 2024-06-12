@@ -21,7 +21,8 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Grid
+  Grid,
+  Tooltip 
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { useRouter } from "next/navigation";
@@ -42,6 +43,7 @@ import { useAuth } from 'utills/AuthContext';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import HomeIcon from '@mui/icons-material/Home';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 const enquiries = [
   {
@@ -101,8 +103,8 @@ function Row(props) {
                   `${capitalLizeName(row?.project)}`
                   : "-"}
               </a>
-              {row.brokerId?.length > 0 ? <HomeIcon sx={{ fontSize: "14px", position: "relative", top: "2px", left: "3px"}}/> : 
-              <SupportAgentIcon sx={{ fontSize: "14px", position: "relative", top: "2px", left: "3px"}}/>}
+              {row.brokerId?.length > 0 ? <Tooltip title="Home"><HomeIcon sx={{ fontSize: "14px", position: "relative", top: "2px", left: "3px"}}/></Tooltip> : 
+              <Tooltip title="Agent"><SupportAgentIcon sx={{ fontSize: "14px", position: "relative", top: "2px", left: "3px"}}/></Tooltip>}
             </>
           )}
         </TableCell>
@@ -122,7 +124,7 @@ function Row(props) {
               history.push(listOfPages.suggestedLeads);
             }}
             style={{ textDecoration: "none", }}
-          > <LocalPhoneIcon fontSize="1rem" sx={{ mr: "0.1rem" }} />
+          > <LocalPhoneIcon fontSize="1rem" sx={{ mr: "0.1rem", position: "relative", top: "2px" }} />
             View contact
 
 
@@ -494,9 +496,12 @@ export default function Enquiries(props) {
                   <Row key={row.name} row={row} history={history} />
                 ))
               ) : (
-                <Typography variant="body2" style={{ display: "flex", justifyContent: "center", marginTop: "5px" }}>
-                  No Data
-                </Typography>
+                // <Typography variant="body2" style={{ display: "flex", justifyContent: "center", marginTop: "5px" }}>
+                //   No Data
+                // </Typography>
+                <Box>
+                  <NoDataCard title={"No data found"} sx={{width: "100%"}}/>
+                </Box>
               )}
             </TableBody>
           </Table>

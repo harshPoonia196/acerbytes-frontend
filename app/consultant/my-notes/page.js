@@ -23,6 +23,8 @@ import { deleteNote, getNotes } from "api/Broker.api";
 import { DEBOUNCE_TIMER, NOTES_TYPE, ToasterMessages } from "utills/Constants";
 import { debounce } from "lodash";
 import NoteSubscription from "./NoteSubscription";
+import AddIcon from '@mui/icons-material/Add';
+
 function MyNotes() {
   const router = useRouter();
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
@@ -116,10 +118,11 @@ function MyNotes() {
           }
 
           {!list?.needSubscribe && <CustomButton
+            startIcon={<AddIcon />}
             variant="contained"
             size="small"
             onClick={() => handleOpenUpdatePopup()}
-            ButtonText={"Add notes"}
+            ButtonText={"Add Notes"}
           />}
         </div>}
       />

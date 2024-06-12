@@ -93,9 +93,9 @@ function AdsSection({ handleOpenPersonalizeAds, handleOpenActivateAdsPopup, isCo
                         </Typography>
                     </Box>
                     {isConsultant ? (
-                        <ContentCopyIcon fontSize='1rem' sx={{ color: colors.BLUE, cursor: 'not-allowed' }} />
+                        <Tooltip title="Copy"><ContentCopyIcon fontSize='1rem' sx={{ color: colors.BLUE, cursor: 'not-allowed' }} /></Tooltip>
                     ) : (
-                        <ContentCopyIcon fontSize='1rem' sx={{ color: colors.BLUE, }} onClick={() => copyToClipboard(propertyUrl)} />
+                        <Tooltip title="Copy"><ContentCopyIcon fontSize='1rem' sx={{ color: colors.BLUE, }} onClick={() => copyToClipboard(propertyUrl)} /></Tooltip>
                     )}
                 </Box>
                 <Divider sx={{ borderColor: 'whitesmoke' }} />

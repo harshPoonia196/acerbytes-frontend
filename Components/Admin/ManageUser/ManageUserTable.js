@@ -17,6 +17,7 @@ import {
   Chip,
   Menu,
   MenuItem,
+  ListItemIcon
 } from "@mui/material";
 import React from "react";
 import Paper from "@mui/material/Paper";
@@ -51,6 +52,9 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import RoleConfirmationDialog from "Components/CommonLayouts/RoleConfirmationDialog";
 import moment from 'moment/moment';
+import BlockIcon from '@mui/icons-material/Block';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import EditIcon from '@mui/icons-material/Edit';
 
 const headCells = [
   {
@@ -243,7 +247,7 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
       <TableCell>{row.email}</TableCell>
       {selectedTabValue === 0 && (
         <TableCell>
-          {row.isBlocked ? <DoNotDisturbAltIcon sx={{ color: colors.ERROR, fontSize: "1rem" }} /> :
+          {row.isBlocked ? <Tooltip title="Block"><DoNotDisturbAltIcon sx={{ color: colors.ERROR, fontSize: "1rem" }} /></Tooltip> :
             <RoleViewer
               key={row._id}
               role={row.role}
@@ -261,7 +265,8 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
 
 
       {selectedTabValue === 0 && (
-        <TableCell sx={{ py: 0 }}>
+        <TableCell>
+          <Tooltip title="More">
           <IconButton
             onClick={handleClick}
             disabled={
@@ -274,6 +279,7 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
           >
             <MoreVertIcon fontSize="1rem" />
           </IconButton>
+          </Tooltip>
           <Menu
             id="basic-menu"
             anchorEl={anchorEl}
@@ -294,22 +300,22 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
           >
             {row.isBlocked ? (
               <MenuItem onClick={() => updateStatus(row.googleID, false)}>
-                Unblock
+                <ListItemIcon><RemoveCircleOutlineIcon fontSize="small"/></ListItemIcon> Unblock
               </MenuItem>
             ) : (
               <MenuItem onClick={() => updateStatus(row.googleID, true)}>
-                Block
+                <ListItemIcon><BlockIcon fontSize="small"/></ListItemIcon> Block
               </MenuItem>
             )}
             {(!row.isBlocked && (row.role == ROLE_CONSTANTS.user || row.role == ROLE_CONSTANTS.broker)) && <MenuItem onClick={() => editProfile(row.googleID, row.role)} >
-              Edit Profile
+            <ListItemIcon><EditIcon fontSize="small"/></ListItemIcon> Edit Profile
             </MenuItem>}
           </Menu>
         </TableCell>
       )}
       {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{ justifyContent: "center", display: "flex", gap: "12px" }}>
-        <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", color: colors.SUCCESS}} onClick={() => UserApproveupdate(row.googleID, true, row)}/>
-        <CancelIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", color: colors.ERROR}} onClick={() => UserApproveupdate(row.googleID, false, row)}/>
+        <Tooltip title="Accept"><CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", color: colors.SUCCESS}} onClick={() => UserApproveupdate(row.googleID, true, row)}/></Tooltip>
+        <Tooltip title="Decline"><CancelIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", color: colors.ERROR}} onClick={() => UserApproveupdate(row.googleID, false, row)}/></Tooltip>
       </TableCell>}
     </TableRow>
   );

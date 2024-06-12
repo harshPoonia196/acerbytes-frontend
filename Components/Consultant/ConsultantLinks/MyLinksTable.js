@@ -53,7 +53,8 @@ const headCells = [
   },
   {
     id: "pageViewCount",
-    label: "Page view",
+    label: "Page views",
+    numeric: true
   },
   {
     id: "link",
@@ -138,7 +139,7 @@ function RowStructure({ row, history }) {
     if (daysRemaining < 0) {
       return "-";
     } else {
-      return `${daysRemaining} Days`;
+      return `${daysRemaining} days`;
     }
   };
 
@@ -150,9 +151,9 @@ function RowStructure({ row, history }) {
       <TableCell>{row?.consultantName}</TableCell>
       <TableCell>{row?.phone}</TableCell>
       <TableCell>{row?.propertyType}</TableCell>
-      <TableCell><Link href={row?.link} style={{color: "#20262D", textDecoration: 'none'}}>{row?.propertyName}</Link></TableCell>
+      <TableCell><Link href={row?.link} style={{textDecoration: 'none'}}>{row?.propertyName}</Link></TableCell>
       <TableCell>{row?.city}</TableCell>
-      <TableCell>{row?.PageViewCount || "-"}</TableCell>
+      <TableCell align="right">{row?.PageViewCount || "-"}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy link">
           <IconButton sx={{ fontSize: "1rem !important" }}
@@ -349,7 +350,7 @@ function MyLinksTable({ setCount }) {
       {
         activeAdData?.length > 0 ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}

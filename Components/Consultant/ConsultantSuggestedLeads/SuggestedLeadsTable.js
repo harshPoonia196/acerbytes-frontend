@@ -65,7 +65,8 @@ const headCells = [
   },
   {
     id: "maxBuget",
-    label: "Max Buget",
+    label: "Max buget",
+    numeric: true
   },
   {
     id: "vewDetails",
@@ -84,7 +85,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell sx={{ textTransform: "capitalize" }}
+          <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
@@ -155,7 +156,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
           </a>
         )}
       </TableCell>
-      <TableCell>{formatAmount(row?.userDetail?.budget?.maximumBudget?.value)}</TableCell>
+      <TableCell align="right">{formatAmount(row?.userDetail?.budget?.maximumBudget?.value)}</TableCell>
       <TableCell> <IconButton
         sx={{ fontSize: "1rem !important" }}
         aria-label="more"

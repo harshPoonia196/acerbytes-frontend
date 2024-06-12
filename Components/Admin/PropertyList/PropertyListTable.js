@@ -16,7 +16,8 @@ import {
   CircularProgress,
   Stack,
   Card,
-  Typography
+  Typography,
+  ListItemIcon
 } from "@mui/material";
 import React, {
   forwardRef,
@@ -42,6 +43,8 @@ import {
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearch from "Components/CommonLayouts/CustomSearch";
+import DraftsIcon from '@mui/icons-material/Drafts';
+import PublishIcon from '@mui/icons-material/Publish';
 
 const headCells = [
   {
@@ -185,12 +188,12 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
       <TableCell>{row.sector}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton sx={{ fontSize: "1rem !important" }} onClick={() => handleEdit(row.id)}>
-          <EditIcon fontSize="1rem"/>
+        <Tooltip title="Edit"><EditIcon fontSize="1rem"/></Tooltip>
         </IconButton>
       </TableCell>
       <TableCell sx={{ py: 0 }}>
         <IconButton sx={{ fontSize: "1rem !important" }} onClick={() => handleDelete(row.id)}>
-          <DeleteIcon fontSize="1rem" />
+        <Tooltip title="Delete"><DeleteIcon fontSize="1rem" /></Tooltip>
         </IconButton>
       </TableCell>
       <TableCell>
@@ -204,9 +207,11 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
         />
       </TableCell>
       <TableCell sx={{ py: 0 }}>
+      <Tooltip title="More">
         <IconButton sx={{ fontSize: "1rem !important" }} onClick={handleClick}>
           <MoreVertIcon fontSize="1rem" />
         </IconButton>
+        </Tooltip>
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -234,7 +239,10 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
               handleClose();
             }}
           >
-            {row.published ? "Draft" : "Publish"}
+            <ListItemIcon>
+            {row.published ? <DraftsIcon fontSize="small"/>: <PublishIcon fontSize="small"/>}
+            </ListItemIcon>
+            {row.published ? " Draft" : "Publish"}
           </MenuItem>
         </Menu>
       </TableCell>
@@ -452,7 +460,7 @@ const PropertyListTable = ({ setCount }) => {
       {
         propertyList.length > 0 ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}

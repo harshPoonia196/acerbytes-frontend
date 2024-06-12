@@ -30,6 +30,7 @@ import Reviews from "./reviews";
 import PhoneIcon from '@mui/icons-material/Phone';
 import LockIcon from '@mui/icons-material/Lock';
 import PublicIcon from '@mui/icons-material/Public';
+import ReviewsOutlinedIcon from '@mui/icons-material/ReviewsOutlined';
 
 function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, showRating = false, hasReviews = false }) {
   const [openDialog, setOpenDialog] = useState(false),
@@ -231,11 +232,11 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       { userDetails.role !== 'broker' && userDetails.role !== 'admin' && userDetails.role !== 'superAdmin' && <>
       {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:10, sm:13}, right: 16 }} onClick={handlePhoneClick}  >
         <IconButton sx={{ boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)" }}>
-          <CallIcon fontSize="small" />
+          <Tooltip title="Call"><CallIcon fontSize="small" /></Tooltip>
         </IconButton>
       </Box>) :
         <Box sx={{ position: "absolute", top: 8, right: 8, cursor: "pointer", color: "blue" }} onClick={handlePhoneClick} >
-          <PhoneIcon sx={{ position: "relative", top: "5px", fontSize: "19px" }} fontSize="small"/> {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}
+          <Tooltip title="Call"><PhoneIcon sx={{ position: "relative", top: "5px", fontSize: "19px" }} fontSize="small"/> {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}</Tooltip>
         </Box>
       }</>
     }
@@ -275,7 +276,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
             justifyContent={broker?.reviews?.ratings.length > 0 ? "space-between" : 'flex-end'}
           >
             {broker?.reviews?.ratings.length > 0 && (
-            <Box sx={{ display: "flex", p: 2, pb: 1 }}>
+            <Box sx={{ display: "flex", p: 2, pb: 1, pt:0 }}>
               <Avatar
                 alt={titleCase(userDetails?.name.firstName)}
                 src={userDetails?.googleDetails.profilePicture}
@@ -305,6 +306,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
                 />
               ) : (
                 <CustomButton
+                  startIcon={<Tooltip title="Rate"><ReviewsOutlinedIcon /></Tooltip>}
                   onClick={handleDialogOpen}
                   size="small"
                   variant="outlined"
@@ -322,7 +324,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           <Grid container spacing={1} sx={{ pl: "71px" }}>
           {broker?.reviews?.ratings?.map((rating) => {
             return (
-              <Grid item xs={4} key={rating?.type}>
+              <Grid item xs={12} sm={4} key={rating?.type}>
                 <Typography variant="h6">{rating?.type}</Typography>
                 <Rating
                   name="text-feedback"

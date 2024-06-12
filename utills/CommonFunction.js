@@ -120,6 +120,10 @@ const formattedCreatedAt = (dateString) => {
   return format(new Date(dateString), "dd MMM, yyyy, hh:mm aaa");
 };
 
+const formattedTime = (time) => {
+  return format(new Date(time), "dd/MM/yyyy hh:mm aaa");
+};
+
 let formatDateAndDaysRemaining = (expiryDate, format) => {
   const expiry = new Date(expiryDate);
   const now = new Date();
@@ -333,4 +337,5 @@ export {
   getRoleLabelByValue,
   indianNumberingSystem,
   filterText,
+  formattedTime
 };
