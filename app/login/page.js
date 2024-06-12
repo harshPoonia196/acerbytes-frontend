@@ -127,11 +127,11 @@ function Login() {
         if (token) {
           if (userDetails?.isBlocked) {
             setLoading(false);
-            openSnackbar("You are blocked", "warning");
+            openSnackbar("You can't access. Contact Acrebytes team", "warning");
             return;
           } else if (!userDetails?.isApproved) {
             setLoading(false);
-            openSnackbar("Please try again after some time because permission is still waiting.", "warning");
+            openSnackbar("We are reviewing your details. You'll be notified shortly.Thanks", "warning");
             router.push(listOfPages?.approvalPendingPage);
             return;
           }
@@ -255,10 +255,10 @@ function Login() {
       if (res.status === 200) {
         const { token, userDetails } = res?.data?.data;
         if (userDetails?.isBlocked) {
-          openSnackbar("You are blocked", "warning");
+          openSnackbar("You can't access. Contact Acrebytes team", "warning");
           return;
         } else if (!userDetails?.isApproved) {
-          openSnackbar("Please try again after some time because permission is still waiting.", "warning");
+          openSnackbar("We are reviewing your details. You'll be notified shortly.Thanks", "warning");
           router.push(listOfPages?.approvalPendingPage);
           return;
         } else {
