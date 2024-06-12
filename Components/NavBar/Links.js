@@ -8,25 +8,25 @@ import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import GroupIcon from "@mui/icons-material/Group";
 import TableRowsIcon from "@mui/icons-material/TableRows";
-import LinkIcon from '@mui/icons-material/Link';
-import CloseIcon from '@mui/icons-material/Close';
+import LinkIcon from "@mui/icons-material/Link";
+import CloseIcon from "@mui/icons-material/Close";
 
-export const companyName = 'AcreBytes'
+export const companyName = "AcreBytes";
 
 export const listOfPages = {
-  home: '/',
-  login: '/login',
-  pageNotFound: '/page-not-found',
-  termsAndCondition: '/terms-and-condition',
-  privacy: '/privacy',
+  home: "/",
+  login: "/login",
+  pageNotFound: "/page-not-found",
+  termsAndCondition: "/terms-and-condition",
+  privacy: "/privacy",
   commonPropertyList: "/property-list",
-  commonAllBrokers: '/all-brokers',
-  commonEnquiries: '/generate-real-estate-leads-growth',
-  userProfile: '/user/profile',
-  userShortlist: '/user/shortlist',
-  userMyConsultant: '/user/my-consultants',
-  consultantProfile: '/consultant/profile',
-  consultantRatings: '/consultant/review',
+  commonAllBrokers: "/all-brokers",
+  commonEnquiries: "/generate-real-estate-leads-growth",
+  userProfile: "/user/profile",
+  userShortlist: "/user/shortlist",
+  userMyConsultant: "/user/my-consultants",
+  consultantProfile: "/consultant/profile",
+  consultantRatings: "/consultant/review",
   consultantMyLeads: "/consultant/my-leads",
   suggestedLeads: "/consultant/suggested-leads",
   consultantLinks: "/consultant/my-links",
@@ -34,18 +34,18 @@ export const listOfPages = {
   consultantMakePayment: "/consultant/make-payment",
   consultantPaymentHistory: "/consultant/payment-history",
   consultantJoinNow: "/consultant/join-now",
-  adminEnquiries: '/admin/enquiries',
-  adminReviewedEnquiries: '/admin/reviewed-enquiries',
-  adminOrdersRequest: '/admin/orders-request',
-  adminCreditStatus: '/admin/credit-status',
-  adminAddProperty: '/admin/add-property',
-  adminPropertyList: '/admin/property-list',
-  adminManageUser: '/admin/manage-user',
-  adminManageConsultant: '/admin/manage-consultant',
-  adminConsultantLinks: '/admin/links-consultant',
-  adminUpdateProfileLinks: '/admin/updateProfile',
-  adminUpdateConsultantProfileLinks: '/admin/updateConsultantProfile',
-  approvalPendingPage: '/approval-pending'
+  adminEnquiries: "/admin/enquiries",
+  adminReviewedEnquiries: "/admin/reviewed-enquiries",
+  adminOrdersRequest: "/admin/orders-request",
+  adminCreditStatus: "/admin/credit-status",
+  adminAddProperty: "/admin/add-property",
+  adminPropertyList: "/admin/property-list",
+  adminManageUser: "/admin/manage-user",
+  adminManageConsultant: "/admin/manage-consultant",
+  adminConsultantLinks: "/admin/links-consultant",
+  adminUpdateProfileLinks: "/admin/updateProfile",
+  adminUpdateConsultantProfileLinks: "/admin/updateConsultantProfile",
+  approvalPendingPage: "/approval-pending",
 };
 
 export const CommonMenuList = [
@@ -126,7 +126,7 @@ export const ConsultantMenuList = [
     label: "Payment history",
     route: listOfPages.consultantPaymentHistory,
     icon: <PaymentIcon fontSize="small" />,
-  }
+  },
 ];
 
 export const AdminMenuList = [
@@ -175,7 +175,6 @@ export const AdminMenuList = [
     route: listOfPages.adminConsultantLinks,
     icon: <LinkIcon fontSize="small" />,
   },
-
 ];
 
 export const CSRMenuList = [
@@ -183,7 +182,7 @@ export const CSRMenuList = [
     label: "Leads received",
     route: listOfPages.adminEnquiries,
     icon: <RecentActorsIcon fontSize="small" />,
-  }
+  },
 ];
 
 export const SMRMenuList = [
@@ -193,5 +192,3 @@ export const SMRMenuList = [
     icon: <PlaylistAddIcon fontSize="small" />,
   },
 ];
-
-

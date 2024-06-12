@@ -22,7 +22,8 @@ import {
   ListSubheader,
   Card,
   Badge,
-  Avatar, Chip
+  Avatar,
+  Chip,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -61,7 +62,7 @@ import { ROLES, ROLE_CONSTANTS } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { getRoleLabelByValue } from "utills/CommonFunction";
-import Logo from 'public/images/icon.svg';
+import Logo from "public/images/icon.svg";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -73,8 +74,14 @@ export default function ClippedDrawer({ children }) {
   const pathname = usePathname();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { userDetails, isLogged, logout, isLoggedIn, setBrokerPoints, brokerBalance } =
-    useAuth();
+  const {
+    userDetails,
+    isLogged,
+    logout,
+    isLoggedIn,
+    setBrokerPoints,
+    brokerBalance,
+  } = useAuth();
 
   React.useEffect(() => {
     const userInfo = localStorage.getItem("userDetails");
@@ -106,17 +113,15 @@ export default function ClippedDrawer({ children }) {
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error getbroker balance request",
+          error?.message ||
+          "Error getbroker balance request",
         "error"
       );
     }
   };
 
   const redirectUser = (url) => {
-    const {
-      search
-    } = window?.location
+    const { search } = window?.location;
     router.replace(url + (search ?? ""));
   };
 
@@ -167,16 +172,23 @@ export default function ClippedDrawer({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {(userDetails.role !== "admin" && userDetails.role !== 'superAdmin' && userDetails.role !== ROLE_CONSTANTS.customerSupport && userDetails.role !== ROLE_CONSTANTS.sales) && (
-        <MenuItem
-          onClick={() => {
-            router.push(userDetails.role === "broker" ? listOfPages.consultantProfile : listOfPages.userProfile);
-            handleMenuClose();
-          }}
-        >
-          Profile
-        </MenuItem>
-      )}
+      {userDetails.role !== "admin" &&
+        userDetails.role !== "superAdmin" &&
+        userDetails.role !== ROLE_CONSTANTS.customerSupport &&
+        userDetails.role !== ROLE_CONSTANTS.sales && (
+          <MenuItem
+            onClick={() => {
+              router.push(
+                userDetails.role === "broker"
+                  ? listOfPages.consultantProfile
+                  : listOfPages.userProfile
+              );
+              handleMenuClose();
+            }}
+          >
+            Profile
+          </MenuItem>
+        )}
       {isLogged ? (
         <MenuItem onClick={() => logoutUser()}>Log out</MenuItem>
       ) : null}
@@ -189,7 +201,7 @@ export default function ClippedDrawer({ children }) {
       top: 12,
       // border: `2px solid ${theme.palette.background.paper}`,
       padding: "0 4px",
-      backgroundColor: 'whitesmoke !important'
+      backgroundColor: "whitesmoke !important",
     },
   }));
 
@@ -200,7 +212,7 @@ export default function ClippedDrawer({ children }) {
           sx={{ pl: 3 }}
           onClick={() => {
             router.push(item.route);
-            router.refresh()
+            router.refresh();
             handleDrawerClose();
           }}
         >
@@ -223,138 +235,133 @@ export default function ClippedDrawer({ children }) {
   };
 
   const DrawerContent = () => {
-
     const isSalesRole = authRole(ROLE_CONSTANTS.sales);
     return (
       <>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole && <List subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              Public
-            </ListSubheader>
-          }>
-            {CommonMenuList.map((item) => (
-              <DrawerListItem key={`common-${item.label}`} item={item} />
-            ))}
-          </List>}
-          <Divider />
-          {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole &&
-            <>
-              {
-                ToBeRemoved.map((item) => (
-                  <DrawerListItem key={`toberemoved-${item.label}`} item={item} />
-                ))
+          {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole && (
+            <List
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                  Public
+                </ListSubheader>
               }
-            </>
-          }
+            >
+              {CommonMenuList.map((item) => (
+                <DrawerListItem key={`common-${item.label}`} item={item} />
+              ))}
+            </List>
+          )}
           <Divider />
-          {
-            authRole("user") && (
-              <>
-                <List
-                  subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
-                      Customer / Buyer
-                    </ListSubheader>
-                  }
-                >
-                  {UserMenuList.map((item) => (
-                    <DrawerListItem key={`user-${item.label}`} item={item} />
-                  ))}
-                </List>
-                <Divider />
-              </>
-            )
-          }
-          {
-            authRole("broker") && (
-              <>
-                <List
-                  subheader={
-                    <ListSubheader
-                      component="div"
-                      id="nested-list-subheader"
-                      sx={{ display: "flex" }}
-                    >
-                      <p style={{ flex: 1 }}>Consultant</p>{" "}
-                      <Box sx={{ alignSelf: "center" }}>
-                        <IconButton
-                          onClick={() => {
-                            router.push(listOfPages.consultantJoinNow);
-                          }}
-                        >
-                          <HowToRegIcon size="small" />
-                        </IconButton>
-                      </Box>
-                    </ListSubheader>
-                  }
-                >
-                  {ConsultantMenuList.map((item, index) => (
-                    <DrawerListItem key={`consultant-${item.label}`} item={item} />
-                  ))}
-                </List>
-                <Divider />
-              </>
-            )
-          }
-          {
-            (authRole(ROLE_CONSTANTS.admin) || authRole(ROLE_CONSTANTS.superAdmin)) && (
-              <>
-                <List
-                  subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
-                      Admin
-                    </ListSubheader>
-                  }
-                >
-                  {AdminMenuList.map((item, index) => (
-                    <>
-                      <DrawerListItem key={`admin-${item.label}`} item={item} />
-                    </>
-                  ))}
-                </List>
-              </>
-            )
-          }
-          {
-            (authRole(ROLE_CONSTANTS.customerSupport)) && (
-              <>
-                <List
-                  subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
-                      Admin
-                    </ListSubheader>
-                  }
-                >
-                  {CSRMenuList.map((item, index) => (
-                    <>
-                      <DrawerListItem key={`admin-${item.label}`} item={item} />
-                    </>
-                  ))}
-                </List>
-              </>
-            )
-          }
-          {
-            isSalesRole && (
-              <>
-                <List
-                  subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
-                      Admin
-                    </ListSubheader>
-                  }
-                >
-                  {SMRMenuList.map((item, index) => (
-                    <>
-                      <DrawerListItem key={`admin-${item.label}`} item={item} />
-                    </>
-                  ))}
-                </List>
-              </>
-            )
-          }
+          {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole && (
+            <>
+              {ToBeRemoved.map((item) => (
+                <DrawerListItem key={`toberemoved-${item.label}`} item={item} />
+              ))}
+            </>
+          )}
+          <Divider />
+          {authRole("user") && (
+            <>
+              <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Customer / Buyer
+                  </ListSubheader>
+                }
+              >
+                {UserMenuList.map((item) => (
+                  <DrawerListItem key={`user-${item.label}`} item={item} />
+                ))}
+              </List>
+              <Divider />
+            </>
+          )}
+          {authRole("broker") && (
+            <>
+              <List
+                subheader={
+                  <ListSubheader
+                    component="div"
+                    id="nested-list-subheader"
+                    sx={{ display: "flex" }}
+                  >
+                    <p style={{ flex: 1 }}>Consultant</p>{" "}
+                    <Box sx={{ alignSelf: "center" }}>
+                      <IconButton
+                        onClick={() => {
+                          router.push(listOfPages.consultantJoinNow);
+                        }}
+                      >
+                        <HowToRegIcon size="small" />
+                      </IconButton>
+                    </Box>
+                  </ListSubheader>
+                }
+              >
+                {ConsultantMenuList.map((item, index) => (
+                  <DrawerListItem
+                    key={`consultant-${item.label}`}
+                    item={item}
+                  />
+                ))}
+              </List>
+              <Divider />
+            </>
+          )}
+          {(authRole(ROLE_CONSTANTS.admin) ||
+            authRole(ROLE_CONSTANTS.superAdmin)) && (
+            <>
+              <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Admin
+                  </ListSubheader>
+                }
+              >
+                {AdminMenuList.map((item, index) => (
+                  <>
+                    <DrawerListItem key={`admin-${item.label}`} item={item} />
+                  </>
+                ))}
+              </List>
+            </>
+          )}
+          {authRole(ROLE_CONSTANTS.customerSupport) && (
+            <>
+              <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Admin
+                  </ListSubheader>
+                }
+              >
+                {CSRMenuList.map((item, index) => (
+                  <>
+                    <DrawerListItem key={`admin-${item.label}`} item={item} />
+                  </>
+                ))}
+              </List>
+            </>
+          )}
+          {isSalesRole && (
+            <>
+              <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Admin
+                  </ListSubheader>
+                }
+              >
+                {SMRMenuList.map((item, index) => (
+                  <>
+                    <DrawerListItem key={`admin-${item.label}`} item={item} />
+                  </>
+                ))}
+              </List>
+            </>
+          )}
         </Box>
       </>
     );
@@ -373,7 +380,9 @@ export default function ClippedDrawer({ children }) {
           }}
         >
           <List>
-            <ListItem sx={{ paddingLeft: "25px"}}><Typography variant="body2">Helpline - 457856954</Typography></ListItem>
+            <ListItem sx={{ paddingLeft: "25px" }}>
+              <Typography variant="body2">Helpline - 457856954</Typography>
+            </ListItem>
             <ListItem
               disablePadding
               secondaryAction={
@@ -382,7 +391,6 @@ export default function ClippedDrawer({ children }) {
                 </IconButton>
               }
             >
-              
               {isLogged ? (
                 <ListItemButton
                   onClick={() => logout()}
@@ -450,18 +458,14 @@ export default function ClippedDrawer({ children }) {
           },
           position: "relative",
           [`& .MuiModal-backdrop`]: {
-            backgroundColor: 'transparent !important' /* Set the backdrop color to transparent */
-          }
-        }
-        }
+            backgroundColor:
+              "transparent !important" /* Set the backdrop color to transparent */,
+          },
+        }}
       >
         <DrawerContent />
-        {
-          isLoggedIn() ?
-            <DrawerBottomContent />
-            : null
-        }
-      </Drawer >
+        {isLoggedIn() ? <DrawerBottomContent /> : null}
+      </Drawer>
     );
   };
 
@@ -498,11 +502,30 @@ export default function ClippedDrawer({ children }) {
                 <MenuIcon fontSize="small" />
               </IconButton>
             </Box>
-            <Box sx={{ alignSelf: "center", }}>
-              <Link href={listOfPages.home} prefetch={true} style={{ textDecoration: 'none' }}>
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Box sx={{ height: 30, width: 30, background: 'gainsboro', '&:hover': { background: 'gainsboro' }, borderRadius: '4px' }}>
-                    <Image priority height={25} width={25} src={Logo} style={{ margin: '2.5px' }} alt="acrebytes" />
+            <Box sx={{ alignSelf: "center" }}>
+              <Link
+                href={listOfPages.home}
+                prefetch={true}
+                style={{ textDecoration: "none" }}
+              >
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <Box
+                    sx={{
+                      height: 30,
+                      width: 30,
+                      background: "gainsboro",
+                      "&:hover": { background: "gainsboro" },
+                      borderRadius: "4px",
+                    }}
+                  >
+                    <Image
+                      priority
+                      height={25}
+                      width={25}
+                      src={Logo}
+                      style={{ margin: "2.5px" }}
+                      alt="acrebytes"
+                    />
                   </Box>
                   <Typography
                     variant="h6"
@@ -512,7 +535,7 @@ export default function ClippedDrawer({ children }) {
                       fontWeight: 600,
                       lineHeight: 1,
                       textTransform: "uppercase",
-                      alignSelf: 'center'
+                      alignSelf: "center",
                     }}
                   >
                     {companyName}
@@ -526,22 +549,51 @@ export default function ClippedDrawer({ children }) {
               {userDetails && Object.keys(userDetails).length ? (
                 <Box>
                   <Box>
-                    <Typography variant='body1' sx={{ display: { xs: 'none', sm: 'flex' }, flex: 1, color: colors.BLUE }}>
-                      {userDetails?.name?.firstName} {userDetails?.name?.lastName}
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: { xs: "none", sm: "flex" },
+                        flex: 1,
+                        color: colors.BLUE,
+                      }}
+                    >
+                      {userDetails?.name?.firstName}{" "}
+                      {userDetails?.name?.lastName}
                     </Typography>
-                    <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, flex: 1, color: colors.BLUE }}>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: { xs: "flex", sm: "none" },
+                        flex: 1,
+                        color: colors.BLUE,
+                      }}
+                    >
                       {userDetails?.name?.firstName}
                     </Typography>
                   </Box>
                   <Box sx={{ alignSelf: "center", textAlign: "right" }}>
                     {userDetails?.role == ROLE_CONSTANTS.broker && (
-                      <Chip label={`Points: ${brokerBalance}`} size="small"
-                        onClick={() => router.push(listOfPages.consultantPaymentHistory)} />
+                      <Chip
+                        label={`Points: ${brokerBalance}`}
+                        size="small"
+                        onClick={() =>
+                          router.push(listOfPages.consultantPaymentHistory)
+                        }
+                      />
                     )}
-                    {(userDetails?.role == ROLE_CONSTANTS.admin || userDetails?.role == ROLE_CONSTANTS.sales || userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
-                      <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" />
+                    {(userDetails?.role == ROLE_CONSTANTS.admin ||
+                      userDetails?.role == ROLE_CONSTANTS.sales ||
+                      userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
+                      <Chip
+                        label={getRoleLabelByValue(userDetails?.role)}
+                        size="small"
+                      />
                     )}
-                    <Chip label={`${userDetails?.role}`} size="small" sx={{ marginLeft: "5px"}} />
+                    <Chip
+                      label={`${userDetails?.role}`}
+                      size="small"
+                      sx={{ marginLeft: "5px" }}
+                    />
                   </Box>
                 </Box>
               ) : (
@@ -565,7 +617,10 @@ export default function ClippedDrawer({ children }) {
                   color="#000"
                 >
                   {userDetails?.googleDetails?.profilePicture ? (
-                    <Avatar sx={{ height: 24, width: 24 }} src={userDetails?.googleDetails?.profilePicture} />
+                    <Avatar
+                      sx={{ height: 24, width: 24 }}
+                      src={userDetails?.googleDetails?.profilePicture}
+                    />
                   ) : (
                     <AccountCircle />
                   )}
@@ -582,6 +637,6 @@ export default function ClippedDrawer({ children }) {
         <Toolbar />
         {children}
       </Box>
-    </Box >
+    </Box>
   );
 }

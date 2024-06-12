@@ -10,57 +10,64 @@ import {
   Grid,
   Divider,
   Dialog,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import CallIcon from "@mui/icons-material/Call";
 import { useState } from "react";
 import RatingDialog from "./Dialog/RatingDialog";
-import DoneIcon from "@mui/icons-material/Done";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ShieldIcon from "@mui/icons-material/Shield";
 import RemoveModeratorIcon from "@mui/icons-material/RemoveModerator";
 import moment from "moment";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import { useAuth } from "utills/AuthContext";
-import { listOfPages } from "Components/NavBar/Links";
 import { countryCodeFormating } from "utills/utills";
-import { capitalLizeName, getFirstCharacterOfFirstOfFullName } from "utills/CommonFunction";
+import {
+  capitalLizeName,
+  getFirstCharacterOfFirstOfFullName,
+} from "utills/CommonFunction";
 import Reviews from "./reviews";
-import PhoneIcon from '@mui/icons-material/Phone';
+import PhoneIcon from "@mui/icons-material/Phone";
 
-function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, showRating = false, hasReviews = false }) {
+function BrokerCard({
+  broker,
+  type,
+  noReview,
+  updateBroker,
+  enquiredInfo,
+  handleEnquireWithBroker,
+  showRating = false,
+  hasReviews = false,
+}) {
   const [openDialog, setOpenDialog] = useState(false),
     [openReviews, setOpenReviews] = useState(false),
-    { userDetails, isLogged } = useAuth(),
     router = useRouter(),
-
     handleDialogOpen = () => {
       setOpenDialog(true);
     },
-
     handleOpenReviews = () => {
       setOpenReviews(true);
     },
-
     handleCloseOpenReviews = () => {
       setOpenReviews(false);
     },
-
     handleViewReview = (name) => {
       router.push(`/broker-review?name=${name}`);
     },
-
     precision = 0.5,
     titleCase = (string) => {
-      return string ? string.replace(/^\w/, c => c.toUpperCase()) : string
+      return string ? string.replace(/^\w/, (c) => c.toUpperCase()) : string;
     },
-    currentEnquiredBroker = enquiredInfo?.find((enquiry) => enquiry?.brokerId?.[0] === broker.id || enquiry.isNew),
+    currentEnquiredBroker = enquiredInfo?.find(
+      (enquiry) => enquiry?.brokerId?.[0] === broker.id || enquiry.isNew
+    ),
     isEnquiredByCurrentBroker = currentEnquiredBroker?._id ? true : false,
     handleCallClick = () => {
-      if (typeof handleEnquireWithBroker === 'function') {
+      if (typeof handleEnquireWithBroker === "function") {
         if (isEnquiredByCurrentBroker) {
-          const callHref = `tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")}`;
+          const callHref = `tel:${
+            (broker?.phone?.countryCode || "") + (broker?.phone?.number || "")
+          }`;
           if (callHref) {
             window.location.href = callHref;
           }
@@ -68,9 +75,9 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
           handleEnquireWithBroker(broker?.id);
         }
       } else {
-        console.error('handleEnquireWithBroker is not a function');
+        console.error("handleEnquireWithBroker is not a function");
       }
-    }
+    };
 
   return (
     <Card sx={{ position: "relative" }}>
@@ -84,13 +91,27 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Avatar>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h5">
-            <Box sx={{ display: {sm: "flex", xs: "block"}, gap: "5px", cursor: "pointer"}} onClick={hasReviews ? handleOpenReviews : null}>
+            <Box
+              sx={{
+                display: { sm: "flex", xs: "block" },
+                gap: "5px",
+                cursor: "pointer",
+              }}
+              onClick={hasReviews ? handleOpenReviews : null}
+            >
               {titleCase(broker?.fullName)}
-              <DoneAllIcon fontSize="1rem" sx={{ alignSelf: "center", position: "relative", top: "1px", left: "2px" }} />
-              {showRating ?
+              <DoneAllIcon
+                fontSize="1rem"
+                sx={{
+                  alignSelf: "center",
+                  position: "relative",
+                  top: "1px",
+                  left: "2px",
+                }}
+              />
+              {showRating ? (
                 <>
                   <div className="rating">
-
                     <Rating
                       readOnly
                       size="small"
@@ -98,10 +119,13 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
                       precision={0.5}
                       value={broker?.rating ?? 0}
                     />
-                    <div className="rating-count"> {broker?.ratingCount ?? 0} Ratings</div>
+                    <div className="rating-count">
+                      {" "}
+                      {broker?.ratingCount ?? 0} Ratings
+                    </div>
                   </div>
                 </>
-                : null}
+              ) : null}
             </Box>
           </Typography>
           <Typography variant="body2">
@@ -206,15 +230,39 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </Box>
       ) : null} */}
       {/* {isLogged ? ( */}
-      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:10, sm:13}, right: 8 }} onClick={handleCallClick}  >
-        <IconButton sx={{ boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)" }}>
-          <CallIcon fontSize="small" />
-        </IconButton>
-      </Box>) :
-        <Box sx={{ position: "absolute", top: 8, right: 8, cursor: "pointer", color: "blue" }} onClick={handleCallClick} >
-          <PhoneIcon sx={{ position: "relative", top: "5px", fontSize: "19px" }} fontSize="small"/> {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}
+      {!isEnquiredByCurrentBroker ? (
+        <Box
+          sx={{ position: "absolute", top: { xs: 10, sm: 13 }, right: 8 }}
+          onClick={handleCallClick}
+        >
+          <IconButton
+            sx={{
+              boxShadow:
+                "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)",
+            }}
+          >
+            <CallIcon fontSize="small" />
+          </IconButton>
         </Box>
-      }
+      ) : (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            cursor: "pointer",
+            color: "blue",
+          }}
+          onClick={handleCallClick}
+        >
+          <PhoneIcon
+            sx={{ position: "relative", top: "5px", fontSize: "19px" }}
+            fontSize="small"
+          />{" "}
+          {(countryCodeFormating(broker?.phone?.countryCode) || "") +
+            (broker?.phone?.number || "")}
+        </Box>
+      )}
       {/* // : (
       //   <Box sx={{ position: "absolute", top: 8, right: 8 }}>
       //     <IconButton onClick={() => router.push(listOfPages.login)}>
@@ -271,8 +319,8 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
                   Review given
                   {broker?.reviews?.createdAt
                     ? moment(broker?.reviews?.createdAt).format(
-                      " on DD MMM, YYYY"
-                    )
+                        " on DD MMM, YYYY"
+                      )
                     : ""}
                 </Typography>
                 <Typography variant="body2">
