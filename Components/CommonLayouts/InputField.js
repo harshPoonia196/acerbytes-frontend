@@ -1,6 +1,7 @@
 import React from "react";
 import { TextField, InputAdornment, Grid } from "@mui/material";
 import { formatPoints } from "utills/CommonFunction";
+import SavingsIcon from '@mui/icons-material/Savings';
 
 const InputField = ({
   name,
@@ -44,8 +45,7 @@ const InputField = ({
         error={error}
         InputLabelProps={{ shrink: (isAmount || value) && true }}
         InputProps={{
-          startAdornment: isAmount && <InputAdornment position="start">₹</InputAdornment>,
-          startAdornment: isPoint && <InputAdornment position="start"></InputAdornment>,
+          startAdornment: isAmount && <InputAdornment position="start">₹</InputAdornment> || isPoint && <InputAdornment position="start"><SavingsIcon fontSize="small"/></InputAdornment>
         }}
         {...props}
       />

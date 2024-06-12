@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Typography, Chip, Button, Card, IconButton, Menu, MenuItem } from '@mui/material'
+import { Box, Typography, Chip, Button, Card, IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
@@ -56,9 +56,12 @@ function Footer({ paymentPage }) {
                         ButtonText={"Share"}
                     />
                 </Box>
+                <Tooltip title="More">
+                
                 <IconButton onClick={handleClick}>
                     <MoreVertIcon fontSize='small' />
                 </IconButton>
+                </Tooltip>
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}

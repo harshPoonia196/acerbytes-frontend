@@ -222,3 +222,16 @@ html {
 /* .MuiTableCell-head{
   text-transform: capitalize !important;
 } */
+
+.MuiClock-amButton:hover{
+  background-color: #eaeaef !important;
+}
+.MuiTableCell-head{
+  text-transform: none !important;
+}
+/* .MuiTableCell-body{
+  padding: 8px 16px !important;
+} */
+.creditPopup .creditPopup-textfield .MuiTypography-subtitle2{
+  transform: translate(-14px, 0) scale(0.9);
+}

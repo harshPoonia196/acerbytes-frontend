@@ -13,7 +13,7 @@ export const boxShadowBottom = "1px 2px 2px -2px gainsboro !important";
 export const menuMaxHeight = 150;
 export const FILE_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 
-export const PAGINATION_LIMIT = 10;
+export const PAGINATION_LIMIT = 50;
 export const PAGINATION_LIMIT_OPTIONS = [10, 20, 50];
 export const DEBOUNCE_TIMER = 500;
 
@@ -373,7 +373,7 @@ const listOfConsultantProfileTab = [
   // { label: 'Enquiries', value: 'enquiries' },
   // { label: 'Property Consultants', value: 'propertyConsultants' },
   // { label: 'Current address', value: 'currentAddress' },
-  { label: "Setting", value: "setting" },
+  { label: "Settings", value: "setting" },
 ];
 
 const listOfPropertyDetailsTab = [

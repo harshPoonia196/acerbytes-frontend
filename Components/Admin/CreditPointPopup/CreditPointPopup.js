@@ -16,6 +16,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import { generateRandorOrderNumber } from "api/Broker.api";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
 function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
   const [isLoading, setLoading] = React.useState(false);
@@ -168,7 +169,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
       sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
       open={open}
       onClose={handleClose}
-    >
+    className="creditPopup">
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
           Add Credit points for Consultant
@@ -197,9 +198,10 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
             isPoint={true}
             handleChange={updateCreditInfo}
             halfSm
+            
           />
           <NewAutoCompleteInputStructure
-            label="Select Consultant"
+            label="Select Property Consultant"
             variant='standard'
             handleChange={(e, newValue) =>
               updateCreditInfo({
@@ -219,6 +221,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
                 value: rs._id,
               };
             })}
+            className="creditPopup-textfield"
           />
           <NewAutoCompleteInputStructure
             label="Select Sales person"
@@ -243,6 +246,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
                 value: rs.googleID,
               };
             })}
+            className="creditPopup-textfield"
           />
         </Grid>
       </DialogContent>

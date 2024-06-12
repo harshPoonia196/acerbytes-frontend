@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Chip, Container, Fab, IconButton, Menu, MenuItem, Typography, Rating } from '@mui/material'
+import { Avatar, Box, Button, Chip, Container, Fab, IconButton, Menu, MenuItem, Typography, Rating, Tooltip } from '@mui/material'
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { ContentCopy as ContentCopyIcon, Phone as PhoneIcon,  } from '@mui/icons-material';
@@ -240,9 +240,11 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                     </Box>
 
                                     <Box sx={{ alignSelf: 'start'}}>
+                                    <Tooltip title="More">
                                         <IconButton onClick={handleClick} sx={{ padding: "0"}}>
                                             <MoreVertIcon />
                                         </IconButton>
+                                        </Tooltip>
                                     </Box>
                                     <Menu
                                         id="basic-menu"

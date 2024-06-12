@@ -18,7 +18,8 @@ import {
   MenuItem,
   Container,
   Typography,
-  Grid
+  Grid,
+  ListItemIcon
 } from "@mui/material";
 
 import {
@@ -52,6 +53,7 @@ import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { ORDER_STATUS, ToasterMessages } from "utills/Constants";
 import { countryCodeFormating } from "utills/utills";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 
 const headCells = [
   {
@@ -64,7 +66,7 @@ const headCells = [
   },
   {
     id: "mobileNumber",
-    label: "Mobile number",
+    label: "Phone",
   },
   {
     id: "lastTopupDate",
@@ -73,18 +75,22 @@ const headCells = [
   {
     id: "lastTopupAmount",
     label: "Last topup Points",
+    numeric: true
   },
   {
     id: "opening",
     label: "Opening",
+    numeric: true
   },
   {
     id: "consumedSoFar",
     label: "Consumed so far",
+    numeric: true
   },
   {
     id: "balance",
     label: "Balance",
+    numeric: true
   },
   {
     id: "action",
@@ -108,7 +114,7 @@ function EnhancedTableHead(props) {
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
-            sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+            sx={{ fontWeight: "bold" }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -173,11 +179,12 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           {row?.brokerDetails?.phone?.number}
         </TableCell>
         <TableCell>{formatDate(row.createdAt)}</TableCell>
-        <TableCell>{formatPoints(row.newPoints)}</TableCell>
-        <TableCell>{formatPoints(row.openingPoints)}</TableCell>
-        <TableCell>{formatPoints(row.consumedPoints)}</TableCell>
-        <TableCell>{formatAmount(row?.brokerBalance?.balance || 0)}</TableCell>
+        <TableCell sx={{ textAlign: "right" }}>{formatPoints(row.newPoints)}</TableCell>
+        <TableCell sx={{ textAlign: "right" }}>{formatPoints(row.openingPoints)}</TableCell>
+        <TableCell sx={{ textAlign: "right" }}>{formatPoints(row.consumedPoints)}</TableCell>
+        <TableCell sx={{ textAlign: "right" }}>{formatAmount(row?.brokerBalance?.balance || 0)}</TableCell>
         <TableCell>
+        <Tooltip title="More">
           <IconButton
             aria-label="more"
             id="long-button"
@@ -189,6 +196,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           >
             <MoreVertIcon fontSize="1rem" />
           </IconButton>
+          </Tooltip>
         </TableCell>
         <Menu
           id="basic-menu"
@@ -208,7 +216,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           }}
         >
           <MenuItem onClick={() => handlePopuChange(true)}>
-            Assign points
+            <ListItemIcon><CreditScoreIcon fontSize="small"/></ListItemIcon> Assign points
           </MenuItem>
         </Menu>
       </TableRow>

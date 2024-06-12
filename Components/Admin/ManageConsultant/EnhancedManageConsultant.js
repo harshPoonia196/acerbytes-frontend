@@ -13,15 +13,15 @@ import React from "react";
 const headCells = [
     {
         id: "FirstName",
-        label: "First name",
+        label: "Name",
     },
-    {
-        id: "LastName",
-        label: "Last name",
-    },
+    // {
+    //     id: "LastName",
+    //     label: "Last name",
+    // },
     {
         id: "consultant_id",
-        label: "Consultant ID",
+        label: "Consultant Id",
     },
     {
         id: "CompanyName",
@@ -34,15 +34,17 @@ const headCells = [
 
     {
         id: "RERANumber",
-        label: "Rera #",
+        label: "RERA",
     },
     {
         id: "NoOfActiveLinks",
         label: "No of active links",
+        numeric: true
     },
     {
         id: "CreditAmount",
         label: "Credit amount",
+        numeric: true
     },
 ];
 

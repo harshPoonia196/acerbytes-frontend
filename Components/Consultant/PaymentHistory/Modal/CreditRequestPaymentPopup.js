@@ -24,6 +24,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { formatAmount, formatPoints } from "utills/CommonFunction";
 import AutorenewIcon from '@mui/icons-material/Autorenew';
+import DoneIcon from '@mui/icons-material/Done';
 
 function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
   const router = useRouter();
@@ -172,7 +173,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
             loadingPosition="start"
             variant="contained"
           >
-            Click here to pay
+            <DoneIcon fontSize="small"sx={{ position: "relative", top: "-2px", marginRight: "3px"}} /> Confirm order & Pay
           </LoadingButton>
         </Box>
         <Divider sx={{ my: 2, borderColor: "gainsboro" }} />

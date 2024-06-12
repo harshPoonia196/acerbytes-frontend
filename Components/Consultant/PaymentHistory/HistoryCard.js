@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Box, Card, IconButton, Typography, Grid, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material'
+import { Box, Card, IconButton, Typography, Grid, Menu, MenuItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import colors from 'styles/theme/colors';
 import { CustomAccordion, CustomAccordionDetails, CustomAccordionSummary } from 'Components/CommonLayouts/CommonAccordion';
@@ -66,9 +66,11 @@ function HistoryCard({ history }) {
                     </Typography>
                 </Box>
                 <Box>
+                <Tooltip title="More">
                     <IconButton onClick={handleOpenMenu}>
                         <MoreVertIcon />
                     </IconButton>
+                    </Tooltip>
                     <Menu
                         id="basic-menu"
                         anchorEl={anchorElMenuState}

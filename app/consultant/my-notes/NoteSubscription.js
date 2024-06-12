@@ -18,7 +18,7 @@ import { buyNotesPoints, getBrokerBalance } from "api/Broker.api";
 import { useAuth } from "utills/AuthContext";
 
 function NoteSubscription({ open, handleClose, getList }) {
-  const { setBrokerPoints } = useAuth(),
+  const { setBrokerPoints, brokerBalance } = useAuth(),
     [loadingStates, setLoadingStates] = useState({}),
     { openSnackbar } = useSnackbar(),
 
@@ -115,7 +115,10 @@ function NoteSubscription({ open, handleClose, getList }) {
           })}
         </Grid>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{justifyContent: 'space-between'}}>
+        <Box sx={{ fontWeight: 700}}>
+          Points: {brokerBalance}
+        </Box>
         <Box sx={{ textAlign: "end" }}>
           <CustomButton
             variant="contained"

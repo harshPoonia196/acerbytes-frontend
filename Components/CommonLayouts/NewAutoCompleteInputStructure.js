@@ -17,11 +17,12 @@ const NewAutoCompleteInputStructure = ({
   list,
   xs,
   sm, md,
-  clearable
+  clearable,
+  className
 }) => (
   <>
     <Grid item xs={xs ? xs : 12} sm={sm ? sm : 6} md={md ? md : 6}>
-      <Box>
+      <Box className={className}>
         <Typography
           variant='subtitle2'
           sx={{ alignSelf: "center", flex: 1 }}>
