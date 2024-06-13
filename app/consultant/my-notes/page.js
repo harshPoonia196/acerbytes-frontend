@@ -24,6 +24,7 @@ import { DEBOUNCE_TIMER, NOTES_TYPE, ToasterMessages } from "utills/Constants";
 import { debounce } from "lodash";
 import NoteSubscription from "./NoteSubscription";
 import AddIcon from '@mui/icons-material/Add';
+import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 
 function MyNotes() {
   const router = useRouter();
@@ -107,7 +108,8 @@ function MyNotes() {
         button={<div style={{ display: 'flex', gap: '10px' }}>
 
           {!list.showSubscribeButton &&
-            <CustomButton
+            <CustomButton 
+              startIcon={<SubscriptionsIcon fontSize="small"/>}
               variant="contained"
               size="small"
               onClick={() => {

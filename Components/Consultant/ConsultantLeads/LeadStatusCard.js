@@ -1,5 +1,5 @@
 import MoreVert from '@mui/icons-material/MoreVert'
-import { Box, Card, Divider, Grid, IconButton, Menu, MenuItem, Typography, ListItemIcon } from '@mui/material'
+import { Box, Card, Divider, Grid, IconButton, Menu, MenuItem, Typography, ListItemIcon, Tooltip } from '@mui/material'
 import { deleteNote } from 'api/Broker.api'
 import React, { useState } from 'react'
 import colors from 'styles/theme/colors'
@@ -40,9 +40,11 @@ function LeadStatusCard({ name, actionType, type, status, comment, time, noteId,
                     <Typography variant="body2">{formattedTime(time)}</Typography>
                 </Box>
                 <Box>
-                    <IconButton size='small' onClick={handleClick}>
-                        <MoreVert fontSize='1rem' />
-                    </IconButton>
+                    <Tooltip title="More">
+                        <IconButton size='small' onClick={handleClick}>
+                            <MoreVert fontSize='1rem' />
+                        </IconButton>
+                    </Tooltip>
                     <Menu
                         id="basic-menu"
                         anchorEl={anchorEl}

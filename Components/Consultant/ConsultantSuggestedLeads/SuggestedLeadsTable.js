@@ -19,7 +19,8 @@ import {
   DialogContentText,
   DialogActions,
   Chip,
-  Typography
+  Typography,
+  Tooltip
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -157,21 +158,24 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
         )}
       </TableCell>
       <TableCell align="right">{formatAmount(row?.userDetail?.budget?.maximumBudget?.value)}</TableCell>
-      <TableCell> <IconButton
-        sx={{ fontSize: "1rem !important" }}
-        aria-label="more"
-        id="long-button"
-        aria-controls={open ? "long-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
-        aria-haspopup="true"
-        onClick={() => {
-          setSelectedRowData(row);
-          setViewLeadsDetails(true);
-        }}
-        size="small"
-      >
-        <VisibilityIcon fontSize="1rem" />
-      </IconButton>
+      <TableCell> 
+        <Tooltip title="View">
+          <IconButton
+          sx={{ fontSize: "1rem !important" }}
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={() => {
+            setSelectedRowData(row);
+            setViewLeadsDetails(true);
+          }}
+          size="small"
+        >
+          <VisibilityIcon fontSize="1rem" />
+        </IconButton>
+      </Tooltip>
       </TableCell>
       <TableCell>
         <Button onClick={() => manageBuyNow(row?._id)}>
@@ -394,7 +398,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
               key={Iindex}
               label={item}
               onDelete={() => handleEdit()}
-              deleteIcon={<EditIcon fontSize="14px"/>}
+              deleteIcon={<Tooltip title="Edit"><EditIcon fontSize="14px"/></Tooltip>}
               sx={{ marginRight: "5px"}}
             />
           )
