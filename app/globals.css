@@ -228,10 +228,12 @@ html {
 }
 .MuiTableCell-head{
   text-transform: none !important;
+  padding: 16px !important;
 }
-/* .MuiTableCell-body{
+.MuiTableCell-body{
   padding: 8px 16px !important;
-} */
+  height: 50px;
+}
 .creditPopup .creditPopup-textfield .MuiTypography-subtitle2{
   transform: translate(-14px, 0) scale(0.9);
 }

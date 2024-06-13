@@ -261,9 +261,9 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
           </a>
         )}
         {row.isVerified ? (
-          <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", left: "2px" }} fontSize="1rem" color="success" />
+          <Tooltip title="Verified"><CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", left: "2px" }} fontSize="1rem" color="success" /></Tooltip>
         ) : (
-          <UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", left: "2px" }} fontSize="1rem" color="error" />
+          <Tooltip title="Not Verified"><UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", left: "2px" }} fontSize="1rem" color="error" /></Tooltip>
         )}
       </TableCell>
       {/* <TableCell>
@@ -296,7 +296,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
               e.preventDefault();
               handlePropertyView(row.propertyLink);
             }}
-            style={{ textDecoration: 'none' }}
+            style={{ textDecoration: 'none', position: "relative", top: "-3px" }}
           >
              <LinkIcon sx={{ fontSize: "17px", position: "relative", top: "4px"}} fontSize="small"/> {row?.property?.overview?.projectName ?
               `${capitalLizeName(row?.property?.overview?.builder)}.${capitalLizeName(row?.property?.overview?.projectName)}`
@@ -322,7 +322,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
           }}
           size="small"
         >
-          <VisibilityIcon fontSize="1rem" />
+          <Tooltip title="View"><VisibilityIcon fontSize="1rem" /></Tooltip>
         </IconButton>
         }
       </TableCell>

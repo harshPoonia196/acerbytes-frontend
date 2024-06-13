@@ -49,7 +49,7 @@ import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import ConsultantsViewAll from "Components/DetailsPage/Modal/ConsultantsViewAll";
-import { getItem } from "utills/utills";
+import { clearItem, getItem } from "utills/utills";
 import {
   submitEnquiry,
   submitEnquiryUnauth,

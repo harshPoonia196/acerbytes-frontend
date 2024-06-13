@@ -28,13 +28,13 @@ import CustomSearch from "Components/CommonLayouts/CustomSearch";
 import { useAuth } from "utills/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
+import LinkIcon from '@mui/icons-material/Link';
 
 const headCells = [
-  {
-    id: "consultantName",
-    label: "Consultant name",
-  },
+  // {
+  //   id: "consultantName",
+  //   label: "Consultant name",
+  // },
   {
     id: "phone",
     label: "Phone",
@@ -148,10 +148,10 @@ function RowStructure({ row, history }) {
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell>{row?.consultantName}</TableCell>
+      {/* <TableCell>{row?.consultantName}</TableCell> */}
       <TableCell>{row?.phone}</TableCell>
       <TableCell>{row?.propertyType}</TableCell>
-      <TableCell><Link href={row?.link} style={{textDecoration: 'none'}}>{row?.propertyName}</Link></TableCell>
+      <TableCell><Link href={row?.link} style={{textDecoration: 'none'}} sx={{ position: "relative", top: "-4px"}}><Tooltip title="Link"><LinkIcon sx={{ fontSize: "17px", position: "relative", top: "4px"}} fontSize="small"/></Tooltip>{row?.propertyName}</Link></TableCell>
       <TableCell>{row?.city}</TableCell>
       <TableCell align="right">{row?.PageViewCount || "-"}</TableCell>
       <TableCell sx={{ py: 0 }}>

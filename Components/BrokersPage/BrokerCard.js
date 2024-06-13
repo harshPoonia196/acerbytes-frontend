@@ -266,7 +266,7 @@ function BrokerCard({
                   top: { xs: 10, sm: 13 },
                   right: 16,
                 }}
-                onClick={handlePhoneClick}
+                onClick={handleCallClick}
               >
                 <IconButton
                   sx={{
@@ -288,7 +288,7 @@ function BrokerCard({
                   cursor: 'pointer',
                   color: 'blue',
                 }}
-                onClick={handlePhoneClick}
+                onClick={handleCallClick}
               >
                 <Tooltip title="Call">
                   <PhoneIcon

@@ -36,7 +36,6 @@ function LocationSection(props) {
                 m: 0,
                 ml: "auto !important",
               }}
-              onClick={() => router.push("/research")}
             >
               <Typography
                 variant="h6"

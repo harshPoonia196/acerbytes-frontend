@@ -47,18 +47,11 @@ import {
 } from 'state/DrawerStore/action';
 import CloseIcon from '@mui/icons-material/Close';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {
-  authRole,
-  checkUrlAccess,
-  isLoggedIn,
-  logoutUser,
-  matchUserRole,
-} from 'utills/utills';
+import { authRole, checkUrlAccess, logoutUser } from 'utills/utills';
 import colors from 'styles/theme/colors';
-import { checkTokenAPI } from 'api/Auth.api';
 import { useAuth } from 'utills/AuthContext';
 import { getBrokerBalance } from 'api/Broker.api';
-import { ROLES, ROLE_CONSTANTS } from 'utills/Constants';
+import { ROLE_CONSTANTS } from 'utills/Constants';
 import { useSnackbar } from 'utills/SnackbarContext';
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import { getRoleLabelByValue } from 'utills/CommonFunction';
@@ -385,7 +378,7 @@ export default function ClippedDrawer({ children }) {
           <List sx={{ pb: 0 }}>
             <ListItemButton
               onClick={() => {
-                router.push('http://wa.me/+919323996997');
+                window.open('http://wa.me/+919323996997', '_blank');
               }}
               sx={{
                 pl: 3,
@@ -602,11 +595,13 @@ export default function ClippedDrawer({ children }) {
                         size="small"
                       />
                     )}
-                    <Chip
-                      label={getRoleLabelByValue(userDetails?.role)}
-                      size="small"
-                      sx={{ marginLeft: '5px' }}
-                    />
+                    {userDetails?.role !== ROLE_CONSTANTS.user && (
+                      <Chip
+                        label={getRoleLabelByValue(userDetails?.role)}
+                        size="small"
+                        sx={{ marginLeft: '5px' }}
+                      />
+                    )}
                   </Box>
                 </Box>
               ) : (

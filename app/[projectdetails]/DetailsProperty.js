@@ -63,6 +63,7 @@ import colors from "styles/theme/colors";
 import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpinner";
 import { getCountsByProperty } from "api/Broker.api";
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import Link from "next/link";
 
 const tabHeight = 200;
 
@@ -306,6 +307,8 @@ const PropertyDetails = ({ params }) => {
     checkPropertyIsEnquired();
   }, [userDetails]);
 
+  console.log("propertyData", propertyData);
+  
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
     return (
@@ -603,7 +606,7 @@ const PropertyDetails = ({ params }) => {
     },
     []
   );
-
+  
   return (
     <>
       {isLoading && <Loader />}
@@ -679,6 +682,7 @@ const PropertyDetails = ({ params }) => {
               handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
               submitEnquiryUnath={handleSubmitEnquiryUnauth}
+              isUnique={true}
             />
             {/* <MoreSimilarPropertyCard /> */}
           </Grid>
@@ -753,6 +757,7 @@ const PropertyDetails = ({ params }) => {
                 }}
               >
                 {isLogged ? (
+                  <>
                   <Fab
                     variant="extended"
                     sx={{ mb: 1, justifyContent: "flex-start" }}
@@ -765,6 +770,16 @@ const PropertyDetails = ({ params }) => {
                     )}
                     Like
                   </Fab>
+                  <a href={`https://wa.me/+919725555595`} target="_blank">
+                  <Fab
+                    variant="extended"
+                    sx={{ mb: 1, justifyContent: "flex-start" }}
+                  >
+                    <WhatsAppIcon sx={{ mr: 1 }} />
+                    Contact
+                  </Fab>
+                </a>
+                </>
                 ) : (
                   <Fab
                     variant="extended"
@@ -788,16 +803,6 @@ const PropertyDetails = ({ params }) => {
                   <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
                   Share
                 </Fab>
-                <a href={`https://wa.me/+919725555595`}>
-                  <Fab
-                    variant="extended"
-                    sx={{ mb: 1, justifyContent: "flex-start" }}
-                  >
-                    <WhatsAppIcon sx={{ mr: 1 }} />
-                    Contact
-                  </Fab>
-                </a>
-
                 <Fab
                   variant="extended"
                   sx={{ justifyContent: "flex-start" }}
@@ -813,6 +818,7 @@ const PropertyDetails = ({ params }) => {
           AllPropertyData={propertyData[0]}
           contactPermissionToView={isLogged ? contactPermissionToView : true}
           handleOpenEnquiryForm={handleOpenEnquiryForm}
+          isUnique={true}
         />
         {expiredModalOpenRef.current && (
           <Dialog open={expiredModalOpenRef.current}>
@@ -882,7 +888,8 @@ const PropertyDetails = ({ params }) => {
                     <AddLinkIcon fontSize='small' sx={{ mr: 1 }} />
                     Activate link
                 </Fab> */}
-                {userDetails.role === 'broker' && <Fab
+                <Link href="/consultant/my-leads">
+                {userDetails.role === 'broker' && <Fab 
                     // size="small"
                     variant="extended"
                     sx={{ justifyContent: "flex-start" }}
@@ -890,6 +897,7 @@ const PropertyDetails = ({ params }) => {
                     <FormatListBulletedIcon fontSize='small' sx={{ mr: 1 }} />
                     {leadsCount} Enquiries received
                 </Fab>}
+                </Link>
             </Box>
       </Box>
     </>

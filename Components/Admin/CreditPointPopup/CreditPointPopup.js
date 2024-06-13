@@ -175,7 +175,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
           Add Credit points for Consultant
         </Typography>
         <Typography variant="body1">
-          Potential to buy leads from the panel
+          Credit Points are required to buy services on AcreBytes
         </Typography>
       </DialogTitle>
       <DialogContent>

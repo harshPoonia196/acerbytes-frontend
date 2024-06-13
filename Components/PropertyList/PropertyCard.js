@@ -12,16 +12,18 @@ import {
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from 'utills/AuthContext';
 import CircularWithValueLabel from 'Components/CommonLayouts/CircularProgressWithLabel';
 import { shortPriceFormatter } from 'utills/CommonFunction';
 import Image from 'next/image';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { formatNumberWithCommas } from 'utills/CommonFunction';
 
 function PropertyCard(props) {
   const router = useRouter();
-  const { userDetails } = useAuth(); 
+  const [priceRange, setAmount] = useState({});
+  const { userDetails } = useAuth();
   const { propertyDetails, isShortListPageCard, createdDate } = props;
   const constructPropertyUrl = (propertyDetailsData) => {
     const overview = propertyDetailsData?.overview;
@@ -98,6 +100,28 @@ function PropertyCard(props) {
   const numbers = layoutData.map((item) => item.split(' ')[0]).sort();
   const suffix = layoutData[0].split(' ').slice(1).join(' ');
 
+  useEffect(() => {
+    const getPriceTag = shortPriceFormatter(
+      propertyDetails?.unitsPlan?.minPriceRange,
+    );
+
+    const [minPrice, tag] = getPriceTag.split(' ');
+    const finalMinPrice = Math.round(minPrice * 10) / 10;
+
+    const getMaxPriceTag = shortPriceFormatter(
+      propertyDetails?.unitsPlan?.maxPriceRange,
+    );
+
+    const [maxPrice, maxTag] = getMaxPriceTag.split(' ');
+    const finalMaxPrice = Math.round(maxPrice * 10) / 10;
+
+    setAmount({
+      ...priceRange,
+      minPrice: { price: finalMinPrice, tag },
+      maxPrice: { price: finalMaxPrice, tag: maxTag },
+    });
+  }, []);
+
   const formattedBHK = `${numbers.join(', ')} ${suffix}`;
 
   return (
@@ -169,7 +193,7 @@ function PropertyCard(props) {
             <Typography variant="caption" sx={{ textTransform: 'capitalize' }}>
               {propertyDetails?.location?.area}
             </Typography>
-            <Typography 
+            <Typography
               variant="subtitle2"
               sx={{ textTransform: 'capitalize' }}
             >
@@ -184,7 +208,8 @@ function PropertyCard(props) {
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
-              {propertyDetails?.layout?.totalUnits} Units
+              {formatNumberWithCommas(propertyDetails?.layout?.totalUnits)}{' '}
+              Units
             </Typography>
             <Typography variant="subtitle2">
               {`${propertyDetails?.layout?.area} 
@@ -233,10 +258,8 @@ function PropertyCard(props) {
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
               <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-                ₹{' '}
-                {shortPriceFormatter(propertyDetails?.unitsPlan?.minPriceRange)}{' '}
-                - ₹{' '}
-                {shortPriceFormatter(propertyDetails?.unitsPlan?.maxPriceRange)}{' '}
+                ₹ {priceRange?.minPrice?.price} {priceRange?.minPrice?.tag} - ₹{' '}
+                {priceRange?.maxPrice?.price} {priceRange?.maxPrice?.tag}
               </Typography>
             )}
           </Grid>
