@@ -409,7 +409,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
           )
         })}
 
-        <Button>
+        <Button onClick={()=> router.push("/consultant/profile")}>
           <EditIcon fontSize="14px" />
         </Button>
 
