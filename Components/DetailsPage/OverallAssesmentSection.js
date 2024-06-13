@@ -26,11 +26,11 @@ function OverallAssesmentSection({
   handleClose,
   handleAction,
   AllPropertyData,
-  submitEnquiryUnath
+  submitEnquiryUnath,
+  isUnique = false
 }) {
-  const { userDetails } = useAuth();
+  const { userDetails, isLogged } = useAuth();
   const router = useRouter();
-
   return (
     <Grid item xs={12} ref={refCallback} id="assesment">
       <Card>
@@ -38,7 +38,7 @@ function OverallAssesmentSection({
           <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
             Overall assesment
           </Typography>
-          <Box sx={{ alignSelf: "center" }}>
+          {/* <Box sx={{ alignSelf: "center" }}>
             <Card
               sx={{
                 width: "fit-content",
@@ -47,7 +47,6 @@ function OverallAssesmentSection({
                 m: 0,
                 ml: "auto !important",
               }}
-              onClick={() => router.push("/research")}
             >
               <Typography
                 variant="h6"
@@ -65,7 +64,7 @@ function OverallAssesmentSection({
                   : "00"}
               </Typography>
             </Card>
-          </Box>
+          </Box> */}
         </Box>
         <Divider />
 
@@ -96,9 +95,9 @@ function OverallAssesmentSection({
           </Typography>
           
           <Box sx={{ mt: 1 }}>
-          {userDetails?.role !== "broker" && userDetails?.role !== "admin" && userDetails?.role !== "superAdmin"&& (<>
-            <Button variant="outlined" onClick={() => { router.push('http://wa.me/+919323996997') }} startIcon={<WhatsAppIcon sx={{ position: 'relative', top: '-2px'}} />} sx={{
-                marginRight: "10px"}}>WhatsApp</Button>
+          {userDetails?.role !== "broker" && userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && (<>
+            {isLogged && !isUnique && <Button variant="outlined" onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }} startIcon={<WhatsAppIcon sx={{ position: 'relative', top: '-2px'}} />} sx={{
+                marginRight: "10px"}}>WhatsApp</Button> }
             <Button variant="contained" onClick={handleOpenEnquiryForm} startIcon={<CallIcon />}>Get a Call back</Button></>)}
             {/* <Chip label="WhatsApp" className="customBtn" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />}
               sx={{

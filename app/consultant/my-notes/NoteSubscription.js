@@ -8,9 +8,13 @@ import {
   Box,
   Card,
   Grid,
+  Chip,
+  RadioGroup,
+  FormControlLabel,
+  Radio
 } from "@mui/material";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import { formatAmount } from "utills/CommonFunction";
+import { formatAmount, formatPoints } from "utills/CommonFunction";
 import { BuyConsultantsNotePoints } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import { PropertyPlanPoints } from "api/Property.api";
@@ -65,6 +69,13 @@ function NoteSubscription({ open, handleClose, getList }) {
       }
     };
 
+    const [subscribeItem, setSubscribeItem] = useState({});
+
+    const handleChange = (event) => {
+      console.log("event",event)
+      setSubscribeItem({value: event.target.value});
+    };
+    console.log("value", subscribeItem)
   return (
     <Dialog
       sx={{
@@ -79,20 +90,38 @@ function NoteSubscription({ open, handleClose, getList }) {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <Grid container spacing={1} >
+        
+        <RadioGroup
+          aria-labelledby="demo-controlled-radio-buttons-group"
+          name="controlled-radio-buttons-group"
+          value={subscribeItem.value}
+          onChange={handleChange}
+  >
+          <Grid container spacing={1} >
           {BuyConsultantsNotePoints?.map((credit, index) => {
             return (
               <>
                 <Grid item xs={12}>
                   <Card sx={{ p: 1 }}>
                     <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography
-                        variant="body1"
-                        sx={{ flex: 1, alignSelf: "center" }}
-                      >
-                        {credit?.month} plan
-                      </Typography>
                       <Box>
+                        <FormControlLabel value={credit.value} control={<Radio />}/>
+                      </Box>
+                      <Box>
+                      <Typography
+                          variant="body1"
+                          sx={{ flex: 1, alignSelf: "center" }}
+                        >
+                          {credit?.month} plan
+                        </Typography>
+                        <Typography variant="subtitle2">
+                      <span style={{ fontWeight: 600 }}>
+                        {formatPoints(credit?.discountAmount)}
+                      </span>{" "}
+                      ({credit?.discount}% discount)
+                    </Typography>
+                      </Box>
+                      {/* <Box>
                         <CustomButton
                           variant="contained"
                           size="small"
@@ -100,26 +129,31 @@ function NoteSubscription({ open, handleClose, getList }) {
                           disabled={loadingStates[index] || false}
                           ButtonText={loadingStates[index] ? 'Loading...' : `Subscribe`}
                         />
-                      </Box>
+                      </Box> */}
                     </Box>
-                    <Typography variant="subtitle2">
-                      <span style={{ fontWeight: 600 }}>
-                        {formatAmount(credit?.discountAmount)}
-                      </span>{" "}
-                      ({credit?.discount}% discount)
-                    </Typography>
+                   
                   </Card>
                 </Grid>
               </>
             );
           })}
-        </Grid>
+          </Grid>
+          </RadioGroup>
+        
       </DialogContent>
       <DialogActions sx={{justifyContent: 'space-between'}}>
         <Box sx={{ fontWeight: 700}}>
-          Points: {brokerBalance}
+          <Chip label={`Balance: ${brokerBalance}`} color="primary"></Chip>
         </Box>
         <Box sx={{ textAlign: "end" }}>
+        
+            <CustomButton
+              variant="contained"
+              size="small"
+              sx={{ mr: 1}}
+              ButtonText={`Subscribe`}
+            />
+          
           <CustomButton
             variant="contained"
             onClick={() => {

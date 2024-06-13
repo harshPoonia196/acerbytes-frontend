@@ -89,7 +89,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
             <Box className="consultantFooter" sx={{
                 width: '100%', position: 'fixed',
                 bottom: 0,
-                left: 0,
+                left: "-4px",
                 zIndex: 1000,
             }}>
                 <Container maxWidth='md' sx={{ px: { xs: '0 !important', evmd: '1rem !important' }, py: "0 !important" }}>
@@ -238,7 +238,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                         <div><Typography variant='body2' sx={{ marginTop: '5px'}}>Get leads</Typography></div>
                                         <div><Typography variant="body2" sx={{ lineHeight: '1.3', marginTop: '5px'}}>{SinglePropertyId?.expired_at ? formatDateAndDaysRemaining(SinglePropertyId?.expired_at, "short") : "Get customer enquiries" }</Typography></div>
                                     </Box>
-
+                                    { propertyData?.isActiveAd && 
                                     <Box sx={{ alignSelf: 'start'}}>
                                     <Tooltip title="More">
                                         <IconButton onClick={handleClick} sx={{ padding: "0"}}>
@@ -246,6 +246,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                                         </IconButton>
                                         </Tooltip>
                                     </Box>
+                                    }
                                     <Menu
                                         id="basic-menu"
                                         anchorEl={anchorEl}

@@ -39,7 +39,7 @@ function MakePayment() {
                         </Typography>
                         <Typography variant='body2'>
                             Step 2. After successful payment, send payment reference screenshot to&nbsp;
-                            <Chip onClick={() => { }} icon={<WhatsAppIcon fontSize="small" />}
+                            <Chip onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }} icon={<WhatsAppIcon fontSize="small" />}
                                 label="+9198799877" size="small" sx={{ fontSize: '0.875rem', verticalAlign: 'middle' }} />
                         </Typography>
                     </Box>

@@ -49,6 +49,8 @@ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import EditIcon from '@mui/icons-material/Edit';
 import { useQuery } from "@tanstack/react-query";
 import { getBrokerProfile } from "api/BrokerProfile.api";
+import LinkIcon from '@mui/icons-material/Link';
+
 const headCells = [
   {
     id: "name",
@@ -144,7 +146,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
         {`${countryCodeFormating(row.phone?.countryCode)} ${row.phone?.number}`}
       </TableCell>
       <TableCell>
-        {row.propertyLink && (
+        {row.propertyLink && (<>
           <a
             href={row.propertyLink}
             onClick={(e) => {
@@ -153,11 +155,11 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
             }}
             style={{ textDecoration: "none" }}
           >
-            {row?.properties?.overview?.projectName ?
+            <Tooltip title="Link"><LinkIcon sx={{ fontSize: "17px", position: "relative", top: "4px"}} fontSize="small"/></Tooltip> {row?.properties?.overview?.projectName ?
               `${capitalLizeName(row?.properties?.overview?.projectName)}`
               : "-"}
           </a>
-        )}
+        </>)}
       </TableCell>
       <TableCell align="right">{formatAmount(row?.userDetail?.budget?.maximumBudget?.value)}</TableCell>
       <TableCell> 
@@ -347,37 +349,38 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
       <DialogContent sx={{ padding: "36px !important", minWidth: "415px" }}>
         <DialogContentText>
-          <Typography variant="body1">{buyNowResponseMessage}</Typography>
+          <Typography variant="h4">{buyNowResponseMessage}</Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button variant="h6"
+      <Button
+          variant="contained"
           sx={{
             fontWeight: 600,
-            color: "white",
-            backgroundColor: colors?.BLACK,
-            "&:hover": {
-              backgroundColor: colors?.BLACK,
-              boxShadow: "none",
-            },
-          }} onClick={closeBuyResponseModal} color="primary">
-          Close
-        </Button>
-        <Button
-          variant="h6"
-          sx={{
-            fontWeight: 600,
-            color: "white",
-            backgroundColor: colors?.BLACK,
-            "&:hover": {
-              backgroundColor: colors?.BLACK,
-              boxShadow: "none",
-            },
+            // color: "white",
+            // backgroundColor: colors?.BLACK,
+            // "&:hover": {
+            //   backgroundColor: colors?.BLACK,
+            //   boxShadow: "none",
+            // },
           }}
           onClick={handleViewMyLeadClick}
         >
           View My lead
         </Button>
+        <Button variant="contained"
+          sx={{
+            fontWeight: 600,
+            // color: "white",
+            // backgroundColor: colors?.BLACK,
+            // "&:hover": {
+            //   backgroundColor: colors?.BLACK,
+            //   boxShadow: "none",
+            // },
+          }} onClick={closeBuyResponseModal} color="primary">
+          Close
+        </Button>
+        
       </DialogActions>
     </Dialog>
   );
@@ -397,19 +400,20 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     <>
       {isLoading && <Loader />}
         <Typography variant="h6">Your targeted cities are:</Typography>
-      <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
-        {targetedCities.map((item, Iindex) => {
-          return (
-            <Chip
-              key={Iindex}
-              label={item}
-              sx={{ marginRight: "5px" }}
-            />
-          )
-        })}
-
-        <Button onClick={()=> router.push("/consultant/profile")}>
-          <EditIcon fontSize="14px" />
+        <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
+          <Box>
+          {targetedCities.map((item, Iindex) => {
+            return (
+              <Chip
+                key={Iindex}
+                label={item}
+                sx={{ marginRight: "5px" }}
+              />
+            )
+          })}
+          </Box>
+        <Button variant="contained" onClick={()=> router.push("/consultant/profile")}>
+          <EditIcon fontSize="14px" sx={{mr: 1}} /> Edit
         </Button>
 
       </Box>

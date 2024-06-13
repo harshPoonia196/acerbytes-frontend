@@ -92,7 +92,7 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
               that can be shared with {companyName} representative (if any) and
               send screenshot at&nbsp;&nbsp;
               <Chip
-                onClick={() => { }}
+                onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }}
                 icon={<WhatsAppIcon fontSize="small" />}
                 label="+9198799877"
                 size="small"

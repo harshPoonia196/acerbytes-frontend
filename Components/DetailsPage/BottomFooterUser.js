@@ -186,7 +186,7 @@ function BottomFooterUser({
           <ReplyIcon sx={{ mr: 1, transform: "scaleX(-1)" }} />
           Share
         </Fab>
-        <a href={`https://wa.me/+919323996997`}>
+        <a href={`https://wa.me/+919323996997`} target="_blank">
           <Fab variant="extended" sx={{ mb: 1, justifyContent: "flex-start" }}>
             <WhatsAppIcon sx={{ mr: 1 }} />
             Contact

@@ -3,6 +3,7 @@ import { Grid, Card, Typography, Box, Divider } from '@mui/material'
 import NewKeyValuePairStructure from 'Components/CommonLayouts/NewKeyValuePairStructure'
 import { useRouter } from 'next/navigation'
 import colors from 'styles/theme/colors'
+import {formatNumberWithCommas } from "utills/CommonFunction";
 
 function LandscapeSection(props) {
     const  {layoutData, overviewData} = props
@@ -25,7 +26,7 @@ function LandscapeSection(props) {
                                 m: 0,
                                 ml: "auto !important",
                             }}
-                            onClick={() => router.push("/research")}
+                            
                         >
                             <Typography
                                 variant="h6"
@@ -46,8 +47,8 @@ function LandscapeSection(props) {
                 <Divider />
                 <Grid container spacing={1} sx={{ p: 2 }}>
                     <NewKeyValuePairStructure label="Towers" value={layoutData?.numberOfBuildings} />
-                    <NewKeyValuePairStructure label="Property type" value={overviewData?.projectType?.map(item => item.value).join(", ")} />
-                    <NewKeyValuePairStructure label="Units (Total)" value={layoutData?.totalUnits} />
+                    {/* <NewKeyValuePairStructure label="Property type" value={overviewData?.projectType?.map(item => item.value).join(", ")} /> */}
+                    <NewKeyValuePairStructure label="Units (Total)" value={formatNumberWithCommas(layoutData?.totalUnits)} />
                     {/* <NewKeyValuePairStructure label="Floor types" value={layoutData?.layoutType?.map(item => item.value).join(", ")} /> */}
                     <NewKeyValuePairStructure label="Floors (Min-Max)" value={`${layoutData?.minFloors } - ${layoutData?.maxFloors}`} />
                     <NewKeyValuePairStructure label="Area" value={layoutData?.area && `${parseFloat(layoutData?.area).toFixed()} ${layoutData?.areaUnit || ''}`} />
