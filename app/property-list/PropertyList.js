@@ -244,7 +244,7 @@ function PropertyList({ params }) {
       setSelectedOptions((prevOptions) => {
         const newOptions = { ...prevOptions };
         delete newOptions[key];
-        return newOptions;
+        return updatedValue(newOptions);
       });
     }
   };

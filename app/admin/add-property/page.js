@@ -1039,6 +1039,20 @@ function AddProperty() {
         [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e },
         marketing: { ...form.marketing, tagLine: formattedTagLine },
       });
+    } else if (firstKeyName === "layout" && secondKeyName === "area") {
+      let totalArea = +e.target.value;
+      if (form.layout.areaUnit.toLowerCase() === "acres") {
+        const sqftPerAcre = 43560;
+        totalArea = +e.target.value * sqftPerAcre;
+      }
+      setForm({
+        ...form,
+        layout: {
+          ...form.layout,
+          area: e.target.value,
+          areaInSqft: totalArea,
+        },
+      });
     } else if (
       secondKeyName.toLowerCase() === "projectcategory" ||
       secondKeyName.toLowerCase() === "state" ||
@@ -1145,21 +1159,7 @@ function AddProperty() {
           ...form,
           marketing: { ...form.marketing, image: e },
         });
-      } else if (firstKeyName === "layout" && secondKeyName === "area") {
-        let totalArea = +e.target.value;
-        if (form.layout.areaUnit.toLowerCase() === "acres") {
-          const sqftPerAcre = 43560;
-          totalArea = +e.target.value * sqftPerAcre;
-        }
-        setForm({
-          ...form,
-          layout: {
-            ...form.layout,
-            area: e.target.value,
-            areaInSqft: totalArea,
-          },
-        });
-      } else {
+      }  else {
         let value = e?.target
           ? thirdKeyName === "checked"
             ? e.target.checked
