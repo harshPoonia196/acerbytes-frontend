@@ -46,6 +46,8 @@ import {
 } from "utills/CommonFunction";
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import EditIcon from '@mui/icons-material/Edit';
+import { useQuery } from "@tanstack/react-query";
+import { getBrokerProfile } from "api/BrokerProfile.api";
 const headCells = [
   {
     id: "name",
@@ -227,6 +229,15 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     }
   );
 
+
+  const { data: brokerProfile } = useQuery({
+    queryKey: ["brokerDetailsSuggested", userDetails],
+    queryFn: () => {
+      return getBrokerProfile(userDetails?.googleID)
+    }
+  })
+
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -332,7 +343,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
       <DialogContent sx={{ padding: "36px !important", minWidth: "415px" }}>
         <DialogContentText>
-        <Typography variant="body1">{buyNowResponseMessage}</Typography>
+          <Typography variant="body1">{buyNowResponseMessage}</Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -372,35 +383,37 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     router.push('/consultant/profile');
   }
 
-  
-    useEffect(() => {
-      let data = []
-      rows.map(row => {
-        data.push(row.properties.location.city)
-      })
-      setTargetedCities([...new Set(data)])
-      // console.log(targetedCities)
-    }, [rows])
-  
+
+  useEffect(() => {
+    let data = []
+    brokerProfile?.data?.data?.targetCustomers.map(row => {
+      data.push(row?.selectCity)
+    })
+    setTargetedCities([...new Set(data)])
+    // console.log(targetedCities)
+  }, [brokerProfile?.data?.data?.targetCustomers])
+
 
   return (
     <>
       {isLoading && <Loader />}
-      <Box sx={{ mb: 2}}>
-        <Typography variant="h6">Your targeted city are:</Typography>
+        <Typography variant="h6">Your targeted cities are:</Typography>
+      <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
         {targetedCities.map((item, Iindex) => {
-          return(
+          return (
             <Chip
               key={Iindex}
               label={item}
-              onDelete={() => handleEdit()}
-              deleteIcon={<EditIcon fontSize="14px"/>}
-              sx={{ marginRight: "5px"}}
+              sx={{ marginRight: "5px" }}
             />
           )
         })}
-          
-        </Box>
+
+        <Button>
+          <EditIcon fontSize="14px" />
+        </Button>
+
+      </Box>
       <Grid item xs={12}>
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput
