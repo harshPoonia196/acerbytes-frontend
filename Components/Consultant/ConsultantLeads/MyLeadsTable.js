@@ -35,6 +35,10 @@ import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
+import LinkIcon from '@mui/icons-material/Link';
+import moment from "moment";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import SuggesredLeadsDetails from "../ConsultantSuggestedLeads/Modal/SuggesredLeadsDetails";
 
 
 
@@ -59,10 +63,6 @@ const headCells = [
     id: "Name",
     label: "Name",
   },
-  {
-    id: "propertyCity",
-    label: "Property city",
-  },
   // {
   //   id: "currentStatus",
   //   label: "Current Status",
@@ -73,7 +73,7 @@ const headCells = [
   // },
   {
     id: "phone",
-    label: "phone",
+    label: "Phone",
   },
   // {
   //   id: "numberVerified",
@@ -81,7 +81,7 @@ const headCells = [
   // },
   {
     id: "email",
-    label: "email",
+    label: "Email",
   },
   // {
   //   id: "role",
@@ -89,7 +89,8 @@ const headCells = [
   // },
   {
     id: "maxBudget",
-    label: "max Budget",
+    label: "Max budget",
+    numeric: true
   },
   {
     id: "source",
@@ -98,6 +99,14 @@ const headCells = [
   {
     id: "property",
     label: "Property",
+  },
+  {
+    id: "propertyCity",
+    label: "Property city",
+  },
+  {
+    id: "userDetails",
+    label: "User Details",
   },
   {
     id: "enquired",
@@ -128,7 +137,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="caption" sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+              <Typography variant="caption" sx={{ fontWeight: "bold", fontSize: "12px" }}>
                 {(headCell.label)}
               </Typography>
 
@@ -145,7 +154,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, handlePropertyView }) {
+function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelectedRowData }) {
   const user = row?.user || {};
   const userDetail = row?.userDetail || {};
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
@@ -178,6 +187,7 @@ function RowStructure({ row, handlePropertyView }) {
 
   return (
     <TableRow
+      hover
       key={row?._id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
       onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
@@ -189,7 +199,6 @@ function RowStructure({ row, handlePropertyView }) {
         isUserSelected
       />
       <TableCell>{(row?.fullName)}</TableCell>
-      <TableCell>{row?.property?.location?.city}</TableCell>
       {/* <TableCell>
         <Chip
           label={row.currentStatus}
@@ -252,9 +261,9 @@ function RowStructure({ row, handlePropertyView }) {
           </a>
         )}
         {row.isVerified ? (
-          <CheckCircleIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color="success" />
+          <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", left: "2px" }} fontSize="1rem" color="success" />
         ) : (
-          <UnpublishedIcon sx={{ verticalAlign: 'middle' }} fontSize="1rem" color="error" />
+          <UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", left: "2px" }} fontSize="1rem" color="error" />
         )}
       </TableCell>
       {/* <TableCell>
@@ -270,7 +279,7 @@ function RowStructure({ row, handlePropertyView }) {
       </TableCell>
       {/* <TableCell>{user.role}</TableCell> */}
       {/* <TableCell>{row?.property?.unitsPlan?.[0]?.bsp || ""}</TableCell> */}
-      <TableCell>{userDetail?.budget?.maximumBudget?.value ? `₹${formatNumberWithCommas(userDetail?.budget?.maximumBudget?.value)}` : "-"}</TableCell>
+      <TableCell align="right">{userDetail?.budget?.maximumBudget?.value ? `₹${formatNumberWithCommas(userDetail?.budget?.maximumBudget?.value)}` : "-"}</TableCell>
       {/* <TableCell>
         <Chip
           label={row.notesUpdated}
@@ -289,14 +298,36 @@ function RowStructure({ row, handlePropertyView }) {
             }}
             style={{ textDecoration: 'none' }}
           >
-            {row?.property?.overview?.projectName ?
+             <LinkIcon sx={{ fontSize: "17px", position: "relative", top: "4px"}} fontSize="small"/> {row?.property?.overview?.projectName ?
               `${capitalLizeName(row?.property?.overview?.builder)}.${capitalLizeName(row?.property?.overview?.projectName)}`
               : "-"}
           </a>
         )}
       </TableCell>
+
+      <TableCell>{row?.property?.location?.city}</TableCell>
+
+      <TableCell> 
+        {
+          row?.userDetail && <IconButton
+          sx={{ fontSize: "1rem !important" }}
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={() => {
+            setSelectedRowData(row);
+            setViewLeadsDetails(true);
+          }}
+          size="small"
+        >
+          <VisibilityIcon fontSize="1rem" />
+        </IconButton>
+        }
+      </TableCell>
       <TableCell>
-        27/05/2024
+        {moment(row.createdAt).format("DD/MM/YY hh:ss A")}
       </TableCell>
 
     </TableRow>
@@ -312,8 +343,15 @@ function MyLeadsTable({ setLeadsCount }) {
   const [totalCount, setTotalCount] = React.useState(0);
   const firstLoad = React.useRef(true);
   const [search, setSearch] = React.useState("");
+  const [selectedRowData, setSelectedRowData] = React.useState({});
+  const [viewLeadsDetails, setViewLeadsDetails] = useState(false);
 
   const { openSnackbar } = useSnackbar();
+
+  const handleCloseViewLeadsDetails = () => {
+    setViewLeadsDetails(false)
+  }
+
 
   const { data, isLoading, error, refetch } = useQueries(
     [search, reactQueryKey.broker.myLeads],
@@ -403,7 +441,7 @@ function MyLeadsTable({ setLeadsCount }) {
       {
         rows.length > 0 ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}
@@ -419,7 +457,10 @@ function MyLeadsTable({ setLeadsCount }) {
                   } else if (!adId && !brokerId?.length && userId) {
                     row.source = LINK.acrebytes;
                   }
-                  return <RowStructure row={row} key={row?._id} handlePropertyView={handlePropertyView} />
+                  return <RowStructure
+                    setViewLeadsDetails={setViewLeadsDetails}
+                    setSelectedRowData={setSelectedRowData}
+                    row={row} key={row?._id} handlePropertyView={handlePropertyView} />
                 }
                 )}
               </TableBody>
@@ -438,6 +479,14 @@ function MyLeadsTable({ setLeadsCount }) {
             />
           </TableContainer>
         ) : <NoDataCard title={"No data found"} />}
+
+      {viewLeadsDetails && (
+        <SuggesredLeadsDetails
+          open={viewLeadsDetails}
+          handleClose={handleCloseViewLeadsDetails}
+          selectedRowData={selectedRowData}
+        />
+      )}
 
     </>
   );

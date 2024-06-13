@@ -18,8 +18,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Chip,
+  Typography
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { capitalLizeName, getComparator, stableSort } from "utills/CommonFunction";
@@ -38,8 +40,12 @@ import { useAuth } from "utills/AuthContext";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
 import { listOfPages } from "Components/NavBar/Links";
-
-
+import {
+  formatPoints,
+  formatAmount,
+} from "utills/CommonFunction";
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import EditIcon from '@mui/icons-material/Edit';
 const headCells = [
   {
     id: "name",
@@ -59,7 +65,8 @@ const headCells = [
   },
   {
     id: "maxBuget",
-    label: "Max Buget",
+    label: "Max buget",
+    numeric: true
   },
   {
     id: "vewDetails",
@@ -78,7 +85,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell sx={{ textTransform: "capitalize" }}
+          <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
@@ -124,6 +131,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
 
   return (
     <TableRow
+      hover
       key={row?._id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
@@ -148,7 +156,7 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
           </a>
         )}
       </TableCell>
-      <TableCell>{row?.userDetail?.budget?.maximumBudget?.value}</TableCell>
+      <TableCell align="right">{formatAmount(row?.userDetail?.budget?.maximumBudget?.value)}</TableCell>
       <TableCell> <IconButton
         sx={{ fontSize: "1rem !important" }}
         aria-label="more"
@@ -193,6 +201,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const { openSnackbar } = useSnackbar();
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [buyNowResponseMessage, setBuyNowResponseMessage] = useState("");
+  const [targetedCities, setTargetedCities] = useState([]);
 
   const { data, isLoading, error, refetch } = useQueries([search],
     async () => {
@@ -323,7 +332,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
       <DialogContent sx={{ padding: "36px !important", minWidth: "415px" }}>
         <DialogContentText>
-          {buyNowResponseMessage}
+        <Typography variant="body1">{buyNowResponseMessage}</Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -358,10 +367,40 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     </Dialog>
   );
 
+  const handleEdit = () => {
+    // console.log("handle")
+    router.push('/consultant/profile');
+  }
+
+  
+    useEffect(() => {
+      let data = []
+      rows.map(row => {
+        data.push(row.properties.location.city)
+      })
+      setTargetedCities([...new Set(data)])
+      // console.log(targetedCities)
+    }, [rows])
+  
 
   return (
     <>
       {isLoading && <Loader />}
+      <Box sx={{ mb: 2}}>
+        <Typography variant="h6">Your targeted city are:</Typography>
+        {targetedCities.map((item, Iindex) => {
+          return(
+            <Chip
+              key={Iindex}
+              label={item}
+              onDelete={() => handleEdit()}
+              deleteIcon={<EditIcon fontSize="14px"/>}
+              sx={{ marginRight: "5px"}}
+            />
+          )
+        })}
+          
+        </Box>
       <Grid item xs={12}>
         <Card sx={{ mb: 2 }}>
           <CustomSearchInput

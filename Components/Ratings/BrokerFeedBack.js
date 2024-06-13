@@ -1,9 +1,11 @@
-import { Avatar, Box, Card, Grid, IconButton, Rating, Typography } from '@mui/material'
+import { Avatar, Box, Card, Grid, IconButton, Rating, Typography, Tooltip } from '@mui/material'
 import React from 'react'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import StarIcon from "@mui/icons-material/Star";
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import moment from 'moment/moment';
+import LockIcon from '@mui/icons-material/Lock';
+import PublicIcon from '@mui/icons-material/Public';
 
 const BrokerFeedBack = ({ review }) => {
     const getTime = (time) => {
@@ -30,6 +32,9 @@ const BrokerFeedBack = ({ review }) => {
                         <Box>
                             <Typography variant="h6">{review?.fullName ?? ''}</Typography>
                             <Typography variant="body2">{getTime(review?.createdAt)}</Typography>
+                        </Box>
+                        <Box>
+                            {review?.isPrivate ? <Tooltip title="Private"><LockIcon fontSize='small'/></Tooltip>: <Tooltip title="Public"><PublicIcon fontSize='small'/></Tooltip>}
                         </Box>
                         {/* <Box>
                             <CustomButton startIcon={<ThumbUpIcon />} ButtonText='Helpful?' />
@@ -73,7 +78,7 @@ const BrokerFeedBack = ({ review }) => {
                         })}
                         {review?.note ? (
                             <Grid item xs={12} sx={{ mt: 1 }}>
-                                <Box sx={{ background: "whitesmoke", p: 2 }}>
+                                <Box sx={{ background: "whitesmoke", p: 2, pt: 1}}>
                                     <Typography variant="caption">
                                         
                                         {review?.createdAt

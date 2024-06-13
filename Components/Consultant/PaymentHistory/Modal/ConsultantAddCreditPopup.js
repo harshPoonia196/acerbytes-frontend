@@ -102,9 +102,9 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-between"}}>
           <Typography variant="body2">
-            Property consultant can use above credits to activate below services
+            Property consultant can use above credits to activate below services. <Link href="/generate-real-estate-leads-growth" style={{ textDecoration: "none"}}>Know more</Link>
           </Typography>
-          <Link href="/generate-real-estate-leads-growth" style={{ textDecoration: "none"}}><Typography variant="body2" >Know more</Typography></Link>
+          
           
           </Box>
           <ul style={{ marginLeft: "16px" }}>

@@ -1,5 +1,5 @@
-import React from "react";
-import { useRouter } from "next/navigation";
+import React from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Card,
   Avatar,
@@ -11,23 +11,24 @@ import {
   Divider,
   Dialog,
   Tooltip,
-} from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
-import CallIcon from "@mui/icons-material/Call";
-import { useState } from "react";
-import RatingDialog from "./Dialog/RatingDialog";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import ShieldIcon from "@mui/icons-material/Shield";
-import RemoveModeratorIcon from "@mui/icons-material/RemoveModerator";
-import moment from "moment";
-import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import { countryCodeFormating } from "utills/utills";
+} from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
+import CallIcon from '@mui/icons-material/Call';
+import { useState } from 'react';
+import RatingDialog from './Dialog/RatingDialog';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import moment from 'moment';
+import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
+import { countryCodeFormating } from 'utills/utills';
 import {
   capitalLizeName,
   getFirstCharacterOfFirstOfFullName,
-} from "utills/CommonFunction";
-import Reviews from "./reviews";
-import PhoneIcon from "@mui/icons-material/Phone";
+} from 'utills/CommonFunction';
+import Reviews from './reviews';
+import PhoneIcon from '@mui/icons-material/Phone';
+import LockIcon from '@mui/icons-material/Lock';
+import PublicIcon from '@mui/icons-material/Public';
+import ReviewsOutlinedIcon from '@mui/icons-material/ReviewsOutlined';
 
 function BrokerCard({
   broker,
@@ -59,14 +60,14 @@ function BrokerCard({
       return string ? string.replace(/^\w/, (c) => c.toUpperCase()) : string;
     },
     currentEnquiredBroker = enquiredInfo?.find(
-      (enquiry) => enquiry?.brokerId?.[0] === broker.id || enquiry.isNew
+      (enquiry) => enquiry?.brokerId?.[0] === broker.id || enquiry.isNew,
     ),
     isEnquiredByCurrentBroker = currentEnquiredBroker?._id ? true : false,
     handleCallClick = () => {
-      if (typeof handleEnquireWithBroker === "function") {
+      if (typeof handleEnquireWithBroker === 'function') {
         if (isEnquiredByCurrentBroker) {
           const callHref = `tel:${
-            (broker?.phone?.countryCode || "") + (broker?.phone?.number || "")
+            (broker?.phone?.countryCode || '') + (broker?.phone?.number || '')
           }`;
           if (callHref) {
             window.location.href = callHref;
@@ -75,13 +76,39 @@ function BrokerCard({
           handleEnquireWithBroker(broker?.id);
         }
       } else {
-        console.error("handleEnquireWithBroker is not a function");
+        console.error('handleEnquireWithBroker is not a function');
       }
     };
 
+  const handlePhoneClick = () => {
+    // console.log("handlePhoneClick");
+    const callHref = `tel:${
+      (broker?.phone?.countryCode || '') + (broker?.phone?.number || '')
+    }`;
+    if (callHref) {
+      window.location.href = callHref;
+    }
+  };
+
+  const getTime = (time) => {
+    const startDate = new Date(time),
+      diffDate = new Date(new Date() - startDate),
+      years = diffDate && diffDate?.toISOString().slice(0, 4) - 1970,
+      months = diffDate?.getMonth(),
+      days = diffDate?.getDate() - 1;
+
+    return years
+      ? `${years + (years > 1 ? ' years ago' : ' year ago')}`
+      : months
+      ? `${months + (months > 1 ? ' months ago' : ' month ago')}`
+      : `${
+          days === 0 ? 'Today' : days + (days > 1 ? ' days ago' : ' day ago')
+        }`;
+  };
+
   return (
-    <Card sx={{ position: "relative" }}>
-      <Box sx={{ display: "flex", p: 2 }}>
+    <Card sx={{ position: 'relative' }}>
+      <Box sx={{ display: 'flex', p: 2 }}>
         <Avatar
           alt={titleCase(broker?.fullName)}
           src={broker.profilePicture}
@@ -92,52 +119,50 @@ function BrokerCard({
         <Box sx={{ flex: 1 }}>
           <Typography variant="h5">
             <Box
-              sx={{
-                display: { sm: "flex", xs: "block" },
-                gap: "5px",
-                cursor: "pointer",
-              }}
+              sx={{ gap: '5px', cursor: 'pointer' }}
               onClick={hasReviews ? handleOpenReviews : null}
             >
               {titleCase(broker?.fullName)}
               <DoneAllIcon
                 fontSize="1rem"
                 sx={{
-                  alignSelf: "center",
-                  position: "relative",
-                  top: "1px",
-                  left: "2px",
+                  alignSelf: 'center',
+                  position: 'relative',
+                  top: '1px',
+                  left: '2px',
                 }}
               />
-              {showRating ? (
-                <>
-                  <div className="rating">
-                    <Rating
-                      readOnly
-                      size="small"
-                      name="hover-feedback"
-                      precision={0.5}
-                      value={broker?.rating ?? 0}
-                    />
-                    <div className="rating-count">
-                      {" "}
-                      {broker?.ratingCount ?? 0} Ratings
+              <Box>
+                {showRating ? (
+                  <>
+                    <div className="rating">
+                      <Rating
+                        readOnly
+                        size="small"
+                        name="hover-feedback"
+                        precision={0.5}
+                        value={broker?.rating ?? 0}
+                      />
+                      <div className="rating-count">
+                        {' '}
+                        {broker?.ratingCount ?? 0} Ratings
+                      </div>
                     </div>
-                  </div>
-                </>
-              ) : null}
+                  </>
+                ) : null}
+              </Box>
             </Box>
           </Typography>
           <Typography variant="body2">
-            {broker?.currentAddress?.city || ""}{" "}
-            {broker?.currentAddress?.city ? <>&#183;</> : ""}{" "}
-            {capitalLizeName(broker?.type) || "Consultant"}
+            {broker?.currentAddress?.city || ''}{' '}
+            {broker?.currentAddress?.city ? <>&#183;</> : ''}{' '}
+            {capitalLizeName(broker?.type) || 'Consultant'}
           </Typography>
           <Box
             sx={{
-              display: "flex",
-              flexDirection: { xs: "column", sm: "row" },
-              gap: "1rem",
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: '1rem',
               mt: 0.5,
             }}
           >
@@ -170,7 +195,7 @@ function BrokerCard({
                 <i>{broker?.clients || 50} clients served</i>
               </Typography>
             </Box> */}
-            {
+            {/* {
               !noReview ? (
                 <Box sx={{ alignSelf: "end" }}>
                   {type ? (
@@ -203,13 +228,13 @@ function BrokerCard({
               //     </Button>
               //   </Box>
               // )
-            }
+            } */}
           </Box>
         </Box>
       </Box>
 
       <Dialog
-        sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
+        sx={{ '& .MuiDialog-paper': { borderRadius: '8px !important' } }}
         open={openReviews}
         fullWidth={true}
         onClose={handleCloseOpenReviews}
@@ -230,39 +255,53 @@ function BrokerCard({
         </Box>
       ) : null} */}
       {/* {isLogged ? ( */}
-      {!isEnquiredByCurrentBroker ? (
-        <Box
-          sx={{ position: "absolute", top: { xs: 10, sm: 13 }, right: 8 }}
-          onClick={handleCallClick}
-        >
-          <IconButton
-            sx={{
-              boxShadow:
-                "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)",
-            }}
-          >
-            <CallIcon fontSize="small" />
-          </IconButton>
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            cursor: "pointer",
-            color: "blue",
-          }}
-          onClick={handleCallClick}
-        >
-          <PhoneIcon
-            sx={{ position: "relative", top: "5px", fontSize: "19px" }}
-            fontSize="small"
-          />{" "}
-          {(countryCodeFormating(broker?.phone?.countryCode) || "") +
-            (broker?.phone?.number || "")}
-        </Box>
-      )}
+      {userDetails.role !== 'broker' &&
+        userDetails.role !== 'admin' &&
+        userDetails.role !== 'superAdmin' && (
+          <>
+            {!isEnquiredByCurrentBroker ? (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: { xs: 10, sm: 13 },
+                  right: 16,
+                }}
+                onClick={handlePhoneClick}
+              >
+                <IconButton
+                  sx={{
+                    boxShadow:
+                      '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)',
+                  }}
+                >
+                  <Tooltip title="Call">
+                    <CallIcon fontSize="small" />
+                  </Tooltip>
+                </IconButton>
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  cursor: 'pointer',
+                  color: 'blue',
+                }}
+                onClick={handlePhoneClick}
+              >
+                <Tooltip title="Call">
+                  <PhoneIcon
+                    sx={{ position: 'relative', top: '5px', fontSize: '19px' }}
+                    fontSize="small"
+                  />{' '}
+                  {(countryCodeFormating(broker?.phone?.countryCode) || '') +
+                    (broker?.phone?.number || '')}
+                </Tooltip>
+              </Box>
+            )}
+          </>
+        )}
       {/* // : (
       //   <Box sx={{ position: "absolute", top: 8, right: 8 }}>
       //     <IconButton onClick={() => router.push(listOfPages.login)}>
@@ -273,7 +312,7 @@ function BrokerCard({
       <Divider />
       {!noReview && (
         <Grid container spacing={1} sx={{ p: 2 }}>
-          <Grid
+          {/* <Grid
             item
             xs={12}
             alignItems={"center"}
@@ -290,45 +329,112 @@ function BrokerCard({
                 <RemoveModeratorIcon color="primary" fontSize="1rem" />
               </Tooltip>
             )}
-          </Grid>
-          {broker?.reviews?.ratings?.map((rating) => {
-            return (
-              <Grid item xs={4} key={rating?.type}>
-                <Typography variant="h6">{rating?.type}</Typography>
-                <Rating
-                  name="text-feedback"
-                  value={rating?.rating}
-                  readOnly
-                  precision={precision}
-                  sx={{ fontSize: "1rem" }}
-                  emptyIcon={
-                    <StarIcon
-                      style={{ opacity: 0.55 }}
-                      fontSize="small"
-                      sx={{ fontSize: "1rem" }}
-                    />
+          </Grid> */}
+          <Grid
+            item
+            xs={12}
+            alignItems={'flex-start'}
+            display={'flex'}
+            justifyContent={
+              broker?.reviews?.ratings.length > 0 ? 'space-between' : 'flex-end'
+            }
+          >
+            {broker?.reviews?.ratings.length > 0 && (
+              <Box sx={{ display: 'flex', p: 2, pb: 1, pt: 0 }}>
+                <Avatar
+                  alt={titleCase(userDetails?.name.firstName)}
+                  src={userDetails?.googleDetails.profilePicture}
+                  sx={{ mr: 2, width: 40, height: 40 }}
+                >
+                  {getFirstCharacterOfFirstOfFullName(broker?.name.firstName)}
+                </Avatar>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h5">
+                    <Box
+                      sx={{ gap: '5px', cursor: 'pointer' }}
+                      onClick={hasReviews ? handleOpenReviews : null}
+                    >
+                      {titleCase(userDetails?.name.firstName)}{' '}
+                      {titleCase(userDetails?.name.lastName)}
+                    </Box>
+                  </Typography>
+                  <Typography variant="body2">
+                    {getTime(broker?.reviews?.createdAt)}
+                  </Typography>
+                </Box>
+              </Box>
+            )}
+            <Box sx={{ alignSelf: 'flex-start' }}>
+              {type ? (
+                <CustomButton
+                  onClick={() => handleViewReview(broker?.name)}
+                  size="small"
+                  variant="outlined"
+                  ButtonText={'View Reviews'}
+                />
+              ) : (
+                <CustomButton
+                  startIcon={
+                    <Tooltip title="Rate">
+                      <ReviewsOutlinedIcon />
+                    </Tooltip>
+                  }
+                  onClick={handleDialogOpen}
+                  size="small"
+                  variant="outlined"
+                  ButtonText={
+                    broker?.reviews?.ratings.length > 0
+                      ? 'Rated'
+                      : 'Rate your experience'
                   }
                 />
-              </Grid>
-            );
-          })}
-          {broker?.reviews?.note ? (
-            <Grid item xs={12} sx={{ mt: 1 }}>
-              <Box sx={{ background: "whitesmoke", p: 2 }}>
-                <Typography variant="caption">
-                  Review given
-                  {broker?.reviews?.createdAt
-                    ? moment(broker?.reviews?.createdAt).format(
-                        " on DD MMM, YYYY"
-                      )
-                    : ""}
-                </Typography>
-                <Typography variant="body2">
-                  <i>{broker?.reviews?.note}</i>
-                </Typography>
-              </Box>
+              )}
+              {/* <Box>
+              {broker?.reviews?.isPrivate ? <LockIcon fontSize="small"/> : <PublicIcon fontSize="small"/>}
+              </Box> */}
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container spacing={1} sx={{ pl: '71px' }}>
+              {broker?.reviews?.ratings?.map((rating) => {
+                return (
+                  <Grid item xs={12} sm={4} key={rating?.type}>
+                    <Typography variant="h6">{rating?.type}</Typography>
+                    <Rating
+                      name="text-feedback"
+                      value={rating?.rating}
+                      readOnly
+                      precision={precision}
+                      sx={{ fontSize: '1rem' }}
+                      emptyIcon={
+                        <StarIcon
+                          style={{ opacity: 0.55 }}
+                          fontSize="small"
+                          sx={{ fontSize: '1rem' }}
+                        />
+                      }
+                    />
+                  </Grid>
+                );
+              })}
+              {broker?.reviews?.note ? (
+                <Grid item xs={12} sx={{ mt: 1 }}>
+                  <Box sx={{ background: 'whitesmoke', p: 2, pt: 1 }}>
+                    <Typography variant="caption">
+                      {broker?.reviews?.createdAt
+                        ? moment(broker?.reviews?.createdAt).format(
+                            ' DD MMM, YYYY',
+                          )
+                        : ''}
+                    </Typography>
+                    <Typography variant="body2">
+                      <i>{broker?.reviews?.note}</i>
+                    </Typography>
+                  </Box>
+                </Grid>
+              ) : null}
             </Grid>
-          ) : null}
+          </Grid>
         </Grid>
       )}
 

@@ -120,7 +120,11 @@ const formattedCreatedAt = (dateString) => {
   return format(new Date(dateString), "dd MMM, yyyy, hh:mm aaa");
 };
 
-let formatDateAndDaysRemaining = (expiryDate) => {
+const formattedTime = (time) => {
+  return format(new Date(time), "dd/MM/yyyy hh:mm aaa");
+};
+
+let formatDateAndDaysRemaining = (expiryDate, format) => {
   const expiry = new Date(expiryDate);
   const now = new Date();
   const daysRemaining = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
@@ -144,8 +148,45 @@ let formatDateAndDaysRemaining = (expiryDate) => {
     ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d - 20) % 10 < 1 ? d % 10 : 0] ||
     "th";
   const formattedDate = `${day}${nth(day)} ${monthNames[expiry.getMonth()]}`;
+  const longFormat = `${day}${nth(day)}-${monthNames[expiry.getMonth()]}-${daysRemaining}-days-remaining`;
 
-  return `${formattedDate} (${daysRemaining} days remaining)`;
+  if (format === "short") {
+    return `${formattedDate} (${daysRemaining} days remaining)`;
+  } else if (format === "long") {
+    return longFormat
+  } else {
+    return "Invalid format";
+  }
+
+};
+
+export const constructPropertyUrl = (property, userInfo) => {
+  const overview = property?.overview;
+  const location = property?.location;
+  const brokerId = property?.propertyBroker?.[0]?._id ?? 'defaultBrokerId'
+
+  const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+  let projectType;
+  if (overview?.projectType?.length > 0) {
+      projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+  }
+  const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
+  const sector = (location?.sector.trim() ?? 'sector').replace(/\s+/g, '-');
+  const area = (location?.area.trim() ?? 'area').replace(/\s+/g, '-');
+  const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+
+  const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
+
+  let url = `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}`;
+
+  if(userInfo?.role === "broker"){
+      const expireTime =  formatDateAndDaysRemaining(property?.propertyBroker?.[0]?.expired_at, 'long')
+      url += `-${expireTime}`;
+  }
+  url += `-${brokerId}`;
+
+  return url;
+
 };
 
 const formatAmount = (amount) => {
@@ -296,4 +337,5 @@ export {
   getRoleLabelByValue,
   indianNumberingSystem,
   filterText,
+  formattedTime
 };

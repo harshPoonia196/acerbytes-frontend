@@ -17,6 +17,9 @@ import colors from "styles/theme/colors";
 import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
 import { boxShadowTop } from "utills/Constants";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Person2Icon from '@mui/icons-material/Person2';
 
 function BottomFooterUser({
   divRef,
@@ -127,9 +130,9 @@ function BottomFooterUser({
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={handleClose}><ListItemIcon><Person2Icon fontSize="small"/></ListItemIcon> Profile</MenuItem>
+            <MenuItem onClick={handleClose}><ListItemIcon><AccountCircleIcon fontSize="small"/></ListItemIcon> My account</MenuItem>
+            <MenuItem onClick={handleClose}><ListItemIcon><LogoutIcon fontSize="small"/></ListItemIcon> Logout</MenuItem>
           </Menu>
         </BottomNavigation>
       </Box>

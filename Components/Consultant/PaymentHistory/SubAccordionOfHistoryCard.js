@@ -32,9 +32,10 @@ function SubAccordionOfHistoryCard({ title, data = [], type = '' }) {
             <CustomAccordionDetails>
                 {data.map((res) => {
                     const { createdAt, consumedPoints, details } = res;
-                    return <Box sx={{ display: 'flex' }}>
-                        <Typography variant='subtitle2' sx={{ flex: 1 }}>{details + ' on ' + formatDate(createdAt)}</Typography>
-                        <Typography variant='h6'>{formatPoints(consumedPoints)}</Typography>
+                    return <Box sx={{ display: 'flex', pl: "28px" }}>
+                        <Typography variant='subtitle2' sx={{ flex: 1 }}>{`${formatDate(createdAt)} (${details})`}</Typography>
+                        {/* <Typography variant='subtitle2' sx={{ flex: 1 }}>{details + ' on ' + formatDate(createdAt)}</Typography> */}
+                        <Typography variant='h6'>{formatPoints(consumedPoints)} Points</Typography>
                     </Box>
                 })
                 }

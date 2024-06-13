@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, ToggleButton } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, ToggleButton, Typography } from '@mui/material'
 import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton'
 import NewInputFieldStructure from 'Components/CommonLayouts/NewInputFieldStructure'
 import NewToggleButtonStructure from 'Components/CommonLayouts/NewToggleButtonStructure'
@@ -51,7 +51,7 @@ const ConsultantDialog = ({ loading, createUserFun, form, handleChange, showCons
             maxWidth="sm"
         >
             <DialogTitle onClose={() => setShowConsultantDetailsPopup(false)}>
-                Additional Details for Real Estate Consultant
+                <Typography variant="h4">Additional Details for Real Estate Consultant</Typography>
             </DialogTitle>
             <DialogContent>
                 <Grid container spacing={2}>

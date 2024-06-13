@@ -14,8 +14,10 @@ import { useSnackbar } from 'utills/SnackbarContext';
 import { createNote, getMyLeadsCustomer } from 'api/Broker.api';
 import { ToasterMessages } from "utills/Constants";
 import dayjs from 'dayjs';
+import { useAuth } from "utills/AuthContext";
 
 function UpdateLeadStatus({ open, handleClose, getList: getNotesList, isEdit, editData, setIsEdit }) {
+    const { userDetails } = useAuth();
     const [loading, setLoading] = useState(false),
         [myLeadsCustomer, setMyLeadsCustomer] = useState([]),
         [errors, setErrors] = useState({ status: false, time: false, note: false, userId: false, statusNext: false, timeNext: false, noteNext: false }),
@@ -194,7 +196,7 @@ function UpdateLeadStatus({ open, handleClose, getList: getNotesList, isEdit, ed
         <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }} open={open} onClose={handlePopClose}>
             <DialogTitle onClose={handlePopClose}>
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    {isEdit ? 'Edit Note' : 'Add Note'}
+                    {isEdit ? `Edit Note for ${userDetails?.name?.firstName} ${userDetails?.name?.lastName}` : `Add Note for ${userDetails?.name?.firstName} ${userDetails?.name?.lastName}`}
                 </Typography>
             </DialogTitle>
             <DialogContent>

@@ -39,7 +39,7 @@ const page = () => {
   return (
     <>
 
-      <CustomConsultantBreadScrumbs text="List of reviews" />
+      <CustomConsultantBreadScrumbs text="Reviews received" />
       <InfoBox
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
@@ -52,13 +52,14 @@ const page = () => {
             background: "white",
             position: "sticky",
             top: { xs: 48, sm: 64 },
+            boxShadow: "0px 2px 2px -2px gainsboro"
           }}
         >
           <Container maxWidth="evmd">
             <BrokerDetails name={name} data={data} />
           </Container>
         </Box>
-          <Container maxWidth="evmd">
+          <Container maxWidth="evmd" >
             <Grid container spacing={2}>
               {
                 data?.reviews?.map((review) => <BrokerFeedBack review={review} />)

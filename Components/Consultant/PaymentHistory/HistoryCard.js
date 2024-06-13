@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Box, Card, IconButton, Typography, Grid, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material'
+import { Box, Card, IconButton, Typography, Grid, Menu, MenuItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import colors from 'styles/theme/colors';
 import { CustomAccordion, CustomAccordionDetails, CustomAccordionSummary } from 'Components/CommonLayouts/CommonAccordion';
@@ -52,7 +52,7 @@ function HistoryCard({ history }) {
 
     return (
         <CustomAccordion expanded={isExpanded} >
-            <CustomAccordionSummary handleIconClick={handleExpandedStateChange}>
+            <CustomAccordionSummary handleIconClick={handleExpandedStateChange} sx={{ pt: 2, pb: 2}}>
                 <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant='h5' sx={{ flex: 1 }}>
@@ -66,9 +66,11 @@ function HistoryCard({ history }) {
                     </Typography>
                 </Box>
                 <Box>
+                <Tooltip title="More">
                     <IconButton onClick={handleOpenMenu}>
                         <MoreVertIcon />
                     </IconButton>
+                    </Tooltip>
                     <Menu
                         id="basic-menu"
                         anchorEl={anchorElMenuState}
@@ -91,8 +93,8 @@ function HistoryCard({ history }) {
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
                         <Box sx={{ display: 'flex', px: 2, mb: 2 }}>
-                            <Typography variant='subtitle2' sx={{ flex: 1 }}>Credit points consumed</Typography>
-                            <Typography variant='h6'>{formatPoints(calculateConsumedPoints(history?.childTransaction))}</Typography>
+                            <Typography variant='h5' sx={{ flex: 1 }}>Credit points consumed</Typography>
+                            <Typography variant='h5'>{formatPoints(calculateConsumedPoints(history?.childTransaction))} Points</Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
@@ -102,10 +104,10 @@ function HistoryCard({ history }) {
                         <SubAccordionOfHistoryCard title="Activated leads" data={calculateItems(history?.childTransaction, transactionType.SUGGESTED_LEAD_BUY)} type='Leads' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Consultant subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Consultant Subscriptions' />
+                        <SubAccordionOfHistoryCard title="Consultant subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Consultant subscriptions' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Note Subscriptions' />
+                        <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Note' />
                     </Grid>
                 </Grid>
             </CustomAccordionDetails>

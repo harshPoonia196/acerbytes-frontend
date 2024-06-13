@@ -51,7 +51,8 @@ const headCells = [
   },
   {
     id: "pageViewCount",
-    label: "Page View",
+    label: "Page views",
+    numeric: true
   },
   {
     id: "link",
@@ -63,12 +64,12 @@ const headCells = [
   },
   {
     id: "validFrom",
-    label: "Valid from",
+    label: "Valid Period",
   },
-  {
-    id: "validTo",
-    label: "Valid to",
-  },
+  // {
+  //   id: "validTo",
+  //   label: "Valid to",
+  // },
   {
     id: "expiresIn",
     label: "Expires In",
@@ -85,7 +86,7 @@ function EnhancedTableHead(props) {
   return (
     <>
       <TableHead >
-        <TableRow >
+        <TableRow>
           {headCells.map((headCell) => (
             (headCell.id !== 'expiresIn' || alignmentValue === "Active" || alignmentValue === "" || alignmentValue === "Expiring Soon") && (
               <TableCell
@@ -137,7 +138,7 @@ function RowStructure({ row, alignmentValue, history }) {
   };
 
   return (
-    <TableRow
+    <TableRow hover
       key={row?.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
@@ -145,7 +146,7 @@ function RowStructure({ row, alignmentValue, history }) {
       <TableCell>{row?.phone}</TableCell>
       <TableCell>{row?.propertyType}</TableCell>
       <TableCell>{row?.propertyName}</TableCell>
-      <TableCell>{row?.PageViewCount || "-"}</TableCell>
+      <TableCell align="right">{row?.PageViewCount || "-"}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy consultant property link">
           <IconButton sx={{ fontSize: "1rem !important" }}
@@ -169,8 +170,8 @@ function RowStructure({ row, alignmentValue, history }) {
           }
         />
       </TableCell>
-      <TableCell>{formatDate(row?.validFrom)}</TableCell>
-      <TableCell>{formatDate(row?.validTo)}</TableCell>
+      <TableCell>{formatDate(row?.validFrom)} - {formatDate(row?.validTo)}</TableCell>
+      {/* <TableCell>{formatDate(row?.validTo)}</TableCell> */}
       <TableCell sx={{ textAlign: "center" }}>
         {alignmentValue !== "Expired" && row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
       </TableCell>
@@ -348,7 +349,7 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
       </Card>
       {activeAdData?.length > 0 ? (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <Table sx={{ minWidth: 650 }} aria-label="a dense table">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}

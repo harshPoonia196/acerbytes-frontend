@@ -27,6 +27,7 @@ import { PAGINATION_LIMIT_OPTIONS, PAGINATION_LIMIT } from "utills/Constants";
 import CustomSearch from "Components/CommonLayouts/CustomSearch";
 import { useAuth } from "utills/AuthContext";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 const headCells = [
@@ -52,7 +53,8 @@ const headCells = [
   },
   {
     id: "pageViewCount",
-    label: "Page View",
+    label: "Page views",
+    numeric: true
   },
   {
     id: "link",
@@ -63,16 +65,16 @@ const headCells = [
     label: "Status",
   },
   {
-    id: "validFrom",
-    label: "Valid from",
+    id: "validPeriod",
+    label: "Valid period",
   },
-  {
-    id: "validTo",
-    label: "Valid to",
-  },
+  // {
+  //   id: "validTo",
+  //   label: "Valid to",
+  // },
   {
     id: "expiresIn",
-    label: "Expires In",
+    label: "Expires in",
   },
 ];
 
@@ -87,7 +89,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell sx={{ textTransform: "capitalize" }}
+          <TableCell sx={{ textTransform: "none" }}
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
@@ -137,21 +139,21 @@ function RowStructure({ row, history }) {
     if (daysRemaining < 0) {
       return "-";
     } else {
-      return `${daysRemaining} Days`;
+      return `${daysRemaining} days`;
     }
   };
 
   return (
-    <TableRow
+    <TableRow hover
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <TableCell>{row?.consultantName}</TableCell>
       <TableCell>{row?.phone}</TableCell>
       <TableCell>{row?.propertyType}</TableCell>
-      <TableCell>{row?.propertyName}</TableCell>
+      <TableCell><Link href={row?.link} style={{textDecoration: 'none'}}>{row?.propertyName}</Link></TableCell>
       <TableCell>{row?.city}</TableCell>
-      <TableCell>{row?.PageViewCount || "-"}</TableCell>
+      <TableCell align="right">{row?.PageViewCount || "-"}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy link">
           <IconButton sx={{ fontSize: "1rem !important" }}
@@ -175,8 +177,7 @@ function RowStructure({ row, history }) {
           }
         />
       </TableCell>
-      <TableCell>{formatDate(row?.validFrom)}</TableCell>
-      <TableCell>{formatDate(row?.validTo)}</TableCell>
+      <TableCell>{formatDate(row?.validFrom)} - {formatDate(row?.validTo)}</TableCell>
       <TableCell>
         {row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
       </TableCell>
@@ -349,7 +350,7 @@ function MyLinksTable({ setCount }) {
       {
         activeAdData?.length > 0 ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}

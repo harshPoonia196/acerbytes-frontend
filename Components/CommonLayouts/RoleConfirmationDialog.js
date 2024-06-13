@@ -76,7 +76,9 @@ const RoleConfirmationDialog = ({ open, handleAction, selectedRowData, setuserAp
         <DialogContent >
           <RoleViewerDropdown row={selectedRowData?.data?.row} setuserApproveStatusConfirmationDialog={setuserApproveStatusConfirmationDialog} isApproved={selectedRowData?.data}/>
           <DialogContentText sx={paddingTopStyle}>
+          <Typography variant="body1">
             Are you sure you want to perform this action?
+            </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

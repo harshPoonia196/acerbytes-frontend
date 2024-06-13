@@ -73,7 +73,7 @@ function Row(props) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell component="th" scope="row">
           {row.tower}
         </TableCell>
@@ -95,7 +95,7 @@ function Row(props) {
           </IconButton>
         </TableCell>
       </TableRow>
-      <TableRow>
+      <TableRow hover>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>

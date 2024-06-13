@@ -19,6 +19,7 @@ import {
   Card,
   ToggleButtonGroup,
   ToggleButton,
+  ListItemIcon
 } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import React from "react";
@@ -54,6 +55,7 @@ import Loader from "Components/CommonLayouts/Loading";
 import { debounce } from "lodash";
 import { ORDER_STATUS } from "utills/Constants";
 import { countryCodeFormating } from "utills/utills";
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 
 const headCells = [
   {
@@ -61,60 +63,70 @@ const headCells = [
     label: "Order no",
     isCompleteView: true,
     isPendingView: true,
+    numeric: false
   },
   {
     id: "name",
-    label: "Property consultant name",
+    label: "Property consultant",
     isCompleteView: true,
     isPendingView: true,
+    numeric: false
   },
   {
     id: "mobileNumber",
-    label: "Mobile number",
+    label: "Phone",
     isCompleteView: true,
     isPendingView: true,
+    numeric: false
   },
   {
     id: "amount",
     label: "St Amount",
     isCompleteView: true,
     isPendingView: true,
+    numeric: true
   },
   {
     id: "point",
-    label: "St Point",
+    label: "St Points",
     isCompleteView: true,
     isPendingView: true,
+    numeric: true
   },
   {
     id: "discount",
-    label: "St discount",
+    label: "St percentage discount",
     isCompleteView: true,
     isPendingView: true,
+    numeric: true
   },
   {
     id: "approvedDiscount",
     label: "Approved discount",
     isCompleteView: true,
     isPendingView: false,
+    numeric: true
   },
   {
     id: "approvedPayment",
     label: "Approved payment",
     isCompleteView: true,
     isPendingView: false,
+    numeric: true
   },
   {
     id: "approvedPoints",
     label: "Approved points",
     isCompleteView: true,
     isPendingView: false,
+    numeric: true
   },
   {
     id: "action",
     label: "Action",
     isCompleteView: false,
     isPendingView: true,
+    numeric: false
   },
 ];
 
@@ -138,7 +150,7 @@ function EnhancedTableHead(props) {
               align={headCell.numeric ? "right" : "left"}
               padding={headCell.disablePadding ? "none" : "normal"}
               sortDirection={orderBy === headCell.id ? order : false}
-              sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+              sx={{ textTransform: "capitalize", fontWeight: "bold"}}
             >
               <TableSortLabel
                 active={orderBy === headCell.id}
@@ -241,7 +253,7 @@ function RowStructure({
         handleSubmit={assignPointsHandler}
       />
 
-      <TableRow
+      <TableRow hover
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         onMouseEnter={(e) => {
@@ -259,18 +271,19 @@ function RowStructure({
           {countryCodeFormating(row?.brokerId?.phone?.countryCode)}{" "}
           {row?.brokerId?.phone?.number}
         </TableCell>
-        <TableCell>{formatAmount(row.amount)}</TableCell>
-        <TableCell>{formatPoints(row.points)}</TableCell>
-        <TableCell>{row?.standardDiscount}%</TableCell>
-        {isCompleted && <TableCell>{row?.approvedDiscount}%</TableCell>}
+        <TableCell sx={{ textAlign: "right"}}>{formatAmount(row.amount)}</TableCell>
+        <TableCell sx={{ textAlign: "right"}}>{formatPoints(row.points)}</TableCell>
+        <TableCell sx={{ textAlign: "right"}}>{row?.standardDiscount}%</TableCell>
+        {isCompleted && <TableCell sx={{ textAlign: "right"}}>{row?.approvedDiscount}%</TableCell>}
         {isCompleted && (
-          <TableCell>{formatAmount(row?.approvedPayment)}</TableCell>
+          <TableCell sx={{ textAlign: "right"}}>{formatAmount(row?.approvedPayment)}</TableCell>
         )}
         {isCompleted && (
-          <TableCell>{formatPoints(row?.approvedPoints)}</TableCell>
+          <TableCell sx={{ textAlign: "right"}}>{formatPoints(row?.approvedPoints)}</TableCell>
         )}
         {!isCompleted && (
           <TableCell sx={{}}>
+            <Tooltip title="More">
             <IconButton
               aria-label="more"
               id="long-button"
@@ -284,6 +297,7 @@ function RowStructure({
             >
               <MoreVertIcon fontSize="1rem" />
             </IconButton>
+            </Tooltip>
           </TableCell>
         )}
         <Menu
@@ -295,7 +309,9 @@ function RowStructure({
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem onClick={handleAssingPoints}>Assign points</MenuItem>
+          <MenuItem onClick={handleAssingPoints}>
+          <ListItemIcon><CreditScoreIcon fontSize="small"/></ListItemIcon> Assign points
+          </MenuItem>
         </Menu>
       </TableRow>
     </>
@@ -430,7 +446,7 @@ function TableView({
       </Card>
       {orderRequests?.list?.length > 0 ? (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <Table sx={{ minWidth: 650 }} aria-label="a dense table">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -634,10 +650,10 @@ function OrdersTable({ onDashboardDataUpdate }) {
           onChange={handleChange}
         >
           <ToggleButton size="small" value={0} sx={{ flex: 1, border: "none" }}>
-            Pending
+            Pending (Not assigned)
           </ToggleButton>
           <ToggleButton size="small" value={1} sx={{ flex: 1, border: "none" }}>
-            Completed
+            Assigned
           </ToggleButton>
         </ToggleButtonGroup>
       </Card>

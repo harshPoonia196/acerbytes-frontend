@@ -119,6 +119,17 @@ function TopMenu(props) {
                 size="small"
               />
             )}
+            <Chip
+            label={`₹ ${shortPriceFormatter(
+                topMenu?.unitsPlan?.minPriceRange
+            )} - ₹ 
+            ${shortPriceFormatter(
+                topMenu?.unitsPlan?.maxPriceRange
+            )}`}
+            color="primary"
+            size="small"
+            style={{ marginLeft: 10 }}
+            />
           </Box>
           <Box>
             <CircularWithValueLabel
