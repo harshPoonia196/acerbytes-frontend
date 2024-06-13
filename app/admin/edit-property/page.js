@@ -1075,6 +1075,16 @@ function AddProperty() {
       });
 
     }
+    else if (firstKeyName === "layout" && secondKeyName === "area") {
+      let totalArea = +e.target.value
+      if (form.layout.areaUnit.toLowerCase() === 'acres') {
+        const sqftPerAcre = 43560
+        totalArea = +e.target.value * sqftPerAcre
+      }
+      setForm({
+        ...form, layout: { ...form.layout, area: e.target.value, areaInSqft: totalArea }
+      })
+    }
     else if (secondKeyName.toLowerCase() === "projectcategory" || secondKeyName.toLowerCase() === "state" || secondKeyName.toLowerCase() === "area" || secondKeyName.toLowerCase() === "projectname") {
       let formattedTagLine = formatTagLine(e.target.value, secondKeyName)
       setForm({
@@ -1149,17 +1159,6 @@ function AddProperty() {
       else if (firstKeyName === "marketing" && secondKeyName === "image") {
         setForm({
           ...form, marketing: { ...form.marketing, image: e }
-        })
-      }
-      else if (firstKeyName === "layout" && secondKeyName === "area") {
-
-        let totalArea = +e.target.value
-        if (form.layout.areaUnit.toLowerCase() === 'acres') {
-          const sqftPerAcre = 43560
-          totalArea = +e.target.value * sqftPerAcre
-        }
-        setForm({
-          ...form, layout: { ...form.layout, area: e.target.value, areaInSqft: totalArea }
         })
       }
       else {
