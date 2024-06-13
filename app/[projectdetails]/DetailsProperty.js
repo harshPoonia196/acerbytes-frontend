@@ -113,6 +113,7 @@ const PropertyDetails = ({ params }) => {
   const [progressCount, setProgressCount] = useState(6);
   const [leadId, setLeadId] = useState("");
   const expiredModalOpenRef = useRef(false);
+  const [brokerContact, setBrokerContact] = React.useState(null);
   let expiredModalTimeout;
 
   const linkIdData = params.projectdetails;
