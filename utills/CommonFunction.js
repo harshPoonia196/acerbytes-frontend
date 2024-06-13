@@ -293,11 +293,25 @@ const getColorForProgressBar = (input) => {
 };
 
 const shortPriceFormatter = (value) => {
-  const val = Math.abs(value);
-  if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`;
-  if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`;
-  if (val >= 1000) return `${(value / 1000).toFixed(2)} K`;
-  return value;
+  if (value) {
+    const val = Math.abs(value);
+    let formattedValue;
+
+    if (val >= 10000000) {
+      formattedValue = `${(value / 10000000).toFixed(2)} Cr`;
+    } else if (val >= 100000) {
+      formattedValue = `${(value / 100000).toFixed(2)} Lac`;
+    } else if (val >= 1000) {
+      formattedValue = `${(value / 1000).toFixed(2)} K`;
+    } else {
+      formattedValue = value?.toString();
+    }
+
+    const [price, tag] = formattedValue.split(' ');
+    const finalPrice = Math.round(price * 10) / 10;
+    return `${finalPrice} ${tag || ''}`.trim();
+  }
+  return;
 };
 
 const getFirstCharacterOfFirstOfFullName = (fname) => {

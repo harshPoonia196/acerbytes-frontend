@@ -26,9 +26,8 @@ import {
 } from 'utills/CommonFunction';
 import Reviews from './reviews';
 import PhoneIcon from '@mui/icons-material/Phone';
-import LockIcon from '@mui/icons-material/Lock';
-import PublicIcon from '@mui/icons-material/Public';
 import ReviewsOutlinedIcon from '@mui/icons-material/ReviewsOutlined';
+import { useAuth } from 'utills/AuthContext';
 
 function BrokerCard({
   broker,
@@ -42,6 +41,7 @@ function BrokerCard({
 }) {
   const [openDialog, setOpenDialog] = useState(false),
     [openReviews, setOpenReviews] = useState(false),
+    { userDetails } = useAuth(),
     router = useRouter(),
     handleDialogOpen = () => {
       setOpenDialog(true);

@@ -334,26 +334,9 @@ const PropertyDetails = ({ params }) => {
     );
   };
 
-  function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box>{children}</Box>}
-      </div>
-    );
-  }
 
   const [currentTab, setCurrentTab] = React.useState(0);
 
-  const [amenitiesTabs, setAmenitiesTab] = React.useState(0);
-  const param = useParams();
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
@@ -616,7 +599,6 @@ const PropertyDetails = ({ params }) => {
 
   React.useEffect(
     () => () => {
-      
       clearTimeout(unsetClickedRef.current);
     },
     []
