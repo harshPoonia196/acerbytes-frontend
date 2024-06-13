@@ -993,13 +993,13 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                           }
                           if (targetArea.selectCity) {
                             if (label) {
-                              label += "/";
+                              label += " / ";
                             }
                             label += targetArea.selectCity;
                           }
                           if (targetArea.selectArea) {
                             if (label) {
-                              label += "/";
+                              label += " / ";
                             }
                             label += targetArea.selectArea;
                           }
