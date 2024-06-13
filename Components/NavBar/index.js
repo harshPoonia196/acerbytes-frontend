@@ -375,7 +375,7 @@ export default function ClippedDrawer({ children }) {
         >
           <List sx={{pb: 0}}>
             <ListItemButton 
-                  onClick={() => { router.push('http://wa.me/+919323996997') }}
+                  onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }}
                   sx={{ pl: 3, backgroundColor: 'whitesmoke', borderTop: 'solid 1px gainsboro' }}>
                   <ListItemIcon sx={{ minWidth: 40 }}>
                     <WhatsAppIcon fontSize="small" />
@@ -549,7 +549,7 @@ export default function ClippedDrawer({ children }) {
                     {(userDetails?.role == ROLE_CONSTANTS.admin || userDetails?.role == ROLE_CONSTANTS.sales || userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
                       <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" />
                     )}
-                    <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" sx={{ marginLeft: "5px"}} />
+                    {userDetails?.role !== ROLE_CONSTANTS.user && <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" sx={{ marginLeft: "5px"}} />}
                   </Box>
                 </Box>
               ) : (

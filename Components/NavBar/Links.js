@@ -10,6 +10,14 @@ import GroupIcon from "@mui/icons-material/Group";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import LinkIcon from '@mui/icons-material/Link';
 import CloseIcon from '@mui/icons-material/Close';
+import StarsIcon from '@mui/icons-material/Stars';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import DescriptionIcon from '@mui/icons-material/Description';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 
 export const companyName = 'AcreBytes'
 
@@ -100,17 +108,17 @@ export const ConsultantMenuList = [
   {
     label: "My ratings",
     route: listOfPages.consultantRatings,
-    icon: <AccountCircleIcon fontSize="small" />,
+    icon: <StarsIcon fontSize="small" />,
   },
   {
     label: "My leads",
     route: listOfPages.consultantMyLeads,
-    icon: <PlaylistAddCheckIcon fontSize="small" />,
+    icon: <LeaderboardIcon fontSize="small" />,
   },
   {
     label: "My notes",
     route: listOfPages.consultantMyNotes,
-    icon: <PlaylistAddCheckIcon fontSize="small" />,
+    icon: <DescriptionIcon fontSize="small" />,
   },
   {
     label: "Suggested leads",
@@ -138,12 +146,12 @@ export const AdminMenuList = [
   {
     label: "Orders request",
     route: listOfPages.adminOrdersRequest,
-    icon: <RecentActorsIcon fontSize="small" />,
+    icon: <ShoppingCartCheckoutIcon fontSize="small" />,
   },
   {
     label: "Credit status",
     route: listOfPages.adminCreditStatus,
-    icon: <RecentActorsIcon fontSize="small" />,
+    icon: <RequestQuoteIcon fontSize="small" />,
   },
   {
     label: "Leads reviewed",
@@ -158,17 +166,17 @@ export const AdminMenuList = [
   {
     label: "Property list",
     route: listOfPages.adminPropertyList,
-    icon: <PlaylistAddIcon fontSize="small" />,
+    icon: <ListAltIcon fontSize="small" />,
   },
   {
     label: "Manage users",
     route: listOfPages.adminManageUser,
-    icon: <PlaylistAddIcon fontSize="small" />,
+    icon: <ManageAccountsIcon fontSize="small" />,
   },
   {
     label: "Manage Consultants",
     route: listOfPages.adminManageConsultant,
-    icon: <PlaylistAddIcon fontSize="small" />,
+    icon: <SupervisedUserCircleIcon fontSize="small" />,
   },
   {
     label: "Consultant links",

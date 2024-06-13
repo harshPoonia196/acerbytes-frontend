@@ -29,6 +29,7 @@ function UserDetailsAd({
   AllPropertyData,
   contactPermissionToView,
   handleOpenEnquiryForm,
+  isUnique = false
 }) {
   const { userDetails, isLoggedIn } = useAuth();
 
@@ -73,7 +74,7 @@ function UserDetailsAd({
 
   return (
     <Box>
-      <Box sx={{ position: "fixed", bottom: 0, width: "100%" }}>
+      <Box sx={{ position: "fixed", bottom: 0, left:"-3px", width: "100%" }}>
         <Container
           maxWidth="md"
           sx={{
@@ -166,7 +167,7 @@ function UserDetailsAd({
                       display: { xs: "block", md: "none" },
                     }}
                   >
-                    <Button
+                    {/* <Button
                       variant="contained"
                       size="small"
                       startIcon={<DoneIcon />}
@@ -174,7 +175,7 @@ function UserDetailsAd({
                       sx={{}}
                     >
                       Activated
-                    </Button>
+                    </Button> */}
                     {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
                 Call First
               </Button>
@@ -192,7 +193,8 @@ function UserDetailsAd({
                 display: { md: "block" },
               }}
             >
-              { isLoggedIn && 
+              { isLoggedIn && <>
+              {userDetails.role === 'user' && isUnique (
               <Chip
                 icon={showContact ? null : <PhoneIcon />}
                 label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
@@ -200,6 +202,8 @@ function UserDetailsAd({
                 onClick={handleViewContactClick}
                 sx={{marginLeft: "5px"}}
               />
+              )}
+              </>
               }
               {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
                 Call First
@@ -231,13 +235,15 @@ function UserDetailsAd({
                 <Typography variant="h5" sx={{ flex: 1 }}>
                   {name}
                 </Typography>
-                { isLoggedIn &&<Box>
+                { isLoggedIn && <Box>
+                  {userDetails.role === 'user' && isUnique (
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
                     label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
                     size="small"
                     onClick={handleViewContactClick}
                   />
+                  )}
                 </Box>}
               </Box>
               <Typography variant="h6">
