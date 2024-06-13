@@ -11,6 +11,7 @@ function LocationSection(props) {
   if (!(locationData?.assessment || locationData?.sectionScore)) {
     return null;
   }
+
   const filteredEntries = Object.entries(locationData?.assessment).filter(
     ([_, value]) => value.isApplicable
   );
@@ -19,7 +20,6 @@ function LocationSection(props) {
     return null;
   }
 
-  
   return (
     <Grid item xs={12} ref={refCallback} id="location">
       <Card>

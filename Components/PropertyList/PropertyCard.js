@@ -7,18 +7,18 @@ import {
   CardActions,
   Chip,
   Divider,
-  Tooltip
-} from "@mui/material";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import { useRouter } from "next/navigation";
-import { format } from "date-fns";
-import { useEffect, useMemo, useState } from "react";
-import { useAuth } from "utills/AuthContext";
-import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
-import { shortPriceFormatter } from "utills/CommonFunction";
-import Image from "next/image";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { formatNumberWithCommas } from "utills/CommonFunction";
+  Tooltip,
+} from '@mui/material';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { useRouter } from 'next/navigation';
+import { format } from 'date-fns';
+import { useEffect, useMemo, useState } from 'react';
+import { useAuth } from 'utills/AuthContext';
+import CircularWithValueLabel from 'Components/CommonLayouts/CircularProgressWithLabel';
+import { shortPriceFormatter } from 'utills/CommonFunction';
+import Image from 'next/image';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { formatNumberWithCommas } from 'utills/CommonFunction';
 
 function PropertyCard(props) {
   const router = useRouter();
@@ -30,40 +30,42 @@ function PropertyCard(props) {
     const location = propertyDetailsData?.location;
 
     const projectCategory = encodeURIComponent(
-      (overview?.projectCategory.trim() ?? "category")
-        .replace(/\s+/g, "-")
-        .replace(/\//g, "-")
+      (overview?.projectCategory.trim() ?? 'category')
+        .replace(/\s+/g, '-')
+        .replace(/\//g, '-'),
     );
     let projectType;
     if (overview?.projectType?.length > 0) {
       projectType = overview.projectType
         .map((type) =>
           encodeURIComponent(
-            type.value.trim().replace(/\s+/g, "-").replace(/\//g, "-")
-          )
+            type.value.trim().replace(/\s+/g, '-').replace(/\//g, '-'),
+          ),
         )
-        .join("-");
+        .join('-');
     } else {
-      projectType = "type";
+      projectType = 'type';
     }
     const city = encodeURIComponent(
-      (location?.city.trim() ?? "city").replace(/\s+/g, "-").replace(/\//g, "-")
+      (location?.city.trim() ?? 'city')
+        .replace(/\s+/g, '-')
+        .replace(/\//g, '-'),
     );
     const sector = encodeURIComponent(
-      (location?.sector.trim() ?? "sector")
-        .replace(/[\s,]+/g, "-")
-        .replace(/\//g, "-")
+      (location?.sector.trim() ?? 'sector')
+        .replace(/[\s,]+/g, '-')
+        .replace(/\//g, '-'),
     );
     const area = encodeURIComponent(
-      (location?.area.trim() ?? "area")
-        .replace(/[\s,]+/g, "-")
-        .replace("-#", "")
-        .replace(/\//g, "-")
+      (location?.area.trim() ?? 'area')
+        .replace(/[\s,]+/g, '-')
+        .replace('-#', '')
+        .replace(/\//g, '-'),
     );
     const projectName = encodeURIComponent(
-      (overview?.projectName.trim() ?? "projectName")
-        .replace(/\s+/g, "-")
-        .replace(/\//g, "-")
+      (overview?.projectName.trim() ?? 'projectName')
+        .replace(/\s+/g, '-')
+        .replace(/\//g, '-'),
     );
 
     return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetails._id}`;
@@ -78,7 +80,7 @@ function PropertyCard(props) {
     return (
       propertyDetails?.unitsPlan?.uniqueLayouts?.length +
       propertyDetails?.unitsPlan?.planList?.filter(
-        (item) => !item.propertyLayout
+        (item) => !item.propertyLayout,
       )?.length
     );
   }, [propertyDetails]);
@@ -86,7 +88,7 @@ function PropertyCard(props) {
   const layoutData = useMemo(() => {
     const withoutUniqueLayout = [
       ...propertyDetails?.unitsPlan?.planList?.filter(
-        (item) => !item.propertyLayout
+        (item) => !item.propertyLayout,
       ),
     ]?.map((item) => `${item?.width}*${item?.length}`);
     return [
@@ -95,22 +97,22 @@ function PropertyCard(props) {
     ];
   }, [propertyDetails]);
 
-  const numbers = layoutData.map((item) => item.split(" ")[0]).sort();
-  const suffix = layoutData[0].split(" ").slice(1).join(" ");
+  const numbers = layoutData.map((item) => item.split(' ')[0]).sort();
+  const suffix = layoutData[0].split(' ').slice(1).join(' ');
 
   useEffect(() => {
     const getPriceTag = shortPriceFormatter(
-      propertyDetails?.unitsPlan?.minPriceRange
+      propertyDetails?.unitsPlan?.minPriceRange,
     );
 
-    const [minPrice, tag] = getPriceTag.split(" ");
+    const [minPrice, tag] = getPriceTag.split(' ');
     const finalMinPrice = Math.round(minPrice * 10) / 10;
 
     const getMaxPriceTag = shortPriceFormatter(
-      propertyDetails?.unitsPlan?.maxPriceRange
+      propertyDetails?.unitsPlan?.maxPriceRange,
     );
 
-    const [maxPrice, maxTag] = getMaxPriceTag.split(" ");
+    const [maxPrice, maxTag] = getMaxPriceTag.split(' ');
     const finalMaxPrice = Math.round(maxPrice * 10) / 10;
 
     setAmount({
@@ -120,15 +122,15 @@ function PropertyCard(props) {
     });
   }, []);
 
-  const formattedBHK = `${numbers.join(", ")} ${suffix}`;
+  const formattedBHK = `${numbers.join(', ')} ${suffix}`;
 
   return (
     <Card>
       <CardActionArea sx={{ p: 2 }}>
         <Grid container spacing={1} columns={16}>
-          <Grid item xs={16} sm={8} lg={4.5} sx={{ display: "flex" }}>
+          <Grid item xs={16} sm={8} lg={4.5} sx={{ display: 'flex' }}>
             <Box
-              sx={{ display: "flex", flex: 1 }}
+              sx={{ display: 'flex', flex: 1 }}
               onClick={() => router.push(`/details/${propertyUrl}`)}
             >
               <Image
@@ -138,7 +140,7 @@ function PropertyCard(props) {
                 loading="lazy"
                 src={propertyDetails?.marketing?.image}
                 style={{
-                  borderRadius: "8px",
+                  borderRadius: '8px',
                   marginRight: 16,
                 }}
               />
@@ -147,28 +149,29 @@ function PropertyCard(props) {
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               >
                 <Typography variant="caption">
-                <Tooltip title="Location"><LocationOnIcon
-                    sx={{
-                      fontSize: "12px",
-                      position: "relative",
-                      top: "1.5px",
-                    }}
-                  />
+                  <Tooltip title="Location">
+                    <LocationOnIcon
+                      sx={{
+                        fontSize: '12px',
+                        position: 'relative',
+                        top: '1.5px',
+                      }}
+                    />
                   </Tooltip>
-                  {propertyDetails?.location?.city}{" "}
+                  {propertyDetails?.location?.city}{' '}
                   {propertyDetails?.property_id}
                 </Typography>
                 <Typography
                   variant="subtitle2"
-                  sx={{ textTransform: "capitalize" }}
+                  sx={{ textTransform: 'capitalize' }}
                 >
                   {propertyDetails?.overview?.builder +
-                    " " +
+                    ' ' +
                     propertyDetails?.overview?.projectName}
                 </Typography>
               </Box>
             </Box>
-            <Box sx={{ display: { xs: "block", sm: "none" } }}>
+            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
               <CircularWithValueLabel
                 progress={
                   propertyDetails?.overallAssessment?.score
@@ -187,12 +190,12 @@ function PropertyCard(props) {
             lg={1.5}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
-            <Typography variant="caption" sx={{ textTransform: "capitalize" }}>
+            <Typography variant="caption" sx={{ textTransform: 'capitalize' }}>
               {propertyDetails?.location?.area}
             </Typography>
             <Typography
               variant="subtitle2"
-              sx={{ textTransform: "capitalize" }}
+              sx={{ textTransform: 'capitalize' }}
             >
               {propertyDetails?.location?.sector}
             </Typography>
@@ -205,14 +208,15 @@ function PropertyCard(props) {
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
-              {formatNumberWithCommas(propertyDetails?.layout?.totalUnits)} Units
+              {formatNumberWithCommas(propertyDetails?.layout?.totalUnits)}{' '}
+              Units
             </Typography>
             <Typography variant="subtitle2">
               {`${propertyDetails?.layout?.area} 
               ${
                 propertyDetails?.layout?.areaUnit
                   ? propertyDetails?.layout?.areaUnit
-                  : ""
+                  : ''
               }`}
             </Typography>
           </Grid>
@@ -220,8 +224,8 @@ function PropertyCard(props) {
             item
             sm={1.5}
             sx={{
-              display: { xs: "none", sm: "block", lg: "none" },
-              textAlign: "end",
+              display: { xs: 'none', sm: 'block', lg: 'none' },
+              textAlign: 'end',
             }}
           >
             <CircularWithValueLabel
@@ -245,16 +249,16 @@ function PropertyCard(props) {
             {(propertyDetails?.unitsPlan?.averagePrice ||
               propertyDetails?.unitsPlan?.planList[0]?.areaUnit) && (
               <Typography variant="caption">
-                {"₹ " +
+                {'₹ ' +
                   propertyDetails?.unitsPlan?.averagePrice.toLocaleString() +
-                  "/" +
+                  '/' +
                   propertyDetails?.unitsPlan?.planList[0]?.areaUnit}
               </Typography>
             )}
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
-              <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-                ₹ {priceRange?.minPrice?.price} {priceRange?.minPrice?.tag} - ₹{" "}
+              <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                ₹ {priceRange?.minPrice?.price} {priceRange?.minPrice?.tag} - ₹{' '}
                 {priceRange?.maxPrice?.price} {priceRange?.maxPrice?.tag}
               </Typography>
             )}
@@ -286,7 +290,7 @@ function PropertyCard(props) {
               {propertyDetails?.overview?.status}
             </Typography>
             <Typography variant="subtitle2">
-              {propertyDetails?.overview?.launchYear} -{" "}
+              {propertyDetails?.overview?.launchYear} -{' '}
               {propertyDetails?.overview?.completionYear}
             </Typography>
           </Grid>
@@ -295,7 +299,7 @@ function PropertyCard(props) {
             xs={8}
             sm={1.5}
             lg={1}
-            sx={{ display: { xs: "none", lg: "block" }, textAlign: "end" }}
+            sx={{ display: { xs: 'none', lg: 'block' }, textAlign: 'end' }}
           >
             <CircularWithValueLabel
               progress={
@@ -345,16 +349,16 @@ function PropertyCard(props) {
           </Grid> */}
         </Grid>
       </CardActionArea>
-      {userDetails.role === "user" && isShortListPageCard && <Divider />}
-      {userDetails.role === "user" && isShortListPageCard && (
-        <CardActions sx={{ textAlign: "end" }}>
+      {userDetails.role === 'user' && isShortListPageCard && <Divider />}
+      {userDetails.role === 'user' && isShortListPageCard && (
+        <CardActions sx={{ textAlign: 'end' }}>
           <Chip
-            icon={<ThumbUpIcon style={{ color: "#276ef1", mr: 1 }} />}
+            icon={<ThumbUpIcon style={{ color: '#276ef1', mr: 1 }} />}
             // label="Liked on 23-09-2023 at 09:30 AM"
             label={`Liked on ${formattedCreatedAt}`}
             onClick={() => {}}
             size="small"
-            sx={{ fontSize: "0.75rem" }}
+            sx={{ fontSize: '0.75rem' }}
           />
         </CardActions>
       )}
