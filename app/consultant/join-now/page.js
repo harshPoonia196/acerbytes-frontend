@@ -101,7 +101,7 @@ function JoinNow() {
         if (token) {
           if (userDetails?.isBlocked) {
             setLoading(false);
-            openSnackbar("You are blocked", "warning");
+            openSnackbar("You can't access. Contact Acrebytes team", "warning");
             return;
           } else {
             login(userDetails, token);
@@ -190,7 +190,7 @@ function JoinNow() {
       if (res.status === 200) {
         const { token, userDetails } = res?.data?.data;
         if (userDetails?.isBlocked) {
-          openSnackbar("You are blocked", "warning");
+          openSnackbar("You can't access. Contact Acrebytes team", "warning");
           return;
         } else {
           login(userDetails, token);
