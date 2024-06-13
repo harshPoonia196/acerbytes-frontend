@@ -18,6 +18,7 @@ import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWit
 import { shortPriceFormatter } from "utills/CommonFunction";
 import Image from "next/image";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { formatNumberWithCommas } from "utills/CommonFunction";
 
 function PropertyCard(props) {
   const router = useRouter();
@@ -204,7 +205,7 @@ function PropertyCard(props) {
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
-              {propertyDetails?.layout?.totalUnits} Units
+              {formatNumberWithCommas(propertyDetails?.layout?.totalUnits)} Units
             </Typography>
             <Typography variant="subtitle2">
               {`${propertyDetails?.layout?.area} 
