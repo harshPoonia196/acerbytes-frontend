@@ -194,7 +194,7 @@ function UserDetailsAd({
               }}
             >
               { isLoggedIn && <>
-              {userDetails.role === 'user' && isUnique (
+              {userDetails.role === 'user' && isUnique && (
               <Chip
                 icon={showContact ? null : <PhoneIcon />}
                 label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
@@ -236,7 +236,7 @@ function UserDetailsAd({
                   {name}
                 </Typography>
                 { isLoggedIn && <Box>
-                  {userDetails.role === 'user' && isUnique (
+                  {userDetails.role === 'user' && isUnique && (
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
                     label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
