@@ -51,7 +51,7 @@ function ConsultantAddCreditPopup({ open, handleClose }) {
             Request for buying credits (points)
           </Typography>
           <Typography variant="body1">
-            Potential to buy leads from the panel
+            Credit Points are required to buy services on AcreBytes
           </Typography>
           
         </DialogTitle>

@@ -18,6 +18,7 @@ import { reviewBroker } from "api/UserProfile.api";
 import { useMutate } from "utills/ReactQueryContext";
 import { useSnackbar } from "utills/SnackbarContext";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 
 const RatingDialog = (props) => {
   const { openDialog, setOpenDialog, broker, updateBroker } = props;
@@ -161,9 +162,12 @@ const RatingDialog = (props) => {
                 } ${broker?.name?.lastName || ""}`}</span>
             </Typography>
           ) : (
-            <Typography variant="h5" sx={{ fontWeight: 700 }}>
-              Thank you, your review has been submitted
-            </Typography>
+            <Box align="center">
+              <SentimentSatisfiedAltIcon />
+              <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                Thank you, your review has been submitted
+              </Typography>
+            </Box>
           )}
         </DialogTitle>
         {!submitReview && (

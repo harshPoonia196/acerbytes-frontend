@@ -32,7 +32,6 @@ function UserDetailsAd({
   isUnique = false
 }) {
   const { userDetails, isLoggedIn } = useAuth();
-
   const overviewData = AllPropertyData?.propertyData?.overview;
   const [showContact, setShowContact] = useState(false);
 
@@ -85,6 +84,7 @@ function UserDetailsAd({
           <Box sx={{
               
               p: 2,
+              pt: 0,
               background: "ghostwhite",
               boxShadow: boxShadowTop,
               borderTop: `2px solid ${colors.BLUE}`
@@ -117,6 +117,7 @@ function UserDetailsAd({
                 <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
                    {AllPropertyData?.brokerRating?.rating && AllPropertyData?.brokerRating?.rating}
                 </Typography>
+                
                   {AllPropertyData?.brokerRating?.rating && (<Rating
                       name="half-rating"
                       {...AllPropertyData?.brokerRating?.rating}
@@ -194,7 +195,7 @@ function UserDetailsAd({
               }}
             >
               { isLoggedIn && <>
-              {userDetails.role === 'user' && isUnique && (
+              
               <Chip
                 icon={showContact ? null : <PhoneIcon />}
                 label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
@@ -202,7 +203,7 @@ function UserDetailsAd({
                 onClick={handleViewContactClick}
                 sx={{marginLeft: "5px"}}
               />
-              )}
+             
               </>
               }
               {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
@@ -236,14 +237,14 @@ function UserDetailsAd({
                   {name}
                 </Typography>
                 { isLoggedIn && <Box>
-                  {userDetails.role === 'user' && isUnique && (
+                 
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
                     label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
                     size="small"
                     onClick={handleViewContactClick}
                   />
-                  )}
+                 
                 </Box>}
               </Box>
               <Typography variant="h6">

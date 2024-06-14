@@ -33,7 +33,7 @@ function OverallAssesmentSection({
   const router = useRouter();
   return (
     <Grid item xs={12} ref={refCallback} id="assesment">
-      <Card>
+      <Card sx={{ pb: "40px"}}>
         <Box sx={{ p: 2, display: "flex" }}>
           <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
             Overall assesment

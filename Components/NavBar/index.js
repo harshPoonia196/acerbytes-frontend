@@ -587,14 +587,14 @@ export default function ClippedDrawer({ children }) {
                         }
                       />
                     )}
-                    {(userDetails?.role == ROLE_CONSTANTS.admin ||
+                    {/* {(userDetails?.role == ROLE_CONSTANTS.admin ||
                       userDetails?.role == ROLE_CONSTANTS.sales ||
                       userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
                       <Chip
                         label={getRoleLabelByValue(userDetails?.role)}
                         size="small"
                       />
-                    )}
+                    )} */}
                     {userDetails?.role !== ROLE_CONSTANTS.user && (
                       <Chip
                         label={getRoleLabelByValue(userDetails?.role)}

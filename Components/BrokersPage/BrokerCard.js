@@ -27,18 +27,10 @@ import {
 import Reviews from './reviews';
 import PhoneIcon from '@mui/icons-material/Phone';
 import ReviewsOutlinedIcon from '@mui/icons-material/ReviewsOutlined';
-import { useAuth } from 'utills/AuthContext';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import { useAuth } from "utills/AuthContext";
 
-function BrokerCard({
-  broker,
-  type,
-  noReview,
-  updateBroker,
-  enquiredInfo,
-  handleEnquireWithBroker,
-  showRating = false,
-  hasReviews = false,
-}) {
+function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handleEnquireWithBroker, allBroker=false, myConsultant=false, showRating = false, hasReviews = false }) {
   const [openDialog, setOpenDialog] = useState(false),
     [openReviews, setOpenReviews] = useState(false),
     { userDetails } = useAuth(),
@@ -64,7 +56,7 @@ function BrokerCard({
     ),
     isEnquiredByCurrentBroker = currentEnquiredBroker?._id ? true : false,
     handleCallClick = () => {
-      if (typeof handleEnquireWithBroker === 'function') {
+      if (typeof handleEnquireWithBroker === 'function' || myConsultant) {
         if (isEnquiredByCurrentBroker) {
           const callHref = `tel:${
             (broker?.phone?.countryCode || '') + (broker?.phone?.number || '')
@@ -72,8 +64,18 @@ function BrokerCard({
           if (callHref) {
             window.location.href = callHref;
           }
+          
         } else {
-          handleEnquireWithBroker(broker?.id);
+          if(myConsultant){
+            const callHref = `tel:${(broker?.phone?.countryCode || "") + (broker?.phone?.number || "")}`;
+            if (callHref) {
+              window.open(callHref, '_blank');
+              // window.location.href = callHref;
+            }
+          } else{
+            handleEnquireWithBroker(broker?.id);
+          }
+          
         }
       } else {
         console.error('handleEnquireWithBroker is not a function');
@@ -143,10 +145,7 @@ function BrokerCard({
                         precision={0.5}
                         value={broker?.rating ?? 0}
                       />
-                      <div className="rating-count">
-                        {' '}
-                        {broker?.ratingCount ?? 0} Ratings
-                      </div>
+                      <div className="rating-count"> {broker?.ratingCount ?? 0} {broker?.ratingCount > 1 ? "Ratings" : "Rating"}</div>
                     </div>
                   </>
                 ) : null}
@@ -255,53 +254,17 @@ function BrokerCard({
         </Box>
       ) : null} */}
       {/* {isLogged ? ( */}
-      {userDetails.role !== 'broker' &&
-        userDetails.role !== 'admin' &&
-        userDetails.role !== 'superAdmin' && (
-          <>
-            {!isEnquiredByCurrentBroker ? (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: { xs: 10, sm: 13 },
-                  right: 16,
-                }}
-                onClick={handleCallClick}
-              >
-                <IconButton
-                  sx={{
-                    boxShadow:
-                      '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)',
-                  }}
-                >
-                  <Tooltip title="Call">
-                    <CallIcon fontSize="small" />
-                  </Tooltip>
-                </IconButton>
-              </Box>
-            ) : (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: 8,
-                  right: 8,
-                  cursor: 'pointer',
-                  color: 'blue',
-                }}
-                onClick={handleCallClick}
-              >
-                <Tooltip title="Call">
-                  <PhoneIcon
-                    sx={{ position: 'relative', top: '5px', fontSize: '19px' }}
-                    fontSize="small"
-                  />{' '}
-                  {(countryCodeFormating(broker?.phone?.countryCode) || '') +
-                    (broker?.phone?.number || '')}
-                </Tooltip>
-              </Box>
-            )}
-          </>
-        )}
+      { userDetails.role !== 'broker' && userDetails.role !== 'admin' && userDetails.role !== 'superAdmin' && !allBroker && <>
+      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:10, sm:13}, right: 16 }} onClick={handleCallClick}  >
+        <IconButton sx={{ boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)" }}>
+          <Tooltip title="Call"><CallIcon fontSize="small" /></Tooltip>
+        </IconButton>
+      </Box>) :
+        <Box sx={{ position: "absolute", top: 8, right: 8, cursor: "pointer", color: "blue" }} onClick={handleCallClick} >
+          <Tooltip title="Call"><PhoneIcon sx={{ position: "relative", top: "5px", fontSize: "19px" }} fontSize="small"/> {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}</Tooltip>
+        </Box>
+      }</>
+    }
       {/* // : (
       //   <Box sx={{ position: "absolute", top: 8, right: 8 }}>
       //     <IconButton onClick={() => router.push(listOfPages.login)}>
@@ -374,11 +337,7 @@ function BrokerCard({
                 />
               ) : (
                 <CustomButton
-                  startIcon={
-                    <Tooltip title="Rate">
-                      <ReviewsOutlinedIcon />
-                    </Tooltip>
-                  }
+                  startIcon={broker?.reviews?.ratings.length > 0 ? <Tooltip title="Rate"><RateReviewIcon /></Tooltip>: <Tooltip title="Rate"><ReviewsOutlinedIcon /></Tooltip>}
                   onClick={handleDialogOpen}
                   size="small"
                   variant="outlined"

@@ -8,6 +8,9 @@ import {
   Box,
   Card,
   Grid,
+  Radio,
+  RadioGroup,
+  FormControlLabel 
 } from "@mui/material";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { formatAmount } from "utills/CommonFunction";
@@ -66,6 +69,12 @@ function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetPrope
     }
   };
 
+  const [value, setValue] = useState('');
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
   return (
     <Dialog
       sx={{
@@ -85,21 +94,35 @@ function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetPrope
       <DialogContent
         sx={{ maxWidth: "100%", width: "100%", overflowY: "scroll" }}
       >
+        <RadioGroup
+            aria-labelledby="demo-controlled-radio-buttons-group"
+            name="controlled-radio-buttons-group"
+            value={value}
+            onChange={handleChange}
+        >
         <Grid container spacing={1} sx={{ p: 2 }}>
-
           {BuyConsultanttPoints?.map((credit, index) => {
             return (
               <>
                 <Grid item xs={12}>
                   <Card sx={{ p: 1 }}>
                     <Box sx={{ display: "flex", gap: 1 }}>
+                      <FormControlLabel value={credit.value} control={<Radio />} label="" sx={{mr: 0}}/>
+                      <Box>
                       <Typography
                         variant="body1"
                         sx={{ flex: 1, alignSelf: "center" }}
                       >
                         {credit?.month} plan
                       </Typography>
-                      <Box>
+                        <Typography variant="subtitle2">
+                        <span style={{ fontWeight: 600 }}>
+                          {credit?.discountAmount}
+                        </span>{" "}
+                        ({credit?.discount}% discount) Points
+                      </Typography>
+                      </Box>
+                      {/* <Box>
                         <CustomButton
                           variant="contained"
                           size="small"
@@ -107,23 +130,26 @@ function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetPrope
                           disabled={loadingStates[index] || false}
                           ButtonText={loadingStates[index] ? 'Loading...' : `${credit?.amount} Buy Now`}
                         />
-                      </Box>
+                      </Box> */}
                     </Box>
-                    <Typography variant="subtitle2">
-                      <span style={{ fontWeight: 600 }}>
-                        {formatAmount(credit?.discountAmount)}
-                      </span>{" "}
-                      ({credit?.discount}% discount)
-                    </Typography>
                   </Card>
                 </Grid>
               </>
             );
           })}
         </Grid>
+        </RadioGroup>
       </DialogContent>
       <DialogActions>
         <Box sx={{ textAlign: "end" }}>
+          <CustomButton
+            variant="contained"
+            size="small"
+            // onClick={() => handleByPlanClick(credit.value, index)}
+            // disabled={loadingStates[index] || false}
+            ButtonText={"Buy Now"}
+            sx={{ mr: "5px"}}
+          />
           <CustomButton
             variant="contained"
             onClick={() => {
