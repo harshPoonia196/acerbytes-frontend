@@ -119,6 +119,7 @@ function PropertyCard(props) {
 
   const formatUnit = () => {
     const finalData = [];
+
     layoutData.sort().map((item, index) => {
       let nextUnit =
         layoutData[index + 1] && layoutData[index + 1].split(" ")[1];
@@ -126,10 +127,17 @@ function PropertyCard(props) {
 
       const num = spitedValue[0];
       const unit = spitedValue[1];
-      if (unit === nextUnit) {
+
+      if (unit === undefined) {
+        const width = num.split("*")[0];
+
+        const { areaUnit } = propertyDetails?.unitsPlan?.planList.filter(
+          (i) => i.width === Number(width)
+        )[0];
+
+        finalData.push(`${num} ${areaUnit}`);
+      } else if (unit === nextUnit) {
         finalData.push(num);
-      } else if (unit === undefined) {
-        finalData.push(`${num} ${propertyDetails?.layout?.areaUnit}`);
       } else {
         finalData.push(`${num} ${unit}`);
       }
