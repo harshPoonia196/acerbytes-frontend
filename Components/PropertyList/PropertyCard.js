@@ -272,8 +272,10 @@ function PropertyCard(props) {
             {(propertyDetails?.unitsPlan?.minPriceRange ||
               propertyDetails?.unitsPlan?.maxPriceRange) && (
               <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-                ₹ {priceRange?.minPrice?.price} {priceRange?.minPrice?.tag} - ₹{" "}
-                {priceRange?.maxPrice?.price} {priceRange?.maxPrice?.tag}
+                ₹{" "}
+                {shortPriceFormatter(propertyDetails?.unitsPlan?.minPriceRange)}{" "}
+                - ₹{" "}
+                {shortPriceFormatter(propertyDetails?.unitsPlan?.maxPriceRange)}{" "}
               </Typography>
             )}
           </Grid>
