@@ -194,7 +194,7 @@ function UserDetailsAd({
                 display: { md: "block" },
               }}
             >
-              { isLoggedIn && <>
+              { isLoggedIn && userDetails.role === "user" && <>
               
               <Chip
                 icon={showContact ? null : <PhoneIcon />}
@@ -236,7 +236,7 @@ function UserDetailsAd({
                 <Typography variant="h5" sx={{ flex: 1 }}>
                   {name}
                 </Typography>
-                { isLoggedIn && <Box>
+                { isLoggedIn && userDetails.role === "user" && <Box>
                  
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
