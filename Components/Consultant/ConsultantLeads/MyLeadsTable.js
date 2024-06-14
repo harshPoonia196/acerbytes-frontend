@@ -106,7 +106,7 @@ const headCells = [
   },
   {
     id: "userDetails",
-    label: "User Details",
+    label: "User details",
   },
   {
     id: "enquired",
