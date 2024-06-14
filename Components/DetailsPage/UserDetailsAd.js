@@ -32,7 +32,6 @@ function UserDetailsAd({
   isUnique = false
 }) {
   const { userDetails, isLoggedIn } = useAuth();
-
   const overviewData = AllPropertyData?.propertyData?.overview;
   const [showContact, setShowContact] = useState(false);
 
@@ -194,7 +193,7 @@ function UserDetailsAd({
               }}
             >
               { isLoggedIn && <>
-              {userDetails.role === 'user' && isUnique && (
+              
               <Chip
                 icon={showContact ? null : <PhoneIcon />}
                 label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
@@ -202,7 +201,7 @@ function UserDetailsAd({
                 onClick={handleViewContactClick}
                 sx={{marginLeft: "5px"}}
               />
-              )}
+             
               </>
               }
               {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
@@ -236,14 +235,14 @@ function UserDetailsAd({
                   {name}
                 </Typography>
                 { isLoggedIn && <Box>
-                  {userDetails.role === 'user' && isUnique && (
+                 
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
                     label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
                     size="small"
                     onClick={handleViewContactClick}
                   />
-                  )}
+                 
                 </Box>}
               </Box>
               <Typography variant="h6">

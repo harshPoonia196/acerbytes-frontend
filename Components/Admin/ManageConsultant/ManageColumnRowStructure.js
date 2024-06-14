@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { listOfPages } from "Components/NavBar/Links";
 import EditIcon from '@mui/icons-material/Edit';
+import {formatNumberWithCommas} from 'utills/CommonFunction';
 
 function RowStructure({ row, router }) {
 
@@ -52,7 +53,7 @@ function RowStructure({ row, router }) {
         <TableCell>{`${(row?.phone?.countryCode) ? '+' + row?.phone?.countryCode : ''}${row?.phone?.number}`}</TableCell>
         <TableCell>{row?.serviceDetails?.reraNumber || ''}</TableCell>
         <TableCell align="right">{row?.totalLinks || 0}</TableCell>
-        <TableCell align="right">{numberFormat(row?.brokerBalance?.balance || 0)}</TableCell>
+        <TableCell align="right">{formatNumberWithCommas(row?.brokerBalance?.balance || 0)}</TableCell>
         <TableCell>
         <Tooltip title="More">
           <IconButton

@@ -347,12 +347,32 @@ function SuggestedLeadsTable({ setLeadsCount }) {
 
   const BuyResponseModal = () => (
     <Dialog open={buyModalOpen} onClose={closeBuyResponseModal}>
+      <DialogTitle>
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
+          Insufficient Credit points
+        </Typography>
+      </DialogTitle>
       <DialogContent sx={{ padding: "36px !important", minWidth: "415px" }}>
         <DialogContentText>
-          <Typography variant="h4">{buyNowResponseMessage}</Typography>
+          <Typography variant="body1">{buyNowResponseMessage}</Typography>
+          <Typography variant="body1">Your current Credit points (23,000 points) are insufficient to buy the services.</Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
+        <Button
+          variant="outlined"
+          sx={{
+            fontWeight: 600
+          }}>
+          Required points: 2500 
+        </Button>
+        <Button
+          variant="contained"
+          sx={{
+            fontWeight: 600
+          }}>
+          Add Credit points
+        </Button>
       <Button
           variant="contained"
           sx={{

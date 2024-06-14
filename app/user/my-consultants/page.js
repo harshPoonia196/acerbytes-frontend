@@ -117,6 +117,7 @@ function Brokers() {
                     broker={broker}
                     noReview={false}
                     updateBroker={getList}
+                    myConsultant={true}
                   />
                 </Grid>
               )

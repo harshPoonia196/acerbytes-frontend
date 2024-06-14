@@ -12,7 +12,7 @@ function AddCreditPopup({ open, handleClose }) {
                     Add credit for <span style={{ color: "gray" }}>Aman Sharma</span>
                 </Typography>
                 <Typography variant="body1">
-                    Potential to buy leads from the panel
+                    Credit Points are required to buy services on AcreBytes
                 </Typography>
             </DialogTitle>
             <DialogContent>

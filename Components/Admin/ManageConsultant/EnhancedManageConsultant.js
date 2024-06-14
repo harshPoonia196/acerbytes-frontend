@@ -21,7 +21,7 @@ const headCells = [
     // },
     {
         id: "consultant_id",
-        label: "Consultant Id",
+        label: "Consultant id",
     },
     {
         id: "CompanyName",

@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Typography,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -308,7 +309,6 @@ const PropertyDetails = ({ params }) => {
     checkPropertyIsEnquired();
   }, [userDetails]);
 
-  console.log("propertyData", propertyData);
   
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
@@ -744,14 +744,14 @@ const PropertyDetails = ({ params }) => {
                 Share
               </Button>
 
-              <Button
+              {/* <Button
                 sx={{ mt: 1, ml: 1 }}
                 variant="outlined"
                 onClick={handleOpenEnquiryForm}
                 startIcon={<WhatsAppIcon />}
               >
                 Contact
-              </Button>
+              </Button> */}
               <Button
                 sx={{ mt: 1, ml: 1 }}
                 variant="outlined"
@@ -789,7 +789,7 @@ const PropertyDetails = ({ params }) => {
                     )}
                     Like
                   </Fab>
-                  <a href={`https://wa.me/+919725555595`} target="_blank">
+                  {/* <a href={`https://wa.me/+919725555595`} target="_blank">
                   <Fab
                     variant="extended"
                     sx={{ mb: 1, justifyContent: "flex-start" }}
@@ -797,7 +797,7 @@ const PropertyDetails = ({ params }) => {
                     <WhatsAppIcon sx={{ mr: 1 }} />
                     Contact
                   </Fab>
-                </a>
+                </a> */}
                 </>
                 ) : (
                   <Fab
@@ -847,31 +847,13 @@ const PropertyDetails = ({ params }) => {
               <Grid sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <CircularProgressSpinner value={progressCount} />
                 <DialogContentText>
-                  Link is not available please check details page
+                  <Typography variant="body2">Link is not available please check details page</Typography>
                 </DialogContentText>
               </Grid>
             </DialogContent>
             <DialogActions>
-              <Button
-                variant="h6"
-                sx={{
-                  fontWeight: 600,
-                  color: "white",
-                  backgroundColor: colors?.BLACK,
-                  "&:hover": {
-                    backgroundColor: colors?.BLACK,
-                    boxShadow: "none",
-                  },
-                }}
-                onClick={() => {
-                  expiredModalOpenRef.current = false;
-                }}
-                color="primary"
-              >
-                Close
-              </Button>
-              <Button
-                variant="h6"
+            <Button
+                variant="contained"
                 sx={{
                   fontWeight: 600,
                   color: "white",
@@ -885,6 +867,25 @@ const PropertyDetails = ({ params }) => {
               >
                 Details Page
               </Button>
+              <Button
+                variant="contained"
+                // sx={{
+                //   fontWeight: 600,
+                //   color: "white",
+                //   backgroundColor: colors?.BLACK,
+                //   "&:hover": {
+                //     backgroundColor: colors?.BLACK,
+                //     boxShadow: "none",
+                //   },
+                // }}
+                onClick={() => {
+                  expiredModalOpenRef.current = false;
+                }}
+                color="primary"
+              >
+                Close
+              </Button>
+              
             </DialogActions>
           </Dialog>
         )}

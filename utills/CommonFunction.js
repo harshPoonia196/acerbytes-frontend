@@ -204,7 +204,9 @@ const formatAmount = (amount) => {
 const formatPoints = (points) => {
   // const numericAmount = Number(points?.replace(/,/g, ''));
   const numericAmount = Number(String(points).replace(/,/g, ""));
-  return numericAmount.toLocaleString("en-IN");
+  const wholeNumberAmount = Math.floor(numericAmount);
+
+  return wholeNumberAmount.toLocaleString("en-IN");
 };
 
 function formatNumberWithCommas(number) {

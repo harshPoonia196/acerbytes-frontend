@@ -546,9 +546,9 @@ export default function ClippedDrawer({ children }) {
                       <Chip label={`Points: ${brokerBalance}`} size="small"
                         onClick={() => router.push(listOfPages.consultantPaymentHistory)} />
                     )}
-                    {(userDetails?.role == ROLE_CONSTANTS.admin || userDetails?.role == ROLE_CONSTANTS.sales || userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
+                    {/* {(userDetails?.role == ROLE_CONSTANTS.admin || userDetails?.role == ROLE_CONSTANTS.sales || userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
                       <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" />
-                    )}
+                    )} */}
                     {userDetails?.role !== ROLE_CONSTANTS.user && <Chip label={getRoleLabelByValue(userDetails?.role)} size="small" sx={{ marginLeft: "5px"}} />}
                   </Box>
                 </Box>
