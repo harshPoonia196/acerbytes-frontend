@@ -76,14 +76,9 @@ function ActivateAdsPopup({
   const validateForm = () => {
     const newErrors = {};
 
-    const titleWords = formData.title.trim().split(/\s+/);
     if (!formData.title) {
       newErrors.title = "Title is required.";
-    } else if (titleWords.length >= 10) {
-      newErrors.title = "Title must be max up to 10 words.";
-    }
-
-    if (!formData.duration) {
+    } else if (!formData.duration) {
       newErrors.duration = "Duration is required.";
     }
 
@@ -215,7 +210,7 @@ function ActivateAdsPopup({
             value={propertyUrl ? propertyUrl : ""}
           />
           <NewInputFieldStructure
-            label="Title (10 words)"
+            label="Title"
             isFull
             variant="outlined"
             name="title"
