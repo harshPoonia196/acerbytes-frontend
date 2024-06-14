@@ -402,12 +402,12 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
               />
               <TableBody>
                 {rows.map((row) => {
-                  const { adId = null, brokerId = [], userId = null } = row;
-                  if (adId && !!brokerId?.length && userId) {
+                  const { adId = null, brokerId = [] } = row;
+                  if (adId && !!brokerId?.length) {
                     row.source = LINK.unique;
-                  } else if (!adId && !!brokerId?.length && userId) {
+                  } else if (!adId && !!brokerId?.length) {
                     row.source = LINK.consultant;
-                  } else if (!adId && !brokerId?.length && userId) {
+                  } else if (!adId && !brokerId?.length) {
                     row.source = LINK.acrebytes;
                   }
 

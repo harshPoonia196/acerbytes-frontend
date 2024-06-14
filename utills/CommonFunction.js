@@ -1,16 +1,16 @@
-import { format } from "date-fns";
-import moment from "moment";
-import { ROLES } from "./Constants";
+import { format } from 'date-fns';
+import moment from 'moment';
+import { ROLES } from './Constants';
 
 function capitalLizeName(text) {
   if (text && text.length >= 0) {
-    let words = text?.split(" ");
+    let words = text?.split(' ');
     // Capitalize the first letter of each word
     let formattedName = words?.map(
-      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
     );
     // Join the words back into a string
-    return formattedName?.join(" ");
+    return formattedName?.join(' ');
   }
 }
 
@@ -37,7 +37,7 @@ function toCamelCase(input) {
       return word.charAt(0).toUpperCase() + word.slice(1);
     }
   });
-  return camelCaseWords.join("");
+  return camelCaseWords.join('');
 }
 
 function transformDocuments(documents) {
@@ -80,7 +80,7 @@ function transformDocumentsLocation(documents) {
 }
 
 function getComparator(order, orderBy) {
-  return order === "desc"
+  return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -100,28 +100,28 @@ function stableSort(array, comparator) {
 const objectToQueryString = (obj) => {
   const queryString = Object.keys(obj)
     .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
-    .join("&");
+    .join('&');
 
   return queryString;
 };
 
 const getApprovedDiscountPercentage = (pointsString, amountString) => {
-  const points = parseFloat(pointsString.replace(/,/g, ""));
-  const paidAmount = parseFloat(amountString.replace(/,/g, ""));
+  const points = parseFloat(pointsString.replace(/,/g, ''));
+  const paidAmount = parseFloat(amountString.replace(/,/g, ''));
   const discountAmount = Number(points) - Number(paidAmount);
   return (discountAmount / points) * 100;
 };
 
 const formatDate = (dateString) => {
-  return moment(dateString).format("Do MMMM, YYYY");
+  return moment(dateString).format('Do MMMM, YYYY');
 };
 
 const formattedCreatedAt = (dateString) => {
-  return format(new Date(dateString), "dd MMM, yyyy, hh:mm aaa");
+  return format(new Date(dateString), 'dd MMM, yyyy, hh:mm aaa');
 };
 
 const formattedTime = (time) => {
-  return format(new Date(time), "dd/MM/yyyy hh:mm aaa");
+  return format(new Date(time), 'dd/MM/yyyy hh:mm aaa');
 };
 
 let formatDateAndDaysRemaining = (expiryDate, format) => {
@@ -131,74 +131,84 @@ let formatDateAndDaysRemaining = (expiryDate, format) => {
 
   const day = expiry.getDate();
   const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   const nth = (d) =>
-    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d - 20) % 10 < 1 ? d % 10 : 0] ||
-    "th";
+    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d - 20) % 10 < 1 ? d % 10 : 0] ||
+    'th';
   const formattedDate = `${day}${nth(day)} ${monthNames[expiry.getMonth()]}`;
-  const longFormat = `${day}${nth(day)}-${monthNames[expiry.getMonth()]}-${daysRemaining}-days-remaining`;
+  const longFormat = `${day}${nth(day)}-${
+    monthNames[expiry.getMonth()]
+  }-${daysRemaining}-days-remaining`;
 
-  if (format === "short") {
+  if (format === 'short') {
     return `${formattedDate} (${daysRemaining} days remaining)`;
-  } else if (format === "long") {
-    return longFormat
+  } else if (format === 'long') {
+    return longFormat;
   } else {
-    return "Invalid format";
+    return 'Invalid format';
   }
-
 };
 
 export const constructPropertyUrl = (property, userInfo) => {
   const overview = property?.overview;
   const location = property?.location;
-  const brokerId = property?.propertyBroker?.[0]?._id ?? 'defaultBrokerId'
+  const brokerId = property?.propertyBroker?.[0]?._id ?? 'defaultBrokerId';
 
-  const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+  const projectCategory = (
+    overview?.projectCategory.trim() ?? 'category'
+  ).replace(/\s+/g, '-');
   let projectType;
   if (overview?.projectType?.length > 0) {
-      projectType = overview.projectType.map(type => type.value.trim().replace(/\s+/g, '-')).join("-");
+    projectType = overview.projectType
+      .map((type) => type.value.trim().replace(/\s+/g, '-'))
+      .join('-');
   }
   const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
   const sector = (location?.sector.trim() ?? 'sector').replace(/\s+/g, '-');
   const area = (location?.area.trim() ?? 'area').replace(/\s+/g, '-');
-  const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+  const projectName = (overview?.projectName.trim() ?? 'projectName').replace(
+    /\s+/g,
+    '-',
+  );
 
   const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
 
   let url = `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}`;
 
-  if(userInfo?.role === "broker"){
-      const expireTime =  formatDateAndDaysRemaining(property?.propertyBroker?.[0]?.expired_at, 'long')
-      url += `-${expireTime}`;
+  if (userInfo?.role === 'broker') {
+    const expireTime = formatDateAndDaysRemaining(
+      property?.propertyBroker?.[0]?.expired_at,
+      'long',
+    );
+    url += `-${expireTime}`;
   }
   url += `-${brokerId}`;
 
   return url;
-
 };
 
 const formatAmount = (amount) => {
   // const numericAmount = Number(amount.replace(/,/g, ''));
-  const numericAmount = Number(String(amount).replace(/,/g, ""));
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
+  const numericAmount = Number(String(amount).replace(/,/g, ''));
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
     maximumFractionDigits: 0,
   })
     .format(numericAmount)
-    .replace("₹", "₹ ");
+    .replace('₹', '₹ ');
 };
 
 const formatPoints = (points) => {
@@ -215,17 +225,17 @@ function formatNumberWithCommas(number) {
 
   // Check if the number is negative and remove the negative sign temporarily
   let isNegative = false;
-  if (numberString[0] === "-") {
+  if (numberString[0] === '-') {
     isNegative = true;
     numberString = numberString.slice(1);
   }
 
   // Separate the number into groups based on units
-  let crores = "";
-  let lakhs = "";
-  let tenThousands = "";
-  let thousands = "";
-  let hundreds = "";
+  let crores = '';
+  let lakhs = '';
+  let tenThousands = '';
+  let thousands = '';
+  let hundreds = '';
 
   if (numberString.length > 7) {
     crores = numberString.slice(0, -7);
@@ -244,18 +254,18 @@ function formatNumberWithCommas(number) {
   }
 
   // Add commas to separate units
-  crores = crores ? crores + "," : "";
-  lakhs = lakhs ? lakhs + "," : "";
-  tenThousands = tenThousands ? tenThousands + "," : "";
-  thousands = thousands ? thousands + "," : "";
-  hundreds = hundreds ? hundreds + "," : "";
+  crores = crores ? crores + ',' : '';
+  lakhs = lakhs ? lakhs + ',' : '';
+  tenThousands = tenThousands ? tenThousands + ',' : '';
+  thousands = thousands ? thousands + ',' : '';
+  hundreds = hundreds ? hundreds + ',' : '';
 
   // Combine the formatted parts and add back the negative sign if needed
   let formattedNumber = crores + lakhs + tenThousands + thousands + hundreds;
   if (isNegative) {
-    formattedNumber = "-" + formattedNumber;
+    formattedNumber = '-' + formattedNumber;
   }
-  let finalValue = formattedNumber.replace(/,$/, "");
+  let finalValue = formattedNumber.replace(/,$/, '');
   return finalValue;
 }
 
@@ -268,32 +278,46 @@ const yearList = Array.from({ length: 41 }, (_, index) => {
 
 const monthList = Array.from({ length: 12 }, (_, index) => {
   return {
-    label: (index + 1).toString().padStart(2, "0"),
-    value: (index + 1).toString().padStart(2, "0"),
+    label: (index + 1).toString().padStart(2, '0'),
+    value: (index + 1).toString().padStart(2, '0'),
   };
 });
 
 const getColorForProgressBar = (input) => {
   let data = parseInt(input);
   if (data > 70) {
-    return "success";
+    return 'success';
   } else if (data > 40) {
-    return "warning";
+    return 'warning';
   } else {
-    return "error";
+    return 'error';
   }
 };
 
 const shortPriceFormatter = (value) => {
-  const val = Math.abs(value);
-  if (val >= 10000000) return `${(value / 10000000).toFixed(2)} Cr`;
-  if (val >= 100000) return `${(value / 100000).toFixed(2)} Lac`;
-  if (val >= 1000) return `${(value / 1000).toFixed(2)}k`;
-  return value;
+  if (value) {
+    const val = Math.abs(value);
+    let formattedValue;
+
+    if (val >= 10000000) {
+      formattedValue = `${(value / 10000000).toFixed(2)} Cr`;
+    } else if (val >= 100000) {
+      formattedValue = `${(value / 100000).toFixed(2)} Lac`;
+    } else if (val >= 1000) {
+      formattedValue = `${(value / 1000).toFixed(2)} K`;
+    } else {
+      formattedValue = value?.toString();
+    }
+
+    const [price, tag] = formattedValue.split(' ');
+    const finalPrice = Math.round(price * 10) / 10;
+    return `${finalPrice} ${tag || ''}`.trim();
+  }
+  return;
 };
 
 const getFirstCharacterOfFirstOfFullName = (fname) => {
-  let listOfWords = fname.split(" ");
+  let listOfWords = fname.split(' ');
   return (
     listOfWords[0].charAt(0) + listOfWords[listOfWords.length - 1].charAt(0)
   );
@@ -306,11 +330,11 @@ const getRoleLabelByValue = (value) => {
 
 const indianNumberingSystem = (number) => {
   // Format the number using Indian numbering system
-  const formatted = Number(number).toLocaleString("en-IN");
+  const formatted = Number(number).toLocaleString('en-IN');
   return formatted;
 };
 const filterText = (text) => {
-  return text.replace(/[^a-zA-Z\s]/g, "");
+  return text.replace(/[^a-zA-Z\s]/g, '');
 };
 
 export {
@@ -339,5 +363,5 @@ export {
   getRoleLabelByValue,
   indianNumberingSystem,
   filterText,
-  formattedTime
+  formattedTime,
 };

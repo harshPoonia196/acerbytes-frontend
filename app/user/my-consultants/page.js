@@ -9,31 +9,30 @@ import {
   Pagination,
 } from "@mui/material";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
-import { useRouter } from "next/navigation";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { getBrokers } from "api/UserProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
 import { debounce } from "lodash";
-import {
-  DEBOUNCE_TIMER, SORTING
-} from "utills/Constants";
+import { DEBOUNCE_TIMER, SORTING } from "utills/Constants";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 function Brokers() {
-
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [consultantList, setConsultantList] = useState({ rows: [], totalCount: 0 });
+  const [consultantList, setConsultantList] = useState({
+    rows: [],
+    totalCount: 0,
+  });
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [initialMount, setInitialMount] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    getList()
-  }, [rowsPerPage, page])
+    getList();
+  }, [rowsPerPage, page]);
 
   useEffect(() => {
     if (initialMount) {
@@ -45,7 +44,7 @@ function Brokers() {
     return () => {
       debouncedSearch.cancel();
     };
-  }, [searchTerm])
+  }, [searchTerm]);
 
   const { openSnackbar } = useSnackbar(),
     showToaterMessages = (message, severity) => {
@@ -53,32 +52,34 @@ function Brokers() {
     };
 
   const getList = async () => {
-    try {
-      const { data: { data: { data = [], totalCount = 0 } } } = await getBrokers(rowsPerPage, page, searchTerm)
-      let total = parseInt(totalCount / rowsPerPage);
-      if (totalCount % rowsPerPage) {
-        total += 1;
+      try {
+        const {
+          data: {
+            data: { data = [], totalCount = 0 },
+          },
+        } = await getBrokers(rowsPerPage, page, searchTerm);
+        let total = parseInt(totalCount / rowsPerPage);
+        if (totalCount % rowsPerPage) {
+          total += 1;
+        }
+        setTotalPage(total);
+        setConsultantList({ rows: data, totalCount });
+      } catch (error) {
+        showToaterMessages(error.message, "error");
       }
-      setTotalPage(total)
-      setConsultantList({ rows: data, totalCount })
-    } catch (error) {
-      showToaterMessages(error.message, "error");
-    }
-  },
-
+    },
     handleChangePage = (event, newPage) => {
       setPage(newPage - 1);
-    }
+    };
 
   function performSearch() {
-    getList()
+    getList();
   }
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
-  }
-
+  };
   return (
     <>
       {isLoading && <Loader />}
@@ -107,8 +108,8 @@ function Brokers() {
           {consultantList?.rows?.length ? (
             consultantList?.rows?.map((broker) => {
               const type = broker.businessType,
-                profilePicture = broker?.brokerPic?.[0]?.profilePicture ?? '';
-              broker = { ...broker, type, profilePicture }
+                profilePicture = broker?.brokerPic?.[0]?.profilePicture ?? "";
+              broker = { ...broker, type, profilePicture };
 
               return (
                 <Grid item xs={12} key={broker._id}>
@@ -120,14 +121,10 @@ function Brokers() {
                     myConsultant={true}
                   />
                 </Grid>
-              )
-            }
-            )
+              );
+            })
           ) : (
             <Grid item xs={12} justifyContent={"center"}>
-              {/* <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
-                No data found!
-              </Typography> */}
               <NoDataCard title={"No data found"} />
             </Grid>
           )}
