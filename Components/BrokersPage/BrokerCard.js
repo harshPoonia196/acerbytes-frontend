@@ -261,7 +261,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
         </IconButton>
       </Box>) :
         <Box sx={{ position: "absolute", top: 8, right: 8, cursor: "pointer", color: "blue" }} onClick={handleCallClick} >
-          <Tooltip title="Call"><PhoneIcon sx={{ position: "relative", top: "5px", fontSize: "19px" }} fontSize="small"/> {(countryCodeFormating(broker?.phone?.countryCode) || "") + (broker?.phone?.number || "")}</Tooltip>
+          <Tooltip title="Call"><PhoneIcon sx={{ position: "relative", top: "5px", fontSize: "19px" }} fontSize="small"/> {(countryCodeFormating(broker?.phone?.countryCode) || " ") + (broker?.phone?.number || "")}</Tooltip>
         </Box>
       }</>
     }

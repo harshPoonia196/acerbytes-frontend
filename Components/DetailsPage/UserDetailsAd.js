@@ -79,12 +79,12 @@ function UserDetailsAd({
           sx={{
             p: { xs: "0 !important", md: "16px !important" },
             pb: { md: "0 !important" },
+            pt: {xs: "0 !important"}
           }}
         >
           <Box sx={{
               
               p: 2,
-              pt: 0,
               background: "ghostwhite",
               boxShadow: boxShadowTop,
               borderTop: `2px solid ${colors.BLUE}`
@@ -194,7 +194,7 @@ function UserDetailsAd({
                 display: { md: "block" },
               }}
             >
-              { isLoggedIn && <>
+              { isLoggedIn && userDetails.role === "user" && <>
               
               <Chip
                 icon={showContact ? null : <PhoneIcon />}
@@ -236,7 +236,7 @@ function UserDetailsAd({
                 <Typography variant="h5" sx={{ flex: 1 }}>
                   {name}
                 </Typography>
-                { isLoggedIn && <Box>
+                { isLoggedIn && userDetails.role === "user" && <Box>
                  
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
