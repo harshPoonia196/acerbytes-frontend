@@ -20,6 +20,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { listOfPages } from "Components/NavBar/Links";
 import { getBrokerBalance } from "api/Broker.api";
+import dayjs from "dayjs";  // import dayjs for date manipulation
 
 function ActivateAdsPopup({
   open,
@@ -121,8 +122,8 @@ function ActivateAdsPopup({
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error generating order number request",
+        error?.message ||
+        "Error generating order number request",
         "error"
       );
     } finally {
@@ -139,8 +140,8 @@ function ActivateAdsPopup({
     } catch (error) {
       showToaterMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error getbroker balance request",
+        error?.message ||
+        "Error getbroker balance request",
         "error"
       );
     }
@@ -149,6 +150,12 @@ function ActivateAdsPopup({
   const { openSnackbar } = useSnackbar();
   const showToaterMessages = (message, severity) => {
     openSnackbar(message, severity);
+  };
+
+  const calculateNewExpiryDate = () => {
+    const currentExpiryDate = dayjs(propertyData?.expired_at);
+    const newExpiryDate = currentExpiryDate.add(parseInt(formData.duration), 'month');
+    return newExpiryDate.format('MMMM D, YYYY');
   };
 
   return (
@@ -161,7 +168,10 @@ function ActivateAdsPopup({
         <Box sx={{ display: "flex", gap: 2 }}>
           <Box sx={{ flex: 1, alignSelf: { xs: "start", sm: "center" } }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              Activate your link
+              {isFromUniqueUrl ? "Extend" : "Activate"} your link
+            </Typography>
+            <Typography sx={{fontSize:'12px'}}>
+              {isFromUniqueUrl && `till ${calculateNewExpiryDate()}`}
             </Typography>
             <Typography
               variant="subtitle2"
@@ -272,7 +282,7 @@ function ActivateAdsPopup({
               size="small"
               onClick={handleActivateClick}
               disabled={isLoading}
-              ButtonText={isLoading ? "Activating" : "Activate"}
+              ButtonText={isLoading ? "Activating" : isFromUniqueUrl ? "Extend" : "Activate"}
             />
 
             <Typography

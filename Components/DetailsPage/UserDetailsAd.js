@@ -30,9 +30,8 @@ import DoneIcon from "@mui/icons-material/Done";
 import { capitalLizeName, formatDateAndDaysRemaining } from "utills/CommonFunction";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddLinkIcon from '@mui/icons-material/AddLink';
-import ShareIcon from '@mui/icons-material/Share';
 import { useSnackbar } from "utills/SnackbarContext";
-
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 function UserDetailsAd({
   AllPropertyData,
   contactPermissionToView,
@@ -300,11 +299,11 @@ function UserDetailsAd({
                         'aria-labelledby': 'basic-button',
                       }}
                     >
-                      <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}><AddLinkIcon sx={{ fontSize: "20px", marginRight: "10px" }} /> {true ? "Extend" : "Activate link"} </MenuItem>
+                      <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}><AddLinkIcon sx={{ fontSize: "20px", marginRight: "10px" }} /> {true ? "Extend your link" : "Activate link"} </MenuItem>
                       {true ? (
-                        <MenuItem onClick={() => copyToClipboard(propertyUrl)}><ShareIcon sx={{ fontSize: "18px", marginRight: "10px" }} /> Share</MenuItem>
+                        <MenuItem onClick={() => copyToClipboard(propertyUrl)}><ContentCopyIcon sx={{ fontSize: "18px", marginRight: "10px" }} />Copy activated url</MenuItem>
                       ) : (
-                        <MenuItem sx={{ cursor: 'not-allowed' }}><ShareIcon sx={{ fontSize: "18px", marginRight: "10px" }} /> Share</MenuItem>
+                        <MenuItem sx={{ cursor: 'not-allowed' }}><ContentCopyIcon sx={{ fontSize: "18px", marginRight: "10px" }} />Copy activated url</MenuItem>
                       )}
                     </Menu>
                   </Box>
