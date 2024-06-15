@@ -453,131 +453,130 @@ function PropertyList({ params }) {
 
   return (
     <>
-      <>
-        {(isLoading?.loader1 || isLoading?.loader2) && <Loader />}
-        <Container maxWidth="lg" sx={{ height: "100%" }}>
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <Card
-              sx={{
-                display: { xs: "none", md: "block" },
-                pl: 2,
-                pt: 2,
-                pr: 1,
-                pb: 2,
-                width: 220,
-                height: "max-content",
-                overflowY: "scroll",
-              }}
-            >
-              <Grid container spacing={2}>
-                {getFilterFields()}
-                <Grid item xs={12} sx={{ alignSelf: "center" }}>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ alignSelf: "center", color: colors.GRAY }}
-                  >
-                    Sort by
-                  </Typography>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={alignment}
-                    exclusive
-                    onChange={handleChangeData}
-                    aria-label="Platform"
-                    sx={{ display: "flex" }}
-                    size="small"
-                    orientation="vertical"
-                  >
-                    <ToggleButton
-                      value="score"
-                      selected={propertyvalue === "score"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Score{" "}
-                      {propertyvalue === "score" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                    <ToggleButton
-                      value="price"
-                      selected={propertyvalue === "price"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Price{" "}
-                      {propertyvalue === "price" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                    <ToggleButton
-                      value="area"
-                      selected={propertyvalue === "area"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Area{" "}
-                      {propertyvalue === "area" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                    <ToggleButton
-                      value="completion"
-                      selected={propertyvalue === "completion"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Completion{" "}
-                      {propertyvalue === "completion" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </Grid>
-                <Grid
-                  item
-                  xs={36}
-                  sm={36}
-                  md={6}
-                  sx={{ textAlign: "end", alignSelf: "end" }}
+      {(isLoading?.loader1 || isLoading?.loader2) && <Loader />}
+      <Container maxWidth="lg" sx={{ height: "100%" }}>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Card
+            sx={{
+              display: { xs: "none", md: "block" },
+              pl: 2,
+              pt: 2,
+              pr: 1,
+              pb: 2,
+              width: 220,
+              height: "max-content",
+              overflowY: "scroll",
+            }}
+          >
+            <Grid container spacing={2}>
+              {getFilterFields()}
+              <Grid item xs={12} sx={{ alignSelf: "center" }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ alignSelf: "center", color: colors.GRAY }}
                 >
-                  <Button
-                    variant="h6"
-                    sx={{
-                      fontWeight: 600,
-                      color: "white",
-                      background: colors?.BLACK,
-                      "&:hover": {
-                        backgroundColor: colors?.BLACK,
-                        boxShadow: "none",
-                      },
-                    }}
-                    startIcon={<CloseIcon />}
-                    onClick={handleReset}
+                  Sort by
+                </Typography>
+                <ToggleButtonGroup
+                  color="primary"
+                  value={alignment}
+                  exclusive
+                  onChange={handleChangeData}
+                  aria-label="Platform"
+                  sx={{ display: "flex" }}
+                  size="small"
+                  orientation="vertical"
+                >
+                  <ToggleButton
+                    value="score"
+                    selected={propertyvalue === "score"}
+                    sx={{ flex: 1, justifyContent: "flex-start" }}
                   >
-                    Reset
-                  </Button>
-                </Grid>
+                    Score
+                    {propertyvalue === "score" &&
+                      (alignment === -1 ? (
+                        <ArrowDownwardIcon fontSize="small" />
+                      ) : (
+                        <ArrowUpwardIcon fontSize="small" />
+                      ))}
+                  </ToggleButton>
+                  <ToggleButton
+                    value="price"
+                    selected={propertyvalue === "price"}
+                    sx={{ flex: 1, justifyContent: "flex-start" }}
+                  >
+                    Price
+                    {propertyvalue === "price" &&
+                      (alignment === -1 ? (
+                        <ArrowDownwardIcon fontSize="small" />
+                      ) : (
+                        <ArrowUpwardIcon fontSize="small" />
+                      ))}
+                  </ToggleButton>
+                  <ToggleButton
+                    value="area"
+                    selected={propertyvalue === "area"}
+                    sx={{ flex: 1, justifyContent: "flex-start" }}
+                  >
+                    Rate (Per Unit)
+                    {propertyvalue === "area" &&
+                      (alignment === -1 ? (
+                        <ArrowDownwardIcon fontSize="small" />
+                      ) : (
+                        <ArrowUpwardIcon fontSize="small" />
+                      ))}
+                  </ToggleButton>
+                  <ToggleButton
+                    value="completion"
+                    selected={propertyvalue === "completion"}
+                    sx={{ flex: 1, justifyContent: "flex-start" }}
+                  >
+                    Completion
+                    {propertyvalue === "completion" &&
+                      (alignment === -1 ? (
+                        <ArrowDownwardIcon fontSize="small" />
+                      ) : (
+                        <ArrowUpwardIcon fontSize="small" />
+                      ))}
+                  </ToggleButton>
+                </ToggleButtonGroup>
               </Grid>
-            </Card>
-            <Box sx={{ flex: 1 }}>
-              <Grid container spacing={2}>
-                {params.location && (
-                  <Grid item xs={36}>
-                    <Card>
-                      <Grid
-                        container
-                        sx={{ display: "flex", flexDirection: "row-reverse" }}
-                      >
-                        {/* <Grid item xs={12} sm={6}>
+              <Grid
+                item
+                xs={36}
+                sm={36}
+                md={6}
+                sx={{ textAlign: "end", alignSelf: "end" }}
+              >
+                <Button
+                  variant="h6"
+                  sx={{
+                    fontWeight: 600,
+                    color: "white",
+                    background: colors?.BLACK,
+                    "&:hover": {
+                      backgroundColor: colors?.BLACK,
+                      boxShadow: "none",
+                    },
+                  }}
+                  startIcon={<CloseIcon />}
+                  onClick={handleReset}
+                >
+                  Reset
+                </Button>
+              </Grid>
+            </Grid>
+          </Card>
+          <Box sx={{ flex: 1 }}>
+            <Grid container spacing={2}>
+              {params.location && (
+                <Grid item xs={36}>
+                  <Card>
+                    <Grid
+                      container
+                      sx={{ display: "flex", flexDirection: "row-reverse" }}
+                    >
+                      {/* <Grid item xs={12} sm={6}>
                   <Card sx={{ boxShadow: "none" }}>
                     <iframe
                       src="https://www.google.com/maps/embed?pb=!1m12!1m12!1m3!1d30144.970768064195!2d72.8535903!3d19.1299016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6ee06ebad2b%3A0x9c288235c433657d!2sInfiniti%20Mall!5e0!3m2!1sen!2sin!4v1694174929476!5m2!1sen!2sin"
@@ -589,84 +588,79 @@ function PropertyList({ params }) {
                   </Card>
                 </Grid> */}
 
-                        <Grid item xs={12}>
-                          <Card
-                            sx={{
-                              p: 2,
-                              height: "100%",
-                              boxShadow: "none",
-                            }}
-                          >
-                            <Typography variant="h2">
-                              {decodeURIComponent(params.location)}
-                            </Typography>
-                            <Typography variant="caption">
-                              Noida's strategic location, robust infrastructure,
-                              and flourishing business environment have
-                              contributed to its status as a vibrant and
-                              attractive real estate destination in the NCR
-                              region.
-                            </Typography>
-                          </Card>
-                        </Grid>
+                      <Grid item xs={12}>
+                        <Card
+                          sx={{
+                            p: 2,
+                            height: "100%",
+                            boxShadow: "none",
+                          }}
+                        >
+                          <Typography variant="h2">
+                            {decodeURIComponent(params.location)}
+                          </Typography>
+                          <Typography variant="caption">
+                            Noida's strategic location, robust infrastructure,
+                            and flourishing business environment have
+                            contributed to its status as a vibrant and
+                            attractive real estate destination in the NCR
+                            region.
+                          </Typography>
+                        </Card>
                       </Grid>
-                    </Card>
-                  </Grid>
-                )}
-                <Grid item xs={36}>
-                  <Card>
-                    <CustomSearch
-                      value={searchTerm}
-                      onChange={(event) =>
-                        setSearchTerm(event.target.value.toLowerCase())
-                      }
-                      onSearchButtonClick={handleSearchButtonClick}
-                      inputRef={inputRef}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleSearchButtonClick();
-                        }
-                      }}
-                    />
+                    </Grid>
                   </Card>
                 </Grid>
-                <Grid item xs={36}>
-                  {count?.totalCount === 0 ? (
-                    <NoDataCard />
-                  ) : (
-                    <Grid container spacing={1}>
-                      {property?.map((propertyDetails) => (
-                        <Grid item xs={12} key={propertyDetails?._id}>
-                          <PropertyCard
-                            createdDate={propertyDetails?.created_at}
-                            isShortListPageCard={propertyDetails?.isFav}
-                            propertyDetails={propertyDetails}
-                          />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  )}
-                </Grid>
-                <Grid
-                  item
-                  xs={36}
-                  sx={{ marginLeft: "auto", marginRight: "0" }}
-                >
-                  <TablePagination
-                    rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-                    component="div"
-                    count={count?.totalCount || 0}
-                    rowsPerPage={pageLimit}
-                    page={currentPage - 1}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+              )}
+              <Grid item xs={36}>
+                <Card>
+                  <CustomSearch
+                    value={searchTerm}
+                    onChange={(event) =>
+                      setSearchTerm(event.target.value.toLowerCase())
+                    }
+                    onSearchButtonClick={handleSearchButtonClick}
+                    inputRef={inputRef}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSearchButtonClick();
+                      }
+                    }}
                   />
-                </Grid>
+                </Card>
               </Grid>
-            </Box>
+              <Grid item xs={36}>
+                {count?.totalCount === 0 ? (
+                  <NoDataCard />
+                ) : (
+                  <Grid container spacing={1}>
+                    {property?.map((propertyDetails) => (
+                      <Grid item xs={12} key={propertyDetails?._id}>
+                        <PropertyCard
+                          createdDate={propertyDetails?.created_at}
+                          isShortListPageCard={propertyDetails?.isFav}
+                          propertyDetails={propertyDetails}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                )}
+              </Grid>
+              <Grid item xs={36} sx={{ marginLeft: "auto", marginRight: "0" }}>
+                <TablePagination
+                  rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+                  component="div"
+                  count={count?.totalCount || 0}
+                  rowsPerPage={pageLimit}
+                  page={currentPage - 1}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </Grid>
+            </Grid>
           </Box>
-        </Container>
-      </>
+        </Box>
+      </Container>
     </>
   );
 }
