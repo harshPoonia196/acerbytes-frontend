@@ -10,7 +10,8 @@ import {
   Grid,
   Radio,
   RadioGroup,
-  FormControlLabel 
+  FormControlLabel,
+  Chip
 } from "@mui/material";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { formatAmount } from "utills/CommonFunction";
@@ -19,15 +20,18 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { PropertyPlanPoints } from "api/Property.api";
 import { getBrokerBalance } from "api/Broker.api";
 import { useAuth } from "utills/AuthContext";
+import AddCardIcon from "@mui/icons-material/AddCard";
+import { listOfPages } from "Components/NavBar/Links";
+import { useRouter } from "next/navigation";
 
-function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetProperty }) {
+function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetProperty, brokerBalance }) {
   const { setBrokerPoints } = useAuth();
   const [loadingStates, setLoadingStates] = useState({});
   const { openSnackbar } = useSnackbar();
   const showToaterMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
-
+  const router = useRouter();
   const handleByPlanClick = async (duration, planId) => {
     const adData = {
       durationInMonths: duration
@@ -87,9 +91,20 @@ function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetPrope
       onClose={handleClose}
     >
       <DialogTitle onClose={handleClose}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center"}}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
           Request for purchase plan
         </Typography>
+        <CustomButton
+          startIcon={<AddCardIcon fontSize="small" />}
+          variant="outlined"
+          size="small"
+          onClick={() =>
+            router.push(listOfPages.consultantPaymentHistory)
+          }
+          ButtonText={"Add points"}
+        />
+        </Box>
       </DialogTitle>
       <DialogContent
         sx={{ maxWidth: "100%", width: "100%", overflowY: "scroll" }}
@@ -100,7 +115,7 @@ function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetPrope
             value={value}
             onChange={handleChange}
         >
-        <Grid container spacing={1} sx={{ p: 2 }}>
+        <Grid container spacing={1} sx={{ pt: 2 }}>
           {BuyConsultanttPoints?.map((credit, index) => {
             return (
               <>
@@ -113,13 +128,13 @@ function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetPrope
                         variant="body1"
                         sx={{ flex: 1, alignSelf: "center" }}
                       >
-                        {credit?.month} plan
+                        {credit?.month}{credit?.month !== "1 month" ? "s": null} plan
                       </Typography>
                         <Typography variant="subtitle2">
                         <span style={{ fontWeight: 600 }}>
                           {credit?.discountAmount}
-                        </span>{" "}
-                        ({credit?.discount}% discount) Points
+                        </span>{" "} Points
+                        ({credit?.discount}% discount) 
                       </Typography>
                       </Box>
                       {/* <Box>
@@ -140,8 +155,15 @@ function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetPrope
         </Grid>
         </RadioGroup>
       </DialogContent>
-      <DialogActions>
-        <Box sx={{ textAlign: "end" }}>
+      <DialogActions sx={{ justifyContent: "space-between", alignItems: "center", pt: 1}}>
+      
+        <Chip
+              variant="contained"
+              sx={{ marginRight: "10px"}}
+              color="primary"
+              label={`Balance: ${brokerBalance} points`}
+            ></Chip>
+        
           <CustomButton
             variant="contained"
             size="small"
@@ -150,14 +172,7 @@ function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetPrope
             ButtonText={"Buy Now"}
             sx={{ mr: "5px"}}
           />
-          <CustomButton
-            variant="contained"
-            onClick={() => {
-              handleClose();
-            }}
-            ButtonText={"Close"}
-          />
-        </Box>
+       
       </DialogActions>
     </Dialog>
   );

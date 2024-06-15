@@ -675,6 +675,7 @@ const PropertyDetailsPage = ({ params }) => {
                         gap: 1,
                       }}
                     >
+                      {propertyData?.isConsultant === false && (
                       <Box sx={{ flex: 1, alignSelf: "center" }}>
                         <Typography variant="body2" sx={{ flex: 1 }}>
                           Are you a{" "}
@@ -683,7 +684,7 @@ const PropertyDetailsPage = ({ params }) => {
                           </span>{" "}
                           let Customers reach you
                         </Typography>
-                      </Box>
+                      </Box>)}
                       {propertyData?.isConsultant === false && (
                         <Box sx={{ alignSelf: { xs: "end" } }}>
                           <Chip
@@ -709,6 +710,7 @@ const PropertyDetailsPage = ({ params }) => {
                 handleClose={handleCloseConsultantDetails}
                 detailsPropertyId={detailsPropertyId}
                 detailsGetProperty={detailsGetProperty}
+                brokerBalance={brokerBalance}
               />
             )}
 
