@@ -20,6 +20,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { PropertyPlanPoints } from "api/Property.api";
 import { buyNotesPoints, getBrokerBalance } from "api/Broker.api";
 import { useAuth } from "utills/AuthContext";
+import AddCardIcon from "@mui/icons-material/AddCard";
 
 function NoteSubscription({ open, handleClose, getList }) {
   const { setBrokerPoints, brokerBalance } = useAuth(),
@@ -75,7 +76,7 @@ function NoteSubscription({ open, handleClose, getList }) {
       console.log("event",event)
       setSubscribeItem({value: event.target.value});
     };
-    console.log("value", subscribeItem)
+    
   return (
     <Dialog
       sx={{
@@ -85,9 +86,20 @@ function NoteSubscription({ open, handleClose, getList }) {
       onClose={handleClose}
     >
       <DialogTitle onClose={handleClose}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center"}}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
           Request for Plan Subscribe
         </Typography>
+        <CustomButton
+          startIcon={<AddCardIcon fontSize="small" />}
+          variant="outlined"
+          size="small"
+          onClick={() =>
+            router.push(listOfPages.consultantPaymentHistory)
+          }
+          ButtonText={"Add points"}
+        />
+        </Box>
       </DialogTitle>
       <DialogContent>
         
@@ -105,7 +117,7 @@ function NoteSubscription({ open, handleClose, getList }) {
                   <Card sx={{ p: 1 }}>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <Box>
-                        <FormControlLabel value={credit.value} control={<Radio />}/>
+                        <FormControlLabel value={credit.value} control={<Radio />} style={{ marginRight: "0px"}} />
                       </Box>
                       <Box>
                       <Typography
@@ -116,7 +128,7 @@ function NoteSubscription({ open, handleClose, getList }) {
                         </Typography>
                         <Typography variant="subtitle2">
                       <span style={{ fontWeight: 600 }}>
-                        {formatPoints(credit?.discountAmount)}
+                        {formatPoints(credit?.discountAmount)} Points
                       </span>{" "}
                       ({credit?.discount}% discount)
                     </Typography>
@@ -141,7 +153,7 @@ function NoteSubscription({ open, handleClose, getList }) {
           </RadioGroup>
         
       </DialogContent>
-      <DialogActions sx={{justifyContent: 'space-between'}}>
+      <DialogActions sx={{justifyContent: 'space-between', pt: 1}}>
         <Box sx={{ fontWeight: 700}}>
           <Chip label={`Balance: ${brokerBalance}`} color="primary"></Chip>
         </Box>
@@ -150,17 +162,16 @@ function NoteSubscription({ open, handleClose, getList }) {
             <CustomButton
               variant="contained"
               size="small"
-              sx={{ mr: 1}}
               ButtonText={`Subscribe`}
             />
           
-          <CustomButton
+          {/* <CustomButton
             variant="contained"
             onClick={() => {
               handleClose();
             }}
             ButtonText={"Close"}
-          />
+          /> */}
         </Box>
       </DialogActions>
     </Dialog>
