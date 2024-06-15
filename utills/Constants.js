@@ -120,7 +120,7 @@ export const BuyingCreditPoints = [
   },
 ];
 
-export const BuyConsultanttPoints = [
+export const BuyConsultantPoints = [
   {
     amount: 2000,
     month: "1 month",

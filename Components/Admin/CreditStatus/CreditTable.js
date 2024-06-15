@@ -19,7 +19,7 @@ import {
   Container,
   Typography,
   Grid,
-  ListItemIcon
+  ListItemIcon,
 } from "@mui/material";
 
 import {
@@ -53,7 +53,7 @@ import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { ORDER_STATUS, ToasterMessages } from "utills/Constants";
 import { countryCodeFormating } from "utills/utills";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
-import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import CreditScoreIcon from "@mui/icons-material/CreditScore";
 
 const headCells = [
   {
@@ -75,22 +75,22 @@ const headCells = [
   {
     id: "lastTopupAmount",
     label: "Last topup Points",
-    numeric: true
+    numeric: true,
   },
   {
     id: "opening",
     label: "Opening",
-    numeric: true
+    numeric: true,
   },
   {
     id: "consumedSoFar",
     label: "Consumed so far",
-    numeric: true
+    numeric: true,
   },
   {
     id: "balance",
     label: "Balance",
-    numeric: true
+    numeric: true,
   },
   {
     id: "action",
@@ -121,9 +121,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-           
-                {headCell.label}
-            
+              {headCell.label}
 
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
@@ -166,8 +164,12 @@ function RowStructure({ row, adminAssignPointsHandler }) {
         hover
         key={row._id}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = "#f5f5f5";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = "transparent";
+        }}
       >
         <TableCell>
           {row?.brokerDetails?.name?.firstName}{" "}
@@ -179,23 +181,31 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           {row?.brokerDetails?.phone?.number}
         </TableCell>
         <TableCell>{formatDate(row.createdAt)}</TableCell>
-        <TableCell sx={{ textAlign: "right" }}>{formatPoints(row.newPoints)}</TableCell>
-        <TableCell sx={{ textAlign: "right" }}>{formatPoints(row.openingPoints)}</TableCell>
-        <TableCell sx={{ textAlign: "right" }}>{formatPoints(row.consumedPoints)}</TableCell>
-        <TableCell sx={{ textAlign: "right" }}>{formatAmount(row?.brokerBalance?.balance || 0)}</TableCell>
+        <TableCell sx={{ textAlign: "right" }}>
+          {formatPoints(row.newPoints)}
+        </TableCell>
+        <TableCell sx={{ textAlign: "right" }}>
+          {formatPoints(row.openingPoints)}
+        </TableCell>
+        <TableCell sx={{ textAlign: "right" }}>
+          {formatPoints(row.consumedPoints)}
+        </TableCell>
+        <TableCell sx={{ textAlign: "right" }}>
+          {formatAmount(row?.brokerBalance?.balance || 0)}
+        </TableCell>
         <TableCell>
-        <Tooltip title="More">
-          <IconButton
-            aria-label="more"
-            id="long-button"
-            aria-controls={open ? "long-menu" : undefined}
-            aria-expanded={open ? "true" : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-            size="small"
-          >
-            <MoreVertIcon fontSize="1rem" />
-          </IconButton>
+          <Tooltip title="More">
+            <IconButton
+              aria-label="more"
+              id="long-button"
+              aria-controls={open ? "long-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
+              size="small"
+            >
+              <MoreVertIcon fontSize="1rem" />
+            </IconButton>
           </Tooltip>
         </TableCell>
         <Menu
@@ -207,16 +217,19 @@ function RowStructure({ row, adminAssignPointsHandler }) {
             "aria-labelledby": "basic-button",
           }}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
+            vertical: "top",
+            horizontal: "left",
           }}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
+            vertical: "top",
+            horizontal: "left",
           }}
         >
           <MenuItem onClick={() => handlePopuChange(true)}>
-            <ListItemIcon><CreditScoreIcon fontSize="small"/></ListItemIcon> Assign points
+            <ListItemIcon>
+              <CreditScoreIcon fontSize="small" />
+            </ListItemIcon>{" "}
+            Assign points
           </MenuItem>
         </Menu>
       </TableRow>
@@ -238,7 +251,7 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER); // Adjust the debounce delay as needed
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -266,7 +279,11 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
     return () => {
       debouncedSearch.cancel();
     };
-  }, [userDetails && Object.keys(userDetails).length, searchTerm, initialMount]);
+  }, [
+    userDetails && Object.keys(userDetails).length,
+    searchTerm,
+    initialMount,
+  ]);
 
   const getCreditPointList = async (queryParams, searchTerms = searchTerm) => {
     try {
@@ -288,14 +305,14 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
         });
         onDashboardDataUpdate({
           countInfo: { count: response?.data?.totalCount } || {},
-          userDetails
+          userDetails,
         });
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error creating order request",
+          error?.message ||
+          "Error creating order request",
         "error"
       );
     } finally {
@@ -364,17 +381,17 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
       setLoading(true);
       const response = await completeOrderRequest(payload);
       if (response.status == 200) {
-        showToaterMessages(ToasterMessages.ORDER_COMPLETED_SUCCESS, "success");
+        showTostMessages(ToasterMessages.ORDER_COMPLETED_SUCCESS, "success");
         getCreditPointList({
           pageLimit: rowsPerPage,
           page,
         });
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error creating order request",
+          error?.message ||
+          "Error creating order request",
         "error"
       );
     } finally {
@@ -383,65 +400,76 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
     }
   };
 
-  return <Box sx={{ width: "100%" }}>
-    <InfoBox label='Credit points status'
-      button={<CustomButton
-        variant="contained"
-        onClick={() => setOpenAddCreditPoints(true)}
-        startIcon={<Add />}
-        ButtonText={"Credit points"}
-      />}
-      dataList={[{ label: 'Paid Consultants', value: dashboardInfo.count }]}
-    />
-
-    <Container>
-      {isLoading && <Loading />}
-
-      <AdminCreditPointsPopup
-        open={openAddCreditPoints}
-        handleClose={handleCloseAddCreditPopup}
-        handleSubmit={adminAssignPointsHandler}
+  return (
+    <Box sx={{ width: "100%" }}>
+      <InfoBox
+        label="Credit points status"
+        button={
+          <CustomButton
+            variant="contained"
+            onClick={() => setOpenAddCreditPoints(true)}
+            startIcon={<Add />}
+            ButtonText={"Credit points"}
+          />
+        }
+        dataList={[{ label: "Paid Consultants", value: dashboardInfo.count }]}
       />
 
-      <Card sx={{ mb: 2 }}>
-        <CustomSearchInput
-          label="Search"
-          variant="outlined"
-          value={searchTerm}
-          onChange={handleSearch}
+      <Container>
+        {isLoading && <Loading />}
+
+        <AdminCreditPointsPopup
+          open={openAddCreditPoints}
+          handleClose={handleCloseAddCreditPopup}
+          handleSubmit={adminAssignPointsHandler}
         />
-      </Card>
-      {
-        creditPointList?.list?.length > 0 ? (<TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {creditPointList?.list?.map((row) => (
-                <RowStructure
-                  row={row}
-                  key={row.firstName}
-                  adminAssignPointsHandler={adminAssignPointsHandler}
-                />
-              ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-            component="div"
-            count={creditPointList.totalCount}
-            rowsPerPage={rowsPerPage}
-            page={page - 1}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+
+        <Card sx={{ mb: 2 }}>
+          <CustomSearchInput
+            label="Search"
+            variant="outlined"
+            value={searchTerm}
+            onChange={handleSearch}
           />
-        </TableContainer>) : <NoDataCard title={"No data found"} />
-      }
-    </Container>
-  </Box>
+        </Card>
+        {creditPointList?.list?.length > 0 ? (
+          <TableContainer component={Paper}>
+            <Table
+              sx={{ minWidth: 650 }}
+              size="small"
+              aria-label="a dense table"
+            >
+              <EnhancedTableHead
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+              />
+              <TableBody>
+                {creditPointList?.list?.map((row) => (
+                  <RowStructure
+                    row={row}
+                    key={row.firstName}
+                    adminAssignPointsHandler={adminAssignPointsHandler}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+            <TablePagination
+              rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+              component="div"
+              count={creditPointList.totalCount}
+              rowsPerPage={rowsPerPage}
+              page={page - 1}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableContainer>
+        ) : (
+          <NoDataCard title={"No data found"} />
+        )}
+      </Container>
+    </Box>
+  );
 }
 
 export default CreditTable;

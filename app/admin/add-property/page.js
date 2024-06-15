@@ -364,7 +364,7 @@ function AddProperty() {
         setForm({ ...data });
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -408,7 +408,7 @@ function AddProperty() {
     }
   };
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -420,7 +420,7 @@ function AddProperty() {
         setCities(res.data.data[0]);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -481,7 +481,7 @@ function AddProperty() {
         setLoading(false);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -1159,7 +1159,7 @@ function AddProperty() {
           ...form,
           marketing: { ...form.marketing, image: e },
         });
-      }  else {
+      } else {
         let value = e?.target
           ? thirdKeyName === "checked"
             ? e.target.checked

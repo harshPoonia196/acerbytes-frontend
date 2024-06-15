@@ -28,7 +28,7 @@ import CustomSearch from "Components/CommonLayouts/CustomSearch";
 import { useAuth } from "utills/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import LinkIcon from '@mui/icons-material/Link';
+import LinkIcon from "@mui/icons-material/Link";
 
 const headCells = [
   // {
@@ -54,7 +54,7 @@ const headCells = [
   {
     id: "pageViewCount",
     label: "Page views",
-    numeric: true
+    numeric: true,
   },
   {
     id: "link",
@@ -89,7 +89,8 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell sx={{ textTransform: "none" }}
+          <TableCell
+            sx={{ textTransform: "none" }}
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
@@ -115,13 +116,15 @@ function EnhancedTableHead(props) {
 }
 
 function RowStructure({ row, history }) {
-
   const copyToClipboard = (link) => {
-    navigator.clipboard.writeText(link).then(() => {
-      console.log('Link copied to clipboard!');
-    }, (err) => {
-      console.error('Could not copy link: ', err);
-    });
+    navigator.clipboard.writeText(link).then(
+      () => {
+        console.log("Link copied to clipboard!");
+      },
+      (err) => {
+        console.error("Could not copy link: ", err);
+      }
+    );
   };
 
   const calculateDaysRemaining = (expiresAt) => {
@@ -132,7 +135,7 @@ function RowStructure({ row, history }) {
     const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
 
     return differenceInDays;
-  }
+  };
 
   const expiresInDisplay = (expiresAt) => {
     const daysRemaining = calculateDaysRemaining(expiresAt);
@@ -144,19 +147,35 @@ function RowStructure({ row, history }) {
   };
 
   return (
-    <TableRow hover
+    <TableRow
+      hover
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       {/* <TableCell>{row?.consultantName}</TableCell> */}
       <TableCell>{row?.phone}</TableCell>
       <TableCell>{row?.propertyType}</TableCell>
-      <TableCell><Link href={row?.link} style={{textDecoration: 'none'}} sx={{ position: "relative", top: "-4px"}}><Tooltip title="Link"><LinkIcon sx={{ fontSize: "17px", position: "relative", top: "4px"}} fontSize="small"/></Tooltip>{row?.propertyName}</Link></TableCell>
+      <TableCell>
+        <Link
+          href={row?.link}
+          style={{ textDecoration: "none" }}
+          sx={{ position: "relative", top: "-4px" }}
+        >
+          <Tooltip title="Link">
+            <LinkIcon
+              sx={{ fontSize: "17px", position: "relative", top: "4px" }}
+              fontSize="small"
+            />
+          </Tooltip>
+          {row?.propertyName}
+        </Link>
+      </TableCell>
       <TableCell>{row?.city}</TableCell>
       <TableCell align="right">{row?.PageViewCount || "-"}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy link">
-          <IconButton sx={{ fontSize: "1rem !important" }}
+          <IconButton
+            sx={{ fontSize: "1rem !important" }}
             onClick={() => copyToClipboard(row?.link)}
           >
             <ContentCopyIcon fontSize="1rem" />
@@ -167,17 +186,21 @@ function RowStructure({ row, history }) {
         <Chip
           label={row.status}
           size="small"
-          onClick={() => { history.push(row?.link) }}
+          onClick={() => {
+            history.push(row?.link);
+          }}
           color={
             row.status === "Active"
               ? "success"
               : row.status === "Expired"
-                ? "error"
-                : "warning"
+              ? "error"
+              : "warning"
           }
         />
       </TableCell>
-      <TableCell>{formatDate(row?.validFrom)} - {formatDate(row?.validTo)}</TableCell>
+      <TableCell>
+        {formatDate(row?.validFrom)} - {formatDate(row?.validTo)}
+      </TableCell>
       <TableCell>
         {row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
       </TableCell>
@@ -186,8 +209,7 @@ function RowStructure({ row, history }) {
 }
 
 function MyLinksTable({ setCount }) {
-
-  const history = useRouter()
+  const history = useRouter();
 
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(null);
@@ -202,17 +224,29 @@ function MyLinksTable({ setCount }) {
     const overview = propertyDetailsData?.propertyData?.overview;
     const location = propertyDetailsData?.propertyData?.location;
 
-    const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+    const projectCategory = (
+      overview?.projectCategory.trim() ?? "category"
+    ).replace(/\s+/g, "-");
     let projectType;
     if (overview?.projectType?.length > 0) {
-      projectType = overview.projectType.map(type => type?.value.trim().replace(/\s+/g, '-')).join("-");
+      projectType = overview.projectType
+        .map((type) => type?.value.trim().replace(/\s+/g, "-"))
+        .join("-");
     } else {
-      projectType = 'type';
+      projectType = "type";
     }
-    const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
-    const sector = (location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-');
-    const area = (location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '');
-    const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+    const city = (location?.city.trim() ?? "city").replace(/\s+/g, "-");
+    const sector = (location?.sector.trim() ?? "sector").replace(
+      /[\s,]+/g,
+      "-"
+    );
+    const area = (location?.area.trim() ?? "area")
+      .replace(/[\s,]+/g, "-")
+      .replace("-#", "");
+    const projectName = (overview?.projectName.trim() ?? "projectName").replace(
+      /\s+/g,
+      "-"
+    );
     const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
 
     return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetailsData._id}`;
@@ -245,7 +279,7 @@ function MyLinksTable({ setCount }) {
 
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -274,10 +308,10 @@ function MyLinksTable({ setCount }) {
         setProperty(res?.data);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -290,8 +324,8 @@ function MyLinksTable({ setCount }) {
       pageLimit,
       page: currentPage,
     };
-    getAlllActiveAdList(pageOptions, searchTerm)
-  }, [currentPage, pageLimit])
+    getAlllActiveAdList(pageOptions, searchTerm);
+  }, [currentPage, pageLimit]);
 
   const handleSearchClick = () => {
     setCurrentPage(1);
@@ -341,42 +375,42 @@ function MyLinksTable({ setCount }) {
           onChange={handleSearch}
           onSearchButtonClick={handleSearchClick}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               handleSearchClick();
             }
           }}
         />
       </Card>
-      {
-        activeAdData?.length > 0 ? (
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
-              <EnhancedTableHead
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-              />
-              <TableBody>
-                {activeAdData?.map((row) => (
-                  <RowStructure row={row} key={row?.id} history={history} />
-                ))}
-              </TableBody>
-            </Table>
-            <TablePagination
-              sx={{
-                overflow: "hidden",
-              }}
-              rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-              component="div"
-              count={property?.totalCount}
-              rowsPerPage={pageLimit}
-              page={currentPage - 1}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+      {activeAdData?.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
             />
-          </TableContainer>
-        ) : <NoDataCard title={"No data found"} />
-      }
+            <TableBody>
+              {activeAdData?.map((row) => (
+                <RowStructure row={row} key={row?.id} history={history} />
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            sx={{
+              overflow: "hidden",
+            }}
+            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+            component="div"
+            count={property?.totalCount}
+            rowsPerPage={pageLimit}
+            page={currentPage - 1}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>
+      ) : (
+        <NoDataCard title={"No data found"} />
+      )}
     </>
   );
 }

@@ -16,7 +16,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import { generateRandorOrderNumber } from "api/Broker.api";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 
 function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
   const [isLoading, setLoading] = React.useState(false);
@@ -28,7 +28,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
 
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -46,10 +46,10 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
         setSalesPersons(response?.data?.data);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error creating order request",
+          error?.message ||
+          "Error creating order request",
         "error"
       );
     } finally {
@@ -64,22 +64,24 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
       const isReset = true;
       if (response.status == 200) {
         const randomNumber = response?.data?.data;
-        updateCreditInfo({
-          target: {
-            name: "orderNumber",
-            value:
-              typeof randomNumber === "string"
-                ? randomNumber.toUpperCase()
-                : "",
+        updateCreditInfo(
+          {
+            target: {
+              name: "orderNumber",
+              value:
+                typeof randomNumber === "string"
+                  ? randomNumber.toUpperCase()
+                  : "",
+            },
           },
-        },
-          isReset);
+          isReset
+        );
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error creating order request",
+          error?.message ||
+          "Error creating order request",
         "error"
       );
     } finally {
@@ -95,10 +97,10 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
         setConsultantsList(response?.data?.data);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error creating order request",
+          error?.message ||
+          "Error creating order request",
         "error"
       );
     } finally {
@@ -169,7 +171,8 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
       sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
       open={open}
       onClose={handleClose}
-    className="creditPopup">
+      className="creditPopup"
+    >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
           Add Credit points for Consultant
@@ -198,11 +201,10 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
             isPoint={true}
             handleChange={updateCreditInfo}
             halfSm
-            
           />
           <NewAutoCompleteInputStructure
             label="Select Property Consultant"
-            variant='standard'
+            variant="standard"
             handleChange={(e, newValue) =>
               updateCreditInfo({
                 target: {
@@ -212,7 +214,9 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
               })
             }
             value={{
-              label: consultantInfo?.firstName ? `${consultantInfo?.firstName} ${consultantInfo?.lastName}` : '',
+              label: consultantInfo?.firstName
+                ? `${consultantInfo?.firstName} ${consultantInfo?.lastName}`
+                : "",
               value: creditInfo?.brokerGoogleID,
             }}
             list={consultantList?.map((rs) => {
@@ -225,7 +229,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
           />
           <NewAutoCompleteInputStructure
             label="Select Sales person"
-            variant='standard'
+            variant="standard"
             handleChange={(e, newValue) =>
               updateCreditInfo({
                 target: {
@@ -257,7 +261,10 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
             justifyContent: "space-between",
           }}
         >
-          <CustomButton variant="outlined" sx={{ mr: 2 }} onClick={handleClose}
+          <CustomButton
+            variant="outlined"
+            sx={{ mr: 2 }}
+            onClick={handleClose}
             ButtonText={"Close"}
           />
           <CustomButton

@@ -30,7 +30,6 @@ import Loader from "Components/CommonLayouts/Loading";
 import CustomSearch from "Components/CommonLayouts/CustomSearch";
 import { useRouter } from "next/navigation";
 
-
 // const rows = []
 const headCells = [
   {
@@ -52,7 +51,7 @@ const headCells = [
   {
     id: "pageViewCount",
     label: "Page views",
-    numeric: true
+    numeric: true,
   },
   {
     id: "link",
@@ -85,23 +84,25 @@ function EnhancedTableHead(props) {
 
   return (
     <>
-      <TableHead >
+      <TableHead>
         <TableRow>
-          {headCells.map((headCell) => (
-            (headCell.id !== 'expiresIn' || alignmentValue === "Active" || alignmentValue === "" || alignmentValue === "Expiring Soon") && (
-              <TableCell
-                key={headCell.id}
-                align={headCell.numeric ? "right" : "left"}
-                padding={headCell.disablePadding ? "none" : "normal"}
-                sortDirection={orderBy === headCell.id ? order : false}
-                sx={{ textTransform: "capitalize", fontWeight: "bold", }}
-              >
-
-                {headCell.label}
-
-              </TableCell>
-            )
-          ))}
+          {headCells.map(
+            (headCell) =>
+              (headCell.id !== "expiresIn" ||
+                alignmentValue === "Active" ||
+                alignmentValue === "" ||
+                alignmentValue === "Expiring Soon") && (
+                <TableCell
+                  key={headCell.id}
+                  align={headCell.numeric ? "right" : "left"}
+                  padding={headCell.disablePadding ? "none" : "normal"}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                  sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+                >
+                  {headCell.label}
+                </TableCell>
+              )
+          )}
         </TableRow>
       </TableHead>
     </>
@@ -109,13 +110,15 @@ function EnhancedTableHead(props) {
 }
 
 function RowStructure({ row, alignmentValue, history }) {
-
   const copyToClipboard = (link) => {
-    navigator.clipboard.writeText(link).then(() => {
-      console.log('Link copied to clipboard!');
-    }, (err) => {
-      console.error('Could not copy link: ', err);
-    });
+    navigator.clipboard.writeText(link).then(
+      () => {
+        console.log("Link copied to clipboard!");
+      },
+      (err) => {
+        console.error("Could not copy link: ", err);
+      }
+    );
   };
 
   const calculateDaysRemaining = (expiresAt) => {
@@ -126,7 +129,7 @@ function RowStructure({ row, alignmentValue, history }) {
     const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
 
     return differenceInDays;
-  }
+  };
 
   const expiresInDisplay = (expiresAt) => {
     const daysRemaining = calculateDaysRemaining(expiresAt);
@@ -138,7 +141,8 @@ function RowStructure({ row, alignmentValue, history }) {
   };
 
   return (
-    <TableRow hover
+    <TableRow
+      hover
       key={row?.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
@@ -149,7 +153,8 @@ function RowStructure({ row, alignmentValue, history }) {
       <TableCell align="right">{row?.PageViewCount || "-"}</TableCell>
       <TableCell sx={{ py: 0 }}>
         <Tooltip title="Copy consultant property link">
-          <IconButton sx={{ fontSize: "1rem !important" }}
+          <IconButton
+            sx={{ fontSize: "1rem !important" }}
             onClick={() => copyToClipboard(row?.link)}
           >
             <ContentCopyIcon fontSize="1rem" />
@@ -160,28 +165,33 @@ function RowStructure({ row, alignmentValue, history }) {
         <Chip
           label={row.status}
           size="small"
-          onClick={() => { history.push(row?.link) }}
+          onClick={() => {
+            history.push(row?.link);
+          }}
           color={
             row.status === "Active"
               ? "success"
               : row.status === "Expired"
-                ? "error"
-                : "warning"
+              ? "error"
+              : "warning"
           }
         />
       </TableCell>
-      <TableCell>{formatDate(row?.validFrom)} - {formatDate(row?.validTo)}</TableCell>
+      <TableCell>
+        {formatDate(row?.validFrom)} - {formatDate(row?.validTo)}
+      </TableCell>
       {/* <TableCell>{formatDate(row?.validTo)}</TableCell> */}
       <TableCell sx={{ textAlign: "center" }}>
-        {alignmentValue !== "Expired" && row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
+        {alignmentValue !== "Expired" && row?.expiresIn
+          ? expiresInDisplay(row.expiresIn)
+          : ""}
       </TableCell>
     </TableRow>
   );
 }
 
 function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
-
-  const history = useRouter()
+  const history = useRouter();
 
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(null);
@@ -194,7 +204,7 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
 
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -202,17 +212,29 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
     const overview = propertyDetailsData?.propertyData?.overview;
     const location = propertyDetailsData?.propertyData?.location;
 
-    const projectCategory = (overview?.projectCategory.trim() ?? 'category').replace(/\s+/g, '-');
+    const projectCategory = (
+      overview?.projectCategory.trim() ?? "category"
+    ).replace(/\s+/g, "-");
     let projectType;
     if (overview?.projectType?.length > 0) {
-      projectType = overview.projectType.map(type => type?.value.trim().replace(/\s+/g, '-')).join("-");
+      projectType = overview.projectType
+        .map((type) => type?.value.trim().replace(/\s+/g, "-"))
+        .join("-");
     } else {
-      projectType = 'type';
+      projectType = "type";
     }
-    const city = (location?.city.trim() ?? 'city').replace(/\s+/g, '-');
-    const sector = (location?.sector.trim() ?? 'sector').replace(/[\s,]+/g, '-');
-    const area = (location?.area.trim() ?? 'area').replace(/[\s,]+/g, '-').replace("-#", '');
-    const projectName = (overview?.projectName.trim() ?? 'projectName').replace(/\s+/g, '-');
+    const city = (location?.city.trim() ?? "city").replace(/\s+/g, "-");
+    const sector = (location?.sector.trim() ?? "sector").replace(
+      /[\s,]+/g,
+      "-"
+    );
+    const area = (location?.area.trim() ?? "area")
+      .replace(/[\s,]+/g, "-")
+      .replace("-#", "");
+    const projectName = (overview?.projectName.trim() ?? "projectName").replace(
+      /\s+/g,
+      "-"
+    );
     const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
 
     return `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetailsData._id}`;
@@ -232,8 +254,8 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
         validFrom: item?.created_at,
         validTo: item?.expired_at,
         expiresIn: item?.expired_at,
-        PageViewCount: item?.viewCount
-      }
+        PageViewCount: item?.viewCount,
+      };
     });
   };
 
@@ -258,7 +280,7 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
       const querParams = {
         ...pageOptions,
         ...(searchTerm ? { search: searchTerm } : {}),
-        ...(alignmentValue ? { status: alignmentValue } : {})
+        ...(alignmentValue ? { status: alignmentValue } : {}),
       };
       let res = await getAllActiveAd(objectToQueryString(querParams));
       if (res.status === 200) {
@@ -270,10 +292,10 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
         });
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -286,8 +308,8 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
       pageLimit,
       page: currentPage,
     };
-    getAlllActiveAdList(pageOptions, searchTerm)
-  }, [currentPage, pageLimit, alignmentValue])
+    getAlllActiveAdList(pageOptions, searchTerm);
+  }, [currentPage, pageLimit, alignmentValue]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -341,7 +363,7 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
           onChange={handleSearch}
           onSearchButtonClick={handleSearchClick}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               handleSearchClick();
             }
           }}
@@ -358,7 +380,12 @@ function ConsultantLinksTable({ alignmentValue, onDashboardDataUpdate }) {
             />
             <TableBody>
               {activeAdData?.map((row, index) => (
-                <RowStructure key={index} row={row} alignmentValue={alignmentValue} history={history} />
+                <RowStructure
+                  key={index}
+                  row={row}
+                  alignmentValue={alignmentValue}
+                  history={history}
+                />
               ))}
             </TableBody>
           </Table>

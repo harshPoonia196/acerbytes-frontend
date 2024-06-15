@@ -30,7 +30,7 @@ function ActivateAdsPopup({
   brokerBalance,
   propertyUrl,
   setBrokerPoints,
-  isFromUniqueUrl
+  isFromUniqueUrl,
 }) {
   const router = useRouter();
 
@@ -93,8 +93,16 @@ function ActivateAdsPopup({
   }, [formData]);
 
   useEffect(() => {
-    if (propertyData?.marketing?.tagLine || propertyData?.propertyData?.marketing?.tagLine) {
-      setFormData({ ...formData, title: propertyData?.marketing?.tagLine || propertyData?.propertyData?.marketing?.tagLine });
+    if (
+      propertyData?.marketing?.tagLine ||
+      propertyData?.propertyData?.marketing?.tagLine
+    ) {
+      setFormData({
+        ...formData,
+        title:
+          propertyData?.marketing?.tagLine ||
+          propertyData?.propertyData?.marketing?.tagLine,
+      });
     }
   }, [propertyData]);
 
@@ -105,7 +113,9 @@ function ActivateAdsPopup({
     }
     const adData = {
       broker_id: userId,
-      property_id: isFromUniqueUrl ? propertyData?.property_id : propertyData._id,
+      property_id: isFromUniqueUrl
+        ? propertyData?.property_id
+        : propertyData._id,
       title: formData.title,
       description: formData.description,
       durationInMonths: formData.duration,
@@ -114,13 +124,13 @@ function ActivateAdsPopup({
       setLoading(true);
       const response = await activeadCreate(adData);
       if (response.status == 200) {
-        showToaterMessages(response?.data.message, "success");
+        showTostMessages(response?.data.message, "success");
         detailsGetProperty(isFromUniqueUrl ? false : true);
         handleClose();
-        getBrokerpointBalance();
+        getBrokerPointBalance();
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
         error?.message ||
         "Error generating order number request",
@@ -131,14 +141,14 @@ function ActivateAdsPopup({
     }
   };
 
-  const getBrokerpointBalance = async () => {
+  const getBrokerPointBalance = async () => {
     try {
       const response = await getBrokerBalance();
       if (response.status == 200) {
         setBrokerPoints(response?.data?.data?.balance || 0);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
         error?.message ||
         "Error getbroker balance request",
@@ -148,7 +158,7 @@ function ActivateAdsPopup({
   };
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 

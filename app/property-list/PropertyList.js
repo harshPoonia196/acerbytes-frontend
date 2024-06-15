@@ -109,7 +109,7 @@ function PropertyList({ params }) {
         setCount(res.data.totalCount);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -137,7 +137,7 @@ function PropertyList({ params }) {
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -195,7 +195,7 @@ function PropertyList({ params }) {
         console.log("err");
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -261,7 +261,7 @@ function PropertyList({ params }) {
   };
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 

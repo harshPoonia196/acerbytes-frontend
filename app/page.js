@@ -19,7 +19,7 @@ import { propertyRedirectKey } from "utills/Constants";
 import { propertyByCity } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
 import { useSnackbar } from "utills/SnackbarContext";
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
 export default function Home() {
   const router = useRouter();
@@ -34,10 +34,11 @@ export default function Home() {
         setCityRoute(res?.data?.data);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list", "error"
+          error?.message ||
+          "Error fetching state list",
+        "error"
       );
     } finally {
       setLoading(false);
@@ -50,18 +51,23 @@ export default function Home() {
       clearItem(propertyRedirectKey);
       router.push(isRedirect);
     }
-    getAllPropertyByCity()
+    getAllPropertyByCity();
   }, []);
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
   return (
     <>
       {isLoading && <Loader />}
-      <Container maxWidth="lg" sx={{ paddingBottom: { xs: "110px !important", sm: "90px !important"} }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          paddingBottom: { xs: "110px !important", sm: "90px !important" },
+        }}
+      >
         <Box
           sx={{
             px: { xs: 2, sm: 4 },
@@ -77,7 +83,10 @@ export default function Home() {
               fontSize: { sm: "2em !important", md: "4rem !important" },
             }}
           >
-            <span style={{ color: colors.GRAY, fontWeight: "bold" }}>Empowering better</span> Real Estate decisions
+            <span style={{ color: colors.GRAY, fontWeight: "bold" }}>
+              Empowering better
+            </span>{" "}
+            Real Estate decisions
           </Typography>
 
           <Box
@@ -126,15 +135,32 @@ export default function Home() {
         </Box>
         <Box>
           <Grid container spacing={2} sx={{ justifyContent: "center" }}>
-            <Grid item xs={12} sx={{ textAlign: "center", justifyContent: "center" }}>
-              <Box sx={{ display: 'flex', gap: 1, width: 'fit-content', m: 'auto' }}>
+            <Grid
+              item
+              xs={12}
+              sx={{ textAlign: "center", justifyContent: "center" }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  width: "fit-content",
+                  m: "auto",
+                }}
+              >
                 <AutoAwesomeIcon />
                 <Typography
                   variant="h5"
                   sx={{ textTransform: "lowercase" }}
                   className="urlStylingBackground"
                 >
-                  get insights into <a style={{ color: colors.BLUE, cursor: "pointer" }} onClick={() => router.push(listOfPages.commonPropertyList)}>real estate projects</a>{' '}
+                  get insights into{" "}
+                  <a
+                    style={{ color: colors.BLUE, cursor: "pointer" }}
+                    onClick={() => router.push(listOfPages.commonPropertyList)}
+                  >
+                    real estate projects
+                  </a>{" "}
                   across the cities below
                 </Typography>
               </Box>
@@ -145,11 +171,17 @@ export default function Home() {
                   <CardActionArea
                     sx={{ p: 2, textAlign: "center" }}
                     onClick={() => {
-                      router.push(listOfPages.commonPropertyList + `/${city?.city}`);
+                      router.push(
+                        listOfPages.commonPropertyList + `/${city?.city}`
+                      );
                     }}
                   >
-                    <Typography variant="h3" sx={{ fontWeight: "bold"}}>{city?.city}</Typography>
-                    <Typography variant="h6">{city?.propertyCount} Properties</Typography>
+                    <Typography variant="h3" sx={{ fontWeight: "bold" }}>
+                      {city?.city}
+                    </Typography>
+                    <Typography variant="h6">
+                      {city?.propertyCount} Properties
+                    </Typography>
                   </CardActionArea>
                 </Card>
               </Grid>

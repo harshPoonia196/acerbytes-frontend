@@ -47,7 +47,7 @@ function Brokers() {
   }, [searchTerm]);
 
   const { openSnackbar } = useSnackbar(),
-    showToaterMessages = (message, severity) => {
+    showTostMessages = (message, severity) => {
       openSnackbar(message, severity);
     };
 
@@ -65,7 +65,7 @@ function Brokers() {
         setTotalPage(total);
         setConsultantList({ rows: data, totalCount });
       } catch (error) {
-        showToaterMessages(error.message, "error");
+        showTostMessages(error.message, "error");
       }
     },
     handleChangePage = (event, newPage) => {

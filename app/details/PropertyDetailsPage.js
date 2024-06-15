@@ -145,7 +145,7 @@ const PropertyDetailsPage = ({ params }) => {
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -170,7 +170,7 @@ const PropertyDetailsPage = ({ params }) => {
         detailsGetProperty();
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error generating fav Property",
@@ -182,7 +182,7 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -210,7 +210,7 @@ const PropertyDetailsPage = ({ params }) => {
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",

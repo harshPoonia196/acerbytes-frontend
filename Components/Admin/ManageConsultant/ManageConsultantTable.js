@@ -15,9 +15,7 @@ import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import { useRouter } from "next/navigation";
 import { getBrokerCityList, getBrokersList } from "api/Admin.api";
 import { debounce } from "lodash";
-import {
-  DEBOUNCE_TIMER, SORTING
-} from "utills/Constants";
+import { DEBOUNCE_TIMER, SORTING } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import RowStructure from "./ManageColumnRowStructure";
 import EnhancedTableHead from "./EnhancedManageConsultant";
@@ -30,20 +28,23 @@ function ManageConsultantTable({ user }) {
   const [orderBy, setOrderBy] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
-  const [consultantList, setConsultantList] = useState({ rows: [], totalCount: 0 });
+  const [consultantList, setConsultantList] = useState({
+    rows: [],
+    totalCount: 0,
+  });
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
   const [initialMount, setInitialMount] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [citiesOptions, setCitiesOptions] = useState([]);
-  const [city, setCity] = useState("all")
+  const [city, setCity] = useState("all");
 
   useEffect(() => {
-    getList()
-  }, [rowsPerPage, page, city])
+    getList();
+  }, [rowsPerPage, page, city]);
 
   useEffect(() => {
     if (initialMount) {
-      brokerCityList()
+      brokerCityList();
       setInitialMount(false);
       return;
     }
@@ -52,35 +53,45 @@ function ManageConsultantTable({ user }) {
     return () => {
       debouncedSearch.cancel();
     };
-  }, [searchTerm])
+  }, [searchTerm]);
 
   const { openSnackbar } = useSnackbar(),
-    showToaterMessages = (message, severity) => {
+    showTostMessages = (message, severity) => {
       openSnackbar(message, severity);
     };
 
   const getList = async () => {
     try {
-      const { data: { data: { data = [], totalCount = 0 } }, status } = await getBrokersList(rowsPerPage, page, searchTerm, city)
-      setConsultantList({ rows: data, totalCount })
+      const {
+        data: {
+          data: { data = [], totalCount = 0 },
+        },
+        status,
+      } = await getBrokersList(rowsPerPage, page, searchTerm, city);
+      setConsultantList({ rows: data, totalCount });
     } catch (error) {
-      showToaterMessages(error.message, "error");
+      showTostMessages(error.message, "error");
     }
-  }
+  };
 
   const brokerCityList = async () => {
     try {
-      const { data: { data: { data = [] } }, status } = await getBrokerCityList(),
-        cities = [{ label: 'All', value: 'all' }];
+      const {
+          data: {
+            data: { data = [] },
+          },
+          status,
+        } = await getBrokerCityList(),
+        cities = [{ label: "All", value: "all" }];
       for (let i = 0; i < data.length; i++) {
         const city_data = { label: data[i], value: data[i] };
         cities.push(city_data);
       }
       setCitiesOptions(cities);
     } catch (error) {
-      showToaterMessages(error.message, "error");
+      showTostMessages(error.message, "error");
     }
-  }
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === SORTING.asc;
@@ -98,46 +109,40 @@ function ManageConsultantTable({ user }) {
   };
 
   function performSearch() {
-    getList()
+    getList();
   }
 
   const handleSearch = (event) => {
-    const term = event.target.value.toLowerCase();
-    setPage(0);
-    setSearchTerm(term);
-  },
-
+      const term = event.target.value.toLowerCase();
+      setPage(0);
+      setSearchTerm(term);
+    },
     handleCityChange = (event) => {
-      setPage(0)
-      setCity(event.target.value)
-    }
-
+      setPage(0);
+      setCity(event.target.value);
+    };
 
   return (
     <>
       <InfoBox
-        dataList={[{ label: 'Consultants', value: consultantList.totalCount }]}
+        dataList={[{ label: "Consultants", value: consultantList.totalCount }]}
       />
 
       <Container>
         <Grid container spacing={2} sx={{ mb: 2 }}>
           <Grid item xs={6}>
             <Card>
-              <CustomSearchInput value={searchTerm}
-                onChange={handleSearch}
-              />
+              <CustomSearchInput value={searchTerm} onChange={handleSearch} />
             </Card>
           </Grid>
           <Grid item xs={6}>
             <SelectTextFields
-              sx={{ border: 'none' }}
+              sx={{ border: "none" }}
               // isEdit={true}
               label="Select City"
               name={"city"}
               value={city}
-              handleChange={(e) =>
-                handleCityChange(e)
-              }
+              handleChange={(e) => handleCityChange(e)}
               list={citiesOptions}
             />
           </Grid>
@@ -145,7 +150,11 @@ function ManageConsultantTable({ user }) {
 
         {!!consultantList.rows.length ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <Table
+              sx={{ minWidth: 650 }}
+              size="small"
+              aria-label="a dense table"
+            >
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}
