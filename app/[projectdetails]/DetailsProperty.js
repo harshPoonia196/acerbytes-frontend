@@ -63,7 +63,7 @@ import { clearItem, getItem } from "utills/utills";
 import colors from "styles/theme/colors";
 import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpinner";
 import { getCountsByProperty } from "api/Broker.api";
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Link from "next/link";
 
 const tabHeight = 200;
@@ -178,9 +178,12 @@ const PropertyDetails = ({ params }) => {
       }
       if (res.status === 200) {
         setPropertyData(res.data?.data);
-        if(userDetails.role === "broker" && isLogged){
-          const result = await getCountsByProperty(res.data?.data?.[0]?.property_id, res.data?.data?.[0]?.broker_collection_id)
-          setLeadsCount(result?.data?.count)
+        if (userDetails.role === "broker" && isLogged) {
+          const result = await getCountsByProperty(
+            res.data?.data?.[0]?.property_id,
+            res.data?.data?.[0]?.broker_collection_id
+          );
+          setLeadsCount(result?.data?.count);
         }
         const expiredAt = new Date(res?.data?.data[0]?.expired_at);
         const now = new Date();
@@ -309,7 +312,6 @@ const PropertyDetails = ({ params }) => {
     checkPropertyIsEnquired();
   }, [userDetails]);
 
-  
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
     return (
@@ -338,9 +340,7 @@ const PropertyDetails = ({ params }) => {
     );
   };
 
-
   const [currentTab, setCurrentTab] = React.useState(0);
-
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
@@ -607,7 +607,7 @@ const PropertyDetails = ({ params }) => {
     },
     []
   );
-  
+
   return (
     <>
       {isLoading && <Loader />}
@@ -635,14 +635,17 @@ const PropertyDetails = ({ params }) => {
         handleClose={handleCloseAlternateSignIn}
         leadId={leadId}
       />
-      <nav className={classes.demo2}>
-        <TopMenu
-          topMenu={propertyData[0]?.propertyData}
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
-      </nav>
+      {propertyData.length && (
+        <nav className={classes.demo2}>
+          <TopMenu
+            topMenu={propertyData[0]?.propertyData}
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </nav>
+      )}
+
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
         <Container maxWidth="md" sx={{ pt: "0 !important" }}>
@@ -759,19 +762,19 @@ const PropertyDetails = ({ params }) => {
               >
                 {isLogged ? (
                   <>
-                  <Fab
-                    variant="extended"
-                    sx={{ mb: 1, justifyContent: "flex-start" }}
-                    onClick={handlefavClick}
-                  >
-                    {propertyData[0]?.isFav ? (
-                      <ThumbUpIcon sx={{ color: "#276ef1", mr: 1 }} />
-                    ) : (
-                      <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                    )}
-                    Like
-                  </Fab>
-                  {/* <a href={`https://wa.me/+919725555595`} target="_blank">
+                    <Fab
+                      variant="extended"
+                      sx={{ mb: 1, justifyContent: "flex-start" }}
+                      onClick={handlefavClick}
+                    >
+                      {propertyData[0]?.isFav ? (
+                        <ThumbUpIcon sx={{ color: "#276ef1", mr: 1 }} />
+                      ) : (
+                        <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                      )}
+                      Like
+                    </Fab>
+                    {/* <a href={`https://wa.me/+919725555595`} target="_blank">
                   <Fab
                     variant="extended"
                     sx={{ mb: 1, justifyContent: "flex-start" }}
@@ -780,7 +783,7 @@ const PropertyDetails = ({ params }) => {
                     Contact
                   </Fab>
                 </a> */}
-                </>
+                  </>
                 ) : (
                   <Fab
                     variant="extended"
@@ -829,12 +832,14 @@ const PropertyDetails = ({ params }) => {
               <Grid sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <CircularProgressSpinner value={progressCount} />
                 <DialogContentText>
-                  <Typography variant="body2">Link is not available please check details page</Typography>
+                  <Typography variant="body2">
+                    Link is not available please check details page
+                  </Typography>
                 </DialogContentText>
               </Grid>
             </DialogContent>
             <DialogActions>
-            <Button
+              <Button
                 variant="contained"
                 sx={{
                   fontWeight: 600,
@@ -867,22 +872,21 @@ const PropertyDetails = ({ params }) => {
               >
                 Close
               </Button>
-              
             </DialogActions>
           </Dialog>
         )}
         <Box
-            className="detailFab"
-                sx={{
-                    position: "fixed",
-                    right: 16,
-                    bottom: 16,
-                    display: { xs: "none", evmd: "flex" },
-                    gap: 2,
-                    flexDirection: "column",
-                }}
-            >
-                {/* <Fab
+          className="detailFab"
+          sx={{
+            position: "fixed",
+            right: 16,
+            bottom: 16,
+            display: { xs: "none", evmd: "flex" },
+            gap: 2,
+            flexDirection: "column",
+          }}
+        >
+          {/* <Fab
                     // size="small"
                     variant="extended"
                     sx={{ justifyContent: "flex-start" }}
@@ -890,17 +894,19 @@ const PropertyDetails = ({ params }) => {
                     <AddLinkIcon fontSize='small' sx={{ mr: 1 }} />
                     Activate link
                 </Fab> */}
-                <Link href="/consultant/my-leads">
-                {userDetails.role === 'broker' && <Fab 
-                    // size="small"
-                    variant="extended"
-                    sx={{ justifyContent: "flex-start" }}
-                >
-                    <FormatListBulletedIcon fontSize='small' sx={{ mr: 1 }} />
-                    {leadsCount} Enquiries received
-                </Fab>}
-                </Link>
-            </Box>
+          <Link href="/consultant/my-leads">
+            {userDetails.role === "broker" && (
+              <Fab
+                // size="small"
+                variant="extended"
+                sx={{ justifyContent: "flex-start" }}
+              >
+                <FormatListBulletedIcon fontSize="small" sx={{ mr: 1 }} />
+                {leadsCount} Enquiries received
+              </Fab>
+            )}
+          </Link>
+        </Box>
       </Box>
     </>
   );

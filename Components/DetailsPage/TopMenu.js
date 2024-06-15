@@ -17,8 +17,13 @@ import { capitalLizeName, shortPriceFormatter } from "utills/CommonFunction";
 function TopMenu(props) {
   const { value, handleChange, list, topMenu } = props;
 
-  const { location, marketing, overview, unitsPlan, overallAssessment } =
-    topMenu;
+  const {
+    location = {},
+    marketing = {},
+    overview = {},
+    unitsPlan = {},
+    overallAssessment = {},
+  } = topMenu;
   const { sector, state, city, area } = location;
   const { builder, projectName, status } = overview;
   const { maxPriceRange, minPriceRange } = unitsPlan;

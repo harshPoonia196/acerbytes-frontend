@@ -13,7 +13,6 @@ import {
 import React, { useState, useEffect, useRef } from "react";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
-import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import GroupIcon from "@mui/icons-material/Group";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
@@ -35,7 +34,6 @@ import {
   enquiryFormKey,
   enquiryFormOpen,
   listOfPropertyDetailsTab,
-  listOfTabsInAddProperty,
   propertyUserVerifiedKey,
   userLeadId,
 } from "utills/Constants";
@@ -98,7 +96,6 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 const PropertyDetailsPage = ({ params }) => {
-  const searchParams = useSearchParams();
   const url = new URL(window.location.href);
   const { isLogged, userDetails, brokerBalance, setBrokerPoints } = useAuth();
   const router = useRouter();
@@ -594,14 +591,14 @@ const PropertyDetailsPage = ({ params }) => {
               submitEnquiryUnath={handleSubmitEnquiryUnauth}
             />
           )}
-          <OtpVerify
+          {/* <OtpVerify
             formData={getItem(enquiryFormKey)}
             open={openOtpPopup}
             handleClose={handleCloseVerifyPopup}
             handleOpen={handleOpenEnquiryForm}
             handleAlternateSignIn={handleOpenAlternateSignIn}
             handleSubmit={updateEnquiryVerfication}
-          />
+          /> */}
           <AlternateSignIn
             open={openAlternateSignIn}
             leadId={leadId}
