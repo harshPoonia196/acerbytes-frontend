@@ -628,7 +628,8 @@ const PropertyDetailsPage = ({ params }) => {
                   <Box sx={{ display: "flex", p: 2 }}>
                     <Box sx={{ flex: 1, alignSelf: "center" }}>
                       <Typography variant="h4">
-                        Contact verified consultants
+                        Contact verified consultants (
+                        {propertyData?.consultants?.length})
                       </Typography>
                     </Box>
                     <Box>
@@ -652,7 +653,7 @@ const PropertyDetailsPage = ({ params }) => {
                   <Box sx={{ p: 2 }}>
                     <Grid container spacing={2}>
                       {propertyData?.consultants?.length > 0 &&
-                        propertyData?.consultants?.slice(0, 2).map((broker) => (
+                        propertyData?.consultants?.slice(0, 4).map((broker) => (
                           <Grid item xs={12} sm={6} key={broker?.id}>
                             <BrokerCard
                               broker={broker}
