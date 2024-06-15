@@ -559,6 +559,7 @@ const PropertyDetails = ({ params }) => {
 
     document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
+    console.log(" ===========>");
 
     // if (activeState !== hash) {
     //
@@ -902,15 +903,6 @@ const PropertyDetails = ({ params }) => {
               </Button>
               <Button
                 variant="contained"
-                // sx={{
-                //   fontWeight: 600,
-                //   color: "white",
-                //   backgroundColor: colors?.BLACK,
-                //   "&:hover": {
-                //     backgroundColor: colors?.BLACK,
-                //     boxShadow: "none",
-                //   },
-                // }}
                 onClick={() => {
                   expiredModalOpenRef.current = false;
                 }}
