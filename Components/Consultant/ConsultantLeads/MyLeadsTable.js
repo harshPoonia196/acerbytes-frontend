@@ -249,16 +249,18 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
       </TableCell> */}
       <TableCell>
         {row.phone?.countryCode && row.phone?.number && (
-          <a
-            href={`https://www.phonepe.com/how-to-pay/pay-by-phonepe/web/`} // Prevent default link behavior
-            onClick={(e) => {
-              e.preventDefault();
-              handlePhonePeRedirect(`${row.phone?.countryCode}${row.phone?.number}`);
-            }}
-            style={{ textDecoration: 'none' }}
-          >
-            {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}
-          </a>
+          // <a
+          //   href={`https://www.phonepe.com/how-to-pay/pay-by-phonepe/web/`} // Prevent default link behavior
+          //   onClick={(e) => {
+          //     e.preventDefault();
+          //     handlePhonePeRedirect(`${row.phone?.countryCode}${row.phone?.number}`);
+          //   }}
+          //   style={{ textDecoration: 'none' }}
+          // >
+          //   {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}
+          // </a>
+          <a href="#" style={{ textDecoration: 'none' }} onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }}>
+            {countryCodeFormating(row.phone?.countryCode)} {row.phone?.number}</a>
         )}
         {row.isVerified ? (
           <Tooltip title="Verified"><CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", left: "2px" }} fontSize="1rem" color="success" /></Tooltip>
