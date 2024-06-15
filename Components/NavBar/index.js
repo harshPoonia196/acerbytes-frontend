@@ -235,7 +235,7 @@ export default function ClippedDrawer({ children }) {
     return (
       <>
         <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
+        <Box sx={{ overflow: 'auto', marginBottom: "30px" }}>
           {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole && (
             <List
               subheader={
@@ -375,7 +375,7 @@ export default function ClippedDrawer({ children }) {
             width: '100%',
           }}
         >
-          <List sx={{ pb: 0 }}>
+          <List sx={{ p: 0 }}>
             <ListItemButton
               onClick={() => {
                 window.open('http://wa.me/+919323996997', '_blank');
