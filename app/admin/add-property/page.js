@@ -267,7 +267,7 @@ function AddProperty() {
 
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => () => {
+  const handleClick = (hash) => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
     clickedRef.current = true;
     unsetClickedRef.current = setTimeout(() => {

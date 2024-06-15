@@ -549,7 +549,7 @@ const PropertyDetails = ({ params }) => {
   // Corresponds to 10 frames at 60 Hz
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => () => {
+  const handleClick = (hash) => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
 
     clickedRef.current = true;
@@ -559,7 +559,6 @@ const PropertyDetails = ({ params }) => {
 
     document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
-    console.log(" ===========>");
 
     // if (activeState !== hash) {
     //
