@@ -303,7 +303,7 @@ function MarketingSection(props) {
             />
             <NewKeyValuePairStructure
               label="Location"
-              value={`${AllLocationData?.area}, ${AllLocationData?.city}, ${AllLocationData?.state}`}
+              value={`${AllLocationData?.sector}, ${AllLocationData?.area}, ${AllLocationData?.city}, ${AllLocationData?.state}`}
             />
             <NewKeyValuePairStructure
               label="Status"

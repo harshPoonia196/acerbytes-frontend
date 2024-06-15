@@ -2,13 +2,9 @@ import React from "react";
 import PropertyDetailsPage from "../PropertyDetailsPage";
 import { notFound } from "next/navigation";
 
-
 export async function generateMetadata({ params }) {
- 
-  // read route params
   const parts = params.id.split("-");
   const paramsId = parts[parts.length - 1];
-  // fetch data
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const product = await fetch(
     `${baseUrl}/property/getProperty/${paramsId}`
@@ -17,27 +13,26 @@ export async function generateMetadata({ params }) {
   if (product.status !== 200) {
     notFound();
   }
-  const title = product?.data?.marketing?.tagLine ?? ""
-  const description = product?.data?.marketing?.description ?? ""
-  const imageUrl = product?.data?.marketing?.image ?? "";
+
+  const {
+    tagLine: title,
+    description,
+    image: imageUrl,
+  } = product?.data?.marketing;
 
   return {
     title,
     description,
-    openGraph: {  
+    openGraph: {
       title,
       description,
-      images: [{ url: imageUrl, width: 300, height: 200}]
-    }
+      images: [{ url: imageUrl, width: 300, height: 200 }],
+    },
   };
 }
 
 const page = async ({ params }) => {
-  return (
-    <>
-      <PropertyDetailsPage params={params} />
-    </>
-  );
+  return <PropertyDetailsPage params={params} />;
 };
 
 export default page;

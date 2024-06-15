@@ -46,6 +46,7 @@ import {
   activeAdGet,
   activedViewCount,
   checkEnquiryOnActiveLink,
+  detailsProperty,
   favPropertyCreate,
 } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
@@ -63,8 +64,9 @@ import { clearItem, getItem } from "utills/utills";
 import colors from "styles/theme/colors";
 import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpinner";
 import { getCountsByProperty } from "api/Broker.api";
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Link from "next/link";
+import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
 
 const tabHeight = 200;
 
@@ -102,7 +104,7 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 const PropertyDetails = ({ params }) => {
-  const { userDetails, isLogged } = useAuth();
+  const { userDetails, isLogged, brokerBalance, setBrokerPoints } = useAuth();
   const router = useRouter();
   const url = new URL(window.location.href);
   const searchParams = useSearchParams();
@@ -178,9 +180,12 @@ const PropertyDetails = ({ params }) => {
       }
       if (res.status === 200) {
         setPropertyData(res.data?.data);
-        if(userDetails.role === "broker" && isLogged){
-          const result = await getCountsByProperty(res.data?.data?.[0]?.property_id, res.data?.data?.[0]?.broker_collection_id)
-          setLeadsCount(result?.data?.count)
+        if (userDetails.role === "broker" && isLogged) {
+          const result = await getCountsByProperty(
+            res.data?.data?.[0]?.property_id,
+            res.data?.data?.[0]?.broker_collection_id
+          );
+          setLeadsCount(result?.data?.count);
         }
         const expiredAt = new Date(res?.data?.data[0]?.expired_at);
         const now = new Date();
@@ -309,7 +314,6 @@ const PropertyDetails = ({ params }) => {
     checkPropertyIsEnquired();
   }, [userDetails]);
 
-  
   const GridItemWithCard = (props) => {
     const { children, styles, boxStyles, ...rest } = props;
     return (
@@ -338,9 +342,7 @@ const PropertyDetails = ({ params }) => {
     );
   };
 
-
   const [currentTab, setCurrentTab] = React.useState(0);
-
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
@@ -607,10 +609,83 @@ const PropertyDetails = ({ params }) => {
     },
     []
   );
-  
+
+  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
+  const handleCloseActivateAdsPopup = () => {
+    setActivateAdsPopupState(false);
+  };
+
+  const userInfo = JSON.parse(localStorage.getItem("userDetails"));
+
+  const token = localStorage.getItem("token");
+
+  const [propertyUrl, setPropertyUrl] = useState("");
+
+  const handleOpenActivateAdsPopup = (ActiveUrl) => {
+    setActivateAdsPopupState(true);
+    setPropertyUrl(ActiveUrl);
+  };
+
+  const shuffle = (a) => {
+    for (let i = a?.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  const detailsGetProperty = async (isNavigate = false) => {
+    try {
+      setLoading(true);
+      let res;
+      if (token) {
+        res = await detailsProperty(
+          `${propertyData[0]?.property_id}?brokerId=${userInfo?._id}`
+        );
+      } else {
+        res = await detailsProperty(propertyData[0]?.property_id);
+      }
+      if (res.status === 200) {
+        const data = {
+          ...res.data?.data,
+          consultants: shuffle(res.data?.data?.consultants),
+        };
+        setPropertyData({ ...data });
+        if (isNavigate) {
+          const url = constructPropertyUrl({ ...data }, userInfo);
+          router.push(url);
+        }
+        else{
+          window.location.reload()
+        }
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {isLoading && <Loader />}
+
+      <ActivateAdsPopup
+        propertyData={propertyData?.[0]}
+        detailsGetProperty={detailsGetProperty}
+        open={activateAdsPopupState}
+        handleClose={handleCloseActivateAdsPopup}
+        brokerBalance={brokerBalance}
+        propertyUrl={propertyUrl}
+        setBrokerPoints={setBrokerPoints}
+        isFromUniqueUrl={true}
+      />
+
       {openEnquiryForm && (
         <EnquireNow
           open={openEnquiryForm}
@@ -635,14 +710,17 @@ const PropertyDetails = ({ params }) => {
         handleClose={handleCloseAlternateSignIn}
         leadId={leadId}
       />
-      <nav className={classes.demo2}>
-        <TopMenu
-          topMenu={propertyData[0]?.propertyData}
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
-      </nav>
+      {propertyData.length && (
+        <nav className={classes.demo2}>
+          <TopMenu
+            topMenu={propertyData[0]?.propertyData}
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </nav>
+      )}
+
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
         <Container maxWidth="md" sx={{ pt: "0 !important" }}>
@@ -759,19 +837,19 @@ const PropertyDetails = ({ params }) => {
               >
                 {isLogged ? (
                   <>
-                  <Fab
-                    variant="extended"
-                    sx={{ mb: 1, justifyContent: "flex-start" }}
-                    onClick={handlefavClick}
-                  >
-                    {propertyData[0]?.isFav ? (
-                      <ThumbUpIcon sx={{ color: "#276ef1", mr: 1 }} />
-                    ) : (
-                      <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                    )}
-                    Like
-                  </Fab>
-                  {/* <a href={`https://wa.me/+919725555595`} target="_blank">
+                    <Fab
+                      variant="extended"
+                      sx={{ mb: 1, justifyContent: "flex-start" }}
+                      onClick={handlefavClick}
+                    >
+                      {propertyData[0]?.isFav ? (
+                        <ThumbUpIcon sx={{ color: "#276ef1", mr: 1 }} />
+                      ) : (
+                        <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                      )}
+                      Like
+                    </Fab>
+                    {/* <a href={`https://wa.me/+919725555595`} target="_blank">
                   <Fab
                     variant="extended"
                     sx={{ mb: 1, justifyContent: "flex-start" }}
@@ -780,7 +858,7 @@ const PropertyDetails = ({ params }) => {
                     Contact
                   </Fab>
                 </a> */}
-                </>
+                  </>
                 ) : (
                   <Fab
                     variant="extended"
@@ -820,6 +898,7 @@ const PropertyDetails = ({ params }) => {
           contactPermissionToView={isLogged ? contactPermissionToView : true}
           handleOpenEnquiryForm={handleOpenEnquiryForm}
           isUnique={true}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
         />
         {expiredModalOpenRef.current && (
           <Dialog open={expiredModalOpenRef.current}>
@@ -829,12 +908,14 @@ const PropertyDetails = ({ params }) => {
               <Grid sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <CircularProgressSpinner value={progressCount} />
                 <DialogContentText>
-                  <Typography variant="body2">Link is not available please check details page</Typography>
+                  <Typography variant="body2">
+                    Link is not available please check details page
+                  </Typography>
                 </DialogContentText>
               </Grid>
             </DialogContent>
             <DialogActions>
-            <Button
+              <Button
                 variant="contained"
                 sx={{
                   fontWeight: 600,
@@ -867,22 +948,21 @@ const PropertyDetails = ({ params }) => {
               >
                 Close
               </Button>
-              
             </DialogActions>
           </Dialog>
         )}
         <Box
-            className="detailFab"
-                sx={{
-                    position: "fixed",
-                    right: 16,
-                    bottom: 16,
-                    display: { xs: "none", evmd: "flex" },
-                    gap: 2,
-                    flexDirection: "column",
-                }}
-            >
-                {/* <Fab
+          className="detailFab"
+          sx={{
+            position: "fixed",
+            right: 16,
+            bottom: 16,
+            display: { xs: "none", evmd: "flex" },
+            gap: 2,
+            flexDirection: "column",
+          }}
+        >
+          {/* <Fab
                     // size="small"
                     variant="extended"
                     sx={{ justifyContent: "flex-start" }}
@@ -890,17 +970,19 @@ const PropertyDetails = ({ params }) => {
                     <AddLinkIcon fontSize='small' sx={{ mr: 1 }} />
                     Activate link
                 </Fab> */}
-                <Link href="/consultant/my-leads">
-                {userDetails.role === 'broker' && <Fab 
-                    // size="small"
-                    variant="extended"
-                    sx={{ justifyContent: "flex-start" }}
-                >
-                    <FormatListBulletedIcon fontSize='small' sx={{ mr: 1 }} />
-                    {leadsCount} Enquiries received
-                </Fab>}
-                </Link>
-            </Box>
+          <Link href="/consultant/my-leads">
+            {userDetails.role === "broker" && (
+              <Fab
+                // size="small"
+                variant="extended"
+                sx={{ justifyContent: "flex-start" }}
+              >
+                <FormatListBulletedIcon fontSize="small" sx={{ mr: 1 }} />
+                {leadsCount} Enquiries received
+              </Fab>
+            )}
+          </Link>
+        </Box>
       </Box>
     </>
   );
