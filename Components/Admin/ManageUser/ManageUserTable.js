@@ -17,7 +17,7 @@ import {
   Chip,
   Menu,
   MenuItem,
-  ListItemIcon
+  ListItemIcon,
 } from "@mui/material";
 import React from "react";
 import Paper from "@mui/material/Paper";
@@ -41,20 +41,21 @@ import {
   PAGINATION_LIMIT,
   PAGINATION_LIMIT_OPTIONS,
   ROLES,
-  ROLE_CONSTANTS, ToasterMessages
+  ROLE_CONSTANTS,
+  ToasterMessages,
 } from "utills/Constants";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import colors from "styles/theme/colors";
-import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt'
+import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
 import { useRouter } from "next/navigation";
 import { listOfPages } from "Components/NavBar/Links";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 import RoleConfirmationDialog from "Components/CommonLayouts/RoleConfirmationDialog";
-import moment from 'moment/moment';
-import BlockIcon from '@mui/icons-material/Block';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import EditIcon from '@mui/icons-material/Edit';
+import moment from "moment/moment";
+import BlockIcon from "@mui/icons-material/Block";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import EditIcon from "@mui/icons-material/Edit";
 
 const headCells = [
   {
@@ -80,7 +81,8 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort, userDetails, selectedTabValue } = props;
+  const { order, orderBy, onRequestSort, userDetails, selectedTabValue } =
+    props;
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -89,35 +91,42 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          (headCell.id !== 'role' || selectedTabValue === 0) && (
-            <TableCell
-              key={headCell.id}
-              align={headCell.numeric ? "right" : "left"}
-              padding={headCell.disablePadding ? "none" : "normal"}
-              sortDirection={orderBy === headCell.id ? order : false}
-              sx={{ textTransform: "capitalize", fontWeight: "bold" }}
-            >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
+        {headCells.map(
+          (headCell) =>
+            (headCell.id !== "role" || selectedTabValue === 0) && (
+              <TableCell
+                key={headCell.id}
+                align={headCell.numeric ? "right" : "left"}
+                padding={headCell.disablePadding ? "none" : "normal"}
+                sortDirection={orderBy === headCell.id ? order : false}
+                sx={{ textTransform: "capitalize", fontWeight: "bold" }}
               >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.id)}
+                >
+                  {headCell.label}
 
-                {headCell.label}
-
-
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc" ? "sorted descending" : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          )
-        ))}
-        {(selectedTabValue === 0) && <TableCell sx={{ textTransform: "capitalize", }}>Action</TableCell>}
-        {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{ textAlign: "center", textTransform: "capitalize" }}>Approval Request</TableCell>}
+                  {orderBy === headCell.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === "desc"
+                        ? "sorted descending"
+                        : "sorted ascending"}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
+              </TableCell>
+            )
+        )}
+        {selectedTabValue === 0 && (
+          <TableCell sx={{ textTransform: "capitalize" }}>Action</TableCell>
+        )}
+        {userDetails.role == "superAdmin" && selectedTabValue == 1 && (
+          <TableCell sx={{ textAlign: "center", textTransform: "capitalize" }}>
+            Approval Request
+          </TableCell>
+        )}
       </TableRow>
     </TableHead>
   );
@@ -163,20 +172,22 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
           })}
         </Select>
       </FormControl> */}
-      {
-        matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ?
-          <Chip
-            // disabled={
-            //   disabled ||
-            //   !(
-            //     matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
-            //   )
-            // }
-            label={role} size="small" onClick={handleClick} sx={{ textTransform: 'capitalize' }} />
-          :
-          <Chip label={role} size="small" sx={{ textTransform: 'capitalize' }} />
-      }
-
+      {matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ? (
+        <Chip
+          // disabled={
+          //   disabled ||
+          //   !(
+          //     matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin)
+          //   )
+          // }
+          label={role}
+          size="small"
+          onClick={handleClick}
+          sx={{ textTransform: "capitalize" }}
+        />
+      ) : (
+        <Chip label={role} size="small" sx={{ textTransform: "capitalize" }} />
+      )}
 
       <Menu
         id="basic-menu"
@@ -184,22 +195,38 @@ const RoleViewer = ({ role, userDetails, updateRole, disabled = false }) => {
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-button',
+          "aria-labelledby": "basic-button",
         }}
       >
         {ROLES?.filter((rs) => rs.isVisible)?.map((rs, index) => {
-          return <MenuItem key={index} onClick={(e) => {
-            handleChangeRole(rs.value)
-            handleClose()
-          }} value={rs.value} disabled={rs.value === role}>{rs.label}</MenuItem>;
+          return (
+            <MenuItem
+              key={index}
+              onClick={(e) => {
+                handleChangeRole(rs.value);
+                handleClose();
+              }}
+              value={rs.value}
+              disabled={rs.value === role}
+            >
+              {rs.label}
+            </MenuItem>
+          );
         })}
       </Menu>
     </>
-
   );
 };
 
-function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus, selectedTabValue, UserApproveupdateStatus }) {
+function RowStructure({
+  row,
+  router,
+  userDetails,
+  updateRole,
+  handleUpdateStatus,
+  selectedTabValue,
+  UserApproveupdateStatus,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -224,19 +251,25 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
       router.push(listOfPages.adminUpdateProfileLinks + `/${googleID}`);
     }
     if (role == ROLE_CONSTANTS.broker) {
-      router.push(listOfPages.adminUpdateConsultantProfileLinks + `/${googleID}`);
+      router.push(
+        listOfPages.adminUpdateConsultantProfileLinks + `/${googleID}`
+      );
     }
     handleClose();
-  }
+  };
 
   return (
     <TableRow
       hover
       key={row.name}
-      style={row.isBlocked ? { backgroundColor: 'whitesmoke' } : null}
+      style={row.isBlocked ? { backgroundColor: "whitesmoke" } : null}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = "#f5f5f5";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = "transparent";
+      }}
     >
       <TableCell>
         {row?.name?.firstName} {row?.name?.lastName}
@@ -247,38 +280,44 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
       <TableCell>{row.email}</TableCell>
       {selectedTabValue === 0 && (
         <TableCell>
-          {row.isBlocked ? <Tooltip title="Block"><DoNotDisturbAltIcon sx={{ color: colors.ERROR, fontSize: "1rem" }} /></Tooltip> :
+          {row.isBlocked ? (
+            <Tooltip title="Block">
+              <DoNotDisturbAltIcon
+                sx={{ color: colors.ERROR, fontSize: "1rem" }}
+              />
+            </Tooltip>
+          ) : (
             <RoleViewer
               key={row._id}
               role={row.role}
               disabled={row.isBlocked}
               userDetails={userDetails}
               updateRole={(newRole) => updateRole(row.googleID, newRole)}
-            />}
+            />
+          )}
         </TableCell>
       )}
-      <TableCell>{row.createdAt
-        ? moment(row.createdAt).format(
-          "DD MMM, YYYY, h:mm a"
-        )
-        : ""}</TableCell>
-
+      <TableCell>
+        {row.createdAt
+          ? moment(row.createdAt).format("DD MMM, YYYY, h:mm a")
+          : ""}
+      </TableCell>
 
       {selectedTabValue === 0 && (
         <TableCell>
           <Tooltip title="More">
-          <IconButton
-            onClick={handleClick}
-            disabled={
-              !(
-                matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
-                matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)
-              )
-            }
-            sx={{ fontSize: "1rem !important" }}
-          >
-            <MoreVertIcon fontSize="1rem" />
-          </IconButton>
+            <IconButton
+              onClick={handleClick}
+              disabled={
+                !(
+                  matchUserRole(userDetails?.role, ROLE_CONSTANTS.superAdmin) ||
+                  matchUserRole(userDetails?.role, ROLE_CONSTANTS.admin)
+                )
+              }
+              sx={{ fontSize: "1rem !important" }}
+            >
+              <MoreVertIcon fontSize="1rem" />
+            </IconButton>
           </Tooltip>
           <Menu
             id="basic-menu"
@@ -293,35 +332,76 @@ function RowStructure({ row, router, userDetails, updateRole, handleUpdateStatus
               horizontal: "left",
             }}
             sx={{
-              '& .MuiList-root': {
-                padding: '0px',
+              "& .MuiList-root": {
+                padding: "0px",
               },
             }}
           >
             {row.isBlocked ? (
               <MenuItem onClick={() => updateStatus(row.googleID, false)}>
-                <ListItemIcon><RemoveCircleOutlineIcon fontSize="small"/></ListItemIcon> Unblock
+                <ListItemIcon>
+                  <RemoveCircleOutlineIcon fontSize="small" />
+                </ListItemIcon>{" "}
+                Unblock
               </MenuItem>
             ) : (
               <MenuItem onClick={() => updateStatus(row.googleID, true)}>
-                <ListItemIcon><BlockIcon fontSize="small"/></ListItemIcon> Block
+                <ListItemIcon>
+                  <BlockIcon fontSize="small" />
+                </ListItemIcon>{" "}
+                Block
               </MenuItem>
             )}
-            {(!row.isBlocked && (row.role == ROLE_CONSTANTS.user || row.role == ROLE_CONSTANTS.broker)) && <MenuItem onClick={() => editProfile(row.googleID, row.role)} >
-            <ListItemIcon><EditIcon fontSize="small"/></ListItemIcon> Edit Profile
-            </MenuItem>}
+            {!row.isBlocked &&
+              (row.role == ROLE_CONSTANTS.user ||
+                row.role == ROLE_CONSTANTS.broker) && (
+                <MenuItem onClick={() => editProfile(row.googleID, row.role)}>
+                  <ListItemIcon>
+                    <EditIcon fontSize="small" />
+                  </ListItemIcon>{" "}
+                  Edit Profile
+                </MenuItem>
+              )}
           </Menu>
         </TableCell>
       )}
-      {(userDetails.role == 'superAdmin' && selectedTabValue == 1) && <TableCell sx={{ justifyContent: "center", display: "flex", gap: "12px" }}>
-        <Tooltip title="Accept"><CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", color: colors.SUCCESS}} onClick={() => UserApproveupdate(row.googleID, true, row)}/></Tooltip>
-        <Tooltip title="Decline"><CancelIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px", color: colors.ERROR}} onClick={() => UserApproveupdate(row.googleID, false, row)}/></Tooltip>
-      </TableCell>}
+      {userDetails.role == "superAdmin" && selectedTabValue == 1 && (
+        <TableCell
+          sx={{ justifyContent: "center", display: "flex", gap: "12px" }}
+        >
+          <Tooltip title="Accept">
+            <CheckCircleIcon
+              sx={{
+                verticalAlign: "middle",
+                position: "relative",
+                top: "-1px",
+                color: colors.SUCCESS,
+              }}
+              onClick={() => UserApproveupdate(row.googleID, true, row)}
+            />
+          </Tooltip>
+          <Tooltip title="Decline">
+            <CancelIcon
+              sx={{
+                verticalAlign: "middle",
+                position: "relative",
+                top: "-1px",
+                color: colors.ERROR,
+              }}
+              onClick={() => UserApproveupdate(row.googleID, false, row)}
+            />
+          </Tooltip>
+        </TableCell>
+      )}
     </TableRow>
   );
 }
 
-function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }) {
+function ManageUserTable({
+  searchText,
+  onDashboardDataUpdate,
+  selectedTabValue,
+}) {
   const router = useRouter();
   const { userDetails } = useAuth();
   const [order, setOrder] = React.useState("asc");
@@ -342,15 +422,17 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
       data: {},
     });
 
-  const [userApproveStatusConfirmationDialog, setuserApproveStatusConfirmationDialog] =
-    React.useState({
-      isOpen: false,
-      data: {},
-    });
+  const [
+    userApproveStatusConfirmationDialog,
+    setuserApproveStatusConfirmationDialog,
+  ] = React.useState({
+    isOpen: false,
+    data: {},
+  });
 
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -363,7 +445,7 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
   }
 
   React.useEffect(() => {
-    setUsersList([])
+    setUsersList([]);
     // This block will run only on initial mount
     if (initialMount) {
       setInitialMount(false);
@@ -396,10 +478,10 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
         role: searchText,
         phone: searchText,
         email: searchText,
-        isApproved: selectedTabValue == 0 ? true : false
+        isApproved: selectedTabValue == 0 ? true : false,
       };
       if (userDetails.role === "admin") {
-        delete querParams?.isApproved
+        delete querParams?.isApproved;
       }
       setLoading(true);
       const response = await getUsersList(objectToQueryString(querParams));
@@ -413,14 +495,14 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
         });
         onDashboardDataUpdate({
           countInfo: response?.data?.dashboardInfo || {},
-          userDetails
+          userDetails,
         });
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error get Users list",
+          error?.message ||
+          "Error get Users list",
         "error"
       );
     } finally {
@@ -481,12 +563,10 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
       data: {
         userId: userId,
         isApproved,
-        row
+        row,
       },
     });
   };
-
-
 
   const handleDialogAction = async (action) => {
     if (action) {
@@ -506,16 +586,13 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
             page: currentPage,
           };
           getAllUsersList(pageOptions, searchText);
-          showToaterMessages(
-            ToasterMessages.ROLE_UPDATE_SUCCESS,
-            "success"
-          );
+          showTostMessages(ToasterMessages.ROLE_UPDATE_SUCCESS, "success");
         }
       } catch (error) {
-        showToaterMessages(
+        showTostMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error update role",
+            error?.message ||
+            "Error update role",
           "error"
         );
       } finally {
@@ -532,7 +609,6 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
   React.useEffect(() => {
     setCurrentPage(1);
   }, [selectedTabValue]);
-
 
   const handleDialogActionUserApprove = async (action) => {
     if (action) {
@@ -555,15 +631,13 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
             page: currentPage,
           };
           getAllUsersList(pageOptions, searchText);
-          showToaterMessages(response?.data?.message,
-            "success"
-          );
+          showTostMessages(response?.data?.message, "success");
         }
       } catch (error) {
-        showToaterMessages(
+        showTostMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error update role",
+            error?.message ||
+            "Error update role",
           "error"
         );
       } finally {
@@ -596,10 +670,10 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
           getAllUsersList(pageOptions, searchText);
         }
       } catch (error) {
-        showToaterMessages(
+        showTostMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error update status",
+            error?.message ||
+            "Error update status",
           "error"
         );
       } finally {
@@ -632,12 +706,14 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
         keepMounted
         open={userApproveStatusConfirmationDialog.isOpen}
         handleAction={handleDialogActionUserApprove}
-        setuserApproveStatusConfirmationDialog={setuserApproveStatusConfirmationDialog}
+        setuserApproveStatusConfirmationDialog={
+          setuserApproveStatusConfirmationDialog
+        }
         selectedRowData={userApproveStatusConfirmationDialog}
       />
       {isLoading && <Loading />}
-      {
-        usersList?.list?.length > 0 ? (<TableContainer component={Paper}>
+      {usersList?.list?.length > 0 ? (
+        <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <EnhancedTableHead
               order={order}
@@ -647,21 +723,19 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
               selectedTabValue={selectedTabValue}
             />
             <TableBody>
-              {
-                usersList?.list?.map((row, index) => (
-                  <RowStructure
-                    key={index}
-                    row={row}
-                    router={router}
-                    userDetails={userDetails}
-                    updateRole={updateRole}
-                    handleUpdateStatus={handleUpdateStatus}
-                    UserApproveupdateStatus={UserApproveupdateStatus}
-                    selectedTabValue={selectedTabValue}
-                    setUsersList={setUsersList}
-                  />
-                ))
-              }
+              {usersList?.list?.map((row, index) => (
+                <RowStructure
+                  key={index}
+                  row={row}
+                  router={router}
+                  userDetails={userDetails}
+                  updateRole={updateRole}
+                  handleUpdateStatus={handleUpdateStatus}
+                  UserApproveupdateStatus={UserApproveupdateStatus}
+                  selectedTabValue={selectedTabValue}
+                  setUsersList={setUsersList}
+                />
+              ))}
             </TableBody>
           </Table>
           <TablePagination
@@ -676,9 +750,10 @@ function ManageUserTable({ searchText, onDashboardDataUpdate, selectedTabValue }
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        </TableContainer>) : <NoDataCard title={"No data found"} />
-      }
-
+        </TableContainer>
+      ) : (
+        <NoDataCard title={"No data found"} />
+      )}
     </>
   );
 }

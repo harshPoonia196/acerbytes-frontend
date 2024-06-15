@@ -87,24 +87,24 @@ function ClippedDrawer({ children }) {
       Object.keys(userDetails).length &&
       userDetails?.role == ROLE_CONSTANTS.broker
     ) {
-      getBrokerpointBalance();
+      getBrokerPointBalance();
     }
   }, [userDetails && Object.keys(userDetails).length]);
 
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
-  const getBrokerpointBalance = async () => {
+  const getBrokerPointBalance = async () => {
     try {
       const response = await getBrokerBalance();
       if (response.status == 200) {
         setBrokerPoints(response?.data?.data?.balance || 0);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error getbroker balance request",

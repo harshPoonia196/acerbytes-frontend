@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Container,
-  Grid,
-  Card,
-  Box,
-  Typography,
-} from "@mui/material";
+import { Container, Grid, Card, Box, Typography } from "@mui/material";
 import PropertyCard from "Components/PropertyList/PropertyCard";
 import React, { useEffect, useRef, useState } from "react";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
@@ -18,18 +12,17 @@ import { DEBOUNCE_TIMER } from "utills/Constants";
 function ShortList() {
   const [alignment, setAlignment] = useState("asc");
 
-  const [favouriteProperty, setfavouriteProperty] = useState([])
+  const [favouriteProperty, setfavouriteProperty] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
-  const [focus, setFocus] = useState(false)
+  const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
 
   const handleSearch = (event) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
-    setFocus(true)
-
+    setFocus(true);
   };
 
   const objectToQueryString = (obj) => {
@@ -45,7 +38,7 @@ function ShortList() {
   const getAllfavouritePropertyList = async (searchTerm) => {
     try {
       const querParams = {
-        ...(searchTerm ? { search: searchTerm } : {})
+        ...(searchTerm ? { search: searchTerm } : {}),
       };
       setLoading(true);
       let res = await getAllfavouriteProperty(objectToQueryString(querParams));
@@ -53,10 +46,10 @@ function ShortList() {
         setfavouriteProperty(res?.data?.data);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -66,16 +59,15 @@ function ShortList() {
 
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
-
   useEffect(() => {
-    getAllfavouritePropertyList(debouncedSearchTerm)
+    getAllfavouritePropertyList(debouncedSearchTerm);
     if (inputRef.current) {
       inputRef.current.focus();
-      setFocus(true)
+      setFocus(true);
     }
   }, [debouncedSearchTerm]);
 
@@ -87,7 +79,6 @@ function ShortList() {
     return () => clearTimeout(timerId);
   }, [searchTerm]);
 
-
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
@@ -95,13 +86,24 @@ function ShortList() {
     <>
       {isLoading && <Loading />}
 
-      <Box sx={{ background: 'white', borderBottom: '1px solid whitesmoke', boxShadow: '1px 2px 2px -2px gainsboro!important' }}>
-        <Container maxWidth='lg'>
-          <Typography variant='h3' sx={{ my: 2, ml: 2 }}>
+      <Box
+        sx={{
+          background: "white",
+          borderBottom: "1px solid whitesmoke",
+          boxShadow: "1px 2px 2px -2px gainsboro!important",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography variant="h3" sx={{ my: 2, ml: 2 }}>
             My favourite Properties ({favouriteProperty?.length})
           </Typography>
           <Card>
-            <CustomSearchInput value={searchTerm} onChange={handleSearch} inputRef={inputRef} autoFocus={focus} />
+            <CustomSearchInput
+              value={searchTerm}
+              onChange={handleSearch}
+              inputRef={inputRef}
+              autoFocus={focus}
+            />
           </Card>
         </Container>
       </Box>
@@ -112,9 +114,13 @@ function ShortList() {
               {favouriteProperty.map((property, index) => {
                 return (
                   <Grid item xs={12} key={property._id}>
-                    <PropertyCard isShortListPageCard propertyDetails={property?.propertyData} createdDate={property?.created_at} />
+                    <PropertyCard
+                      isShortListPageCard
+                      propertyDetails={property?.propertyData}
+                      createdDate={property?.created_at}
+                    />
                   </Grid>
-                )
+                );
               })}
             </Grid>
           </Grid>

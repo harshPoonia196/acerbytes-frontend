@@ -207,7 +207,7 @@ const PropertyDetails = ({ params }) => {
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -236,7 +236,7 @@ const PropertyDetails = ({ params }) => {
         setContactPermissionToView(!!res.data?.data?._id);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -257,7 +257,7 @@ const PropertyDetails = ({ params }) => {
         activeAdGetProperty();
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error generating fav Property",
@@ -269,7 +269,7 @@ const PropertyDetails = ({ params }) => {
   };
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -294,7 +294,7 @@ const PropertyDetails = ({ params }) => {
       if (response.status === 200) {
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -654,13 +654,12 @@ const PropertyDetails = ({ params }) => {
         if (isNavigate) {
           const url = constructPropertyUrl({ ...data }, userInfo);
           router.push(url);
-        }
-        else{
-          window.location.reload()
+        } else {
+          window.location.reload();
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",

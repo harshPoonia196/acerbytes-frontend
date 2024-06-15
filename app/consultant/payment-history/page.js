@@ -41,12 +41,12 @@ function PaymentHistory(props) {
       getBrokerPaymentHistory();
 
       // window.location?.pathname !== listOfPages.consultantPaymentHistory &&
-      getBrokerpointBalance();
+      getBrokerPointBalance();
     }
   }, [userDetails && Object.keys(userDetails).length, initialMount]);
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -55,17 +55,15 @@ function PaymentHistory(props) {
     let latest_index = 0;
     for (let i = 0; i < transaction.length; i++) {
       const history = transaction[i];
-      if(history?.transactionType === transactionType.PAYMENT_ADD){
-         data.push({...history, childTransaction: []})
-         latest_index = data.length - 1;
+      if (history?.transactionType === transactionType.PAYMENT_ADD) {
+        data.push({ ...history, childTransaction: [] });
+        latest_index = data.length - 1;
       } else {
         data?.[latest_index]?.childTransaction?.push(history);
       }
     }
     return data.reverse();
-  }
-
-
+  };
 
   const getBrokerPaymentHistory = async () => {
     try {
@@ -75,10 +73,10 @@ function PaymentHistory(props) {
         setPaymentHistory(response?.data?.data);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error payment history request",
+          error?.message ||
+          "Error payment history request",
         "error"
       );
     } finally {
@@ -86,17 +84,17 @@ function PaymentHistory(props) {
     }
   };
 
-  const getBrokerpointBalance = async () => {
+  const getBrokerPointBalance = async () => {
     try {
       const response = await getBrokerBalance();
       if (response.status == 200) {
         setBrokerPoints(response?.data?.data?.balance || 0);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error getbroker balance request",
+          error?.message ||
+          "Error getbroker balance request",
         "error"
       );
     }
@@ -111,27 +109,35 @@ function PaymentHistory(props) {
       />
       <CustomConsultantBreadScrumbs text="Payment history" />
       <InfoBox
-        label={<Box sx={{ flex: 1 }}>
-          <Typography variant="h3">Balance: <span style={{ fontWeight: 600 }}>{brokerBalance}</span></Typography>
-          <Typography variant="h6" sx={{ flex: 1, alignSelf: "center" }}>
-            My payment and points credit history
-          </Typography>
-        </Box>}
-        button={<CustomButton
-          startIcon={<AddCardIcon />}
-          size="small"
-          variant="contained"
-          onClick={handleOpenAddCredit}
-          ButtonText={"Add Points credits "} />}
+        label={
+          <Box sx={{ flex: 1 }}>
+            <Typography variant="h3">
+              Balance: <span style={{ fontWeight: 600 }}>{brokerBalance}</span>
+            </Typography>
+            <Typography variant="h6" sx={{ flex: 1, alignSelf: "center" }}>
+              My payment and points credit history
+            </Typography>
+          </Box>
+        }
+        button={
+          <CustomButton
+            startIcon={<AddCardIcon />}
+            size="small"
+            variant="contained"
+            onClick={handleOpenAddCredit}
+            ButtonText={"Add Points credits "}
+          />
+        }
         title="Anand Gupta(Admin)"
         subtitle="3,344 property consultant links are currently active"
-
       />
       <Container>
         {filterTransaction(paymentHistory)?.map((history, index) => {
-          return <Card sx={{ mb: 1 }}>
-            <HistoryCard history={history} key={index} />
-          </Card>
+          return (
+            <Card sx={{ mb: 1 }}>
+              <HistoryCard history={history} key={index} />
+            </Card>
+          );
         })}
       </Container>
     </>

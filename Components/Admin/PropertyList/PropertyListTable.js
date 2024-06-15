@@ -17,7 +17,7 @@ import {
   Stack,
   Card,
   Typography,
-  ListItemIcon
+  ListItemIcon,
 } from "@mui/material";
 import React, {
   forwardRef,
@@ -28,23 +28,29 @@ import React, {
 import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { visuallyHidden } from "@mui/utils";
-import { formattedCreatedAt, getComparator, stableSort } from "utills/CommonFunction";
+import {
+  formattedCreatedAt,
+  getComparator,
+  stableSort,
+} from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
-import { getAllProperty, getAllAdminProperty, deleteProperty, managePublishData } from "api/Property.api";
+import {
+  getAllProperty,
+  getAllAdminProperty,
+  deleteProperty,
+  managePublishData,
+} from "api/Property.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
-import {
-  PAGINATION_LIMIT,
-  PAGINATION_LIMIT_OPTIONS,
-} from "utills/Constants";
+import { PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS } from "utills/Constants";
 import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearch from "Components/CommonLayouts/CustomSearch";
-import DraftsIcon from '@mui/icons-material/Drafts';
-import PublishIcon from '@mui/icons-material/Publish';
+import DraftsIcon from "@mui/icons-material/Drafts";
+import PublishIcon from "@mui/icons-material/Publish";
 
 const headCells = [
   {
@@ -112,15 +118,14 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
               sx={{
-                '&:hover .MuiTableSortLabel-icon': {
+                "&:hover .MuiTableSortLabel-icon": {
                   opacity: 0,
                 },
-                '&.Mui-active .MuiTableSortLabel-icon': {
+                "&.Mui-active .MuiTableSortLabel-icon": {
                   opacity: 0,
                 },
               }}
             >
-
               {headCell.label}
 
               {orderBy === headCell.id ? (
@@ -131,7 +136,9 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell sx={{ textTransform: "capitalize", fontWeight: "bold" }}>Action</TableCell>
+        <TableCell sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+          Action
+        </TableCell>
       </TableRow>
     </TableHead>
   );
@@ -146,10 +153,9 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
   const open = Boolean(anchorEl);
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
-
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -159,12 +165,16 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
   };
 
   return (
-    <TableRow hover
+    <TableRow
+      hover
       key={row.name}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f5f5"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
-
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = "#f5f5f5";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = "transparent";
+      }}
     >
       <TableCell
         onClick={() => {
@@ -182,18 +192,28 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
       >
         {row.project}
       </TableCell>
-      <TableCell>{row.propertyId ? row.propertyId : '-'}</TableCell>
+      <TableCell>{row.propertyId ? row.propertyId : "-"}</TableCell>
       <TableCell>{row.city}</TableCell>
       <TableCell>{row.area}</TableCell>
       <TableCell>{row.sector}</TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton sx={{ fontSize: "1rem !important" }} onClick={() => handleEdit(row.id)}>
-        <Tooltip title="Edit"><EditIcon fontSize="1rem"/></Tooltip>
+        <IconButton
+          sx={{ fontSize: "1rem !important" }}
+          onClick={() => handleEdit(row.id)}
+        >
+          <Tooltip title="Edit">
+            <EditIcon fontSize="1rem" />
+          </Tooltip>
         </IconButton>
       </TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton sx={{ fontSize: "1rem !important" }} onClick={() => handleDelete(row.id)}>
-        <Tooltip title="Delete"><DeleteIcon fontSize="1rem" /></Tooltip>
+        <IconButton
+          sx={{ fontSize: "1rem !important" }}
+          onClick={() => handleDelete(row.id)}
+        >
+          <Tooltip title="Delete">
+            <DeleteIcon fontSize="1rem" />
+          </Tooltip>
         </IconButton>
       </TableCell>
       <TableCell>
@@ -207,10 +227,13 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
         />
       </TableCell>
       <TableCell sx={{ py: 0 }}>
-      <Tooltip title="More">
-        <IconButton sx={{ fontSize: "1rem !important" }} onClick={handleClick}>
-          <MoreVertIcon fontSize="1rem" />
-        </IconButton>
+        <Tooltip title="More">
+          <IconButton
+            sx={{ fontSize: "1rem !important" }}
+            onClick={handleClick}
+          >
+            <MoreVertIcon fontSize="1rem" />
+          </IconButton>
         </Tooltip>
         <Menu
           id="basic-menu"
@@ -223,15 +246,16 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
         >
           <MenuItem
             onClick={() => {
-              if (row.rera === 'yes' && row.published === false) {
+              if (row.rera === "yes" && row.published === false) {
                 managePublishActive(row.id, !row.published);
-              }
-              else if (row.published === true) {
+              } else if (row.published === true) {
                 managePublishActive(row.id, !row.published);
-              }
-              else {
-                openSnackbar("RERA message needs to be provided for this property", "error");
-                // showToaterMessages(
+              } else {
+                openSnackbar(
+                  "RERA message needs to be provided for this property",
+                  "error"
+                );
+                // showTostMessages(
                 //  "RERA message needs to be provided for this property",
                 // );
               }
@@ -240,7 +264,11 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
             }}
           >
             <ListItemIcon>
-            {row.published ? <DraftsIcon fontSize="small"/>: <PublishIcon fontSize="small"/>}
+              {row.published ? (
+                <DraftsIcon fontSize="small" />
+              ) : (
+                <PublishIcon fontSize="small" />
+              )}
             </ListItemIcon>
             {row.published ? " Draft" : "Publish"}
           </MenuItem>
@@ -277,7 +305,7 @@ const PropertyListTable = ({ setCount }) => {
       status: item.overview?.status,
       modifiedData: item?.modifiedAt,
       published: item?.published,
-      propertyId: item?.property_id
+      propertyId: item?.property_id,
     }));
   };
 
@@ -303,7 +331,7 @@ const PropertyListTable = ({ setCount }) => {
         ...(searchTerm ? { search: searchTerm } : {}),
       };
       if (userDetails?.role) {
-        querParams.role = userDetails?.role
+        querParams.role = userDetails?.role;
       }
 
       let res = await getAllAdminProperty(objectToQueryString(querParams));
@@ -314,10 +342,10 @@ const PropertyListTable = ({ setCount }) => {
         setProperty(res?.data);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -346,10 +374,10 @@ const PropertyListTable = ({ setCount }) => {
           setDeletingPropertyId(null);
         }
       } catch (error) {
-        showToaterMessages(
+        showTostMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error deleting property",
+            error?.message ||
+            "Error deleting property",
           "error"
         );
       } finally {
@@ -361,25 +389,23 @@ const PropertyListTable = ({ setCount }) => {
     }
   };
 
-
   const managePublishActive = async (propertyId, publishStatus) => {
     try {
       setLoading(true);
       let response = await managePublishData(propertyId, publishStatus);
       if (response.status === 200) {
-        getAllPropertyList()
+        getAllPropertyList();
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error deleting property",
+          error?.message ||
+          "Error deleting property",
         "error"
       );
     } finally {
       setLoading(false);
     }
-
   };
 
   useEffect(() => {
@@ -401,7 +427,7 @@ const PropertyListTable = ({ setCount }) => {
 
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -451,48 +477,48 @@ const PropertyListTable = ({ setCount }) => {
           onChange={handleSearch}
           onSearchButtonClick={handleSearchClick}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               handleSearchClick();
             }
           }}
         />
       </Card>
-      {
-        propertyList.length > 0 ? (
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
-              <EnhancedTableHead
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-              />
-              <TableBody>
-                {propertyList?.map((row) => (
-                  <RowStructure
-                    key={row?.id}
-                    row={row}
-                    router={router}
-                    handleDelete={handleDelete}
-                    managePublishActive={managePublishActive}
-                  />
-                ))}
-              </TableBody>
-            </Table>
-            <TablePagination sx={{
-
-              overflow: 'hidden',
-            }}
-              rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
-              component="div"
-              count={property?.totalCount}
-              rowsPerPage={pageLimit}
-              page={currentPage - 1}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+      {propertyList.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
             />
-          </TableContainer>
-        ) : <NoDataCard title={"No data found"} />
-      }
+            <TableBody>
+              {propertyList?.map((row) => (
+                <RowStructure
+                  key={row?.id}
+                  row={row}
+                  router={router}
+                  handleDelete={handleDelete}
+                  managePublishActive={managePublishActive}
+                />
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            sx={{
+              overflow: "hidden",
+            }}
+            rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
+            component="div"
+            count={property?.totalCount}
+            rowsPerPage={pageLimit}
+            page={currentPage - 1}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>
+      ) : (
+        <NoDataCard title={"No data found"} />
+      )}
 
       <ConfirmationDialog
         open={isDialogOpen}
