@@ -10,6 +10,8 @@ import {
   Rating,
   Menu,
   MenuItem,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import colors from "styles/theme/colors";
@@ -19,11 +21,12 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import { countryCodeFormating } from "utills/utills";
 import { ToasterMessages, boxShadowTop } from "utills/Constants";
 import DoneIcon from "@mui/icons-material/Done";
-import { capitalLizeName } from "utills/CommonFunction";
+import { capitalLizeName, formatDateAndDaysRemaining } from "utills/CommonFunction";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import ShareIcon from "@mui/icons-material/Share";
 import { useSnackbar } from "utills/SnackbarContext";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function UserDetailsAd({
   AllPropertyData,
@@ -40,12 +43,10 @@ function UserDetailsAd({
   const locationData = AllPropertyData?.propertyData.location;
   const phoneNumber =
     brokerData?.phone?.countryCode && brokerData?.phone?.number
-      ? `${countryCodeFormating(brokerData.phone.countryCode)} ${
-          brokerData.phone.number
-        }`
-      : `${countryCodeFormating(userDetails?.phone?.countryCode)}  ${
-          userDetails?.phone?.number
-        }`;
+      ? `${countryCodeFormating(brokerData.phone.countryCode)} ${brokerData.phone.number
+      }`
+      : `${countryCodeFormating(userDetails?.phone?.countryCode)}  ${userDetails?.phone?.number
+      }`;
 
   const name =
     brokerData?.name?.firstName && brokerData?.name?.lastName
@@ -381,10 +382,10 @@ function UserDetailsAd({
                           >
                             {AllPropertyData?.propertyBroker?.[0]?.expired_at
                               ? formatDateAndDaysRemaining(
-                                  AllPropertyData?.propertyBroker?.[0]
-                                    ?.expired_at,
-                                  "short"
-                                )
+                                AllPropertyData?.propertyBroker?.[0]
+                                  ?.expired_at,
+                                "short"
+                              )
                               : "Get customer enquiries"}
                           </Typography>
                         </div>
@@ -410,32 +411,11 @@ function UserDetailsAd({
                           "aria-labelledby": "basic-button",
                         }}
                       >
-                        <MenuItem
-                          onClick={() =>
-                            handleOpenActivateAdsPopup(propertyUrl)
-                          }
-                        >
-                          <AddLinkIcon
-                            sx={{ fontSize: "20px", marginRight: "10px" }}
-                          />{" "}
-                          {true ? "Extend" : "Activate link"}{" "}
-                        </MenuItem>
+                        <MenuItem onClick={() => handleOpenActivateAdsPopup(propertyUrl)}><AddLinkIcon sx={{ fontSize: "20px", marginRight: "10px" }} /> {true ? "Extend your link" : "Activate link"} </MenuItem>
                         {true ? (
-                          <MenuItem
-                            onClick={() => copyToClipboard(propertyUrl)}
-                          >
-                            <ShareIcon
-                              sx={{ fontSize: "18px", marginRight: "10px" }}
-                            />{" "}
-                            Share
-                          </MenuItem>
+                          <MenuItem onClick={() => copyToClipboard(propertyUrl)}><ContentCopyIcon sx={{ fontSize: "18px", marginRight: "10px" }} />Copy activated url</MenuItem>
                         ) : (
-                          <MenuItem sx={{ cursor: "not-allowed" }}>
-                            <ShareIcon
-                              sx={{ fontSize: "18px", marginRight: "10px" }}
-                            />{" "}
-                            Share
-                          </MenuItem>
+                          <MenuItem sx={{ cursor: 'not-allowed' }}><ContentCopyIcon sx={{ fontSize: "18px", marginRight: "10px" }} />Copy activated url</MenuItem>
                         )}
                       </Menu>
                     </Box>
