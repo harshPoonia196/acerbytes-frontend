@@ -22,6 +22,7 @@ import { useAuth } from "utills/AuthContext";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
+import { formatPoints } from "utills/CommonFunction";
 
 function ConsultantPopup({
   open,
@@ -33,7 +34,7 @@ function ConsultantPopup({
   const { setBrokerPoints } = useAuth();
   const [loadingStates, setLoadingStates] = useState(false);
   const [currentPlan, setCurrentPlan] = useState({});
-
+  const router = useRouter();
   const { openSnackbar } = useSnackbar();
 
   const showTostMessages = (message, severity) => {
@@ -152,13 +153,13 @@ function ConsultantPopup({
                             variant="body1"
                             sx={{ flex: 1, alignSelf: "center" }}
                           >
-                            {credit?.month} plan
+                            {credit?.month}{credit?.month !== "1 month" ? "s": null} plan
                           </Typography>
                           <Typography variant="subtitle2">
                             <span style={{ fontWeight: 600 }}>
-                              {credit?.discountAmount}
+                              {formatPoints(credit?.discountAmount)} Points {" "}
                             </span>
-                            ({credit?.discount}% discount) Points
+                            ({credit?.discount}% discount)
                           </Typography>
                         </Box>
                       </Box>

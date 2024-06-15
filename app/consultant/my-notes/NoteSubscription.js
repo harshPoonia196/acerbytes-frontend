@@ -20,8 +20,10 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { buyNotesPoints, getBrokerBalance } from "api/Broker.api";
 import { useAuth } from "utills/AuthContext";
 import AddCardIcon from "@mui/icons-material/AddCard";
+import { useRouter } from "next/navigation";
 
 function NoteSubscription({ open, handleClose, getList }) {
+  const router = useRouter();
   const { setBrokerPoints, brokerBalance } = useAuth(),
     [loadingStates, setLoadingStates] = useState({}),
     { openSnackbar } = useSnackbar(),
@@ -105,35 +107,32 @@ function NoteSubscription({ open, handleClose, getList }) {
           name="controlled-radio-buttons-group"
           value={subscribeItem.value}
           onChange={handleChange}
-        >
-          <Grid container spacing={1}>
-            {BuyConsultantsNotePoints?.map((credit, index) => {
-              return (
-                <>
-                  <Grid item xs={12}>
-                    <Card sx={{ p: 1 }}>
-                      <Box sx={{ display: "flex", gap: 1 }}>
-                        <Box>
-                          <FormControlLabel
-                            value={credit.value}
-                            control={<Radio />}
-                          />
-                        </Box>
-                        <Box>
-                          <Typography
-                            variant="body1"
-                            sx={{ flex: 1, alignSelf: "center" }}
-                          >
-                            {credit?.month} plan
-                          </Typography>
-                          <Typography variant="subtitle2">
-                            <span style={{ fontWeight: 600 }}>
-                              {formatPoints(credit?.discountAmount)}
-                            </span>{" "}
-                            ({credit?.discount}% discount)
-                          </Typography>
-                        </Box>
-                        {/* <Box>
+  >
+          <Grid container spacing={1} >
+          {BuyConsultantsNotePoints?.map((credit, index) => {
+            return (
+              <>
+                <Grid item xs={12}>
+                  <Card sx={{ p: 1 }}>
+                    <Box sx={{ display: "flex", gap: 1 }}>
+                      <Box>
+                        <FormControlLabel value={credit.value} control={<Radio />} style={{ marginRight: "0px", marginLeft: "5px"}} />
+                      </Box>
+                      <Box>
+                      <Typography
+                          variant="body1"
+                          sx={{ flex: 1, alignSelf: "center" }}
+                        >
+                          {credit?.month}{credit?.month !== "1 month" ? "s": null} plan
+                        </Typography>
+                        <Typography variant="subtitle2">
+                      <span style={{ fontWeight: 600 }}>
+                        {formatPoints(credit?.discountAmount)} Points
+                      </span>{" "}
+                      ({credit?.discount}% discount)
+                    </Typography>
+                      </Box>
+                      {/* <Box>
                         <CustomButton
                           variant="contained"
                           size="small"
@@ -151,9 +150,9 @@ function NoteSubscription({ open, handleClose, getList }) {
           </Grid>
         </RadioGroup>
       </DialogContent>
-      <DialogActions sx={{ justifyContent: "space-between" }}>
-        <Box sx={{ fontWeight: 700 }}>
-          <Chip label={`Balance: ${brokerBalance}`} color="primary"></Chip>
+      <DialogActions sx={{justifyContent: 'space-between', pt: 1}}>
+        <Box sx={{ fontWeight: 700}}>
+          <Chip label={`Balance: ${brokerBalance} Points`} color="primary"></Chip> 
         </Box>
         <Box sx={{ textAlign: "end" }}>
           <CustomButton
