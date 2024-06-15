@@ -22,6 +22,7 @@ import { useAuth } from "utills/AuthContext";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
+import { formatPoints } from "utills/CommonFunction";
 
 function ConsultantPopup({
   open,
