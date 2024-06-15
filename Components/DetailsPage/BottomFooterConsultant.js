@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import { Phone as PhoneIcon } from "@mui/icons-material";
-import React from "react";
+import React, { useEffect } from "react";
 import { boxShadowTop } from "utills/Constants";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DoneIcon from "@mui/icons-material/Done";
@@ -27,6 +27,7 @@ import { ToasterMessages } from "utills/Constants";
 import colors from "styles/theme/colors";
 import ShareIcon from "@mui/icons-material/Share";
 import { countryCodeFormating } from "utills/utills";
+import { useRouter } from 'next/navigation';
 
 function BottomFooterConsultant({
   handleOpenActivateAdsPopup,
@@ -34,6 +35,8 @@ function BottomFooterConsultant({
   SinglePropertyId,
 }) {
   const { userDetails } = useAuth();
+  const router = useRouter();
+
   const locationData = propertyData?.location;
   const brokerData = SinglePropertyId?.brokerData;
 
@@ -115,6 +118,12 @@ function BottomFooterConsultant({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(()=> {
+    if(propertyData?.isActiveAd){
+        router.push(propertyUrl)
+    }
+}, [propertyData?.isActiveAd])
   return (
     <>
       <Box
