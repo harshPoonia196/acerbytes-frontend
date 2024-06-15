@@ -58,7 +58,7 @@ function ProjectCard({
   // const { openSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 

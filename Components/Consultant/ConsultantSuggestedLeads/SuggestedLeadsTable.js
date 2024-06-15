@@ -20,36 +20,45 @@ import {
   DialogActions,
   Chip,
   Typography,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
-import { capitalLizeName, getComparator, stableSort } from "utills/CommonFunction";
+import {
+  capitalLizeName,
+  getComparator,
+  stableSort,
+} from "utills/CommonFunction";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useQueries } from "utills/ReactQueryContext";
-import { buySuggestedLeads, getBrokerBalance, getBrokerSuggestedLeads } from "api/Broker.api";
+import {
+  buySuggestedLeads,
+  getBrokerBalance,
+  getBrokerSuggestedLeads,
+} from "api/Broker.api";
 import { debounce } from "lodash";
-import { DEBOUNCE_TIMER, PAGINATION_LIMIT, PAGINATION_LIMIT_OPTIONS } from "utills/Constants";
+import {
+  DEBOUNCE_TIMER,
+  PAGINATION_LIMIT,
+  PAGINATION_LIMIT_OPTIONS,
+} from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { countryCodeFormating } from "utills/utills";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import SuggesredLeadsDetails from "./Modal/SuggesredLeadsDetails";
 import { useAuth } from "utills/AuthContext";
 import colors from "styles/theme/colors";
 import { useRouter } from "next/navigation";
 import { listOfPages } from "Components/NavBar/Links";
-import {
-  formatPoints,
-  formatAmount,
-} from "utills/CommonFunction";
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import EditIcon from '@mui/icons-material/Edit';
+import { formatPoints, formatAmount } from "utills/CommonFunction";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import EditIcon from "@mui/icons-material/Edit";
 import { useQuery } from "@tanstack/react-query";
 import { getBrokerProfile } from "api/BrokerProfile.api";
-import LinkIcon from '@mui/icons-material/Link';
+import LinkIcon from "@mui/icons-material/Link";
 
 const headCells = [
   {
@@ -71,7 +80,7 @@ const headCells = [
   {
     id: "maxBuget",
     label: "Max buget",
-    numeric: true
+    numeric: true,
   },
   {
     id: "vewDetails",
@@ -101,10 +110,10 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
               sx={{
-                '&:hover .MuiTableSortLabel-icon': {
+                "&:hover .MuiTableSortLabel-icon": {
                   opacity: 0,
                 },
-                '&.Mui-active .MuiTableSortLabel-icon': {
+                "&.Mui-active .MuiTableSortLabel-icon": {
                   opacity: 0,
                 },
               }}
@@ -124,7 +133,13 @@ function EnhancedTableHead(props) {
   );
 }
 
-function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelectedRowData, manageBuyNow }) {
+function RowStructure({
+  row,
+  handlePropertyView,
+  setViewLeadsDetails,
+  setSelectedRowData,
+  manageBuyNow,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -146,51 +161,57 @@ function RowStructure({ row, handlePropertyView, setViewLeadsDetails, setSelecte
         {`${countryCodeFormating(row.phone?.countryCode)} ${row.phone?.number}`}
       </TableCell>
       <TableCell>
-        {row.propertyLink && (<>
-          <a
-            href={row.propertyLink}
-            onClick={(e) => {
-              e.preventDefault();
-              handlePropertyView(row.propertyLink);
-            }}
-            style={{ textDecoration: "none" }}
-          >
-            <Tooltip title="Link"><LinkIcon sx={{ fontSize: "17px", position: "relative", top: "4px"}} fontSize="small"/></Tooltip> {row?.properties?.overview?.projectName ?
-              `${capitalLizeName(row?.properties?.overview?.projectName)}`
-              : "-"}
-          </a>
-        </>)}
+        {row.propertyLink && (
+          <>
+            <a
+              href={row.propertyLink}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePropertyView(row.propertyLink);
+              }}
+              style={{ textDecoration: "none" }}
+            >
+              <Tooltip title="Link">
+                <LinkIcon
+                  sx={{ fontSize: "17px", position: "relative", top: "4px" }}
+                  fontSize="small"
+                />
+              </Tooltip>{" "}
+              {row?.properties?.overview?.projectName
+                ? `${capitalLizeName(row?.properties?.overview?.projectName)}`
+                : "-"}
+            </a>
+          </>
+        )}
       </TableCell>
-      <TableCell align="right">{formatAmount(row?.userDetail?.budget?.maximumBudget?.value)}</TableCell>
-      <TableCell> 
-        <Tooltip title="View">
-          <IconButton
-          sx={{ fontSize: "1rem !important" }}
-          aria-label="more"
-          id="long-button"
-          aria-controls={open ? "long-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-haspopup="true"
-          onClick={() => {
-            setSelectedRowData(row);
-            setViewLeadsDetails(true);
-          }}
-          size="small"
-        >
-          <VisibilityIcon fontSize="1rem" />
-        </IconButton>
-      </Tooltip>
+      <TableCell align="right">
+        {formatAmount(row?.userDetail?.budget?.maximumBudget?.value)}
       </TableCell>
       <TableCell>
-        <Button onClick={() => manageBuyNow(row?._id)}>
-          Buy Now
-        </Button>
+        <Tooltip title="View">
+          <IconButton
+            sx={{ fontSize: "1rem !important" }}
+            aria-label="more"
+            id="long-button"
+            aria-controls={open ? "long-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
+            aria-haspopup="true"
+            onClick={() => {
+              setSelectedRowData(row);
+              setViewLeadsDetails(true);
+            }}
+            size="small"
+          >
+            <VisibilityIcon fontSize="1rem" />
+          </IconButton>
+        </Tooltip>
+      </TableCell>
+      <TableCell>
+        <Button onClick={() => manageBuyNow(row?._id)}>Buy Now</Button>
       </TableCell>
     </TableRow>
   );
 }
-
-
 
 function SuggestedLeadsTable({ setLeadsCount }) {
   const router = useRouter();
@@ -211,38 +232,38 @@ function SuggestedLeadsTable({ setLeadsCount }) {
   const [buyNowResponseMessage, setBuyNowResponseMessage] = useState("");
   const [targetedCities, setTargetedCities] = useState([]);
 
-  const { data, isLoading, error, refetch } = useQueries([search],
-    async () => {
-      try {
-        const response = await getBrokerSuggestedLeads({ limit: rowsPerPage, page, search });
-        if (response.status == 200) {
-          const { success, data, message } = response.data;
-          if (success) {
-            return data;
-          } else {
-            openSnackbar(message, "error");
-          }
+  const { data, isLoading, error, refetch } = useQueries([search], async () => {
+    try {
+      const response = await getBrokerSuggestedLeads({
+        limit: rowsPerPage,
+        page,
+        search,
+      });
+      if (response.status == 200) {
+        const { success, data, message } = response.data;
+        if (success) {
+          return data;
+        } else {
+          openSnackbar(message, "error");
         }
-      } catch (error) {
-        openSnackbar(
-          error?.response?.data?.message ||
+      }
+    } catch (error) {
+      openSnackbar(
+        error?.response?.data?.message ||
           error?.message ||
           "Something went wrong!",
-          "error"
-        );
-        return error;
-      }
+        "error"
+      );
+      return error;
     }
-  );
-
+  });
 
   const { data: brokerProfile } = useQuery({
     queryKey: ["brokerDetailsSuggested", userDetails],
     queryFn: () => {
-      return getBrokerProfile(userDetails?.googleID)
-    }
-  })
-
+      return getBrokerProfile(userDetails?.googleID);
+    },
+  });
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -298,22 +319,22 @@ function SuggestedLeadsTable({ setLeadsCount }) {
     const baseUrl = window.location.origin;
     const fullLink = `${baseUrl}/${link}`;
     window.open(fullLink, "_blank");
-  }
+  };
   const handleCloseViewLeadsDetails = () => {
-    setViewLeadsDetails(false)
-  }
+    setViewLeadsDetails(false);
+  };
 
-  const getBrokerpointBalance = async () => {
+  const getBrokerPointBalance = async () => {
     try {
       const response = await getBrokerBalance();
       if (response.status == 200) {
         setBrokerPoints(response?.data?.data?.balance || 0);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error getbroker balance request",
+          error?.message ||
+          "Error getbroker balance request",
         "error"
       );
     }
@@ -321,28 +342,38 @@ function SuggestedLeadsTable({ setLeadsCount }) {
 
   const manageBuyNow = async (leadId) => {
     try {
-      let response = await buySuggestedLeads({ leadId, googleID: userDetails?.googleID });
+      let response = await buySuggestedLeads({
+        leadId,
+        googleID: userDetails?.googleID,
+      });
       if (response.status === 200) {
         setBuyModalOpen(true);
-        setBuyNowResponseMessage(response.data.message || "Fetched leads successfully please check my leads");
+        setBuyNowResponseMessage(
+          response.data.message ||
+            "Fetched leads successfully please check my leads"
+        );
       }
     } catch (error) {
-      setBuyNowResponseMessage(error?.response?.data?.message || error?.message || "Error processing purchase");
+      setBuyNowResponseMessage(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error processing purchase"
+      );
       setBuyModalOpen(true);
     }
   };
 
   const closeBuyResponseModal = () => {
-    setBuyModalOpen(false)
-    getBrokerpointBalance()
-    refetch()
-  }
+    setBuyModalOpen(false);
+    getBrokerPointBalance();
+    refetch();
+  };
 
   const handleViewMyLeadClick = () => {
     setBuyModalOpen(false);
-    getBrokerpointBalance();
+    getBrokerPointBalance();
     refetch();
-    router.push(listOfPages.consultantMyLeads)
+    router.push(listOfPages.consultantMyLeads);
   };
 
   const BuyResponseModal = () => (
@@ -355,25 +386,30 @@ function SuggestedLeadsTable({ setLeadsCount }) {
       <DialogContent sx={{ padding: "36px !important", minWidth: "415px" }}>
         <DialogContentText>
           <Typography variant="body1">{buyNowResponseMessage}</Typography>
-          <Typography variant="body1">Your current Credit points (23,000 points) are insufficient to buy the services.</Typography>
+          <Typography variant="body1">
+            Your current Credit points (23,000 points) are insufficient to buy
+            the services.
+          </Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
           variant="outlined"
           sx={{
-            fontWeight: 600
-          }}>
-          Required points: 2500 
+            fontWeight: 600,
+          }}
+        >
+          Required points: 2500
         </Button>
         <Button
           variant="contained"
           sx={{
-            fontWeight: 600
-          }}>
+            fontWeight: 600,
+          }}
+        >
           Add Credit points
         </Button>
-      <Button
+        <Button
           variant="contained"
           sx={{
             fontWeight: 600,
@@ -388,7 +424,8 @@ function SuggestedLeadsTable({ setLeadsCount }) {
         >
           View My lead
         </Button>
-        <Button variant="contained"
+        <Button
+          variant="contained"
           sx={{
             fontWeight: 600,
             // color: "white",
@@ -397,45 +434,50 @@ function SuggestedLeadsTable({ setLeadsCount }) {
             //   backgroundColor: colors?.BLACK,
             //   boxShadow: "none",
             // },
-          }} onClick={closeBuyResponseModal} color="primary">
+          }}
+          onClick={closeBuyResponseModal}
+          color="primary"
+        >
           Close
         </Button>
-        
       </DialogActions>
     </Dialog>
   );
 
-
   useEffect(() => {
-    let data = []
-    brokerProfile?.data?.data?.targetCustomers.map(row => {
-      data.push(row?.selectCity)
-    })
-    setTargetedCities([...new Set(data)])
+    let data = [];
+    brokerProfile?.data?.data?.targetCustomers.map((row) => {
+      data.push(row?.selectCity);
+    });
+    setTargetedCities([...new Set(data)]);
     // console.log(targetedCities)
-  }, [brokerProfile?.data?.data?.targetCustomers])
-
+  }, [brokerProfile?.data?.data?.targetCustomers]);
 
   return (
     <>
       {isLoading && <Loader />}
-        <Typography variant="h6">Your targeted cities are:</Typography>
-        <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
-          <Box>
+      <Typography variant="h6">Your targeted cities are:</Typography>
+      <Box
+        sx={{
+          mb: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box>
           {targetedCities.map((item, Iindex) => {
             return (
-              <Chip
-                key={Iindex}
-                label={item}
-                sx={{ marginRight: "5px" }}
-              />
-            )
+              <Chip key={Iindex} label={item} sx={{ marginRight: "5px" }} />
+            );
           })}
-          </Box>
-        <Button variant="contained" onClick={()=> router.push("/consultant/profile")}>
-          <EditIcon fontSize="14px" sx={{mr: 1}} /> Edit
+        </Box>
+        <Button
+          variant="contained"
+          onClick={() => router.push("/consultant/profile")}
+        >
+          <EditIcon fontSize="14px" sx={{ mr: 1 }} /> Edit
         </Button>
-
       </Box>
       <Grid item xs={12}>
         <Card sx={{ mb: 2 }}>
@@ -481,7 +523,6 @@ function SuggestedLeadsTable({ setLeadsCount }) {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </TableContainer>
-
       ) : (
         <NoDataCard title={"No data found"} />
       )}
