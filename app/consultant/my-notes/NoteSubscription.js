@@ -117,7 +117,7 @@ function NoteSubscription({ open, handleClose, getList }) {
                   <Card sx={{ p: 1 }}>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <Box>
-                        <FormControlLabel value={credit.value} control={<Radio />} style={{ marginRight: "0px"}} />
+                        <FormControlLabel value={credit.value} control={<Radio />} style={{ marginRight: "0px", marginLeft: "5px"}} />
                       </Box>
                       <Box>
                       <Typography
@@ -155,7 +155,7 @@ function NoteSubscription({ open, handleClose, getList }) {
       </DialogContent>
       <DialogActions sx={{justifyContent: 'space-between', pt: 1}}>
         <Box sx={{ fontWeight: 700}}>
-          <Chip label={`Balance: ${brokerBalance}`} color="primary"></Chip>
+          <Chip label={`Balance: ${brokerBalance} Points`} color="primary"></Chip> 
         </Box>
         <Box sx={{ textAlign: "end" }}>
         

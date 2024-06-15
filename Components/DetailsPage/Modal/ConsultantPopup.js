@@ -122,7 +122,7 @@ function ConsultantPopup({ open, handleClose, detailsPropertyId, detailsGetPrope
                 <Grid item xs={12}>
                   <Card sx={{ p: 1 }}>
                     <Box sx={{ display: "flex", gap: 1 }}>
-                      <FormControlLabel value={credit.value} control={<Radio />} label="" sx={{mr: 0}}/>
+                      <FormControlLabel value={credit.value} control={<Radio />} label="" style={{ marginRight: "0px", marginLeft: "5px"}}/>
                       <Box>
                       <Typography
                         variant="body1"
