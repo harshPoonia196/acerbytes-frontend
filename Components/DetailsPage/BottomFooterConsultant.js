@@ -13,12 +13,14 @@ import { ToasterMessages } from 'utills/Constants';
 import colors from 'styles/theme/colors';
 import ShareIcon from '@mui/icons-material/Share';
 import { countryCodeFormating } from 'utills/utills';
+import { useRouter } from 'next/navigation';
 
 
 function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, SinglePropertyId }) {
     const { userDetails } = useAuth();
     const locationData = propertyData?.location;
     const brokerData = SinglePropertyId?.brokerData
+    const router = useRouter();
 
     const name = brokerData?.name?.firstName && brokerData?.name?.lastName
         ? `${brokerData.name.firstName} ${brokerData.name.lastName}`
@@ -81,6 +83,12 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    useEffect(()=> {
+        if(propertyData?.isActiveAd){
+            router.push(propertyUrl)
+        }
+    }, [propertyData?.isActiveAd])
     return (
         <>
             <Box className="consultantFooter" sx={{
