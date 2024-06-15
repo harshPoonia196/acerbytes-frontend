@@ -155,12 +155,12 @@ function PropertyCard(props) {
   }
 
   const categorizeScore = (score) => {
-    if (score >= 0 && score <= 20) return "Poor";
-    if (score >= 21 && score <= 40) return "Average";
-    if (score >= 41 && score <= 60) return "Good";
-    if (score >= 61 && score <= 80) return "Very good";
-    if (score >= 81 && score <= 90) return "Excellent";
-    if (score >= 91 && score <= 100) return "Outstanding";
+    if (score >= 0 && score <= 20) return "poor";
+    if (score >= 21 && score <= 40) return "average";
+    if (score >= 41 && score <= 60) return "good";
+    if (score >= 61 && score <= 80) return "very good";
+    if (score >= 81 && score <= 90) return "excellent";
+    if (score >= 91 && score <= 100) return "outstanding";
     return "invalid";
   };
 
@@ -326,15 +326,13 @@ function PropertyCard(props) {
             lg={1}
             sx={{ display: { xs: "none", lg: "block" }, textAlign: "end" }}
           >
-            <Tooltip title={categorizeScore(propertyDetails?.overallAssessment?.score)}>
             <CircularWithValueLabel
               progress={
                 overallAssessment?.score ? overallAssessment.score.toFixed() : 0
               }
               onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltiptext={`AB scores ${categorizeScore(propertyDetails?.overallAssessment?.score)}`}
+              tooltipText={`AB scores ${categorizeScore(propertyDetails?.overallAssessment?.score)}`}
             />
-            </Tooltip>
           </Grid>
         </Grid>
       </CardActionArea>
