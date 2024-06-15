@@ -35,6 +35,8 @@ import {
 import { debounce } from "lodash";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import CustomSearch from "Components/CommonLayouts/CustomSearch";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 function PropertyList({ params }) {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -60,6 +62,7 @@ function PropertyList({ params }) {
   const [selectedCity, setSelectedCity] = useState(
     params.location ? [decodeURIComponent(params.location)] : []
   );
+  const [mobileFilter, setMobileFilter] = useState(false)
 
   const handleSearchButtonClick = () => {
     performSearch();
@@ -368,25 +371,27 @@ function PropertyList({ params }) {
     return (
       <>
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Builder"
           list={selectOption?.builder}
           handleChange={(event, value) => handleOptionChange("builder", value)}
           value={selectedOptions.builder ? selectedOptions.builder : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Category"
           list={selectOption?.projectCategory}
           handleChange={(event, value) => handleOptionChange("category", value)}
           value={selectedOptions.category ? selectedOptions.category : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Property type"
           disabled={isDisablePropertyType}
@@ -402,9 +407,10 @@ function PropertyList({ params }) {
             selectedOptions?.propertyType ? selectedOptions?.propertyType : ""
           }
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Layout type"
           disabled={isDisableLayoutType}
@@ -418,18 +424,20 @@ function PropertyList({ params }) {
           handleChange={(event, value) => handleOptionChange("unitType", value)}
           value={selectedOptions.unitType ? selectedOptions.unitType : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="City"
           list={cities}
           handleChange={(event, value) => handleOptionChange("city", value)}
           value={selectedOptions.city ? selectedOptions.city : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Location"
           disabled={locationDisable}
@@ -437,41 +445,25 @@ function PropertyList({ params }) {
           handleChange={(event, value) => handleOptionChange("location", value)}
           value={selectedOptions.location ? selectedOptions.location : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Status"
           list={selectOption?.status}
           handleChange={(event, value) => handleOptionChange("status", value)}
           value={selectedOptions.status ? selectedOptions.status : ""}
           clearable
+          className="filter-input-field"
         />
       </>
     );
   };
 
-  return (
-    <>
-      <>
-        {(isLoading?.loader1 || isLoading?.loader2) && <Loader />}
-        <Container maxWidth="lg" sx={{ height: "100%" }}>
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <Card
-              sx={{
-                display: { xs: "none", md: "block" },
-                pl: 2,
-                pt: 2,
-                pr: 1,
-                pb: 2,
-                width: 220,
-                height: "max-content",
-                overflowY: "scroll",
-              }}
-            >
-              <Grid container spacing={2}>
-                {getFilterFields()}
-                <Grid item xs={12} sx={{ alignSelf: "center" }}>
+  const getSortBy = () => {
+    return (
+      <Grid item xs={12} sx={{ alignSelf: "center" }}>
                   <Typography
                     variant="subtitle2"
                     sx={{ alignSelf: "center", color: colors.GRAY }}
@@ -542,6 +534,30 @@ function PropertyList({ params }) {
                     </ToggleButton>
                   </ToggleButtonGroup>
                 </Grid>
+    )
+  }
+
+  return (
+    <>
+      <>
+        {(isLoading?.loader1 || isLoading?.loader2) && <Loader />}
+        <Container maxWidth="lg" sx={{ height: "100%" }}>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <Card
+              sx={{
+                display: { xs: "none", md: "block" },
+                pl: 2,
+                pt: 2,
+                pr: 1,
+                pb: 2,
+                width: 220,
+                height: "max-content",
+                overflowY: "scroll",
+              }}
+            >
+              <Grid container spacing={2}>
+                {getFilterFields()}
+                {getSortBy()}
                 <Grid
                   item
                   xs={36}
@@ -613,6 +629,7 @@ function PropertyList({ params }) {
                     </Card>
                   </Grid>
                 )}
+                
                 <Grid item xs={36}>
                   <Card>
                     <CustomSearch
@@ -629,6 +646,16 @@ function PropertyList({ params }) {
                       }}
                     />
                   </Card>
+                </Grid>
+                <Grid item xs={36}  sx={{display: { xs: "block", md: "none" }}}>
+                  <Typography variant="body1" align="right" onClick={() => setMobileFilter(!mobileFilter)} sx={{ color: colors.BLUE, display: "flex", alignItems: 'center', justifyContent: 'flex-end'}}>Filter & Sort {mobileFilter ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</Typography>
+                  {mobileFilter && (
+                  <Box sx={{ pb:2, pr: 2, backgroundColor:'white', mt: 2}}>
+                    <Grid container spacing={2} sx={{ marginLeft: 0, width: "100%"}}>
+                    {getFilterFields()}
+                    {getSortBy()}
+                    </Grid>
+                  </Box>)}
                 </Grid>
                 <Grid item xs={36}>
                   {count?.totalCount === 0 ? (
