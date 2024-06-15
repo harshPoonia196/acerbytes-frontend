@@ -20,8 +20,10 @@ import { useSnackbar } from "utills/SnackbarContext";
 import { buyNotesPoints, getBrokerBalance } from "api/Broker.api";
 import { useAuth } from "utills/AuthContext";
 import AddCardIcon from "@mui/icons-material/AddCard";
+import { useRouter } from "next/navigation";
 
 function NoteSubscription({ open, handleClose, getList }) {
+  const router = useRouter();
   const { setBrokerPoints, brokerBalance } = useAuth(),
     [loadingStates, setLoadingStates] = useState({}),
     { openSnackbar } = useSnackbar(),
