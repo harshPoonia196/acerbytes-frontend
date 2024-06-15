@@ -463,77 +463,103 @@ function PropertyList({ params }) {
 
   const getSortBy = () => {
     return (
+      <>
       <Grid item xs={12} sx={{ alignSelf: "center" }}>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ alignSelf: "center", color: colors.GRAY }}
-                  >
-                    Sort by
-                  </Typography>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={alignment}
-                    exclusive
-                    onChange={handleChangeData}
-                    aria-label="Platform"
-                    sx={{ display: "flex" }}
-                    size="small"
-                    orientation="vertical"
-                  >
-                    <ToggleButton
-                      value="score"
-                      selected={propertyvalue === "score"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Score{" "}
-                      {propertyvalue === "score" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                    <ToggleButton
-                      value="price"
-                      selected={propertyvalue === "price"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Price{" "}
-                      {propertyvalue === "price" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                    <ToggleButton
-                      value="area"
-                      selected={propertyvalue === "area"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Area{" "}
-                      {propertyvalue === "area" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                    <ToggleButton
-                      value="completion"
-                      selected={propertyvalue === "completion"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Completion{" "}
-                      {propertyvalue === "completion" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </Grid>
+        <Typography
+          variant="subtitle2"
+          sx={{ alignSelf: "center", color: colors.GRAY }}
+        >
+          Sort by
+        </Typography>
+        <ToggleButtonGroup
+          color="primary"
+          value={alignment}
+          exclusive
+          onChange={handleChangeData}
+          aria-label="Platform"
+          sx={{ display: "flex" }}
+          size="small"
+          orientation="vertical"
+        >
+          <ToggleButton
+            value="score"
+            selected={propertyvalue === "score"}
+            sx={{ flex: 1, justifyContent: "flex-start" }}
+          >
+            Score{" "}
+            {propertyvalue === "score" &&
+              (alignment === -1 ? (
+                <ArrowDownwardIcon fontSize="small" />
+              ) : (
+                <ArrowUpwardIcon fontSize="small" />
+              ))}
+          </ToggleButton>
+          <ToggleButton
+            value="price"
+            selected={propertyvalue === "price"}
+            sx={{ flex: 1, justifyContent: "flex-start" }}
+          >
+            Price{" "}
+            {propertyvalue === "price" &&
+              (alignment === -1 ? (
+                <ArrowDownwardIcon fontSize="small" />
+              ) : (
+                <ArrowUpwardIcon fontSize="small" />
+              ))}
+          </ToggleButton>
+          <ToggleButton
+            value="area"
+            selected={propertyvalue === "area"}
+            sx={{ flex: 1, justifyContent: "flex-start" }}
+          >
+            Area{" "}
+            {propertyvalue === "area" &&
+              (alignment === -1 ? (
+                <ArrowDownwardIcon fontSize="small" />
+              ) : (
+                <ArrowUpwardIcon fontSize="small" />
+              ))}
+          </ToggleButton>
+          <ToggleButton
+            value="completion"
+            selected={propertyvalue === "completion"}
+            sx={{ flex: 1, justifyContent: "flex-start" }}
+          >
+            Completion{" "}
+            {propertyvalue === "completion" &&
+              (alignment === -1 ? (
+                <ArrowDownwardIcon fontSize="small" />
+              ) : (
+                <ArrowUpwardIcon fontSize="small" />
+              ))}
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Grid>
+      <Grid
+        item
+        xs={36}
+        sm={36}
+        md={6}
+        sx={{ textAlign: "start", alignSelf: "start" }}
+      >
+        <Button
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            color: "white",
+            background: colors?.BLACK,
+            "&:hover": {
+              backgroundColor: colors?.BLACK,
+              boxShadow: "none",
+            },
+          }}
+          startIcon={<CloseIcon />}
+          onClick={handleReset}
+        >
+          Reset
+        </Button>
+      </Grid>
+      </>
     )
   }
 
@@ -558,30 +584,6 @@ function PropertyList({ params }) {
               <Grid container spacing={2}>
                 {getFilterFields()}
                 {getSortBy()}
-                <Grid
-                  item
-                  xs={36}
-                  sm={36}
-                  md={6}
-                  sx={{ textAlign: "end", alignSelf: "end" }}
-                >
-                  <Button
-                    variant="h6"
-                    sx={{
-                      fontWeight: 600,
-                      color: "white",
-                      background: colors?.BLACK,
-                      "&:hover": {
-                        backgroundColor: colors?.BLACK,
-                        boxShadow: "none",
-                      },
-                    }}
-                    startIcon={<CloseIcon />}
-                    onClick={handleReset}
-                  >
-                    Reset
-                  </Button>
-                </Grid>
               </Grid>
             </Card>
             <Box sx={{ flex: 1 }}>
@@ -648,7 +650,10 @@ function PropertyList({ params }) {
                   </Card>
                 </Grid>
                 <Grid item xs={36}  sx={{display: { xs: "block", md: "none" }}}>
-                  <Typography variant="body1" align="right" onClick={() => setMobileFilter(!mobileFilter)} sx={{ color: colors.BLUE, display: "flex", alignItems: 'center', justifyContent: 'flex-end'}}>Filter & Sort {mobileFilter ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</Typography>
+                  <Typography variant="body1" align="right" onClick={() => setMobileFilter(!mobileFilter)} 
+                  sx={{ color: colors.BLUE, display: "flex", alignItems: 'center', justifyContent: 'flex-end', cursor: "pointer"}}>
+                    Filter & Sort {mobileFilter ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                  </Typography>
                   {mobileFilter && (
                   <Box sx={{ pb:2, pr: 2, backgroundColor:'white', mt: 2}}>
                     <Grid container spacing={2} sx={{ marginLeft: 0, width: "100%"}}>
