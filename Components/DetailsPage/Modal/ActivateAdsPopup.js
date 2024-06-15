@@ -29,6 +29,7 @@ function ActivateAdsPopup({
   brokerBalance,
   propertyUrl,
   setBrokerPoints,
+  isFromUniqueUrl
 }) {
   const router = useRouter();
 
@@ -91,8 +92,8 @@ function ActivateAdsPopup({
   }, [formData]);
 
   useEffect(() => {
-    if (propertyData?.marketing?.tagLine) {
-      setFormData({ ...formData, title: propertyData?.marketing?.tagLine });
+    if (propertyData?.marketing?.tagLine || propertyData?.propertyData?.marketing?.tagLine) {
+      setFormData({ ...formData, title: propertyData?.marketing?.tagLine || propertyData?.propertyData?.marketing?.tagLine });
     }
   }, [propertyData]);
 
@@ -103,7 +104,7 @@ function ActivateAdsPopup({
     }
     const adData = {
       broker_id: userId,
-      property_id: propertyData._id,
+      property_id: isFromUniqueUrl ? propertyData?.property_id : propertyData._id,
       title: formData.title,
       description: formData.description,
       durationInMonths: formData.duration,
@@ -113,7 +114,7 @@ function ActivateAdsPopup({
       const response = await activeadCreate(adData);
       if (response.status == 200) {
         showToaterMessages(response?.data.message, "success");
-        detailsGetProperty(true);
+        detailsGetProperty(isFromUniqueUrl ? false : true);
         handleClose();
         getBrokerpointBalance();
       }

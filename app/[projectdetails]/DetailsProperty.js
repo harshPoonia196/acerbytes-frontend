@@ -46,6 +46,7 @@ import {
   activeAdGet,
   activedViewCount,
   checkEnquiryOnActiveLink,
+  detailsProperty,
   favPropertyCreate,
 } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
@@ -65,6 +66,7 @@ import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpin
 import { getCountsByProperty } from "api/Broker.api";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Link from "next/link";
+import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
 
 const tabHeight = 200;
 
@@ -102,7 +104,7 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 const PropertyDetails = ({ params }) => {
-  const { userDetails, isLogged } = useAuth();
+  const { userDetails, isLogged, brokerBalance, setBrokerPoints } = useAuth();
   const router = useRouter();
   const url = new URL(window.location.href);
   const searchParams = useSearchParams();
@@ -608,9 +610,82 @@ const PropertyDetails = ({ params }) => {
     []
   );
 
+  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
+  const handleCloseActivateAdsPopup = () => {
+    setActivateAdsPopupState(false);
+  };
+
+  const userInfo = JSON.parse(localStorage.getItem("userDetails"));
+
+  const token = localStorage.getItem("token");
+
+  const [propertyUrl, setPropertyUrl] = useState("");
+
+  const handleOpenActivateAdsPopup = (ActiveUrl) => {
+    setActivateAdsPopupState(true);
+    setPropertyUrl(ActiveUrl);
+  };
+
+  const shuffle = (a) => {
+    for (let i = a?.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  const detailsGetProperty = async (isNavigate = false) => {
+    try {
+      setLoading(true);
+      let res;
+      if (token) {
+        res = await detailsProperty(
+          `${propertyData[0]?.property_id}?brokerId=${userInfo?._id}`
+        );
+      } else {
+        res = await detailsProperty(propertyData[0]?.property_id);
+      }
+      if (res.status === 200) {
+        const data = {
+          ...res.data?.data,
+          consultants: shuffle(res.data?.data?.consultants),
+        };
+        setPropertyData({ ...data });
+        if (isNavigate) {
+          const url = constructPropertyUrl({ ...data }, userInfo);
+          router.push(url);
+        }
+        else{
+          window.location.reload()
+        }
+      }
+    } catch (error) {
+      showToaterMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {isLoading && <Loader />}
+
+      <ActivateAdsPopup
+        propertyData={propertyData?.[0]}
+        detailsGetProperty={detailsGetProperty}
+        open={activateAdsPopupState}
+        handleClose={handleCloseActivateAdsPopup}
+        brokerBalance={brokerBalance}
+        propertyUrl={propertyUrl}
+        setBrokerPoints={setBrokerPoints}
+        isFromUniqueUrl={true}
+      />
+
       {openEnquiryForm && (
         <EnquireNow
           open={openEnquiryForm}
@@ -823,6 +898,7 @@ const PropertyDetails = ({ params }) => {
           contactPermissionToView={isLogged ? contactPermissionToView : true}
           handleOpenEnquiryForm={handleOpenEnquiryForm}
           isUnique={true}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
         />
         {expiredModalOpenRef.current && (
           <Dialog open={expiredModalOpenRef.current}>
