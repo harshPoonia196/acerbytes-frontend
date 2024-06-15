@@ -102,7 +102,7 @@ function BottomFooterConsultant({ handleOpenActivateAdsPopup, propertyData, Sing
                     }}>
                         <Box>
                             <Typography variant='body2' sx={{ marginBottom: "5px"}}>
-                                {`${capitalLizeName(propertyData?.overview?.builder || "builder")}  | ${capitalLizeName(propertyData?.overview?.projectName|| "projectName")} | ${locationData?.city || 'Godrejforest'} | ${locationData?.sector || 'Sector'}`}
+                                {`${capitalLizeName(propertyData?.overview?.builder || "builder")}  | ${capitalLizeName(propertyData?.overview?.projectName|| "projectName")} | ${locationData?.sector || 'Sector'} | ${locationData?.area || 'Area'} | ${locationData?.city || 'Godrejforest'}`}
                             </Typography>
                         </Box>
                         <Box sx={{ display: 'flex'}}>
