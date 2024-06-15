@@ -25,15 +25,28 @@ function PropertyCard(props) {
   const [priceRange, setAmount] = useState({});
   const { userDetails } = useAuth();
   const { propertyDetails, isShortListPageCard, createdDate } = props;
+
+  const {
+    unitsPlan,
+    overview,
+    location,
+    layout,
+    marketing,
+    overallAssessment,
+    property_id,
+  } = propertyDetails;
+
+  const { area, totalUnits, areaUnit } = layout;
+
   const constructPropertyUrl = (propertyDetailsData) => {
-    const overview = propertyDetailsData?.overview;
-    const location = propertyDetailsData?.location;
+    const { overview, location, _id } = propertyDetailsData;
 
     const projectCategory = encodeURIComponent(
       (overview?.projectCategory.trim() ?? "category")
         .replace(/\s+/g, "-")
         .replace(/\//g, "-")
     );
+
     let projectType;
     if (overview?.projectType?.length > 0) {
       projectType = overview.projectType
@@ -66,7 +79,7 @@ function PropertyCard(props) {
         .replace(/\//g, "-")
     );
 
-    return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${propertyDetails._id}`;
+    return `${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}-${_id}`;
   };
 
   const propertyUrl = constructPropertyUrl(propertyDetails);
@@ -75,37 +88,28 @@ function PropertyCard(props) {
     createdDate && format(new Date(createdDate), "dd-MM-yyyy 'at' hh:mm aaa");
 
   const layoutCount = useMemo(() => {
+    const { uniqueLayouts, planList } = unitsPlan || {};
     return (
-      propertyDetails?.unitsPlan?.uniqueLayouts?.length +
-      propertyDetails?.unitsPlan?.planList?.filter(
-        (item) => !item.propertyLayout
-      )?.length
+      (uniqueLayouts?.length || 0) +
+      (planList?.filter((item) => !item.propertyLayout)?.length || 0)
     );
-  }, [propertyDetails]);
+  }, [unitsPlan]);
 
   const layoutData = useMemo(() => {
-    const withoutUniqueLayout = [
-      ...propertyDetails?.unitsPlan?.planList?.filter(
-        (item) => !item.propertyLayout
-      ),
-    ]?.map((item) => `${item?.width}*${item?.length}`);
-    return [
-      ...propertyDetails?.unitsPlan?.uniqueLayouts,
-      ...withoutUniqueLayout,
-    ];
-  }, [propertyDetails]);
+    const { uniqueLayouts, planList } = unitsPlan || {};
+    const withoutUniqueLayout = (
+      planList?.filter((item) => !item.propertyLayout) || []
+    ).map((item) => `${item?.width}*${item?.length}`);
+    return [...(uniqueLayouts || []), ...withoutUniqueLayout];
+  }, [unitsPlan]);
 
   useEffect(() => {
-    const getPriceTag = shortPriceFormatter(
-      propertyDetails?.unitsPlan?.minPriceRange
-    );
+    const getPriceTag = shortPriceFormatter(unitsPlan?.minPriceRange);
 
     const [minPrice, tag] = getPriceTag.split(" ");
     const finalMinPrice = Math.round(minPrice * 10) / 10;
 
-    const getMaxPriceTag = shortPriceFormatter(
-      propertyDetails?.unitsPlan?.maxPriceRange
-    );
+    const getMaxPriceTag = shortPriceFormatter(unitsPlan?.maxPriceRange);
 
     const [maxPrice, maxTag] = getMaxPriceTag.split(" ");
     const finalMaxPrice = Math.round(maxPrice * 10) / 10;
@@ -115,25 +119,22 @@ function PropertyCard(props) {
       minPrice: { price: finalMinPrice, tag },
       maxPrice: { price: finalMaxPrice, tag: maxTag },
     });
-  }, []);
+  }, [unitsPlan, priceRange]);
 
   const formatUnit = () => {
     const finalData = [];
 
     layoutData.sort().map((item, index) => {
-      let nextUnit =
-        layoutData[index + 1] && layoutData[index + 1].split(" ")[1];
+      let nextUnit = layoutData[index + 1]?.split(" ")[1];
       let spitedValue = item.split(" ");
 
       const num = spitedValue[0];
       const unit = spitedValue[1];
 
-      if (unit === undefined) {
+      if (!unit) {
         const width = num.split("*")[0];
-
-        const { areaUnit } = propertyDetails?.unitsPlan?.planList.filter(
-          (i) => i.width === Number(width)
-        )[0];
+        const { areaUnit } =
+          unitsPlan?.planList.find((i) => i.width === Number(width)) || {};
 
         finalData.push(`${num} ${areaUnit}`);
       } else if (unit === nextUnit) {
@@ -143,8 +144,15 @@ function PropertyCard(props) {
       }
     });
 
-    return String(finalData);
+    return finalData.join(", ");
   };
+
+  function roundOff(number) {
+    if (number % 1 !== 0) {
+      return Math.round(number * 10) / 10;
+    }
+    return number;
+  }
 
   return (
     <Card>
@@ -156,11 +164,11 @@ function PropertyCard(props) {
               onClick={() => router.push(`/details/${propertyUrl}`)}
             >
               <Image
-                alt={propertyDetails?.marketing?.tagLine}
+                alt={marketing?.tagLine}
                 height={54}
                 width={80}
                 loading="lazy"
-                src={propertyDetails?.marketing?.image}
+                src={marketing?.image}
                 style={{
                   borderRadius: "8px",
                   marginRight: 16,
@@ -180,27 +188,23 @@ function PropertyCard(props) {
                       }}
                     />
                   </Tooltip>
-                  {propertyDetails?.location?.city}{" "}
-                  {propertyDetails?.property_id}
+                  {location?.city} {property_id}
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   sx={{ textTransform: "capitalize" }}
                 >
-                  {propertyDetails?.overview?.builder +
-                    " " +
-                    propertyDetails?.overview?.projectName}
+                  {`${overview?.builder} ${overview?.projectName}`}
                 </Typography>
               </Box>
             </Box>
             <Box sx={{ display: { xs: "block", sm: "none" } }}>
               <CircularWithValueLabel
                 progress={
-                  propertyDetails?.overallAssessment?.score
-                    ? propertyDetails?.overallAssessment?.score.toFixed()
+                  overallAssessment?.score
+                    ? overallAssessment.score.toFixed()
                     : 0
                 }
-                // onClick={() => router.push("/research")}
                 onClick={() => router.push(`/details/${propertyUrl}`)}
               />
             </Box>
@@ -213,13 +217,13 @@ function PropertyCard(props) {
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption" sx={{ textTransform: "capitalize" }}>
-              {propertyDetails?.location?.area}
+              {location?.area}
             </Typography>
             <Typography
               variant="subtitle2"
               sx={{ textTransform: "capitalize" }}
             >
-              {propertyDetails?.location?.sector}
+              {location?.sector}
             </Typography>
           </Grid>
           <Grid
@@ -230,16 +234,10 @@ function PropertyCard(props) {
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
-              {formatNumberWithCommas(propertyDetails?.layout?.totalUnits)}{" "}
-              Units
+              {formatNumberWithCommas(totalUnits)} Units
             </Typography>
             <Typography variant="subtitle2">
-              {`${propertyDetails?.layout?.area} 
-              ${
-                propertyDetails?.layout?.areaUnit
-                  ? propertyDetails?.layout?.areaUnit
-                  : ""
-              }`}
+              {`${roundOff(Number(area))} ${areaUnit}`}
             </Typography>
           </Grid>
           <Grid
@@ -252,13 +250,10 @@ function PropertyCard(props) {
           >
             <CircularWithValueLabel
               progress={
-                propertyDetails?.overallAssessment?.score
-                  ? propertyDetails?.overallAssessment?.score.toFixed()
-                  : 0
+                overallAssessment?.score ? overallAssessment.score.toFixed() : 0
               }
-              // onClick={() => router.push("/research")}
               onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltiptext={`AB scores *`}
+              tooltipText={`AB scores *`}
             />
           </Grid>
           <Grid
@@ -268,22 +263,18 @@ function PropertyCard(props) {
             lg={3}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
-            {(propertyDetails?.unitsPlan?.averagePrice ||
-              propertyDetails?.unitsPlan?.planList[0]?.areaUnit) && (
+            {(unitsPlan?.averagePrice || unitsPlan?.planList[0]?.areaUnit) && (
               <Typography variant="caption">
                 {"₹ " +
-                  propertyDetails?.unitsPlan?.averagePrice.toLocaleString() +
+                  unitsPlan.averagePrice.toLocaleString() +
                   "/" +
-                  propertyDetails?.unitsPlan?.planList[0]?.areaUnit}
+                  unitsPlan.planList[0]?.areaUnit}
               </Typography>
             )}
-            {(propertyDetails?.unitsPlan?.minPriceRange ||
-              propertyDetails?.unitsPlan?.maxPriceRange) && (
+            {(unitsPlan?.minPriceRange || unitsPlan?.maxPriceRange) && (
               <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-                ₹{" "}
-                {shortPriceFormatter(propertyDetails?.unitsPlan?.minPriceRange)}{" "}
-                - ₹{" "}
-                {shortPriceFormatter(propertyDetails?.unitsPlan?.maxPriceRange)}{" "}
+                ₹ {shortPriceFormatter(unitsPlan.minPriceRange)} - ₹{" "}
+                {shortPriceFormatter(unitsPlan.maxPriceRange)}
               </Typography>
             )}
           </Grid>
@@ -300,9 +291,7 @@ function PropertyCard(props) {
                 : `${layoutCount} layouts`}
             </Typography>
             <Typography variant="subtitle2">{formatUnit()}</Typography>
-            {/* <Typography variant="subtitle2">{layoutData.split(" ")}</Typography> */}
           </Grid>
-
           <Grid
             item
             xs={8}
@@ -310,12 +299,9 @@ function PropertyCard(props) {
             lg={2}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
-            <Typography variant="caption">
-              {propertyDetails?.overview?.status}
-            </Typography>
+            <Typography variant="caption">{overview?.status}</Typography>
             <Typography variant="subtitle2">
-              {propertyDetails?.overview?.launchYear} -{" "}
-              {propertyDetails?.overview?.completionYear}
+              {overview?.launchYear} - {overview?.completionYear}
             </Typography>
           </Grid>
           <Grid
@@ -327,50 +313,12 @@ function PropertyCard(props) {
           >
             <CircularWithValueLabel
               progress={
-                propertyDetails?.overallAssessment?.score
-                  ? propertyDetails?.overallAssessment?.score.toFixed()
-                  : 0
+                overallAssessment?.score ? overallAssessment.score.toFixed() : 0
               }
-              // onClick={() => router.push("/research")}
               onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltiptext={`AB scores Excellent *`}
+              tooltipText={`AB scores Excellent *`}
             />
           </Grid>
-          {/* <Grid
-            item
-            xs={8}
-            sm={2.5}
-            md={1}
-            onClick={() => router.push(`/details/${propertyDetails._id}`)}
-          >
-            <Typography variant="caption">Enquiries</Typography>
-            <Typography variant="subtitle2">345</Typography>
-          </Grid> */}
-          {/* <Grid item sm={1.5} md={1} sx={{ display: { xs: 'none', sm: 'block' } }}>
-            <Card
-              sx={{
-                width: "fit-content",
-                backgroundColor: colors?.BLACK,
-                // borderRadius: "4px !important",
-                m: 0,
-                ml: "auto !important",
-              }}
-              onClick={() => router.push("/research")}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 600,
-                  width: "fit-content",
-                  color: "white",
-                  p: 0.5,
-                  px: 1,
-                }}
-              >
-                99
-              </Typography>
-            </Card>
-          </Grid> */}
         </Grid>
       </CardActionArea>
       {userDetails.role === "user" && isShortListPageCard && <Divider />}
@@ -378,7 +326,6 @@ function PropertyCard(props) {
         <CardActions sx={{ textAlign: "end" }}>
           <Chip
             icon={<ThumbUpIcon style={{ color: "#276ef1", mr: 1 }} />}
-            // label="Liked on 23-09-2023 at 09:30 AM"
             label={`Liked on ${formattedCreatedAt}`}
             onClick={() => {}}
             size="small"
