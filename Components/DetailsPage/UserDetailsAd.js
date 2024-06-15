@@ -39,12 +39,10 @@ function UserDetailsAd({
   const locationData = AllPropertyData?.propertyData.location;
   const phoneNumber =
     brokerData?.phone?.countryCode && brokerData?.phone?.number
-      ? `${countryCodeFormating(brokerData.phone.countryCode)} ${
-          brokerData.phone.number
-        }`
-      : `${countryCodeFormating(userDetails?.phone?.countryCode)}  ${
-          userDetails?.phone?.number
-        }`;
+      ? `${countryCodeFormating(brokerData.phone.countryCode)} ${brokerData.phone.number
+      }`
+      : `${countryCodeFormating(userDetails?.phone?.countryCode)}  ${userDetails?.phone?.number
+      }`;
 
   const name =
     brokerData?.name?.firstName && brokerData?.name?.lastName
@@ -52,6 +50,7 @@ function UserDetailsAd({
       : `${userDetails?.name?.firstName}  ${userDetails?.name?.lastName}`;
   const city = locationData?.city ? locationData.city : "city";
   const sector = locationData?.sector ? locationData.sector : "sector";
+  const area = locationData?.area ? locationData.area : "area";
   const projectName = overviewData?.projectName
     ? overviewData.projectName
     : "projectName";
@@ -73,52 +72,52 @@ function UserDetailsAd({
 
   return (
     <Box>
-      <Box sx={{ position: "fixed", bottom: 0, left:"-3px", width: "100%" }}>
+      <Box sx={{ position: "fixed", bottom: 0, left: "-3px", width: "100%" }}>
         <Container
           maxWidth="md"
           sx={{
             p: { xs: "0 !important", md: "16px !important" },
             pb: { md: "0 !important" },
-            pt: {xs: "0 !important"}
+            pt: { xs: "0 !important" }
           }}
         >
           <Box sx={{
-              
-              p: 2,
-              background: "ghostwhite",
-              boxShadow: boxShadowTop,
-              borderTop: `2px solid ${colors.BLUE}`
-            }}>
-          <Box>
-                  <Typography variant="body2" sx={{marginBottom: "3px"}}>
-                    {capitalLizeName(builder)} | {capitalLizeName(projectName)} | {city} | {sector}
-                  </Typography>
-                </Box>
-          <Box
-            sx={{display: "flex"}}
-          >
-            <Avatar
-              src={AllPropertyData?.brokerProfilePic?.profilePicture}
-              sx={{
-                height: { md: 40 },
-                width: { md: 40 },
-                fontSize: { xs: "0.75rem", md: "1rem" },
-              }}
-            ></Avatar>
-            <Box sx={{ ml: 2, flex: 1 }}>
-              <Box sx={{ display: { xs: "none", md: "block" } }}>
-                
-                 <Typography variant="h6" sx={{ display: "inline-block", marginRight: "5px"}}>{name}</Typography>
-                 { !isLoggedIn &&<a href={`tel:${phoneNumber}`}>
-                  <Chip icon={<PhoneIcon />} label={phoneNumber} size="small" />
-                </a>}
-                
-                <Box>
-                <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
-                   {AllPropertyData?.brokerRating?.rating && AllPropertyData?.brokerRating?.rating}
-                </Typography>
-                
-                  {AllPropertyData?.brokerRating?.rating && (<Rating
+
+            p: 2,
+            background: "ghostwhite",
+            boxShadow: boxShadowTop,
+            borderTop: `2px solid ${colors.BLUE}`
+          }}>
+            <Box>
+              <Typography variant="body2" sx={{ marginBottom: "3px" }}>
+                {capitalLizeName(builder)} | {capitalLizeName(projectName)} | {sector} | {area} | {city}
+              </Typography>
+            </Box>
+            <Box
+              sx={{ display: "flex" }}
+            >
+              <Avatar
+                src={AllPropertyData?.brokerProfilePic?.profilePicture}
+                sx={{
+                  height: { md: 40 },
+                  width: { md: 40 },
+                  fontSize: { xs: "0.75rem", md: "1rem" },
+                }}
+              ></Avatar>
+              <Box sx={{ ml: 2, flex: 1 }}>
+                <Box sx={{ display: { xs: "none", md: "block" } }}>
+
+                  <Typography variant="h6" sx={{ display: "inline-block", marginRight: "5px" }}>{name}</Typography>
+                  {!isLoggedIn && <a href={`tel:${phoneNumber}`}>
+                    <Chip icon={<PhoneIcon />} label={phoneNumber} size="small" />
+                  </a>}
+
+                  <Box>
+                    <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
+                      {AllPropertyData?.brokerRating?.rating && AllPropertyData?.brokerRating?.rating}
+                    </Typography>
+
+                    {AllPropertyData?.brokerRating?.rating && (<Rating
                       name="half-rating"
                       {...AllPropertyData?.brokerRating?.rating}
                       precision={0.5}
@@ -127,48 +126,48 @@ function UserDetailsAd({
                       readOnly
                       size="small"
                       sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
-                  />)}
+                    />)}
+                  </Box>
                 </Box>
-              </Box>
-              <Box sx={{ display: { xs: "block", md: "none" } }}>
-                {/* <Typography variant="subtitle2">
+                <Box sx={{ display: { xs: "block", md: "none" } }}>
+                  {/* <Typography variant="subtitle2">
                   {capitalLizeName(builder)} | {capitalLizeName(projectName)} | {city} | {sector}
                 </Typography> */}
-                <Box sx={{ display: "flex"}}>
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="h6" sx={{ display: "inline-block", marginRight: "5px"}}>{name}</Typography>
-                  { !isLoggedIn && <a href={`tel:${phoneNumber}`}>
-                    <Chip
-                      icon={<PhoneIcon />}
-                      label={phoneNumber}
-                      size="small"
-                    />
-                  </a> }
-                  
-                  <Box>
-                  <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
-                    {AllPropertyData?.brokerRating?.rating && AllPropertyData?.brokerRating?.rating}
-                  </Typography>
-                  {AllPropertyData?.brokerRating?.rating && (<Rating
-                    name="half-rating"
-                    {...AllPropertyData?.brokerRating?.rating}
-                    precision={0.5}
-                    value={AllPropertyData?.brokerRating?.rating}
-                    defaultValue={AllPropertyData?.brokerRating?.rating}
-                    readOnly
-                    size="small"
-                    sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
-                  />)}
-                </Box>
-                </Box>
-                { isLoggedIn && userDetails.role === 'broker' && <Box
-                    sx={{
-                      textAlign: {xs: "start", md: "end"},
-                      alignSelf: {xs: "start", md: "end"},
-                      display: { xs: "block", md: "none" },
-                    }}
-                  >
-                    {/* <Button
+                  <Box sx={{ display: "flex" }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="h6" sx={{ display: "inline-block", marginRight: "5px" }}>{name}</Typography>
+                      {!isLoggedIn && <a href={`tel:${phoneNumber}`}>
+                        <Chip
+                          icon={<PhoneIcon />}
+                          label={phoneNumber}
+                          size="small"
+                        />
+                      </a>}
+
+                      <Box>
+                        <Typography variant="body2" sx={{ mt: 1, display: "inline-block", position: "relative", top: "-2px", marginRight: "3px" }}>
+                          {AllPropertyData?.brokerRating?.rating && AllPropertyData?.brokerRating?.rating}
+                        </Typography>
+                        {AllPropertyData?.brokerRating?.rating && (<Rating
+                          name="half-rating"
+                          {...AllPropertyData?.brokerRating?.rating}
+                          precision={0.5}
+                          value={AllPropertyData?.brokerRating?.rating}
+                          defaultValue={AllPropertyData?.brokerRating?.rating}
+                          readOnly
+                          size="small"
+                          sx={{ alignSelf: "center", fontSize: { xs: '0.75rem !important', sm: '0.875rem !important' } }}
+                        />)}
+                      </Box>
+                    </Box>
+                    {isLoggedIn && userDetails.role === 'broker' && <Box
+                      sx={{
+                        textAlign: { xs: "start", md: "end" },
+                        alignSelf: { xs: "start", md: "end" },
+                        display: { xs: "block", md: "none" },
+                      }}
+                    >
+                      {/* <Button
                       variant="contained"
                       size="small"
                       startIcon={<DoneIcon />}
@@ -177,44 +176,44 @@ function UserDetailsAd({
                     >
                       Activated
                     </Button> */}
-                    {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
+                      {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
                 Call First
               </Button>
               <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
                 Log in
               </Button> */}
-                  </Box>}
+                    </Box>}
                   </Box>
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  textAlign: "center",
+                  alignSelf: "start",
+                  display: { md: "block" },
+                }}
+              >
+                {isLoggedIn && userDetails.role === "user" && <>
+
+                  <Chip
+                    icon={showContact ? null : <PhoneIcon />}
+                    label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
+                    size="small"
+                    onClick={handleViewContactClick}
+                    sx={{ marginLeft: "5px" }}
+                  />
+
+                </>
+                }
+                {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
+                Call First
+              </Button>
+              <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
+                Log in
+              </Button> */}
+                {/* <p style={{ fontSize: "0.75rem" }}>26 days remaining</p> */}
               </Box>
             </Box>
-            <Box
-              sx={{
-                textAlign: "center",
-                alignSelf: "start",
-                display: { md: "block" },
-              }}
-            >
-              { isLoggedIn && userDetails.role === "user" && <>
-              
-              <Chip
-                icon={showContact ? null : <PhoneIcon />}
-                label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
-                size="small"
-                onClick={handleViewContactClick}
-                sx={{marginLeft: "5px"}}
-              />
-             
-              </>
-              }
-              {/* <Button variant='contained' startIcon={<Phone />} sx={{ mb: 1 }}>
-                Call First
-              </Button>
-              <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mb: 1 }}>
-                Log in
-              </Button> */}
-              {/* <p style={{ fontSize: "0.75rem" }}>26 days remaining</p> */}
-            </Box>
-          </Box>
           </Box>
         </Container>
       </Box>
@@ -236,15 +235,15 @@ function UserDetailsAd({
                 <Typography variant="h5" sx={{ flex: 1 }}>
                   {name}
                 </Typography>
-                { isLoggedIn && userDetails.role === "user" && <Box>
-                 
+                {isLoggedIn && userDetails.role === "user" && <Box>
+
                   <Chip
                     icon={showContact ? null : <PhoneIcon />}
                     label={showContact ? <a href={`tel:${phoneNumber}`}>{phoneNumber}</a> : "View Contact"}
                     size="small"
                     onClick={handleViewContactClick}
                   />
-                 
+
                 </Box>}
               </Box>
               <Typography variant="h6">
