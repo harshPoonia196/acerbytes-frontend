@@ -20,6 +20,7 @@ import { useSnackbar } from "utills/SnackbarContext";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { listOfPages } from "Components/NavBar/Links";
 import { getBrokerBalance } from "api/Broker.api";
+import dayjs from "dayjs";  // import dayjs for date manipulation
 
 function ActivateAdsPopup({
   open,
@@ -29,6 +30,7 @@ function ActivateAdsPopup({
   brokerBalance,
   propertyUrl,
   setBrokerPoints,
+  isFromUniqueUrl,
 }) {
   const router = useRouter();
 
@@ -76,14 +78,9 @@ function ActivateAdsPopup({
   const validateForm = () => {
     const newErrors = {};
 
-    const titleWords = formData.title.trim().split(/\s+/);
     if (!formData.title) {
       newErrors.title = "Title is required.";
-    } else if (titleWords.length >= 10) {
-      newErrors.title = "Title must be max up to 10 words.";
-    }
-
-    if (!formData.duration) {
+    } else if (!formData.duration) {
       newErrors.duration = "Duration is required.";
     }
 
@@ -96,8 +93,16 @@ function ActivateAdsPopup({
   }, [formData]);
 
   useEffect(() => {
-    if (propertyData?.marketing?.tagLine) {
-      setFormData({ ...formData, title: propertyData?.marketing?.tagLine });
+    if (
+      propertyData?.marketing?.tagLine ||
+      propertyData?.propertyData?.marketing?.tagLine
+    ) {
+      setFormData({
+        ...formData,
+        title:
+          propertyData?.marketing?.tagLine ||
+          propertyData?.propertyData?.marketing?.tagLine,
+      });
     }
   }, [propertyData]);
 
@@ -108,7 +113,9 @@ function ActivateAdsPopup({
     }
     const adData = {
       broker_id: userId,
-      property_id: propertyData._id,
+      property_id: isFromUniqueUrl
+        ? propertyData?.property_id
+        : propertyData._id,
       title: formData.title,
       description: formData.description,
       durationInMonths: formData.duration,
@@ -117,16 +124,16 @@ function ActivateAdsPopup({
       setLoading(true);
       const response = await activeadCreate(adData);
       if (response.status == 200) {
-        showToaterMessages(response?.data.message, "success");
-        detailsGetProperty(true);
+        showTostMessages(response?.data.message, "success");
+        detailsGetProperty(isFromUniqueUrl ? false : true);
         handleClose();
-        getBrokerpointBalance();
+        getBrokerPointBalance();
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error generating order number request",
+        error?.message ||
+        "Error generating order number request",
         "error"
       );
     } finally {
@@ -134,25 +141,31 @@ function ActivateAdsPopup({
     }
   };
 
-  const getBrokerpointBalance = async () => {
+  const getBrokerPointBalance = async () => {
     try {
       const response = await getBrokerBalance();
       if (response.status == 200) {
         setBrokerPoints(response?.data?.data?.balance || 0);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error getbroker balance request",
+        error?.message ||
+        "Error getbroker balance request",
         "error"
       );
     }
   };
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
+  };
+
+  const calculateNewExpiryDate = () => {
+    const currentExpiryDate = dayjs(propertyData?.expired_at);
+    const newExpiryDate = currentExpiryDate.add(parseInt(formData.duration), 'month');
+    return newExpiryDate.format('MMMM D, YYYY');
   };
 
   return (
@@ -165,7 +178,10 @@ function ActivateAdsPopup({
         <Box sx={{ display: "flex", gap: 2 }}>
           <Box sx={{ flex: 1, alignSelf: { xs: "start", sm: "center" } }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              Activate your link
+              {isFromUniqueUrl ? "Extend" : "Activate"} your link
+            </Typography>
+            <Typography sx={{fontSize:'12px'}}>
+              {isFromUniqueUrl && `till ${calculateNewExpiryDate()}`}
             </Typography>
             <Typography
               variant="subtitle2"
@@ -215,7 +231,7 @@ function ActivateAdsPopup({
             value={propertyUrl ? propertyUrl : ""}
           />
           <NewInputFieldStructure
-            label="Title (10 words)"
+            label="Title"
             isFull
             variant="outlined"
             name="title"
@@ -276,7 +292,7 @@ function ActivateAdsPopup({
               size="small"
               onClick={handleActivateClick}
               disabled={isLoading}
-              ButtonText={isLoading ? "Activating" : "Activate"}
+              ButtonText={isLoading ? "Activating" : isFromUniqueUrl ? "Extend" : "Activate"}
             />
 
             <Typography

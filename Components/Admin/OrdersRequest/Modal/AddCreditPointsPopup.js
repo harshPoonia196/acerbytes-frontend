@@ -73,7 +73,7 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
           Add Credit points for <span style={{ color: "gray" }}>{info?.name}</span>
         </Typography>
         <Typography variant="body1">
-          Potential to buy leads from the panel
+          Credit Points are required to buy services on AcreBytes
         </Typography>
       </DialogTitle>
       <DialogContent>

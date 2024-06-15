@@ -33,7 +33,7 @@ function OverallAssesmentSection({
   const router = useRouter();
   return (
     <Grid item xs={12} ref={refCallback} id="assesment">
-      <Card>
+      <Card style={{ paddingBottom: isUnique ? "40px" : "0px"}}>
         <Box sx={{ p: 2, display: "flex" }}>
           <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
             Overall assesment
@@ -98,7 +98,7 @@ function OverallAssesmentSection({
           {userDetails?.role !== "broker" && userDetails?.role !== "admin" && userDetails?.role !== "superAdmin" && (<>
             {isLogged && !isUnique && <Button variant="outlined" onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }} startIcon={<WhatsAppIcon sx={{ position: 'relative', top: '-2px'}} />} sx={{
                 marginRight: "10px"}}>WhatsApp</Button> }
-            <Button variant="contained" onClick={handleOpenEnquiryForm} startIcon={<CallIcon />}>Get a Call back</Button></>)}
+            <Button variant="contained" onClick={handleOpenEnquiryForm} startIcon={<CallIcon />}>{isUnique ? "let consultant call you" : "Get a Call back"}</Button></>)}
             {/* <Chip label="WhatsApp" className="customBtn" onClick={() => { router.push('http://wa.me/+919323996997') }} icon={<WhatsAppIcon fontSize="small" />}
               sx={{
                 marginRight: "10px"
@@ -147,6 +147,7 @@ function OverallAssesmentSection({
           handleAction={handleAction}
           submitEnquiry={handleSubmitEnquiry}
           submitEnquiryUnath={submitEnquiryUnath}
+          propertyData={AllPropertyData}
         />}
         <Divider />
         <Box sx={{ p: 1 }}>

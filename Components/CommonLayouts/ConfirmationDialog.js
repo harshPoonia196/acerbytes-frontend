@@ -33,10 +33,10 @@ const ConfirmationDialog = ({ open, handleAction }) => {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <CustomButton onClick={handleClose}
+        <CustomButton variant="contained" onClick={handleClose}
           ButtonText={"No"}
         />
-        <CustomButton onClick={handleConfirm} autoFocus
+        <CustomButton variant="contained" onClick={handleConfirm} autoFocus
           ButtonText={"Yes"}
         />
       </DialogActions>

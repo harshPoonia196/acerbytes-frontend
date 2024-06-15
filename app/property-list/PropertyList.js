@@ -35,6 +35,8 @@ import {
 import { debounce } from "lodash";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import CustomSearch from "Components/CommonLayouts/CustomSearch";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function PropertyList({ params }) {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -43,7 +45,7 @@ function PropertyList({ params }) {
   const [pageLimit, setPageLimit] = useState(50);
 
   const [property, setProperty] = useState([]);
-  const [count, setCount] = useState({});
+  const [count, setCount] = useState(0);
   const [isLoading, setLoading] = useState({ loader1: true, loader2: true });
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
@@ -60,6 +62,7 @@ function PropertyList({ params }) {
   const [selectedCity, setSelectedCity] = useState(
     params.location ? [decodeURIComponent(params.location)] : []
   );
+  const [mobileFilter, setMobileFilter] = useState(false);
 
   const handleSearchButtonClick = () => {
     performSearch();
@@ -106,10 +109,10 @@ function PropertyList({ params }) {
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
-        setCount(res.totalCount);
+        setCount(res.data.totalCount);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -137,7 +140,7 @@ function PropertyList({ params }) {
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -195,7 +198,7 @@ function PropertyList({ params }) {
         console.log("err");
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -261,7 +264,7 @@ function PropertyList({ params }) {
   };
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -368,25 +371,27 @@ function PropertyList({ params }) {
     return (
       <>
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Builder"
           list={selectOption?.builder}
           handleChange={(event, value) => handleOptionChange("builder", value)}
           value={selectedOptions.builder ? selectedOptions.builder : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Category"
           list={selectOption?.projectCategory}
           handleChange={(event, value) => handleOptionChange("category", value)}
           value={selectedOptions.category ? selectedOptions.category : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Property type"
           disabled={isDisablePropertyType}
@@ -402,9 +407,10 @@ function PropertyList({ params }) {
             selectedOptions?.propertyType ? selectedOptions?.propertyType : ""
           }
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Layout type"
           disabled={isDisableLayoutType}
@@ -418,18 +424,20 @@ function PropertyList({ params }) {
           handleChange={(event, value) => handleOptionChange("unitType", value)}
           value={selectedOptions.unitType ? selectedOptions.unitType : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="City"
           list={cities}
           handleChange={(event, value) => handleOptionChange("city", value)}
           value={selectedOptions.city ? selectedOptions.city : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Location"
           disabled={locationDisable}
@@ -437,16 +445,120 @@ function PropertyList({ params }) {
           handleChange={(event, value) => handleOptionChange("location", value)}
           value={selectedOptions.location ? selectedOptions.location : ""}
           clearable
+          className="filter-input-field"
         />
         <NewAutoCompleteInputStructure
-          xs={12}
+          xs={6}
           md={12}
           label="Status"
           list={selectOption?.status}
           handleChange={(event, value) => handleOptionChange("status", value)}
           value={selectedOptions.status ? selectedOptions.status : ""}
           clearable
+          className="filter-input-field"
         />
+      </>
+    );
+  };
+
+  const getSortBy = () => {
+    return (
+      <>
+        <Grid item xs={12} sx={{ alignSelf: "center" }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ alignSelf: "center", color: colors.GRAY }}
+          >
+            Sort by
+          </Typography>
+          <ToggleButtonGroup
+            color="primary"
+            value={alignment}
+            exclusive
+            onChange={handleChangeData}
+            aria-label="Platform"
+            sx={{ display: "flex" }}
+            size="small"
+            orientation="vertical"
+          >
+            <ToggleButton
+              value="score"
+              selected={propertyvalue === "score"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Score{" "}
+              {propertyvalue === "score" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+            <ToggleButton
+              value="price"
+              selected={propertyvalue === "price"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Price{" "}
+              {propertyvalue === "price" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+            <ToggleButton
+              value="area"
+              selected={propertyvalue === "area"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Area{" "}
+              {propertyvalue === "area" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+            <ToggleButton
+              value="completion"
+              selected={propertyvalue === "completion"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Completion{" "}
+              {propertyvalue === "completion" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Grid>
+        <Grid
+          item
+          xs={36}
+          sm={36}
+          md={6}
+          sx={{ textAlign: "start", alignSelf: "start" }}
+        >
+          <Button
+            variant="h6"
+            sx={{
+              fontWeight: 600,
+              color: "white",
+              background: colors?.BLACK,
+              "&:hover": {
+                backgroundColor: colors?.BLACK,
+                boxShadow: "none",
+              },
+            }}
+            startIcon={<CloseIcon />}
+            onClick={handleReset}
+          >
+            Reset
+          </Button>
+        </Grid>
       </>
     );
   };
@@ -471,101 +583,7 @@ function PropertyList({ params }) {
             >
               <Grid container spacing={2}>
                 {getFilterFields()}
-                <Grid item xs={12} sx={{ alignSelf: "center" }}>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ alignSelf: "center", color: colors.GRAY }}
-                  >
-                    Sort by
-                  </Typography>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={alignment}
-                    exclusive
-                    onChange={handleChangeData}
-                    aria-label="Platform"
-                    sx={{ display: "flex" }}
-                    size="small"
-                    orientation="vertical"
-                  >
-                    <ToggleButton
-                      value="score"
-                      selected={propertyvalue === "score"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Score{" "}
-                      {propertyvalue === "score" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                    <ToggleButton
-                      value="price"
-                      selected={propertyvalue === "price"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Price{" "}
-                      {propertyvalue === "price" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                    <ToggleButton
-                      value="area"
-                      selected={propertyvalue === "area"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Area{" "}
-                      {propertyvalue === "area" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                    <ToggleButton
-                      value="completion"
-                      selected={propertyvalue === "completion"}
-                      sx={{ flex: 1, justifyContent: "flex-start" }}
-                    >
-                      Completion{" "}
-                      {propertyvalue === "completion" &&
-                        (alignment === -1 ? (
-                          <ArrowDownwardIcon fontSize="small" />
-                        ) : (
-                          <ArrowUpwardIcon fontSize="small" />
-                        ))}
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </Grid>
-                <Grid
-                  item
-                  xs={36}
-                  sm={36}
-                  md={6}
-                  sx={{ textAlign: "end", alignSelf: "end" }}
-                >
-                  <Button
-                    variant="h6"
-                    sx={{
-                      fontWeight: 600,
-                      color: "white",
-                      background: colors?.BLACK,
-                      "&:hover": {
-                        backgroundColor: colors?.BLACK,
-                        boxShadow: "none",
-                      },
-                    }}
-                    startIcon={<CloseIcon />}
-                    onClick={handleReset}
-                  >
-                    Reset
-                  </Button>
-                </Grid>
+                {getSortBy()}
               </Grid>
             </Card>
             <Box sx={{ flex: 1 }}>
@@ -597,10 +615,13 @@ function PropertyList({ params }) {
                               boxShadow: "none",
                             }}
                           >
-                            <Typography variant="h2">
+                            <Typography
+                              variant="h2"
+                              sx={{ fontWeight: "Bold", mb: 1 }}
+                            >
                               {decodeURIComponent(params.location)}
                             </Typography>
-                            <Typography variant="caption">
+                            <Typography variant="body1">
                               Noida's strategic location, robust infrastructure,
                               and flourishing business environment have
                               contributed to its status as a vibrant and
@@ -613,6 +634,7 @@ function PropertyList({ params }) {
                     </Card>
                   </Grid>
                 )}
+
                 <Grid item xs={36}>
                   <Card>
                     <CustomSearch
@@ -630,8 +652,45 @@ function PropertyList({ params }) {
                     />
                   </Card>
                 </Grid>
+                <Grid
+                  item
+                  xs={36}
+                  sx={{ display: { xs: "block", md: "none" } }}
+                >
+                  <Typography
+                    variant="body1"
+                    align="right"
+                    onClick={() => setMobileFilter(!mobileFilter)}
+                    sx={{
+                      color: colors.BLUE,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Filter & Sort{" "}
+                    {mobileFilter ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
+                  </Typography>
+                  {mobileFilter && (
+                    <Box sx={{ pb: 2, pr: 2, backgroundColor: "white", mt: 2 }}>
+                      <Grid
+                        container
+                        spacing={2}
+                        sx={{ marginLeft: 0, width: "100%" }}
+                      >
+                        {getFilterFields()}
+                        {getSortBy()}
+                      </Grid>
+                    </Box>
+                  )}
+                </Grid>
                 <Grid item xs={36}>
-                  {count?.totalCount === 0 ? (
+                  {count === 0 ? (
                     <NoDataCard />
                   ) : (
                     <Grid container spacing={1}>
@@ -655,7 +714,7 @@ function PropertyList({ params }) {
                   <TablePagination
                     rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
                     component="div"
-                    count={count?.totalCount || 0}
+                    count={count || 0}
                     rowsPerPage={pageLimit}
                     page={currentPage - 1}
                     onPageChange={handleChangePage}

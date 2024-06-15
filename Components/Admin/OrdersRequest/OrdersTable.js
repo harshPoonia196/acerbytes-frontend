@@ -19,7 +19,7 @@ import {
   Card,
   ToggleButtonGroup,
   ToggleButton,
-  ListItemIcon
+  ListItemIcon,
 } from "@mui/material";
 import CustomSearchInput from "Components/CommonLayouts/SearchInput";
 import React from "react";
@@ -55,7 +55,7 @@ import Loader from "Components/CommonLayouts/Loading";
 import { debounce } from "lodash";
 import { ORDER_STATUS } from "utills/Constants";
 import { countryCodeFormating } from "utills/utills";
-import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import CreditScoreIcon from "@mui/icons-material/CreditScore";
 
 const headCells = [
   {
@@ -63,70 +63,70 @@ const headCells = [
     label: "Order no",
     isCompleteView: true,
     isPendingView: true,
-    numeric: false
+    numeric: false,
   },
   {
     id: "name",
     label: "Property consultant",
     isCompleteView: true,
     isPendingView: true,
-    numeric: false
+    numeric: false,
   },
   {
     id: "mobileNumber",
     label: "Phone",
     isCompleteView: true,
     isPendingView: true,
-    numeric: false
+    numeric: false,
   },
   {
     id: "amount",
     label: "St Amount",
     isCompleteView: true,
     isPendingView: true,
-    numeric: true
+    numeric: true,
   },
   {
     id: "point",
     label: "St Points",
     isCompleteView: true,
     isPendingView: true,
-    numeric: true
+    numeric: true,
   },
   {
     id: "discount",
     label: "St percentage discount",
     isCompleteView: true,
     isPendingView: true,
-    numeric: true
+    numeric: true,
   },
   {
     id: "approvedDiscount",
     label: "Approved discount",
     isCompleteView: true,
     isPendingView: false,
-    numeric: true
+    numeric: true,
   },
   {
     id: "approvedPayment",
     label: "Approved payment",
     isCompleteView: true,
     isPendingView: false,
-    numeric: true
+    numeric: true,
   },
   {
     id: "approvedPoints",
     label: "Approved points",
     isCompleteView: true,
     isPendingView: false,
-    numeric: true
+    numeric: true,
   },
   {
     id: "action",
     label: "Action",
     isCompleteView: false,
     isPendingView: true,
-    numeric: false
+    numeric: false,
   },
 ];
 
@@ -150,7 +150,7 @@ function EnhancedTableHead(props) {
               align={headCell.numeric ? "right" : "left"}
               padding={headCell.disablePadding ? "none" : "normal"}
               sortDirection={orderBy === headCell.id ? order : false}
-              sx={{ textTransform: "capitalize", fontWeight: "bold"}}
+              sx={{ textTransform: "capitalize", fontWeight: "bold" }}
             >
               <TableSortLabel
                 active={orderBy === headCell.id}
@@ -253,7 +253,8 @@ function RowStructure({
         handleSubmit={assignPointsHandler}
       />
 
-      <TableRow hover
+      <TableRow
+        hover
         key={row.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         onMouseEnter={(e) => {
@@ -271,32 +272,46 @@ function RowStructure({
           {countryCodeFormating(row?.brokerId?.phone?.countryCode)}{" "}
           {row?.brokerId?.phone?.number}
         </TableCell>
-        <TableCell sx={{ textAlign: "right"}}>{formatAmount(row.amount)}</TableCell>
-        <TableCell sx={{ textAlign: "right"}}>{formatPoints(row.points)}</TableCell>
-        <TableCell sx={{ textAlign: "right"}}>{row?.standardDiscount}%</TableCell>
-        {isCompleted && <TableCell sx={{ textAlign: "right"}}>{row?.approvedDiscount}%</TableCell>}
+        <TableCell sx={{ textAlign: "right" }}>
+          {formatAmount(row.amount)}
+        </TableCell>
+        <TableCell sx={{ textAlign: "right" }}>
+          {formatPoints(row.points)}
+        </TableCell>
+        <TableCell sx={{ textAlign: "right" }}>
+          {row?.standardDiscount}%
+        </TableCell>
         {isCompleted && (
-          <TableCell sx={{ textAlign: "right"}}>{formatAmount(row?.approvedPayment)}</TableCell>
+          <TableCell sx={{ textAlign: "right" }}>
+            {row?.approvedDiscount}%
+          </TableCell>
         )}
         {isCompleted && (
-          <TableCell sx={{ textAlign: "right"}}>{formatPoints(row?.approvedPoints)}</TableCell>
+          <TableCell sx={{ textAlign: "right" }}>
+            {formatAmount(row?.approvedPayment)}
+          </TableCell>
+        )}
+        {isCompleted && (
+          <TableCell sx={{ textAlign: "right" }}>
+            {formatPoints(row?.approvedPoints)}
+          </TableCell>
         )}
         {!isCompleted && (
           <TableCell sx={{}}>
             <Tooltip title="More">
-            <IconButton
-              aria-label="more"
-              id="long-button"
-              disabled={isCompleted}
-              aria-controls={open ? "long-menu" : undefined}
-              aria-expanded={open ? "true" : undefined}
-              aria-haspopup="true"
-              onClick={handleClick}
-              size="small"
-              sx={{ p: 0 }}
-            >
-              <MoreVertIcon fontSize="1rem" />
-            </IconButton>
+              <IconButton
+                aria-label="more"
+                id="long-button"
+                disabled={isCompleted}
+                aria-controls={open ? "long-menu" : undefined}
+                aria-expanded={open ? "true" : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+                size="small"
+                sx={{ p: 0 }}
+              >
+                <MoreVertIcon fontSize="1rem" />
+              </IconButton>
             </Tooltip>
           </TableCell>
         )}
@@ -310,7 +325,10 @@ function RowStructure({
           }}
         >
           <MenuItem onClick={handleAssingPoints}>
-          <ListItemIcon><CreditScoreIcon fontSize="small"/></ListItemIcon> Assign points
+            <ListItemIcon>
+              <CreditScoreIcon fontSize="small" />
+            </ListItemIcon>{" "}
+            Assign points
           </MenuItem>
         </Menu>
       </TableRow>
@@ -345,7 +363,7 @@ function TableView({
   status,
   userDetails,
   handleOrderRequest,
-  showToaterMessages,
+  showTostMessages,
   isLoading,
   setLoading,
   getOrderRequestList,
@@ -401,7 +419,7 @@ function TableView({
         setSalesPersons(response?.data?.data);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error creating order request",
@@ -498,7 +516,7 @@ function OrdersTable({ onDashboardDataUpdate }) {
   const [initialMount, setInitialMount] = React.useState(true);
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -541,14 +559,14 @@ function OrdersTable({ onDashboardDataUpdate }) {
       setLoading(true);
       const response = await completeOrderRequest(payload);
       if (response.status == 200) {
-        showToaterMessages(ToasterMessages.ORDER_COMPLETED_SUCCESS, "success");
+        showTostMessages(ToasterMessages.ORDER_COMPLETED_SUCCESS, "success");
         getOrderRequestList({
           pageLimit: rowsPerPage,
           page,
         });
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error creating order request",
@@ -596,7 +614,7 @@ function OrdersTable({ onDashboardDataUpdate }) {
         nextPage: null,
         prevPage: null,
       });
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error creating order request",
@@ -668,7 +686,7 @@ function OrdersTable({ onDashboardDataUpdate }) {
           page={page}
           rowsPerPage={rowsPerPage}
           handleOrderRequest={handleOrderRequest}
-          showToaterMessages={showToaterMessages}
+          showTostMessages={showTostMessages}
           setRowsPerPage={setRowsPerPage}
           initialMount={initialMount}
           orderRequests={orderRequests}
@@ -687,7 +705,7 @@ function OrdersTable({ onDashboardDataUpdate }) {
           orderRequests={orderRequests}
           rowsPerPage={rowsPerPage}
           handleOrderRequest={handleOrderRequest}
-          showToaterMessages={showToaterMessages}
+          showTostMessages={showTostMessages}
           getOrderRequestList={getOrderRequestList}
           initialMount={initialMount}
           setInitialMount={setInitialMount}

@@ -1,40 +1,28 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import {
   Card,
   Typography,
   Grid,
   Box,
-  ToggleButton,
-  Chip,
-  Switch,
   Divider,
-  IconButton,
   Button,
   Tooltip,
   Fade,
 } from "@mui/material";
-import Image from "next/image";
-
-import EditIcon from "@mui/icons-material/Edit";
-import { useSnackbar } from "utills/SnackbarContext";
 
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
-import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
-import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import { useState } from "react";
 import colors from "styles/theme/colors";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
-import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 function MarketingCard({ isEdit, errors, form, handleChange }) {
-
   const imageDoc = `image at least 200x200 pixels, Image aspect ratio of 1:1, file size under 300 KB`;
 
   const { tagLine, description, image, metaDescription } = form.marketing;
-  const { openSnackbar } = useSnackbar();
+
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
 
   const handleOpenUploadPopup = () => {
@@ -46,10 +34,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
   };
 
   const [selectedImage, setImage] = useState("");
-  const [cropData, setCropData] = useState("");
-  const [cropper, setCropper] = useState(false);
   const fileInputRef = useRef(null);
-  const [enableCropper, setEnableCropper] = useState(false);
 
   const handleImageSelect = (e) => {
     e.preventDefault();
@@ -112,13 +97,16 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                 src={image}
               />
             )}
-              <Tooltip title={imageDoc} TransitionComponent={Fade}
-                TransitionProps={{ timeout: 600 }}>
+            <Tooltip
+              title={imageDoc}
+              TransitionComponent={Fade}
+              TransitionProps={{ timeout: 600 }}
+            >
               <Card sx={{ display: "flex", p: 2 }}>
-                  <Typography sx={{ flex: 1, alignSelf: "center" }}>
-                    Upload
-                  </Typography>
-                
+                <Typography sx={{ flex: 1, alignSelf: "center" }}>
+                  Upload
+                </Typography>
+
                 <>
                   <input
                     id="contained-button-file"
@@ -144,13 +132,13 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                         Banner Image
                       </Button>
                     </label>
-                    {/* <Typography sx={{ flex: 1, alignSelf: 'center', marginTop: "5px" }}>{selectedImage ? selectedImage : image}</Typography> */}
                   </div>
                 </>
               </Card>
             </Tooltip>
           </Grid>
-          <NewInputFieldStructure isRequired={true}
+          <NewInputFieldStructure
+            isRequired={true}
             label="Tag line"
             variant="outlined"
             isEdit={isEdit}
@@ -159,7 +147,8 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
             value={tagLine}
             handleChange={(e) => handleChange(e, "marketing", "tagLine")}
           />
-          <NewInputFieldStructure isRequired={true}
+          <NewInputFieldStructure
+            isRequired={true}
             label="Description"
             variant="outlined"
             isEdit={isEdit}

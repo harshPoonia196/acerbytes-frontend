@@ -11,11 +11,12 @@ import {
 } from "@mui/material";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import {formatNumberWithCommas} from "utills/CommonFunction";
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
 function SuggesredLeadsDetails({ open, handleClose, selectedRowData }) {
 
   const budget = [
-    { title: "Budget", value: formatNumberWithCommas(selectedRowData?.userDetail?.budget?.maximumBudget?.value) },
+    { title: "Budget", value: `₹ ${formatNumberWithCommas(selectedRowData?.userDetail?.budget?.maximumBudget?.value)}` },
     { title: "Purpose", value: selectedRowData?.userDetail?.budget?.purpose },
     { title: "Purchase", value: selectedRowData?.userDetail?.budget?.purchase },
     { title: "Demographic", value: selectedRowData?.userDetail?.budget?.demographic },

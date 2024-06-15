@@ -32,7 +32,7 @@ import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketin
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
 import Avatar from "@mui/material/Avatar";
 import EditIcon from "@mui/icons-material/Edit";
-import { CircularProgress } from '@mui/material';
+import { CircularProgress } from "@mui/material";
 
 import {
   getUserProfileByGoogleId,
@@ -49,9 +49,17 @@ import {
 } from "api/Util.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import {
-  FILE_TYPES, SERVICE_TYPE, listOfProfileTab, FAMILY, exploringAs,
-  purpose, purchase, demographic, interestedForLoan, addressType,
-  ToasterMessages
+  FILE_TYPES,
+  SERVICE_TYPE,
+  listOfProfileTab,
+  FAMILY,
+  exploringAs,
+  purpose,
+  purchase,
+  demographic,
+  interestedForLoan,
+  addressType,
+  ToasterMessages,
 } from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { validateEmail } from "utills/utills";
@@ -81,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -173,7 +181,7 @@ function Profile({ id, isAdminUpdate }) {
       purchase: "",
       demographic: "",
       interestedForLoan: "",
-      paymentStatus: ""
+      paymentStatus: "",
     },
     settings: {
       dnd: false,
@@ -232,9 +240,9 @@ function Profile({ id, isAdminUpdate }) {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -256,23 +264,26 @@ function Profile({ id, isAdminUpdate }) {
       clickedRef.current = false;
     }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
 
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    // if (activeState !== hash) {
+    //   setActiveState(hash);
+
+    //   if (window)
+    //     window.scrollTo({
+    //       top:
+    //         document.getElementById(hash)?.getBoundingClientRect().top +
+    //         window.pageYOffset -
+    //         tabHeight,
+    //       behavior: "smooth",
+    //     });
+    // }
   };
 
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -320,7 +331,7 @@ function Profile({ id, isAdminUpdate }) {
             },
             currentAddress: {
               ...dataPlayload?.currentAddress,
-              country: COUNTRY_NAME
+              country: COUNTRY_NAME,
             },
             interestedCities: dataPlayload?.interestedCities || [],
             name: dataPlayload?.name,
@@ -336,13 +347,12 @@ function Profile({ id, isAdminUpdate }) {
             googleID: dataPlayload?.googleID,
             email: dataPlayload?.email,
           });
-
         }
       } catch (error) {
-        showToaterMessages(
+        showTostMessages(
           error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching user profile",
+            error?.message ||
+            "Error fetching user profile",
           "error"
         );
         setLoading(false);
@@ -358,12 +368,14 @@ function Profile({ id, isAdminUpdate }) {
       if (response?.data?.data?.[0]) {
         setAllStateAndCityInfo(response?.data?.data?.[0]);
         setInterestedStatesList(
-          Object.keys(response?.data?.data?.[0])?.filter(rs => rs !== "_id")?.map((stateDetail) => {
-            return {
-              label: stateDetail || "",
-              value: stateDetail || "",
-            }
-          }) || []
+          Object.keys(response?.data?.data?.[0])
+            ?.filter((rs) => rs !== "_id")
+            ?.map((stateDetail) => {
+              return {
+                label: stateDetail || "",
+                value: stateDetail || "",
+              };
+            }) || []
         );
       }
 
@@ -372,10 +384,10 @@ function Profile({ id, isAdminUpdate }) {
         setAllDropdownOptions(allOptionsResponse?.data?.data);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -393,10 +405,10 @@ function Profile({ id, isAdminUpdate }) {
         );
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -406,23 +418,26 @@ function Profile({ id, isAdminUpdate }) {
 
   const handleChange = async (e, firstKeyName, secondKeyName, thirdKeyName) => {
     var value = thirdKeyName === "checked" ? e.target.checked : e.target.value;
-    if (secondKeyName === 'firstName' || secondKeyName === 'lastName' || secondKeyName === 'company') {
-      value = capitalLizeName(value)
+    if (
+      secondKeyName === "firstName" ||
+      secondKeyName === "lastName" ||
+      secondKeyName === "company"
+    ) {
+      value = capitalLizeName(value);
     }
-    if (secondKeyName === 'pinCode') {
-
-      value = value.replace(/\D/g, '');
+    if (secondKeyName === "pinCode") {
+      value = value.replace(/\D/g, "");
 
       value = value.slice(0, 6);
     }
 
-    if (firstKeyName === 'age') {
-      const age = Number(value)
+    if (firstKeyName === "age") {
+      const age = Number(value);
       if (age > 100 || age < 0) {
-        setInvalidAge(true)
-        showToaterMessages('Please Enter Correct Age', 'error')
+        setInvalidAge(true);
+        showTostMessages("Please Enter Correct Age", "error");
       } else {
-        setInvalidAge(false)
+        setInvalidAge(false);
       }
     }
 
@@ -431,14 +446,14 @@ function Profile({ id, isAdminUpdate }) {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-          ...prev?.[firstKeyName],
-          [secondKeyName]: !thirdKeyName
-            ? value
-            : {
-              ...prev?.[firstKeyName]?.[secondKeyName],
-              [thirdKeyName]: value,
-            },
-        },
+            ...prev?.[firstKeyName],
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+          },
     }));
   };
 
@@ -479,7 +494,6 @@ function Profile({ id, isAdminUpdate }) {
         [event.target.name]: value || event.target.value,
       },
     });
-
   };
 
   const handleChangeInteresetCitiesDetails = (key, value) => {
@@ -557,7 +571,7 @@ function Profile({ id, isAdminUpdate }) {
       }
 
       if (invalidAge) {
-        return
+        return;
       }
 
       setLoading(true);
@@ -570,21 +584,20 @@ function Profile({ id, isAdminUpdate }) {
           if (!isAdminUpdate) {
             updateDetailsonLocalStorage(profileInfo);
           }
-          showToaterMessages(ToasterMessages.PROFILE_UPDATE_SUCCESS, "success");
+          showTostMessages(ToasterMessages.PROFILE_UPDATE_SUCCESS, "success");
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error user profile updating",
+          error?.message ||
+          "Error user profile updating",
         "error"
       );
     } finally {
       setLoading(false);
     }
   };
-
 
   const updateDetailsonLocalStorage = (info) => {
     let userInfo = JSON.parse(localStorage.getItem("userDetails"));
@@ -626,32 +639,31 @@ function Profile({ id, isAdminUpdate }) {
     try {
       setUploading(true);
       const formData = new FormData();
-      formData.append('image', selectedFile);
+      formData.append("image", selectedFile);
       const response = await uploadImage(formData);
       if (response.data.status == 200) {
         const userId = isAdminUpdate ? id : userDetails.googleID;
-        const imageResponse = await updateProfileImage(userId, response.data.data.Location);
+        const imageResponse = await updateProfileImage(
+          userId,
+          response.data.data.Location
+        );
         if (imageResponse?.data?.status == 200) {
           updateOnLocalStorage(response.data.data.Location);
-          openSnackbar(
-            response.data.message,
-            "success"
-          );
+          openSnackbar(response.data.message, "success");
         }
       }
     } catch (error) {
       console.log("error: ", error);
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     } finally {
       setUploading(false);
     }
-
-  }
+  };
 
   const updateOnLocalStorage = (imageUrl) => {
     let userInfo = JSON.parse(localStorage.getItem("userDetails"));
@@ -668,9 +680,7 @@ function Profile({ id, isAdminUpdate }) {
 
   return (
     <>
-      {isLoading && (
-        <Loader />
-      )}
+      {isLoading && <Loader />}
 
       <nav className={classes.demo2}>
         <NavTabProfilePage
@@ -692,12 +702,19 @@ function Profile({ id, isAdminUpdate }) {
               Save
             </LoadingButton>
           </Grid> */}
-          {!isAdminUpdate && <Grid item xs={12} id="userDetails">
-            <Card sx={{ p: 2 }}>
-              <Box sx={{ display: "flex", flexDirection: { xs: 'column', sm: 'row' }, gap: 1 }}>
-                <Box sx={{ flex: 1, display: 'flex', gap: 2, }}>
-                  <Box>
-                    {/* <UploadMarketingImage
+          {!isAdminUpdate && (
+            <Grid item xs={12} id="userDetails">
+              <Card sx={{ p: 2 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", sm: "row" },
+                    gap: 1,
+                  }}
+                >
+                  <Box sx={{ flex: 1, display: "flex", gap: 2 }}>
+                    <Box>
+                      {/* <UploadMarketingImage
                       open={isUploadPopupOpen}
                       image={image}
                       setImage={setImage}
@@ -705,92 +722,102 @@ function Profile({ id, isAdminUpdate }) {
                       changeImage={handleImageSelect}
                       removeImage={handleImageRemove}
                     /> */}
-                    {/* Avatar and file input */}
-                    <label
-                      htmlFor="avatar-input"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <ProfilePic
-                        style={{
-                          minWidth: "3rem",
-                          maxWidth: "3rem",
-                          height: "3rem",
-                        }}
+                      {/* Avatar and file input */}
+                      <label
+                        htmlFor="avatar-input"
+                        style={{ cursor: "pointer" }}
                       >
-                        {isUploading ?
-                          <div className="profilepic__loader">
-                            <CircularProgress size={24} />
-                          </div> :
-                          <>
-                            <Avatar
-                              sx={{
-                                width: "3rem",
-                                position: "static",
-                                height: "3rem",
-                                cursor: "pointer",
-                              }}
-                              src={userDetails?.googleDetails?.profilePicture ? userDetails.googleDetails.profilePicture : null}
-                              className="profilepic__image"
-                              onClick={(e) => {
-                                // Trigger the file input click when Avatar is clicked
-                                document.getElementById("avatar-input").click();
-                              }}
-                            >
-                              {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
-                            </Avatar>
-                            <div className="profilepic__content">
-                              <EditIcon fontSize="small" />
-                              <p className="profilepic__text">Edit</p>
+                        <ProfilePic
+                          style={{
+                            minWidth: "3rem",
+                            maxWidth: "3rem",
+                            height: "3rem",
+                          }}
+                        >
+                          {isUploading ? (
+                            <div className="profilepic__loader">
+                              <CircularProgress size={24} />
                             </div>
-                          </>}
-                      </ProfilePic>
-                    </label>
-                    <input
-                      id="avatar-input"
-                      type="file"
-                      disabled={isUploading}
-                      // onChange={handleImageSelect}
-                      onChange={handleFileChange}
-                      accept="image/x-png,image/gif,image/jpeg"
-                      hidden
-                    />
+                          ) : (
+                            <>
+                              <Avatar
+                                sx={{
+                                  width: "3rem",
+                                  position: "static",
+                                  height: "3rem",
+                                  cursor: "pointer",
+                                }}
+                                src={
+                                  userDetails?.googleDetails?.profilePicture
+                                    ? userDetails.googleDetails.profilePicture
+                                    : null
+                                }
+                                className="profilepic__image"
+                                onClick={(e) => {
+                                  // Trigger the file input click when Avatar is clicked
+                                  document
+                                    .getElementById("avatar-input")
+                                    .click();
+                                }}
+                              >
+                                {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+                              </Avatar>
+                              <div className="profilepic__content">
+                                <EditIcon fontSize="small" />
+                                <p className="profilepic__text">Edit</p>
+                              </div>
+                            </>
+                          )}
+                        </ProfilePic>
+                      </label>
+                      <input
+                        id="avatar-input"
+                        type="file"
+                        disabled={isUploading}
+                        // onChange={handleImageSelect}
+                        onChange={handleFileChange}
+                        accept="image/x-png,image/gif,image/jpeg"
+                        hidden
+                      />
+                    </Box>
+                    <Box>
+                      <Typography variant="h6" sx={{ fontWeight: 900 }}>
+                        {userDetails?.name?.firstName}{" "}
+                        {userDetails?.name?.lastName}
+                      </Typography>
+                      <Typography variant="body2">
+                        {userDetails?.email}
+                      </Typography>
+                    </Box>
                   </Box>
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                      {userDetails?.name?.firstName} {userDetails?.name?.lastName}
-                    </Typography>
-                    <Typography variant='body2'>
-                      {userDetails?.email}
-                    </Typography>
+                  <Box sx={{ alignSelf: { xs: "end", sm: "start" } }}>
+                    <a
+                      href={`tel:${profileInfo?.phone?.countryCode}${profileInfo?.phone?.number}`}
+                      style={{
+                        display: "flex",
+                        alignSelf: "center",
+                        textDecoration: "none",
+                        color: colors.BLUE,
+                      }}
+                    >
+                      <CallIcon fontSize="small" sx={{ alignSelf: "center" }} />
+                      <Typography
+                        variant="h6"
+                        sx={{ alignSelf: "center", color: colors.BLUE }}
+                      >
+                        +{profileInfo?.phone?.countryCode}{" "}
+                        {profileInfo?.phone?.number}
+                      </Typography>
+                    </a>
                   </Box>
                 </Box>
-                <Box sx={{ alignSelf: { xs: 'end', sm: 'start' } }}>
-                  <a
-                    href={`tel:${profileInfo?.phone?.countryCode}${profileInfo?.phone?.number}`}
-                    style={{
-                      display: "flex",
-                      alignSelf: "center",
-                      textDecoration: "none",
-                      color: colors.BLUE,
-                    }}
-                  >
-                    <CallIcon
-                      fontSize="small"
-                      sx={{ alignSelf: "center" }}
-                    />
-                    <Typography variant="h6" sx={{ alignSelf: "center", color: colors.BLUE, }}>
-                      +{profileInfo?.phone?.countryCode}{" "}
-                      {profileInfo?.phone?.number}
-                    </Typography>
-                  </a>
-                </Box>
-              </Box>
 
-              {/* <Typography variant="body1" sx={{ mt: 1 }}>
+                {/* <Typography variant="body1" sx={{ mt: 1 }}>
                 Mumbai
               </Typography> */}
-            </Card>
-          </Grid>}
+              </Card>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -802,12 +829,7 @@ function Profile({ id, isAdminUpdate }) {
                 </Typography>
               </Box>
               <Divider />
-              <Grid
-                container
-                rowSpacing={1}
-                columnSpacing={2}
-                sx={{ p: 2 }}
-              >
+              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewInputFieldStructure
                   isRequired={true}
                   label="First name"
@@ -878,12 +900,7 @@ function Profile({ id, isAdminUpdate }) {
                 </Typography>
               </Box>
               <Divider />
-              <Grid
-                container
-                rowSpacing={1}
-                columnSpacing={2}
-                sx={{ p: 2 }}
-              >
+              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewSelectTextFieldStructure
                   label="Service type"
                   isEdit={isEdit}
@@ -891,7 +908,10 @@ function Profile({ id, isAdminUpdate }) {
                     handleChange(e, "serviceDetails", "serviceType")
                   }
                   name={"serviceType"}
-                  list={allDropdownOptions?.find(rs => rs.name == "Service Type")?.childSub || []}
+                  list={
+                    allDropdownOptions?.find((rs) => rs.name == "Service Type")
+                      ?.childSub || []
+                  }
                   value={profileInfo?.serviceDetails?.serviceType}
                 />
                 <NewInputFieldStructure
@@ -912,7 +932,10 @@ function Profile({ id, isAdminUpdate }) {
                   }
                   name={"family"}
                   value={profileInfo?.serviceDetails?.family}
-                  list={allDropdownOptions?.find(rs => rs.name == "Family")?.childSub || []}
+                  list={
+                    allDropdownOptions?.find((rs) => rs.name == "Family")
+                      ?.childSub || []
+                  }
                 />
               </Grid>
             </Card>
@@ -928,12 +951,7 @@ function Profile({ id, isAdminUpdate }) {
                 </Typography>
               </Box>
               <Divider />
-              <Grid
-                container
-                rowSpacing={1}
-                columnSpacing={2}
-                sx={{ p: 2 }}
-              >
+              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewAutoCompleteInputStructure
                   label="Select State"
                   handleChange={(e, newValue) =>
@@ -953,7 +971,6 @@ function Profile({ id, isAdminUpdate }) {
                   <>
                     <NewAutoCompleteInputStructure
                       label="Select City"
-
                       handleChange={(e, newValue) =>
                         handleChangeInteresetCitiesDetails(
                           SELECT_CITY,
@@ -968,7 +985,6 @@ function Profile({ id, isAdminUpdate }) {
                     />
                     <NewInputFieldStructure
                       label="Area"
-
                       variant="outlined"
                       value={selectInterestedArea}
                       handleChange={(e) =>
@@ -984,22 +1000,18 @@ function Profile({ id, isAdminUpdate }) {
                   ""
                 )}
                 <Grid item xs={12} sx={{ mt: 1, display: "flex" }}>
-                  <Box
-                    sx={{ flex: 1, alignSelf: "center", ml: -1, mt: -1 }}
-                  >
-                    {profileInfo?.interestedCities?.map(
-                      (cityInfo, index) => {
-                        return (
-                          <Chip
-                            key={index}
-                            label={`${cityInfo?.selectArea}, ${cityInfo?.selectCity}`}
-                            size="small"
-                            sx={{ ml: 1, mt: 1 }}
-                            onDelete={() => removeInterestedCity(index)}
-                          />
-                        );
-                      }
-                    )}
+                  <Box sx={{ flex: 1, alignSelf: "center", ml: -1, mt: -1 }}>
+                    {profileInfo?.interestedCities?.map((cityInfo, index) => {
+                      return (
+                        <Chip
+                          key={index}
+                          label={`${cityInfo?.selectArea}, ${cityInfo?.selectCity}`}
+                          size="small"
+                          sx={{ ml: 1, mt: 1 }}
+                          onDelete={() => removeInterestedCity(index)}
+                        />
+                      );
+                    })}
                   </Box>
                   <Box>
                     <CustomButton
@@ -1030,12 +1042,7 @@ function Profile({ id, isAdminUpdate }) {
                 </Typography>
               </Box>
               <Divider />
-              <Grid
-                container
-                rowSpacing={1}
-                columnSpacing={2}
-                sx={{ p: 2 }}
-              >
+              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewCurrencyInputField
                   label="Minimum"
                   variant="outlined"
@@ -1056,7 +1063,6 @@ function Profile({ id, isAdminUpdate }) {
                   label="Maximum"
                   variant="outlined"
                   isEdit={isEdit}
-
                   value1={profileInfo?.budget?.maximumBudget?.unit || "₹INR"}
                   value2={profileInfo?.budget?.maximumBudget?.value}
                   handleChange={(e) =>
@@ -1197,12 +1203,7 @@ function Profile({ id, isAdminUpdate }) {
                 </Typography>
               </Box>
               <Divider />
-              <Grid
-                container
-                rowSpacing={1}
-                columnSpacing={2}
-                sx={{ p: 2 }}
-              >
+              <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                 <NewToggleButtonStructure
                   isEdit={isEdit}
                   label="Address type"

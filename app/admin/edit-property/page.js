@@ -1,7 +1,5 @@
-"use client";
-
-import { Box, Button, Card, Container, Grid } from "@mui/material";
-import dynamic from 'next/dynamic'
+import { Card, Container, Grid } from "@mui/material";
+import dynamic from "next/dynamic";
 import React from "react";
 import { useState } from "react";
 import { listOfTabsInAddProperty } from "utills/Constants";
@@ -9,31 +7,27 @@ import NavTab from "Components/Admin/Property/NavTab";
 import throttle from "lodash/throttle";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { getBrokersList } from "api/Admin.api";
-import { getBrokers } from "api/UserProfile.api";
-import { getAllBrokers } from "api/Broker.api";
 
-import { makeStyles, withStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
-import BankCard from "Components/Admin/Property/SubComponents/BankCard";
-import { getAllOptions, getAllProperty, getCities } from "api/Property.api";
+import { getAllOptions, getCities } from "api/Property.api";
 
 import {
   Schema,
-  projectName,
   reraSchema,
 } from "Components/Admin/Property/Validation/PropertyValidation";
 import FacilitiesCard from "Components/Admin/Property/SubComponents/FacilitiesCard";
 import LandscapeCard from "Components/Admin/Property/SubComponents/LandscapeCard";
 import FloorPlanCard from "Components/Admin/Property/SubComponents/FloorPlanCard";
 import RegulatoryCard from "Components/Admin/Property/SubComponents/RegulatoryCard";
-import BuilderPriceCard from "Components/Admin/Property/SubComponents/BuilderPriceCard";
-import ResalePriceCard from "Components/Admin/Property/SubComponents/ResalePriceCard";
 import InvestmentCard from "Components/Admin/Property/SubComponents/InvestmentCard";
-const MarketingCard = dynamic(() => import('Components/Admin/Property/SubComponents/MarketingCard'), {
-  ssr: false,
-})
+const MarketingCard = dynamic(
+  () => import("Components/Admin/Property/SubComponents/MarketingCard"),
+  {
+    ssr: false,
+  }
+);
 import { useSnackbar } from "utills/SnackbarContext";
 import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
 import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
@@ -42,7 +36,7 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import { detailsProperty } from "api/Property.api";
 import colors from "styles/theme/colors";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import EditLocationCard from "Components/Admin/Property/SubComponents/EditLocationCard";
+import { getAllBrokers } from "api/Broker.api";
 
 const tabHeight = 116;
 
@@ -61,8 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
-
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -83,15 +76,15 @@ function useThrottledOnScroll(callback, delay) {
 
 function AddProperty() {
   const router = useSearchParams();
-  const [cities, setCities] = useState([])
+  const [cities, setCities] = useState([]);
   const routerNavigation = useRouter();
   const [editPage, setEditPage] = useState(false);
   const [brokerList, setBrokerList] = useState([]);
   const [amentiesStarsScore, setAmentiesStarScore] = useState([]);
   const [amentiesStars, setAmentiesStar] = useState([]);
   const [locationStars, setLocationStars] = useState([]);
-  const [regulatoryCount, setRegulatoryCount] = useState(0)
-  const [totalRating, setTotalRating] = useState(80)
+  const [regulatoryCount, setRegulatoryCount] = useState(0);
+  const [totalRating, setTotalRating] = useState(80);
   const [tagField, setTagField] = useState({
     builder: "",
     projectName: "",
@@ -99,8 +92,8 @@ function AddProperty() {
     projectType: "",
     area: "",
     sector: "",
-    city: ""
-  })
+    city: "",
+  });
   const [locationStarsScore, setLocationStarsScore] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [formUpdated, setFormUpdated] = useState(false);
@@ -143,9 +136,9 @@ function AddProperty() {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -159,25 +152,27 @@ function AddProperty() {
 
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => () => {
+  const handleClick = (hash) => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
+
     clickedRef.current = true;
     unsetClickedRef.current = setTimeout(() => {
       clickedRef.current = false;
     }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
 
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    // if (activeState !== hash) {
+    //   if (window)
+    //     window.scrollTo({
+    //       top:
+    //         document.getElementById(hash)?.getBoundingClientRect().top +
+    //         window.pageYOffset -
+    //         tabHeight,
+    //       behavior: "smooth",
+    //     });
+    // }
   };
   function removeIds(obj) {
     for (const key in obj) {
@@ -191,7 +186,6 @@ function AddProperty() {
     }
     return obj;
   }
-
 
   const countLocationAssessmentItems = (data) => {
     const items = [];
@@ -208,7 +202,7 @@ function AddProperty() {
   // Function to count items with ratings > 0 and isApplicable true in amenities data
   const countAmenitiesDataItems = (data) => {
     const items = [];
-    Object.values(data.amenitiesData).forEach(section => {
+    Object.values(data.amenitiesData).forEach((section) => {
       Object.entries(section).forEach(([name, item]) => {
         if (item.rating > 0 && item.isApplicable) {
           items.push({ name, rating: item.rating });
@@ -219,18 +213,15 @@ function AddProperty() {
     return items;
   };
 
-
-
-
   let getProp = async () => {
     try {
       let res = await detailsProperty(detailsPropertyId);
       if (res.status === 200) {
-        setFormUpdated(false)
+        setFormUpdated(false);
         let data = removeIds(res.data?.data);
-        delete data?.data
+        delete data?.data;
         delete data.__v;
-        handleUIHide(data.overview.projectType, "overview", "projectType")
+        handleUIHide(data.overview.projectType, "overview", "projectType");
         setEditForm(true);
         let assignTagLine = {
           builder: data.overview.builder,
@@ -239,69 +230,76 @@ function AddProperty() {
           projectType: data.overview.projectType,
           area: data.location.area,
           sector: data.location.sector,
-          city: data.location.city
-        }
-
-        setTagField(assignTagLine)
+          city: data.location.city,
+        };
+        setTagField(assignTagLine);
         setForm({ ...data });
 
-        let countLocationItems = countLocationAssessmentItems(data)
-        let AmentiesCount = countAmenitiesDataItems(data)
-        let updateTotalCount = 0
+        let countLocationItems = countLocationAssessmentItems(data);
+        let AmentiesCount = countAmenitiesDataItems(data);
+        let updateTotalCount = 0;
         if (AmentiesCount.length > 0) {
-          let count = AmentiesCount.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
-          let names = AmentiesCount.map(item => item.name)
-          updateTotalCount += (AmentiesCount.length * 5)
+          let count = AmentiesCount.reduce(
+            (accumulator, currentItem) => accumulator + currentItem.rating,
+            0
+          );
+          let names = AmentiesCount.map((item) => item.name);
+          updateTotalCount += AmentiesCount.length * 5;
           // setTotalRating(totalRating+count)
           // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
-          setAmentiesStarScore([...amentiesStarsScore, ...names])
+          setAmentiesStarScore([...amentiesStarsScore, ...names]);
         }
         if (countLocationItems.length > 0) {
-          let count = countLocationItems.reduce((accumulator, currentItem) => accumulator + currentItem.rating, 0);
-          let names = countLocationItems.map(item => item.name)
+          let count = countLocationItems.reduce(
+            (accumulator, currentItem) => accumulator + currentItem.rating,
+            0
+          );
+          let names = countLocationItems.map((item) => item.name);
 
           //  setTotalRating(totalRating+count)
-          updateTotalCount += (countLocationItems.length * 5)
-          setLocationStarsScore([...locationStarsScore, ...names])
+          updateTotalCount += countLocationItems.length * 5;
+          setLocationStarsScore([...locationStarsScore, ...names]);
         }
-        let countYes = 0
-        Object.values(data.regulatoryClearance).forEach(value => {
-          if (value === 'Yes') {
+        let countYes = 0;
+        Object.values(data.regulatoryClearance).forEach((value) => {
+          if (value === "Yes") {
             countYes++;
           }
         });
-        setRegulatoryCount(countYes)
-        setTotalRating(totalRating + updateTotalCount)
+        setRegulatoryCount(countYes);
+        setTotalRating(totalRating + updateTotalCount);
 
-        setFormUpdated(true)
+        setFormUpdated(true);
       }
-    }
-    catch (error) {
-      showToaterMessages(
+    } catch (error) {
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
-  const brokersList = async (rowsPerPage, page, search) => {
+
+  const brokersList = async () => {
     try {
       const response = await getAllBrokers();
       if (response.status == 200) {
         const { success, data, message } = response.data;
         if (success) {
           let getValue = data.data.map((i) => {
-
             let u = {
-              fullName: i.fullName.replace(/\b\w/g, (match) => match.toUpperCase()),
+              fullName: i.fullName.replace(/\b\w/g, (match) =>
+                match.toUpperCase()
+              ),
               type: "consultant",
               phone: i.phone,
               rating: i.rating,
-              profilePicture: i?.brokerPic?.profilePicture ? i?.brokerPic?.profilePicture : "",
+              profilePicture: i?.brokerPic?.profilePicture
+                ? i?.brokerPic?.profilePicture
+                : "",
               id: i._id,
             };
             return u;
@@ -320,7 +318,7 @@ function AddProperty() {
     }
   };
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -328,41 +326,38 @@ function AddProperty() {
     try {
       let res = await getCities();
       if (res.status == 200) {
-        delete res.data.data[0]._id
-        setCities(res.data.data[0])
+        delete res.data.data[0]._id;
+        setCities(res.data.data[0]);
       }
-    }
-    catch (error) {
-      showToaterMessages(
+    } catch (error) {
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
-
-
-  }
+  };
 
   const getAllOptionDataList = async () => {
     try {
       let res = await getAllOptions();
       if (res.status === 200) {
-        let transform = transformDocuments(res.data.data)
-        let temp = {}
-        const filteredData = res.data.data.filter(item => item.name !== "Assesment" && item.name !== "Amenities");
-        const transformFiltered = transformDocuments(filteredData)
-        setSelectOption({ ...transformFiltered })
+        let transform = transformDocuments(res.data.data);
+        let temp = {};
+        const filteredData = res.data.data.filter(
+          (item) => item.name !== "Assesment" && item.name !== "Amenities"
+        );
+        const transformFiltered = transformDocuments(filteredData);
+        setSelectOption({ ...transformFiltered });
         transform["assesment"].map((thing) => {
           temp[thing] = {
             isApplicable: false,
-            rating: 0
-          }
-
-        })
+            rating: 0,
+          };
+        });
 
         const amenities = transform.amenities.reduce((acc, item) => {
           acc[item] = {};
@@ -373,23 +368,25 @@ function AddProperty() {
           transform[item.toLowerCase()].map((thing) => {
             amenities[item][thing] = {
               isApplicable: false,
-              rating: 0
-            }
-
-          })
-        })
+              rating: 0,
+            };
+          });
+        });
 
         const sumItems = (obj, excludedFields) => {
           let sum = 0;
           for (let key in obj) {
-            if (!excludedFields.includes(key) && typeof obj[key] === 'object') {
+            if (!excludedFields.includes(key) && typeof obj[key] === "object") {
               sum += Object.keys(obj[key]).length;
             }
           }
           return sum;
         };
 
-        let amentiesSatrCount = sumItems({ sectionScore: 0, pointsGained: 0, ...amenities }, ['sectionScore', 'pointsGained'])
+        let amentiesSatrCount = sumItems(
+          { sectionScore: 0, pointsGained: 0, ...amenities },
+          ["sectionScore", "pointsGained"]
+        );
 
         // setForm((prevForm) => ({
         //   ...prevForm,
@@ -403,14 +400,13 @@ function AddProperty() {
         // setSelectOption({ ...temp })
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -419,11 +415,9 @@ function AddProperty() {
     if (detailsPropertyId) {
       getProp();
       setEditPage(true);
-      getAllOptionDataList()
-
-    }
-    else {
-      getAllOptionDataList()
+      getAllOptionDataList();
+    } else {
+      getAllOptionDataList();
     }
     getCitiesList();
     brokersList();
@@ -433,8 +427,6 @@ function AddProperty() {
       clearTimeout(unsetClickedRef.current);
     };
   }, []);
-
-
 
   const classes = useStyles();
 
@@ -453,8 +445,8 @@ function AddProperty() {
       completionYear: "",
       status: "",
       constructionProgress: "",
-      sectionScore: '',
-      pointsGained: 0
+      sectionScore: "",
+      pointsGained: 0,
     },
     regulatoryClearance: {
       reraApproved: "",
@@ -467,7 +459,7 @@ function AddProperty() {
       fresh: "",
       resale: "",
       sectionScore: 0,
-      pointsGained: 0
+      pointsGained: 0,
     },
     layout: {
       numberOfBuildings: "",
@@ -486,7 +478,7 @@ function AddProperty() {
       constructionQuality: 0,
       interiorQuality: 0,
       sectionScore: 0,
-      pointsGained: 0
+      pointsGained: 0,
     },
     unitsPlan: {
       averagePrice: 0,
@@ -510,8 +502,7 @@ function AddProperty() {
       ],
     },
 
-    amenitiesData: {
-    },
+    amenitiesData: {},
     location: {
       state: "",
       city: "",
@@ -523,15 +514,14 @@ function AddProperty() {
       googleMapLink: "",
       longitude: "",
       latitude: "",
-      assessment: {
-      },
+      assessment: {},
     },
     valueForMoney: {
       appTillNow: 0,
       expectedFurtherApp: 0,
       forEndUse: 0,
       pointsGained: 0,
-      sectionScore: 0
+      sectionScore: 0,
     },
     consultants: [],
     overallAssessment: {
@@ -565,10 +555,9 @@ function AddProperty() {
       image: "",
       tagLine: "",
       description: "",
-      metaDescription: ""
+      metaDescription: "",
     },
   });
-
 
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
@@ -576,18 +565,20 @@ function AddProperty() {
   function transformDocuments(documents) {
     return documents.reduce((result, document) => {
       const { name, childSub } = document;
-      let camelCaseName = name.replace(/[\s_-](\w)/g, (_, char) => char.toUpperCase())
-      result[camelCaseName.charAt(0).toLowerCase() + camelCaseName.slice(1)] = childSub;
+      let camelCaseName = name.replace(/[\s_-](\w)/g, (_, char) =>
+        char.toUpperCase()
+      );
+      result[camelCaseName.charAt(0).toLowerCase() + camelCaseName.slice(1)] =
+        childSub;
       // result[camelCaseName] = childSub;
       return result;
     }, {});
   }
-  const [selectOptions, setSelectOption] = useState({})
-  const [hide, setHide] = useState([])
+  const [selectOptions, setSelectOption] = useState({});
+  const [hide, setHide] = useState([]);
 
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
-
-    let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
+    let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName);
     // totalRating=totalRating
     // let totalRating = form.overview.status ==="underconstruction"? 75:80;
     let totalScored;
@@ -635,9 +626,7 @@ function AddProperty() {
         totalScored =
           form.overallAssessment.scoredRating - Math.abs(difference);
       }
-    }
-
-    else {
+    } else {
       totalScored =
         form.overallAssessment.scoredRating + parseInt(incomingValue);
     }
@@ -649,7 +638,7 @@ function AddProperty() {
         ...form[firstKeyName],
         [secondKeyName]: e.target.value,
         ["sectionScore"]: moduleScore.calc,
-        ["pointsGained"]: moduleScore.totalScored
+        ["pointsGained"]: moduleScore.totalScored,
       },
       overallAssessment: {
         ...form.overallAssessment,
@@ -663,10 +652,13 @@ function AddProperty() {
     });
   };
 
-
-
-
-  const moduleScoreCalc = (e, firstKeyName, secondKeyName, seperateCalc, thirdKeyName) => {
+  const moduleScoreCalc = (
+    e,
+    firstKeyName,
+    secondKeyName,
+    seperateCalc,
+    thirdKeyName
+  ) => {
     let totalRatingModule;
     let totalScored;
     switch (firstKeyName.toLowerCase()) {
@@ -692,9 +684,8 @@ function AddProperty() {
         totalRatingModule = 10;
     }
 
-
     function chechAlpahbeValues(value) {
-      let returnValue = 0
+      let returnValue = 0;
       switch (value.toLowerCase()) {
         case "yes":
           returnValue = 5;
@@ -717,7 +708,7 @@ function AddProperty() {
         default:
           returnValue = 0;
       }
-      return returnValue
+      return returnValue;
     }
     function isNotAlphabet(char) {
       return !/[a-zA-Z]/.test(char);
@@ -726,10 +717,8 @@ function AddProperty() {
     if (isNotAlphabet(e.target.value)) {
       incomingValue = e.target.value;
     } else {
-
-      let val = chechAlpahbeValues(e.target.value)
-      incomingValue = val
-
+      let val = chechAlpahbeValues(e.target.value);
+      incomingValue = val;
     }
     // if (form.overallAssessment.rated?.[secondKeyName] > 0) {
     //   console.log('isinn')
@@ -748,14 +737,15 @@ function AddProperty() {
     //     totalScored =
     //     form?.[firstKeyName]?.["pointsGained"] - Math.abs(difference);
     //   }
-    // } 
+    // }
 
     if (secondKeyName === "assessment" || firstKeyName === "amenitiesData") {
-
       let difference =
-        +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(incomingValue);
+        +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating -
+        parseInt(incomingValue);
       let compare =
-        form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(incomingValue);
+        form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating <
+        parseInt(incomingValue);
       if (compare) {
         totalScored =
           +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
@@ -763,22 +753,26 @@ function AddProperty() {
         totalScored =
           +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
       }
-    }
-
-    else if (firstKeyName === "regulatoryClearance") {
-
-      if (form?.[firstKeyName]?.[secondKeyName].toLowerCase() === `don't know` && e.target.value.toLowerCase() !== `don't know`) {
-        totalRatingModule = totalRatingModule + 5
-        setRegulatoryCount(regulatoryCount + 1)
-      }
-      else if (form?.[firstKeyName]?.[secondKeyName].toLowerCase() !== `don't know` && e.target.value.toLowerCase() === `don't know`) {
-        totalRatingModule = totalRatingModule - 5
-        setRegulatoryCount(regulatoryCount - 1)
+    } else if (firstKeyName === "regulatoryClearance") {
+      if (
+        form?.[firstKeyName]?.[secondKeyName].toLowerCase() === `don't know` &&
+        e.target.value.toLowerCase() !== `don't know`
+      ) {
+        totalRatingModule = totalRatingModule + 5;
+        setRegulatoryCount(regulatoryCount + 1);
+      } else if (
+        form?.[firstKeyName]?.[secondKeyName].toLowerCase() !== `don't know` &&
+        e.target.value.toLowerCase() === `don't know`
+      ) {
+        totalRatingModule = totalRatingModule - 5;
+        setRegulatoryCount(regulatoryCount - 1);
       }
       let difference =
-        chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) - parseInt(incomingValue);
+        chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) -
+        parseInt(incomingValue);
       let compare =
-        chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) < parseInt(incomingValue);
+        chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) <
+        parseInt(incomingValue);
       if (compare) {
         totalScored =
           +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
@@ -786,18 +780,21 @@ function AddProperty() {
         totalScored =
           +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
       }
-    }
-
-    else {
-      let difference
-      let compare
+    } else {
+      let difference;
+      let compare;
       if (secondKeyName === "constructionProgress") {
         difference =
-          (form?.[firstKeyName]?.[secondKeyName] == "" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay" ? 0 : 5) - parseInt(incomingValue);
+          (form?.[firstKeyName]?.[secondKeyName] == "" ||
+          form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay"
+            ? 0
+            : 5) - parseInt(incomingValue);
         compare =
-          (form?.[firstKeyName]?.[secondKeyName] == "" || form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay" ? 0 : 5) < parseInt(incomingValue);
-      }
-      else {
+          (form?.[firstKeyName]?.[secondKeyName] == "" ||
+          form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay"
+            ? 0
+            : 5) < parseInt(incomingValue);
+      } else {
         difference =
           +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
         compare =
@@ -808,12 +805,10 @@ function AddProperty() {
         totalScored =
           +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
       } else {
-
         totalScored =
           +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
       }
     }
-
 
     let calc = (totalScored / totalRatingModule) * 10;
 
@@ -824,31 +819,36 @@ function AddProperty() {
           ...form[firstKeyName],
           [secondKeyName]: e.target.value,
           ["sectionScore"]: calc,
-          ["pointsGained"]: totalScored
-        }
+          ["pointsGained"]: totalScored,
+        },
       });
     }
 
-    return { calc, totalScored }
-
-  }
+    return { calc, totalScored };
+  };
 
   const handleUIHide = (e, firstKeyName, secondKeyName) => {
-    if (form?.[firstKeyName][secondKeyName].some(item => item.value.toLowerCase() !== 'land' && form?.[firstKeyName].projectCategory.toLowerCase() !== "commercial")) {
-      setHide([])
-    }
-    else if (form?.[firstKeyName].projectCategory.toLowerCase() === "commercial") {
+    if (
+      form?.[firstKeyName][secondKeyName].some(
+        (item) =>
+          item.value.toLowerCase() !== "land" &&
+          form?.[firstKeyName].projectCategory.toLowerCase() !== "commercial"
+      )
+    ) {
+      setHide([]);
+    } else if (
+      form?.[firstKeyName].projectCategory.toLowerCase() === "commercial"
+    ) {
       setHide([
         "numberOfBuildings",
         "layoutType",
         "floors",
         "greenArea",
         "greenDensity",
-      ])
-    }
-    else {
-      let lastValue = e[e.length - 1]?.value.toLowerCase()
-      let value = lastValue?.replace(/\s/g, '')
+      ]);
+    } else {
+      let lastValue = e[e.length - 1]?.value.toLowerCase();
+      let value = lastValue?.replace(/\s/g, "");
       switch (value) {
         case "restaurant":
           setHide([
@@ -857,7 +857,7 @@ function AddProperty() {
             "floors",
             "greenArea",
             "greenDensity",
-          ])
+          ]);
           break;
         case "shop":
           setHide([
@@ -866,7 +866,7 @@ function AddProperty() {
             "floors",
             "greenArea",
             "greenDensity",
-          ])
+          ]);
           break;
         case "foodcourt":
           setHide([
@@ -875,21 +875,21 @@ function AddProperty() {
             "floors",
             "greenArea",
             "greenDensity",
-          ])
+          ]);
           break;
         case "land":
           setHide([
             "numberOfBuildings",
             "layoutType",
             "floors",
-            "unitsPlanUnit"])
+            "unitsPlanUnit",
+          ]);
           break;
         default:
-          setHide([])
+          setHide([]);
       }
     }
-
-  }
+  };
 
   const handleCategoryHide = (e) => {
     if (e.target.value.toLowerCase() === "commercial") {
@@ -900,9 +900,9 @@ function AddProperty() {
         "greenArea",
         "greenDensityScore",
         "greenDensity",
-      ])
+      ]);
     }
-  }
+  };
 
   const handleChange = async (
     e,
@@ -930,9 +930,8 @@ function AddProperty() {
     } else if (firstKeyName === "unitsPlan") {
       setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
     } else if (score === true) {
-
-      let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName)
-      let total = totalRating
+      let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName);
+      let total = totalRating;
       // let totalRating = form.overview.status ==="underconstruction"? 75:80;
       let totalScored;
 
@@ -952,13 +951,13 @@ function AddProperty() {
             break;
           case "dont know":
             incomingValue = 0;
-            total = totalRating - 5
-            setTotalRating(total)
+            total = totalRating - 5;
+            setTotalRating(total);
             break;
           case "don't know":
             incomingValue = 0;
-            total = totalRating - 5
-            setTotalRating(total)
+            total = totalRating - 5;
+            setTotalRating(total);
             break;
           case "on time":
             incomingValue = 5;
@@ -990,11 +989,13 @@ function AddProperty() {
           totalScored =
             form.overallAssessment.scoredRating + parseInt(incomingValue);
         }
-      }
-
-      else if (firstKeyName === "regulatoryClearance" && form?.[firstKeyName]?.[secondKeyName].toLowerCase() === `don't know` && e.target.value.toLowerCase() !== `don't know`) {
-        total = totalRating + 5
-        setTotalRating(total)
+      } else if (
+        firstKeyName === "regulatoryClearance" &&
+        form?.[firstKeyName]?.[secondKeyName].toLowerCase() === `don't know` &&
+        e.target.value.toLowerCase() !== `don't know`
+      ) {
+        total = totalRating + 5;
+        setTotalRating(total);
 
         if (form.overallAssessment.rated?.[secondKeyName] > 0) {
           let difference =
@@ -1010,13 +1011,11 @@ function AddProperty() {
             totalScored =
               form.overallAssessment.scoredRating - Math.abs(difference);
           }
-        }
-        else {
+        } else {
           totalScored =
             form.overallAssessment.scoredRating + parseInt(incomingValue);
         }
-      }
-      else if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+      } else if (form.overallAssessment.rated?.[secondKeyName] > 0) {
         let difference =
           form.overallAssessment.rated?.[secondKeyName] -
           parseInt(incomingValue);
@@ -1035,8 +1034,11 @@ function AddProperty() {
           form.overallAssessment.scoredRating + parseInt(incomingValue);
       }
 
-      if (e.target.value.toLowerCase() === "dont know" || e.target.value.toLowerCase() === "don't know") {
-        totalScored -= 5
+      if (
+        e.target.value.toLowerCase() === "dont know" ||
+        e.target.value.toLowerCase() === "don't know"
+      ) {
+        totalScored -= 5;
       }
       let calc = (totalScored / total) * 100;
 
@@ -1046,7 +1048,7 @@ function AddProperty() {
           ...form[firstKeyName],
           [secondKeyName]: e.target.value,
           ["sectionScore"]: moduleScore.calc,
-          ["pointsGained"]: moduleScore.totalScored
+          ["pointsGained"]: moduleScore.totalScored,
         },
         overallAssessment: {
           ...form.overallAssessment,
@@ -1058,44 +1060,50 @@ function AddProperty() {
           },
         },
       });
-    }
-    else if (secondKeyName.toLowerCase() === "projecttype") {
-      let projectType = e.map(item => item.value).join('-');
-      let formattedTagLine = formatTagLine(projectType, secondKeyName)
+    } else if (secondKeyName.toLowerCase() === "projecttype") {
+      let projectType = e.map((item) => item.value).join("-");
+      let formattedTagLine = formatTagLine(projectType, secondKeyName);
       setForm({
-        ...form, [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e }
-        , marketing: { ...form.marketing, tagLine: formattedTagLine }
+        ...form,
+        [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e },
+        marketing: { ...form.marketing, tagLine: formattedTagLine },
       });
-    }
-    else if (secondKeyName.toLowerCase() === "builder" || secondKeyName.toLowerCase() === "city") {
-      let formattedTagLine = formatTagLine(e, secondKeyName)
+    } else if (
+      secondKeyName.toLowerCase() === "builder" ||
+      secondKeyName.toLowerCase() === "city"
+    ) {
+      let formattedTagLine = formatTagLine(e, secondKeyName);
       setForm({
-        ...form, [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e }
-        , marketing: { ...form.marketing, tagLine: formattedTagLine }
+        ...form,
+        [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e },
+        marketing: { ...form.marketing, tagLine: formattedTagLine },
       });
-
-    }
-    else if (firstKeyName === "layout" && secondKeyName === "area") {
-      let totalArea = +e.target.value
-      if (form.layout.areaUnit.toLowerCase() === 'acres') {
-        const sqftPerAcre = 43560
-        totalArea = +e.target.value * sqftPerAcre
+    } else if (firstKeyName === "layout" && secondKeyName === "area") {
+      let totalArea = +e.target.value;
+      if (form.layout.areaUnit.toLowerCase() === "acres") {
+        const sqftPerAcre = 43560;
+        totalArea = +e.target.value * sqftPerAcre;
       }
       setForm({
-        ...form, layout: { ...form.layout, area: e.target.value, areaInSqft: totalArea }
-      })
-    }
-    else if (secondKeyName.toLowerCase() === "projectcategory" || secondKeyName.toLowerCase() === "state" || secondKeyName.toLowerCase() === "area" || secondKeyName.toLowerCase() === "projectname") {
-      let formattedTagLine = formatTagLine(e.target.value, secondKeyName)
-      setForm({
-        ...form, [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e.target.value }
-        , marketing: { ...form.marketing, tagLine: formattedTagLine }
+        ...form,
+        layout: { ...form.layout, area: e.target.value, areaInSqft: totalArea },
       });
-
-    }
-
-
-    else {
+    } else if (
+      secondKeyName.toLowerCase() === "projectcategory" ||
+      secondKeyName.toLowerCase() === "state" ||
+      secondKeyName.toLowerCase() === "area" ||
+      secondKeyName.toLowerCase() === "projectname"
+    ) {
+      let formattedTagLine = formatTagLine(e.target.value, secondKeyName);
+      setForm({
+        ...form,
+        [firstKeyName]: {
+          ...form?.[firstKeyName],
+          [secondKeyName]: e.target.value,
+        },
+        marketing: { ...form.marketing, tagLine: formattedTagLine },
+      });
+    } else {
       if (thirdKeyName === "checked") {
         setForm((prevForm) => {
           const updatedForm = { ...prevForm };
@@ -1104,14 +1112,27 @@ function AddProperty() {
             updatedForm[firstKeyName][secondKeyName] &&
             isRating
           ) {
-            if (firstKeyName === 'location' || firstKeyName === "amenitiesData") {
+            if (
+              firstKeyName === "location" ||
+              firstKeyName === "amenitiesData"
+            ) {
+              let getCalc = amentieScoreCalc(
+                e,
+                firstKeyName,
+                secondKeyName,
+                autoFillField
+              );
 
-              let getCalc = amentieScoreCalc(e, firstKeyName, secondKeyName, autoFillField)
+              let locationAssesment = moduleScoreCalc(
+                e,
+                firstKeyName,
+                secondKeyName
+              );
 
-              let locationAssesment = moduleScoreCalc(e, firstKeyName, secondKeyName)
-
-              updatedForm[firstKeyName]["sectionScore"] = locationAssesment.calc
-              updatedForm[firstKeyName]["pointsGained"] = locationAssesment.totalScored
+              updatedForm[firstKeyName]["sectionScore"] =
+                locationAssesment.calc;
+              updatedForm[firstKeyName]["pointsGained"] =
+                locationAssesment.totalScored;
               updatedForm[firstKeyName][secondKeyName][autoFillField] = {
                 ...updatedForm[firstKeyName][secondKeyName][autoFillField],
                 rating: e.target.value,
@@ -1124,27 +1145,34 @@ function AddProperty() {
                 //   ...form.overallAssessment.rated,
                 //   [secondKeyName]: parseInt(incomingValue),
                 // },
-              }
-            }
-            else {
-              let locationAssesment = moduleScoreCalc(e, firstKeyName, secondKeyName)
+              };
+            } else {
+              let locationAssesment = moduleScoreCalc(
+                e,
+                firstKeyName,
+                secondKeyName
+              );
 
-              updatedForm[firstKeyName]["sectionScore"] = locationAssesment.calc
-              updatedForm[firstKeyName]["pointsGained"] = locationAssesment.totalScored
+              updatedForm[firstKeyName]["sectionScore"] =
+                locationAssesment.calc;
+              updatedForm[firstKeyName]["pointsGained"] =
+                locationAssesment.totalScored;
               updatedForm[firstKeyName][secondKeyName][autoFillField] = {
                 ...updatedForm[firstKeyName][secondKeyName][autoFillField],
                 rating: e.target.value,
               };
             }
-
-
-
           } else {
-            if (secondKeyName === "assessment" && (!locationStars.includes(autoFillField))) {
-              setLocationStars([...locationStars, autoFillField])
-            }
-            else if (firstKeyName === "amenitiesData" && (!amentiesStars.includes(autoFillField))) {
-              setAmentiesStar([...amentiesStars, autoFillField])
+            if (
+              secondKeyName === "assessment" &&
+              !locationStars.includes(autoFillField)
+            ) {
+              setLocationStars([...locationStars, autoFillField]);
+            } else if (
+              firstKeyName === "amenitiesData" &&
+              !amentiesStars.includes(autoFillField)
+            ) {
+              setAmentiesStar([...amentiesStars, autoFillField]);
             }
 
             updatedForm[firstKeyName][secondKeyName][autoFillField] = {
@@ -1158,60 +1186,73 @@ function AddProperty() {
       // tagline will be added here
       else if (firstKeyName === "marketing" && secondKeyName === "image") {
         setForm({
-          ...form, marketing: { ...form.marketing, image: e }
-        })
-      }
-      else {
+          ...form,
+          marketing: { ...form.marketing, image: e },
+        });
+      } else {
         let value = e?.target
           ? thirdKeyName === "checked"
             ? e.target.checked
             : e.target.value
           : e;
         if (secondKeyName === "maxFloors" || secondKeyName === "minFloors") {
-          value = +value
-
-
+          value = +value;
         }
-        if (secondKeyName === "projectCategory" && form?.[firstKeyName][secondKeyName].toLowerCase() !== e.target.value.toLowerCase()) {
+        if (
+          secondKeyName === "projectCategory" &&
+          form?.[firstKeyName][secondKeyName].toLowerCase() !==
+            e.target.value.toLowerCase()
+        ) {
           setForm((prev) => ({
             ...prev,
-            [firstKeyName]: { ...form?.[firstKeyName], projectCategory: e.target.value, projectType: [] }
-          }))
-          handleCategoryHide(e)
+            [firstKeyName]: {
+              ...form?.[firstKeyName],
+              projectCategory: e.target.value,
+              projectType: [],
+            },
+          }));
+          handleCategoryHide(e);
         }
         setForm((prev) => ({
           ...prev,
           [firstKeyName]: !secondKeyName
             ? value
             : {
-              ...prev?.[firstKeyName],
-              [secondKeyName]: !thirdKeyName
-                ? value
-                : {
-                  ...prev?.[firstKeyName]?.[secondKeyName],
-                  [thirdKeyName]: value,
-                },
-            },
+                ...prev?.[firstKeyName],
+                [secondKeyName]: !thirdKeyName
+                  ? value
+                  : {
+                      ...prev?.[firstKeyName]?.[secondKeyName],
+                      [thirdKeyName]: value,
+                    },
+              },
         }));
       }
     }
 
     if (firstKeyName === "overview" && secondKeyName === "projectType") {
-      let hideValue = handleUIHide(e, firstKeyName, secondKeyName)
+      let hideValue = handleUIHide(e, firstKeyName, secondKeyName);
     }
-    if (firstKeyName === "overview" && secondKeyName === "status" && e.target.value.toLowerCase() === "underconstruction") {
-      let total = totalRating + 5
-      setTotalRating(total)
+    if (
+      firstKeyName === "overview" &&
+      secondKeyName === "status" &&
+      e.target.value.toLowerCase() === "underconstruction"
+    ) {
+      let total = totalRating + 5;
+      setTotalRating(total);
     }
   };
 
   let formatTagLine = (value, key) => {
-
     let obj = {
-      ...tagField, [key]: value
-    }
-    let output = '';
-    setTagField(obj)
+      ...tagField,
+      [key]: value,
+    };
+    let output = "";
+    setTagField(obj);
+
+    console.log("obj ===========>", obj);
+
     Object.entries(obj).forEach(([key, value]) => {
       if (value) {
         if (output) {
@@ -1221,45 +1262,46 @@ function AddProperty() {
       }
     });
 
-    return output
-  }
+    return output;
+  };
 
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
-    let total = totalRating
-    let checkField = firstKeyName.toLowerCase() === "location" ? locationStarsScore : amentiesStarsScore
+    let total = totalRating;
+    let checkField =
+      firstKeyName.toLowerCase() === "location"
+        ? locationStarsScore
+        : amentiesStarsScore;
     const findItemByKey = (array, searchKey) => {
-      return array.find(item => item === searchKey);
+      return array.find((item) => item === searchKey);
     };
     const foundItem = findItemByKey(checkField, autoFillField);
     if (!foundItem) {
-      let fieldName = autoFillField
+      let fieldName = autoFillField;
       if (firstKeyName === "amenitiesData") {
-        total = totalRating + 5
-        setTotalRating(total)
-        setAmentiesStarScore([...amentiesStarsScore, fieldName])
+        total = totalRating + 5;
+        setTotalRating(total);
+        setAmentiesStarScore([...amentiesStarsScore, fieldName]);
         // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
-      }
-      else {
-        total = totalRating + 5
-        setTotalRating(total)
-        setLocationStarsScore([...locationStarsScore, fieldName])
+      } else {
+        total = totalRating + 5;
+        setTotalRating(total);
+        setLocationStarsScore([...locationStarsScore, fieldName]);
         // setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
       }
     }
     let totalScored;
 
     let difference =
-      +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating - parseInt(e.target.value);
+      +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating -
+      parseInt(e.target.value);
     let compare =
-      form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating < parseInt(e.target.value);
+      form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating <
+      parseInt(e.target.value);
     if (compare) {
-      totalScored =
-        +form.overallAssessment.scoredRating + Math.abs(difference);
+      totalScored = +form.overallAssessment.scoredRating + Math.abs(difference);
     } else {
-      totalScored =
-        +form.overallAssessment.scoredRating - Math.abs(difference);
+      totalScored = +form.overallAssessment.scoredRating - Math.abs(difference);
     }
-
 
     // let checkField = firstKeyName === "location" ? locationStarsScore : amentiesStarsScore
     // const findItemByKey = (array, searchKey) => {
@@ -1302,8 +1344,8 @@ function AddProperty() {
     //     form.overallAssessment.scoredRating + parseInt(e.target.value)
     let calc = (totalScored / total) * 100;
 
-    return { calc, totalScored }
-  }
+    return { calc, totalScored };
+  };
 
   const validateForm = (publish) => {
     const { error } = Schema?.validate(form, { abortEarly: false });
@@ -1341,7 +1383,7 @@ function AddProperty() {
         } else {
           label = item.context.key;
         }
-        console.log(label, 'labbal')
+        console.log(label, "labbal");
         switch (label.toLowerCase()) {
           case "constructionquality":
             label = "Construction Quality";
@@ -1363,9 +1405,11 @@ function AddProperty() {
             label;
         }
         openSnackbar(`Ratings needs to be provided for ${label}`, "error");
-      }
-      else if (item.context.key === "image") {
-        openSnackbar(`${item.context.key} needs to be uploaded for the property`, "error");
+      } else if (item.context.key === "image") {
+        openSnackbar(
+          `${item.context.key} needs to be uploaded for the property`,
+          "error"
+        );
       }
     });
     console.log(form, "formmmm", error, "errrr");
@@ -1379,7 +1423,6 @@ function AddProperty() {
       // Handle validation errors, e.g., display error messages
       setErrors(validationErrors);
       return false;
-
     }
     //     else if(publish && !error){
     //       const { publishError } = reraSchema.validate({reraApproved:form.regulatoryClearance.reraApproved,reraNumber:form.regulatoryClearance.reraNumber}, {
@@ -1394,81 +1437,89 @@ function AddProperty() {
       if (!editPage) {
         // Validation passed
         if (publish) {
-          const { error } = reraSchema.validate({ reraApproved: form.regulatoryClearance.reraApproved, reraNumber: form.regulatoryClearance.reraNumber }, {
-            abortEarly: false,
-          });
+          const { error } = reraSchema.validate(
+            {
+              reraApproved: form.regulatoryClearance.reraApproved,
+              reraNumber: form.regulatoryClearance.reraNumber,
+            },
+            {
+              abortEarly: false,
+            }
+          );
           if (!error) {
-
-            setForm({ ...form, published: true })
+            setForm({ ...form, published: true });
             CreateProperty({ ...form, published: true })
               .then((res) => {
                 openSnackbar(`Property Published successfully`, "success");
                 routerNavigation.push(`/admin/property-list`);
               })
               .catch((error) => {
-                console.error('Error:', error);
+                console.error("Error:", error);
               });
-          }
-          else {
+          } else {
             openSnackbar(`Please check the RERA Approval`, "error");
           }
-        }
-        else {
+        } else {
           CreateProperty({ ...form })
             .then((res) => {
               openSnackbar(`Property added successfully`, "success");
               routerNavigation.push(`/admin/property-list`);
             })
             .catch((error) => {
-              console.error('Error:', error);
+              console.error("Error:", error);
             });
         }
-
-
       } else {
-
         if (publish) {
-          const { error } = reraSchema.validate({ reraApproved: form.regulatoryClearance.reraApproved, reraNumber: form.regulatoryClearance.reraNumber }, {
-            abortEarly: false,
-          });
+          const { error } = reraSchema.validate(
+            {
+              reraApproved: form.regulatoryClearance.reraApproved,
+              reraNumber: form.regulatoryClearance.reraNumber,
+            },
+            {
+              abortEarly: false,
+            }
+          );
           if (!error) {
-            setForm({ ...form, published: true })
+            setForm({ ...form, published: true });
             EditProperty(detailsPropertyId, { ...form, published: true })
               .then((res) => {
-                openSnackbar(`Property Edited & Published successfully`, "success");
+                openSnackbar(
+                  `Property Edited & Published successfully`,
+                  "success"
+                );
                 routerNavigation.push(`/admin/property-list`);
               })
               .catch((error) => {
-                console.error('Error:', error);
+                console.error("Error:", error);
               });
-          }
-          else {
+          } else {
             openSnackbar(`Please check the rera criteria`, "error");
           }
-        }
-        else {
+        } else {
           EditProperty(detailsPropertyId, { ...form })
             .then((res) => {
               openSnackbar(`Property edited successfully`, "success");
               routerNavigation.push(`/admin/property-list`);
             })
             .catch((error) => {
-              console.error('Error:', error);
+              console.error("Error:", error);
             });
         }
-
       }
     }
     return true;
   };
   const handleNewObjChange = (e) => {
-    setNewObj(e.target.value)
-  }
+    setNewObj(e.target.value);
+  };
 
   return (
     <>
       <nav className={classes.demo2}>
-        <CustomAdminBreadScrumbs text={editPage ? "Edit Property" : "Add Property"} />
+        <CustomAdminBreadScrumbs
+          text={editPage ? "Edit Property" : "Add Property"}
+        />
         <Card>
           <NavTab
             value={activeState}
@@ -1478,100 +1529,112 @@ function AddProperty() {
         </Card>
       </nav>
 
-      <Container maxWidth='md'>
-
-        {isLoading === false && formUpdated && <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
-          <ProjectCard
-            errors={errors}
-            form={form}
-            hide={hide}
-            selectOptions={selectOptions}
-            editPage={editPage}
-            handleNewObjChange={handleNewObjChange}
-            handleChange={handleChange}
-            isEdit={isEdit}
-          />
-          <RegulatoryCard
-            errors={errors}
-            hide={hide}
-            form={form}
-            selectOptions={selectOptions}
-            handleChange={handleChange}
-            isEdit={isEdit}
-          />
-          <LandscapeCard
-            errors={errors}
-            hide={hide}
-            form={form}
-            scoreChange={scoreChange}
-            selectOptions={selectOptions}
-            handleChange={handleChange}
-            isEdit={isEdit}
-          />
-          {!hide.includes("unitsPlan")
-            && <FloorPlanCard
+      <Container maxWidth="md">
+        {isLoading === false && formUpdated && (
+          <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+            <ProjectCard
+              errors={errors}
+              form={form}
+              hide={hide}
+              selectOptions={selectOptions}
+              editPage={editPage}
+              handleNewObjChange={handleNewObjChange}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            <RegulatoryCard
               errors={errors}
               hide={hide}
               form={form}
-              editForm={editForm}
-              handleChange={handleChange}
               selectOptions={selectOptions}
-              handleUnitsPlan={handleUnitsPlan}
+              handleChange={handleChange}
               isEdit={isEdit}
-            />}
-          <FacilitiesCard
-            errors={errors}
-            hide={hide}
-            form={form}
-            isEdit={isEdit}
-            selectOptions={selectOptions}
-            handleChange={handleChange}
-          />
-          <LocationCard
-            errors={errors}
-            hide={hide}
-            cities={cities}
-            selectOptions={selectOptions}
-            form={form}
-            moduleScoreCalc={moduleScoreCalc}
-            handleChange={handleChange}
-            isEdit={isEdit}
-          />
-          {/* <ResalePriceCard isEdit={isEdit} />
+            />
+            <LandscapeCard
+              errors={errors}
+              hide={hide}
+              form={form}
+              scoreChange={scoreChange}
+              selectOptions={selectOptions}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            {!hide.includes("unitsPlan") && (
+              <FloorPlanCard
+                errors={errors}
+                hide={hide}
+                form={form}
+                editForm={editForm}
+                handleChange={handleChange}
+                selectOptions={selectOptions}
+                handleUnitsPlan={handleUnitsPlan}
+                isEdit={isEdit}
+              />
+            )}
+            <FacilitiesCard
+              errors={errors}
+              hide={hide}
+              form={form}
+              isEdit={isEdit}
+              selectOptions={selectOptions}
+              handleChange={handleChange}
+            />
+            <LocationCard
+              errors={errors}
+              hide={hide}
+              cities={cities}
+              selectOptions={selectOptions}
+              form={form}
+              moduleScoreCalc={moduleScoreCalc}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            {/* <ResalePriceCard isEdit={isEdit} />
                         <BuilderPriceCard isEdit={isEdit} /> */}
-          <InvestmentCard
-            errors={errors}
-            hide={hide}
-            selectOptions={selectOptions}
-            form={form}
-            scoreChange={scoreChange}
-            moduleScoreCalc={moduleScoreCalc}
-            handleChange={handleChange}
-            isEdit={isEdit}
-          />
-          {/* {JSON.stringify(brokerList)} */}
-          <PropertyConsultantsCard
-            isEdit={isEdit}
-            form={form}
-            hide={hide}
-            list={brokerList}
-            handleChange={handleChange}
-          />
-          <OverallAssessmentCard hide={hide} isEdit={isEdit} form={form} />
-          {/* <BankCard isEdit={isEdit} /> */}
-          <MarketingCard
-            errors={errors}
-            hide={hide}
-            form={form}
-            handleChange={handleChange}
-            isEdit={isEdit}
-          />
-          <Grid item xs={12} sx={{ textAlign: "end" }}>
-            {!form.published && <CustomButton onClick={() => validateForm(false)} variant="contained"
-              ButtonText={editPage ? "Update" : "Save"} />}
-            <CustomButton onClick={() => validateForm(true)} ButtonText={"Publish"} sx={{ marginLeft: "10px" }} variant="contained" />
+            <InvestmentCard
+              errors={errors}
+              hide={hide}
+              selectOptions={selectOptions}
+              form={form}
+              scoreChange={scoreChange}
+              moduleScoreCalc={moduleScoreCalc}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            {/* {JSON.stringify(brokerList)} */}
+            <PropertyConsultantsCard
+              isEdit={isEdit}
+              form={form}
+              hide={hide}
+              list={brokerList}
+              handleChange={handleChange}
+            />
+            <OverallAssessmentCard hide={hide} isEdit={isEdit} form={form} />
+            {/* <BankCard isEdit={isEdit} /> */}
+            <MarketingCard
+              errors={errors}
+              hide={hide}
+              form={form}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            <Grid item xs={12} sx={{ textAlign: "end" }}>
+              {!form.published && (
+                <CustomButton
+                  onClick={() => validateForm(false)}
+                  variant="contained"
+                  ButtonText={editPage ? "Update" : "Save"}
+                />
+              )}
+              <CustomButton
+                onClick={() => validateForm(true)}
+                ButtonText={"Publish"}
+                sx={{ marginLeft: "10px" }}
+                variant="contained"
+              />
+            </Grid>
           </Grid>
-        </Grid>}
+        )}
       </Container>
     </>
   );

@@ -8,7 +8,7 @@ import { CustomAccordion, CustomAccordionDetails, CustomAccordionSummary } from 
 import SubAccordionOfHistoryCard from './SubAccordionOfHistoryCard';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PriceFormatter from 'Components/CommonLayouts/PriceFormatter';
-import { formatPoints, formatDate, formatAmount } from 'utills/CommonFunction';
+import { formatPoints, formatDate, formatAmount, shortPriceFormatter } from 'utills/CommonFunction';
 import { transactionType } from 'utills/Constants';
 
 function HistoryCard({ history }) {
@@ -66,11 +66,11 @@ function HistoryCard({ history }) {
                     </Typography>
                 </Box>
                 <Box>
-                <Tooltip title="More">
+                {/* <Tooltip title="More">
                     <IconButton onClick={handleOpenMenu}>
                         <MoreVertIcon />
                     </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                     <Menu
                         id="basic-menu"
                         anchorEl={anchorElMenuState}
@@ -107,7 +107,7 @@ function HistoryCard({ history }) {
                         <SubAccordionOfHistoryCard title="Consultant subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Consultant subscriptions' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Note' />
+                        <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Notes subscription' />
                     </Grid>
                 </Grid>
             </CustomAccordionDetails>

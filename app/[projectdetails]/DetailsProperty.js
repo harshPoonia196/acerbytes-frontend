@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Container,
   Card,
@@ -11,6 +9,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Typography,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -22,7 +21,6 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
-import MarketingSection from "Components/DetailsPage/MarketingSection";
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";
 import AmenitiesSection from "Components/DetailsPage/AmenitiesSection";
@@ -30,7 +28,7 @@ import ClearanceSection from "Components/DetailsPage/ClearanceSection";
 import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import {
@@ -45,6 +43,7 @@ import {
   activeAdGet,
   activedViewCount,
   checkEnquiryOnActiveLink,
+  detailsProperty,
   favPropertyCreate,
 } from "api/Property.api";
 import Loader from "Components/CommonLayouts/Loading";
@@ -62,8 +61,10 @@ import { clearItem, getItem } from "utills/utills";
 import colors from "styles/theme/colors";
 import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpinner";
 import { getCountsByProperty } from "api/Broker.api";
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Link from "next/link";
+import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
+import MarketingSection from "Components/DetailsPage/MarketingSection";
 
 const tabHeight = 200;
 
@@ -101,7 +102,7 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 const PropertyDetails = ({ params }) => {
-  const { userDetails, isLogged } = useAuth();
+  const { userDetails, isLogged, brokerBalance, setBrokerPoints } = useAuth();
   const router = useRouter();
   const url = new URL(window.location.href);
   const searchParams = useSearchParams();
@@ -113,6 +114,7 @@ const PropertyDetails = ({ params }) => {
   const [progressCount, setProgressCount] = useState(6);
   const [leadId, setLeadId] = useState("");
   const expiredModalOpenRef = useRef(false);
+  const [brokerContact, setBrokerContact] = React.useState(null);
   let expiredModalTimeout;
 
   const linkIdData = params.projectdetails;
@@ -176,9 +178,12 @@ const PropertyDetails = ({ params }) => {
       }
       if (res.status === 200) {
         setPropertyData(res.data?.data);
-        if(userDetails.role === "broker" && isLogged){
-          const result = await getCountsByProperty(res.data?.data?.[0]?.property_id, res.data?.data?.[0]?.broker_collection_id)
-          setLeadsCount(result?.data?.count)
+        if (userDetails.role === "broker" && isLogged) {
+          const result = await getCountsByProperty(
+            res.data?.data?.[0]?.property_id,
+            res.data?.data?.[0]?.broker_collection_id
+          );
+          setLeadsCount(result?.data?.count);
         }
         const expiredAt = new Date(res?.data?.data[0]?.expired_at);
         const now = new Date();
@@ -200,7 +205,7 @@ const PropertyDetails = ({ params }) => {
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -229,7 +234,7 @@ const PropertyDetails = ({ params }) => {
         setContactPermissionToView(!!res.data?.data?._id);
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -250,7 +255,7 @@ const PropertyDetails = ({ params }) => {
         activeAdGetProperty();
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error generating fav Property",
@@ -262,7 +267,7 @@ const PropertyDetails = ({ params }) => {
   };
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -287,7 +292,7 @@ const PropertyDetails = ({ params }) => {
       if (response.status === 200) {
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -306,40 +311,6 @@ const PropertyDetails = ({ params }) => {
     activeAdGetProperty();
     checkPropertyIsEnquired();
   }, [userDetails]);
-
-  console.log("propertyData", propertyData);
-  
-  const GridItemWithCard = (props) => {
-    const { children, styles, boxStyles, ...rest } = props;
-    return (
-      <Grid
-        item
-        {...rest}
-        sx={{
-          padding: 1,
-          textAlign: "center",
-          ...styles,
-        }}
-      >
-        <Box
-          sx={{
-            backgroundColor: "whitesmoke",
-            p: 2,
-            borderRadius: "8px",
-            boxShadow:
-              "0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%)",
-            ...boxStyles,
-          }}
-        >
-          {children}
-        </Box>
-      </Grid>
-    );
-  };
-
-
-  const [currentTab, setCurrentTab] = React.useState(0);
-
 
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
@@ -558,7 +529,6 @@ const PropertyDetails = ({ params }) => {
       }
 
       const item = itemsClientRef.current[i];
-
       if (
         item.node &&
         item.node.offsetTop <
@@ -581,23 +551,28 @@ const PropertyDetails = ({ params }) => {
 
   const handleClick = (hash) => () => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
+
     clickedRef.current = true;
     unsetClickedRef.current = setTimeout(() => {
       clickedRef.current = false;
     }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
+    console.log(" ===========>");
 
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    // if (activeState !== hash) {
+    //
+
+    //   if (window)
+    //     window.scrollTo({
+    //       top:
+    //         document.getElementById(hash)?.getBoundingClientRect().top +
+    //         window.pageYOffset -
+    //         tabHeight,
+    //       behavior: "smooth",
+    //     });
+    // }
   };
 
   React.useEffect(
@@ -606,10 +581,82 @@ const PropertyDetails = ({ params }) => {
     },
     []
   );
-  
+
+  const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
+  const handleCloseActivateAdsPopup = () => {
+    setActivateAdsPopupState(false);
+  };
+
+  const userInfo = JSON.parse(localStorage.getItem("userDetails"));
+
+  const token = localStorage.getItem("token");
+
+  const [propertyUrl, setPropertyUrl] = useState("");
+
+  const handleOpenActivateAdsPopup = (ActiveUrl) => {
+    setActivateAdsPopupState(true);
+    setPropertyUrl(ActiveUrl);
+  };
+
+  const shuffle = (a) => {
+    for (let i = a?.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  const detailsGetProperty = async (isNavigate = false) => {
+    try {
+      setLoading(true);
+      let res;
+      if (token) {
+        res = await detailsProperty(
+          `${propertyData[0]?.property_id}?brokerId=${userInfo?._id}`
+        );
+      } else {
+        res = await detailsProperty(propertyData[0]?.property_id);
+      }
+      if (res.status === 200) {
+        const data = {
+          ...res.data?.data,
+          consultants: shuffle(res.data?.data?.consultants),
+        };
+        setPropertyData({ ...data });
+        if (isNavigate) {
+          const url = constructPropertyUrl({ ...data }, userInfo);
+          router.push(url);
+        } else {
+          window.location.reload();
+        }
+      }
+    } catch (error) {
+      showTostMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {isLoading && <Loader />}
+
+      <ActivateAdsPopup
+        propertyData={propertyData?.[0]}
+        detailsGetProperty={detailsGetProperty}
+        open={activateAdsPopupState}
+        handleClose={handleCloseActivateAdsPopup}
+        brokerBalance={brokerBalance}
+        propertyUrl={propertyUrl}
+        setBrokerPoints={setBrokerPoints}
+        isFromUniqueUrl={true}
+      />
+
       {openEnquiryForm && (
         <EnquireNow
           open={openEnquiryForm}
@@ -634,14 +681,17 @@ const PropertyDetails = ({ params }) => {
         handleClose={handleCloseAlternateSignIn}
         leadId={leadId}
       />
-      <nav className={classes.demo2}>
-        <TopMenu
-          topMenu={propertyData[0]?.propertyData}
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
-      </nav>
+      {propertyData.length && (
+        <nav className={classes.demo2}>
+          <TopMenu
+            topMenu={propertyData[0]?.propertyData}
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </nav>
+      )}
+
       <Box>
         <MarketingSection overviewData={propertyData[0]?.propertyData} />
         <Container maxWidth="md" sx={{ pt: "0 !important" }}>
@@ -725,14 +775,14 @@ const PropertyDetails = ({ params }) => {
                 Share
               </Button>
 
-              <Button
+              {/* <Button
                 sx={{ mt: 1, ml: 1 }}
                 variant="outlined"
                 onClick={handleOpenEnquiryForm}
                 startIcon={<WhatsAppIcon />}
               >
                 Contact
-              </Button>
+              </Button> */}
               <Button
                 sx={{ mt: 1, ml: 1 }}
                 variant="outlined"
@@ -758,19 +808,19 @@ const PropertyDetails = ({ params }) => {
               >
                 {isLogged ? (
                   <>
-                  <Fab
-                    variant="extended"
-                    sx={{ mb: 1, justifyContent: "flex-start" }}
-                    onClick={handlefavClick}
-                  >
-                    {propertyData[0]?.isFav ? (
-                      <ThumbUpIcon sx={{ color: "#276ef1", mr: 1 }} />
-                    ) : (
-                      <ThumbUpOffAltIcon sx={{ mr: 1 }} />
-                    )}
-                    Like
-                  </Fab>
-                  <a href={`https://wa.me/+919725555595`} target="_blank">
+                    <Fab
+                      variant="extended"
+                      sx={{ mb: 1, justifyContent: "flex-start" }}
+                      onClick={handlefavClick}
+                    >
+                      {propertyData[0]?.isFav ? (
+                        <ThumbUpIcon sx={{ color: "#276ef1", mr: 1 }} />
+                      ) : (
+                        <ThumbUpOffAltIcon sx={{ mr: 1 }} />
+                      )}
+                      Like
+                    </Fab>
+                    {/* <a href={`https://wa.me/+919725555595`} target="_blank">
                   <Fab
                     variant="extended"
                     sx={{ mb: 1, justifyContent: "flex-start" }}
@@ -778,8 +828,8 @@ const PropertyDetails = ({ params }) => {
                     <WhatsAppIcon sx={{ mr: 1 }} />
                     Contact
                   </Fab>
-                </a>
-                </>
+                </a> */}
+                  </>
                 ) : (
                   <Fab
                     variant="extended"
@@ -819,6 +869,7 @@ const PropertyDetails = ({ params }) => {
           contactPermissionToView={isLogged ? contactPermissionToView : true}
           handleOpenEnquiryForm={handleOpenEnquiryForm}
           isUnique={true}
+          handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
         />
         {expiredModalOpenRef.current && (
           <Dialog open={expiredModalOpenRef.current}>
@@ -828,31 +879,15 @@ const PropertyDetails = ({ params }) => {
               <Grid sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <CircularProgressSpinner value={progressCount} />
                 <DialogContentText>
-                  Link is not available please check details page
+                  <Typography variant="body2">
+                    Link is not available please check details page
+                  </Typography>
                 </DialogContentText>
               </Grid>
             </DialogContent>
             <DialogActions>
               <Button
-                variant="h6"
-                sx={{
-                  fontWeight: 600,
-                  color: "white",
-                  backgroundColor: colors?.BLACK,
-                  "&:hover": {
-                    backgroundColor: colors?.BLACK,
-                    boxShadow: "none",
-                  },
-                }}
-                onClick={() => {
-                  expiredModalOpenRef.current = false;
-                }}
-                color="primary"
-              >
-                Close
-              </Button>
-              <Button
-                variant="h6"
+                variant="contained"
                 sx={{
                   fontWeight: 600,
                   color: "white",
@@ -866,21 +901,30 @@ const PropertyDetails = ({ params }) => {
               >
                 Details Page
               </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  expiredModalOpenRef.current = false;
+                }}
+                color="primary"
+              >
+                Close
+              </Button>
             </DialogActions>
           </Dialog>
         )}
         <Box
-            className="detailFab"
-                sx={{
-                    position: "fixed",
-                    right: 16,
-                    bottom: 16,
-                    display: { xs: "none", evmd: "flex" },
-                    gap: 2,
-                    flexDirection: "column",
-                }}
-            >
-                {/* <Fab
+          className="detailFab"
+          sx={{
+            position: "fixed",
+            right: 16,
+            bottom: 16,
+            display: { xs: "none", evmd: "flex" },
+            gap: 2,
+            flexDirection: "column",
+          }}
+        >
+          {/* <Fab
                     // size="small"
                     variant="extended"
                     sx={{ justifyContent: "flex-start" }}
@@ -888,17 +932,19 @@ const PropertyDetails = ({ params }) => {
                     <AddLinkIcon fontSize='small' sx={{ mr: 1 }} />
                     Activate link
                 </Fab> */}
-                <Link href="/consultant/my-leads">
-                {userDetails.role === 'broker' && <Fab 
-                    // size="small"
-                    variant="extended"
-                    sx={{ justifyContent: "flex-start" }}
-                >
-                    <FormatListBulletedIcon fontSize='small' sx={{ mr: 1 }} />
-                    {leadsCount} Enquiries received
-                </Fab>}
-                </Link>
-            </Box>
+          <Link href="/consultant/my-leads">
+            {userDetails.role === "broker" && (
+              <Fab
+                // size="small"
+                variant="extended"
+                sx={{ justifyContent: "flex-start" }}
+              >
+                <FormatListBulletedIcon fontSize="small" sx={{ mr: 1 }} />
+                {leadsCount} Enquiries received
+              </Fab>
+            )}
+          </Link>
+        </Box>
       </Box>
     </>
   );

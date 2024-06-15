@@ -23,8 +23,8 @@ import { ToasterMessages } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
 import { LoadingButton } from "@mui/lab";
 import { formatAmount, formatPoints } from "utills/CommonFunction";
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import DoneIcon from '@mui/icons-material/Done';
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import DoneIcon from "@mui/icons-material/Done";
 
 function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
   const router = useRouter();
@@ -48,7 +48,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
 
   const { openSnackbar } = useSnackbar();
 
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -58,13 +58,15 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
       const response = await generateRandorOrderNumber();
       if (response.status == 200) {
         const randomNumber = response?.data?.data;
-        setOrderNumber(typeof randomNumber === "string" ? randomNumber.toUpperCase() : "");
+        setOrderNumber(
+          typeof randomNumber === "string" ? randomNumber.toUpperCase() : ""
+        );
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error generating order number request",
+          error?.message ||
+          "Error generating order number request",
         "error"
       );
     } finally {
@@ -77,13 +79,13 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
       setLoading(true);
       const response = await createOrderRequest(data);
       if (response.status == 200) {
-        showToaterMessages(ToasterMessages.ORDER_REQUESTED_SUCCESS, "success");
+        showTostMessages(ToasterMessages.ORDER_REQUESTED_SUCCESS, "success");
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error creating order request",
+          error?.message ||
+          "Error creating order request",
         "error"
       );
     } finally {
@@ -135,13 +137,18 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
           <Typography variant="h3">
             {formatPoints(creditRequest?.point || 0)}&nbsp;
           </Typography>
-          <Typography sx={{ fontSize: "1rem", pb: 2 }}>credits (points)</Typography>
-          <Box sx={{ my: 2 }}>
-            <Chip icon={<AutorenewIcon />} label='Payment pending' size='small' color='warning' />
-          </Box>
-          <Typography variant="h4">
-            You need to make payment of
+          <Typography sx={{ fontSize: "1rem", pb: 2 }}>
+            credits (points)
           </Typography>
+          <Box sx={{ my: 2 }}>
+            <Chip
+              icon={<AutorenewIcon />}
+              label="Payment pending"
+              size="small"
+              color="warning"
+            />
+          </Box>
+          <Typography variant="h4">You need to make payment of</Typography>
           <Box sx={{ display: "flex", justifyContent: "center", my: 2, mt: 0 }}>
             <Typography variant="h2" sx={{ fontWeight: 600 }}>
               {formatAmount(creditRequest?.amount || 0)}
@@ -173,7 +180,11 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
             loadingPosition="start"
             variant="contained"
           >
-            <DoneIcon fontSize="small"sx={{ position: "relative", top: "-2px", marginRight: "3px"}} /> Confirm order & Pay
+            <DoneIcon
+              fontSize="small"
+              sx={{ position: "relative", top: "-2px", marginRight: "3px" }}
+            />{" "}
+            Confirm order & Pay
           </LoadingButton>
         </Box>
         <Divider sx={{ my: 2, borderColor: "gainsboro" }} />
@@ -188,7 +199,9 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
             <Typography variant="body2">
               Send screenshot to{" "}
               <Chip
-                onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }}
+                onClick={() => {
+                  window.open("http://wa.me/+919323996997", "_blank");
+                }}
                 icon={<WhatsAppIcon fontSize="small" />}
                 label="+9198799877"
                 size="small"
@@ -199,7 +212,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
           </li>
         </ul>
       </DialogContent>
-    </Dialog >
+    </Dialog>
   );
 }
 

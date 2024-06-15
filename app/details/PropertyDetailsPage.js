@@ -13,7 +13,6 @@ import {
 import React, { useState, useEffect, useRef } from "react";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
-import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import GroupIcon from "@mui/icons-material/Group";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
@@ -35,7 +34,6 @@ import {
   enquiryFormKey,
   enquiryFormOpen,
   listOfPropertyDetailsTab,
-  listOfTabsInAddProperty,
   propertyUserVerifiedKey,
   userLeadId,
 } from "utills/Constants";
@@ -98,9 +96,7 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 const PropertyDetailsPage = ({ params }) => {
-  const searchParams = useSearchParams();
   const url = new URL(window.location.href);
-  const name = searchParams.get("name");
   const { isLogged, userDetails, brokerBalance, setBrokerPoints } = useAuth();
   const router = useRouter();
 
@@ -149,7 +145,7 @@ const PropertyDetailsPage = ({ params }) => {
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -174,7 +170,7 @@ const PropertyDetailsPage = ({ params }) => {
         detailsGetProperty();
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error generating fav Property",
@@ -186,7 +182,7 @@ const PropertyDetailsPage = ({ params }) => {
   };
 
   const { openSnackbar } = useSnackbar();
-  const showToaterMessages = (message, severity) => {
+  const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
 
@@ -197,50 +193,6 @@ const PropertyDetailsPage = ({ params }) => {
   useEffect(() => {
     checkPropertyIsEnquired();
   }, [userDetails._id]);
-
-  const GridItemWithCard = (props) => {
-    const { children, styles, boxStyles, ...rest } = props;
-    return (
-      <Grid
-        item
-        {...rest}
-        sx={{
-          padding: 1,
-          textAlign: "center",
-          ...styles,
-        }}
-      >
-        <Box
-          sx={{
-            backgroundColor: "whitesmoke",
-            p: 2,
-            borderRadius: "8px",
-            boxShadow:
-              "0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%)",
-            ...boxStyles,
-          }}
-        >
-          {children}
-        </Box>
-      </Grid>
-    );
-  };
-
-  function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box>{children}</Box>}
-      </div>
-    );
-  }
 
   const checkPropertyIsEnquired = async () => {
     try {
@@ -258,7 +210,7 @@ const PropertyDetailsPage = ({ params }) => {
         }
       }
     } catch (error) {
-      showToaterMessages(
+      showTostMessages(
         error?.response?.data?.message ||
           error?.message ||
           "Error fetching state list",
@@ -269,23 +221,13 @@ const PropertyDetailsPage = ({ params }) => {
     }
   };
 
-  const [currentTab, setCurrentTab] = React.useState(0);
-
-  const handleTabChange = (event, newValue) => {
-    setCurrentTab(newValue);
-  };
-
-  const [amenitiesTabs, setAmenitiesTab] = React.useState(0);
-
-  const handleAmenitiesTabChange = (event, newValue) => {
-    setAmenitiesTab(newValue);
-  };
-
   const [brokerContact, setBrokerContact] = React.useState(null);
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
   const [enquireWithBrokerId, setEnquireWithBrokerId] = useState("");
-  const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
-    React.useState(false);
+  const [
+    OverallAssessmentOpenEnquiryForm,
+    setOverallAssessmentOpenEnquiryForm,
+  ] = React.useState(false);
 
   const handleOpenEnquiryForm = () => {
     setOpenEnquiryForm(true);
@@ -387,19 +329,8 @@ const PropertyDetailsPage = ({ params }) => {
         const { success, message } = response.data;
         if (success) {
           openSnackbar(message, "success");
-          // hasEnquired();
           setBrokerContact({});
           setLeadId(response.data?.data[0]?._id);
-          // setEnquiredInfo(
-          //   [
-          //     ...enquiredInfo,
-          //     {
-          //       isNew: true,
-          //       ...response.data?.data[0],
-          //       _id: response.data?.data[0]?._id,
-          //     },
-          //   ]
-          // );
         } else {
           openSnackbar(message, "error");
         }
@@ -432,7 +363,6 @@ const PropertyDetailsPage = ({ params }) => {
         const { success, message } = response.data;
         if (success) {
           openSnackbar(message, "success");
-          // hasEnquired();
           setBrokerContact({});
           handleCloseVerifyPopup();
           handleOpenAlternateSignIn();
@@ -508,16 +438,6 @@ const PropertyDetailsPage = ({ params }) => {
 
   const classes = useStyles();
 
-  //All codes about scrolling
-
-  const [alignment, setAlignment] = React.useState(
-    listOfTabsInAddProperty[0].value
-  );
-
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
-
   const [activeState, setActiveState] = React.useState(null);
 
   let itemsServer = listOfPropertyDetailsTab.map((tab) => {
@@ -538,15 +458,11 @@ const PropertyDetailsPage = ({ params }) => {
   const unsetClickedRef = React.useRef(null);
 
   const findActiveIndex = React.useCallback(() => {
-    // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
-
-    // Don't set the active index based on scroll if a link was just clicked
     if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
-      // No hash if we're near the top of the page
       if (document.documentElement.scrollTop < 0) {
         active = { hash: null };
         break;
@@ -581,18 +497,22 @@ const PropertyDetailsPage = ({ params }) => {
       clickedRef.current = false;
     }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
 
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    // ! The following code is supposed to work
+    // if (activeState !== hash) {
+    //   setActiveState(hash);
+    //   const y =
+    //     document.getElementById(hash)?.getBoundingClientRect().top +
+    //     window.pageYOffset -
+    //     tabHeight;
+    //   if (window)
+    //     window.scrollTo({
+    //       top: 300,
+    //       behavior: "smooth",
+    //     });
+    // }
   };
 
   React.useEffect(
@@ -675,14 +595,14 @@ const PropertyDetailsPage = ({ params }) => {
               submitEnquiryUnath={handleSubmitEnquiryUnauth}
             />
           )}
-          <OtpVerify
+          {/* <OtpVerify
             formData={getItem(enquiryFormKey)}
             open={openOtpPopup}
             handleClose={handleCloseVerifyPopup}
             handleOpen={handleOpenEnquiryForm}
             handleAlternateSignIn={handleOpenAlternateSignIn}
             handleSubmit={updateEnquiryVerfication}
-          />
+          /> */}
           <AlternateSignIn
             open={openAlternateSignIn}
             leadId={leadId}
@@ -712,7 +632,8 @@ const PropertyDetailsPage = ({ params }) => {
                   <Box sx={{ display: "flex", p: 2 }}>
                     <Box sx={{ flex: 1, alignSelf: "center" }}>
                       <Typography variant="h4">
-                        Contact verified consultants
+                        Contact verified consultants (
+                        {propertyData?.consultants?.length})
                       </Typography>
                     </Box>
                     <Box>
@@ -722,7 +643,7 @@ const PropertyDetailsPage = ({ params }) => {
                         handleClose={handleCloseConsultantsViewAll}
                         handleEnquireWithBroker={handleEnquireWithBroker}
                         propertyData={propertyData?.consultants}
-                      ></ConsultantsViewAll>
+                      />
                       <Chip
                         label="View all"
                         icon={<GroupIcon fontSize="small" />}
@@ -736,7 +657,7 @@ const PropertyDetailsPage = ({ params }) => {
                   <Box sx={{ p: 2 }}>
                     <Grid container spacing={2}>
                       {propertyData?.consultants?.length > 0 &&
-                        propertyData?.consultants?.slice(0, 2).map((broker) => (
+                        propertyData?.consultants?.slice(0, 4).map((broker) => (
                           <Grid item xs={12} sm={6} key={broker?.id}>
                             <BrokerCard
                               broker={broker}
@@ -758,15 +679,17 @@ const PropertyDetailsPage = ({ params }) => {
                         gap: 1,
                       }}
                     >
-                      <Box sx={{ flex: 1, alignSelf: "center" }}>
-                        <Typography variant="body2" sx={{ flex: 1 }}>
-                          Are you a{" "}
-                          <span style={{ fontWeight: 700 }}>
-                            Property Consultant?
-                          </span>{" "}
-                          let Customers reach you
-                        </Typography>
-                      </Box>
+                      {propertyData?.isConsultant === false && (
+                        <Box sx={{ flex: 1, alignSelf: "center" }}>
+                          <Typography variant="body2" sx={{ flex: 1 }}>
+                            Are you a{" "}
+                            <span style={{ fontWeight: 700 }}>
+                              Property Consultant?
+                            </span>{" "}
+                            let Customers reach you
+                          </Typography>
+                        </Box>
+                      )}
                       {propertyData?.isConsultant === false && (
                         <Box sx={{ alignSelf: { xs: "end" } }}>
                           <Chip
@@ -792,6 +715,7 @@ const PropertyDetailsPage = ({ params }) => {
                 handleClose={handleCloseConsultantDetails}
                 detailsPropertyId={detailsPropertyId}
                 detailsGetProperty={detailsGetProperty}
+                brokerBalance={brokerBalance}
               />
             )}
 
@@ -799,18 +723,18 @@ const PropertyDetailsPage = ({ params }) => {
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
               handleOpenEnquiryForm={() =>
-                setOverallAssesmentOpenEnquiryForm(true)
+                setOverallAssessmentOpenEnquiryForm(true)
               }
               handleSubmitEnquiry={handleSubmitEnquiry}
-              open={OverallAssesmentOpenEnquiryForm}
-              handleClose={() => setOverallAssesmentOpenEnquiryForm(false)}
+              open={OverallAssessmentOpenEnquiryForm}
+              handleClose={() => setOverallAssessmentOpenEnquiryForm(false)}
               handleAction={handleOpenVerifyPopup}
               submitEnquiryUnath={handleSubmitEnquiryUnauth}
             />
             <MoreSimilarPropertyCard propertyData={propertyData} />
           </Grid>
 
-          {/* Dont Touch this */}
+          {/*//! Don't Touch this */}
           {userDetails?.role !== "admin" &&
             userDetails?.role !== "superAdmin" &&
             userDetails?.role !== "broker" && (
