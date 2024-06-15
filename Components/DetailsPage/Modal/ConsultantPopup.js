@@ -153,13 +153,13 @@ function ConsultantPopup({
                             variant="body1"
                             sx={{ flex: 1, alignSelf: "center" }}
                           >
-                            {credit?.month} plan
+                            {credit?.month !== "1 month" ? "s": null} plan
                           </Typography>
                           <Typography variant="subtitle2">
                             <span style={{ fontWeight: 600 }}>
-                              {credit?.discountAmount}
+                              {credit?.discountAmount} Points
                             </span>
-                            ({credit?.discount}% discount) Points
+                            ({credit?.discount}% discount)
                           </Typography>
                         </Box>
                       </Box>

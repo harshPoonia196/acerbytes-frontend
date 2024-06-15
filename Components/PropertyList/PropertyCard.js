@@ -154,6 +154,16 @@ function PropertyCard(props) {
     return number;
   }
 
+  const categorizeScore = (score) => {
+    if (score >= 0 && score <= 20) return "Poor";
+    if (score >= 21 && score <= 40) return "Average";
+    if (score >= 41 && score <= 60) return "Good";
+    if (score >= 61 && score <= 80) return "Very good";
+    if (score >= 81 && score <= 90) return "Excellent";
+    if (score >= 91 && score <= 100) return "Outstanding";
+    return "invalid";
+  };
+
   return (
     <Card>
       <CardActionArea sx={{ p: 2 }}>
@@ -206,6 +216,7 @@ function PropertyCard(props) {
                     : 0
                 }
                 onClick={() => router.push(`/details/${propertyUrl}`)}
+                tooltiptext={`AB scores ${categorizeScore(propertyDetails?.overallAssessment?.score)}`}
               />
             </Box>
           </Grid>
@@ -253,7 +264,7 @@ function PropertyCard(props) {
                 overallAssessment?.score ? overallAssessment.score.toFixed() : 0
               }
               onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltipText={`AB scores *`}
+              tooltiptext={`AB scores ${categorizeScore(propertyDetails?.overallAssessment?.score)}`}
             />
           </Grid>
           <Grid
@@ -316,7 +327,7 @@ function PropertyCard(props) {
                 overallAssessment?.score ? overallAssessment.score.toFixed() : 0
               }
               onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltipText={`AB scores Excellent *`}
+              tooltiptext={`AB scores ${categorizeScore(propertyDetails?.overallAssessment?.score)}`}
             />
           </Grid>
         </Grid>
