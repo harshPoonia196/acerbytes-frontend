@@ -1,20 +1,16 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
+import * as React from "react";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import {
+  CssBaseline,
+  Toolbar,
+  List,
+  Box,
+  Drawer,
+  Typography,
+  AppBar,
+  Divider,
   IconButton,
   Button,
   MenuItem,
@@ -24,11 +20,15 @@ import {
   Badge,
   Avatar,
   Chip,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import MenuIcon from '@mui/icons-material/Menu';
-import { usePathname, useRouter } from 'next/navigation';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+  ListItemText,
+  ListItemIcon,
+  ListItem,
+  ListItemButton,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import MenuIcon from "@mui/icons-material/Menu";
+import { usePathname, useRouter } from "next/navigation";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import {
   AdminMenuList,
   CSRMenuList,
@@ -39,30 +39,29 @@ import {
   UserMenuList,
   companyName,
   listOfPages,
-} from './Links';
-import { useDispatch, useSelector } from 'react-redux';
+} from "./Links";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setDrawerStateOpen,
   setDrawerStateClose,
-} from 'state/DrawerStore/action';
-import CloseIcon from '@mui/icons-material/Close';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { authRole, checkUrlAccess, logoutUser } from 'utills/utills';
-import colors from 'styles/theme/colors';
-import { useAuth } from 'utills/AuthContext';
-import { getBrokerBalance } from 'api/Broker.api';
-import { ROLE_CONSTANTS } from 'utills/Constants';
-import { useSnackbar } from 'utills/SnackbarContext';
-import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
-import { getRoleLabelByValue } from 'utills/CommonFunction';
-import Logo from 'public/images/icon.svg';
-import Image from 'next/image';
-import Link from 'next/link';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+} from "state/DrawerStore/action";
+import CloseIcon from "@mui/icons-material/Close";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { authRole, checkUrlAccess, logoutUser } from "utills/utills";
+import { useAuth } from "utills/AuthContext";
+import { getBrokerBalance } from "api/Broker.api";
+import { ROLE_CONSTANTS } from "utills/Constants";
+import { useSnackbar } from "utills/SnackbarContext";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { getRoleLabelByValue } from "utills/CommonFunction";
+import Logo from "public/images/icon.svg";
+import Image from "next/image";
+import Link from "next/link";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 const drawerWidth = 240;
 
-export default function ClippedDrawer({ children }) {
+function ClippedDrawer({ children }) {
   const isDrawerOpen = useSelector((state) => state.isDrawerOpen);
   const router = useRouter();
   const pathname = usePathname();
@@ -78,7 +77,7 @@ export default function ClippedDrawer({ children }) {
   } = useAuth();
 
   React.useEffect(() => {
-    const userInfo = localStorage.getItem('userDetails');
+    const userInfo = localStorage.getItem("userDetails");
     checkUserUrlAccess(JSON.parse(userInfo));
   }, [pathname]);
 
@@ -108,15 +107,15 @@ export default function ClippedDrawer({ children }) {
       showToaterMessages(
         error?.response?.data?.message ||
           error?.message ||
-          'Error getbroker balance request',
-        'error',
+          "Error getbroker balance request",
+        "error"
       );
     }
   };
 
   const redirectUser = (url) => {
     const { search } = window?.location;
-    router.replace(url + (search ?? ''));
+    router.replace(url + (search ?? ""));
   };
 
   const checkUserUrlAccess = (tempUserDetails) => {
@@ -124,7 +123,7 @@ export default function ClippedDrawer({ children }) {
       isLoggedIn(),
       pathname,
       redirectUser,
-      tempUserDetails?.role || userDetails?.role,
+      tempUserDetails?.role || userDetails?.role
     );
   };
 
@@ -149,33 +148,33 @@ export default function ClippedDrawer({ children }) {
   };
 
   const isMenuOpen = Boolean(anchorEl);
-  const menuId = 'primary-search-account-menu';
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
+        vertical: "bottom",
+        horizontal: "right",
       }}
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {userDetails.role !== 'admin' &&
-        userDetails.role !== 'superAdmin' &&
+      {userDetails.role !== "admin" &&
+        userDetails.role !== "superAdmin" &&
         userDetails.role !== ROLE_CONSTANTS.customerSupport &&
         userDetails.role !== ROLE_CONSTANTS.sales && (
           <MenuItem
             onClick={() => {
               router.push(
-                userDetails.role === 'broker'
+                userDetails.role === "broker"
                   ? listOfPages.consultantProfile
-                  : listOfPages.userProfile,
+                  : listOfPages.userProfile
               );
               handleMenuClose();
             }}
@@ -192,12 +191,12 @@ export default function ClippedDrawer({ children }) {
   );
 
   const StyledBadge = styled(Badge)(({ theme }) => ({
-    '& .MuiBadge-badge': {
+    "& .MuiBadge-badge": {
       right: 16,
       top: 12,
       // border: `2px solid ${theme.palette.background.paper}`,
-      padding: '0 4px',
-      backgroundColor: 'whitesmoke !important',
+      padding: "0 4px",
+      backgroundColor: "whitesmoke !important",
     },
   }));
 
@@ -235,7 +234,7 @@ export default function ClippedDrawer({ children }) {
     return (
       <>
         <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
+        <Box sx={{ overflow: "auto" }}>
           {!authRole(ROLE_CONSTANTS.customerSupport) && !isSalesRole && (
             <List
               subheader={
@@ -258,7 +257,7 @@ export default function ClippedDrawer({ children }) {
             </>
           )}
           <Divider />
-          {authRole('user') && (
+          {authRole("user") && (
             <>
               <List
                 subheader={
@@ -274,17 +273,17 @@ export default function ClippedDrawer({ children }) {
               <Divider />
             </>
           )}
-          {authRole('broker') && (
+          {authRole("broker") && (
             <>
               <List
                 subheader={
                   <ListSubheader
                     component="div"
                     id="nested-list-subheader"
-                    sx={{ display: 'flex' }}
+                    sx={{ display: "flex" }}
                   >
-                    <p style={{ flex: 1 }}>Consultant</p>{' '}
-                    <Box sx={{ alignSelf: 'center' }}>
+                    <p style={{ flex: 1 }}>Consultant</p>{" "}
+                    <Box sx={{ alignSelf: "center" }}>
                       <IconButton
                         onClick={() => {
                           router.push(listOfPages.consultantJoinNow);
@@ -369,21 +368,21 @@ export default function ClippedDrawer({ children }) {
         <Toolbar />
         <Card
           sx={{
-            position: 'absolute',
+            position: "absolute",
             bottom: 0,
             left: 0,
-            width: '100%',
+            width: "100%",
           }}
         >
           <List sx={{ pb: 0 }}>
             <ListItemButton
               onClick={() => {
-                window.open('http://wa.me/+919323996997', '_blank');
+                window.open("http://wa.me/+919323996997", "_blank");
               }}
               sx={{
                 pl: 3,
-                backgroundColor: 'whitesmoke',
-                borderTop: 'solid 1px gainsboro',
+                backgroundColor: "whitesmoke",
+                borderTop: "solid 1px gainsboro",
               }}
             >
               <ListItemIcon sx={{ minWidth: 40 }}>
@@ -404,8 +403,8 @@ export default function ClippedDrawer({ children }) {
                   onClick={() => logout()}
                   sx={{
                     pl: 3,
-                    backgroundColor: 'whitesmoke',
-                    borderTop: 'solid 1px gainsboro',
+                    backgroundColor: "whitesmoke",
+                    borderTop: "solid 1px gainsboro",
                   }}
                   role={undefined}
                 >
@@ -417,7 +416,7 @@ export default function ClippedDrawer({ children }) {
               ) : (
                 <Button
                   onClick={() => {
-                    router.push('/login');
+                    router.push("/login");
                   }}
                 >
                   Sign in
@@ -456,22 +455,20 @@ export default function ClippedDrawer({ children }) {
   const MobileDrawer = () => {
     return (
       <Drawer
-        anchor={'left'}
+        anchor={"left"}
         open={isDrawerOpen}
         onClose={handleDrawerClose}
-        // hideBackdrop={true}
-        // BackdropProps={{ invisible: true }}
         sx={{
           width: drawerWidth,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
-            boxSizing: 'border-box',
+            boxSizing: "border-box",
           },
-          position: 'relative',
+          position: "relative",
           [`& .MuiModal-backdrop`]: {
             backgroundColor:
-              'transparent !important' /* Set the backdrop color to transparent */,
+              "transparent !important" /* Set the backdrop color to transparent */,
           },
         }}
       >
@@ -482,7 +479,7 @@ export default function ClippedDrawer({ children }) {
   };
 
   return (
-    <Box sx={{ display: '-webkit-box' }}>
+    <Box sx={{ display: "-webkit-box" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -490,18 +487,18 @@ export default function ClippedDrawer({ children }) {
           zIndex: (theme) => theme.zIndex.drawer + 1,
           p: 0,
           borderRadius: 0,
-          backgroundColor: 'white',
-          boxShadow: '1px 2px 6px -2px gainsboro',
+          backgroundColor: "white",
+          boxShadow: "1px 2px 6px -2px gainsboro",
         }}
       >
         <Toolbar
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
+            display: "flex",
+            justifyContent: "space-between",
           }}
         >
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ alignSelf: 'center', mr: 2 }}>
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ alignSelf: "center", mr: 2 }}>
               <IconButton
                 size="large"
                 edge="end"
@@ -514,20 +511,20 @@ export default function ClippedDrawer({ children }) {
                 <MenuIcon fontSize="small" />
               </IconButton>
             </Box>
-            <Box sx={{ alignSelf: 'center' }}>
+            <Box sx={{ alignSelf: "center" }}>
               <Link
                 href={listOfPages.home}
                 prefetch={true}
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
               >
-                <Box sx={{ display: 'flex', gap: 1 }}>
+                <Box sx={{ display: "flex", gap: 1 }}>
                   <Box
                     sx={{
                       height: 30,
                       width: 30,
-                      background: 'gainsboro',
-                      '&:hover': { background: 'gainsboro' },
-                      borderRadius: '4px',
+                      background: "gainsboro",
+                      "&:hover": { background: "gainsboro" },
+                      borderRadius: "4px",
                     }}
                   >
                     <Image
@@ -535,19 +532,19 @@ export default function ClippedDrawer({ children }) {
                       height={25}
                       width={25}
                       src={Logo}
-                      style={{ margin: '2.5px' }}
+                      style={{ margin: "2.5px" }}
                       alt="acrebytes"
                     />
                   </Box>
                   <Typography
                     variant="h6"
                     sx={{
-                      color: '#000',
-                      fontSize: '1rem',
+                      color: "#000",
+                      fontSize: "1rem",
                       fontWeight: 600,
                       lineHeight: 1,
-                      textTransform: 'uppercase',
-                      alignSelf: 'center',
+                      textTransform: "uppercase",
+                      alignSelf: "center",
                     }}
                   >
                     {companyName}
@@ -556,28 +553,24 @@ export default function ClippedDrawer({ children }) {
               </Link>
             </Box>
           </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ alignSelf: 'center' }}>
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ alignSelf: "center" }}>
               {userDetails && Object.keys(userDetails).length ? (
                 <Box>
                   <Box>
                     <Typography
                       variant="body1"
                       sx={{
-                        display: { sm: 'flex' },
+                        display: { sm: "flex" },
                         flex: 1,
-                        color: colors.BLUE,
-                        textTransform: 'capitalize',
+                        textTransform: "capitalize",
                       }}
                     >
-                      {userDetails?.name?.firstName}{' '}
+                      {userDetails?.name?.firstName}{" "}
                       {userDetails?.name?.lastName}
                     </Typography>
-                    {/* <Typography variant='body1' sx={{ display: { xs: 'flex', sm: 'none' }, flex: 1, color: colors.BLUE }}>
-                      {userDetails?.name?.firstName}
-                    </Typography> */}
                   </Box>
-                  <Box sx={{ alignSelf: 'center', textAlign: 'right' }}>
+                  <Box sx={{ alignSelf: "center", textAlign: "right" }}>
                     {userDetails?.role == ROLE_CONSTANTS.broker && (
                       <Chip
                         label={`Points: ${brokerBalance}`}
@@ -587,19 +580,11 @@ export default function ClippedDrawer({ children }) {
                         }
                       />
                     )}
-                    {/* {(userDetails?.role == ROLE_CONSTANTS.admin ||
-                      userDetails?.role == ROLE_CONSTANTS.sales ||
-                      userDetails?.role == ROLE_CONSTANTS.customerSupport) && (
-                      <Chip
-                        label={getRoleLabelByValue(userDetails?.role)}
-                        size="small"
-                      />
-                    )} */}
                     {userDetails?.role !== ROLE_CONSTANTS.user && (
                       <Chip
                         label={getRoleLabelByValue(userDetails?.role)}
                         size="small"
-                        sx={{ marginLeft: '5px' }}
+                        sx={{ marginLeft: "5px" }}
                       />
                     )}
                   </Box>
@@ -607,9 +592,9 @@ export default function ClippedDrawer({ children }) {
               ) : (
                 <CustomButton
                   onClick={() => {
-                    router.push('/login');
+                    router.push("/login");
                   }}
-                  ButtonText={'Sign in'}
+                  ButtonText={"Sign in"}
                 />
               )}
             </Box>
@@ -648,3 +633,5 @@ export default function ClippedDrawer({ children }) {
     </Box>
   );
 }
+
+export default ClippedDrawer;
