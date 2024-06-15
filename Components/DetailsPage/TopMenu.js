@@ -9,7 +9,6 @@ import {
   Chip,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import colors from "styles/theme/colors";
 import Image from "next/image";
 import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
 import { boxShadowBottom } from "utills/Constants";
@@ -17,9 +16,15 @@ import { capitalLizeName, shortPriceFormatter } from "utills/CommonFunction";
 
 function TopMenu(props) {
   const { value, handleChange, list, topMenu } = props;
+
+  const { location, marketing, overview, unitsPlan, overallAssessment } =
+    topMenu;
+  const { sector, state, city, area } = location;
+  const { builder, projectName, status } = overview;
+  const { maxPriceRange, minPriceRange } = unitsPlan;
+
   const router = useRouter();
   const defaultValue = list.length > 0 ? list[0].hash : undefined;
-  // console.log(value)
   return (
     <>
       <Card sx={{ p: 2 }}>
@@ -28,7 +33,7 @@ function TopMenu(props) {
             <Box sx={{ display: "flex", gap: 2 }}>
               {value && value !== "project" && (
                 <Image
-                  src={topMenu?.marketing?.image}
+                  src={marketing?.image}
                   width={100}
                   height={50}
                   alt="Picture of the author"
@@ -42,8 +47,7 @@ function TopMenu(props) {
                     display: { xs: "none", sm: "block" },
                   }}
                 >
-                  {topMenu?.overview?.builder} ·{" "}
-                  {capitalLizeName(topMenu?.overview?.projectName)}
+                  {builder} · {capitalLizeName(projectName)}
                 </Typography>
                 <Typography
                   variant="h3"
@@ -52,25 +56,18 @@ function TopMenu(props) {
                     display: { xs: "block", sm: "none" },
                   }}
                 >
-                  {topMenu?.overview?.builder} ·{" "}
-                  {topMenu?.overview?.projectName}
+                  {builder} · {projectName}
                 </Typography>
                 <Typography
                   variant="h5"
                   sx={{ alignSelf: "center", textTransform: "capitalize" }}
                 >
-                  {topMenu?.location?.sector}, {topMenu?.location?.city},{" "}
-                  {topMenu?.location?.state}
+                  {sector}, {area}, {city}, {state}
                 </Typography>
                 <Box sx={{ display: { xs: "none", sm: "flex" } }}>
-                  {topMenu?.overview?.status && (
+                  {status && (
                     <>
-                      <Chip
-                        label={topMenu?.overview?.status}
-                        color="primary"
-                        size="small"
-                      />
-
+                      <Chip label={status} color="primary" size="small" />
                       <Chip
                         label={`₹ ${shortPriceFormatter(
                           topMenu?.unitsPlan?.minPriceRange
@@ -98,7 +95,7 @@ function TopMenu(props) {
             <Box>
               <CircularWithValueLabel
                 onClick={() => router.push("/research")}
-                progress={topMenu?.overallAssessment?.score}
+                progress={overallAssessment?.score}
                 islarge
               />
             </Box>
@@ -112,29 +109,19 @@ function TopMenu(props) {
           }}
         >
           <Box sx={{ alignSelf: "center" }}>
-            {topMenu?.overview?.status && (
-              <Chip
-                label={topMenu?.overview?.status}
-                color="primary"
-                size="small"
-              />
-            )}
+            {status && <Chip label={status} color="primary" size="small" />}
             <Chip
-            label={`₹ ${shortPriceFormatter(
-                topMenu?.unitsPlan?.minPriceRange
-            )} - ₹ 
-            ${shortPriceFormatter(
-                topMenu?.unitsPlan?.maxPriceRange
-            )}`}
-            color="primary"
-            size="small"
-            style={{ marginLeft: 10 }}
+              label={`₹ ${shortPriceFormatter(minPriceRange)} - ₹ 
+            ${shortPriceFormatter(maxPriceRange)}`}
+              color="primary"
+              size="small"
+              style={{ marginLeft: 10 }}
             />
           </Box>
           <Box>
             <CircularWithValueLabel
               onClick={() => router.push("/research")}
-              progress={topMenu?.overallAssessment?.score}
+              progress={overallAssessment?.score}
             />
           </Box>
         </Box>
@@ -142,7 +129,6 @@ function TopMenu(props) {
 
       <Tabs
         value={value || defaultValue}
-        // onChange={handleChange}
         variant="scrollable"
         scrollButtons
         allowScrollButtonsMobile
