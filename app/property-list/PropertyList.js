@@ -615,10 +615,10 @@ function PropertyList({ params }) {
                               boxShadow: "none",
                             }}
                           >
-                            <Typography variant="h2">
+                            <Typography variant="h2" sx={{ fontWeight: "Bold", mb: 1}}>
                               {decodeURIComponent(params.location)}
                             </Typography>
-                            <Typography variant="caption">
+                            <Typography variant="body1">
                               Noida's strategic location, robust infrastructure,
                               and flourishing business environment have
                               contributed to its status as a vibrant and
