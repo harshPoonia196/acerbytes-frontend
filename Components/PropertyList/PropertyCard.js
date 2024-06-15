@@ -119,7 +119,7 @@ function PropertyCard(props) {
       minPrice: { price: finalMinPrice, tag },
       maxPrice: { price: finalMaxPrice, tag: maxTag },
     });
-  }, [unitsPlan, priceRange]);
+  }, []);
 
   const formatUnit = () => {
     const finalData = [];
