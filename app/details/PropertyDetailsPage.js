@@ -497,18 +497,22 @@ const PropertyDetailsPage = ({ params }) => {
       clickedRef.current = false;
     }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
 
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    // ! The following code is supposed to work
+    // if (activeState !== hash) {
+    //   setActiveState(hash);
+    //   const y =
+    //     document.getElementById(hash)?.getBoundingClientRect().top +
+    //     window.pageYOffset -
+    //     tabHeight;
+    //   if (window)
+    //     window.scrollTo({
+    //       top: 300,
+    //       behavior: "smooth",
+    //     });
+    // }
   };
 
   React.useEffect(
@@ -676,15 +680,16 @@ const PropertyDetailsPage = ({ params }) => {
                       }}
                     >
                       {propertyData?.isConsultant === false && (
-                      <Box sx={{ flex: 1, alignSelf: "center" }}>
-                        <Typography variant="body2" sx={{ flex: 1 }}>
-                          Are you a{" "}
-                          <span style={{ fontWeight: 700 }}>
-                            Property Consultant?
-                          </span>{" "}
-                          let Customers reach you
-                        </Typography>
-                      </Box>)}
+                        <Box sx={{ flex: 1, alignSelf: "center" }}>
+                          <Typography variant="body2" sx={{ flex: 1 }}>
+                            Are you a{" "}
+                            <span style={{ fontWeight: 700 }}>
+                              Property Consultant?
+                            </span>{" "}
+                            let Customers reach you
+                          </Typography>
+                        </Box>
+                      )}
                       {propertyData?.isConsultant === false && (
                         <Box sx={{ alignSelf: { xs: "end" } }}>
                           <Chip
@@ -729,7 +734,7 @@ const PropertyDetailsPage = ({ params }) => {
             <MoreSimilarPropertyCard propertyData={propertyData} />
           </Grid>
 
-          {/* Dont Touch this */}
+          {/*//! Don't Touch this */}
           {userDetails?.role !== "admin" &&
             userDetails?.role !== "superAdmin" &&
             userDetails?.role !== "broker" && (

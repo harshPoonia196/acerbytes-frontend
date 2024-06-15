@@ -274,18 +274,21 @@ function AddProperty() {
       clickedRef.current = false;
     }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
 
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    // if (activeState !== hash) {
+    //   setActiveState(hash);
+
+    //   if (window)
+    //     window.scrollTo({
+    //       top:
+    //         document.getElementById(hash)?.getBoundingClientRect().top +
+    //         window.pageYOffset -
+    //         tabHeight,
+    //       behavior: "smooth",
+    //     });
+    // }
   };
   function removeIds(obj) {
     for (const key in obj) {
@@ -1232,6 +1235,7 @@ function AddProperty() {
 
     return output;
   };
+
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
     // let totalRating = form.overview.status ==="underconstruction"? 75:80;
     let total = totalRating;

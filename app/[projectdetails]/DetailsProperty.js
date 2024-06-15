@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Container,
   Card,
@@ -23,7 +21,6 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
-import MarketingSection from "Components/DetailsPage/MarketingSection";
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";
 import AmenitiesSection from "Components/DetailsPage/AmenitiesSection";
@@ -31,7 +28,7 @@ import ClearanceSection from "Components/DetailsPage/ClearanceSection";
 import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import {
@@ -67,6 +64,7 @@ import { getCountsByProperty } from "api/Broker.api";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Link from "next/link";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
+import MarketingSection from "Components/DetailsPage/MarketingSection";
 
 const tabHeight = 200;
 
@@ -314,36 +312,6 @@ const PropertyDetails = ({ params }) => {
     checkPropertyIsEnquired();
   }, [userDetails]);
 
-  const GridItemWithCard = (props) => {
-    const { children, styles, boxStyles, ...rest } = props;
-    return (
-      <Grid
-        item
-        {...rest}
-        sx={{
-          padding: 1,
-          textAlign: "center",
-          ...styles,
-        }}
-      >
-        <Box
-          sx={{
-            backgroundColor: "whitesmoke",
-            p: 2,
-            borderRadius: "8px",
-            boxShadow:
-              "0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%)",
-            ...boxStyles,
-          }}
-        >
-          {children}
-        </Box>
-      </Grid>
-    );
-  };
-
-  const [currentTab, setCurrentTab] = React.useState(0);
-
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
     React.useState(false);
@@ -561,7 +529,6 @@ const PropertyDetails = ({ params }) => {
       }
 
       const item = itemsClientRef.current[i];
-
       if (
         item.node &&
         item.node.offsetTop <
@@ -584,23 +551,27 @@ const PropertyDetails = ({ params }) => {
 
   const handleClick = (hash) => () => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
+
     clickedRef.current = true;
     unsetClickedRef.current = setTimeout(() => {
       clickedRef.current = false;
     }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
 
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    // if (activeState !== hash) {
+    //
+
+    //   if (window)
+    //     window.scrollTo({
+    //       top:
+    //         document.getElementById(hash)?.getBoundingClientRect().top +
+    //         window.pageYOffset -
+    //         tabHeight,
+    //       behavior: "smooth",
+    //     });
+    // }
   };
 
   React.useEffect(

@@ -151,7 +151,7 @@ function TopMenu(props) {
             key={current.hash}
             label={current.text}
             value={current.hash}
-            onClick={handleChange(current.hash)}
+            onClick={() => handleChange(current.hash)}
           />
         ))}
       </Tabs>

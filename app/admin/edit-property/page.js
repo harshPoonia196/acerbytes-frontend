@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Card, Container, Grid } from "@mui/material";
+import { Card, Container, Grid } from "@mui/material";
 import dynamic from "next/dynamic";
 import React from "react";
 import { useState } from "react";
@@ -9,27 +9,20 @@ import NavTab from "Components/Admin/Property/NavTab";
 import throttle from "lodash/throttle";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { getBrokersList } from "api/Admin.api";
-import { getBrokers } from "api/UserProfile.api";
-import { getAllBrokers } from "api/Broker.api";
 
-import { makeStyles, withStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
-import BankCard from "Components/Admin/Property/SubComponents/BankCard";
-import { getAllOptions, getAllProperty, getCities } from "api/Property.api";
+import { getAllOptions, getCities } from "api/Property.api";
 
 import {
   Schema,
-  projectName,
   reraSchema,
 } from "Components/Admin/Property/Validation/PropertyValidation";
 import FacilitiesCard from "Components/Admin/Property/SubComponents/FacilitiesCard";
 import LandscapeCard from "Components/Admin/Property/SubComponents/LandscapeCard";
 import FloorPlanCard from "Components/Admin/Property/SubComponents/FloorPlanCard";
 import RegulatoryCard from "Components/Admin/Property/SubComponents/RegulatoryCard";
-import BuilderPriceCard from "Components/Admin/Property/SubComponents/BuilderPriceCard";
-import ResalePriceCard from "Components/Admin/Property/SubComponents/ResalePriceCard";
 import InvestmentCard from "Components/Admin/Property/SubComponents/InvestmentCard";
 const MarketingCard = dynamic(
   () => import("Components/Admin/Property/SubComponents/MarketingCard"),
@@ -45,7 +38,7 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import { detailsProperty } from "api/Property.api";
 import colors from "styles/theme/colors";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import EditLocationCard from "Components/Admin/Property/SubComponents/EditLocationCard";
+import { getAllBrokers } from "api/Broker.api";
 
 const tabHeight = 116;
 
@@ -161,25 +154,27 @@ function AddProperty() {
 
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => () => {
+  const handleClick = (hash) => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
+
     clickedRef.current = true;
     unsetClickedRef.current = setTimeout(() => {
       clickedRef.current = false;
     }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
 
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    // if (activeState !== hash) {
+    //   if (window)
+    //     window.scrollTo({
+    //       top:
+    //         document.getElementById(hash)?.getBoundingClientRect().top +
+    //         window.pageYOffset -
+    //         tabHeight,
+    //       behavior: "smooth",
+    //     });
+    // }
   };
   function removeIds(obj) {
     for (const key in obj) {
@@ -239,7 +234,6 @@ function AddProperty() {
           sector: data.location.sector,
           city: data.location.city,
         };
-
         setTagField(assignTagLine);
         setForm({ ...data });
 
@@ -290,7 +284,8 @@ function AddProperty() {
       setLoading(false);
     }
   };
-  const brokersList = async (rowsPerPage, page, search) => {
+
+  const brokersList = async () => {
     try {
       const response = await getAllBrokers();
       if (response.status == 200) {
@@ -1257,6 +1252,9 @@ function AddProperty() {
     };
     let output = "";
     setTagField(obj);
+
+    console.log("obj ===========>", obj);
+
     Object.entries(obj).forEach(([key, value]) => {
       if (value) {
         if (output) {

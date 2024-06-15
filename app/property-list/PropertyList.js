@@ -493,7 +493,7 @@ function PropertyList({ params }) {
                       selected={propertyvalue === "score"}
                       sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
-                      Score{" "}
+                      Score
                       {propertyvalue === "score" &&
                         (alignment === -1 ? (
                           <ArrowDownwardIcon fontSize="small" />
@@ -506,7 +506,7 @@ function PropertyList({ params }) {
                       selected={propertyvalue === "price"}
                       sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
-                      Price{" "}
+                      Price
                       {propertyvalue === "price" &&
                         (alignment === -1 ? (
                           <ArrowDownwardIcon fontSize="small" />
@@ -519,7 +519,7 @@ function PropertyList({ params }) {
                       selected={propertyvalue === "area"}
                       sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
-                      Area{" "}
+                      Rate (Per Unit)
                       {propertyvalue === "area" &&
                         (alignment === -1 ? (
                           <ArrowDownwardIcon fontSize="small" />
@@ -532,7 +532,7 @@ function PropertyList({ params }) {
                       selected={propertyvalue === "completion"}
                       sx={{ flex: 1, justifyContent: "flex-start" }}
                     >
-                      Completion{" "}
+                      Completion
                       {propertyvalue === "completion" &&
                         (alignment === -1 ? (
                           <ArrowDownwardIcon fontSize="small" />

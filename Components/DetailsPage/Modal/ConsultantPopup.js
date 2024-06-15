@@ -42,7 +42,6 @@ function ConsultantPopup({
 
   const handleByPlanClick = async () => {
     const { duration } = currentPlan;
-    console.log("duration ===========>", duration);
 
     if (duration) {
       const adData = { durationInMonths: duration };
