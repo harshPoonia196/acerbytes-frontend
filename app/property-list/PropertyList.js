@@ -43,7 +43,7 @@ function PropertyList({ params }) {
   const [pageLimit, setPageLimit] = useState(50);
 
   const [property, setProperty] = useState([]);
-  const [count, setCount] = useState({});
+  const [count, setCount] = useState(0);
   const [isLoading, setLoading] = useState({ loader1: true, loader2: true });
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = debounce(performSearch, DEBOUNCE_TIMER);
@@ -106,7 +106,7 @@ function PropertyList({ params }) {
       let res = await getAllProperty(objectToQueryString(querParams));
       if (res.status === 200) {
         setProperty(res.data?.data || []);
-        setCount(res.totalCount);
+        setCount(res.data.totalCount);
       }
     } catch (error) {
       showToaterMessages(
@@ -598,7 +598,7 @@ function PropertyList({ params }) {
                             }}
                           >
                             <Typography variant="h2">
-                              {decodeURIComponent(params.location)}
+                              {decodeURIComponent(params.location)} ({count})
                             </Typography>
                             <Typography variant="caption">
                               Noida's strategic location, robust infrastructure,
@@ -631,7 +631,7 @@ function PropertyList({ params }) {
                   </Card>
                 </Grid>
                 <Grid item xs={36}>
-                  {count?.totalCount === 0 ? (
+                  {count === 0 ? (
                     <NoDataCard />
                   ) : (
                     <Grid container spacing={1}>
@@ -655,7 +655,7 @@ function PropertyList({ params }) {
                   <TablePagination
                     rowsPerPageOptions={PAGINATION_LIMIT_OPTIONS}
                     component="div"
-                    count={count?.totalCount || 0}
+                    count={count || 0}
                     rowsPerPage={pageLimit}
                     page={currentPage - 1}
                     onPageChange={handleChangePage}
