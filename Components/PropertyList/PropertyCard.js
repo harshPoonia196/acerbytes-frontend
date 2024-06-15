@@ -217,7 +217,7 @@ function PropertyCard(props) {
                       : 0
                   }
                   onClick={() => router.push(`/details/${propertyUrl}`)}
-                  tooltiptext={`AB scores ${categorizeScore(propertyDetails?.overallAssessment?.score)}`}
+                  tooltiptext={`AB scores "${categorizeScore(propertyDetails?.overallAssessment?.score)}"`}
                 />
               </Tooltip>
             </Box>
@@ -267,7 +267,7 @@ function PropertyCard(props) {
                 overallAssessment?.score ? overallAssessment.score.toFixed() : 0
               }
               onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltiptext={`AB scores ${categorizeScore(propertyDetails?.overallAssessment?.score)}`}
+              tooltiptext={`AB scores "${categorizeScore(propertyDetails?.overallAssessment?.score)}"`}
             />
             </Tooltip>
           </Grid>
@@ -331,7 +331,7 @@ function PropertyCard(props) {
                 overallAssessment?.score ? overallAssessment.score.toFixed() : 0
               }
               onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltipText={`AB scores ${categorizeScore(propertyDetails?.overallAssessment?.score)}`}
+              tooltipText={`AB scores "${categorizeScore(propertyDetails?.overallAssessment?.score)}"`}
             />
           </Grid>
         </Grid>

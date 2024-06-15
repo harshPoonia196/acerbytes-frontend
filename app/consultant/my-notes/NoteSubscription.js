@@ -21,6 +21,7 @@ import { buyNotesPoints, getBrokerBalance } from "api/Broker.api";
 import { useAuth } from "utills/AuthContext";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import { useRouter } from "next/navigation";
+import { listOfPages } from "Components/NavBar/Links";
 
 function NoteSubscription({ open, handleClose, getList }) {
   const router = useRouter();
@@ -158,16 +159,15 @@ function NoteSubscription({ open, handleClose, getList }) {
           <CustomButton
             variant="contained"
             size="small"
-            sx={{ mr: 1 }}
             ButtonText={`Subscribe`}
           />
-          <CustomButton
+          {/* <CustomButton
             variant="contained"
             onClick={() => {
               handleClose();
             }}
             ButtonText={"Close"}
-          />{" "}
+          />{" "} */}
         </Box>
       </DialogActions>
     </Dialog>
