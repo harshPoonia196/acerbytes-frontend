@@ -33,7 +33,7 @@ function ConsultantPopup({
   const { setBrokerPoints } = useAuth();
   const [loadingStates, setLoadingStates] = useState(false);
   const [currentPlan, setCurrentPlan] = useState({});
-
+  const router = useRouter();
   const { openSnackbar } = useSnackbar();
 
   const showTostMessages = (message, severity) => {
@@ -153,11 +153,11 @@ function ConsultantPopup({
                             variant="body1"
                             sx={{ flex: 1, alignSelf: "center" }}
                           >
-                            {credit?.month !== "1 month" ? "s": null} plan
+                            {credit?.month}{credit?.month !== "1 month" ? "s": null} plan
                           </Typography>
                           <Typography variant="subtitle2">
                             <span style={{ fontWeight: 600 }}>
-                              {credit?.discountAmount} Points
+                              {formatPoints(credit?.discountAmount)} Points {" "}
                             </span>
                             ({credit?.discount}% discount)
                           </Typography>
