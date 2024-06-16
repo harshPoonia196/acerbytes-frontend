@@ -274,7 +274,7 @@ function AddProperty() {
       clickedRef.current = false;
     }, 1000);
 
-    // document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
 
     // if (activeState !== hash) {

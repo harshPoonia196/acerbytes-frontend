@@ -497,7 +497,7 @@ const PropertyDetailsPage = ({ params }) => {
       clickedRef.current = false;
     }, 1000);
 
-    // document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
 
     // ! The following code is supposed to work
