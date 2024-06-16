@@ -35,7 +35,7 @@ function NoteSubscription({ open, handleClose, getList }) {
     },
     handleByPlanClick = async () => {
       const adData = { months: duration };
-
+      setLoadingStates(true);
       if (duration) {
         try {
           const response = await buyNotesPoints(adData);
@@ -57,6 +57,7 @@ function NoteSubscription({ open, handleClose, getList }) {
         }
       } else {
         showTostMessages("Please select a plan", "error");
+        setLoadingStates(true);
       }
     },
     getBrokerPointBalance = async () => {
