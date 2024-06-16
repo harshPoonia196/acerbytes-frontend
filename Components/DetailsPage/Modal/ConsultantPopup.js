@@ -98,7 +98,7 @@ function ConsultantPopup({
       sx={{
         "& .MuiDialog-paper": {
           borderRadius: "8px !important",
-          overflowY: "scroll",
+          overflowY: "auto",
         },
       }}
       open={open}
@@ -125,7 +125,7 @@ function ConsultantPopup({
         </Box>
       </DialogTitle>
       <DialogContent
-        sx={{ maxWidth: "100%", width: "100%", overflowY: "scroll" }}
+        sx={{ maxWidth: "100%", width: "100%", overflowY: "auto" }}
       >
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
@@ -133,12 +133,12 @@ function ConsultantPopup({
           value={value}
           onChange={handleChange}
         >
-          <Grid container spacing={1} sx={{ p: 2 }}>
+          <Grid container spacing={1}>
             {BuyConsultantPoints?.map((credit, index) => {
               return (
                 <>
                   <Grid item xs={12}>
-                    <Card sx={{ p: 1 }}>
+                    <Card sx={{ p: 2, border: "solid 1px #dcdcdc78", mb: "8px", overflowY: "auto" }}>
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <FormControlLabel
                           onClick={() =>
@@ -186,7 +186,6 @@ function ConsultantPopup({
           size="small"
           disabled={loadingStates}
           ButtonText={!loadingStates ? "Buy Now" : "Loading..."}
-          sx={{ mr: "5px" }}
           onClick={handleByPlanClick}
         />
       </DialogActions>

@@ -91,7 +91,7 @@ function NoteSubscription({ open, handleClose, getList }) {
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            Request for Plan Subscribe
+            Request for plan subscribe
           </Typography>
           <CustomButton
             startIcon={<AddCardIcon fontSize="small" />}
@@ -114,10 +114,10 @@ function NoteSubscription({ open, handleClose, getList }) {
             return (
               <>
                 <Grid item xs={12}>
-                  <Card sx={{ p: 1 }}>
+                  <Card sx={{ p: 2,  border: "solid 1px #dcdcdc78", mb: "8px", overflowY: "auto" }}>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <Box>
-                        <FormControlLabel value={credit.value} control={<Radio />} style={{ marginRight: "0px", marginLeft: "5px"}} />
+                        <FormControlLabel value={credit.value} control={<Radio />} sx={{mr:0}} />
                       </Box>
                       <Box>
                       <Typography
