@@ -452,12 +452,8 @@ const PropertyDetailsPage = ({ params }) => {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
-
   const findActiveIndex = React.useCallback(() => {
     if (activeState === null) setActiveState(itemsServer[0].hash);
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -489,42 +485,14 @@ const PropertyDetailsPage = ({ params }) => {
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
   const handleClick = (hash) => {
-    // Used to disable findActiveIndex if the  scrolls due to a clickpage
-
     document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
-
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
-
-    // if (activeState !== hash) {
-    //   setActiveState(hash);
-
-    //   if (window)
-    //     window.scrollTo({
-    //       top:
-    //         document.getElementById(hash)?.getBoundingClientRect().top +
-    //         window.pageYOffset -
-    //         tabHeight,
-    //       behavior: "smooth",
-    //     });
-    // }
   };
-
-  React.useEffect(
-    () => () => {
-      clearTimeout(unsetClickedRef.current);
-    },
-    []
-  );
 
   const divRef = useRef(null);
   const [heightOfFooter, setHeightOfFooter] = useState(0);
 
   useEffect(() => {
-    // Access the div element and get its height
     if (divRef.current) {
       const divHeight = divRef.current.clientHeight;
       setHeightOfFooter(divHeight);

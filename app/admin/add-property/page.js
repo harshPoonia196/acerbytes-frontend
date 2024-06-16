@@ -229,14 +229,9 @@ function AddProperty() {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
-
-    // Don't set the active index based on scroll if a link was just clicked
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -268,28 +263,10 @@ function AddProperty() {
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
   const handleClick = (hash) => {
-    // Used to disable findActiveIndex if the  scrolls due to a clickpage
-
     document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
-
-    // if (activeState !== hash) {
-    //   setActiveState(hash);
-
-    //   if (window)
-    //     window.scrollTo({
-    //       top:
-    //         document.getElementById(hash)?.getBoundingClientRect().top +
-    //         window.pageYOffset -
-    //         tabHeight,
-    //       behavior: "smooth",
-    //     });
-    // }
   };
+
   function removeIds(obj) {
     for (const key in obj) {
       if (typeof obj[key] === "object" && obj[key] !== null) {
@@ -377,7 +354,7 @@ function AddProperty() {
       setLoading(false);
     }
   };
-  const brokersList = async (rowsPerPage, page, search) => {
+  const brokersList = async () => {
     try {
       const response = await getAllBrokers();
       if (response.status == 200) {
@@ -399,8 +376,6 @@ function AddProperty() {
             return u;
           });
           setBrokerList([...getValue]);
-          // setBrokerList([...data.data]);
-          //   return data;
         } else {
           console.log("error");
           // openSnackbar(message, "error");
@@ -463,16 +438,6 @@ function AddProperty() {
           });
         });
 
-        const sumItems = (obj, excludedFields) => {
-          let sum = 0;
-          for (let key in obj) {
-            if (!excludedFields.includes(key) && typeof obj[key] === "object") {
-              sum += Object.keys(obj[key]).length;
-            }
-          }
-          return sum;
-        };
-
         setForm((prevForm) => ({
           ...prevForm,
           location: {
@@ -503,10 +468,6 @@ function AddProperty() {
     }
     getCitiesList();
     brokersList();
-
-    return () => {
-      clearTimeout(unsetClickedRef.current);
-    };
   }, []);
 
   const classes = useStyles();
@@ -536,8 +497,6 @@ function AddProperty() {
 
   const scoreChange = async (e, firstKeyName, secondKeyName) => {
     let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName);
-    // totalRating=totalRating
-    // let totalRating = form.overview.status ==="underconstruction"? 75:80;
     let totalScored;
 
     function isNotAlphabet(char) {
@@ -1205,7 +1164,7 @@ function AddProperty() {
     }
 
     if (firstKeyName === "overview" && secondKeyName === "projectType") {
-      let hideValue = handleUIHide(e, firstKeyName, secondKeyName);
+      handleUIHide(e, firstKeyName, secondKeyName);
     }
     if (
       firstKeyName === "overview" &&
