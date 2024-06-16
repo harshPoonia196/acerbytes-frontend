@@ -20,7 +20,7 @@ function SuggesredLeadsDetails({ open, handleClose, selectedRowData }) {
     { title: "Purpose", value: selectedRowData?.userDetail?.budget?.purpose },
     { title: "Purchase", value: selectedRowData?.userDetail?.budget?.purchase },
     { title: "Demographic", value: selectedRowData?.userDetail?.budget?.demographic },
-    { title: "Interested For Loan", value: selectedRowData?.userDetail?.budget?.interestedForLoan },
+    { title: "Interested for Loan", value: selectedRowData?.userDetail?.budget?.interestedForLoan },
   ]
   return (
     <Dialog
@@ -36,7 +36,7 @@ function SuggesredLeadsDetails({ open, handleClose, selectedRowData }) {
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          User Details
+          Customer details
         </Typography>
       </DialogTitle>
       <DialogContent

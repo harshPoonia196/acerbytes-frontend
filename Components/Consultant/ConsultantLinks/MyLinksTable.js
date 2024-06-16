@@ -159,7 +159,7 @@ function RowStructure({ row, history }) {
         <Link
           href={row?.link}
           style={{ textDecoration: "none" }}
-          sx={{ position: "relative", top: "-4px" }}
+          sx={{ position: "relative", top: "-4px"}}
         >
           <Tooltip title="Link">
             <LinkIcon
@@ -167,7 +167,7 @@ function RowStructure({ row, history }) {
               fontSize="small"
             />
           </Tooltip>
-          {row?.propertyName}
+          {" "}{row?.propertyName}
         </Link>
       </TableCell>
       <TableCell>{row?.city}</TableCell>

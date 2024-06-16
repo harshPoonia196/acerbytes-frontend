@@ -61,7 +61,7 @@ import SuggesredLeadsDetails from "../ConsultantSuggestedLeads/Modal/SuggesredLe
 const headCells = [
   {
     id: "Name",
-    label: "Name",
+    label: "Customer name",
   },
   // {
   //   id: "currentStatus",
@@ -106,7 +106,7 @@ const headCells = [
   },
   {
     id: "userDetails",
-    label: "User details",
+    label: "Customer details",
   },
   {
     id: "enquired",
