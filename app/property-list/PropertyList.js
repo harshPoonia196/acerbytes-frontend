@@ -464,7 +464,7 @@ function PropertyList({ params }) {
   const getSortBy = () => {
     return (
       <>
-      <Grid item xs={12} sx={{ alignSelf: "center" }}>
+      <Grid item xs={12} sx={{ alignSelf: "center" }} className="sort-block">
         <Typography
           variant="subtitle2"
           sx={{ alignSelf: "center", color: colors.GRAY }}
@@ -481,58 +481,68 @@ function PropertyList({ params }) {
           size="small"
           orientation="vertical"
         >
-          <ToggleButton
-            value="score"
-            selected={propertyvalue === "score"}
-            sx={{ flex: 1, justifyContent: "flex-start" }}
-          >
-            Score{" "}
-            {propertyvalue === "score" &&
-              (alignment === -1 ? (
-                <ArrowDownwardIcon fontSize="small" />
-              ) : (
-                <ArrowUpwardIcon fontSize="small" />
-              ))}
-          </ToggleButton>
-          <ToggleButton
-            value="price"
-            selected={propertyvalue === "price"}
-            sx={{ flex: 1, justifyContent: "flex-start" }}
-          >
-            Price{" "}
-            {propertyvalue === "price" &&
-              (alignment === -1 ? (
-                <ArrowDownwardIcon fontSize="small" />
-              ) : (
-                <ArrowUpwardIcon fontSize="small" />
-              ))}
-          </ToggleButton>
-          <ToggleButton
-            value="area"
-            selected={propertyvalue === "area"}
-            sx={{ flex: 1, justifyContent: "flex-start" }}
-          >
-            Area{" "}
-            {propertyvalue === "area" &&
-              (alignment === -1 ? (
-                <ArrowDownwardIcon fontSize="small" />
-              ) : (
-                <ArrowUpwardIcon fontSize="small" />
-              ))}
-          </ToggleButton>
-          <ToggleButton
-            value="completion"
-            selected={propertyvalue === "completion"}
-            sx={{ flex: 1, justifyContent: "flex-start" }}
-          >
-            Completion{" "}
-            {propertyvalue === "completion" &&
-              (alignment === -1 ? (
-                <ArrowDownwardIcon fontSize="small" />
-              ) : (
-                <ArrowUpwardIcon fontSize="small" />
-              ))}
-          </ToggleButton>
+          <Grid container>
+            <Grid item xs={4} sm={12}>
+              <ToggleButton
+                value="score"
+                selected={propertyvalue === "score"}
+                sx={{ flex: 1, justifyContent: "flex-start" }}
+              >
+                Score{" "}
+                {propertyvalue === "score" &&
+                  (alignment === -1 ? (
+                    <ArrowDownwardIcon fontSize="small" />
+                  ) : (
+                    <ArrowUpwardIcon fontSize="small" />
+                  ))}
+              </ToggleButton>
+            </Grid>
+            <Grid item xs={4} sm={12}>
+            <ToggleButton
+              value="price"
+              selected={propertyvalue === "price"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Price{" "}
+              {propertyvalue === "price" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+            </Grid>
+            <Grid item xs={4} sm={12}>
+            <ToggleButton
+              value="area"
+              selected={propertyvalue === "area"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Area{" "}
+              {propertyvalue === "area" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+            </Grid>
+            <Grid item xs={4} sm={12}>
+            <ToggleButton
+              value="completion"
+              selected={propertyvalue === "completion"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Completion{" "}
+              {propertyvalue === "completion" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+            </Grid>
+          </Grid>
         </ToggleButtonGroup>
       </Grid>
       <Grid
