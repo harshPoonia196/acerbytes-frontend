@@ -113,7 +113,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Credits (points) purchase order generated
+          Credits (points) purchase order created
         </Typography>
         <Typography variant="body1">Payment pending</Typography>
       </DialogTitle>
@@ -133,7 +133,7 @@ function CreditRequestPaymentPopup({ open, handleClose, creditRequest }) {
               </Tooltip>
             </Box>
           </Box>
-          <Typography sx={{ fontSize: "1rem" }}>generated for</Typography>
+          <Typography sx={{ fontSize: "1rem" }}>created for</Typography>
           <Typography variant="h3">
             {formatPoints(creditRequest?.point || 0)}&nbsp;
           </Typography>
