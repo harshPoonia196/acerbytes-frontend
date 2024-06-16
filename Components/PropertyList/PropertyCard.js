@@ -209,11 +209,7 @@ function PropertyCard(props) {
               </Box>
             </Box>
             <Box sx={{ display: { xs: "block", sm: "none" } }}>
-              <Tooltip
-                title={categorizeScore(
-                  propertyDetails?.overallAssessment?.score
-                )}
-              >
+             
                 <CircularWithValueLabel
                   progress={
                     overallAssessment?.score
@@ -223,7 +219,6 @@ function PropertyCard(props) {
                   onClick={() => router.push(`/details/${propertyUrl}`)}
                   tooltiptext={`AB scores "${categorizeScore(propertyDetails?.overallAssessment?.score)}"`}
                 />
-              </Tooltip>
             </Box>
           </Grid>
           <Grid
@@ -265,7 +260,7 @@ function PropertyCard(props) {
               textAlign: "end",
             }}
           >
-            <Tooltip title={categorizeScore(propertyDetails?.overallAssessment?.score)}>
+            
             <CircularWithValueLabel
               progress={
                 overallAssessment?.score ? overallAssessment.score.toFixed() : 0
@@ -273,7 +268,6 @@ function PropertyCard(props) {
               onClick={() => router.push(`/details/${propertyUrl}`)}
               tooltiptext={`AB scores "${categorizeScore(propertyDetails?.overallAssessment?.score)}"`}
             />
-            </Tooltip>
           </Grid>
           <Grid
             item

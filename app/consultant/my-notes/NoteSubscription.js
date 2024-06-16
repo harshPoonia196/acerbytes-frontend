@@ -131,17 +131,8 @@ function NoteSubscription({ open, handleClose, getList }) {
                         {formatPoints(credit?.discountAmount)} Points
                       </span>{" "}
                       ({credit?.discount}% discount)
-                    </Typography>
+                      </Typography>
                       </Box>
-                      {/* <Box>
-                        <CustomButton
-                          variant="contained"
-                          size="small"
-                          onClick={() => handleByPlanClick(credit.value, index)}
-                          disabled={loadingStates[index] || false}
-                          ButtonText={loadingStates[index] ? 'Loading...' : `Subscribe`}
-                        />
-                      </Box> */}
                       </Box>
                     </Card>
                   </Grid>
