@@ -481,8 +481,7 @@ function PropertyList({ params }) {
           size="small"
           orientation="vertical"
         >
-          <Grid container>
-            <Grid item xs={4} sm={12}>
+            
               <ToggleButton
                 value="score"
                 selected={propertyvalue === "score"}
@@ -496,8 +495,8 @@ function PropertyList({ params }) {
                     <ArrowUpwardIcon fontSize="small" />
                   ))}
               </ToggleButton>
-            </Grid>
-            <Grid item xs={4} sm={12}>
+            
+            
             <ToggleButton
               value="price"
               selected={propertyvalue === "price"}
@@ -511,8 +510,8 @@ function PropertyList({ params }) {
                   <ArrowUpwardIcon fontSize="small" />
                 ))}
             </ToggleButton>
-            </Grid>
-            <Grid item xs={4} sm={12}>
+            
+            
             <ToggleButton
               value="area"
               selected={propertyvalue === "area"}
@@ -526,8 +525,8 @@ function PropertyList({ params }) {
                   <ArrowUpwardIcon fontSize="small" />
                 ))}
             </ToggleButton>
-            </Grid>
-            <Grid item xs={4} sm={12}>
+           
+            
             <ToggleButton
               value="completion"
               selected={propertyvalue === "completion"}
@@ -541,8 +540,8 @@ function PropertyList({ params }) {
                   <ArrowUpwardIcon fontSize="small" />
                 ))}
             </ToggleButton>
-            </Grid>
-          </Grid>
+            
+         
         </ToggleButtonGroup>
       </Grid>
       <Grid
