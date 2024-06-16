@@ -125,7 +125,7 @@ function BottomFooterConsultant({
     }
 }, [propertyData?.isActiveAd])
   return (
-    <>
+    <Box className="mainBlock" sx={{ paddingTop: "21px"}}>
       <Box
         className="consultantFooter"
         sx={{
@@ -471,7 +471,7 @@ function BottomFooterConsultant({
                     {userDetails.role === 'broker' ? "Enquiries received": "Enquiries"}
                 </Fab> */}
       </Box>
-    </>
+    </Box>
   );
 }
 

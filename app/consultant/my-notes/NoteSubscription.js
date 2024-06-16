@@ -21,6 +21,7 @@ import { buyNotesPoints, getBrokerBalance } from "api/Broker.api";
 import { useAuth } from "utills/AuthContext";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import { useRouter } from "next/navigation";
+import { listOfPages } from "Components/NavBar/Links";
 
 function NoteSubscription({ open, handleClose, getList }) {
   const router = useRouter();
@@ -90,7 +91,7 @@ function NoteSubscription({ open, handleClose, getList }) {
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            Request for Plan Subscribe
+            Request for plan subscribe
           </Typography>
           <CustomButton
             startIcon={<AddCardIcon fontSize="small" />}
@@ -113,10 +114,10 @@ function NoteSubscription({ open, handleClose, getList }) {
             return (
               <>
                 <Grid item xs={12}>
-                  <Card sx={{ p: 1 }}>
+                  <Card sx={{ p: 2,  border: "solid 1px #dcdcdc78", mb: "8px", overflowY: "auto" }}>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <Box>
-                        <FormControlLabel value={credit.value} control={<Radio />} style={{ marginRight: "0px", marginLeft: "5px"}} />
+                        <FormControlLabel value={credit.value} control={<Radio />} sx={{mr:0}} />
                       </Box>
                       <Box>
                       <Typography
@@ -130,17 +131,8 @@ function NoteSubscription({ open, handleClose, getList }) {
                         {formatPoints(credit?.discountAmount)} Points
                       </span>{" "}
                       ({credit?.discount}% discount)
-                    </Typography>
+                      </Typography>
                       </Box>
-                      {/* <Box>
-                        <CustomButton
-                          variant="contained"
-                          size="small"
-                          onClick={() => handleByPlanClick(credit.value, index)}
-                          disabled={loadingStates[index] || false}
-                          ButtonText={loadingStates[index] ? 'Loading...' : `Subscribe`}
-                        />
-                      </Box> */}
                       </Box>
                     </Card>
                   </Grid>
@@ -158,16 +150,15 @@ function NoteSubscription({ open, handleClose, getList }) {
           <CustomButton
             variant="contained"
             size="small"
-            sx={{ mr: 1 }}
             ButtonText={`Subscribe`}
           />
-          <CustomButton
+          {/* <CustomButton
             variant="contained"
             onClick={() => {
               handleClose();
             }}
             ButtonText={"Close"}
-          />{" "}
+          />{" "} */}
         </Box>
       </DialogActions>
     </Dialog>
