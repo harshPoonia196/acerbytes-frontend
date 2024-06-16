@@ -209,7 +209,11 @@ function PropertyCard(props) {
               </Box>
             </Box>
             <Box sx={{ display: { xs: "block", sm: "none" } }}>
-              <Tooltip title={categorizeScore(propertyDetails?.overallAssessment?.score)}>
+              <Tooltip
+                title={categorizeScore(
+                  propertyDetails?.overallAssessment?.score
+                )}
+              >
                 <CircularWithValueLabel
                   progress={
                     overallAssessment?.score
@@ -281,7 +285,7 @@ function PropertyCard(props) {
             {(unitsPlan?.averagePrice || unitsPlan?.planList[0]?.areaUnit) && (
               <Typography variant="caption">
                 {"₹ " +
-                  unitsPlan.averagePrice.toLocaleString() +
+                  Math.round(unitsPlan.averagePrice).toLocaleString() +
                   "/" +
                   unitsPlan.planList[0]?.areaUnit}
               </Typography>
