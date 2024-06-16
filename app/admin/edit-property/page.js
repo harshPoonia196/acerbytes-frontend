@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Card, Container, Grid } from "@mui/material";
+import { Card, Container, Grid } from "@mui/material";
 import dynamic from "next/dynamic";
 import React from "react";
 import { useState } from "react";
@@ -9,15 +9,12 @@ import NavTab from "Components/Admin/Property/NavTab";
 import throttle from "lodash/throttle";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { getBrokersList } from "api/Admin.api";
-import { getBrokers } from "api/UserProfile.api";
 import { getAllBrokers } from "api/Broker.api";
 
-import { makeStyles, withStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
 import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
-import BankCard from "Components/Admin/Property/SubComponents/BankCard";
-import { getAllOptions, getAllProperty, getCities } from "api/Property.api";
+import { getAllOptions, getCities } from "api/Property.api";
 
 import {
   Schema,
@@ -28,8 +25,6 @@ import FacilitiesCard from "Components/Admin/Property/SubComponents/FacilitiesCa
 import LandscapeCard from "Components/Admin/Property/SubComponents/LandscapeCard";
 import FloorPlanCard from "Components/Admin/Property/SubComponents/FloorPlanCard";
 import RegulatoryCard from "Components/Admin/Property/SubComponents/RegulatoryCard";
-import BuilderPriceCard from "Components/Admin/Property/SubComponents/BuilderPriceCard";
-import ResalePriceCard from "Components/Admin/Property/SubComponents/ResalePriceCard";
 import InvestmentCard from "Components/Admin/Property/SubComponents/InvestmentCard";
 const MarketingCard = dynamic(
   () => import("Components/Admin/Property/SubComponents/MarketingCard"),
@@ -45,7 +40,6 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import { detailsProperty } from "api/Property.api";
 import colors from "styles/theme/colors";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import EditLocationCard from "Components/Admin/Property/SubComponents/EditLocationCard";
 
 const tabHeight = 116;
 
@@ -123,14 +117,9 @@ function AddProperty() {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
-
-    // Don't set the active index based on scroll if a link was just clicked
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -161,25 +150,9 @@ function AddProperty() {
 
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => () => {
-    // Used to disable findActiveIndex if the  scrolls due to a clickpage
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
-
-    if (activeState !== hash) {
-      setActiveState(hash);
-
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+  const handleClick = (hash) => {
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
   };
   function removeIds(obj) {
     for (const key in obj) {
@@ -429,10 +402,6 @@ function AddProperty() {
     getCitiesList();
     brokersList();
     // setLoading(false)
-
-    return () => {
-      clearTimeout(unsetClickedRef.current);
-    };
   }, []);
 
   const classes = useStyles();
@@ -659,13 +628,7 @@ function AddProperty() {
     });
   };
 
-  const moduleScoreCalc = (
-    e,
-    firstKeyName,
-    secondKeyName,
-    seperateCalc,
-    thirdKeyName
-  ) => {
+  const moduleScoreCalc = (e, firstKeyName, secondKeyName, seperateCalc) => {
     let totalRatingModule;
     let totalScored;
     switch (firstKeyName.toLowerCase()) {

@@ -3,7 +3,6 @@
 import {
   Container,
   Card,
-  Switch,
   Typography,
   Grid,
   Box,
@@ -11,44 +10,36 @@ import {
   Chip,
   Button,
   Divider,
-  IconButton,
   Fab,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { CircularProgress } from '@mui/material';
+import { CircularProgress } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
 import SaveIcon from "@mui/icons-material/Save";
 import Avatar from "@mui/material/Avatar";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import PropertyTable from "Components/ProfilePage/PropertyTable";
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import { useState } from "react";
 import colors from "styles/theme/colors";
-import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import NewCurrencyInputField from "Components/CommonLayouts/NewCurrencyInputField";
-import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
-import { makeStyles, withStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
-import { FILE_TYPES, listOfConsultantProfileTab, reactQueryKey } from "utills/Constants";
+import {
+  FILE_TYPES,
+  listOfConsultantProfileTab,
+  reactQueryKey,
+} from "utills/Constants";
 import { getBrokerProfile, updateBrokerProfile } from "api/BrokerProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId, validateEmail, validatePhoneNumber } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
-import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
-import {
-  getAccessToken,
-  getAllCitiesList,
-  getAllStateList,
-  updateProfileImage,
-  uploadImage,
-} from "api/Util.api";
+import { updateProfileImage, uploadImage } from "api/Util.api";
 import { currencies, countries } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import { useAuth } from "utills/AuthContext";
@@ -72,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -94,45 +85,9 @@ function useThrottledOnScroll(callback, delay) {
 function ConsultantProfile({ id, isAdminUpdate = false }) {
   const [isUploading, setUploading] = useState(false);
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
-  const [image, setImage] = useState("");
-  const [cropData, setCropData] = useState("");
-  const [cropper, setCropper] = useState(false);
-  const [enableCropper, setEnableCropper] = useState(false);
-  const { userDetails } =
-    useAuth();
-
-  const handleOpenUploadPopup = () => {
-    setIsUploadPopupOpen(true);
-  };
-
-  const handleCloseUploadPopup = () => {
-    setIsUploadPopupOpen(false);
-  };
-
-  const handleImageSelect = (e) => {
-    e.preventDefault();
-    let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(files[0]);
-    handleOpenUploadPopup();
-  };
-
-  const handleImageRemove = () => {
-    setImage("");
-    handleCloseUploadPopup();
-  };
-  const router = useRouter();
+  const { userDetails } = useAuth();
 
   const { openSnackbar } = useSnackbar();
-
   const [stateOptions, setStateOptions] = useState([]);
   const [allStateAndCityInfo, setAllStateAndCityInfo] = useState({});
   const [allDropdownOptions, setAllDropdownOptions] = useState([]);
@@ -144,7 +99,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       try {
         const userId = isAdminUpdate ? id : userDetails?.googleID;
         if (!userId) {
-          return
+          return;
         }
         const response = await getBrokerProfile(userId);
         if (response.status == 200) {
@@ -158,8 +113,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+            error?.message ||
+            "Something went wrong!",
           "error"
         );
         return error;
@@ -168,7 +123,6 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
   );
 
   const onSuccess = (res) => {
-
     if (!isAdminUpdate) {
       let userInfo = JSON.parse(localStorage.getItem("userDetails"));
       userInfo = {
@@ -186,20 +140,17 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
         name: brokerProfileInfo?.name || {},
         phone: brokerProfileInfo?.phone || {},
       });
-
     }
 
     openSnackbar(res?.data?.message || "Success!", "success");
   };
 
   const onError = (err) => {
-    console.log(err)
+    console.log(err);
     openSnackbar(err?.response?.data?.message || "Error", "error");
   };
 
   const mutate = useMutate(updateBrokerProfile, onSuccess, onError);
-
-  const [exploringAsToggle, setExploringAsToggle] = useState("");
 
   const handleTargetCustomer = (e, firstKeyName) => {
     if (e?.persist) {
@@ -220,8 +171,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     let value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
-    if (secondKeyName === 'firstName' || secondKeyName === 'lastName') {
-      value = capitalLizeName(value)
+    if (secondKeyName === "firstName" || secondKeyName === "lastName") {
+      value = capitalLizeName(value);
     }
     if (e.target.type == "number") {
       value = Number(value);
@@ -236,14 +187,14 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-          ...(prev?.[firstKeyName] || {}),
-          [secondKeyName]: !thirdKeyName
-            ? value
-            : {
-              ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
-              [thirdKeyName]: value,
-            },
-        },
+            ...(prev?.[firstKeyName] || {}),
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
+                  [thirdKeyName]: value,
+                },
+          },
     }));
   };
   const handleAddTargetCustomer = () => {
@@ -272,61 +223,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     });
   };
 
-  const handleChangeExploringAsToggle = (event, newAlignment) => {
-    if (newAlignment != null) setExploringAsToggle(newAlignment);
-  };
-
-  const [purposeToggle, setPurposeToggle] = useState("");
-
-  const handleChangePurposeToggle = (event, newAlignment) => {
-    if (newAlignment != null) setPurposeToggle(newAlignment);
-  };
-
-  const [purchaseToggle, setPurchaseToggle] = useState("");
-
-  const handleChangePurchaseToggle = (event, newAlignment) => {
-    if (newAlignment != null) setPurchaseToggle(newAlignment);
-  };
-
-  const [demographicToggle, setDemographicToggle] = useState("");
-
-  const handleChangeDemographicToggle = (event, newAlignment) => {
-    if (newAlignment != null) setDemographicToggle(newAlignment);
-  };
-
-  const [interestedForLoanToggle, setInterestedForLoanToggle] = useState("");
-
-  const handleChangeInterestedForLoanToggle = (event, newAlignment) => {
-    if (newAlignment != null) setInterestedForLoanToggle(newAlignment);
-  };
-
-  const [propertyTypeToggleAlignment, setPropertyTypeToggleAlignment] =
-    React.useState("");
-
-  const handleChangePropertyTypeToggle = (event, newAlignment) => {
-    setPropertyTypeToggleAlignment(newAlignment);
-  };
-  const [businessTypeToggleAlignment, setBusinessTypeToggleAlignment] =
-    React.useState("");
-  const handleChangeBusinessTypeToggle = (event, newAlignment) => {
-    setBusinessTypeToggleAlignment(newAlignment);
-  };
-
-  const [isDndEnabled, setIsDndEnabled] = useState(false);
-  const [isPromotionEnabled, setIsPromotionEnabled] = useState(true);
-
-  const handleDndToggle = () => {
-    setIsDndEnabled((prev) => !prev);
-  };
-
-  const handlePromotionToggle = () => {
-    setIsPromotionEnabled((prev) => !prev);
-  };
-
   const [isEdit, setIsEdit] = useState(true);
 
   const [activeState, setActiveState] = React.useState("userDetails");
-
   const [brokerProfileInfo, setBrokerProfileInfo] = React.useState({});
   const [userProfileInfo, setUserProfileInfo] = React.useState(null);
   const [errorInvalid, setErrorInvalid] = useState({});
@@ -384,15 +283,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     }
   }, [data]);
 
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
-
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
-
-    // Don't set the active index based on scroll if a link was just clicked
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -407,9 +300,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -424,45 +317,23 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
   // Corresponds to 10 frames at 60 Hz
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => () => {
-    // Used to disable findActiveIndex if the  scrolls due to a clickpage
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
-
-    if (activeState !== hash) {
-      setActiveState(hash);
-
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+  const handleClick = (hash) => {
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
   };
-
-  React.useEffect(
-    () => () => {
-      clearTimeout(unsetClickedRef.current);
-    },
-    []
-  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let error = { ...errorInvalid }, isError = false;
+    let error = { ...errorInvalid },
+      isError = false;
     if (
       brokerProfileInfo?.alternateEmail &&
       !validateEmail(brokerProfileInfo?.alternateEmail)
     ) {
       isError = true;
-      error['alternateEmail'] = true;
+      error["alternateEmail"] = true;
     } else {
-      error['alternateEmail'] = false;
+      error["alternateEmail"] = false;
     }
 
     if (
@@ -470,23 +341,23 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       !validateEmail(brokerProfileInfo?.serviceDetails?.companyEmail)
     ) {
       isError = true;
-      error['companyEmail'] = true;
+      error["companyEmail"] = true;
     } else {
-      error['companyEmail'] = false;
+      error["companyEmail"] = false;
     }
 
     if (!brokerProfileInfo?.serviceDetails?.company) {
-      error['company'] = true;
+      error["company"] = true;
       isError = true;
     } else {
-      error['company'] = false;
+      error["company"] = false;
     }
 
     if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
-      error['reraNumber'] = true;
+      error["reraNumber"] = true;
       isError = true;
     } else {
-      error['reraNumber'] = false;
+      error["reraNumber"] = false;
     }
 
     // if (
@@ -502,13 +373,18 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     //   error['phone'] = false;
     // }
 
-    if (brokerProfileInfo?.serviceDetails?.registeredPhone?.number && !([0, 10].includes(brokerProfileInfo?.serviceDetails?.registeredPhone?.number?.toString()?.length))) {
-      error['registeredPhone'] = true;
+    if (
+      brokerProfileInfo?.serviceDetails?.registeredPhone?.number &&
+      ![0, 10].includes(
+        brokerProfileInfo?.serviceDetails?.registeredPhone?.number?.toString()
+          ?.length
+      )
+    ) {
+      error["registeredPhone"] = true;
       isError = true;
     } else {
-      error['registeredPhone'] = false;
+      error["registeredPhone"] = false;
     }
-
 
     setErrorInvalid({
       ...error,
@@ -532,7 +408,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
         ...brokerProfileInfo?.serviceDetails,
         registeredPhone: {
           ...brokerProfileInfo?.serviceDetails?.registeredPhone,
-          number: brokerProfileInfo?.serviceDetails?.registeredPhone?.number?.toString() || "",
+          number:
+            brokerProfileInfo?.serviceDetails?.registeredPhone?.number?.toString() ||
+            "",
         },
       },
       targetCustomers: brokerProfileInfo?.targetCustomers,
@@ -550,15 +428,16 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       if (response?.data?.data?.[0]) {
         setAllStateAndCityInfo(response?.data?.data?.[0]);
         setStateOptions(
-          Object.keys(response?.data?.data?.[0])?.filter(rs => rs !== "_id")?.map((stateDetail) => {
-            return {
-              label: stateDetail || "",
-              value: stateDetail || "",
-            }
-          }) || []
+          Object.keys(response?.data?.data?.[0])
+            ?.filter((rs) => rs !== "_id")
+            ?.map((stateDetail) => {
+              return {
+                label: stateDetail || "",
+                value: stateDetail || "",
+              };
+            }) || []
         );
       }
-
 
       const allOptionsResponse = await getAllOptions();
       if (allOptionsResponse?.data?.data?.length > 0) {
@@ -567,8 +446,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -588,8 +467,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -621,32 +500,31 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     try {
       setUploading(true);
       const formData = new FormData();
-      formData.append('image', selectedFile);
+      formData.append("image", selectedFile);
       const response = await uploadImage(formData);
       if (response.data.status == 200) {
         const userId = isAdminUpdate ? id : userDetails.googleID;
-        const imageResponse = await updateProfileImage(userId, response.data.data.Location);
+        const imageResponse = await updateProfileImage(
+          userId,
+          response.data.data.Location
+        );
         if (imageResponse?.data?.status == 200) {
           updateOnLocalStorage(response.data.data.Location);
-          openSnackbar(
-            response.data.message,
-            "success"
-          );
+          openSnackbar(response.data.message, "success");
         }
       }
     } catch (error) {
       console.log("error: ", error);
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     } finally {
       setUploading(false);
     }
-
-  }
+  };
 
   const updateOnLocalStorage = (imageUrl) => {
     let userInfo = JSON.parse(localStorage.getItem("userDetails"));
@@ -681,93 +559,103 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
             {/* <Grid item xs={12} sx={{ textAlign: 'end' }}>
             <Button variant='contained'>Save</Button>
           </Grid> */}
-            {isAdminUpdate ? null : <Grid item xs={12} id="userDetails">
-              <Card sx={{ p: 2 }}>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: "20px" }}
-                >
-                  <label htmlFor="avatar-input" style={{ cursor: "pointer" }}>
-                    <ProfilePic
-                      style={{
-                        minWidth: "3rem",
-                        maxWidth: "3rem",
-                        height: "3rem",
-                      }}
-                    >
-                      {isUploading ?
-                        <div className="profilepic__loader">
-                          <CircularProgress size={24} />
-                        </div> :
-                        <>
-                          <Avatar
-                            sx={{
-                              width: "3rem",
-                              position: "static",
-                              height: "3rem",
-                              cursor: "pointer",
-                            }}
-                            src={userDetails?.googleDetails?.profilePicture ? userDetails.googleDetails.profilePicture : null}
-                            className="profilepic__image"
-                            onClick={(e) => {
-                              // Trigger the file input click when Avatar is clicked
-                              document.getElementById("avatar-input").click();
-                            }}
-                          >
-                            {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
-                          </Avatar>
-                          <div className="profilepic__content">
-                            <EditIcon fontSize="small" />
-                            <p className="profilepic__text">Edit</p>
-                          </div>
-                        </>}
-                      <input
-                        type="file"
-                        disabled={isUploading}
-                        id="avatar-input"
-                        accept=".png, .jpeg, .jpg"
-                        onChange={handleFileChange}
-                        style={{ display: 'none' }}
-                      />
-                    </ProfilePic>
-                  </label>
-                  {userProfileInfo?.name ? (
-                    <Box sx={{ flex: 1 }}>
-                      <Typography variant="h6" sx={{ fontWeight: 900 }}>
-                        {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
-                      </Typography>
-                      <Typography variant="body2">
-                        {brokerProfileInfo?.email}
-                      </Typography>
-                    </Box>
-                  ) : null}
-                  {brokerProfileInfo?.phone?.number ? (
-                    <Box>
-                      <a
-                        href={`tel:${brokerProfileInfo?.phone?.countryCode}${brokerProfileInfo?.phone?.number}`}
+            {isAdminUpdate ? null : (
+              <Grid item xs={12} id="userDetails">
+                <Card sx={{ p: 2 }}>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", gap: "20px" }}
+                  >
+                    <label htmlFor="avatar-input" style={{ cursor: "pointer" }}>
+                      <ProfilePic
                         style={{
-                          display: "flex",
-                          alignSelf: "center",
-                          textDecoration: "none",
-                          color: colors.BLUE,
+                          minWidth: "3rem",
+                          maxWidth: "3rem",
+                          height: "3rem",
                         }}
                       >
-                        <CallIcon
-                          fontSize="small"
-                          sx={{ alignSelf: "center" }}
+                        {isUploading ? (
+                          <div className="profilepic__loader">
+                            <CircularProgress size={24} />
+                          </div>
+                        ) : (
+                          <>
+                            <Avatar
+                              sx={{
+                                width: "3rem",
+                                position: "static",
+                                height: "3rem",
+                                cursor: "pointer",
+                              }}
+                              src={
+                                userDetails?.googleDetails?.profilePicture
+                                  ? userDetails.googleDetails.profilePicture
+                                  : null
+                              }
+                              className="profilepic__image"
+                              onClick={(e) => {
+                                // Trigger the file input click when Avatar is clicked
+                                document.getElementById("avatar-input").click();
+                              }}
+                            >
+                              {/* {getFirstLetter(user?.first_name) + getFirstLetter(user?.last_name)} */}
+                            </Avatar>
+                            <div className="profilepic__content">
+                              <EditIcon fontSize="small" />
+                              <p className="profilepic__text">Edit</p>
+                            </div>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          disabled={isUploading}
+                          id="avatar-input"
+                          accept=".png, .jpeg, .jpg"
+                          onChange={handleFileChange}
+                          style={{ display: "none" }}
                         />
-                        <Typography
-                          variant="h6"
-                          sx={{ alignSelf: "center", color: colors.BLUE }}
-                        >
-                          +{`${brokerProfileInfo?.phone?.countryCode || ""} ${brokerProfileInfo?.phone?.number || ""
-                            }`}
+                      </ProfilePic>
+                    </label>
+                    {userProfileInfo?.name ? (
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 900 }}>
+                          {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
                         </Typography>
-                      </a>
-                    </Box>
-                  ) : null}
-                </Box>
-              </Card>
-            </Grid>}
+                        <Typography variant="body2">
+                          {brokerProfileInfo?.email}
+                        </Typography>
+                      </Box>
+                    ) : null}
+                    {brokerProfileInfo?.phone?.number ? (
+                      <Box>
+                        <a
+                          href={`tel:${brokerProfileInfo?.phone?.countryCode}${brokerProfileInfo?.phone?.number}`}
+                          style={{
+                            display: "flex",
+                            alignSelf: "center",
+                            textDecoration: "none",
+                            color: colors.BLUE,
+                          }}
+                        >
+                          <CallIcon
+                            fontSize="small"
+                            sx={{ alignSelf: "center" }}
+                          />
+                          <Typography
+                            variant="h6"
+                            sx={{ alignSelf: "center", color: colors.BLUE }}
+                          >
+                            +
+                            {`${brokerProfileInfo?.phone?.countryCode || ""} ${
+                              brokerProfileInfo?.phone?.number || ""
+                            }`}
+                          </Typography>
+                        </a>
+                      </Box>
+                    ) : null}
+                  </Box>
+                </Card>
+              </Grid>
+            )}
             <Grid item xs={12}>
               <Card>
                 <Box sx={{ display: "flex", p: 2, py: 1 }}>
@@ -821,9 +709,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     value={brokerProfileInfo?.alternateEmail || ""}
                     handleChange={(e) => handleChange(e, "alternateEmail")}
                     isEdit={isEdit}
-                    error={
-                      errorInvalid.alternateEmail || false
-                    }
+                    error={errorInvalid.alternateEmail || false}
                   />
                   <NewToggleButtonStructure
                     isEdit={isEdit}
@@ -858,7 +744,11 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     label="Service type"
                     value={brokerProfileInfo?.serviceDetails?.serviceType || ""}
                     isEdit={isEdit}
-                    list={allDropdownOptions?.find(rs => rs.name == "Service Type")?.childSub || []}
+                    list={
+                      allDropdownOptions?.find(
+                        (rs) => rs.name == "Service Type"
+                      )?.childSub || []
+                    }
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "serviceType")
                     }
@@ -904,7 +794,11 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                   <NewPhoneInputFieldStructure
                     variant="outlined"
                     label="Alternate phone"
-                    countryCodeOptions={allDropdownOptions?.find(rs => rs.name == "Country code")?.childSub || []}
+                    countryCodeOptions={
+                      allDropdownOptions?.find(
+                        (rs) => rs.name == "Country code"
+                      )?.childSub || []
+                    }
                     value1={
                       brokerProfileInfo?.serviceDetails?.registeredPhone
                         ?.countryCode || ""
@@ -929,7 +823,6 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                         "registeredPhone",
                         "countryCode"
                       )
-
                     }
                     error={errorInvalid.registeredPhone}
                   />
@@ -1005,8 +898,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                           }
                           return (
                             <Chip
-                              key={`${targetArea.selectCity || ""}-${targetArea.selectArea || ""
-                                }-${index}`}
+                              key={`${targetArea.selectCity || ""}-${
+                                targetArea.selectArea || ""
+                              }-${index}`}
                               label={label}
                               size="small"
                               sx={{ ml: 1, py: 2, px: 1 }}
@@ -1051,7 +945,11 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     label="Minimum"
                     variant="outlined"
                     isEdit={isEdit}
-                    currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
+                    currentOptions={
+                      allDropdownOptions?.find(
+                        (rs) => rs.name == "currency code"
+                      )?.childSub || []
+                    }
                     value1={
                       brokerProfileInfo?.budget?.minimumBudget?.unit || "₹INR"
                     }
@@ -1068,14 +966,16 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                   <NewCurrencyInputField
                     label="Maximum"
                     variant="outlined"
-                    currentOptions={allDropdownOptions?.find(rs => rs.name == "currency code")?.childSub || []}
+                    currentOptions={
+                      allDropdownOptions?.find(
+                        (rs) => rs.name == "currency code"
+                      )?.childSub || []
+                    }
                     isEdit={isEdit}
                     value1={
                       brokerProfileInfo?.budget?.maximumBudget?.unit || "₹INR"
                     }
-                    value2={
-                      brokerProfileInfo?.budget?.maximumBudget?.value
-                    }
+                    value2={brokerProfileInfo?.budget?.maximumBudget?.value}
                     handleSelect={(e) =>
                       handleChange(e, "budget", "maximumBudget", "unit")
                     }
