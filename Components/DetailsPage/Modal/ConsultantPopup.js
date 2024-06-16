@@ -43,7 +43,6 @@ function ConsultantPopup({
 
   const handleByPlanClick = async () => {
     const { duration } = currentPlan;
-    console.log("duration ===========>", duration);
 
     if (duration) {
       const adData = { durationInMonths: duration };
@@ -87,12 +86,6 @@ function ConsultantPopup({
     }
   };
 
-  const [value, setValue] = useState("");
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
   return (
     <Dialog
       sx={{
@@ -130,15 +123,21 @@ function ConsultantPopup({
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
-          value={value}
-          onChange={handleChange}
+          // onChange={}
         >
           <Grid container spacing={1}>
             {BuyConsultantPoints?.map((credit, index) => {
               return (
                 <>
                   <Grid item xs={12}>
-                    <Card sx={{ p: 2, border: "solid 1px #dcdcdc78", mb: "8px", overflowY: "auto" }}>
+                    <Card
+                      sx={{
+                        p: 2,
+                        border: "solid 1px #dcdcdc78",
+                        mb: "8px",
+                        overflowY: "auto",
+                      }}
+                    >
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <FormControlLabel
                           onClick={() =>
@@ -154,11 +153,12 @@ function ConsultantPopup({
                             variant="body1"
                             sx={{ flex: 1, alignSelf: "center" }}
                           >
-                            {credit?.month}{credit?.month !== "1 month" ? "s": null} plan
+                            {credit?.month}
+                            {credit?.month !== "1 month" ? "s" : null} plan
                           </Typography>
                           <Typography variant="subtitle2">
                             <span style={{ fontWeight: 600 }}>
-                              {formatPoints(credit?.discountAmount)} Points {" "}
+                              {formatPoints(credit?.discountAmount)} Points{" "}
                             </span>
                             ({credit?.discount}% discount)
                           </Typography>
