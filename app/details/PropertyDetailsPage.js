@@ -666,7 +666,7 @@ const PropertyDetailsPage = ({ params }) => {
                     </Grid>
                   </Box>
                   <Divider />
-                  {userDetails?.role === "broker" && (
+                  {userDetails?.role === "broker" && propertyData?.isConsultant === false && (
                     <Box
                       sx={{
                         p: 2,
@@ -675,7 +675,7 @@ const PropertyDetailsPage = ({ params }) => {
                         gap: 1,
                       }}
                     >
-                      {propertyData?.isConsultant === false && (
+                      
                       <Box sx={{ flex: 1, alignSelf: "center" }}>
                         <Typography variant="body2" sx={{ flex: 1 }}>
                           Are you a{" "}
@@ -684,8 +684,8 @@ const PropertyDetailsPage = ({ params }) => {
                           </span>{" "}
                           let Customers reach you
                         </Typography>
-                      </Box>)}
-                      {propertyData?.isConsultant === false && (
+                      </Box>
+                      
                         <Box sx={{ alignSelf: { xs: "end" } }}>
                           <Chip
                             label="Yes, show me here !"
@@ -697,7 +697,7 @@ const PropertyDetailsPage = ({ params }) => {
                             }}
                           />
                         </Box>
-                      )}
+                      
                     </Box>
                   )}
                 </Card>
