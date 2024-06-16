@@ -26,12 +26,10 @@ import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSect
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import {
-  enquiryFormKey,
   enquiryFormOpen,
   listOfPropertyDetailsTab,
   propertyUserVerifiedKey,
@@ -490,25 +488,29 @@ const PropertyDetailsPage = ({ params }) => {
   // Corresponds to 10 frames at 60 Hz
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => () => {
+  const handleClick = (hash) => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
+
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
+
     clickedRef.current = true;
     unsetClickedRef.current = setTimeout(() => {
       clickedRef.current = false;
     }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
+    // if (activeState !== hash) {
+    //   setActiveState(hash);
 
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    //   if (window)
+    //     window.scrollTo({
+    //       top:
+    //         document.getElementById(hash)?.getBoundingClientRect().top +
+    //         window.pageYOffset -
+    //         tabHeight,
+    //       behavior: "smooth",
+    //     });
+    // }
   };
 
   React.useEffect(
@@ -676,15 +678,16 @@ const PropertyDetailsPage = ({ params }) => {
                       }}
                     >
                       {propertyData?.isConsultant === false && (
-                      <Box sx={{ flex: 1, alignSelf: "center" }}>
-                        <Typography variant="body2" sx={{ flex: 1 }}>
-                          Are you a{" "}
-                          <span style={{ fontWeight: 700 }}>
-                            Property Consultant?
-                          </span>{" "}
-                          let Customers reach you
-                        </Typography>
-                      </Box>)}
+                        <Box sx={{ flex: 1, alignSelf: "center" }}>
+                          <Typography variant="body2" sx={{ flex: 1 }}>
+                            Are you a{" "}
+                            <span style={{ fontWeight: 700 }}>
+                              Property Consultant?
+                            </span>{" "}
+                            let Customers reach you
+                          </Typography>
+                        </Box>
+                      )}
                       {propertyData?.isConsultant === false && (
                         <Box sx={{ alignSelf: { xs: "end" } }}>
                           <Chip
