@@ -25,10 +25,10 @@ import { listOfPages } from "Components/NavBar/Links";
 
 function NoteSubscription({ open, handleClose, getList }) {
   const router = useRouter();
-  const [duration, setDuration] = useState({});
+  const [duration, setDuration] = useState();
 
   const { setBrokerPoints, brokerBalance } = useAuth(),
-    [loadingStates, setLoadingStates] = useState({}),
+    [loadingStates, setLoadingStates] = useState(),
     { openSnackbar } = useSnackbar(),
     showTostMessages = (message, severity) => {
       openSnackbar(message, severity);
@@ -57,7 +57,7 @@ function NoteSubscription({ open, handleClose, getList }) {
         }
       } else {
         showTostMessages("Please select a plan", "error");
-        setLoadingStates(true);
+        setLoadingStates(false);
       }
     },
     getBrokerPointBalance = async () => {
