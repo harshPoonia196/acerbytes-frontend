@@ -35,8 +35,8 @@ import {
 import { debounce } from "lodash";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import CustomSearch from "Components/CommonLayouts/CustomSearch";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function PropertyList({ params }) {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -62,7 +62,7 @@ function PropertyList({ params }) {
   const [selectedCity, setSelectedCity] = useState(
     params.location ? [decodeURIComponent(params.location)] : []
   );
-  const [mobileFilter, setMobileFilter] = useState(false)
+  const [mobileFilter, setMobileFilter] = useState(false);
 
   const handleSearchButtonClick = () => {
     performSearch();
@@ -464,104 +464,104 @@ function PropertyList({ params }) {
   const getSortBy = () => {
     return (
       <>
-      <Grid item xs={12} sx={{ alignSelf: "center" }}>
-        <Typography
-          variant="subtitle2"
-          sx={{ alignSelf: "center", color: colors.GRAY }}
+        <Grid item xs={12} sx={{ alignSelf: "center" }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ alignSelf: "center", color: colors.GRAY }}
+          >
+            Sort by
+          </Typography>
+          <ToggleButtonGroup
+            color="primary"
+            value={alignment}
+            exclusive
+            onChange={handleChangeData}
+            aria-label="Platform"
+            sx={{ display: "flex" }}
+            size="small"
+            orientation="vertical"
+          >
+            <ToggleButton
+              value="score"
+              selected={propertyvalue === "score"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Score
+              {propertyvalue === "score" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+            <ToggleButton
+              value="price"
+              selected={propertyvalue === "price"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Price
+              {propertyvalue === "price" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+            <ToggleButton
+              value="area"
+              selected={propertyvalue === "area"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Rate (Per Unit)
+              {propertyvalue === "area" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+            <ToggleButton
+              value="completion"
+              selected={propertyvalue === "completion"}
+              sx={{ flex: 1, justifyContent: "flex-start" }}
+            >
+              Completion
+              {propertyvalue === "completion" &&
+                (alignment === -1 ? (
+                  <ArrowDownwardIcon fontSize="small" />
+                ) : (
+                  <ArrowUpwardIcon fontSize="small" />
+                ))}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Grid>
+        <Grid
+          item
+          xs={36}
+          sm={36}
+          md={6}
+          sx={{ textAlign: "start", alignSelf: "start" }}
         >
-          Sort by
-        </Typography>
-        <ToggleButtonGroup
-          color="primary"
-          value={alignment}
-          exclusive
-          onChange={handleChangeData}
-          aria-label="Platform"
-          sx={{ display: "flex" }}
-          size="small"
-          orientation="vertical"
-        >
-          <ToggleButton
-            value="score"
-            selected={propertyvalue === "score"}
-            sx={{ flex: 1, justifyContent: "flex-start" }}
+          <Button
+            variant="h6"
+            sx={{
+              fontWeight: 600,
+              color: "white",
+              background: colors?.BLACK,
+              "&:hover": {
+                backgroundColor: colors?.BLACK,
+                boxShadow: "none",
+              },
+            }}
+            startIcon={<CloseIcon />}
+            onClick={handleReset}
           >
-            Score{" "}
-            {propertyvalue === "score" &&
-              (alignment === -1 ? (
-                <ArrowDownwardIcon fontSize="small" />
-              ) : (
-                <ArrowUpwardIcon fontSize="small" />
-              ))}
-          </ToggleButton>
-          <ToggleButton
-            value="price"
-            selected={propertyvalue === "price"}
-            sx={{ flex: 1, justifyContent: "flex-start" }}
-          >
-            Price{" "}
-            {propertyvalue === "price" &&
-              (alignment === -1 ? (
-                <ArrowDownwardIcon fontSize="small" />
-              ) : (
-                <ArrowUpwardIcon fontSize="small" />
-              ))}
-          </ToggleButton>
-          <ToggleButton
-            value="area"
-            selected={propertyvalue === "area"}
-            sx={{ flex: 1, justifyContent: "flex-start" }}
-          >
-            Area{" "}
-            {propertyvalue === "area" &&
-              (alignment === -1 ? (
-                <ArrowDownwardIcon fontSize="small" />
-              ) : (
-                <ArrowUpwardIcon fontSize="small" />
-              ))}
-          </ToggleButton>
-          <ToggleButton
-            value="completion"
-            selected={propertyvalue === "completion"}
-            sx={{ flex: 1, justifyContent: "flex-start" }}
-          >
-            Completion{" "}
-            {propertyvalue === "completion" &&
-              (alignment === -1 ? (
-                <ArrowDownwardIcon fontSize="small" />
-              ) : (
-                <ArrowUpwardIcon fontSize="small" />
-              ))}
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Grid>
-      <Grid
-        item
-        xs={36}
-        sm={36}
-        md={6}
-        sx={{ textAlign: "start", alignSelf: "start" }}
-      >
-        <Button
-          variant="h6"
-          sx={{
-            fontWeight: 600,
-            color: "white",
-            background: colors?.BLACK,
-            "&:hover": {
-              backgroundColor: colors?.BLACK,
-              boxShadow: "none",
-            },
-          }}
-          startIcon={<CloseIcon />}
-          onClick={handleReset}
-        >
-          Reset
-        </Button>
-      </Grid>
+            Reset
+          </Button>
+        </Grid>
       </>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -615,7 +615,10 @@ function PropertyList({ params }) {
                               boxShadow: "none",
                             }}
                           >
-                            <Typography variant="h2" sx={{ fontWeight: "Bold", mb: 1}}>
+                            <Typography
+                              variant="h2"
+                              sx={{ fontWeight: "Bold", mb: 1 }}
+                            >
                               {decodeURIComponent(params.location)}
                             </Typography>
                             <Typography variant="body1">
@@ -631,7 +634,7 @@ function PropertyList({ params }) {
                     </Card>
                   </Grid>
                 )}
-                
+
                 <Grid item xs={36}>
                   <Card>
                     <CustomSearch
@@ -649,18 +652,42 @@ function PropertyList({ params }) {
                     />
                   </Card>
                 </Grid>
-                <Grid item xs={36}  sx={{display: { xs: "block", md: "none" }}}>
-                  <Typography variant="body1" align="right" onClick={() => setMobileFilter(!mobileFilter)} 
-                  sx={{ color: colors.BLUE, display: "flex", alignItems: 'center', justifyContent: 'flex-end', cursor: "pointer"}}>
-                    Filter & Sort {mobileFilter ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                <Grid
+                  item
+                  xs={36}
+                  sx={{ display: { xs: "block", md: "none" } }}
+                >
+                  <Typography
+                    variant="body1"
+                    align="right"
+                    onClick={() => setMobileFilter(!mobileFilter)}
+                    sx={{
+                      color: colors.BLUE,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Filter & Sort{" "}
+                    {mobileFilter ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
                   </Typography>
                   {mobileFilter && (
-                  <Box sx={{ pb:2, pr: 2, backgroundColor:'white', mt: 2}}>
-                    <Grid container spacing={2} sx={{ marginLeft: 0, width: "100%"}}>
-                    {getFilterFields()}
-                    {getSortBy()}
-                    </Grid>
-                  </Box>)}
+                    <Box sx={{ pb: 2, pr: 2, backgroundColor: "white", mt: 2 }}>
+                      <Grid
+                        container
+                        spacing={2}
+                        sx={{ marginLeft: 0, width: "100%" }}
+                      >
+                        {getFilterFields()}
+                        {getSortBy()}
+                      </Grid>
+                    </Box>
+                  )}
                 </Grid>
                 <Grid item xs={36}>
                   {count === 0 ? (
