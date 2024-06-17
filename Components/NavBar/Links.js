@@ -87,7 +87,7 @@ export const UserMenuList = [
     icon: <AccountCircleIcon fontSize="small" />,
   },
   {
-    label: 'Favourite properties',
+    label: 'Favourite Properties',
     route: listOfPages.userShortlist,
     icon: <ThumbUpIcon fontSize="small" />,
   },
@@ -100,32 +100,32 @@ export const UserMenuList = [
 
 export const ConsultantMenuList = [
   {
-    label: 'Consultant profile',
+    label: 'Consultant Profile',
     route: listOfPages.consultantProfile,
     icon: <AccountCircleIcon fontSize="small" />,
   },
   {
-    label: 'My ratings',
+    label: 'My Ratings',
     route: listOfPages.consultantRatings,
     icon: <StarsIcon fontSize="small" />,
   },
   {
-    label: 'My leads',
+    label: 'My Leads',
     route: listOfPages.consultantMyLeads,
     icon: <LeaderboardIcon fontSize="small" />,
   },
   {
-    label: 'My notes',
+    label: 'My Notes',
     route: listOfPages.consultantMyNotes,
     icon: <DescriptionIcon fontSize="small" />,
   },
   {
-    label: 'Suggested leads',
+    label: 'Suggested Leads',
     route: listOfPages.suggestedLeads,
     icon: <PlaylistAddCheckIcon fontSize="small" />,
   },
   {
-    label: 'My Properties link',
+    label: 'My Properties Link',
     route: listOfPages.consultantLinks,
     icon: <LinkIcon fontSize="small" />,
   },
@@ -148,7 +148,7 @@ export const AdminMenuList = [
     icon: <ShoppingCartCheckoutIcon fontSize="small" />,
   },
   {
-    label: 'Credit status',
+    label: 'Credit Points status',
     route: listOfPages.adminCreditStatus,
     icon: <RequestQuoteIcon fontSize="small" />,
   },
@@ -163,12 +163,12 @@ export const AdminMenuList = [
     icon: <PlaylistAddIcon fontSize="small" />,
   },
   {
-    label: 'Property list',
+    label: 'Property List',
     route: listOfPages.adminPropertyList,
     icon: <ListAltIcon fontSize="small" />,
   },
   {
-    label: 'Manage users',
+    label: 'Manage Users',
     route: listOfPages.adminManageUser,
     icon: <ManageAccountsIcon fontSize="small" />,
   },
@@ -178,7 +178,7 @@ export const AdminMenuList = [
     icon: <SupervisedUserCircleIcon fontSize="small" />,
   },
   {
-    label: 'Consultant links',
+    label: 'Consultant Links',
     route: listOfPages.adminConsultantLinks,
     icon: <LinkIcon fontSize="small" />,
   },

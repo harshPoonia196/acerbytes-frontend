@@ -137,7 +137,7 @@ function Row(props) {
 export default function DetailsTable() {
   return (
     <TableContainer component={Box}>
-      <Table aria-label="collapsible table">
+      <Table size="small" aria-label="collapsible table">
         <TableHeader />
         <TableBody>
           {rows.map((row) => (

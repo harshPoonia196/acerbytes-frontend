@@ -580,7 +580,7 @@ export default function Enquiries(props) {
             // border: "1px solid #ccc"
           }}
         >
-          <Table aria-label="collapsible table">
+          <Table size="small" aria-label="collapsible table">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}

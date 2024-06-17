@@ -93,16 +93,17 @@ function NoteSubscription({ open, handleClose, getList }) {
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            Request for plan subscribe
+            Notes management subscription
           </Typography>
           <CustomButton
             startIcon={<AddCardIcon fontSize="small" />}
             variant="outlined"
             size="small"
             onClick={() => router.push(listOfPages.consultantPaymentHistory)}
-            ButtonText={"Add points"}
+            ButtonText={"Add Points"}
           />
         </Box>
+        <Typography variant="body1">Select plan to subscribe</Typography>
       </DialogTitle>
       <DialogContent>
         <RadioGroup
