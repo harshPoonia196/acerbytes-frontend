@@ -22,13 +22,18 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  Tooltip 
+  Tooltip,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { useRouter } from "next/navigation";
 import colors from "styles/theme/colors";
 import Footer from "Components/Footer";
-import { capitalLizeName, getComparator, indianNumberingSystem, stableSort } from "utills/CommonFunction";
+import {
+  capitalLizeName,
+  getComparator,
+  indianNumberingSystem,
+  stableSort,
+} from "utills/CommonFunction";
 import { listOfPages } from "Components/NavBar/Links";
 import { reactQueryKey } from "utills/Constants";
 import { useQueries } from "utills/ReactQueryContext";
@@ -37,57 +42,84 @@ import { useSnackbar } from "utills/SnackbarContext";
 import Loader from "Components/CommonLayouts/Loading";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { countryCodeFormating, maskPhoneNumber } from "utills/utills";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import UnpublishedIcon from '@mui/icons-material/Unpublished';
-import { useAuth } from 'utills/AuthContext';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import HomeIcon from '@mui/icons-material/Home';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import UnpublishedIcon from "@mui/icons-material/Unpublished";
+import { useAuth } from "utills/AuthContext";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import HomeIcon from "@mui/icons-material/Home";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 
 const enquiries = [
   {
     id: "1",
     title: "Lead generation link",
-    description: "Get own property page linked with your contact, receive unlimited inquiries",
-    image: "https://www.kundans.com/wp-content/uploads/2023/02/property-purchasing-1024x640.jpg"
+    description:
+      "Get own property page linked with your contact, receive unlimited inquiries",
+    image:
+      "https://www.kundans.com/wp-content/uploads/2023/02/property-purchasing-1024x640.jpg",
   },
   {
     id: "2",
     title: "Lead inquiries management",
     description: "Get paanel to manage your client status and notes",
-    image: "https://kathygroverrealestateagenthighlandvillagetx.com/wp-content/uploads/2019/10/Property-Business0.jpg"
+    image:
+      "https://kathygroverrealestateagenthighlandvillagetx.com/wp-content/uploads/2019/10/Property-Business0.jpg",
   },
   {
     id: "3",
     title: "Increase your presence and visibility",
     description: "Get your profile linked to listed property",
-    image: "https://www.businessinsider.in/_next/image?url=https%3A%2F%2Fstaticbiassets.in%2Fthumb%2Fmsid-52322577%2Cwidth-700%2Cresizemode-4%2Cimgsize-135930%2Findian-property-sector-uprise.jpg&w=1920&q=75"
+    image:
+      "https://www.businessinsider.in/_next/image?url=https%3A%2F%2Fstaticbiassets.in%2Fthumb%2Fmsid-52322577%2Cwidth-700%2Cresizemode-4%2Cimgsize-135930%2Findian-property-sector-uprise.jpg&w=1920&q=75",
   },
   {
     id: "4",
     title: "Access active and verified customer enquiries",
     description: "improve your chances of leads conversion with better leads",
-    image: "https://smallbiztrends.com/ezoimgfmt/media.smallbiztrends.com/2022/05/real-estate-business-ideas-850x476.png?ezimgfmt=ng%3Awebp%2Fngcb12"
-  }
-]
+    image:
+      "https://smallbiztrends.com/ezoimgfmt/media.smallbiztrends.com/2022/05/real-estate-business-ideas-850x476.png?ezimgfmt=ng%3Awebp%2Fngcb12",
+  },
+];
 
 function Row(props) {
   const { row, history } = props;
-  
+
   const [open, setOpen] = React.useState(false);
   const handlePropertyView = (link) => {
     const baseUrl = window.location.origin;
     const fullLink = `${baseUrl}/${link}`;
     window.open(fullLink, "_blank");
-  }
+  };
   return (
     <React.Fragment>
       <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>{row.project}</TableCell>
         <TableCell>{row.location}</TableCell>
-        <TableCell>{row.phone} {row.isVerified ? <CheckCircleIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='success' /> :
-          <UnpublishedIcon sx={{ verticalAlign: 'middle', position: 'relative', top: "-1px" }} fontSize="1rem" color='error' />}</TableCell>
+        <TableCell>
+          {row.phone}{" "}
+          {row.isVerified ? (
+            <CheckCircleIcon
+              sx={{
+                verticalAlign: "middle",
+                position: "relative",
+                top: "-1px",
+              }}
+              fontSize="1rem"
+              color="success"
+            />
+          ) : (
+            <UnpublishedIcon
+              sx={{
+                verticalAlign: "middle",
+                position: "relative",
+                top: "-1px",
+              }}
+              fontSize="1rem"
+              color="error"
+            />
+          )}
+        </TableCell>
         <TableCell>
           {row.propertyLink && (
             <>
@@ -99,12 +131,31 @@ function Row(props) {
                 }}
                 style={{ textDecoration: "none" }}
               >
-                {row?.project ?
-                  `${capitalLizeName(row?.project)}`
-                  : "-"}
+                {row?.project ? `${capitalLizeName(row?.project)}` : "-"}
               </a>
-              {row.brokerId?.length > 0 ? <Tooltip title="Home"><HomeIcon sx={{ fontSize: "14px", position: "relative", top: "2px", left: "3px"}}/></Tooltip> : 
-              <Tooltip title="Agent"><SupportAgentIcon sx={{ fontSize: "14px", position: "relative", top: "2px", left: "3px"}}/></Tooltip>}
+              {row.brokerId?.length > 0 ? (
+                <Tooltip title="Home">
+                  <HomeIcon
+                    sx={{
+                      fontSize: "14px",
+                      position: "relative",
+                      top: "2px",
+                      left: "3px",
+                    }}
+                  />
+                </Tooltip>
+              ) : (
+                <Tooltip title="Agent">
+                  <SupportAgentIcon
+                    sx={{
+                      fontSize: "14px",
+                      position: "relative",
+                      top: "2px",
+                      left: "3px",
+                    }}
+                  />
+                </Tooltip>
+              )}
             </>
           )}
         </TableCell>
@@ -117,20 +168,20 @@ function Row(props) {
     
         <TableCell>{row.consultedBy}</TableCell> */}
         <TableCell>
-
           <a
             href={"consultant/suggested-leads"}
             onClick={() => {
               history.push(listOfPages.suggestedLeads);
             }}
-            style={{ textDecoration: "none", }}
-          > <LocalPhoneIcon fontSize="1rem" sx={{ mr: "0.1rem", position: "relative", top: "2px" }} />
+            style={{ textDecoration: "none" }}
+          >
+            {" "}
+            <LocalPhoneIcon
+              fontSize="1rem"
+              sx={{ mr: "0.1rem", position: "relative", top: "2px" }}
+            />
             View contact
-
-
           </a>
-
-
         </TableCell>
         <TableCell>{row.enquired}</TableCell>
       </TableRow>
@@ -219,7 +270,7 @@ const headCells = [
     id: "ViewDetails",
     label: "View",
   },
-  
+
   // {
   //   id: "buyingType",
   //   numeric: true,
@@ -271,8 +322,12 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              <Typography variant="body2" sx={{ textTransform: "capitalize", fontWeight: "800" }}
-              >{capitalLizeName(headCell.label)}</Typography>
+              <Typography
+                variant="body2"
+                sx={{ textTransform: "capitalize", fontWeight: "800" }}
+              >
+                {capitalLizeName(headCell.label)}
+              </Typography>
 
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
@@ -289,7 +344,14 @@ function EnhancedTableHead(props) {
 
 const EnquiryCard = ({ enquiry }) => {
   return (
-    <Card sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+    <Card
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
       <Box>
         <CardMedia
           sx={{ height: 140 }}
@@ -297,7 +359,12 @@ const EnquiryCard = ({ enquiry }) => {
           title={enquiry.title}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div" sx={{ fontWeight: "bold"}}>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{ fontWeight: "bold" }}
+          >
             {enquiry.title}
           </Typography>
           <Typography variant="body1" color="text.secondary">
@@ -310,11 +377,10 @@ const EnquiryCard = ({ enquiry }) => {
         <Button size="small">Learn More</Button>
       </CardActions>
     </Card>
-  )
-}
+  );
+};
 
 export default function Enquiries(props) {
-
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const { userDetails } = useAuth();
@@ -323,8 +389,8 @@ export default function Enquiries(props) {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  const { brokerBalance } =
-    useAuth();
+  const { brokerBalance } = useAuth();
+
   const { openSnackbar } = useSnackbar();
 
   const {
@@ -339,7 +405,6 @@ export default function Enquiries(props) {
         const { success, data, message } = response.data;
         console.log("data", data);
         if (success) {
-
           return data?.map((enquiry) => {
             console.log("enquiry", enquiry);
             return {
@@ -350,7 +415,9 @@ export default function Enquiries(props) {
               //     ? new Array(enquiry?.broker?.numberLength - 1).join("*")
               //     : ""
               //   }`,
-              phone: `${countryCodeFormating(enquiry.phone?.countryCode)} ${enquiry.phone?.number}********`,
+              phone: `${countryCodeFormating(enquiry.phone?.countryCode)} ${
+                enquiry.phone?.number
+              }********`,
               propertyLink: enquiry.propertyLink,
               urgency: "Medium",
               price: enquiry?.property?.unitsPlan?.[0]?.bsp || "",
@@ -360,9 +427,8 @@ export default function Enquiries(props) {
               // location: `${enquiry?.property[0]?.location?.area} ${enquiry?.property[0]?.location?.sector} ${enquiry?.property[0]?.location?.state} ${enquiry?.property[0]?.location?.city}`,
               location: `${enquiry?.property[0]?.location?.city}`,
               next: "yes",
-              brokerId: enquiry?.brokerId
+              brokerId: enquiry?.brokerId,
             };
-
           });
         } else {
           openSnackbar(message, "error");
@@ -371,8 +437,8 @@ export default function Enquiries(props) {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -380,29 +446,41 @@ export default function Enquiries(props) {
   });
 
   const history = useRouter();
-  console.log(props, "userdjbdj")
+  console.log(props, "userdjbdj");
   console.log("rows", rows);
   return (
     <>
       {isLoading && <Loader />}
-      <Box sx={{ backgroundColor: "white", boxShadow: "-1px -2px 6px 2px gainsboro !important", }} >
-        <Container maxWidth="lg" sx={{ pb: "0 !important" }} >
+      <Box
+        sx={{
+          backgroundColor: "white",
+          boxShadow: "-1px -2px 6px 2px gainsboro !important",
+        }}
+      >
+        <Container maxWidth="lg" sx={{ pb: "0 !important" }}>
           <Box sx={{ py: 2 }}>
-            <Typography variant="h1" sx={{
-              fontWeight: 300,
-              fontSize: { sm: "2em !important", md: "4rem !important" },
-              marginBottom: "35px", textAlign: "center"
-            }}>
-              <span style={{ color: colors.GRAY, fontWeight: "bold" }}>AcreBytes | Are you a real estate consultant ? </span>
-              Get an easy way to generate real estate leads and business growth with AcreBytes
+            <Typography
+              variant="h1"
+              sx={{
+                fontWeight: 300,
+                fontSize: { sm: "2em !important", md: "4rem !important" },
+                marginBottom: "35px",
+                textAlign: "center",
+              }}
+            >
+              <span style={{ color: colors.GRAY, fontWeight: "bold" }}>
+                AcreBytes | Are you a real estate consultant ?{" "}
+              </span>
+              Get an easy way to generate real estate leads and business
+              growth with AcreBytes
             </Typography>
             <Grid container spacing={2}>
-              {enquiries.map(enquiry => {
+              {enquiries.map((enquiry) => {
                 return (
                   <Grid item xs={12} sm={6} lg={3}>
                     <EnquiryCard key={enquiry.id} enquiry={enquiry} />
                   </Grid>
-                )
+                );
               })}
             </Grid>
           </Box>
@@ -444,46 +522,64 @@ export default function Enquiries(props) {
               >
                 View  my {rows?.length} leads
               </Typography> */}
-              
             </Box>
           </Box>
         </Container>
       </Box>
-      <Container maxWidth="lg" >
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2}}>
+      <Container maxWidth="lg">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
           <Typography
             variant="h6"
             sx={{
               color: "#000",
               fontSize: "1rem",
               fontWeight: 900,
-              lineHeight: 1
+              lineHeight: 1,
             }}
           >
             Leads panel
-            
           </Typography>
           <Box>
-          { userDetails.role === 'broker' && (
-                  <>
-                <CustomButton variant="contained" sx={{ alignSelf: 'center', }} onClick={() => { history.push(listOfPages.suggestedLeads) }}
+            {userDetails.role === "broker" && (
+              <>
+                <CustomButton
+                  variant="contained"
+                  sx={{ alignSelf: "center" }}
+                  onClick={() => {
+                    history.push(listOfPages.suggestedLeads);
+                  }}
                   ButtonText={"View suggested leads"}
                 />
-                
-                {brokerBalance ?
-                  <CustomButton variant="contained" sx={{ alignSelf: 'center', margin: "0.3rem" }}
+
+                {brokerBalance ? (
+                  <CustomButton
+                    variant="contained"
+                    sx={{ alignSelf: "center", margin: "0.3rem" }}
                     ButtonText={`Points: ${brokerBalance}`}
-                  /> : ""}
-                  </>
+                  />
+                ) : (
+                  ""
                 )}
+              </>
+            )}
           </Box>
         </Box>
-        <TableContainer component={Paper} style={{
-          maxHeight: "350px",
-          overflowY: "auto",
-          // padding: "10px",
-          // border: "1px solid #ccc"
-        }} >
+        <TableContainer
+          component={Paper}
+          style={{
+            maxHeight: "350px",
+            overflowY: "auto",
+            // padding: "10px",
+            // border: "1px solid #ccc"
+          }}
+        >
           <Table size="small" aria-label="collapsible table">
             <EnhancedTableHead
               order={order}
@@ -500,14 +596,14 @@ export default function Enquiries(props) {
                 //   No Data
                 // </Typography>
                 <Box>
-                  <NoDataCard title={"No data found"} sx={{width: "100%"}}/>
+                  <NoDataCard title={"No data found"} sx={{ width: "100%" }} />
                 </Box>
               )}
             </TableBody>
           </Table>
         </TableContainer>
       </Container>
-      <div style={{ paddingBottom: "70px" }} ></div>
+      <div style={{ paddingBottom: "70px" }}></div>
       <Footer />
     </>
   );

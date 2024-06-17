@@ -30,11 +30,9 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 function MarketingCard({ isEdit, errors, form, handleChange }) {
-
   const imageDoc = `image at least 200x200 pixels, Image aspect ratio of 1:1, file size under 300 KB`;
 
   const { tagLine, description, image, metaDescription } = form.marketing;
-  const { openSnackbar } = useSnackbar();
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
 
   const handleOpenUploadPopup = () => {
@@ -103,8 +101,6 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
               <Box
                 component="img"
                 sx={{
-                  height: 233,
-                  width: 350,
                   maxHeight: { xs: 233, md: 167 },
                   maxWidth: { xs: 350, md: 250 },
                 }}
@@ -112,13 +108,16 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                 src={image}
               />
             )}
-              <Tooltip title={imageDoc} TransitionComponent={Fade}
-                TransitionProps={{ timeout: 600 }}>
+            <Tooltip
+              title={imageDoc}
+              TransitionComponent={Fade}
+              TransitionProps={{ timeout: 600 }}
+            >
               <Card sx={{ display: "flex", p: 2 }}>
-                  <Typography sx={{ flex: 1, alignSelf: "center" }}>
-                    Upload
-                  </Typography>
-                
+                <Typography sx={{ flex: 1, alignSelf: "center" }}>
+                  Upload
+                </Typography>
+
                 <>
                   <input
                     id="contained-button-file"
@@ -150,7 +149,8 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
               </Card>
             </Tooltip>
           </Grid>
-          <NewInputFieldStructure isRequired={true}
+          <NewInputFieldStructure
+            isRequired={true}
             label="Tag line"
             variant="outlined"
             isEdit={isEdit}
@@ -159,7 +159,8 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
             value={tagLine}
             handleChange={(e) => handleChange(e, "marketing", "tagLine")}
           />
-          <NewInputFieldStructure isRequired={true}
+          <NewInputFieldStructure
+            isRequired={true}
             label="Description"
             variant="outlined"
             isEdit={isEdit}

@@ -18,7 +18,6 @@ import { getAllOptions, getCities } from "api/Property.api";
 
 import {
   Schema,
-  projectName,
   reraSchema,
 } from "Components/Admin/Property/Validation/PropertyValidation";
 import FacilitiesCard from "Components/Admin/Property/SubComponents/FacilitiesCard";
@@ -76,6 +75,132 @@ function useThrottledOnScroll(callback, delay) {
     };
   }, [throttledCallback]);
 }
+
+const initalState = {
+  overview: {
+    builder: "",
+    builderScore: "",
+    projectName: "",
+    projectCategory: "",
+    projectType: [],
+    phase: "",
+    launchYear: "",
+    completionYear: "",
+    status: "",
+    constructionProgress: "",
+    sectionScore: "",
+    pointsGained: 0,
+  },
+  regulatoryClearance: {
+    reraApproved: "",
+    reraNumber: "",
+    cc: "",
+    oc: "",
+    authorityRegistration: "",
+    governmentLoan: "",
+    privateBankLoan: "",
+    fresh: "",
+    resale: "",
+    sectionScore: 0,
+    pointsGained: 0,
+  },
+  layout: {
+    numberOfBuildings: "",
+    layoutType: [],
+    maxFloors: "",
+    minFloors: "",
+    totalUnits: "",
+    areaUnit: "Acres",
+    area: "",
+    areaInSqft: 0,
+    greenArea: "",
+    unitDensity: "",
+    unitDensityScore: "",
+    greenDensity: "",
+    greenDensityScore: "",
+    constructionQuality: 0,
+    interiorQuality: 0,
+    sectionScore: 0,
+    pointsGained: 0,
+  },
+  unitsPlan: {
+    averagePrice: 0,
+    minPriceRange: 0,
+    maxPriceRange: 0,
+    uniqueLayouts: [],
+    totalAreaSqft: 0,
+    totalPrice: 0,
+    planList: [
+      // {
+      //   propertyType: "",
+      //   propertyLayout: "",
+      //   name: "",
+      //   areaUnit: "",
+      //   totalUnits: "",
+      //   area: "",
+      //   bsp: "",
+      //   applicableMonth: "",
+      //   applicableYear: "",
+      // },
+    ],
+  },
+
+  amenitiesData: {},
+  location: {
+    state: "",
+    city: "",
+    sector: "",
+    sectionScore: 0,
+    pointsGained: 0,
+    area: "",
+    pinCode: "",
+    googleMapLink: "",
+    longitude: "",
+    latitude: "",
+    assessment: {},
+  },
+  valueForMoney: {
+    appTillNow: 0,
+    expectedFurtherApp: 0,
+    forEndUse: 0,
+    pointsGained: 0,
+    sectionScore: 0,
+  },
+  consultants: [],
+  overallAssessment: {
+    score: 0,
+    scoredRating: 0,
+    rated: {
+      builder: 0,
+      constructionProgress: 0,
+      reraApproved: 0,
+      cc: 0,
+      oc: 0,
+      authorityRegisteration: 0,
+      governmentBankLoan: 0,
+      privateBankLoan: 0,
+      resale: 0,
+      area: 0,
+      appTillNow: 0,
+      expectedFurtherApp: 0,
+      forEndUse: 0,
+      unitsDensity: 0,
+      greenDensity: 0,
+      unitsDensityScore: 0,
+      greenDensityScore: 0,
+      constructionQuality: 0,
+      interiorQuality: 0,
+    },
+  },
+  published: false,
+  tag: "",
+  marketing: {
+    image: "",
+    tagLine: "",
+    description: "",
+    metaDescription: "",
+  },
+};
 
 function AddProperty() {
   const router = useSearchParams();
@@ -203,14 +328,23 @@ function AddProperty() {
         delete data.__v;
         handleUIHide(data.overview.projectType, "overview", "projectType");
         setEditForm(true);
+
+        const { overview, location } = data;
+        const { builder, projectName, projectCategory, projectType } = overview;
+        const { area, sector, city } = location;
+
+        const updatedProjectType = projectType
+          .map((item) => item.value)
+          .join("-");
+
         let assignTagLine = {
-          builder: data.overview.builder,
-          projectName: data.overview.projectName,
-          projectCategory: data.overview.projectCategory,
-          projectType: data.overview.projectType,
-          area: data.location.area,
-          sector: data.location.sector,
-          city: data.location.city,
+          builder,
+          projectName,
+          projectCategory,
+          projectType: updatedProjectType,
+          area,
+          sector,
+          city,
         };
 
         setTagField(assignTagLine);
@@ -263,11 +397,12 @@ function AddProperty() {
       setLoading(false);
     }
   };
-  const brokersList = async (rowsPerPage, page, search) => {
+
+  const brokersList = async () => {
     try {
       const response = await getAllBrokers();
       if (response.status == 200) {
-        const { success, data, message } = response.data;
+        const { success, data } = response.data;
         if (success) {
           let getValue = data.data.map((i) => {
             let u = {
@@ -401,7 +536,6 @@ function AddProperty() {
     }
     getCitiesList();
     brokersList();
-    // setLoading(false)
   }, []);
 
   const classes = useStyles();
@@ -409,131 +543,7 @@ function AddProperty() {
   const [isEdit, setIsEdit] = useState(true);
   const [errors, setErrors] = useState({});
   const [editForm, setEditForm] = useState(false);
-  const [form, setForm] = useState({
-    overview: {
-      builder: "",
-      builderScore: "",
-      projectName: "",
-      projectCategory: "",
-      projectType: [],
-      phase: "",
-      launchYear: "",
-      completionYear: "",
-      status: "",
-      constructionProgress: "",
-      sectionScore: "",
-      pointsGained: 0,
-    },
-    regulatoryClearance: {
-      reraApproved: "",
-      reraNumber: "",
-      cc: "",
-      oc: "",
-      authorityRegistration: "",
-      governmentLoan: "",
-      privateBankLoan: "",
-      fresh: "",
-      resale: "",
-      sectionScore: 0,
-      pointsGained: 0,
-    },
-    layout: {
-      numberOfBuildings: "",
-      layoutType: [],
-      maxFloors: "",
-      minFloors: "",
-      totalUnits: "",
-      areaUnit: "Acres",
-      area: "",
-      areaInSqft: 0,
-      greenArea: "",
-      unitDensity: "",
-      unitDensityScore: "",
-      greenDensity: "",
-      greenDensityScore: "",
-      constructionQuality: 0,
-      interiorQuality: 0,
-      sectionScore: 0,
-      pointsGained: 0,
-    },
-    unitsPlan: {
-      averagePrice: 0,
-      minPriceRange: 0,
-      maxPriceRange: 0,
-      uniqueLayouts: [],
-      totalAreaSqft: 0,
-      totalPrice: 0,
-      planList: [
-        // {
-        //   propertyType: "",
-        //   propertyLayout: "",
-        //   name: "",
-        //   areaUnit: "",
-        //   totalUnits: "",
-        //   area: "",
-        //   bsp: "",
-        //   applicableMonth: "",
-        //   applicableYear: "",
-        // },
-      ],
-    },
-
-    amenitiesData: {},
-    location: {
-      state: "",
-      city: "",
-      sector: "",
-      sectionScore: 0,
-      pointsGained: 0,
-      area: "",
-      pinCode: "",
-      googleMapLink: "",
-      longitude: "",
-      latitude: "",
-      assessment: {},
-    },
-    valueForMoney: {
-      appTillNow: 0,
-      expectedFurtherApp: 0,
-      forEndUse: 0,
-      pointsGained: 0,
-      sectionScore: 0,
-    },
-    consultants: [],
-    overallAssessment: {
-      score: 0,
-      scoredRating: 0,
-      rated: {
-        builder: 0,
-        constructionProgress: 0,
-        reraApproved: 0,
-        cc: 0,
-        oc: 0,
-        authorityRegisteration: 0,
-        governmentBankLoan: 0,
-        privateBankLoan: 0,
-        resale: 0,
-        area: 0,
-        appTillNow: 0,
-        expectedFurtherApp: 0,
-        forEndUse: 0,
-        unitsDensity: 0,
-        greenDensity: 0,
-        unitsDensityScore: 0,
-        greenDensityScore: 0,
-        constructionQuality: 0,
-        interiorQuality: 0,
-      },
-    },
-    published: false,
-    tag: "",
-    marketing: {
-      image: "",
-      tagLine: "",
-      description: "",
-      metaDescription: "",
-    },
-  });
+  const [form, setForm] = useState(initalState);
 
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
@@ -779,9 +789,7 @@ function AddProperty() {
           +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
       }
     }
-
     let calc = (totalScored / totalRatingModule) * 10;
-
     if (seperateCalc) {
       setForm({
         ...form,
