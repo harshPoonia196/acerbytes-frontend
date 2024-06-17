@@ -6,7 +6,7 @@ import React from 'react'
 import colors from 'styles/theme/colors';
 import { formatPoints, formatDate } from 'utills/CommonFunction';
 
-function SubAccordionOfHistoryCard({ title, data = [], type = '' }) {
+function SubAccordionOfHistoryCard({ title, data = [], type = '', header }) {
     const [expanded, setExpanded] = React.useState(false);
 
     const router = useRouter()
@@ -90,24 +90,39 @@ function SubAccordionOfHistoryCard({ title, data = [], type = '' }) {
                 </Typography>
             </CustomAccordionSummary>
             <CustomAccordionDetails>
-                <Box sx={{ display: 'flex', pl: "18px", pb: 1 }}>
-                    <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Transaction</Typography>
-                    <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Project Name</Typography>
-                    <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Valid Period</Typography>
-                    <Typography variant='h5'>Points</Typography>
-                </Box>
+                {header}
                 {data.map((res) => {
                     const { createdAt, consumedPoints, details } = res;
-                    return <Box sx={{ display: 'flex', pl: "18px" }}>
+                    if (type === "Activation") {
+                        return <Box sx={{ display: 'flex', pl: "18px" }}>
+                            <Typography variant='subtitle2' sx={{ flex: 1, width: '33%' }}>{`${formatDate(createdAt)} (${details})`}</Typography>
+                            <Typography variant='subtitle2' sx={{ flex: 1, width: '33%', cursor: 'pointer', color: colors.BLUE }} onClick={() => handleLinkClick(res)}>{res?.overview?.projectName}</Typography>
+                            <Typography variant='subtitle2' sx={{ flex: 1, width: '33%', cursor: 'pointer' }}>
+                                {`${formatWithOrdinal(res?.linkCreatedAt)} - ${formatWithOrdinal(res?.linkExpiredAt)}`}
+                            </Typography>
+                            {/* <Typography variant='subtitle2' sx={{ flex: 1 }}>{details + ' on ' + formatDate(createdAt)}</Typography> */}
+                            <Typography variant='h6'>{formatPoints(consumedPoints)} Points</Typography>
+                        </Box>
+                    }
+                    else if(type === "Lead"){
+                        return <Box sx={{ display: 'flex', pl: "18px" }}>
+                            <Typography variant='subtitle2' sx={{ flex: 1, width: '33%' }}>{`${formatDate(createdAt)} (${details})`}</Typography>
+                            <Typography variant='subtitle2' sx={{ flex: 1, width: '33%', cursor: 'pointer', color: colors.BLUE }} onClick={() => handleLinkClick(res)}>{`${res?.leadUserName?.firstName} ${res?.leadUserName?.lastName}`}</Typography>
+                            <Typography variant='h6'>{formatPoints(consumedPoints)} Points</Typography>
+                        </Box>
+                    }
+                    else if(type === "Display on property subscriptions"){
+                        return <Box sx={{ display: 'flex', pl: "18px" }}>
                         <Typography variant='subtitle2' sx={{ flex: 1, width: '33%' }}>{`${formatDate(createdAt)} (${details})`}</Typography>
                         <Typography variant='subtitle2' sx={{ flex: 1, width: '33%', cursor: 'pointer', color: colors.BLUE }} onClick={() => handleLinkClick(res)}>{res?.overview?.projectName}</Typography>
                         <Typography variant='subtitle2' sx={{ flex: 1, width: '33%', cursor: 'pointer' }}>
-                            {`${formatWithOrdinal(res?.linkCreatedAt)} - ${formatWithOrdinal(res?.linkExpiredAt)}`}
-                        </Typography>
-                        {/* <Typography variant='subtitle2' sx={{ flex: 1 }}>{details + ' on ' + formatDate(createdAt)}</Typography> */}
+                                {`${formatWithOrdinal(res?.linkCreatedAt)} - ${formatWithOrdinal(res?.linkExpiredAt)}`}
+                            </Typography>
                         <Typography variant='h6'>{formatPoints(consumedPoints)} Points</Typography>
                     </Box>
-                })
+                    }
+                }
+                )
                 }
             </CustomAccordionDetails>
         </CustomAccordion >

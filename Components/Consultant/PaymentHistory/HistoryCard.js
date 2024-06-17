@@ -49,10 +49,36 @@ function HistoryCard({ history }) {
         return data;
     }
 
+    const activateLeadsHeaders = (
+        <Box sx={{ display: 'flex', pl: "18px", pb: 1 }}>
+            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Transaction</Typography>
+            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Project Name</Typography>
+            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Valid Period</Typography>
+            <Typography variant='h5'>Points</Typography>
+        </Box>
+    )
+    
+    const suggestedLeadsHeaders = (
+        <Box sx={{ display: 'flex', pl: "18px", pb: 1 }}>
+            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Transaction</Typography>
+            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>User Name</Typography>
+            <Typography variant='h5'>Points</Typography>
+        </Box>
+    )
+    const displayOnPropLeadsHeaders = (
+        <Box sx={{ display: 'flex', pl: "18px", pb: 1 }}>
+            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Transaction</Typography>
+            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Property Name</Typography>
+            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Valid Period</Typography>
+            <Typography variant='h5'>Points</Typography>
+        </Box>
+    )
+
+
 
     return (
         <CustomAccordion expanded={isExpanded} >
-            <CustomAccordionSummary handleIconClick={handleExpandedStateChange} sx={{ pt: 2, pb: 2}}>
+            <CustomAccordionSummary handleIconClick={handleExpandedStateChange} sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant='h5' sx={{ flex: 1 }}>
@@ -66,7 +92,7 @@ function HistoryCard({ history }) {
                     </Typography>
                 </Box>
                 <Box>
-                {/* <Tooltip title="More">
+                    {/* <Tooltip title="More">
                     <IconButton onClick={handleOpenMenu}>
                         <MoreVertIcon />
                     </IconButton>
@@ -98,13 +124,13 @@ function HistoryCard({ history }) {
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Activated links" data={calculateItems(history?.childTransaction, transactionType.ACTIVATE_URL)} type='Activation' />
+                        <SubAccordionOfHistoryCard header={activateLeadsHeaders} title="Activated links" data={calculateItems(history?.childTransaction, transactionType.ACTIVATE_URL)} type='Activation' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Suggested leads" data={calculateItems(history?.childTransaction, transactionType.SUGGESTED_LEAD_BUY)} type='Leads' />
+                        <SubAccordionOfHistoryCard header={suggestedLeadsHeaders} title="Suggested leads" data={calculateItems(history?.childTransaction, transactionType.SUGGESTED_LEAD_BUY)} type='Lead' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Consultant subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Consultant subscriptions' />
+                        <SubAccordionOfHistoryCard header={displayOnPropLeadsHeaders} title="Display on property subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Display on property subscriptions' />
                     </Grid>
                     <Grid item xs={12}>
                         <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Notes subscription' />

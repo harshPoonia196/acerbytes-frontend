@@ -386,15 +386,15 @@ function SuggestedLeadsTable({ setLeadsCount }) {
       </DialogTitle>
       <DialogContent sx={{ padding: "0 25px 25px 24px !important", minWidth: "415px" }}>
         <DialogContentText>
-          {/* <Typography variant="body1">{buyNowResponseMessage}</Typography> */}
-          <Typography variant="body1">
+          <Typography variant="body1">{buyNowResponseMessage}</Typography>
+          {/* <Typography variant="body1">
             Your current Credit points (23,000 points) are insufficient to buy
             the services.
-          </Typography>
+          </Typography> */}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button
+        {/* <Button
           variant="outlined"
           sx={{
             fontWeight: 600,
@@ -409,8 +409,8 @@ function SuggestedLeadsTable({ setLeadsCount }) {
           }}
         >
           Add Credit points
-        </Button>
-        {/* <Button
+        </Button> */}
+        <Button
           variant="contained"
           sx={{
             fontWeight: 600,
@@ -440,7 +440,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
           color="primary"
         >
           Close
-        </Button> */}
+        </Button>
       </DialogActions>
     </Dialog>
   );
