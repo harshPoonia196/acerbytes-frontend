@@ -616,7 +616,7 @@ function PropertyList({ params }) {
                             }}
                           >
                             <Typography variant="h2" sx={{ fontWeight: "Bold", mb: 1}}>
-                              {decodeURIComponent(params.location)}
+                              {decodeURIComponent(params.location)} ({count})
                             </Typography>
                             <Typography variant="body1">
                               Noida's strategic location, robust infrastructure,

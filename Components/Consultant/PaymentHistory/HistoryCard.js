@@ -62,7 +62,7 @@ function HistoryCard({ history }) {
                         {/* <Typography variant='h6' sx={{ color: colors.BLUE }}>Balance: 32,000</Typography> */}
                     </Box>
                     <Typography variant='subtitle2'>
-                        New points: {formatPoints(Number(history?.openingPoints) - calculateConsumedPoints(history?.childTransaction))} | Opening: {formatPoints(history?.openingPoints)} | Consumed: {formatPoints(calculateConsumedPoints(history?.childTransaction))}
+                        New points: {history?.newPoints} | Opening: {formatPoints(history?.openingPoints)} | Consumed: {formatPoints(calculateConsumedPoints(history?.childTransaction))}
                     </Typography>
                 </Box>
                 <Box>
@@ -98,10 +98,10 @@ function HistoryCard({ history }) {
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Activated links" data={calculateItems(history?.childTransaction, transactionType.ACTIVATE_URL)} type='Links' />
+                        <SubAccordionOfHistoryCard title="Activated links" data={calculateItems(history?.childTransaction, transactionType.ACTIVATE_URL)} type='Activation' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Activated leads" data={calculateItems(history?.childTransaction, transactionType.SUGGESTED_LEAD_BUY)} type='Leads' />
+                        <SubAccordionOfHistoryCard title="Suggested leads" data={calculateItems(history?.childTransaction, transactionType.SUGGESTED_LEAD_BUY)} type='Leads' />
                     </Grid>
                     <Grid item xs={12}>
                         <SubAccordionOfHistoryCard title="Consultant subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Consultant subscriptions' />
