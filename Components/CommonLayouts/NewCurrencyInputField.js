@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import colors from "styles/theme/colors";
 import { currencies } from "utills/Constants";
+import { formatPoints } from 'utills/CommonFunction'
 
 const NewCurrencyInputField = ({
   name1,
@@ -30,11 +31,12 @@ const NewCurrencyInputField = ({
     // Allow only letters, spaces, and common punctuation
     let validValue = newValue.replace(/\D/g, "");
     // Update the input value with the validated string
+    let formatValue= formatPoints(validValue)
     const updatedEvent = {
       ...event,
       target: {
         ...event.target,
-        value: validValue,
+        value: formatValue,
       },
     };
     handleChange(updatedEvent);

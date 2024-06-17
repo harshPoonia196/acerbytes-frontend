@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+// import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import Fab from "@mui/material/Fab";
 import React, { useState, useEffect, useRef } from "react";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
@@ -31,7 +31,7 @@ import ClearanceSection from "Components/DetailsPage/ClearanceSection";
 import ValueForMoneySection from "Components/DetailsPage/ValueForMoneySection";
 import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSection";
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import {
@@ -342,8 +342,6 @@ const PropertyDetails = ({ params }) => {
     );
   };
 
-  const [currentTab, setCurrentTab] = React.useState(0);
-
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
     React.useState(false);
@@ -507,10 +505,6 @@ const PropertyDetails = ({ params }) => {
     listOfTabsInAddProperty[0].value
   );
 
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
-
   const [activeState, setActiveState] = React.useState(null);
 
   let itemsServer = listOfPropertyDetailsTab.map((tab) => {
@@ -542,15 +536,12 @@ const PropertyDetails = ({ params }) => {
       clearItem(userLeadId);
     }
   }, [getItem(propertyUserVerifiedKey) == true]);
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
 
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
 
     // Don't set the active index based on scroll if a link was just clicked
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -582,33 +573,12 @@ const PropertyDetails = ({ params }) => {
   // Corresponds to 10 frames at 60 Hz
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => () => {
+  const handleClick = (hash) => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
 
-    if (activeState !== hash) {
-      setActiveState(hash);
-
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
   };
-
-  React.useEffect(
-    () => () => {
-      clearTimeout(unsetClickedRef.current);
-    },
-    []
-  );
 
   const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
   const handleCloseActivateAdsPopup = () => {

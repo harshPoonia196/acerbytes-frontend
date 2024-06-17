@@ -141,7 +141,7 @@ function UserDetailsAd({
   const propertyUrl = constructPropertyUrl(AllPropertyData);
 
   return (
-    <Box>
+    <Box className="userFooter" sx={{ paddingTop: "59px"}}>
       <Box sx={{ position: "fixed", bottom: 0, left: "-3px", width: "100%" }}>
         <Container
           maxWidth="md"

@@ -61,7 +61,7 @@ import SuggesredLeadsDetails from "../ConsultantSuggestedLeads/Modal/SuggesredLe
 const headCells = [
   {
     id: "Name",
-    label: "Name",
+    label: "Customer name",
   },
   // {
   //   id: "currentStatus",
@@ -106,7 +106,7 @@ const headCells = [
   },
   {
     id: "userDetails",
-    label: "User details",
+    label: "Customer details",
   },
   {
     id: "enquired",
@@ -443,7 +443,7 @@ function MyLeadsTable({ setLeadsCount }) {
       {
         rows.length > 0 ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}

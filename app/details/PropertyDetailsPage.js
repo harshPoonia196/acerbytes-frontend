@@ -26,12 +26,10 @@ import OverallAssesmentSection from "Components/DetailsPage/OverallAssesmentSect
 import UnitsPlanSection from "Components/DetailsPage/UnitsPlanSection";
 import DisableActivateAdsPopup from "Components/DetailsPage/Modal/DisableActivateAdsPopup";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import {
-  enquiryFormKey,
   enquiryFormOpen,
   listOfPropertyDetailsTab,
   propertyUserVerifiedKey,
@@ -454,12 +452,8 @@ const PropertyDetailsPage = ({ params }) => {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
-
   const findActiveIndex = React.useCallback(() => {
     if (activeState === null) setActiveState(itemsServer[0].hash);
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -490,39 +484,15 @@ const PropertyDetailsPage = ({ params }) => {
   // Corresponds to 10 frames at 60 Hz
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => () => {
-    // Used to disable findActiveIndex if the  scrolls due to a clickpage
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
-
-    if (activeState !== hash) {
-      setActiveState(hash);
-
-      if (window)
-        window.scrollTo({
-          top:
-            document.getElementById(hash)?.getBoundingClientRect().top +
-            window.pageYOffset -
-            tabHeight,
-          behavior: "smooth",
-        });
-    }
+  const handleClick = (hash) => {
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
   };
-
-  React.useEffect(
-    () => () => {
-      clearTimeout(unsetClickedRef.current);
-    },
-    []
-  );
 
   const divRef = useRef(null);
   const [heightOfFooter, setHeightOfFooter] = useState(0);
 
   useEffect(() => {
-    // Access the div element and get its height
     if (divRef.current) {
       const divHeight = divRef.current.clientHeight;
       setHeightOfFooter(divHeight);
@@ -666,26 +636,25 @@ const PropertyDetailsPage = ({ params }) => {
                     </Grid>
                   </Box>
                   <Divider />
-                  {userDetails?.role === "broker" && (
-                    <Box
-                      sx={{
-                        p: 2,
-                        display: "flex",
-                        flexDirection: { xs: "column", sm: "row" },
-                        gap: 1,
-                      }}
-                    >
-                      {propertyData?.isConsultant === false && (
-                      <Box sx={{ flex: 1, alignSelf: "center" }}>
-                        <Typography variant="body2" sx={{ flex: 1 }}>
-                          Are you a{" "}
-                          <span style={{ fontWeight: 700 }}>
-                            Property Consultant?
-                          </span>{" "}
-                          let Customers reach you
-                        </Typography>
-                      </Box>)}
-                      {propertyData?.isConsultant === false && (
+                  {userDetails?.role === "broker" &&
+                    propertyData?.isConsultant === false && (
+                      <Box
+                        sx={{
+                          p: 2,
+                          display: "flex",
+                          flexDirection: { xs: "column", sm: "row" },
+                          gap: 1,
+                        }}
+                      >
+                        <Box sx={{ flex: 1, alignSelf: "center" }}>
+                          <Typography variant="body2" sx={{ flex: 1 }}>
+                            Are you a{" "}
+                            <span style={{ fontWeight: 700 }}>
+                              Property Consultant?
+                            </span>{" "}
+                            let Customers reach you
+                          </Typography>
+                        </Box>
                         <Box sx={{ alignSelf: { xs: "end" } }}>
                           <Chip
                             label="Yes, show me here !"
@@ -697,9 +666,8 @@ const PropertyDetailsPage = ({ params }) => {
                             }}
                           />
                         </Box>
-                      )}
-                    </Box>
-                  )}
+                      </Box>
+                    )}
                 </Card>
               </Grid>
             )}
@@ -713,7 +681,6 @@ const PropertyDetailsPage = ({ params }) => {
                 brokerBalance={brokerBalance}
               />
             )}
-
             <OverallAssesmentSection
               overallAssessment={propertyData?.overallAssessment}
               AllPropertyData={propertyData}
