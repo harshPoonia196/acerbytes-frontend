@@ -80,13 +80,6 @@ function BottomFooterConsultant({
 
     let url = `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}`;
 
-    if (userDetails?.role === "broker" && propertyData?.isActiveAd) {
-      const expireTime = formatDateAndDaysRemaining(
-        SinglePropertyId?.expired_at,
-        "long"
-      );
-      url += `-${expireTime}`;
-    }
     url += `-${brokerId}`;
 
     return url;
