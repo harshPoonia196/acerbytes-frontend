@@ -245,8 +245,14 @@ function RowStructure({ row, handlePropertyView, router, alignment }) {
       {/* <TableCell>{row.brokerId && row?.higherrole?.name?.firstName ? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => handleBrokerProfileClick(row?.higherrole?.googleID)} >{row?.higherrole?.name?.firstName} {row?.higherrole?.name?.lastName}</span> : "-"}</TableCell> */}
       <TableCell>{row.source}</TableCell>
       {alignment === LEADS_TAB[2].value ? <TableCell align="right">{row?.userDetail?.userCreditValue?.toLocaleString('en-IN')}</TableCell> : null}
-     
-      <TableCell>{row?.userDetail?.status?.toUpperCase() || "-"}
+        
+      <TableCell>
+        <Chip
+            label={row?.userDetail?.status}
+            size="small"
+            style={{textTransform: 'capitalize', color: "white", 
+            backgroundColor: `${row?.userDetail?.status !== undefined ? row?.userDetail?.status === 'reviewed'? 'green' : 'red': "transparent"}`}}
+        />
       </TableCell>
       <TableCell>
         {moment(row.createdAt).format("DD/MM/YY hh:ss A")}
@@ -393,7 +399,7 @@ function EnquiriesTable({ search, setCounts, alignment, page, setPage }) {
       {
         rows.length > 0 ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}

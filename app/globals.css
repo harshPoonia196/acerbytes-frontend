@@ -231,8 +231,9 @@ html {
   padding: 16px !important;
 }
 .MuiTableCell-body{
-  padding: 8px 16px !important;
-  height: 50px;
+  padding: 5px 16px !important;
+  height: 45px;
+  max-height: 45px;
 }
 .creditPopup .creditPopup-textfield .MuiTypography-subtitle2{
   transform: translate(-14px, 0) scale(0.9);

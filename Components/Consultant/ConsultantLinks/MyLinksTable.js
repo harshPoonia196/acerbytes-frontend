@@ -159,7 +159,7 @@ function RowStructure({ row, history }) {
         <Link
           href={row?.link}
           style={{ textDecoration: "none" }}
-          sx={{ position: "relative", top: "-4px" }}
+          sx={{ position: "relative", top: "-4px"}}
         >
           <Tooltip title="Link">
             <LinkIcon
@@ -167,7 +167,7 @@ function RowStructure({ row, history }) {
               fontSize="small"
             />
           </Tooltip>
-          {row?.propertyName}
+          {" "}{row?.propertyName}
         </Link>
       </TableCell>
       <TableCell>{row?.city}</TableCell>
@@ -383,7 +383,7 @@ function MyLinksTable({ setCount }) {
       </Card>
       {activeAdData?.length > 0 ? (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
