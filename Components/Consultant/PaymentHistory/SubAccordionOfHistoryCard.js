@@ -107,7 +107,7 @@ function SubAccordionOfHistoryCard({ title, data = [], type = '', header }) {
                     else if(type === "Lead"){
                         return <Box sx={{ display: 'flex', pl: "18px" }}>
                             <Typography variant='subtitle2' sx={{ flex: 1, width: '33%' }}>{`${formatDate(createdAt)} (${details})`}</Typography>
-                            <Typography variant='subtitle2' sx={{ flex: 1, width: '33%', cursor: 'pointer', color: colors.BLUE }} onClick={() => handleLinkClick(res)}>{`${res?.leadUserName?.firstName} ${res?.leadUserName?.lastName}`}</Typography>
+                            <Typography variant='subtitle2' sx={{ flex: 1, width: '33%', cursor: 'pointer' }}>{`${res?.leadUserName?.firstName} ${res?.leadUserName?.lastName}`}</Typography>
                             <Typography variant='h6'>{formatPoints(consumedPoints)} Points</Typography>
                         </Box>
                     }
@@ -119,6 +119,12 @@ function SubAccordionOfHistoryCard({ title, data = [], type = '', header }) {
                                 {`${formatWithOrdinal(res?.linkCreatedAt)} - ${formatWithOrdinal(res?.linkExpiredAt)}`}
                             </Typography>
                         <Typography variant='h6'>{formatPoints(consumedPoints)} Points</Typography>
+                    </Box>
+                    }
+                    else if(type === "Notes subscription"){
+                        return <Box sx={{ display: 'flex', pl: "18px" }}>
+                        <Typography variant='subtitle2' sx={{ flex: 1, width: '33%' }}>{`${formatDate(createdAt)} (${details})`}</Typography>
++                        <Typography variant='h6'>{formatPoints(consumedPoints)} Points</Typography>
                     </Box>
                     }
                 }

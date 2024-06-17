@@ -133,7 +133,7 @@ function HistoryCard({ history }) {
                         <SubAccordionOfHistoryCard header={displayOnPropLeadsHeaders} title="Display on property subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Display on property subscriptions' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Notes subscription' />
+                        <SubAccordionOfHistoryCard header={displayOnPropLeadsHeaders} title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Notes subscription' />
                     </Grid>
                 </Grid>
             </CustomAccordionDetails>
