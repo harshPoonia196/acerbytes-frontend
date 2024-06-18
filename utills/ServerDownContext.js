@@ -27,7 +27,7 @@ export const ModalProvider = ({ children }) => {
             {children}
             <Dialog sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
                 open={openModal} onClose={handleClose}>
-                <Box sx={{ display: 'flex', padding: '20px', width: '400px', gap: '25px', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', padding: '20px', width: '350px', gap: '25px', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', borderBottom: '1px solid rgba(0,0,0,0.2)', pb: 1, width: '100%' }}>
                         <Image
                             priority
