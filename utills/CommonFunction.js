@@ -124,6 +124,10 @@ const formattedTime = (time) => {
   return format(new Date(time), 'dd/MM/yyyy hh:mm aaa');
 };
 
+const formatShortDate = (time) => {
+  return format(new Date(time), 'dd/mm/yyyy');
+};
+
 let formatDateAndDaysRemaining = (expiryDate, format) => {
   const expiry = new Date(expiryDate);
   const now = new Date();
@@ -364,4 +368,5 @@ export {
   indianNumberingSystem,
   filterText,
   formattedTime,
+  formatShortDate
 };

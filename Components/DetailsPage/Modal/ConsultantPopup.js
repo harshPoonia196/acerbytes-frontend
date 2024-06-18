@@ -127,6 +127,7 @@ function ConsultantPopup({
         >
           <Grid container spacing={1}>
             {BuyConsultantPoints?.map((credit, index) => {
+              
               return (
                 <>
                   <Grid item xs={12}>
@@ -137,13 +138,17 @@ function ConsultantPopup({
                         mb: "8px",
                         overflowY: "auto",
                       }}
-                    >
+                      style={{ borderColor: credit?.value === currentPlan.duration ? '#276ef1': '#dcdcdc78'}}
+                      onClick={() =>
+                        setCurrentPlan({ duration: credit.value, points: credit.discountAmount })
+                      }>
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <FormControlLabel
                           onClick={() =>
-                            setCurrentPlan({ duration: credit.value })
+                            setCurrentPlan({ duration: credit.value, points: credit.discountAmount })
                           }
                           value={credit.value}
+                          checked={credit?.value === currentPlan.duration}
                           control={<Radio />}
                           disabled={loadingStates}
                           sx={{ mr: 0 }}
@@ -181,6 +186,7 @@ function ConsultantPopup({
           color="primary"
           label={`Balance: ${brokerBalance} points`}
         />
+        <Box sx={{ textAlign: "right"}}>
         <CustomButton
           variant="contained"
           size="small"
@@ -188,6 +194,8 @@ function ConsultantPopup({
           ButtonText={!loadingStates ? "Buy Now" : "Loading..."}
           onClick={handleByPlanClick}
         />
+        {currentPlan.points && <Typography variant="body1" sx={{fontWeight: "bold", mt: 1}}>Selected Points: {currentPlan.points}</Typography>}
+        </Box>
       </DialogActions>
     </Dialog>
   );
