@@ -39,7 +39,6 @@ export default function MyLeadsStatus({ list: { rows = [], notesCount = 0, showS
                     !needSubscribe ? (!!rows?.length ?
                         rows.map((res) => <LeadStatusCard
                             name={res.fullName} actionType={res.type + ' action'} status={res.status}
-                            user={res.rows}
                             comment={res.note}
                             type={res.type}
                             userId={res?.user?._id ?? res?.userId}

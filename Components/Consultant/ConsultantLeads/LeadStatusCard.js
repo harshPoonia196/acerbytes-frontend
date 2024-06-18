@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {formattedTime} from '../../../utills/CommonFunction';
 
-function LeadStatusCard({ name, user, actionType, type, status, comment, time, noteId, userId, handleOpenUpdatePopup, onNoteDelete }) {
+function LeadStatusCard({ name, actionType, type, status, comment, time, noteId, userId, handleOpenUpdatePopup, onNoteDelete }) {
     
     const [anchorEl, setAnchorEl] = useState(null),
         open = Boolean(anchorEl),
@@ -30,7 +30,6 @@ function LeadStatusCard({ name, user, actionType, type, status, comment, time, n
         }
 
         const profileImage = (name) =>{
-            //let data = name.split()
             const data = name?.split(" ");
            return data.map((item) => item[0]).join('');
         }
