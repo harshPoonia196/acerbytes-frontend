@@ -47,7 +47,7 @@ function LeadStatusCard({ name, actionType, type, status, comment, time, noteId,
                                 : status === "Didn't Pick Call"
                                 ? "error"
                                 : "warning"
-                            }/> &#183; &nbsp;
+                            }/>&nbsp;  &#183; &nbsp;
                         <span style={{ color: colors.DISABLED }}>{comment}</span>
                     </Typography>
                     
