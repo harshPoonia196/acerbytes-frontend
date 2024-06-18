@@ -123,7 +123,8 @@ function NoteSubscription({ open, handleClose, getList }) {
                       overflowY: "auto",
                     }}
                     style={{ borderColor: credit?.value === duration ? '#276ef1': '#dcdcdc78'}}
-                    onClick={() => {setDuration(credit.value); setPoints(credit.discountAmount)}}>
+                    onClick={() => {setDuration(credit.value); 
+                    setPoints(credit.discountAmount)}}>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <Box>
                         <FormControlLabel
