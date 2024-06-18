@@ -208,7 +208,7 @@ function RowStructure({
         </Tooltip>
       </TableCell>
       <TableCell>
-        <Chip onClick={() => manageBuyNow(row?._id)} label="Buy now"/>
+        <Button onClick={() => manageBuyNow(row?._id)}>Buy now</Button>
       </TableCell>
     </TableRow>
   );

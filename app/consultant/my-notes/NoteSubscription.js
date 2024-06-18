@@ -26,6 +26,7 @@ import { listOfPages } from "Components/NavBar/Links";
 function NoteSubscription({ open, handleClose, getList }) {
   const router = useRouter();
   const [duration, setDuration] = useState();
+  const [points, setPoints] = useState();
 
   const { setBrokerPoints, brokerBalance } = useAuth(),
     [loadingStates, setLoadingStates] = useState(),
@@ -121,14 +122,16 @@ function NoteSubscription({ open, handleClose, getList }) {
                       mb: "8px",
                       overflowY: "auto",
                     }}
-                  >
+                    style={{ borderColor: credit?.value === duration ? '#276ef1': '#dcdcdc78'}}
+                    onClick={() => {setDuration(credit.value); setPoints(credit.discountAmount)}}>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <Box>
                         <FormControlLabel
                           value={credit.value}
                           control={<Radio />}
                           sx={{ mr: 0 }}
-                          onClick={() => setDuration(credit.value)}
+                          checked={credit?.value === duration}
+                          onClick={() => {setDuration(credit.value); setPoints(credit.discountAmount)}}
                         />
                       </Box>
                       <Box>
@@ -166,6 +169,9 @@ function NoteSubscription({ open, handleClose, getList }) {
             onClick={handleByPlanClick}
             disabled={loadingStates}
           />
+          <Box>
+            {points && <Typography variant="body1" sx={{fontWeight: "bold", mt: 1}}>Selected Points: {points}</Typography>}
+          </Box>
         </Box>
       </DialogActions>
     </Dialog>

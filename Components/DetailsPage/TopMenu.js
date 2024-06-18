@@ -143,7 +143,7 @@ function TopMenu(props) {
           [`& .${tabsClasses.scrollButtons}`]: {
             "&.Mui-disabled": { opacity: 0.3 },
           },
-          boxShadow: boxShadowBottom,
+          boxShadow: "-1px 8px 6px -6px gainsboro!important",
         }}
       >
         {list.map((current) => (

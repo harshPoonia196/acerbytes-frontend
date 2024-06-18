@@ -7,6 +7,7 @@ import LeadStatusCard from './LeadStatusCard';
 import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
 import NoDataCard from 'Components/CommonLayouts/CommonDataCard';
 export default function MyLeadsStatus({ list: { rows = [], notesCount = 0, showSubscribeButton = false, needSubscribe = false } = {}, searchTerm, handleSearch, alignment, handleChange, handleOpenUpdatePopup, onNoteDelete }) {
+    
     return (
         <>
             <Grid container>
@@ -38,6 +39,7 @@ export default function MyLeadsStatus({ list: { rows = [], notesCount = 0, showS
                     !needSubscribe ? (!!rows?.length ?
                         rows.map((res) => <LeadStatusCard
                             name={res.fullName} actionType={res.type + ' action'} status={res.status}
+                            user={res.rows}
                             comment={res.note}
                             type={res.type}
                             userId={res?.user?._id ?? res?.userId}
