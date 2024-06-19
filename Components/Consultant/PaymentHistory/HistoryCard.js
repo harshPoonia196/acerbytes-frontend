@@ -50,27 +50,35 @@ function HistoryCard({ history }) {
     }
 
     const activateLeadsHeaders = (
-        <Box sx={{ display: 'flex', pl: "18px", pb: 1 }}>
-            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Transaction</Typography>
-            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Project Name</Typography>
-            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Valid Period</Typography>
-            <Typography variant='h5'>Points</Typography>
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", pl: "18px", pb: 1 }}>
+            <Typography variant='h5'>Transaction</Typography>
+            <Typography variant='h5'>Project Name</Typography>
+            <Typography variant='h5'>Valid Period</Typography>
+            <Typography variant='h5' sx={{ textAlign: "right"}}>Points</Typography>
         </Box>
     )
     
     const suggestedLeadsHeaders = (
-        <Box sx={{ display: 'flex', pl: "18px", pb: 1 }}>
-            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Transaction</Typography>
-            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>User Name</Typography>
-            <Typography variant='h5'>Points</Typography>
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", pl: "18px", pb: 1 }}>
+            <Typography variant='h5'>Transaction</Typography>
+            <Typography variant='h5'>User Name</Typography>
+            <Typography variant='h5' sx={{ textAlign: "right"}}>Points</Typography>
         </Box>
     )
     const displayOnPropLeadsHeaders = (
-        <Box sx={{ display: 'flex', pl: "18px", pb: 1 }}>
-            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Transaction</Typography>
-            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Property Name</Typography>
-            <Typography variant='h5' sx={{ flex: 1, width: '33%' }}>Valid Period</Typography>
-            <Typography variant='h5'>Points</Typography>
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", pl: "18px", pb: 1 }}>
+            <Typography variant='h5'>Transaction</Typography>
+            <Typography variant='h5'>Property Name</Typography>
+            <Typography variant='h5'>Valid Period</Typography>
+            <Typography variant='h5' sx={{ textAlign: "right"}}>Points</Typography>
+        </Box>
+    )
+
+    const displayOnPropNotesHeaders = (
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", pl: "18px", pb: 1 }}>
+            <Typography variant='h5'>Transaction</Typography>
+            <Typography variant='h5'>Valid Period</Typography>
+            <Typography variant='h5' sx={{ textAlign: "right"}}>Points</Typography>
         </Box>
     )
 
@@ -133,7 +141,7 @@ function HistoryCard({ history }) {
                         <SubAccordionOfHistoryCard header={displayOnPropLeadsHeaders} title="Display on property subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Display on property subscriptions' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard header={displayOnPropLeadsHeaders} title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Notes subscription' />
+                        <SubAccordionOfHistoryCard header={displayOnPropNotesHeaders} title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Notes subscription' />
                     </Grid>
                 </Grid>
             </CustomAccordionDetails>

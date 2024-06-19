@@ -369,11 +369,11 @@ function BottomFooterConsultant({
                         Activate link
                       </Button>
                     )}
-                    <div>
+                    {/* <div>
                       <Typography variant="body2" sx={{ marginTop: "5px" }}>
                         Get leads
                       </Typography>
-                    </div>
+                    </div> */}
                     <div>
                       <Typography
                         variant="body2"

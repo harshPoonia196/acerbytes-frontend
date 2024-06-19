@@ -65,7 +65,7 @@ function TopMenu(props) {
                 </Typography>
                 <Typography
                   variant="h5"
-                  sx={{ alignSelf: "center", textTransform: "capitalize" }}
+                  sx={{ alignSelf: "center", textTransform: "capitalize", mb: "5px" }}
                 >
                   {sector}, {area}, {city}, {state}
                 </Typography>

@@ -39,7 +39,7 @@ function LeadStatusCard({ name, actionType, type, status, comment, time, noteId,
             <Card sx={{ p: 2, display: 'flex', flexDirection: 'row' }}>
                 <Box sx={{ flex: 1 }}>
                     <Typography variant="body1" sx={{ display: "flex", alignItems: "center"}}>
-                        {name && <><Avatar children={profileImage(name)} size="small"  sx={{mr: 1, height: 32, width: 32}} />
+                        {name && <><Avatar children={profileImage(name)} size="small"  sx={{mr: 1, height: 32, width: 32}} />&nbsp;
                         <span style={{ color: colors.BLUE, fontWeight: 600 }}>{name}</span> &#183;</>} {actionType} &#183;  &nbsp;
                         <Chip size="small" label={status} color={
                                 status === "Purchsed"
