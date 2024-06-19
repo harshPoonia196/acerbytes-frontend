@@ -108,13 +108,7 @@ function ConsultantPopup({
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
             Request for purchase plan
           </Typography>
-          <CustomButton
-            startIcon={<AddCardIcon fontSize="small" />}
-            variant="outlined"
-            size="small"
-            onClick={() => router.push(listOfPages.consultantPaymentHistory)}
-            ButtonText={"Add points"}
-          />
+          
         </Box>
       </DialogTitle>
       <DialogContent
@@ -137,6 +131,7 @@ function ConsultantPopup({
                         border: "solid 1px #dcdcdc78",
                         mb: "8px",
                         overflowY: "auto",
+                        cursor: "pointer"
                       }}
                       style={{ borderColor: credit?.value === currentPlan.duration ? '#276ef1': '#dcdcdc78'}}
                       onClick={() =>
@@ -178,14 +173,20 @@ function ConsultantPopup({
         </RadioGroup>
       </DialogContent>
       <DialogActions
-        sx={{ justifyContent: "space-between", alignItems: "center", pt: 1 }}
+        sx={{ justifyContent: "space-between", alignItems: "flex-start", pt: 1 }}
       >
-        <Chip
-          variant="contained"
-          sx={{ marginRight: "10px" }}
-          color="primary"
-          label={`Balance: ${brokerBalance} points`}
-        />
+        <Box>
+        <CustomButton
+            startIcon={<AddCardIcon fontSize="small" />}
+            variant="outlined"
+            size="small"
+            onClick={() => router.push(listOfPages.consultantPaymentHistory)}
+            ButtonText={"Add points"}
+          />
+        <Typography variant="body2"
+          sx={{ marginRight: "10px", alignSelf: "flex-start", mt: 1 }}> 
+          Balance: {brokerBalance} points</Typography>
+        </Box>
         <Box sx={{ textAlign: "right"}}>
         <CustomButton
           variant="contained"
@@ -194,7 +195,7 @@ function ConsultantPopup({
           ButtonText={!loadingStates ? "Buy Now" : "Loading..."}
           onClick={handleByPlanClick}
         />
-        {currentPlan.points && <Typography variant="body1" sx={{fontWeight: "bold", mt: 1}}>Selected Points: {currentPlan.points}</Typography>}
+        {currentPlan.points && <Typography variant="body2" sx={{mt: 1}}>Selected Points: {formatPoints(currentPlan.points)}</Typography>}
         </Box>
       </DialogActions>
     </Dialog>

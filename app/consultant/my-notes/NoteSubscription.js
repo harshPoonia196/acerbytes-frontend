@@ -96,13 +96,7 @@ function NoteSubscription({ open, handleClose, getList }) {
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
             Notes management subscription
           </Typography>
-          <CustomButton
-            startIcon={<AddCardIcon fontSize="small" />}
-            variant="outlined"
-            size="small"
-            onClick={() => router.push(listOfPages.consultantPaymentHistory)}
-            ButtonText={"Add Points"}
-          />
+          
         </Box>
         <Typography variant="body1">Select plan to subscribe</Typography>
       </DialogTitle>
@@ -121,6 +115,7 @@ function NoteSubscription({ open, handleClose, getList }) {
                       border: "solid 1px #dcdcdc78",
                       mb: "8px",
                       overflowY: "auto",
+                      cursor: "pointer"
                     }}
                     style={{ borderColor: credit?.value === duration ? '#276ef1': '#dcdcdc78'}}
                     onClick={() => {setDuration(credit.value); 
@@ -158,9 +153,16 @@ function NoteSubscription({ open, handleClose, getList }) {
           </Grid>
         </RadioGroup>
       </DialogContent>
-      <DialogActions sx={{ justifyContent: "space-between", pt: 1 }}>
-        <Box sx={{ fontWeight: 700 }}>
-          <Chip label={`Balance: ${brokerBalance} Points`} color="primary" />
+      <DialogActions sx={{ justifyContent: "space-between", alignItems: "flex-start", pt: 1 }}>
+        <Box sx={{ fontWeight: 700, alignSelf: "flex-start" }}>
+          <CustomButton
+              startIcon={<AddCardIcon fontSize="small" />}
+              variant="outlined"
+              size="small"
+              onClick={() => router.push(listOfPages.consultantPaymentHistory)}
+              ButtonText={"Add Points"}
+            />
+          <Typography variant="body2" sx={{mt: 1}}>Balance: {brokerBalance} Points</Typography>
         </Box>
         <Box sx={{ textAlign: "end" }}>
           <CustomButton
@@ -171,7 +173,7 @@ function NoteSubscription({ open, handleClose, getList }) {
             disabled={loadingStates}
           />
           <Box>
-            {points && <Typography variant="body1" sx={{fontWeight: "bold", mt: 1}}>Selected Points: {points}</Typography>}
+            {points && <Typography variant="body2" sx={{mt: 1}}>Selected Points: {formatPoints(points)}</Typography>}
           </Box>
         </Box>
       </DialogActions>

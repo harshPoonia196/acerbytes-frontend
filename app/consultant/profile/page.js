@@ -617,7 +617,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     </label>
                     {userProfileInfo?.name ? (
                       <Box sx={{ flex: 1 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 900 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 900, fontSize: "1rem" }}>
                           {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
                         </Typography>
                         <Typography variant="body2">
@@ -703,7 +703,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                   /> */}
                   <NewInputFieldStructure
                     label="Alternate Email"
-                    isRequired={true}
+                    isRequired={false}
                     variant="outlined"
                     disabled={isAdminUpdate}
                     value={brokerProfileInfo?.alternateEmail || ""}

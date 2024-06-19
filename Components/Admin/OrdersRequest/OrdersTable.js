@@ -102,7 +102,7 @@ const headCells = [
   },
   {
     id: "approvedDiscount",
-    label: "Approved discount",
+    label: "Approved Disc (%)",
     isCompleteView: true,
     isPendingView: false,
     numeric: true,
@@ -671,7 +671,7 @@ function OrdersTable({ onDashboardDataUpdate }) {
             Pending (Not assigned)
           </ToggleButton>
           <ToggleButton size="small" value={1} sx={{ flex: 1, border: "none" }}>
-            Assigned
+            Approved (Assigned)
           </ToggleButton>
         </ToggleButtonGroup>
       </Card>
