@@ -7,6 +7,7 @@ import { Providers } from "state/Providers";
 import { SnackbarProvider } from "utills/SnackbarContext";
 import { AuthProvider } from "utills/AuthContext";
 import { ReactQueryClientProvider } from "Components/ReactQuery/ReactQueryClientProvider";
+import { ModalProvider } from "utills/ServerDownContext";
 
 const inter = Inter({ subsets: ["latin"] });
 const ibm_plex_sans = IBM_Plex_Sans({
@@ -30,7 +31,7 @@ export default function RootLayout({ children }) {
           crossOrigin="true"
         />
         <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
-        
+
         <meta name="description" content="AcreBytes is a platform that helps you make better decisions when buying property by providing detailed listings of thoroughly researched properties and connecting you with registered real estate consultants."></meta>
         <meta name="keywords" content="acrebytes, property, property leads, Real estate, property consultant, property real estate dealers"></meta>
       </head>
@@ -40,7 +41,9 @@ export default function RootLayout({ children }) {
             <ThemeRegistry options={{ key: "css" }}>
               <AuthProvider>
                 <SnackbarProvider>
-                  <NavBar>{children}</NavBar>
+                  <ModalProvider>
+                    <NavBar>{children}</NavBar>
+                  </ModalProvider>
                 </SnackbarProvider>
               </AuthProvider>
             </ThemeRegistry>
