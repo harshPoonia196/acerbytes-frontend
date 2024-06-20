@@ -1,5 +1,5 @@
 "use client"
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { Box, Button, Dialog, Typography } from "@mui/material";
 import Logo from "public/images/icon.svg";
 import Image from "next/image";
@@ -17,9 +17,30 @@ export const ModalProvider = ({ children }) => {
         setOpenModal(true);
     };
 
+    useEffect(() => {
+        localStorage.removeItem("serverDown");
+        window.dispatchEvent(new Event("localeUpdated"));
+    
+        const handleLocaleUpdated = () => {
+            if(localStorage.getItem("serverDown") === "true"){
+                setOpenModal(true);
+            }
+            else{
+                setOpenModal(false);
+            }
+        };
+    
+        window.addEventListener('localeUpdated', handleLocaleUpdated);
+    
+        return () => {
+          window.removeEventListener('localeUpdated', handleLocaleUpdated);
+        };
+      }, []);
+    
     const handleClose = () => {
         setOpenModal(false);
         localStorage.removeItem("serverDown")
+        window.dispatchEvent(new Event("localeUpdated"));
     };
 
     return (
@@ -53,7 +74,6 @@ export const ModalProvider = ({ children }) => {
                     <Typography sx={{ textAlign: 'center' }}>Service is temporary unavailable!</Typography>
                     <Box sx={{ display: 'flex', gap: '20px' }}>
                         <Button onClick={()=> window.location.reload()} variant="contained">Refresh</Button>
-                        <Button onClick={() => handleClose()} variant="outlined">Close</Button>
                     </Box>
                 </Box>
             </Dialog>
