@@ -19,8 +19,9 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error?.code === "ECONNABORTED") {
-      showModal("Server is down. Please try again later."); 
+    console.log(error?.code)
+    if (error?.code === "ECONNABORTED" || error?.code === "ERR_CONNECTION_REFUSED") {
+      showModal(); 
     }
     if (error.response && error.response.status === 401) {
       logoutUser()
