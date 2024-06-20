@@ -663,10 +663,16 @@ export const LEADS_TAB = [
 ];
 
 export const NOTES_STATUS = [
-  { value: "Contact Done", label: "Contact Done" },
-  { value: "Didn't Pick Call", label: "Didn't Pick Call" },
-  { value: "Purchsed", label: "Purchsed" },
+  { value: "Contact", label: "Contact" },
+  { value: "Meet", label: "Meet" },
+  { value: "Site visit", label: "Site visit" },
+  { value: "Booking", label: "Booking" },
+  { value: "Buy", label: "Buy" },
+  { value: "No Response", label: "No Response" },
+  { value: "Not Interested", label: "Not Interested" },
+  { value: "Brokerage", label: "Brokerage" },
 ];
+
 
 export const NOTES_TYPE = {
   COMPLETED: "Completed",
