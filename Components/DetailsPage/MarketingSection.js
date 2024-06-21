@@ -172,6 +172,7 @@ function MarketingSection(props) {
                   label={overviewData?.overview?.status}
                   color="primary"
                   size="small"
+                  sx={{ mb: 1}}
                 />
               )}
               {(overviewData?.overview?.launchYear ||
@@ -192,6 +193,7 @@ function MarketingSection(props) {
             ${shortPriceFormatter(overviewData?.unitsPlan?.maxPriceRange)}`}
                   color="primary"
                   size="small"
+                  sx={{ mb: 1}}
                 />
               )}
               {(overviewData?.unitsPlan?.averagePrice ||
