@@ -1,5 +1,6 @@
 import axios from "axios";
-import { getToken } from "utills/utills";
+import { showModal } from "utills/ServerDownContext";
+import { getToken, logoutUser } from "utills/utills";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -18,8 +19,12 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.log(error?.code)
+    if (error?.code === "ECONNABORTED" || error?.code === "ERR_CONNECTION_REFUSED") {
+      showModal(); 
+    }
     if (error.response && error.response.status === 401) {
-      // logoutUser()
+      logoutUser()
     }
     return Promise.reject(error);
   }

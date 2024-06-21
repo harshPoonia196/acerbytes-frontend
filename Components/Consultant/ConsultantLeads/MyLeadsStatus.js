@@ -7,6 +7,7 @@ import LeadStatusCard from './LeadStatusCard';
 import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
 import NoDataCard from 'Components/CommonLayouts/CommonDataCard';
 export default function MyLeadsStatus({ list: { rows = [], notesCount = 0, showSubscribeButton = false, needSubscribe = false } = {}, searchTerm, handleSearch, alignment, handleChange, handleOpenUpdatePopup, onNoteDelete }) {
+    
     return (
         <>
             <Grid container>

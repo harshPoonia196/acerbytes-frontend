@@ -229,11 +229,17 @@ html {
 .MuiTableCell-head{
   text-transform: none !important;
   padding: 16px !important;
+  font-size: 14px !important;
+  background: #f6f6f6;
 }
 .MuiTableCell-body{
-  padding: 8px 16px !important;
-  height: 50px;
+  padding: 4px 16px !important;
+  font-size: 14px !important;
+  height: 40px;
 }
 .creditPopup .creditPopup-textfield .MuiTypography-subtitle2{
   transform: translate(-14px, 0) scale(0.9);
+}
+.MuiTableBody-root .MuiButtonBase-root{
+  padding: 3.5px 8px;
 }

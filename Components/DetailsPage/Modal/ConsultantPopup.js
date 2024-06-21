@@ -86,18 +86,12 @@ function ConsultantPopup({
     }
   };
 
-  const [value, setValue] = useState("");
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
   return (
     <Dialog
       sx={{
         "& .MuiDialog-paper": {
           borderRadius: "8px !important",
-          overflowY: "scroll",
+          overflowY: "auto",
         },
       }}
       open={open}
@@ -114,36 +108,42 @@ function ConsultantPopup({
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
             Request for purchase plan
           </Typography>
-          <CustomButton
-            startIcon={<AddCardIcon fontSize="small" />}
-            variant="outlined"
-            size="small"
-            onClick={() => router.push(listOfPages.consultantPaymentHistory)}
-            ButtonText={"Add points"}
-          />
+          
         </Box>
       </DialogTitle>
       <DialogContent
-        sx={{ maxWidth: "100%", width: "100%", overflowY: "scroll" }}
+        sx={{ maxWidth: "100%", width: "100%", overflowY: "auto" }}
       >
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
-          value={value}
-          onChange={handleChange}
+          // onChange={}
         >
-          <Grid container spacing={1} sx={{ p: 2 }}>
+          <Grid container spacing={1}>
             {BuyConsultantPoints?.map((credit, index) => {
+              
               return (
                 <>
                   <Grid item xs={12}>
-                    <Card sx={{ p: 1 }}>
+                    <Card
+                      sx={{
+                        p: 2,
+                        border: "solid 1px #dcdcdc78",
+                        mb: "8px",
+                        overflowY: "auto",
+                        cursor: "pointer"
+                      }}
+                      style={{ borderColor: credit?.value === currentPlan.duration ? '#276ef1': '#dcdcdc78'}}
+                      onClick={() =>
+                        setCurrentPlan({ duration: credit.value, points: credit.discountAmount })
+                      }>
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <FormControlLabel
                           onClick={() =>
-                            setCurrentPlan({ duration: credit.value })
+                            setCurrentPlan({ duration: credit.value, points: credit.discountAmount })
                           }
                           value={credit.value}
+                          checked={credit?.value === currentPlan.duration}
                           control={<Radio />}
                           disabled={loadingStates}
                           sx={{ mr: 0 }}
@@ -153,11 +153,12 @@ function ConsultantPopup({
                             variant="body1"
                             sx={{ flex: 1, alignSelf: "center" }}
                           >
-                            {credit?.month}{credit?.month !== "1 month" ? "s": null} plan
+                            {credit?.month}
+                            {credit?.month !== "1 month" ? "s" : null} plan
                           </Typography>
                           <Typography variant="subtitle2">
                             <span style={{ fontWeight: 600 }}>
-                              {formatPoints(credit?.discountAmount)} Points {" "}
+                              {formatPoints(credit?.discountAmount)} Points{" "}
                             </span>
                             ({credit?.discount}% discount)
                           </Typography>
@@ -172,22 +173,30 @@ function ConsultantPopup({
         </RadioGroup>
       </DialogContent>
       <DialogActions
-        sx={{ justifyContent: "space-between", alignItems: "center", pt: 1 }}
+        sx={{ justifyContent: "space-between", alignItems: "flex-start", pt: 1 }}
       >
-        <Chip
-          variant="contained"
-          sx={{ marginRight: "10px" }}
-          color="primary"
-          label={`Balance: ${brokerBalance} points`}
-        />
+        <Box>
+        <CustomButton
+            startIcon={<AddCardIcon fontSize="small" />}
+            variant="outlined"
+            size="small"
+            onClick={() => router.push(listOfPages.consultantPaymentHistory)}
+            ButtonText={"Add points"}
+          />
+        <Typography variant="body2"
+          sx={{ marginRight: "10px", alignSelf: "flex-start", mt: 1 }}> 
+          Balance: {brokerBalance} points</Typography>
+        </Box>
+        <Box sx={{ textAlign: "right"}}>
         <CustomButton
           variant="contained"
           size="small"
           disabled={loadingStates}
           ButtonText={!loadingStates ? "Buy Now" : "Loading..."}
-          sx={{ mr: "5px" }}
           onClick={handleByPlanClick}
         />
+        {currentPlan.points && <Typography variant="body2" sx={{mt: 1}}>Selected Points: {formatPoints(currentPlan.points)}</Typography>}
+        </Box>
       </DialogActions>
     </Dialog>
   );

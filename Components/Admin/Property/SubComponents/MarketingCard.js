@@ -22,7 +22,6 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
   const imageDoc = `image at least 200x200 pixels, Image aspect ratio of 1:1, file size under 300 KB`;
 
   const { tagLine, description, image, metaDescription } = form.marketing;
-
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
 
   const handleOpenUploadPopup = () => {
@@ -88,8 +87,6 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
               <Box
                 component="img"
                 sx={{
-                  height: 233,
-                  width: 350,
                   maxHeight: { xs: 233, md: 167 },
                   maxWidth: { xs: 350, md: 250 },
                 }}

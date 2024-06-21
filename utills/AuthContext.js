@@ -11,12 +11,14 @@ export const AuthProvider = ({ children }) => {
   const [brokerBalance, setBrokerBalance] = useState(0);
 
   useEffect(() => {
-    localStorage.getItem("userDetails") && setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
+    localStorage.getItem("userDetails") &&
+      setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
     setIsLogged(isLoggedIn());
 
     const handleStorageChange = (event) => {
       setIsLogged(isLoggedIn());
-      localStorage.getItem("userDetails") && setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
+      localStorage.getItem("userDetails") &&
+        setUserDetails(JSON.parse(localStorage.getItem("userDetails")));
     };
 
     window.addEventListener("storage", handleStorageChange);
@@ -74,5 +76,5 @@ export const useAuth = () => {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-  console.log(context)
+  console.log(context);
 };

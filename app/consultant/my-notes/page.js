@@ -1,33 +1,22 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  ToggleButton,
-  ToggleButtonGroup,
-  Card,
-  Grid,
-} from "@mui/material";
+import { Container } from "@mui/material";
 import UpdateLeadStatus from "Components/Consultant/ConsultantLeads/Modal/UpdateLeadStatus";
 import MyLeadsStatus from "Components/Consultant/ConsultantLeads/MyLeadsStatus";
-import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { useSnackbar } from "utills/SnackbarContext";
 import { deleteNote, getNotes } from "api/Broker.api";
-import { DEBOUNCE_TIMER, NOTES_TYPE, ToasterMessages } from "utills/Constants";
+import { DEBOUNCE_TIMER, ToasterMessages } from "utills/Constants";
 import { debounce } from "lodash";
 import NoteSubscription from "./NoteSubscription";
 import AddIcon from "@mui/icons-material/Add";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 
 function MyNotes() {
-  const router = useRouter();
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const [list, setList] = useState({
     rows: [],
@@ -93,7 +82,7 @@ function MyNotes() {
     },
     onNoteDelete = async (id) => {
       try {
-        const res = await deleteNote(id);
+        await deleteNote(id);
         showTostMessages(ToasterMessages.NOTE_DELETED_SUCCESS, "success");
         getList();
       } catch (error) {

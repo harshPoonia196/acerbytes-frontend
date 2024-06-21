@@ -18,7 +18,7 @@ import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { visuallyHidden } from "@mui/utils";
-import { formatDate, getComparator, stableSort } from "utills/CommonFunction";
+import { formatDate, getComparator, stableSort, formatShortDate } from "utills/CommonFunction";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { getAllActiveAd } from "api/consultant.api";
 import Loader from "Components/CommonLayouts/Loading";
@@ -159,7 +159,7 @@ function RowStructure({ row, history }) {
         <Link
           href={row?.link}
           style={{ textDecoration: "none" }}
-          sx={{ position: "relative", top: "-4px" }}
+          sx={{ position: "relative", top: "-4px"}}
         >
           <Tooltip title="Link">
             <LinkIcon
@@ -167,7 +167,7 @@ function RowStructure({ row, history }) {
               fontSize="small"
             />
           </Tooltip>
-          {row?.propertyName}
+          {" "}{row?.propertyName}
         </Link>
       </TableCell>
       <TableCell>{row?.city}</TableCell>
@@ -199,7 +199,7 @@ function RowStructure({ row, history }) {
         />
       </TableCell>
       <TableCell>
-        {formatDate(row?.validFrom)} - {formatDate(row?.validTo)}
+        {formatShortDate(row?.validFrom)} - {formatShortDate(row?.validTo)}
       </TableCell>
       <TableCell>
         {row?.expiresIn ? expiresInDisplay(row.expiresIn) : ""}
@@ -383,7 +383,7 @@ function MyLinksTable({ setCount }) {
       </Card>
       {activeAdData?.length > 0 ? (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}

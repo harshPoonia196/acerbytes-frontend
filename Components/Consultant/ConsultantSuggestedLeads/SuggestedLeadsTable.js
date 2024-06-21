@@ -208,7 +208,7 @@ function RowStructure({
         </Tooltip>
       </TableCell>
       <TableCell>
-        <Button onClick={() => manageBuyNow(row?._id)}>Buy Now</Button>
+        <Button onClick={() => manageBuyNow(row?._id)}>Buy now</Button>
       </TableCell>
     </TableRow>
   );
@@ -384,17 +384,17 @@ function SuggestedLeadsTable({ setLeadsCount }) {
           Insufficient Credit points
         </Typography>
       </DialogTitle>
-      <DialogContent sx={{ padding: "36px !important", minWidth: "415px" }}>
+      <DialogContent sx={{ padding: "0 25px 25px 24px !important", minWidth: "415px" }}>
         <DialogContentText>
           <Typography variant="body1">{buyNowResponseMessage}</Typography>
-          <Typography variant="body1">
+          {/* <Typography variant="body1">
             Your current Credit points (23,000 points) are insufficient to buy
             the services.
-          </Typography>
+          </Typography> */}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button
+        {/* <Button
           variant="outlined"
           sx={{
             fontWeight: 600,
@@ -409,7 +409,7 @@ function SuggestedLeadsTable({ setLeadsCount }) {
           }}
         >
           Add Credit points
-        </Button>
+        </Button> */}
         <Button
           variant="contained"
           sx={{

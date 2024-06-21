@@ -81,28 +81,28 @@ const headCells = [
   },
   {
     id: "amount",
-    label: "St Amount",
+    label: "Standard Amount",
     isCompleteView: true,
     isPendingView: true,
     numeric: true,
   },
   {
     id: "point",
-    label: "St Points",
+    label: "Standard Pts",
     isCompleteView: true,
     isPendingView: true,
     numeric: true,
   },
   {
     id: "discount",
-    label: "St percentage discount",
+    label: "Standard Disc (%)",
     isCompleteView: true,
     isPendingView: true,
     numeric: true,
   },
   {
     id: "approvedDiscount",
-    label: "Approved discount",
+    label: "Approved Disc (%)",
     isCompleteView: true,
     isPendingView: false,
     numeric: true,
@@ -464,7 +464,7 @@ function TableView({
       </Card>
       {orderRequests?.list?.length > 0 ? (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -671,7 +671,7 @@ function OrdersTable({ onDashboardDataUpdate }) {
             Pending (Not assigned)
           </ToggleButton>
           <ToggleButton size="small" value={1} sx={{ flex: 1, border: "none" }}>
-            Assigned
+            Approved (Assigned)
           </ToggleButton>
         </ToggleButtonGroup>
       </Card>

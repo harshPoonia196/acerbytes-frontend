@@ -80,13 +80,6 @@ function BottomFooterConsultant({
 
     let url = `${baseUrl}/${projectCategory}-${projectType}-${city}-${sector}-${area}-${projectName}`;
 
-    if (userDetails?.role === "broker" && propertyData?.isActiveAd) {
-      const expireTime = formatDateAndDaysRemaining(
-        SinglePropertyId?.expired_at,
-        "long"
-      );
-      url += `-${expireTime}`;
-    }
     url += `-${brokerId}`;
 
     return url;
@@ -125,7 +118,7 @@ function BottomFooterConsultant({
     }
 }, [propertyData?.isActiveAd])
   return (
-    <>
+    <Box className="mainBlock" sx={{ paddingTop: "21px"}}>
       <Box
         className="consultantFooter"
         sx={{
@@ -376,11 +369,11 @@ function BottomFooterConsultant({
                         Activate link
                       </Button>
                     )}
-                    <div>
+                    {/* <div>
                       <Typography variant="body2" sx={{ marginTop: "5px" }}>
                         Get leads
                       </Typography>
-                    </div>
+                    </div> */}
                     <div>
                       <Typography
                         variant="body2"
@@ -471,7 +464,7 @@ function BottomFooterConsultant({
                     {userDetails.role === 'broker' ? "Enquiries received": "Enquiries"}
                 </Fab> */}
       </Box>
-    </>
+    </Box>
   );
 }
 

@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+// import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import Fab from "@mui/material/Fab";
 import React, { useState, useEffect, useRef } from "react";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
@@ -312,6 +312,34 @@ const PropertyDetails = ({ params }) => {
     checkPropertyIsEnquired();
   }, [userDetails]);
 
+  const GridItemWithCard = (props) => {
+    const { children, styles, boxStyles, ...rest } = props;
+    return (
+      <Grid
+        item
+        {...rest}
+        sx={{
+          padding: 1,
+          textAlign: "center",
+          ...styles,
+        }}
+      >
+        <Box
+          sx={{
+            backgroundColor: "whitesmoke",
+            p: 2,
+            borderRadius: "8px",
+            boxShadow:
+              "0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%)",
+            ...boxStyles,
+          }}
+        >
+          {children}
+        </Box>
+      </Grid>
+    );
+  };
+
   const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
     React.useState(false);
@@ -475,10 +503,6 @@ const PropertyDetails = ({ params }) => {
     listOfTabsInAddProperty[0].value
   );
 
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
-
   const [activeState, setActiveState] = React.useState(null);
 
   let itemsServer = listOfPropertyDetailsTab.map((tab) => {
@@ -510,15 +534,12 @@ const PropertyDetails = ({ params }) => {
       clearItem(userLeadId);
     }
   }, [getItem(propertyUserVerifiedKey) == true]);
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
 
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
 
     // Don't set the active index based on scroll if a link was just clicked
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -552,34 +573,9 @@ const PropertyDetails = ({ params }) => {
   const handleClick = (hash) => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
 
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
-
     document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
-
-    // if (activeState !== hash) {
-    //
-
-    //   if (window)
-    //     window.scrollTo({
-    //       top:
-    //         document.getElementById(hash)?.getBoundingClientRect().top +
-    //         window.pageYOffset -
-    //         tabHeight,
-    //       behavior: "smooth",
-    //     });
-    // }
   };
-
-  React.useEffect(
-    () => () => {
-      clearTimeout(unsetClickedRef.current);
-    },
-    []
-  );
 
   const [activateAdsPopupState, setActivateAdsPopupState] = useState(false);
   const handleCloseActivateAdsPopup = () => {

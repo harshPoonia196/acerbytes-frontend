@@ -21,35 +21,44 @@ import { buyNotesPoints, getBrokerBalance } from "api/Broker.api";
 import { useAuth } from "utills/AuthContext";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import { useRouter } from "next/navigation";
+import { listOfPages } from "Components/NavBar/Links";
 
 function NoteSubscription({ open, handleClose, getList }) {
   const router = useRouter();
+  const [duration, setDuration] = useState();
+  const [points, setPoints] = useState();
+
   const { setBrokerPoints, brokerBalance } = useAuth(),
-    [loadingStates, setLoadingStates] = useState({}),
+    [loadingStates, setLoadingStates] = useState(),
     { openSnackbar } = useSnackbar(),
     showTostMessages = (message, severity) => {
       openSnackbar(message, severity);
     },
-    handleByPlanClick = async (duration, index) => {
+    handleByPlanClick = async () => {
       const adData = { months: duration };
-      try {
-        setLoadingStates((prevStates) => ({ ...prevStates, [index]: true }));
-        const response = await buyNotesPoints(adData);
-        if (response.status == 200) {
-          showTostMessages(response?.data.message, "success");
-          getBrokerPointBalance();
-          handleClose();
-          getList();
+      setLoadingStates(true);
+      if (duration) {
+        try {
+          const response = await buyNotesPoints(adData);
+          if (response.status == 200) {
+            showTostMessages(response?.data.message, "success");
+            getBrokerPointBalance();
+            handleClose();
+            getList();
+          }
+        } catch (error) {
+          showTostMessages(
+            error?.response?.data?.message ||
+              error?.message ||
+              "something went wrong error",
+            "error"
+          );
+        } finally {
+          setLoadingStates(false);
         }
-      } catch (error) {
-        showTostMessages(
-          error?.response?.data?.message ||
-            error?.message ||
-            "something went wrong error",
-          "error"
-        );
-      } finally {
-        setLoadingStates((prevStates) => ({ ...prevStates, [index]: false }));
+      } else {
+        showTostMessages("Please select a plan", "error");
+        setLoadingStates(false);
       }
     },
     getBrokerPointBalance = async () => {
@@ -68,11 +77,6 @@ function NoteSubscription({ open, handleClose, getList }) {
       }
     };
 
-  const [subscribeItem, setSubscribeItem] = useState({});
-
-  const handleChange = (event) => {
-    setSubscribeItem({ value: event.target.value });
-  };
   return (
     <Dialog
       sx={{
@@ -90,84 +94,87 @@ function NoteSubscription({ open, handleClose, getList }) {
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            Request for Plan Subscribe
+            Notes management subscription
           </Typography>
-          <CustomButton
-            startIcon={<AddCardIcon fontSize="small" />}
-            variant="outlined"
-            size="small"
-            onClick={() => router.push(listOfPages.consultantPaymentHistory)}
-            ButtonText={"Add points"}
-          />
+          
         </Box>
+        <Typography variant="body1">Select plan to subscribe</Typography>
       </DialogTitle>
       <DialogContent>
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
-          value={subscribeItem.value}
-          onChange={handleChange}
-  >
-          <Grid container spacing={1} >
-          {BuyConsultantsNotePoints?.map((credit, index) => {
-            return (
-              <>
+        >
+          <Grid container spacing={1}>
+            {BuyConsultantsNotePoints?.map((credit) => {
+              return (
                 <Grid item xs={12}>
-                  <Card sx={{ p: 1 }}>
+                  <Card
+                    sx={{
+                      p: 2,
+                      border: "solid 1px #dcdcdc78",
+                      mb: "8px",
+                      overflowY: "auto",
+                      cursor: "pointer"
+                    }}
+                    style={{ borderColor: credit?.value === duration ? '#276ef1': '#dcdcdc78'}}
+                    onClick={() => {setDuration(credit.value); 
+                    setPoints(credit.discountAmount)}}>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <Box>
-                        <FormControlLabel value={credit.value} control={<Radio />} style={{ marginRight: "0px", marginLeft: "5px"}} />
+                        <FormControlLabel
+                          value={credit.value}
+                          control={<Radio />}
+                          sx={{ mr: 0 }}
+                          checked={credit?.value === duration}
+                          onClick={() => {setDuration(credit.value); setPoints(credit.discountAmount)}}
+                        />
                       </Box>
                       <Box>
-                      <Typography
+                        <Typography
                           variant="body1"
                           sx={{ flex: 1, alignSelf: "center" }}
                         >
-                          {credit?.month}{credit?.month !== "1 month" ? "s": null} plan
+                          {credit?.month}
+                          {credit?.month !== "1 month" ? "s" : null} plan
                         </Typography>
                         <Typography variant="subtitle2">
-                      <span style={{ fontWeight: 600 }}>
-                        {formatPoints(credit?.discountAmount)} Points
-                      </span>{" "}
-                      ({credit?.discount}% discount)
-                    </Typography>
+                          <span style={{ fontWeight: 600 }}>
+                            {formatPoints(credit?.discountAmount)} Points
+                          </span>
+                          ({credit?.discount}% discount)
+                        </Typography>
                       </Box>
-                      {/* <Box>
-                        <CustomButton
-                          variant="contained"
-                          size="small"
-                          onClick={() => handleByPlanClick(credit.value, index)}
-                          disabled={loadingStates[index] || false}
-                          ButtonText={loadingStates[index] ? 'Loading...' : `Subscribe`}
-                        />
-                      </Box> */}
-                      </Box>
-                    </Card>
-                  </Grid>
-                </>
+                    </Box>
+                  </Card>
+                </Grid>
               );
             })}
           </Grid>
         </RadioGroup>
       </DialogContent>
-      <DialogActions sx={{justifyContent: 'space-between', pt: 1}}>
-        <Box sx={{ fontWeight: 700}}>
-          <Chip label={`Balance: ${brokerBalance} Points`} color="primary"></Chip> 
+      <DialogActions sx={{ justifyContent: "space-between", alignItems: "flex-start", pt: 1 }}>
+        <Box sx={{ fontWeight: 700, alignSelf: "flex-start" }}>
+          <CustomButton
+              startIcon={<AddCardIcon fontSize="small" />}
+              variant="outlined"
+              size="small"
+              onClick={() => router.push(listOfPages.consultantPaymentHistory)}
+              ButtonText={"Add Points"}
+            />
+          <Typography variant="body2" sx={{mt: 1}}>Balance: {brokerBalance} Points</Typography>
         </Box>
         <Box sx={{ textAlign: "end" }}>
           <CustomButton
             variant="contained"
             size="small"
-            sx={{ mr: 1 }}
-            ButtonText={`Subscribe`}
+            ButtonText={!loadingStates ? "Subscribe" : "Loading..."}
+            onClick={handleByPlanClick}
+            disabled={loadingStates}
           />
-          <CustomButton
-            variant="contained"
-            onClick={() => {
-              handleClose();
-            }}
-            ButtonText={"Close"}
-          />{" "}
+          <Box>
+            {points && <Typography variant="body2" sx={{mt: 1}}>Selected Points: {formatPoints(points)}</Typography>}
+          </Box>
         </Box>
       </DialogActions>
     </Dialog>

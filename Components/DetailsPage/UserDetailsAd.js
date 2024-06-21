@@ -141,7 +141,7 @@ function UserDetailsAd({
   const propertyUrl = constructPropertyUrl(AllPropertyData);
 
   return (
-    <Box>
+    <Box className="userFooter" sx={{ paddingTop: "59px"}}>
       <Box sx={{ position: "fixed", bottom: 0, left: "-3px", width: "100%" }}>
         <Container
           maxWidth="md"
@@ -370,11 +370,11 @@ function UserDetailsAd({
                             Activate link
                           </Button>
                         )}
-                        <div>
+                        {/* <div>
                           <Typography variant="body2" sx={{ marginTop: "5px" }}>
                             Get leads
                           </Typography>
-                        </div>
+                        </div> */}
                         <div>
                           <Typography
                             variant="body2"

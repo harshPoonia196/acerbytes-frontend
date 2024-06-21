@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, Container, Grid } from "@mui/material";
 import dynamic from "next/dynamic";
 import React from "react";
@@ -7,6 +9,7 @@ import NavTab from "Components/Admin/Property/NavTab";
 import throttle from "lodash/throttle";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { getAllBrokers } from "api/Broker.api";
 
 import { makeStyles } from "@mui/styles";
 import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
@@ -36,7 +39,6 @@ import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadSc
 import { detailsProperty } from "api/Property.api";
 import colors from "styles/theme/colors";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import { getAllBrokers } from "api/Broker.api";
 
 const tabHeight = 116;
 
@@ -73,6 +75,132 @@ function useThrottledOnScroll(callback, delay) {
     };
   }, [throttledCallback]);
 }
+
+const initalState = {
+  overview: {
+    builder: "",
+    builderScore: "",
+    projectName: "",
+    projectCategory: "",
+    projectType: [],
+    phase: "",
+    launchYear: "",
+    completionYear: "",
+    status: "",
+    constructionProgress: "",
+    sectionScore: "",
+    pointsGained: 0,
+  },
+  regulatoryClearance: {
+    reraApproved: "",
+    reraNumber: "",
+    cc: "",
+    oc: "",
+    authorityRegistration: "",
+    governmentLoan: "",
+    privateBankLoan: "",
+    fresh: "",
+    resale: "",
+    sectionScore: 0,
+    pointsGained: 0,
+  },
+  layout: {
+    numberOfBuildings: "",
+    layoutType: [],
+    maxFloors: "",
+    minFloors: "",
+    totalUnits: "",
+    areaUnit: "Acres",
+    area: "",
+    areaInSqft: 0,
+    greenArea: "",
+    unitDensity: "",
+    unitDensityScore: "",
+    greenDensity: "",
+    greenDensityScore: "",
+    constructionQuality: 0,
+    interiorQuality: 0,
+    sectionScore: 0,
+    pointsGained: 0,
+  },
+  unitsPlan: {
+    averagePrice: 0,
+    minPriceRange: 0,
+    maxPriceRange: 0,
+    uniqueLayouts: [],
+    totalAreaSqft: 0,
+    totalPrice: 0,
+    planList: [
+      // {
+      //   propertyType: "",
+      //   propertyLayout: "",
+      //   name: "",
+      //   areaUnit: "",
+      //   totalUnits: "",
+      //   area: "",
+      //   bsp: "",
+      //   applicableMonth: "",
+      //   applicableYear: "",
+      // },
+    ],
+  },
+
+  amenitiesData: {},
+  location: {
+    state: "",
+    city: "",
+    sector: "",
+    sectionScore: 0,
+    pointsGained: 0,
+    area: "",
+    pinCode: "",
+    googleMapLink: "",
+    longitude: "",
+    latitude: "",
+    assessment: {},
+  },
+  valueForMoney: {
+    appTillNow: 0,
+    expectedFurtherApp: 0,
+    forEndUse: 0,
+    pointsGained: 0,
+    sectionScore: 0,
+  },
+  consultants: [],
+  overallAssessment: {
+    score: 0,
+    scoredRating: 0,
+    rated: {
+      builder: 0,
+      constructionProgress: 0,
+      reraApproved: 0,
+      cc: 0,
+      oc: 0,
+      authorityRegisteration: 0,
+      governmentBankLoan: 0,
+      privateBankLoan: 0,
+      resale: 0,
+      area: 0,
+      appTillNow: 0,
+      expectedFurtherApp: 0,
+      forEndUse: 0,
+      unitsDensity: 0,
+      greenDensity: 0,
+      unitsDensityScore: 0,
+      greenDensityScore: 0,
+      constructionQuality: 0,
+      interiorQuality: 0,
+    },
+  },
+  published: false,
+  tag: "",
+  marketing: {
+    image: "",
+    tagLine: "",
+    description: "",
+    metaDescription: "",
+  },
+};
 
 function AddProperty() {
   const router = useSearchParams();
@@ -114,14 +242,9 @@ function AddProperty() {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
-
-    // Don't set the active index based on scroll if a link was just clicked
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -153,26 +276,8 @@ function AddProperty() {
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
   const handleClick = (hash) => {
-    // Used to disable findActiveIndex if the  scrolls due to a clickpage
-
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
-
     document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
-
-    // if (activeState !== hash) {
-    //   if (window)
-    //     window.scrollTo({
-    //       top:
-    //         document.getElementById(hash)?.getBoundingClientRect().top +
-    //         window.pageYOffset -
-    //         tabHeight,
-    //       behavior: "smooth",
-    //     });
-    // }
   };
   function removeIds(obj) {
     for (const key in obj) {
@@ -223,14 +328,23 @@ function AddProperty() {
         delete data.__v;
         handleUIHide(data.overview.projectType, "overview", "projectType");
         setEditForm(true);
+
+        const { overview, location } = data;
+        const { builder, projectName, projectCategory, projectType } = overview;
+        const { area, sector, city } = location;
+
+        const updatedProjectType = projectType
+          .map((item) => item.value)
+          .join("-");
+
         let assignTagLine = {
-          builder: data.overview.builder,
-          projectName: data.overview.projectName,
-          projectCategory: data.overview.projectCategory,
-          projectType: data.overview.projectType,
-          area: data.location.area,
-          sector: data.location.sector,
-          city: data.location.city,
+          builder,
+          projectName,
+          projectCategory,
+          projectType: updatedProjectType,
+          area,
+          sector,
+          city,
         };
         setTagField(assignTagLine);
         setForm({ ...data });
@@ -287,7 +401,7 @@ function AddProperty() {
     try {
       const response = await getAllBrokers();
       if (response.status == 200) {
-        const { success, data, message } = response.data;
+        const { success, data } = response.data;
         if (success) {
           let getValue = data.data.map((i) => {
             let u = {
@@ -421,11 +535,6 @@ function AddProperty() {
     }
     getCitiesList();
     brokersList();
-    // setLoading(false)
-
-    return () => {
-      clearTimeout(unsetClickedRef.current);
-    };
   }, []);
 
   const classes = useStyles();
@@ -433,131 +542,7 @@ function AddProperty() {
   const [isEdit, setIsEdit] = useState(true);
   const [errors, setErrors] = useState({});
   const [editForm, setEditForm] = useState(false);
-  const [form, setForm] = useState({
-    overview: {
-      builder: "",
-      builderScore: "",
-      projectName: "",
-      projectCategory: "",
-      projectType: [],
-      phase: "",
-      launchYear: "",
-      completionYear: "",
-      status: "",
-      constructionProgress: "",
-      sectionScore: "",
-      pointsGained: 0,
-    },
-    regulatoryClearance: {
-      reraApproved: "",
-      reraNumber: "",
-      cc: "",
-      oc: "",
-      authorityRegistration: "",
-      governmentLoan: "",
-      privateBankLoan: "",
-      fresh: "",
-      resale: "",
-      sectionScore: 0,
-      pointsGained: 0,
-    },
-    layout: {
-      numberOfBuildings: "",
-      layoutType: [],
-      maxFloors: "",
-      minFloors: "",
-      totalUnits: "",
-      areaUnit: "Acres",
-      area: "",
-      areaInSqft: 0,
-      greenArea: "",
-      unitDensity: "",
-      unitDensityScore: "",
-      greenDensity: "",
-      greenDensityScore: "",
-      constructionQuality: 0,
-      interiorQuality: 0,
-      sectionScore: 0,
-      pointsGained: 0,
-    },
-    unitsPlan: {
-      averagePrice: 0,
-      minPriceRange: 0,
-      maxPriceRange: 0,
-      uniqueLayouts: [],
-      totalAreaSqft: 0,
-      totalPrice: 0,
-      planList: [
-        // {
-        //   propertyType: "",
-        //   propertyLayout: "",
-        //   name: "",
-        //   areaUnit: "",
-        //   totalUnits: "",
-        //   area: "",
-        //   bsp: "",
-        //   applicableMonth: "",
-        //   applicableYear: "",
-        // },
-      ],
-    },
-
-    amenitiesData: {},
-    location: {
-      state: "",
-      city: "",
-      sector: "",
-      sectionScore: 0,
-      pointsGained: 0,
-      area: "",
-      pinCode: "",
-      googleMapLink: "",
-      longitude: "",
-      latitude: "",
-      assessment: {},
-    },
-    valueForMoney: {
-      appTillNow: 0,
-      expectedFurtherApp: 0,
-      forEndUse: 0,
-      pointsGained: 0,
-      sectionScore: 0,
-    },
-    consultants: [],
-    overallAssessment: {
-      score: 0,
-      scoredRating: 0,
-      rated: {
-        builder: 0,
-        constructionProgress: 0,
-        reraApproved: 0,
-        cc: 0,
-        oc: 0,
-        authorityRegisteration: 0,
-        governmentBankLoan: 0,
-        privateBankLoan: 0,
-        resale: 0,
-        area: 0,
-        appTillNow: 0,
-        expectedFurtherApp: 0,
-        forEndUse: 0,
-        unitsDensity: 0,
-        greenDensity: 0,
-        unitsDensityScore: 0,
-        greenDensityScore: 0,
-        constructionQuality: 0,
-        interiorQuality: 0,
-      },
-    },
-    published: false,
-    tag: "",
-    marketing: {
-      image: "",
-      tagLine: "",
-      description: "",
-      metaDescription: "",
-    },
-  });
+  const [form, setForm] = useState(initalState);
 
   const handleUnitsPlan = async (unitsPlanValue) => {
     setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
@@ -652,13 +637,7 @@ function AddProperty() {
     });
   };
 
-  const moduleScoreCalc = (
-    e,
-    firstKeyName,
-    secondKeyName,
-    seperateCalc,
-    thirdKeyName
-  ) => {
+  const moduleScoreCalc = (e, firstKeyName, secondKeyName, seperateCalc) => {
     let totalRatingModule;
     let totalScored;
     switch (firstKeyName.toLowerCase()) {
@@ -809,9 +788,7 @@ function AddProperty() {
           +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
       }
     }
-
     let calc = (totalScored / totalRatingModule) * 10;
-
     if (seperateCalc) {
       setForm({
         ...form,

@@ -1,9 +1,12 @@
 import React from "react";
 import Tabs, { tabsClasses } from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import { useRouter } from "next/navigation";
 import { listOfTabsInAddProperty } from "utills/Constants";
 
 const NavTab = ({ value, handleChange, list }) => {
+  const router = useRouter();
+
   return (
     <Tabs
       value={value ? value : listOfTabsInAddProperty[0].value}

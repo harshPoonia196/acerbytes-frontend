@@ -49,10 +49,44 @@ function HistoryCard({ history }) {
         return data;
     }
 
+    const activateLeadsHeaders = (
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", pl: "18px", pb: 1 }}>
+            <Typography variant='h5'>Transaction</Typography>
+            <Typography variant='h5'>Project Name</Typography>
+            <Typography variant='h5'>Valid Period</Typography>
+            <Typography variant='h5' sx={{ textAlign: "right"}}>Points</Typography>
+        </Box>
+    )
+    
+    const suggestedLeadsHeaders = (
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", pl: "18px", pb: 1 }}>
+            <Typography variant='h5'>Transaction</Typography>
+            <Typography variant='h5'>User Name</Typography>
+            <Typography variant='h5' sx={{ textAlign: "right"}}>Points</Typography>
+        </Box>
+    )
+    const displayOnPropLeadsHeaders = (
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", pl: "18px", pb: 1 }}>
+            <Typography variant='h5'>Transaction</Typography>
+            <Typography variant='h5'>Property Name</Typography>
+            <Typography variant='h5'>Valid Period</Typography>
+            <Typography variant='h5' sx={{ textAlign: "right"}}>Points</Typography>
+        </Box>
+    )
+
+    const displayOnPropNotesHeaders = (
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", pl: "18px", pb: 1 }}>
+            <Typography variant='h5'>Transaction</Typography>
+            <Typography variant='h5'>Valid Period</Typography>
+            <Typography variant='h5' sx={{ textAlign: "right"}}>Points</Typography>
+        </Box>
+    )
+
+
 
     return (
         <CustomAccordion expanded={isExpanded} >
-            <CustomAccordionSummary handleIconClick={handleExpandedStateChange} sx={{ pt: 2, pb: 2}}>
+            <CustomAccordionSummary handleIconClick={handleExpandedStateChange} sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ flex: 1, ml: 2 }} onClick={handleExpandedStateChange}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant='h5' sx={{ flex: 1 }}>
@@ -62,11 +96,11 @@ function HistoryCard({ history }) {
                         {/* <Typography variant='h6' sx={{ color: colors.BLUE }}>Balance: 32,000</Typography> */}
                     </Box>
                     <Typography variant='subtitle2'>
-                        New points: {formatPoints(Number(history?.openingPoints) - calculateConsumedPoints(history?.childTransaction))} | Opening: {formatPoints(history?.openingPoints)} | Consumed: {formatPoints(calculateConsumedPoints(history?.childTransaction))}
+                        New points: {history?.newPoints} | Opening: {formatPoints(history?.openingPoints)} | Consumed: {formatPoints(calculateConsumedPoints(history?.childTransaction))}
                     </Typography>
                 </Box>
                 <Box>
-                {/* <Tooltip title="More">
+                    {/* <Tooltip title="More">
                     <IconButton onClick={handleOpenMenu}>
                         <MoreVertIcon />
                     </IconButton>
@@ -98,16 +132,16 @@ function HistoryCard({ history }) {
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Activated links" data={calculateItems(history?.childTransaction, transactionType.ACTIVATE_URL)} type='Links' />
+                        <SubAccordionOfHistoryCard header={activateLeadsHeaders} title="Activated links" data={calculateItems(history?.childTransaction, transactionType.ACTIVATE_URL)} type='Activation' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Activated leads" data={calculateItems(history?.childTransaction, transactionType.SUGGESTED_LEAD_BUY)} type='Leads' />
+                        <SubAccordionOfHistoryCard header={suggestedLeadsHeaders} title="Suggested leads" data={calculateItems(history?.childTransaction, transactionType.SUGGESTED_LEAD_BUY)} type='Lead' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Consultant subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Consultant subscriptions' />
+                        <SubAccordionOfHistoryCard header={displayOnPropLeadsHeaders} title="Display on property subscription" data={calculateItems(history?.childTransaction, transactionType.CONSULTANT_SUBSCRIPTION)} type='Display on property subscriptions' />
                     </Grid>
                     <Grid item xs={12}>
-                        <SubAccordionOfHistoryCard title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Notes subscription' />
+                        <SubAccordionOfHistoryCard header={displayOnPropNotesHeaders} title="Notes panel" data={calculateItems(history?.childTransaction, transactionType.NOTE_SUBSCRIPTION)} type='Notes subscription' />
                     </Grid>
                 </Grid>
             </CustomAccordionDetails>

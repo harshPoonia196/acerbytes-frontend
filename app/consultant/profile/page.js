@@ -3,7 +3,6 @@
 import {
   Container,
   Card,
-  Switch,
   Typography,
   Grid,
   Box,
@@ -11,7 +10,6 @@ import {
   Chip,
   Button,
   Divider,
-  IconButton,
   Fab,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -19,20 +17,16 @@ import { CircularProgress } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
 import SaveIcon from "@mui/icons-material/Save";
 import Avatar from "@mui/material/Avatar";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import PropertyTable from "Components/ProfilePage/PropertyTable";
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import { useState } from "react";
 import colors from "styles/theme/colors";
-import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import NewCurrencyInputField from "Components/CommonLayouts/NewCurrencyInputField";
-import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
-import { makeStyles, withStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
 import CustomConsultantBreadScrumbs from "Components/CommonLayouts/CustomConsultantBreadScrumbs";
 import {
@@ -44,15 +38,8 @@ import { getBrokerProfile, updateBrokerProfile } from "api/BrokerProfile.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { getGoogleId, validateEmail, validatePhoneNumber } from "utills/utills";
 import { useMutate, useQueries } from "utills/ReactQueryContext";
-import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
-import {
-  getAccessToken,
-  getAllCitiesList,
-  getAllStateList,
-  updateProfileImage,
-  uploadImage,
-} from "api/Util.api";
+import { updateProfileImage, uploadImage } from "api/Util.api";
 import { currencies, countries } from "utills/Constants";
 import Loader from "Components/CommonLayouts/Loading";
 import { useAuth } from "utills/AuthContext";
@@ -98,44 +85,9 @@ function useThrottledOnScroll(callback, delay) {
 function ConsultantProfile({ id, isAdminUpdate = false }) {
   const [isUploading, setUploading] = useState(false);
   const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
-  const [image, setImage] = useState("");
-  const [cropData, setCropData] = useState("");
-  const [cropper, setCropper] = useState(false);
-  const [enableCropper, setEnableCropper] = useState(false);
   const { userDetails } = useAuth();
 
-  const handleOpenUploadPopup = () => {
-    setIsUploadPopupOpen(true);
-  };
-
-  const handleCloseUploadPopup = () => {
-    setIsUploadPopupOpen(false);
-  };
-
-  const handleImageSelect = (e) => {
-    e.preventDefault();
-    let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(files[0]);
-    handleOpenUploadPopup();
-  };
-
-  const handleImageRemove = () => {
-    setImage("");
-    handleCloseUploadPopup();
-  };
-  const router = useRouter();
-
   const { openSnackbar } = useSnackbar();
-
   const [stateOptions, setStateOptions] = useState([]);
   const [allStateAndCityInfo, setAllStateAndCityInfo] = useState({});
   const [allDropdownOptions, setAllDropdownOptions] = useState([]);
@@ -199,8 +151,6 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
   };
 
   const mutate = useMutate(updateBrokerProfile, onSuccess, onError);
-
-  const [exploringAsToggle, setExploringAsToggle] = useState("");
 
   const handleTargetCustomer = (e, firstKeyName) => {
     if (e?.persist) {
@@ -273,61 +223,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     });
   };
 
-  const handleChangeExploringAsToggle = (event, newAlignment) => {
-    if (newAlignment != null) setExploringAsToggle(newAlignment);
-  };
-
-  const [purposeToggle, setPurposeToggle] = useState("");
-
-  const handleChangePurposeToggle = (event, newAlignment) => {
-    if (newAlignment != null) setPurposeToggle(newAlignment);
-  };
-
-  const [purchaseToggle, setPurchaseToggle] = useState("");
-
-  const handleChangePurchaseToggle = (event, newAlignment) => {
-    if (newAlignment != null) setPurchaseToggle(newAlignment);
-  };
-
-  const [demographicToggle, setDemographicToggle] = useState("");
-
-  const handleChangeDemographicToggle = (event, newAlignment) => {
-    if (newAlignment != null) setDemographicToggle(newAlignment);
-  };
-
-  const [interestedForLoanToggle, setInterestedForLoanToggle] = useState("");
-
-  const handleChangeInterestedForLoanToggle = (event, newAlignment) => {
-    if (newAlignment != null) setInterestedForLoanToggle(newAlignment);
-  };
-
-  const [propertyTypeToggleAlignment, setPropertyTypeToggleAlignment] =
-    React.useState("");
-
-  const handleChangePropertyTypeToggle = (event, newAlignment) => {
-    setPropertyTypeToggleAlignment(newAlignment);
-  };
-  const [businessTypeToggleAlignment, setBusinessTypeToggleAlignment] =
-    React.useState("");
-  const handleChangeBusinessTypeToggle = (event, newAlignment) => {
-    setBusinessTypeToggleAlignment(newAlignment);
-  };
-
-  const [isDndEnabled, setIsDndEnabled] = useState(false);
-  const [isPromotionEnabled, setIsPromotionEnabled] = useState(true);
-
-  const handleDndToggle = () => {
-    setIsDndEnabled((prev) => !prev);
-  };
-
-  const handlePromotionToggle = () => {
-    setIsPromotionEnabled((prev) => !prev);
-  };
-
   const [isEdit, setIsEdit] = useState(true);
 
   const [activeState, setActiveState] = React.useState("userDetails");
-
   const [brokerProfileInfo, setBrokerProfileInfo] = React.useState({});
   const [userProfileInfo, setUserProfileInfo] = React.useState(null);
   const [errorInvalid, setErrorInvalid] = useState({});
@@ -385,15 +283,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     }
   }, [data]);
 
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
-
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
-
-    // Don't set the active index based on scroll if a link was just clicked
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -426,35 +318,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
   const handleClick = (hash) => {
-    // Used to disable findActiveIndex if the  scrolls due to a clickpage
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
-
     document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
-
-    // if (activeState !== hash) {
-    //   setActiveState(hash);
-
-    //   if (window)
-    //     window.scrollTo({
-    //       top:
-    //         document.getElementById(hash)?.getBoundingClientRect().top +
-    //         window.pageYOffset -
-    //         tabHeight,
-    //       behavior: "smooth",
-    //     });
-    // }
   };
-
-  React.useEffect(
-    () => () => {
-      clearTimeout(unsetClickedRef.current);
-    },
-    []
-  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -751,7 +617,10 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     </label>
                     {userProfileInfo?.name ? (
                       <Box sx={{ flex: 1 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 900 }}>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontWeight: 900, fontSize: "1rem" }}
+                        >
                           {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
                         </Typography>
                         <Typography variant="body2">
@@ -837,7 +706,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                   /> */}
                   <NewInputFieldStructure
                     label="Alternate Email"
-                    isRequired={true}
+                    isRequired={false}
                     variant="outlined"
                     disabled={isAdminUpdate}
                     value={brokerProfileInfo?.alternateEmail || ""}

@@ -3,13 +3,11 @@
 import {
   Container,
   Card,
-  Switch,
   Typography,
   Grid,
   Box,
   ToggleButton,
   Chip,
-  Button,
   Divider,
   Fab,
 } from "@mui/material";
@@ -18,17 +16,14 @@ import SaveIcon from "@mui/icons-material/Save";
 import React from "react";
 import { useEffect } from "react";
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
-import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import { useState } from "react";
 import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
 import NewCurrencyInputField from "Components/CommonLayouts/NewCurrencyInputField";
-import { useRouter } from "next/navigation";
 import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import { makeStyles } from "@mui/styles";
 import throttle from "lodash/throttle";
-import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
 import { ProfilePic } from "Components/CommonLayouts/profilepic";
 import Avatar from "@mui/material/Avatar";
 import EditIcon from "@mui/icons-material/Edit";
@@ -39,20 +34,11 @@ import {
   updateUserProfile,
 } from "api/UserProfile.api";
 import { useAuth } from "utills/AuthContext";
-import {
-  getAccessToken,
-  getAllCitiesList,
-  getAllCountriesList,
-  getAllStateList,
-  updateProfileImage,
-  uploadImage,
-} from "api/Util.api";
+import { updateProfileImage, uploadImage } from "api/Util.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import {
   FILE_TYPES,
-  SERVICE_TYPE,
   listOfProfileTab,
-  FAMILY,
   exploringAs,
   purpose,
   purchase,
@@ -120,35 +106,7 @@ function Profile({ id, isAdminUpdate }) {
   const [selectInterestedArea, setInterestedArea] = useState("");
   const [emailInvalid, setEmailInvalid] = useState(false);
   const [invalidAge, setInvalidAge] = useState(false);
-  const [isUploadPopupOpen, setIsUploadPopupOpen] = useState(false);
-  const [image, setImage] = useState("");
-
-  const handleOpenUploadPopup = () => {
-    setIsUploadPopupOpen(true);
-  };
-  const handleImageSelect = (e) => {
-    e.preventDefault();
-    let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(files[0]);
-    handleOpenUploadPopup();
-  };
-
-  const handleImageRemove = () => {
-    setImage("");
-    handleCloseUploadPopup();
-  };
-  const handleCloseUploadPopup = () => {
-    setIsUploadPopupOpen(false);
-  };
+  const [isEdit, setIsEdit] = useState(true);
 
   const [profileInfo, setProfileInfo] = useState({
     name: {
@@ -198,8 +156,6 @@ function Profile({ id, isAdminUpdate }) {
     },
   });
 
-  const [isEdit, setIsEdit] = useState(true);
-
   const [activeState, setActiveState] = React.useState("userDetails");
   const [isUploading, setUploading] = React.useState(false);
 
@@ -217,15 +173,9 @@ function Profile({ id, isAdminUpdate }) {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
-
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
-
-    // Don't set the active index based on scroll if a link was just clicked
-    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -259,26 +209,9 @@ function Profile({ id, isAdminUpdate }) {
 
   const handleClick = (hash) => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
-    clickedRef.current = true;
-    unsetClickedRef.current = setTimeout(() => {
-      clickedRef.current = false;
-    }, 1000);
 
     document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
     setActiveState(hash);
-
-    // if (activeState !== hash) {
-    //   setActiveState(hash);
-
-    //   if (window)
-    //     window.scrollTo({
-    //       top:
-    //         document.getElementById(hash)?.getBoundingClientRect().top +
-    //         window.pageYOffset -
-    //         tabHeight,
-    //       behavior: "smooth",
-    //     });
-    // }
   };
 
   const { openSnackbar } = useSnackbar();
@@ -286,13 +219,6 @@ function Profile({ id, isAdminUpdate }) {
   const showTostMessages = (message, severity) => {
     openSnackbar(message, severity);
   };
-
-  React.useEffect(
-    () => () => {
-      clearTimeout(unsetClickedRef.current);
-    },
-    []
-  );
 
   React.useEffect(() => {
     getDropdownOptions();
@@ -463,16 +389,6 @@ function Profile({ id, isAdminUpdate }) {
       budget: {
         ...profileInfo.budget,
         [event.target.name]: newAlignment,
-      },
-    });
-  };
-
-  const handleChangeSettings = (event) => {
-    setProfileInfo({
-      ...profileInfo,
-      settings: {
-        ...profileInfo.settings,
-        [event.target.name]: !profileInfo.settings[event.target.name],
       },
     });
   };
