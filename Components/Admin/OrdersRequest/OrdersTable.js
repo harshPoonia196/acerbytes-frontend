@@ -56,7 +56,7 @@ import { debounce } from "lodash";
 import { ORDER_STATUS } from "utills/Constants";
 import { countryCodeFormating } from "utills/utills";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
-import { formattedCreatedAt } from 'utills/CommonFunction';
+import { formattedCreatedAt, formatShortDate } from 'utills/CommonFunction';
 
 const headCells = [
   {
@@ -70,7 +70,7 @@ const headCells = [
     id: "orderDate",
     label: "Order Date",
     isCompleteView: true,
-    isPendingView: false,
+    isPendingView: true,
     numeric: false,
   },
   {
@@ -273,11 +273,11 @@ function RowStructure({
         }}
       >
         <TableCell>{row.orderNumber}</TableCell>
-        {isCompleted && (
-          <TableCell sx={{ textAlign: "right" }}>
-            {formattedCreatedAt(row.createdAt)}
-          </TableCell>
-        )}
+        
+        <TableCell>
+          {formatShortDate(row.createdAt)}
+        </TableCell>
+        
         <TableCell>
           {row?.brokerId?.name?.firstName} {row?.brokerId?.name?.lastName}
         </TableCell>
