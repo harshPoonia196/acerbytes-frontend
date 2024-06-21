@@ -21,7 +21,7 @@ import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { visuallyHidden } from "@mui/utils";
-import { formatDate, getComparator, stableSort } from "utills/CommonFunction";
+import { formatDate, getComparator, stableSort, formatShortDate } from "utills/CommonFunction";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
 import { PAGINATION_LIMIT_OPTIONS, PAGINATION_LIMIT } from "utills/Constants";
 import { useSnackbar } from "utills/SnackbarContext";
@@ -178,7 +178,7 @@ function RowStructure({ row, alignmentValue, history }) {
         />
       </TableCell>
       <TableCell>
-        {formatDate(row?.validFrom)} - {formatDate(row?.validTo)}
+        {formatShortDate(row?.validFrom)} - {formatShortDate(row?.validTo)}
       </TableCell>
       {/* <TableCell>{formatDate(row?.validTo)}</TableCell> */}
       <TableCell sx={{ textAlign: "center" }}>

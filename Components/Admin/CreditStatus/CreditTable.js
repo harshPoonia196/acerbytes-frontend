@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 
 import {
-  formatDate,
+  formatShortDate,
   formatPoints,
   getApprovedDiscountPercentage,
   objectToQueryString,
@@ -190,7 +190,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           {countryCodeFormating(row?.brokerDetails?.phone?.countryCode)}{" "}
           {row?.brokerDetails?.phone?.number}
         </TableCell>
-        <TableCell>{formatDate(row.createdAt)}</TableCell>
+        <TableCell>{formatShortDate(row.createdAt)}</TableCell>
         <TableCell sx={{ textAlign: "right" }}>
           {formatPoints(row.newPoints)}
         </TableCell>

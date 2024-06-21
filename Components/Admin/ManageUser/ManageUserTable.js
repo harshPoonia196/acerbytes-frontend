@@ -23,7 +23,7 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { visuallyHidden } from "@mui/utils";
-import { getComparator, stableSort } from "utills/CommonFunction";
+import { getComparator, stableSort, formattedTime } from "utills/CommonFunction";
 import {
   UserApprove,
   getUsersList,
@@ -299,7 +299,7 @@ function RowStructure({
       )}
       <TableCell>
         {row.createdAt
-          ? moment(row.createdAt).format("DD MMM, YYYY, h:mm a")
+          ? formattedTime(row.createdAt)
           : ""}
       </TableCell>
 

@@ -56,7 +56,7 @@ import { debounce } from "lodash";
 import { ORDER_STATUS } from "utills/Constants";
 import { countryCodeFormating } from "utills/utills";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
-import { formattedCreatedAt, formatShortDate } from 'utills/CommonFunction';
+import { formattedCreatedAt, formattedTime } from 'utills/CommonFunction';
 
 const headCells = [
   {
@@ -275,7 +275,7 @@ function RowStructure({
         <TableCell>{row.orderNumber}</TableCell>
         
         <TableCell>
-          {formatShortDate(row.createdAt)}
+          {formattedTime(row.createdAt)}
         </TableCell>
         
         <TableCell>
