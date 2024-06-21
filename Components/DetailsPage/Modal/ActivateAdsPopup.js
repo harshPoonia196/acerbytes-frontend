@@ -183,7 +183,7 @@ function ActivateAdsPopup({
             <Typography sx={{fontSize:'12px'}}>
               {isFromUniqueUrl && `till ${calculateNewExpiryDate()}`}
             </Typography>
-            <Typography
+            {/* <Typography
               variant="subtitle2"
               sx={{
                 alignSelf: "center",
@@ -192,31 +192,13 @@ function ActivateAdsPopup({
               }}
             >
               Balance: {brokerBalance} points
-            </Typography>
+            </Typography> */}
           </Box>
-          <Box sx={{ display: "flex", alignSelf: { xs: "center", sm: "end" } }}>
+          {/* <Box sx={{ display: "flex", alignSelf: { xs: "center", sm: "end" } }}>
             <Box sx={{ ml: 1, textAlign: "end" }}>
-              <CustomButton
-                startIcon={<AddCardIcon fontSize="small" />}
-                variant="outlined"
-                size="small"
-                onClick={() =>
-                  router.push(listOfPages.consultantPaymentHistory)
-                }
-                ButtonText={"Add points"}
-              />
-              <Typography
-                variant="subtitle2"
-                sx={{
-                  alignSelf: "center",
-                  color: colors.GRAY,
-                  display: { xs: "none", sm: "block" },
-                }}
-              >
-                Balance: {brokerBalance} points
-              </Typography>
+              
             </Box>
-          </Box>
+          </Box> */}
         </Box>
       </DialogTitle>
       <DialogContent sx={{ minWidth: 300 }}>
@@ -279,12 +261,28 @@ function ActivateAdsPopup({
             width: "100%",
           }}
         >
-          <Chip
-            variant="contained"
-            sx={{ marginRight: "10px", alignSelf: "flex-start" }}
-            color="primary"
-            label={`Balance: ${brokerBalance} points`}
-          ></Chip>
+          <Box sx={{ml: 0, textAlign: "left"}}>
+            <CustomButton
+              startIcon={<AddCardIcon fontSize="small" />}
+              variant="outlined"
+              size="small"
+              onClick={() =>
+                router.push(listOfPages.consultantPaymentHistory)
+              }
+              ButtonText={"Add points"}
+            />
+            <Typography
+              variant="subtitle2"
+              sx={{
+                alignSelf: "center",
+                color: colors.GRAY,
+                display: { xs: "block", sm: "block" },
+              }}
+            >
+              Balance: {brokerBalance} points
+            </Typography>
+          </Box>
+
           <Box>
             <CustomButton
               startIcon={<DoneIcon fontSize="small" />}

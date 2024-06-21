@@ -152,6 +152,16 @@ function RowStructure({ row, adminAssignPointsHandler }) {
     handleClose();
   };
 
+  const balanceColor = (amount) => {
+    if(amount >= 20000){
+      return 'green'
+    } else if(amount > 5000 && amount < 20000){
+      return '#FFBF00'
+    } else if(amount <= 5000){
+      return 'red'
+    }
+  }
+
   return (
     <>
       <AdminCreditPointsPopup
@@ -191,7 +201,9 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           {formatPoints(row.consumedPoints)}
         </TableCell>
         <TableCell sx={{ textAlign: "right" }}>
-          {formatAmount(row?.brokerBalance?.balance || 0)}
+          {/* {balanceColor(row?.brokerBalance?.balance)} */}
+          <Typography style={{ color: balanceColor(row?.brokerBalance?.balance)}}>{formatPoints(row?.brokerBalance?.balance || 0)}</Typography>
+          {/* {<Typography style={{ color: row?.brokerBalance?.balance < 5000 ? 'red': row?.brokerBalance?.balance < 20000 ? 'amber' : 'green'}}>{formatPoints(row?.brokerBalance?.balance || 0)}</Typography>} */}
         </TableCell>
         <TableCell>
           <Tooltip title="More">

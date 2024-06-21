@@ -324,9 +324,9 @@ function EnhancedTableHead(props) {
             >
               <Typography
                 variant="body2"
-                sx={{ textTransform: "capitalize", fontWeight: "800" }}
+                sx={{ fontWeight: "800" }}
               >
-                {capitalLizeName(headCell.label)}
+                {headCell.label}
               </Typography>
 
               {orderBy === headCell.id ? (

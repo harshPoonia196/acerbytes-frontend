@@ -171,7 +171,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     let value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
-    if (secondKeyName === "firstName" || secondKeyName === "lastName") {
+    if (secondKeyName === "firstName" || secondKeyName === "lastName" || secondKeyName === "company") {
       value = capitalLizeName(value);
     }
     if (e.target.type == "number") {
@@ -763,6 +763,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "company")
                     }
+                    name="company"
                   />
 
                   <NewInputFieldStructure
