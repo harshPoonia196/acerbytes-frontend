@@ -383,7 +383,6 @@ const PropertyDetails = ({ params }) => {
       return error;
     }
   };
-
   const handleSubmitEnquiryUnauth = async (data) => {
     try {
       const response = await submitEnquiryUnauth({
