@@ -37,6 +37,15 @@ function RowStructure({ row, router }) {
         currency: 'INR'
       }).format(value);
 
+      const balanceColor = (amount) => {
+        if(amount >= 20000){
+          return 'green'
+        } else if(amount > 5000 && amount < 20000){
+          return '#FFBF00'
+        } else if(amount <= 5000){
+          return 'red'
+        }
+      }
 
   return (
     <>
@@ -53,7 +62,7 @@ function RowStructure({ row, router }) {
         <TableCell>{`${(row?.phone?.countryCode) ? '+' + row?.phone?.countryCode : ''}${row?.phone?.number}`}</TableCell>
         <TableCell>{row?.serviceDetails?.reraNumber || ''}</TableCell>
         <TableCell align="right">{row?.totalLinks || 0}</TableCell>
-        <TableCell align="right">{formatNumberWithCommas(row?.brokerBalance?.balance || 0)}</TableCell>
+        <TableCell align="right" style={{ color: balanceColor(row?.brokerBalance?.balance)}}>{formatNumberWithCommas(row?.brokerBalance?.balance || 0)}</TableCell>
         <TableCell>
         <Tooltip title="More">
           <IconButton

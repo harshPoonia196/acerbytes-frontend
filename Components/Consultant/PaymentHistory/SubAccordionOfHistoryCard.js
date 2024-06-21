@@ -76,7 +76,7 @@ function SubAccordionOfHistoryCard({ title, data = [], type = '', header }) {
     }
 
     const formatWithOrdinal = (date) => {
-        return moment(date).format('Do MMMM, YYYY');
+        return moment(date).format('DD/MM/YYYY');
     };
 
     return (
@@ -95,36 +95,36 @@ function SubAccordionOfHistoryCard({ title, data = [], type = '', header }) {
                     const { createdAt, consumedPoints, details } = res;
                     if (type === "Activation") {
                         return <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", pl: "18px" }}>
-                            <Typography variant='subtitle2'>{`${formatDate(createdAt)} (${details})`}</Typography>
+                            <Typography variant='subtitle2' sx={{ color: "#747474"}}>{`${formatDate(createdAt)} (${details})`}</Typography>
                             <Typography variant='subtitle2' sx={{ cursor: 'pointer', color: colors.BLUE }} onClick={() => handleLinkClick(res)}>{res?.overview?.projectName}</Typography>
-                            <Typography variant='subtitle2' sx={{ cursor: 'pointer' }}>
+                            <Typography variant='subtitle2' sx={{ cursor: 'pointer', color: "#747474" }}>
                                 {`${formatWithOrdinal(res?.linkCreatedAt)} - ${formatWithOrdinal(res?.linkExpiredAt)}`}
                             </Typography>
                             {/* <Typography variant='subtitle2' sx={{ flex: 1 }}>{details + ' on ' + formatDate(createdAt)}</Typography> */}
-                            <Typography variant='h6' sx={{ textAlign: "right"}}>{formatPoints(consumedPoints)} Points</Typography>
+                            <Typography variant='h6' sx={{ textAlign: "right", color: "#747474"}}>{formatPoints(consumedPoints)} Points</Typography>
                         </Box>
                     }
                     else if(type === "Lead"){
                         return <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", pl: "18px" }}>
-                            <Typography variant='subtitle2'>{`${formatDate(createdAt)} (${details})`}</Typography>
-                            <Typography variant='subtitle2' sx={{ cursor: 'pointer' }}>{`${res?.leadUserName?.firstName} ${res?.leadUserName?.lastName}`}</Typography>
-                            <Typography variant='h6' sx={{ textAlign: "right"}}>{formatPoints(consumedPoints)} Points</Typography>
+                            <Typography variant='subtitle2' sx={{ color: "#747474" }}>{`${formatDate(createdAt)} (${details})`}</Typography>
+                            <Typography variant='subtitle2' sx={{ cursor: 'pointer', color: "#747474" }}>{`${res?.leadUserName?.firstName} ${res?.leadUserName?.lastName}`}</Typography>
+                            <Typography variant='h6' sx={{ textAlign: "right", color: "#747474"}}>{formatPoints(consumedPoints)} Points</Typography>
                         </Box>
                     }
                     else if(type === "Display on property subscriptions"){
                         return <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", pl: "18px" }}>
-                        <Typography variant='subtitle2' >{`${formatDate(createdAt)} (${details})`}</Typography>
+                        <Typography variant='subtitle2' sx={{ color: "#747474" }}>{`${formatDate(createdAt)} (${details})`}</Typography>
                         <Typography variant='subtitle2' sx={{ cursor: 'pointer', color: colors.BLUE }} onClick={() => handleLinkClick(res)}>{res?.overview?.projectName}</Typography>
-                        <Typography variant='subtitle2' sx={{ cursor: 'pointer' }}>
+                        <Typography variant='subtitle2' sx={{ cursor: 'pointer', color: "#747474" }}>
                                 {`${formatWithOrdinal(res?.linkCreatedAt)} - ${formatWithOrdinal(res?.linkExpiredAt)}`}
                             </Typography>
-                        <Typography variant='h6' sx={{ textAlign: "right"}}>{formatPoints(consumedPoints)} Points</Typography>
+                        <Typography variant='h6' sx={{ textAlign: "right", color: "#747474"}}>{formatPoints(consumedPoints)} Points</Typography>
                     </Box>
                     }
                     else if(type === "Notes subscription"){
                         return <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", pl: "18px" }}>
-                        <Typography variant='subtitle2'>{`${formatDate(createdAt)} (${details})`}</Typography>
-+                        <Typography variant='h6' sx={{ textAlign: "right"}}>{formatPoints(consumedPoints)} Points</Typography>
+                        <Typography variant='subtitle2' sx={{ color: "#747474" }}>{`${formatDate(createdAt)} (${details})`}</Typography>
++                        <Typography variant='h6' sx={{ textAlign: "right", color: "#747474"}}>{formatPoints(consumedPoints)} Points</Typography>
                     </Box>
                     }
                 }

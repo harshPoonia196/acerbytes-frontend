@@ -29,7 +29,7 @@ import Paper from "@mui/material/Paper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { visuallyHidden } from "@mui/utils";
 import {
-  formattedCreatedAt,
+  formattedTime,
   getComparator,
   stableSort,
 } from "utills/CommonFunction";
@@ -217,7 +217,7 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
         </IconButton>
       </TableCell>
       <TableCell>
-        <Chip label={formattedCreatedAt(row?.modifiedData)} size="small" />
+        <Chip label={formattedTime(row?.modifiedData)} size="small" />
       </TableCell>
       <TableCell>
         <Chip
