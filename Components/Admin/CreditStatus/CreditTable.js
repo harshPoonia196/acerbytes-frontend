@@ -153,14 +153,14 @@ function RowStructure({ row, adminAssignPointsHandler }) {
   };
 
   const balanceColor = (amount) => {
-    if(amount >= 20000){
-      return 'green'
-    } else if(amount > 5000 && amount < 20000){
-      return '#FFBF00'
-    } else if(amount <= 5000){
-      return 'red'
+    if (amount >= 20000) {
+      return "green";
+    } else if (amount > 5000 && amount < 20000) {
+      return "#FFBF00";
+    } else if (amount <= 5000) {
+      return "red";
     }
-  }
+  };
 
   return (
     <>
@@ -202,7 +202,11 @@ function RowStructure({ row, adminAssignPointsHandler }) {
         </TableCell>
         <TableCell sx={{ textAlign: "right" }}>
           {/* {balanceColor(row?.brokerBalance?.balance)} */}
-          <Typography style={{ color: balanceColor(row?.brokerBalance?.balance)}}>{formatPoints(row?.brokerBalance?.balance || 0)}</Typography>
+          <Typography
+            style={{ color: balanceColor(row?.brokerBalance?.balance) }}
+          >
+            {formatPoints(row?.brokerBalance?.balance || 0)}
+          </Typography>
           {/* {<Typography style={{ color: row?.brokerBalance?.balance < 5000 ? 'red': row?.brokerBalance?.balance < 20000 ? 'amber' : 'green'}}>{formatPoints(row?.brokerBalance?.balance || 0)}</Typography>} */}
         </TableCell>
         <TableCell>
@@ -444,6 +448,7 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
             onChange={handleSearch}
           />
         </Card>
+        {console.log(" creditPointList ===========>", creditPointList)}
         {creditPointList?.list?.length > 0 ? (
           <TableContainer component={Paper}>
             <Table

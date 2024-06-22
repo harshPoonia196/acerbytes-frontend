@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, InputAdornment, Grid } from "@mui/material";
+import PaymentsIcon from "@mui/icons-material/Payments";
 import { formatPoints } from "utills/CommonFunction";
-import PaymentsIcon from '@mui/icons-material/Payments';
 
 const InputField = ({
   name,
@@ -18,38 +18,50 @@ const InputField = ({
   ...props
 }) => {
   const handleFormatting = (e) => {
+    let newValue = e.target.value;
+
     if (isAmount || isPoint) {
-      if (!isNaN(parseFloat(e.target.value)) || e.target.value === '') {
-        let data = { target: { name: '', value: '' } };
-        data.target.name = e.target.name
-        data.target.value = formatPoints(e.target.value)
-        handleChange(data)
+      newValue = newValue.replace(/[^0-9.]/g, "");
+
+      if (!isNaN(parseFloat(newValue)) || newValue === "") {
+        let data = { target: { name: "", value: "" } };
+        data.target.name = e.target.name;
+        data.target.value = formatPoints(newValue);
+        handleChange(data);
       }
     } else {
-      handleChange(e)
+      handleChange(e);
     }
-  }
+  };
 
   return (
     <Grid item xs={12} sm={halfSm ? 6 : 12}>
       <TextField
-        type={type}
+        type={type === "number" ? "text" : type}
         name={name}
         value={value}
         onChange={handleFormatting}
         label={label}
-        variant={variant ? variant : "standard"}
+        variant={variant || "standard"}
         fullWidth
         size="small"
         sx={sx}
         error={error}
         InputLabelProps={{ shrink: (isAmount || isPoint || value) && true }}
         InputProps={{
-          startAdornment: isAmount && <InputAdornment position="start">₹</InputAdornment> || isPoint && <InputAdornment position="start"><PaymentsIcon fontSize="small"/></InputAdornment>
+          startAdornment:
+            (isAmount && <InputAdornment position="start">₹</InputAdornment>) ||
+            (isPoint && (
+              <InputAdornment position="start">
+                <PaymentsIcon fontSize="small" />
+              </InputAdornment>
+            )),
+          inputMode: type === "number" ? "numeric" : undefined,
         }}
         {...props}
       />
     </Grid>
   );
-}
+};
+
 export default InputField;
