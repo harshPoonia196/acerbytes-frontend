@@ -246,3 +246,22 @@ html {
 .consultant-dialog .MuiCard-root{
   margin-bottom: 1rem;
 }
+
+.overlay{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #00000052;
+}
+
+.offers:nth-child(even) .rightCard{
+  order: 1
+}
+.offers:nth-child(even) .leftCard{
+  order: 2
+}
+.offers:nth-child(even) ol{
+  list-style: disc;
+}
