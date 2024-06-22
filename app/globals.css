@@ -243,3 +243,6 @@ html {
 .MuiTableBody-root .MuiButtonBase-root{
   padding: 3.5px 8px;
 }
+.consultant-dialog .MuiCard-root{
+  margin-bottom: 1rem;
+}

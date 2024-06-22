@@ -109,7 +109,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
   };
 
   return (
-    <Card sx={{ position: 'relative', border: "solid 1px #dcdcdc78", mb: 1 }}>
+    <Card sx={{ position: 'relative', border: "solid 1px #dcdcdc78" }}>
       <Box sx={{ display: 'flex', p: 2, borderRadius: "5px"}}>
         <Avatar
           alt={titleCase(broker?.fullName)}
