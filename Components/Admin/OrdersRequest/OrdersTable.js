@@ -56,11 +56,19 @@ import { debounce } from "lodash";
 import { ORDER_STATUS } from "utills/Constants";
 import { countryCodeFormating } from "utills/utills";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
+import { formattedCreatedAt, formattedTime } from 'utills/CommonFunction';
 
 const headCells = [
   {
     id: "orderNo",
     label: "Order no",
+    isCompleteView: true,
+    isPendingView: true,
+    numeric: false,
+  },
+  {
+    id: "orderDate",
+    label: "Order Date",
     isCompleteView: true,
     isPendingView: true,
     numeric: false,
@@ -265,6 +273,11 @@ function RowStructure({
         }}
       >
         <TableCell>{row.orderNumber}</TableCell>
+        
+        <TableCell>
+          {formattedTime(row.createdAt)}
+        </TableCell>
+        
         <TableCell>
           {row?.brokerId?.name?.firstName} {row?.brokerId?.name?.lastName}
         </TableCell>
@@ -296,6 +309,7 @@ function RowStructure({
             {formatPoints(row?.approvedPoints)}
           </TableCell>
         )}
+        
         {!isCompleted && (
           <TableCell sx={{}}>
             <Tooltip title="More">

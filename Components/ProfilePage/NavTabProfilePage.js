@@ -16,7 +16,7 @@ function NavTabProfilePage({ value, handleChange, list }) {
           key={data.hash}
           label={data.text}
           value={data.hash}
-          onClick={() => handleChange(data.hash)}
+          onClick={handleChange(data.hash)}
         />
       ))}
     </Tabs>

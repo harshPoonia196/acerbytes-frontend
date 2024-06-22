@@ -43,7 +43,7 @@ const headCells = [
     },
     {
         id: "CreditAmount",
-        label: "Credit amount",
+        label: "Balance",
         numeric: true
     },
 ];

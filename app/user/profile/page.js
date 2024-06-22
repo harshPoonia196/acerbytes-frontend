@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -173,9 +173,15 @@ function Profile({ id, isAdminUpdate }) {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
+  const clickedRef = React.useRef(false);
+  const unsetClickedRef = React.useRef(null);
+
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
+
+    // Don't set the active index based on scroll if a link was just clicked
+    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -190,9 +196,9 @@ function Profile({ id, isAdminUpdate }) {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -207,12 +213,33 @@ function Profile({ id, isAdminUpdate }) {
   // Corresponds to 10 frames at 60 Hz
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => {
+  const handleClick = (hash) => () => {
     // Used to disable findActiveIndex if the  scrolls due to a clickpage
+    clickedRef.current = true;
+    unsetClickedRef.current = setTimeout(() => {
+      clickedRef.current = false;
+    }, 1000);
 
-    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
-    setActiveState(hash);
+    if (activeState !== hash) {
+      setActiveState(hash);
+
+      if (window)
+        window.scrollTo({
+          top:
+            document.getElementById(hash)?.getBoundingClientRect().top +
+            window.pageYOffset -
+            tabHeight,
+          behavior: "smooth",
+        });
+    }
   };
+
+  React.useEffect(
+    () => () => {
+      clearTimeout(unsetClickedRef.current);
+    },
+    []
+  );
 
   const { openSnackbar } = useSnackbar();
 
@@ -277,8 +304,8 @@ function Profile({ id, isAdminUpdate }) {
       } catch (error) {
         showTostMessages(
           error?.response?.data?.message ||
-            error?.message ||
-            "Error fetching user profile",
+          error?.message ||
+          "Error fetching user profile",
           "error"
         );
         setLoading(false);
@@ -312,8 +339,8 @@ function Profile({ id, isAdminUpdate }) {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -333,8 +360,8 @@ function Profile({ id, isAdminUpdate }) {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -372,14 +399,14 @@ function Profile({ id, isAdminUpdate }) {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-            ...prev?.[firstKeyName],
-            [secondKeyName]: !thirdKeyName
-              ? value
-              : {
-                  ...prev?.[firstKeyName]?.[secondKeyName],
-                  [thirdKeyName]: value,
-                },
-          },
+          ...prev?.[firstKeyName],
+          [secondKeyName]: !thirdKeyName
+            ? value
+            : {
+              ...prev?.[firstKeyName]?.[secondKeyName],
+              [thirdKeyName]: value,
+            },
+        },
     }));
   };
 
@@ -506,8 +533,8 @@ function Profile({ id, isAdminUpdate }) {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error user profile updating",
+        error?.message ||
+        "Error user profile updating",
         "error"
       );
     } finally {
@@ -572,8 +599,8 @@ function Profile({ id, isAdminUpdate }) {
       console.log("error: ", error);
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     } finally {
@@ -734,7 +761,7 @@ function Profile({ id, isAdminUpdate }) {
               </Card>
             </Grid>
           )}
-          <Grid item xs={12}>
+          <Grid item xs={12} id="userDetails">
             <Card>
               <Box sx={{ display: "flex", p: 2, py: 1 }}>
                 <Typography

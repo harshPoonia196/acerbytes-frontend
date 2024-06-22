@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -113,8 +113,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-            error?.message ||
-            "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
           "error"
         );
         return error;
@@ -171,7 +171,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     let value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
-    if (secondKeyName === "firstName" || secondKeyName === "lastName") {
+    if (secondKeyName === "firstName" || secondKeyName === "lastName" || secondKeyName === "company") {
       value = capitalLizeName(value);
     }
     if (e.target.type == "number") {
@@ -187,14 +187,14 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-            ...(prev?.[firstKeyName] || {}),
-            [secondKeyName]: !thirdKeyName
-              ? value
-              : {
-                  ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
-                  [thirdKeyName]: value,
-                },
-          },
+          ...(prev?.[firstKeyName] || {}),
+          [secondKeyName]: !thirdKeyName
+            ? value
+            : {
+              ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
+              [thirdKeyName]: value,
+            },
+        },
     }));
   };
   const handleAddTargetCustomer = () => {
@@ -283,9 +283,15 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     }
   }, [data]);
 
+  const clickedRef = React.useRef(false);
+  const unsetClickedRef = React.useRef(null);
+
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
+
+    // Don't set the active index based on scroll if a link was just clicked
+    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -300,9 +306,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -317,10 +323,33 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
   // Corresponds to 10 frames at 60 Hz
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = (hash) => {
-    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
-    setActiveState(hash);
+  const handleClick = (hash) => () => {
+    // Used to disable findActiveIndex if the  scrolls due to a clickpage
+    clickedRef.current = true;
+    unsetClickedRef.current = setTimeout(() => {
+      clickedRef.current = false;
+    }, 1000);
+
+    if (activeState !== hash) {
+      setActiveState(hash);
+
+      if (window)
+        window.scrollTo({
+          top:
+            document.getElementById(hash)?.getBoundingClientRect().top +
+            window.pageYOffset -
+            tabHeight,
+          behavior: "smooth",
+        });
+    }
   };
+
+  React.useEffect(
+    () => () => {
+      clearTimeout(unsetClickedRef.current);
+    },
+    []
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -446,8 +475,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -467,8 +496,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     }
@@ -517,8 +546,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       console.log("error: ", error);
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state of india list",
+        error?.message ||
+        "Error fetching state of india list",
         "error"
       );
     } finally {
@@ -648,9 +677,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                             sx={{ alignSelf: "center", color: colors.BLUE }}
                           >
                             +
-                            {`${brokerProfileInfo?.phone?.countryCode || ""} ${
-                              brokerProfileInfo?.phone?.number || ""
-                            }`}
+                            {`${brokerProfileInfo?.phone?.countryCode || ""} ${brokerProfileInfo?.phone?.number || ""
+                              }`}
                           </Typography>
                         </a>
                       </Box>
@@ -766,6 +794,7 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     handleChange={(e) =>
                       handleChange(e, "serviceDetails", "company")
                     }
+                    name="company"
                   />
 
                   <NewInputFieldStructure
@@ -901,9 +930,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                           }
                           return (
                             <Chip
-                              key={`${targetArea.selectCity || ""}-${
-                                targetArea.selectArea || ""
-                              }-${index}`}
+                              key={`${targetArea.selectCity || ""}-${targetArea.selectArea || ""
+                                }-${index}`}
                               label={label}
                               size="small"
                               sx={{ ml: 1, py: 2, px: 1 }}
