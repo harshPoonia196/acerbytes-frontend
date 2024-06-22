@@ -125,15 +125,17 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
               onClick={hasReviews ? handleOpenReviews : null}
             >
               {titleCase(broker?.fullName)}
-              <DoneAllIcon
-                fontSize="1rem"
-                sx={{
-                  alignSelf: 'center',
-                  position: 'relative',
-                  top: '1px',
-                  left: '2px',
-                }}
-              />
+              <Tooltip title={titleCase(broker?.fullName)}>
+                <DoneAllIcon
+                  fontSize="1rem"
+                  sx={{
+                    alignSelf: 'center',
+                    position: 'relative',
+                    top: '1px',
+                    left: '2px',
+                  }}
+                />
+              </Tooltip>
               <Box>
                 {showRating ? (
                   <>
