@@ -573,7 +573,7 @@ function useThrottledOnScroll(callback, delay) {
       >
         <Card sx={{ background: "#e2b42d", borderRadius: 0}}>
           <Container maxWidth="lg">
-            <Typography variant="h4" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Improve your Real estate conversions, significantly improve your real estate Sales</Typography>
+            <Typography variant="h4" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)", textAlign: "center"}}>Improve your Real estate conversions, significantly improve your real estate Sales</Typography>
           </Container>
         </Card>
         <Card sx={{ position: "relative",borderRadius: 0 }}>
@@ -584,8 +584,8 @@ function useThrottledOnScroll(callback, delay) {
           />
           <Box sx={{ color: colors.WHITE, zIndex: 1, textAlign: "center", position: 'absolute', top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>
             <Container maxWidth="lg">
-              <Typography variant="h5" sx={{textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Are you into Real estate business or Consultant ?</Typography>
-              <Typography variant="h2" fontWeight="bold" sx={{textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Grow your Real estate Business exponentially </Typography>
+              <Typography variant="h5" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Are you into Real estate business or Consultant ?</Typography>
+              <Typography variant="h2" fontWeight="bold" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Grow your Real estate Business exponentially </Typography>
             </Container>
           </Box>
           <Box className="overlay"></Box>
