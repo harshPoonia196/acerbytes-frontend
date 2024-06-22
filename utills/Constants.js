@@ -362,7 +362,7 @@ const listOfProfileTab = [
   // { label: 'Enquiries', value: 'enquiries' },
   // { label: 'Property Consultants', value: 'propertyConsultants' },
   { label: "Current address", value: "currentAddress" },
-  { label: "Settings", value: "setting" },
+  // { label: "Settings", value: "setting" },
 ];
 
 const listOfConsultantProfileTab = [
@@ -373,7 +373,7 @@ const listOfConsultantProfileTab = [
   // { label: 'Enquiries', value: 'enquiries' },
   // { label: 'Property Consultants', value: 'propertyConsultants' },
   // { label: 'Current address', value: 'currentAddress' },
-  { label: "Settings", value: "setting" },
+  // { label: "Settings", value: "setting" },
 ];
 
 const listOfPropertyDetailsTab = [
@@ -401,14 +401,15 @@ const listOfPropertyDetailsTab = [
     label: "Amenities",
     value: "amenities",
   },
+  { label: 'Location', value: 'location' },
   {
     label: "Value for money",
     value: "value",
   },
-  // {
-  //   label: "Property consultants",
-  //   value: "propertyConsultants",
-  // },
+  {
+    label: "Property consultants",
+    value: "propertyConsultants",
+  },
   {
     label: "Assesment",
     value: "assesment",
