@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -242,9 +242,15 @@ function AddProperty() {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
+  const clickedRef = React.useRef(false);
+  const unsetClickedRef = React.useRef(null);
+
   const findActiveIndex = React.useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
+
+    // Don't set the active index based on scroll if a link was just clicked
+    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -259,9 +265,9 @@ function AddProperty() {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -276,9 +282,32 @@ function AddProperty() {
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
   const handleClick = (hash) => {
-    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
-    setActiveState(hash);
+    // Used to disable findActiveIndex if the  scrolls due to a clickpage
+    clickedRef.current = true;
+    unsetClickedRef.current = setTimeout(() => {
+      clickedRef.current = false;
+    }, 1000);
+    if (activeState !== hash) {
+      setActiveState(hash);
+
+      if (window)
+        window.scrollTo({
+          top:
+            document.getElementById(hash)?.getBoundingClientRect().top +
+            window.pageYOffset -
+            tabHeight,
+          behavior: "smooth",
+        });
+    }
   };
+
+  React.useEffect(
+    () => () => {
+      clearTimeout(unsetClickedRef.current);
+    },
+    []
+  );
+
   function removeIds(obj) {
     for (const key in obj) {
       if (typeof obj[key] === "object" && obj[key] !== null) {
@@ -389,8 +418,8 @@ function AddProperty() {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -447,8 +476,8 @@ function AddProperty() {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -517,8 +546,8 @@ function AddProperty() {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -766,12 +795,12 @@ function AddProperty() {
       if (secondKeyName === "constructionProgress") {
         difference =
           (form?.[firstKeyName]?.[secondKeyName] == "" ||
-          form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay"
+            form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay"
             ? 0
             : 5) - parseInt(incomingValue);
         compare =
           (form?.[firstKeyName]?.[secondKeyName] == "" ||
-          form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay"
+            form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay"
             ? 0
             : 5) < parseInt(incomingValue);
       } else {
@@ -1179,7 +1208,7 @@ function AddProperty() {
         if (
           secondKeyName === "projectCategory" &&
           form?.[firstKeyName][secondKeyName].toLowerCase() !==
-            e.target.value.toLowerCase()
+          e.target.value.toLowerCase()
         ) {
           setForm((prev) => ({
             ...prev,
@@ -1196,14 +1225,14 @@ function AddProperty() {
           [firstKeyName]: !secondKeyName
             ? value
             : {
-                ...prev?.[firstKeyName],
-                [secondKeyName]: !thirdKeyName
-                  ? value
-                  : {
-                      ...prev?.[firstKeyName]?.[secondKeyName],
-                      [thirdKeyName]: value,
-                    },
-              },
+              ...prev?.[firstKeyName],
+              [secondKeyName]: !thirdKeyName
+                ? value
+                : {
+                  ...prev?.[firstKeyName]?.[secondKeyName],
+                  [thirdKeyName]: value,
+                },
+            },
         }));
       }
     }
