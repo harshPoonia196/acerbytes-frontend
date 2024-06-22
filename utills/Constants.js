@@ -448,7 +448,6 @@ const listOfMarketingTab = [
   { label: "What we do", value: "whatWeDo" },
   { label: "what we offer", value: "offerDetails" },
   { label: "Benefits", value: "benefits" },
-  { label: "Searching for", value: "budget" },
   { label: 'Testimonial', value: 'testimonial' },
   { label: 'FAQ', value: 'faq' },
   { label: "Consultants", value: "consultants" },

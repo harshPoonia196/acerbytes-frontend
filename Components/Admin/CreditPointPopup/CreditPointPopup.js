@@ -181,7 +181,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
           Credit Points are required to buy services on AcreBytes
         </Typography>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{minHeight: "202px"}}>
         {isLoading && <Loading />}
         <Grid container spacing={2}>
           <InputField
