@@ -109,7 +109,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
   };
 
   return (
-    <Card sx={{ position: 'relative', border: "solid 1px #dcdcdc78", mb: 1 }}>
+    <Card sx={{ position: 'relative', border: "solid 1px #dcdcdc78" }}>
       <Box sx={{ display: 'flex', p: 2, borderRadius: "5px"}}>
         <Avatar
           alt={titleCase(broker?.fullName)}
@@ -125,15 +125,17 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
               onClick={hasReviews ? handleOpenReviews : null}
             >
               {titleCase(broker?.fullName)}
-              <DoneAllIcon
-                fontSize="1rem"
-                sx={{
-                  alignSelf: 'center',
-                  position: 'relative',
-                  top: '1px',
-                  left: '2px',
-                }}
-              />
+              <Tooltip title={titleCase(broker?.fullName)}>
+                <DoneAllIcon
+                  fontSize="1rem"
+                  sx={{
+                    alignSelf: 'center',
+                    position: 'relative',
+                    top: '1px',
+                    left: '2px',
+                  }}
+                />
+              </Tooltip>
               <Box>
                 {showRating ? (
                   <>
