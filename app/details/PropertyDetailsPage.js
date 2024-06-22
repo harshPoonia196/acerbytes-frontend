@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const noop = () => {};
+const noop = () => { };
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -145,8 +145,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -170,8 +170,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error generating fav Property",
+        error?.message ||
+        "Error generating fav Property",
         "error"
       );
     } finally {
@@ -197,8 +197,7 @@ const PropertyDetailsPage = ({ params }) => {
       setLoading(true);
       if (userDetails?._id) {
         let res = await checkEnquiryOnPropertyLink(
-          `${detailsPropertyId}${
-            userDetails?._id ? `?userId=${userDetails?._id}` : ""
+          `${detailsPropertyId}${userDetails?._id ? `?userId=${userDetails?._id}` : ""
           }`
         );
         if (res.status === 200) {
@@ -210,8 +209,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-          error?.message ||
-          "Error fetching state list",
+        error?.message ||
+        "Error fetching state list",
         "error"
       );
     } finally {
@@ -256,8 +255,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -303,8 +302,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -336,8 +335,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -371,8 +370,8 @@ const PropertyDetailsPage = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+        error?.message ||
+        "Something went wrong!",
         "error"
       );
       return error;
@@ -452,8 +451,15 @@ const PropertyDetailsPage = ({ params }) => {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
 
+  const clickedRef = React.useRef(false);
+  const unsetClickedRef = React.useRef(null);
+
   const findActiveIndex = React.useCallback(() => {
+    // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
+
+    // Don't set the active index based on scroll if a link was just clicked
+    if (clickedRef.current) return;
 
     let active;
     for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
@@ -467,9 +473,9 @@ const PropertyDetailsPage = ({ params }) => {
       if (
         item.node &&
         item.node.offsetTop <
-          document.documentElement.scrollTop +
-            document.documentElement.clientHeight / 8 +
-            tabHeight
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
       ) {
         active = item;
         break;
@@ -485,9 +491,32 @@ const PropertyDetailsPage = ({ params }) => {
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
   const handleClick = (hash) => {
-    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
-    setActiveState(hash);
+    // Used to disable findActiveIndex if the  scrolls due to a clickpage
+    clickedRef.current = true;
+    unsetClickedRef.current = setTimeout(() => {
+      clickedRef.current = false;
+    }, 1000);
+
+    if (activeState !== hash) {
+      setActiveState(hash);
+
+      if (window)
+        window.scrollTo({
+          top:
+            document.getElementById(hash)?.getBoundingClientRect().top +
+            window.pageYOffset -
+            tabHeight,
+          behavior: "smooth",
+        });
+    }
   };
+
+  React.useEffect(
+    () => () => {
+      clearTimeout(unsetClickedRef.current);
+    },
+    []
+  );
 
   const divRef = useRef(null);
   const [heightOfFooter, setHeightOfFooter] = useState(0);
