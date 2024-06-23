@@ -1,6 +1,5 @@
 import InputField from "Components/CommonLayouts/InputField";
 import {
-  Button,
   Grid,
   DialogActions,
   Dialog,
@@ -8,7 +7,6 @@ import {
   DialogTitle,
   Typography,
   Box,
-  InputAdornment,
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import DoneIcon from "@mui/icons-material/Done";
@@ -22,14 +20,19 @@ import {
 } from "utills/utills";
 import React from "react";
 import NewPhoneInputFieldStructure from "Components/CommonLayouts/NewPhoneInputFieldStructure";
-import { countries, enquiryFormKey, enquiryFormOpen, propertyRedirectKey } from "utills/Constants";
+import {
+  countries,
+  enquiryFormKey,
+  enquiryFormOpen,
+  propertyRedirectKey,
+} from "utills/Constants";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import { getAllOptions, getCities } from "api/Property.api";
 
 function EnquireNow(props) {
-  const { open, handleClose, handleAction, submitEnquiry, submitEnquiryUnath } = props;
+  const { open, handleClose, handleAction, submitEnquiry, submitEnquiryUnath } =
+    props;
   const router = useRouter();
-
   const token = isLoggedIn();
 
   const param = useParams();
@@ -82,7 +85,10 @@ function EnquireNow(props) {
     try {
       const allOptionsResponse = await getAllOptions();
       if (allOptionsResponse?.data?.data?.length > 0) {
-        const countryCodeOptions = allOptionsResponse?.data?.data?.find(rs => rs.name == "Country code")?.childSub || []
+        const countryCodeOptions =
+          allOptionsResponse?.data?.data?.find(
+            (rs) => rs.name == "Country code"
+          )?.childSub || [];
         setAllCountryCodeOptions(countryCodeOptions);
       }
     } catch (error) {
@@ -109,7 +115,10 @@ function EnquireNow(props) {
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Enquire about <span style={{ color: "gray" }}>{props?.propertyData?.overview?.projectName}</span>
+          Enquire about{" "}
+          <span style={{ color: "gray" }}>
+            {props?.propertyData?.overview?.projectName}
+          </span>
         </Typography>
         <Typography variant="body1">
           Connect with professional property consultants only
@@ -157,7 +166,7 @@ function EnquireNow(props) {
             }}
           >
             {token ? (
-              <span></span>
+              <></>
             ) : (
               <CustomButton
                 startIcon={<GoogleIcon />}

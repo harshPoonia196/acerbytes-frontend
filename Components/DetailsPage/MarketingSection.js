@@ -20,9 +20,19 @@ import { shortPriceFormatter, capitalLizeName } from "utills/CommonFunction";
 import DOMPurify from "dompurify";
 import { memo } from "react";
 
+export const categorizeScore = (score) => {
+  if (score >= 0 && score <= 20) return "Poor";
+  if (score >= 21 && score <= 40) return "Average";
+  if (score >= 41 && score <= 60) return "Good";
+  if (score >= 61 && score <= 80) return "Very good";
+  if (score >= 81 && score <= 90) return "Excellent";
+  if (score >= 91 && score <= 100) return "Outstanding";
+  return "invalid";
+};
+
 function MarketingSection(props) {
   const { overviewData } = props;
-  const alloverviewData = overviewData?.overview;
+  const allOverviewData = overviewData?.overview;
   const AllLocationData = overviewData?.location;
   const AllUnitsPlan = overviewData?.unitsPlan;
 
@@ -31,16 +41,6 @@ function MarketingSection(props) {
     return matches ? matches[1] : null;
   };
   const mapUrl = extractUrl(AllLocationData?.googleMapLink);
-
-  const categorizeScore = (score) => {
-    if (score >= 0 && score <= 20) return "Poor";
-    if (score >= 21 && score <= 40) return "Average";
-    if (score >= 41 && score <= 60) return "Good";
-    if (score >= 61 && score <= 80) return "Very good";
-    if (score >= 81 && score <= 90) return "Excellent";
-    if (score >= 91 && score <= 100) return "Outstanding";
-    return "invalid";
-  };
 
   const MapFrame = ({ mapUrl }) => {
     return (
@@ -82,7 +82,7 @@ function MarketingSection(props) {
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ mr: 1 }}>
                   <CircularProgressWithIcon
-                    score={alloverviewData?.sectionScore}
+                    score={allOverviewData?.sectionScore}
                     outOf={10}
                     icon={<HandshakeIcon fontSize="1rem" />}
                   />
@@ -90,8 +90,8 @@ function MarketingSection(props) {
                 <Box sx={{ flex: 1 }}>
                   <Typography variant="h6">Performance</Typography>
                   <Typography variant="h4">
-                    {alloverviewData?.sectionScore
-                      ? alloverviewData?.sectionScore.toFixed()
+                    {allOverviewData?.sectionScore
+                      ? allOverviewData?.sectionScore.toFixed()
                       : "0"}
                     <Typography variant="h6" component="span">
                       {" / 10"}
@@ -213,114 +213,108 @@ function MarketingSection(props) {
   };
 
   return (
-    <>
-      <Container maxWidth="md">
-        <Box id="project">
-          <Card sx={{ height: "fit-content" }}>
-            <img
-              src={overviewData?.marketing?.image}
-              style={{ width: "100%" }}
-            />
-          </Card>
-          <Box sx={{ my: 2 }}>
-            <OverviewRatingCard />
-          </Box>
-        </Box>
-        <Card sx={{ p: 2, mb: 2 }}>
-          <div
-            className="innerhtmlFont"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(
-                overviewData?.marketing?.metaDescription
-              ),
-            }}
-          />
+    <Container maxWidth="md" id="project">
+      {/* <Box id="project"> */}
+      <Box>
+        <Card sx={{ height: "fit-content" }}>
+          <img src={overviewData?.marketing?.image} style={{ width: "100%" }} />
         </Card>
-        <Card id="builder">
-          <Box sx={{ display: "flex", p: 2 }}>
-            <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
-              Overview
-            </Typography>
-            <Box sx={{ alignSelf: "center" }}>
-              <Card
+        <Box sx={{ my: 2 }}>
+          <OverviewRatingCard />
+        </Box>
+      </Box>
+      <Card sx={{ p: 2, mb: 2 }}>
+        <div
+          className="innerhtmlFont"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(
+              overviewData?.marketing?.metaDescription
+            ),
+          }}
+        />
+      </Card>
+      <Card id="builder">
+        <Box sx={{ display: "flex", p: 2 }}>
+          <Typography variant="h4" sx={{ flex: 1, alignSelf: "center" }}>
+            Overview
+          </Typography>
+          <Box sx={{ alignSelf: "center" }}>
+            <Card
+              sx={{
+                width: "fit-content",
+                backgroundColor: colors?.BLACK,
+                borderRadius: "4px !important",
+                m: 0,
+                ml: "auto !important",
+              }}
+            >
+              <Typography
+                variant="h6"
                 sx={{
+                  fontWeight: 600,
                   width: "fit-content",
-                  backgroundColor: colors?.BLACK,
-                  borderRadius: "4px !important",
-                  m: 0,
-                  ml: "auto !important",
+                  color: "white",
+                  p: 0.5,
+                  px: 1,
+                  cursor: "pointer",
                 }}
               >
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: 600,
-                    width: "fit-content",
-                    color: "white",
-                    p: 0.5,
-                    px: 1,
-                    cursor: "pointer",
-                  }}
-                >
-                  {alloverviewData?.sectionScore
-                    ? alloverviewData?.sectionScore.toFixed()
-                    : "00"}
-                </Typography>
-              </Card>
-            </Box>
+                {allOverviewData?.sectionScore
+                  ? allOverviewData?.sectionScore.toFixed()
+                  : "00"}
+              </Typography>
+            </Card>
           </Box>
-          <Divider />
-          <Grid container spacing={1} sx={{ p: 2 }}>
+        </Box>
+        <Divider />
+        <Grid container spacing={1} sx={{ p: 2 }}>
+          <NewKeyValuePairStructure
+            label="Builder"
+            value={allOverviewData?.builder}
+          />
+          <NewKeyValuePairStructure
+            label="Project name"
+            value={capitalLizeName(allOverviewData?.projectName)}
+          />
+          <NewKeyValuePairStructure
+            label="Project type"
+            value={Array.from(
+              new Set(AllUnitsPlan?.planList?.map((item) => item?.propertyType))
+            ).join(", ")}
+          />
+          <NewKeyValuePairStructure
+            label="Project category"
+            value={allOverviewData?.projectCategory}
+          />
+          <NewKeyValuePairStructure
+            label="Phase"
+            value={allOverviewData?.phase}
+          />
+          <NewKeyValuePairStructure
+            label="Launch"
+            value={allOverviewData?.launchYear}
+          />
+          <NewKeyValuePairStructure
+            label="Completion"
+            value={allOverviewData?.completionYear}
+          />
+          <NewKeyValuePairStructure
+            label="Location"
+            value={`${AllLocationData?.sector}, ${AllLocationData?.area}, ${AllLocationData?.city}, ${AllLocationData?.state}`}
+          />
+          <NewKeyValuePairStructure
+            label="Status"
+            value={allOverviewData?.status}
+          />
+          {allOverviewData?.constructionProgress && (
             <NewKeyValuePairStructure
-              label="Builder"
-              value={alloverviewData?.builder}
+              label="Speed"
+              value={allOverviewData?.constructionProgress}
             />
-            <NewKeyValuePairStructure
-              label="Project name"
-              value={capitalLizeName(alloverviewData?.projectName)}
-            />
-            <NewKeyValuePairStructure
-              label="Project type"
-              value={Array.from(
-                new Set(
-                  AllUnitsPlan?.planList?.map((item) => item?.propertyType)
-                )
-              ).join(", ")}
-            />
-            <NewKeyValuePairStructure
-              label="Project category"
-              value={alloverviewData?.projectCategory}
-            />
-            <NewKeyValuePairStructure
-              label="Phase"
-              value={alloverviewData?.phase}
-            />
-            <NewKeyValuePairStructure
-              label="Launch"
-              value={alloverviewData?.launchYear}
-            />
-            <NewKeyValuePairStructure
-              label="Completion"
-              value={alloverviewData?.completionYear}
-            />
-            <NewKeyValuePairStructure
-              label="Location"
-              value={`${AllLocationData?.sector}, ${AllLocationData?.area}, ${AllLocationData?.city}, ${AllLocationData?.state}`}
-            />
-            <NewKeyValuePairStructure
-              label="Status"
-              value={alloverviewData?.status}
-            />
-            {alloverviewData?.constructionProgress && (
-              <NewKeyValuePairStructure
-                label="Speed"
-                value={alloverviewData?.constructionProgress}
-              />
-            )}
-          </Grid>
-        </Card>
-      </Container>
-    </>
+          )}
+        </Grid>
+      </Card>
+    </Container>
   );
 }
 

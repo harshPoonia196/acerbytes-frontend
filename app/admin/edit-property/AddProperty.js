@@ -1,0 +1,1595 @@
+"use client";
+import { Card, Container, Grid } from "@mui/material";
+import React from "react";
+import { useState } from "react";
+import { listOfTabsInAddProperty } from "utills/Constants";
+import NavTab from "Components/Admin/Property/NavTab";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import LocationCard from "Components/Admin/Property/SubComponents/LocationCard";
+import ProjectCard from "Components/Admin/Property/SubComponents/ProjectCard";
+import { getAllOptions, getCities } from "api/Property.api";
+import {
+  Schema,
+  reraSchema,
+} from "Components/Admin/Property/Validation/PropertyValidation";
+import FacilitiesCard from "Components/Admin/Property/SubComponents/FacilitiesCard";
+import LandscapeCard from "Components/Admin/Property/SubComponents/LandscapeCard";
+import FloorPlanCard from "Components/Admin/Property/SubComponents/FloorPlanCard";
+import RegulatoryCard from "Components/Admin/Property/SubComponents/RegulatoryCard";
+import InvestmentCard from "Components/Admin/Property/SubComponents/InvestmentCard";
+import { useSnackbar } from "utills/SnackbarContext";
+import PropertyConsultantsCard from "Components/Admin/Property/SubComponents/PropertyConsultantsCard";
+import OverallAssessmentCard from "Components/Admin/Property/SubComponents/OverallAssessmentCard";
+import { CreateProperty, EditProperty } from "api/Property.api";
+import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
+import { detailsProperty } from "api/Property.api";
+import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
+import { getAllBrokers } from "api/Broker.api";
+import {
+  tabHeight,
+  useThrottledOnScroll,
+  useStyles,
+  MarketingCard,
+} from "./page";
+
+export function AddProperty() {
+  const router = useSearchParams();
+  const [cities, setCities] = useState([]);
+  const routerNavigation = useRouter();
+  const [editPage, setEditPage] = useState(false);
+  const [brokerList, setBrokerList] = useState([]);
+  const [amentiesStarsScore, setAmentiesStarScore] = useState([]);
+  const [amentiesStars, setAmentiesStar] = useState([]);
+  const [locationStars, setLocationStars] = useState([]);
+  const [regulatoryCount, setRegulatoryCount] = useState(0);
+  const [totalRating, setTotalRating] = useState(80);
+  const [tagField, setTagField] = useState({
+    builder: "",
+    projectName: "",
+    projectCategory: "",
+    projectType: "",
+    area: "",
+    sector: "",
+    city: "",
+  });
+  const [locationStarsScore, setLocationStarsScore] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [formUpdated, setFormUpdated] = useState(false);
+  const [activeState, setActiveState] = React.useState(null);
+  const detailsPropertyId = router.get("id");
+
+  let itemsServer = listOfTabsInAddProperty.map((tab) => {
+    const hash = tab.value;
+    return {
+      text: tab.label,
+      hash: hash,
+      node: document.getElementById(hash),
+    };
+  });
+
+  const itemsClientRef = React.useRef([]);
+  React.useEffect(() => {
+    itemsClientRef.current = itemsServer;
+  }, [itemsServer]);
+
+  const clickedRef = React.useRef(false);
+  const unsetClickedRef = React.useRef(null);
+  const findActiveIndex = React.useCallback(() => {
+    // set default if activeState is null
+    if (activeState === null) setActiveState(itemsServer[0].hash);
+
+    // Don't set the active index based on scroll if a link was just clicked
+    if (clickedRef.current) return;
+
+    let active;
+    for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
+      // No hash if we're near the top of the page
+      if (document.documentElement.scrollTop < 0) {
+        active = { hash: null };
+        break;
+      }
+
+      const item = itemsClientRef.current[i];
+
+      if (
+        item.node &&
+        item.node.offsetTop <
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
+      ) {
+        active = item;
+        break;
+      }
+    }
+
+    if (active && activeState !== active.hash) {
+      setActiveState(active.hash);
+    }
+  }, [activeState, itemsServer]);
+
+  useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
+
+  const handleClick = (hash) => {
+    // Used to disable findActiveIndex if the  scrolls due to a clickpage
+    clickedRef.current = true;
+    unsetClickedRef.current = setTimeout(() => {
+      clickedRef.current = false;
+    }, 1000);
+
+    document.getElementById(hash).scrollIntoView({ behavior: "smooth" });
+    setActiveState(hash);
+
+    // if (activeState !== hash) {
+    //   if (window)
+    //     window.scrollTo({
+    //       top:
+    //         document.getElementById(hash)?.getBoundingClientRect().top +
+    //         window.pageYOffset -
+    //         tabHeight,
+    //       behavior: "smooth",
+    //     });
+    // }
+  };
+  function removeIds(obj) {
+    for (const key in obj) {
+      if (typeof obj[key] === "object" && obj[key] !== null) {
+        // Recursively call removeIds for nested objects
+        obj[key] = removeIds(obj[key]);
+      } else if (key === "_id") {
+        // Remove the _id field
+        delete obj[key];
+      }
+    }
+    return obj;
+  }
+
+  const countLocationAssessmentItems = (data) => {
+    const items = [];
+
+    Object.entries(data.location.assessment).forEach(([name, item]) => {
+      if (item.rating > 0 && item.isApplicable) {
+        items.push({ name, rating: item.rating });
+      }
+    });
+
+    return items;
+  };
+
+  // Function to count items with ratings > 0 and isApplicable true in amenities data
+  const countAmenitiesDataItems = (data) => {
+    const items = [];
+    Object.values(data.amenitiesData).forEach((section) => {
+      Object.entries(section).forEach(([name, item]) => {
+        if (item.rating > 0 && item.isApplicable) {
+          items.push({ name, rating: item.rating });
+        }
+      });
+    });
+
+    return items;
+  };
+
+  let getProp = async () => {
+    try {
+      let res = await detailsProperty(detailsPropertyId);
+      if (res.status === 200) {
+        setFormUpdated(false);
+        let data = removeIds(res.data?.data);
+        delete data?.data;
+        delete data.__v;
+        handleUIHide(data.overview.projectType, "overview", "projectType");
+        setEditForm(true);
+        let assignTagLine = {
+          builder: data.overview.builder,
+          projectName: data.overview.projectName,
+          projectCategory: data.overview.projectCategory,
+          projectType: data.overview.projectType,
+          area: data.location.area,
+          sector: data.location.sector,
+          city: data.location.city,
+        };
+        setTagField(assignTagLine);
+        setForm({ ...data });
+
+        let countLocationItems = countLocationAssessmentItems(data);
+        let AmentiesCount = countAmenitiesDataItems(data);
+        let updateTotalCount = 0;
+        if (AmentiesCount.length > 0) {
+          let count = AmentiesCount.reduce(
+            (accumulator, currentItem) => accumulator + currentItem.rating,
+            0
+          );
+          let names = AmentiesCount.map((item) => item.name);
+          updateTotalCount += AmentiesCount.length * 5;
+          // setTotalRating(totalRating+count)
+          // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
+          setAmentiesStarScore([...amentiesStarsScore, ...names]);
+        }
+        if (countLocationItems.length > 0) {
+          let count = countLocationItems.reduce(
+            (accumulator, currentItem) => accumulator + currentItem.rating,
+            0
+          );
+          let names = countLocationItems.map((item) => item.name);
+
+          //  setTotalRating(totalRating+count)
+          updateTotalCount += countLocationItems.length * 5;
+          setLocationStarsScore([...locationStarsScore, ...names]);
+        }
+        let countYes = 0;
+        Object.values(data.regulatoryClearance).forEach((value) => {
+          if (value === "Yes") {
+            countYes++;
+          }
+        });
+        setRegulatoryCount(countYes);
+        setTotalRating(totalRating + updateTotalCount);
+
+        setFormUpdated(true);
+      }
+    } catch (error) {
+      showTostMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const brokersList = async () => {
+    try {
+      const response = await getAllBrokers();
+      if (response.status == 200) {
+        const { success, data, message } = response.data;
+        if (success) {
+          let getValue = data.data.map((i) => {
+            let u = {
+              fullName: i.fullName.replace(/\b\w/g, (match) =>
+                match.toUpperCase()
+              ),
+              type: "consultant",
+              phone: i.phone,
+              rating: i.rating,
+              profilePicture: i?.brokerPic?.profilePicture
+                ? i?.brokerPic?.profilePicture
+                : "",
+              id: i._id,
+            };
+            return u;
+          });
+
+          setBrokerList([...getValue]);
+          // setBrokerList([...data.data]);
+          //   return data;
+        } else {
+          console.log("error");
+          // openSnackbar(message, "error");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const { openSnackbar } = useSnackbar();
+  const showTostMessages = (message, severity) => {
+    openSnackbar(message, severity);
+  };
+
+  const getCitiesList = async () => {
+    try {
+      let res = await getCities();
+      if (res.status == 200) {
+        delete res.data.data[0]._id;
+        setCities(res.data.data[0]);
+      }
+    } catch (error) {
+      showTostMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getAllOptionDataList = async () => {
+    try {
+      let res = await getAllOptions();
+      if (res.status === 200) {
+        let transform = transformDocuments(res.data.data);
+        let temp = {};
+        const filteredData = res.data.data.filter(
+          (item) => item.name !== "Assesment" && item.name !== "Amenities"
+        );
+        const transformFiltered = transformDocuments(filteredData);
+        setSelectOption({ ...transformFiltered });
+        transform["assesment"].map((thing) => {
+          temp[thing] = {
+            isApplicable: false,
+            rating: 0,
+          };
+        });
+
+        const amenities = transform.amenities.reduce((acc, item) => {
+          acc[item] = {};
+          return acc;
+        }, {});
+
+        transform.amenities.map((item) => {
+          transform[item.toLowerCase()].map((thing) => {
+            amenities[item][thing] = {
+              isApplicable: false,
+              rating: 0,
+            };
+          });
+        });
+
+        const sumItems = (obj, excludedFields) => {
+          let sum = 0;
+          for (let key in obj) {
+            if (!excludedFields.includes(key) && typeof obj[key] === "object") {
+              sum += Object.keys(obj[key]).length;
+            }
+          }
+          return sum;
+        };
+
+        let amentiesSatrCount = sumItems(
+          { sectionScore: 0, pointsGained: 0, ...amenities },
+          ["sectionScore", "pointsGained"]
+        );
+
+        // setForm((prevForm) => ({
+        //   ...prevForm,
+        //   location: {
+        //     ...prevForm.location,
+        //     assessment: temp,
+        //   },
+        //   amenitiesData:{sectionScore:0,pointsGained:0,...amenities}
+        // }));
+        // setSelectOption({ ...temp })
+      }
+    } catch (error) {
+      showTostMessages(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching state list",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (detailsPropertyId) {
+      getProp();
+      setEditPage(true);
+      getAllOptionDataList();
+    } else {
+      getAllOptionDataList();
+    }
+    getCitiesList();
+    brokersList();
+    // setLoading(false)
+    return () => {
+      clearTimeout(unsetClickedRef.current);
+    };
+  }, []);
+
+  const classes = useStyles();
+
+  const [isEdit, setIsEdit] = useState(true);
+  const [errors, setErrors] = useState({});
+  const [editForm, setEditForm] = useState(false);
+  const [form, setForm] = useState({
+    overview: {
+      builder: "",
+      builderScore: "",
+      projectName: "",
+      projectCategory: "",
+      projectType: [],
+      phase: "",
+      launchYear: "",
+      completionYear: "",
+      status: "",
+      constructionProgress: "",
+      sectionScore: "",
+      pointsGained: 0,
+    },
+    regulatoryClearance: {
+      reraApproved: "",
+      reraNumber: "",
+      cc: "",
+      oc: "",
+      authorityRegistration: "",
+      governmentLoan: "",
+      privateBankLoan: "",
+      fresh: "",
+      resale: "",
+      sectionScore: 0,
+      pointsGained: 0,
+    },
+    layout: {
+      numberOfBuildings: "",
+      layoutType: [],
+      maxFloors: "",
+      minFloors: "",
+      totalUnits: "",
+      areaUnit: "Acres",
+      area: "",
+      areaInSqft: 0,
+      greenArea: "",
+      unitDensity: "",
+      unitDensityScore: "",
+      greenDensity: "",
+      greenDensityScore: "",
+      constructionQuality: 0,
+      interiorQuality: 0,
+      sectionScore: 0,
+      pointsGained: 0,
+    },
+    unitsPlan: {
+      averagePrice: 0,
+      minPriceRange: 0,
+      maxPriceRange: 0,
+      uniqueLayouts: [],
+      totalAreaSqft: 0,
+      totalPrice: 0,
+      planList: [
+        // {
+        //   propertyType: "",
+        //   propertyLayout: "",
+        //   name: "",
+        //   areaUnit: "",
+        //   totalUnits: "",
+        //   area: "",
+        //   bsp: "",
+        //   applicableMonth: "",
+        //   applicableYear: "",
+        // },
+      ],
+    },
+
+    amenitiesData: {},
+    location: {
+      state: "",
+      city: "",
+      sector: "",
+      sectionScore: 0,
+      pointsGained: 0,
+      area: "",
+      pinCode: "",
+      googleMapLink: "",
+      longitude: "",
+      latitude: "",
+      assessment: {},
+    },
+    valueForMoney: {
+      appTillNow: 0,
+      expectedFurtherApp: 0,
+      forEndUse: 0,
+      pointsGained: 0,
+      sectionScore: 0,
+    },
+    consultants: [],
+    overallAssessment: {
+      score: 0,
+      scoredRating: 0,
+      rated: {
+        builder: 0,
+        constructionProgress: 0,
+        reraApproved: 0,
+        cc: 0,
+        oc: 0,
+        authorityRegisteration: 0,
+        governmentBankLoan: 0,
+        privateBankLoan: 0,
+        resale: 0,
+        area: 0,
+        appTillNow: 0,
+        expectedFurtherApp: 0,
+        forEndUse: 0,
+        unitsDensity: 0,
+        greenDensity: 0,
+        unitsDensityScore: 0,
+        greenDensityScore: 0,
+        constructionQuality: 0,
+        interiorQuality: 0,
+      },
+    },
+    published: false,
+    tag: "",
+    marketing: {
+      image: "",
+      tagLine: "",
+      description: "",
+      metaDescription: "",
+    },
+  });
+
+  const handleUnitsPlan = async (unitsPlanValue) => {
+    setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
+  };
+  function transformDocuments(documents) {
+    return documents.reduce((result, document) => {
+      const { name, childSub } = document;
+      let camelCaseName = name.replace(/[\s_-](\w)/g, (_, char) =>
+        char.toUpperCase()
+      );
+      result[camelCaseName.charAt(0).toLowerCase() + camelCaseName.slice(1)] =
+        childSub;
+      // result[camelCaseName] = childSub;
+      return result;
+    }, {});
+  }
+  const [selectOptions, setSelectOption] = useState({});
+  const [hide, setHide] = useState([]);
+
+  const scoreChange = async (e, firstKeyName, secondKeyName) => {
+    let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName);
+    // totalRating=totalRating
+    // let totalRating = form.overview.status ==="underconstruction"? 75:80;
+    let totalScored;
+
+    function isNotAlphabet(char) {
+      return !/[a-zA-Z]/.test(char);
+    }
+    let incomingValue;
+    if (isNotAlphabet(e.target.value)) {
+      incomingValue = e.target.value;
+    } else {
+      switch (e.target.value.toLowerCase()) {
+        case "yes":
+          incomingValue = 5;
+          break;
+        case "no":
+          incomingValue = 4;
+          break;
+        case "dont know":
+          incomingValue = 0;
+          break;
+        case "don't know":
+          incomingValue = 0;
+          break;
+        case "on time":
+          incomingValue = 5;
+          break;
+        case "delay":
+          incomingValue = 3;
+          break;
+        default:
+          incomingValue = 0;
+      }
+    }
+
+    if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+      let difference =
+        form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
+      let compare =
+        form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
+      if (compare) {
+        totalScored =
+          form.overallAssessment.scoredRating + Math.abs(difference);
+      } else {
+        totalScored =
+          form.overallAssessment.scoredRating - Math.abs(difference);
+      }
+    } else {
+      totalScored =
+        form.overallAssessment.scoredRating + parseInt(incomingValue);
+    }
+    let calc = (totalScored / totalRating) * 100;
+
+    setForm({
+      ...form,
+      [firstKeyName]: {
+        ...form[firstKeyName],
+        [secondKeyName]: e.target.value,
+        ["sectionScore"]: moduleScore.calc,
+        ["pointsGained"]: moduleScore.totalScored,
+      },
+      overallAssessment: {
+        ...form.overallAssessment,
+        score: Math.floor(calc),
+        scoredRating: totalScored,
+        rated: {
+          ...form.overallAssessment.rated,
+          [secondKeyName]: parseInt(incomingValue),
+        },
+      },
+    });
+  };
+
+  const moduleScoreCalc = (
+    e,
+    firstKeyName,
+    secondKeyName,
+    seperateCalc,
+    thirdKeyName
+  ) => {
+    let totalRatingModule;
+    let totalScored;
+    switch (firstKeyName.toLowerCase()) {
+      case "overview":
+        totalRatingModule = 10;
+        break;
+      case "regulatoryclearance":
+        totalRatingModule = regulatoryCount * 5;
+        break;
+      case "layout":
+        totalRatingModule = 20;
+        break;
+      case "location":
+        totalRatingModule = locationStarsScore.length * 5;
+        break;
+      case "valueformoney":
+        totalRatingModule = 15;
+        break;
+      case "amenitiesdata":
+        totalRatingModule = +amentiesStarsScore.length * 5;
+        break;
+      default:
+        totalRatingModule = 10;
+    }
+
+    function chechAlpahbeValues(value) {
+      let returnValue = 0;
+      switch (value.toLowerCase()) {
+        case "yes":
+          returnValue = 5;
+          break;
+        case "no":
+          returnValue = 0;
+          break;
+        case "dont know":
+          returnValue = 0;
+          break;
+        case "don't know":
+          returnValue = 0;
+          break;
+        case "on time":
+          returnValue = 5;
+          break;
+        case "delay":
+          returnValue = 0;
+          break;
+        default:
+          returnValue = 0;
+      }
+      return returnValue;
+    }
+    function isNotAlphabet(char) {
+      return !/[a-zA-Z]/.test(char);
+    }
+    let incomingValue;
+    if (isNotAlphabet(e.target.value)) {
+      incomingValue = e.target.value;
+    } else {
+      let val = chechAlpahbeValues(e.target.value);
+      incomingValue = val;
+    }
+    // if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+    //   console.log('isinn')
+    //   let difference =
+    //   form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
+    //   let compare =
+    //   form?.[firstKeyName]?.[secondKeyName] < parseInt(incomingValue);
+    //   // let difference =
+    //   //   form.overallAssessment.rated?.[secondKeyName] - parseInt(incomingValue);
+    //   // let compare =
+    //   //   form.overallAssessment.rated?.[secondKeyName] < parseInt(incomingValue);
+    //   if (compare) {
+    //     totalScored =
+    //       form?.[firstKeyName]?.["pointsGained"] + Math.abs(difference);
+    //   } else {
+    //     totalScored =
+    //     form?.[firstKeyName]?.["pointsGained"] - Math.abs(difference);
+    //   }
+    // }
+    if (secondKeyName === "assessment" || firstKeyName === "amenitiesData") {
+      let difference =
+        +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating -
+        parseInt(incomingValue);
+      let compare =
+        form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating <
+        parseInt(incomingValue);
+      if (compare) {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
+      } else {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
+      }
+    } else if (firstKeyName === "regulatoryClearance") {
+      if (
+        form?.[firstKeyName]?.[secondKeyName].toLowerCase() === `don't know` &&
+        e.target.value.toLowerCase() !== `don't know`
+      ) {
+        totalRatingModule = totalRatingModule + 5;
+        setRegulatoryCount(regulatoryCount + 1);
+      } else if (
+        form?.[firstKeyName]?.[secondKeyName].toLowerCase() !== `don't know` &&
+        e.target.value.toLowerCase() === `don't know`
+      ) {
+        totalRatingModule = totalRatingModule - 5;
+        setRegulatoryCount(regulatoryCount - 1);
+      }
+      let difference =
+        chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) -
+        parseInt(incomingValue);
+      let compare =
+        chechAlpahbeValues(form?.[firstKeyName]?.[secondKeyName]) <
+        parseInt(incomingValue);
+      if (compare) {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
+      } else {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
+      }
+    } else {
+      let difference;
+      let compare;
+      if (secondKeyName === "constructionProgress") {
+        difference =
+          (form?.[firstKeyName]?.[secondKeyName] == "" ||
+          form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay"
+            ? 0
+            : 5) - parseInt(incomingValue);
+        compare =
+          (form?.[firstKeyName]?.[secondKeyName] == "" ||
+          form?.[firstKeyName]?.[secondKeyName].toLowerCase() === "delay"
+            ? 0
+            : 5) < parseInt(incomingValue);
+      } else {
+        difference =
+          +form?.[firstKeyName]?.[secondKeyName] - parseInt(incomingValue);
+        compare =
+          form?.[firstKeyName]?.[secondKeyName] < parseInt(incomingValue);
+      }
+
+      if (compare) {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained + Math.abs(difference);
+      } else {
+        totalScored =
+          +form?.[firstKeyName]?.pointsGained - Math.abs(difference);
+      }
+    }
+
+    let calc = (totalScored / totalRatingModule) * 10;
+
+    if (seperateCalc) {
+      setForm({
+        ...form,
+        [firstKeyName]: {
+          ...form[firstKeyName],
+          [secondKeyName]: e.target.value,
+          ["sectionScore"]: calc,
+          ["pointsGained"]: totalScored,
+        },
+      });
+    }
+
+    return { calc, totalScored };
+  };
+
+  const handleUIHide = (e, firstKeyName, secondKeyName) => {
+    if (
+      form?.[firstKeyName][secondKeyName].some(
+        (item) =>
+          item.value.toLowerCase() !== "land" &&
+          form?.[firstKeyName].projectCategory.toLowerCase() !== "commercial"
+      )
+    ) {
+      setHide([]);
+    } else if (
+      form?.[firstKeyName].projectCategory.toLowerCase() === "commercial"
+    ) {
+      setHide([
+        "numberOfBuildings",
+        "layoutType",
+        "floors",
+        "greenArea",
+        "greenDensity",
+      ]);
+    } else {
+      let lastValue = e[e.length - 1]?.value.toLowerCase();
+      let value = lastValue?.replace(/\s/g, "");
+      switch (value) {
+        case "restaurant":
+          setHide([
+            "numberOfBuildings",
+            "layoutType",
+            "floors",
+            "greenArea",
+            "greenDensity",
+          ]);
+          break;
+        case "shop":
+          setHide([
+            "numberOfBuildings",
+            "layoutType",
+            "floors",
+            "greenArea",
+            "greenDensity",
+          ]);
+          break;
+        case "foodcourt":
+          setHide([
+            "numberOfBuildings",
+            "layoutType",
+            "floors",
+            "greenArea",
+            "greenDensity",
+          ]);
+          break;
+        case "land":
+          setHide([
+            "numberOfBuildings",
+            "layoutType",
+            "floors",
+            "unitsPlanUnit",
+          ]);
+          break;
+        default:
+          setHide([]);
+      }
+    }
+  };
+
+  const handleCategoryHide = (e) => {
+    if (e.target.value.toLowerCase() === "commercial") {
+      setHide([
+        "numberOfBuildings",
+        "layoutType",
+        "floors",
+        "greenArea",
+        "greenDensityScore",
+        "greenDensity",
+      ]);
+    }
+  };
+
+  const handleChange = async (
+    e,
+    firstKeyName,
+    secondKeyName,
+    thirdKeyName,
+    autoFill,
+    autoFillField,
+    autoFillFieldValue,
+    isRating,
+    unitsPlanValue,
+    score
+  ) => {
+    if (autoFill) {
+      let innerObj = {
+        [secondKeyName]: e.target.value,
+        [autoFillField]: autoFillFieldValue,
+      };
+      setForm({
+        ...form,
+        [firstKeyName]: { ...form?.[firstKeyName], ...innerObj },
+      });
+    } else if (firstKeyName === "consultant") {
+      setForm({ ...form, consultants: [...e] });
+    } else if (firstKeyName === "unitsPlan") {
+      setForm({ ...form, ["unitsPlan"]: { ...unitsPlanValue } });
+    } else if (score === true) {
+      let moduleScore = moduleScoreCalc(e, firstKeyName, secondKeyName);
+      let total = totalRating;
+      // let totalRating = form.overview.status ==="underconstruction"? 75:80;
+      let totalScored;
+
+      function isNotAlphabet(char) {
+        return !/[a-zA-Z]/.test(char);
+      }
+      let incomingValue;
+      if (isNotAlphabet(e.target.value)) {
+        incomingValue = e.target.value;
+      } else {
+        switch (e.target.value.toLowerCase()) {
+          case "yes":
+            incomingValue = 5;
+            break;
+          case "no":
+            incomingValue = 0;
+            break;
+          case "dont know":
+            incomingValue = 0;
+            total = totalRating - 5;
+            setTotalRating(total);
+            break;
+          case "don't know":
+            incomingValue = 0;
+            total = totalRating - 5;
+            setTotalRating(total);
+            break;
+          case "on time":
+            incomingValue = 5;
+            break;
+          case "delay":
+            incomingValue = 0;
+            break;
+          default:
+            incomingValue = 0;
+        }
+      }
+
+      if (firstKeyName === "location" || firstKeyName === "amenitiesData") {
+        if (form.overallAssessment.rated?.[firstKeyName].length > 0) {
+          let difference =
+            form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] -
+            parseInt(incomingValue);
+          let compare =
+            form.overallAssessment.rated?.[firstKeyName]?.[secondKeyName] <
+            parseInt(incomingValue);
+          if (compare) {
+            totalScored =
+              form.overallAssessment.scoredRating + Math.abs(difference);
+          } else {
+            totalScored =
+              form.overallAssessment.scoredRating - Math.abs(difference);
+          }
+        } else {
+          totalScored =
+            form.overallAssessment.scoredRating + parseInt(incomingValue);
+        }
+      } else if (
+        firstKeyName === "regulatoryClearance" &&
+        form?.[firstKeyName]?.[secondKeyName].toLowerCase() === `don't know` &&
+        e.target.value.toLowerCase() !== `don't know`
+      ) {
+        total = totalRating + 5;
+        setTotalRating(total);
+
+        if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+          let difference =
+            form.overallAssessment.rated?.[secondKeyName] -
+            parseInt(incomingValue);
+          let compare =
+            form.overallAssessment.rated?.[secondKeyName] <
+            parseInt(incomingValue);
+          if (compare) {
+            totalScored =
+              form.overallAssessment.scoredRating + Math.abs(difference);
+          } else {
+            totalScored =
+              form.overallAssessment.scoredRating - Math.abs(difference);
+          }
+        } else {
+          totalScored =
+            form.overallAssessment.scoredRating + parseInt(incomingValue);
+        }
+      } else if (form.overallAssessment.rated?.[secondKeyName] > 0) {
+        let difference =
+          form.overallAssessment.rated?.[secondKeyName] -
+          parseInt(incomingValue);
+        let compare =
+          form.overallAssessment.rated?.[secondKeyName] <
+          parseInt(incomingValue);
+        if (compare) {
+          totalScored =
+            form.overallAssessment.scoredRating + Math.abs(difference);
+        } else {
+          totalScored =
+            form.overallAssessment.scoredRating - Math.abs(difference);
+        }
+      } else {
+        totalScored =
+          form.overallAssessment.scoredRating + parseInt(incomingValue);
+      }
+
+      if (
+        e.target.value.toLowerCase() === "dont know" ||
+        e.target.value.toLowerCase() === "don't know"
+      ) {
+        totalScored -= 5;
+      }
+      let calc = (totalScored / total) * 100;
+
+      setForm({
+        ...form,
+        [firstKeyName]: {
+          ...form[firstKeyName],
+          [secondKeyName]: e.target.value,
+          ["sectionScore"]: moduleScore.calc,
+          ["pointsGained"]: moduleScore.totalScored,
+        },
+        overallAssessment: {
+          ...form.overallAssessment,
+          score: Math.floor(calc),
+          scoredRating: totalScored,
+          rated: {
+            ...form.overallAssessment.rated,
+            [secondKeyName]: parseInt(incomingValue),
+          },
+        },
+      });
+    } else if (secondKeyName.toLowerCase() === "projecttype") {
+      let projectType = e.map((item) => item.value).join("-");
+      let formattedTagLine = formatTagLine(projectType, secondKeyName);
+      setForm({
+        ...form,
+        [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e },
+        marketing: { ...form.marketing, tagLine: formattedTagLine },
+      });
+    } else if (
+      secondKeyName.toLowerCase() === "builder" ||
+      secondKeyName.toLowerCase() === "city"
+    ) {
+      let formattedTagLine = formatTagLine(e, secondKeyName);
+      setForm({
+        ...form,
+        [firstKeyName]: { ...form?.[firstKeyName], [secondKeyName]: e },
+        marketing: { ...form.marketing, tagLine: formattedTagLine },
+      });
+    } else if (firstKeyName === "layout" && secondKeyName === "area") {
+      let totalArea = +e.target.value;
+      if (form.layout.areaUnit.toLowerCase() === "acres") {
+        const sqftPerAcre = 43560;
+        totalArea = +e.target.value * sqftPerAcre;
+      }
+      setForm({
+        ...form,
+        layout: { ...form.layout, area: e.target.value, areaInSqft: totalArea },
+      });
+    } else if (
+      secondKeyName.toLowerCase() === "projectcategory" ||
+      secondKeyName.toLowerCase() === "state" ||
+      secondKeyName.toLowerCase() === "area" ||
+      secondKeyName.toLowerCase() === "projectname"
+    ) {
+      let formattedTagLine = formatTagLine(e.target.value, secondKeyName);
+      setForm({
+        ...form,
+        [firstKeyName]: {
+          ...form?.[firstKeyName],
+          [secondKeyName]: e.target.value,
+        },
+        marketing: { ...form.marketing, tagLine: formattedTagLine },
+      });
+    } else {
+      if (thirdKeyName === "checked") {
+        setForm((prevForm) => {
+          const updatedForm = { ...prevForm };
+          if (
+            updatedForm[firstKeyName] &&
+            updatedForm[firstKeyName][secondKeyName] &&
+            isRating
+          ) {
+            if (
+              firstKeyName === "location" ||
+              firstKeyName === "amenitiesData"
+            ) {
+              let getCalc = amentieScoreCalc(
+                e,
+                firstKeyName,
+                secondKeyName,
+                autoFillField
+              );
+
+              let locationAssesment = moduleScoreCalc(
+                e,
+                firstKeyName,
+                secondKeyName
+              );
+
+              updatedForm[firstKeyName]["sectionScore"] =
+                locationAssesment.calc;
+              updatedForm[firstKeyName]["pointsGained"] =
+                locationAssesment.totalScored;
+              updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                rating: e.target.value,
+              };
+              updatedForm["overallAssessment"] = {
+                ...form.overallAssessment,
+                score: Math.floor(getCalc.calc),
+                scoredRating: getCalc.totalScored,
+                // rated: {
+                //   ...form.overallAssessment.rated,
+                //   [secondKeyName]: parseInt(incomingValue),
+                // },
+              };
+            } else {
+              let locationAssesment = moduleScoreCalc(
+                e,
+                firstKeyName,
+                secondKeyName
+              );
+
+              updatedForm[firstKeyName]["sectionScore"] =
+                locationAssesment.calc;
+              updatedForm[firstKeyName]["pointsGained"] =
+                locationAssesment.totalScored;
+              updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+                ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+                rating: e.target.value,
+              };
+            }
+          } else {
+            if (
+              secondKeyName === "assessment" &&
+              !locationStars.includes(autoFillField)
+            ) {
+              setLocationStars([...locationStars, autoFillField]);
+            } else if (
+              firstKeyName === "amenitiesData" &&
+              !amentiesStars.includes(autoFillField)
+            ) {
+              setAmentiesStar([...amentiesStars, autoFillField]);
+            }
+
+            updatedForm[firstKeyName][secondKeyName][autoFillField] = {
+              ...updatedForm[firstKeyName][secondKeyName][autoFillField],
+              isApplicable: e.target.checked,
+            };
+          }
+          return updatedForm;
+        });
+      }
+
+      // tagline will be added here
+      else if (firstKeyName === "marketing" && secondKeyName === "image") {
+        setForm({
+          ...form,
+          marketing: { ...form.marketing, image: e },
+        });
+      } else {
+        let value = e?.target
+          ? thirdKeyName === "checked"
+            ? e.target.checked
+            : e.target.value
+          : e;
+        if (secondKeyName === "maxFloors" || secondKeyName === "minFloors") {
+          value = +value;
+        }
+        if (
+          secondKeyName === "projectCategory" &&
+          form?.[firstKeyName][secondKeyName].toLowerCase() !==
+            e.target.value.toLowerCase()
+        ) {
+          setForm((prev) => ({
+            ...prev,
+            [firstKeyName]: {
+              ...form?.[firstKeyName],
+              projectCategory: e.target.value,
+              projectType: [],
+            },
+          }));
+          handleCategoryHide(e);
+        }
+        setForm((prev) => ({
+          ...prev,
+          [firstKeyName]: !secondKeyName
+            ? value
+            : {
+                ...prev?.[firstKeyName],
+                [secondKeyName]: !thirdKeyName
+                  ? value
+                  : {
+                      ...prev?.[firstKeyName]?.[secondKeyName],
+                      [thirdKeyName]: value,
+                    },
+              },
+        }));
+      }
+    }
+
+    if (firstKeyName === "overview" && secondKeyName === "projectType") {
+      let hideValue = handleUIHide(e, firstKeyName, secondKeyName);
+    }
+    if (
+      firstKeyName === "overview" &&
+      secondKeyName === "status" &&
+      e.target.value.toLowerCase() === "underconstruction"
+    ) {
+      let total = totalRating + 5;
+      setTotalRating(total);
+    }
+  };
+
+  let formatTagLine = (value, key) => {
+    let obj = {
+      ...tagField,
+      [key]: value,
+    };
+    let output = "";
+    setTagField(obj);
+
+    console.log("obj ===========>", obj);
+
+    Object.entries(obj).forEach(([key, value]) => {
+      if (value) {
+        if (output) {
+          output += "-";
+        }
+        output += value;
+      }
+    });
+
+    return output;
+  };
+
+  let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
+    let total = totalRating;
+    let checkField =
+      firstKeyName.toLowerCase() === "location"
+        ? locationStarsScore
+        : amentiesStarsScore;
+    const findItemByKey = (array, searchKey) => {
+      return array.find((item) => item === searchKey);
+    };
+    const foundItem = findItemByKey(checkField, autoFillField);
+    if (!foundItem) {
+      let fieldName = autoFillField;
+      if (firstKeyName === "amenitiesData") {
+        total = totalRating + 5;
+        setTotalRating(total);
+        setAmentiesStarScore([...amentiesStarsScore, fieldName]);
+        // setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
+      } else {
+        total = totalRating + 5;
+        setTotalRating(total);
+        setLocationStarsScore([...locationStarsScore, fieldName]);
+        // setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
+      }
+    }
+    let totalScored;
+
+    let difference =
+      +form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating -
+      parseInt(e.target.value);
+    let compare =
+      form?.[firstKeyName]?.[secondKeyName]?.[e.target.name].rating <
+      parseInt(e.target.value);
+    if (compare) {
+      totalScored = +form.overallAssessment.scoredRating + Math.abs(difference);
+    } else {
+      totalScored = +form.overallAssessment.scoredRating - Math.abs(difference);
+    }
+
+    // let checkField = firstKeyName === "location" ? locationStarsScore : amentiesStarsScore
+    // const findItemByKey = (array, searchKey) => {
+    //   return array.find(item => Object.keys(item)[0] === searchKey);
+    // };
+    // const foundItem = findItemByKey(checkField, autoFillField);
+    // console.log(foundItem,'found',checkField,autoFillField,e.target.value)
+    // if (foundItem) {
+    //   let difference =
+    //     foundItem?.[autoFillField] -
+    //     parseInt(e.target.value);
+    //   let compare =
+    //     foundItem?.[autoFillField] <
+    //     parseInt(e.target.value);
+    //     console.log(compare,'compare')
+    //   if (compare) {
+    //     console.log(compare,' greater')
+    //     totalScored =
+    //       form.overallAssessment.scoredRating + Math.abs(difference);
+    //   } else {
+    //     console.log(compare,' lesser',form.overallAssessment.scoredRating, difference)
+    //     totalScored =
+    //       form.overallAssessment.scoredRating - Math.abs(difference);
+    //   }
+    // }
+    // else {
+    //   console.log(foundItem,'inselse',checkField,autoFillField)
+    //   let fieldName = autoFillField
+    //   if (firstKeyName === "amenitiesData") {
+    //     setAmentiesStarScore([...amentiesStarsScore, { [fieldName]: e.target.value }])
+    //   }
+    //   else {
+    //     setLocationStarsScore([...locationStarsScore, { [fieldName]: e.target.value }])
+    //   }
+    //   total = totalRating + 5
+    //   setTotalRating(total)
+    //   totalScored =
+    //     form.overallAssessment.scoredRating + parseInt(e.target.value)
+    let calc = (totalScored / total) * 100;
+
+    return { calc, totalScored };
+  };
+
+  const validateForm = (publish) => {
+    const { error } = Schema?.validate(form, { abortEarly: false });
+
+    let store = [
+      "constructionQuality",
+      "interiorQuality",
+      "rating",
+      "valueForMoney",
+      "forEndUse",
+      "appTillNow",
+      "expectedFurtherApp",
+    ];
+
+    error?.details.map((item) => {
+      if (store.includes(item.context.key)) {
+        let getLabel = item.context.label.split(".");
+
+        function convertToTitleCase(inputString) {
+          let txt = inputString
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, (str) => str.toUpperCase());
+          return txt;
+        }
+
+        let label;
+        if (item.context.key === "rating") {
+          label = getLabel[getLabel.length - 2];
+        } else if (
+          item.context === "forEndUse" ||
+          item.context === "appTillNow" ||
+          item.context === "expectedFurtherApp"
+        ) {
+          label = convertToTitleCase(item.context);
+        } else {
+          label = item.context.key;
+        }
+        console.log(label, "labbal");
+        switch (label.toLowerCase()) {
+          case "constructionquality":
+            label = "Construction Quality";
+            break;
+          case "interiorquality":
+            label = "Interior Quality";
+            break;
+
+          case "apptillnow":
+            label = "Appreciation till now";
+            break;
+          case "expectedFurtherApp":
+            label = "Expected further appreciation";
+            break;
+          case "forenduse":
+            label = "For End Use";
+            break;
+          default:
+            label;
+        }
+        openSnackbar(`Ratings needs to be provided for ${label}`, "error");
+      } else if (item.context.key === "image") {
+        openSnackbar(
+          `${item.context.key} needs to be uploaded for the property`,
+          "error"
+        );
+      }
+    });
+    console.log(form, "formmmm", error, "errrr");
+
+    if (error) {
+      // console.log("🚀 ~ validateForm ~ error:", error.details)
+      const validationErrors = {};
+      error.details.forEach((detail) => {
+        validationErrors[detail?.context?.label] = detail?.message;
+      });
+      // Handle validation errors, e.g., display error messages
+      setErrors(validationErrors);
+      return false;
+    }
+
+    //     else if(publish && !error){
+    //       const { publishError } = reraSchema.validate({reraApproved:form.regulatoryClearance.reraApproved,reraNumber:form.regulatoryClearance.reraNumber}, {
+    //         abortEarly: false,
+    //       });
+    // if(!publishError){
+    //   setForm({...form,published:true})
+    // }
+    //     }
+    else {
+      if (!editPage) {
+        // Validation passed
+        if (publish) {
+          const { error } = reraSchema.validate(
+            {
+              reraApproved: form.regulatoryClearance.reraApproved,
+              reraNumber: form.regulatoryClearance.reraNumber,
+            },
+            {
+              abortEarly: false,
+            }
+          );
+          if (!error) {
+            setForm({ ...form, published: true });
+            CreateProperty({ ...form, published: true })
+              .then((res) => {
+                openSnackbar(`Property Published successfully`, "success");
+                routerNavigation.push(`/admin/property-list`);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          } else {
+            openSnackbar(`Please check the RERA Approval`, "error");
+          }
+        } else {
+          CreateProperty({ ...form })
+            .then((res) => {
+              openSnackbar(`Property added successfully`, "success");
+              routerNavigation.push(`/admin/property-list`);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      } else {
+        if (publish) {
+          const { error } = reraSchema.validate(
+            {
+              reraApproved: form.regulatoryClearance.reraApproved,
+              reraNumber: form.regulatoryClearance.reraNumber,
+            },
+            {
+              abortEarly: false,
+            }
+          );
+          if (!error) {
+            setForm({ ...form, published: true });
+            EditProperty(detailsPropertyId, { ...form, published: true })
+              .then((res) => {
+                openSnackbar(
+                  `Property Edited & Published successfully`,
+                  "success"
+                );
+                routerNavigation.push(`/admin/property-list`);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          } else {
+            openSnackbar(`Please check the rera criteria`, "error");
+          }
+        } else {
+          EditProperty(detailsPropertyId, { ...form })
+            .then((res) => {
+              openSnackbar(`Property edited successfully`, "success");
+              routerNavigation.push(`/admin/property-list`);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      }
+    }
+    return true;
+  };
+  const handleNewObjChange = (e) => {
+    setNewObj(e.target.value);
+  };
+
+  return (
+    <>
+      <nav className={classes.demo2}>
+        <CustomAdminBreadScrumbs
+          text={editPage ? "Edit Property" : "Add Property"}
+        />
+        <Card>
+          <NavTab
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </Card>
+      </nav>
+
+      <Container maxWidth="md">
+        {isLoading === false && formUpdated && (
+          <Grid container spacing={2} sx={{ flex: 1, overflow: "auto" }}>
+            <ProjectCard
+              errors={errors}
+              form={form}
+              hide={hide}
+              selectOptions={selectOptions}
+              editPage={editPage}
+              handleNewObjChange={handleNewObjChange}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            <RegulatoryCard
+              errors={errors}
+              hide={hide}
+              form={form}
+              selectOptions={selectOptions}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            <LandscapeCard
+              errors={errors}
+              hide={hide}
+              form={form}
+              scoreChange={scoreChange}
+              selectOptions={selectOptions}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            {!hide.includes("unitsPlan") && (
+              <FloorPlanCard
+                errors={errors}
+                hide={hide}
+                form={form}
+                editForm={editForm}
+                handleChange={handleChange}
+                selectOptions={selectOptions}
+                handleUnitsPlan={handleUnitsPlan}
+                isEdit={isEdit}
+              />
+            )}
+            <FacilitiesCard
+              errors={errors}
+              hide={hide}
+              form={form}
+              isEdit={isEdit}
+              selectOptions={selectOptions}
+              handleChange={handleChange}
+            />
+            <LocationCard
+              errors={errors}
+              hide={hide}
+              cities={cities}
+              selectOptions={selectOptions}
+              form={form}
+              moduleScoreCalc={moduleScoreCalc}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            {/* <ResalePriceCard isEdit={isEdit} />
+                                <BuilderPriceCard isEdit={isEdit} /> */}
+            <InvestmentCard
+              errors={errors}
+              hide={hide}
+              selectOptions={selectOptions}
+              form={form}
+              scoreChange={scoreChange}
+              moduleScoreCalc={moduleScoreCalc}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            {/* {JSON.stringify(brokerList)} */}
+            <PropertyConsultantsCard
+              isEdit={isEdit}
+              form={form}
+              hide={hide}
+              list={brokerList}
+              handleChange={handleChange}
+            />
+            <OverallAssessmentCard hide={hide} isEdit={isEdit} form={form} />
+            {/* <BankCard isEdit={isEdit} /> */}
+            <MarketingCard
+              errors={errors}
+              hide={hide}
+              form={form}
+              handleChange={handleChange}
+              isEdit={isEdit}
+            />
+            <Grid item xs={12} sx={{ textAlign: "end" }}>
+              {!form.published && (
+                <CustomButton
+                  onClick={() => validateForm(false)}
+                  variant="contained"
+                  ButtonText={editPage ? "Update" : "Save"}
+                />
+              )}
+              <CustomButton
+                onClick={() => validateForm(true)}
+                ButtonText={"Publish"}
+                sx={{ marginLeft: "10px" }}
+                variant="contained"
+              />
+            </Grid>
+          </Grid>
+        )}
+      </Container>
+    </>
+  );
+}

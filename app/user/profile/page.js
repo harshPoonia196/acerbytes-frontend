@@ -625,7 +625,7 @@ function Profile({ id, isAdminUpdate }) {
     <>
       {isLoading && <Loader />}
 
-      <nav className={classes.demo2}>
+      <nav className={classes.demo2} sx={{ boxShadow: "-1px 8px 6px -6px gainsboro!important"}}>
         <NavTabProfilePage
           value={activeState}
           handleChange={handleClick}

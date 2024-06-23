@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -16,7 +15,6 @@ import { useSnackbar } from "utills/SnackbarContext";
 import Loading from "Components/CommonLayouts/Loading";
 import { generateRandorOrderNumber } from "api/Broker.api";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 
 function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
   const [isLoading, setLoading] = React.useState(false);
@@ -141,6 +139,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
         brokerGoogleID: creditInfo.brokerGoogleID,
         orderNumber: creditInfo.orderNumber,
       });
+      handleClose();
     }
   };
 
@@ -181,11 +180,11 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
           Credit Points are required to buy services on AcreBytes
         </Typography>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{minHeight: "202px"}}>
         {isLoading && <Loading />}
         <Grid container spacing={2}>
           <InputField
-            // type="text"
+            type="number"
             name="approvedPayment"
             value={creditInfo.approvedPayment}
             label="Enter received payment"
@@ -194,7 +193,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
             halfSm
           />
           <InputField
-            // type="number"
+            type="number"
             name="approvedPoints"
             value={creditInfo.approvedPoints}
             label="Enter assigned points"
@@ -215,7 +214,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
             }
             value={{
               label: consultantInfo?.firstName
-                ? `${consultantInfo?.firstName} ${consultantInfo?.lastName}`
+                ? `${consultantInfo?.firstName} ${consultantInfo?.lastName} - ${consultantInfo?._id}`
                 : "",
               value: creditInfo?.brokerGoogleID,
             }}
@@ -270,9 +269,7 @@ function AdminCreditPointsPopup({ open, brokerId, handleClose, handleSubmit }) {
           <CustomButton
             disabled={validateFields()}
             variant="contained"
-            onClick={() => {
-              saveHandler();
-            }}
+            onClick={saveHandler}
             ButtonText={"Submit"}
           />
         </Box>

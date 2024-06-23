@@ -10,7 +10,6 @@ const NavTab = ({ value, handleChange, list }) => {
   return (
     <Tabs
       value={value ? value : listOfTabsInAddProperty[0].value}
-      // onChange={handleChange}
       variant="scrollable"
       scrollButtons
       allowScrollButtonsMobile

@@ -1223,6 +1223,7 @@ function AddProperty() {
 
     return output;
   };
+
   let amentieScoreCalc = (e, firstKeyName, secondKeyName, autoFillField) => {
     // let totalRating = form.overview.status ==="underconstruction"? 75:80;
     let total = totalRating;

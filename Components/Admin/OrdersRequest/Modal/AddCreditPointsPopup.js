@@ -15,8 +15,12 @@ import React from "react";
 import { formatAmount, formatPoints } from "utills/CommonFunction";
 
 function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
-  const [receivedPayment, setReceivedPayment] = React.useState("");
-  const [assignedPoints, setAssignedPoints] = React.useState("");
+  const [receivedPayment, setReceivedPayment] = React.useState(
+    info?.amount || ""
+  );
+  const [assignedPoints, setAssignedPoints] = React.useState(
+    info?.points || ""
+  );
   const [salesPerson, setSalesPerson] = React.useState("");
 
   React.useEffect(() => {
@@ -70,7 +74,8 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Add Credit points for <span style={{ color: "gray" }}>{info?.name}</span>
+          Add Credit points for{" "}
+          <span style={{ color: "gray" }}>{info?.name}</span>
         </Typography>
         <Typography variant="body1">
           Credit Points are required to buy services on AcreBytes
@@ -109,15 +114,15 @@ function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
             handleChange={(e, newValue) =>
               handleSelectSalesPerson(newValue?.value ? newValue?.value : "")
             }
-            variant='standard'
+            variant="standard"
             value={
               salesPersonInfo
                 ? {
-                  label:
-                    `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}` ||
-                    "",
-                  value: salesPersonInfo?.googleID || "",
-                }
+                    label:
+                      `${salesPersonInfo?.name?.firstName} ${salesPersonInfo?.name?.lastName}` ||
+                      "",
+                    value: salesPersonInfo?.googleID || "",
+                  }
                 : null
             }
             list={info?.salesPersons?.map((rs) => {

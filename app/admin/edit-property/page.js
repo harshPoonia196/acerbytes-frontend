@@ -375,7 +375,6 @@ function AddProperty() {
           sector,
           city,
         };
-
         setTagField(assignTagLine);
         setForm({ ...data });
 
@@ -1257,6 +1256,9 @@ function AddProperty() {
     };
     let output = "";
     setTagField(obj);
+
+    console.log("obj ===========>", obj);
+
     Object.entries(obj).forEach(([key, value]) => {
       if (value) {
         if (output) {

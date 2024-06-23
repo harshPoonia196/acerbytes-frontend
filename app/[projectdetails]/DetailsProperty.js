@@ -16,14 +16,13 @@ import {
 import AssignmentIcon from "@mui/icons-material/Assignment";
 // import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import Fab from "@mui/material/Fab";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AlternateSignIn from "Components/DetailsPage/Modal/AlternateSignIn";
 import TopMenu from "Components/DetailsPage/TopMenu";
-import MarketingSection from "Components/DetailsPage/MarketingSection";
 import LocationSection from "Components/DetailsPage/LocationSection";
 import LandscapeSection from "Components/DetailsPage/LandscapeSection";
 import AmenitiesSection from "Components/DetailsPage/AmenitiesSection";
@@ -67,6 +66,7 @@ import { getCountsByProperty } from "api/Broker.api";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Link from "next/link";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
+import MarketingSection from "Components/DetailsPage/MarketingSection";
 
 const tabHeight = 200;
 
@@ -84,15 +84,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
-  const throttledCallback = React.useMemo(
+  const throttledCallback = useMemo(
     () => (callback ? throttle(callback, delay) : noop),
     [callback, delay]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (throttledCallback === noop) return undefined;
 
     window.addEventListener("scroll", throttledCallback);
@@ -116,7 +116,7 @@ const PropertyDetails = ({ params }) => {
   const [progressCount, setProgressCount] = useState(6);
   const [leadId, setLeadId] = useState("");
   const expiredModalOpenRef = useRef(false);
-  const [brokerContact, setBrokerContact] = React.useState(null);
+  const [brokerContact, setBrokerContact] = useState(null);
   let expiredModalTimeout;
 
   const linkIdData = params.projectdetails;
@@ -209,8 +209,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -238,8 +238,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -259,8 +259,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error generating fav Property",
+          error?.message ||
+          "Error generating fav Property",
         "error"
       );
     } finally {
@@ -296,8 +296,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -342,9 +342,9 @@ const PropertyDetails = ({ params }) => {
     );
   };
 
-  const [openEnquiryForm, setOpenEnquiryForm] = React.useState(false);
+  const [openEnquiryForm, setOpenEnquiryForm] = useState(false);
   const [OverallAssesmentOpenEnquiryForm, setOverallAssesmentOpenEnquiryForm] =
-    React.useState(false);
+    useState(false);
 
   const handleOpenEnquiryForm = () => {
     setOpenEnquiryForm(true);
@@ -378,14 +378,13 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
     }
   };
-
   const handleSubmitEnquiryUnauth = async (data) => {
     try {
       const response = await submitEnquiryUnauth({
@@ -408,8 +407,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -444,8 +443,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -471,8 +470,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong!",
+          error?.message ||
+          "Something went wrong!",
         "error"
       );
       return error;
@@ -501,11 +500,9 @@ const PropertyDetails = ({ params }) => {
 
   //All codes about scrolling
 
-  const [alignment, setAlignment] = React.useState(
-    listOfTabsInAddProperty[0].value
-  );
+  const [alignment, setAlignment] = useState(listOfTabsInAddProperty[0].value);
 
-  const [activeState, setActiveState] = React.useState(null);
+  const [activeState, setActiveState] = useState(null);
 
   let itemsServer = listOfPropertyDetailsTab.map((tab) => {
     const hash = tab.value;
@@ -516,7 +513,7 @@ const PropertyDetails = ({ params }) => {
     };
   });
 
-  const itemsClientRef = React.useRef([]);
+  const itemsClientRef = useRef([]);
   useEffect(() => {
     itemsClientRef.current = itemsServer;
   }, [itemsServer]);
@@ -537,10 +534,10 @@ const PropertyDetails = ({ params }) => {
     }
   }, [getItem(propertyUserVerifiedKey) == true]);
 
-  const clickedRef = React.useRef(false);
-  const unsetClickedRef = React.useRef(null);
+  const clickedRef = useRef(false);
+  const unsetClickedRef = useRef(null);
 
-  const findActiveIndex = React.useCallback(() => {
+  const findActiveIndex = useCallback(() => {
     // set default if activeState is null
     if (activeState === null) setActiveState(itemsServer[0].hash);
 
@@ -556,13 +553,12 @@ const PropertyDetails = ({ params }) => {
       }
 
       const item = itemsClientRef.current[i];
-
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -598,7 +594,7 @@ const PropertyDetails = ({ params }) => {
     }
   };
 
-  React.useEffect(
+  useEffect(
     () => () => {
       clearTimeout(unsetClickedRef.current);
     },
@@ -656,8 +652,8 @@ const PropertyDetails = ({ params }) => {
     } catch (error) {
       showTostMessages(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state list",
+          error?.message ||
+          "Error fetching state list",
         "error"
       );
     } finally {
@@ -926,15 +922,6 @@ const PropertyDetails = ({ params }) => {
               </Button>
               <Button
                 variant="contained"
-                // sx={{
-                //   fontWeight: 600,
-                //   color: "white",
-                //   backgroundColor: colors?.BLACK,
-                //   "&:hover": {
-                //     backgroundColor: colors?.BLACK,
-                //     boxShadow: "none",
-                //   },
-                // }}
                 onClick={() => {
                   expiredModalOpenRef.current = false;
                 }}

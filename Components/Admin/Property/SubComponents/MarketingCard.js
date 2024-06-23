@@ -1,31 +1,20 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import {
   Card,
   Typography,
   Grid,
   Box,
-  ToggleButton,
-  Chip,
-  Switch,
   Divider,
-  IconButton,
   Button,
   Tooltip,
   Fade,
 } from "@mui/material";
-import Image from "next/image";
-
-import EditIcon from "@mui/icons-material/Edit";
-import { useSnackbar } from "utills/SnackbarContext";
 
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
-import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
-import NewToggleButtonStructure from "Components/CommonLayouts/NewToggleButtonStructure";
 import { useState } from "react";
 import colors from "styles/theme/colors";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import UploadMarketingImage from "Components/Admin/Property/Modal/UploadMarketingImage";
-import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -44,10 +33,7 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
   };
 
   const [selectedImage, setImage] = useState("");
-  const [cropData, setCropData] = useState("");
-  const [cropper, setCropper] = useState(false);
   const fileInputRef = useRef(null);
-  const [enableCropper, setEnableCropper] = useState(false);
 
   const handleImageSelect = (e) => {
     e.preventDefault();
@@ -143,7 +129,6 @@ function MarketingCard({ isEdit, errors, form, handleChange }) {
                         Banner Image
                       </Button>
                     </label>
-                    {/* <Typography sx={{ flex: 1, alignSelf: 'center', marginTop: "5px" }}>{selectedImage ? selectedImage : image}</Typography> */}
                   </div>
                 </>
               </Card>

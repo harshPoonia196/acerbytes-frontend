@@ -9,6 +9,7 @@ import {
   Chip,
   Toolbar,
   Divider,
+  Skeleton,
 } from "@mui/material";
 import React, { useState, useEffect, useRef } from "react";
 import BrokerCard from "Components/BrokersPage/BrokerCard";
@@ -61,6 +62,43 @@ import { constructPropertyUrl } from "utills/CommonFunction";
 
 const tabHeight = 200;
 
+const LoadingEffect = () => {
+  return (
+    <>
+      <Skeleton variant="rectangular" height={140} />
+      <Skeleton variant="rectangular" style={{ marginTop: 6 }} height={40} />
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Skeleton
+          variant="rectangular"
+          width={930}
+          style={{ margin: 20 }}
+          height={440}
+        />
+      </Box>
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          // alignItems: "center",
+        }}
+      >
+        <Skeleton
+          variant="rectangular"
+          width={700}
+          style={{ margin: 20 }}
+          height={40}
+        />
+      </Box>
+    </>
+  );
+};
+
 const useStyles = makeStyles((theme) => ({
   demo2: {
     backgroundColor: "#fff",
@@ -103,7 +141,7 @@ const PropertyDetailsPage = ({ params }) => {
   const paramsId = parts[parts.length - 1];
   const detailsPropertyId = paramsId;
 
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [propertyData, setPropertyData] = useState({});
   const [leadId, setLeadId] = useState("");
   const [enquiredInfo, setEnquiredInfo] = useState([]);
@@ -122,7 +160,6 @@ const PropertyDetailsPage = ({ params }) => {
 
   const detailsGetProperty = async (isNavigate = false) => {
     try {
-      setLoading(true);
       let res;
       if (token) {
         res = await detailsProperty(
@@ -487,7 +524,7 @@ const PropertyDetailsPage = ({ params }) => {
     }
   }, [activeState, itemsServer]);
 
-  // Corresponds to 10 frames at 60 Hz
+  //!` Corresponds to 10 frames at 60 Hz
   useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
 
   const handleClick = (hash) => {
@@ -530,22 +567,25 @@ const PropertyDetailsPage = ({ params }) => {
 
   return (
     <>
-      {isLoading && <Loader />}
-      <ActivateAdsPopup
-        propertyData={propertyData}
-        detailsGetProperty={detailsGetProperty}
-        open={activateAdsPopupState}
-        handleClose={handleCloseActivateAdsPopup}
-        brokerBalance={brokerBalance}
-        propertyUrl={propertyUrl}
-        setBrokerPoints={setBrokerPoints}
-      />
-      <DisableActivateAdsPopup
-        open={disablePersonalizeAds}
-        handleOpen={handleOpenPersonalizeAds}
-        handleClose={handleClosePersonalizeAds}
-      />
-      {/* {userDetails?.role === "broker" &&
+      {isLoading ? (
+        <LoadingEffect />
+      ) : (
+        <>
+          <ActivateAdsPopup
+            propertyData={propertyData}
+            detailsGetProperty={detailsGetProperty}
+            open={activateAdsPopupState}
+            handleClose={handleCloseActivateAdsPopup}
+            brokerBalance={brokerBalance}
+            propertyUrl={propertyUrl}
+            setBrokerPoints={setBrokerPoints}
+          />
+          <DisableActivateAdsPopup
+            open={disablePersonalizeAds}
+            handleOpen={handleOpenPersonalizeAds}
+            handleClose={handleClosePersonalizeAds}
+          />
+          {/* {userDetails?.role === "broker" &&
       (!propertyData.isActiveAd || propertyData?.status === "Expired") ? (
         <AdsSection
           handleOpenPersonalizeAds={handleOpenPersonalizeAds}
@@ -554,7 +594,7 @@ const PropertyDetailsPage = ({ params }) => {
           propertyData={propertyData}
         />
       ) : null}  */}
-      {/* {userDetails?.role !== "admin" &&
+          {/* {userDetails?.role !== "admin" &&
         userDetails?.role !== "superAdmin" &&
         propertyData.isActiveAd ? (
         <AdsSection
@@ -566,31 +606,31 @@ const PropertyDetailsPage = ({ params }) => {
         />
       ) : null} */}
 
-      <nav className={classes.demo2}>
-        <TopMenu
-          topMenu={propertyData}
-          value={activeState}
-          handleChange={handleClick}
-          list={itemsServer}
-        />
-      </nav>
-      <Box>
-        <MarketingSection
-          overviewData={propertyData}
-          activeState={activeState}
-        />
-        <Container maxWidth="md" sx={{ pt: "0 !important" }}>
-          {openEnquiryForm && (
-            <EnquireNow
-              propertyData={propertyData}
-              open={openEnquiryForm}
-              handleClose={handleCloseEnquiryForm}
-              handleAction={handleOpenVerifyPopup}
-              submitEnquiry={handleSubmitEnquiry}
-              submitEnquiryUnath={handleSubmitEnquiryUnauth}
+          <nav className={classes.demo2}>
+            <TopMenu
+              topMenu={propertyData}
+              value={activeState}
+              handleChange={handleClick}
+              list={itemsServer}
             />
-          )}
-          {/* <OtpVerify
+          </nav>
+          <Box>
+            <MarketingSection
+              overviewData={propertyData}
+              activeState={activeState}
+            />
+            <Container maxWidth="md" sx={{ pt: "0 !important" }}>
+              {openEnquiryForm && (
+                <EnquireNow
+                  propertyData={propertyData}
+                  open={openEnquiryForm}
+                  handleClose={handleCloseEnquiryForm}
+                  handleAction={handleOpenVerifyPopup}
+                  submitEnquiry={handleSubmitEnquiry}
+                  submitEnquiryUnath={handleSubmitEnquiryUnauth}
+                />
+              )}
+              {/* <OtpVerify
             formData={getItem(enquiryFormKey)}
             open={openOtpPopup}
             handleClose={handleCloseVerifyPopup}
@@ -598,157 +638,163 @@ const PropertyDetailsPage = ({ params }) => {
             handleAlternateSignIn={handleOpenAlternateSignIn}
             handleSubmit={updateEnquiryVerfication}
           /> */}
-          <AlternateSignIn
-            open={openAlternateSignIn}
-            leadId={leadId}
-            handleClose={handleCloseAlternateSignIn}
-          />
+              <AlternateSignIn
+                open={openAlternateSignIn}
+                leadId={leadId}
+                handleClose={handleCloseAlternateSignIn}
+              />
 
-          <Grid container spacing={2} id="section-list">
-            <ClearanceSection
-              regulatoryClearanceData={propertyData?.regulatoryClearance}
-            />
-            <LandscapeSection
-              layoutData={propertyData?.layout}
-              overviewData={propertyData?.overview}
-            />
-            <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
-            <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
-            <LocationSection locationData={propertyData?.location} />
-            {/* <PricingSection /> */}
-            {/* <ResaleSection /> */}
-            <ValueForMoneySection
-              valueForMoneyData={propertyData?.valueForMoney}
-            />
-            {/* <FloorPlanSection /> */}
-            {propertyData?.consultants?.length > 0 && (
-              <Grid item xs={12} id="propertyConsultants">
-                <Card>
-                  <Box sx={{ display: "flex", p: 2 }}>
-                    <Box sx={{ flex: 1, alignSelf: "center" }}>
-                      <Typography variant="h4">
-                        Contact verified consultants (
-                        {propertyData?.consultants?.length})
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <ConsultantsViewAll
-                        open={consultantsViewAll}
-                        enquiredInfo={enquiredInfo}
-                        handleClose={handleCloseConsultantsViewAll}
-                        handleEnquireWithBroker={handleEnquireWithBroker}
-                        propertyData={propertyData?.consultants}
-                      />
-                      <Chip
-                        label="View all"
-                        icon={<GroupIcon fontSize="small" />}
-                        size="small"
-                        onClick={handleOpenConsultantsViewAll}
-                        sx={{ fontSize: "0.875rem !important", padding: "5px" }}
-                      />
-                    </Box>
-                  </Box>
-                  <Divider />
-                  <Box sx={{ p: 2 }}>
-                    <Grid container spacing={2}>
-                      {propertyData?.consultants?.length > 0 &&
-                        propertyData?.consultants?.slice(0, 4).map((broker) => (
-                          <Grid item xs={12} sm={6} key={broker?.id}>
-                            <BrokerCard
-                              broker={broker}
-                              noReview
-                              enquiredInfo={enquiredInfo}
-                              handleEnquireWithBroker={handleEnquireWithBroker}
-                            />
-                          </Grid>
-                        ))}
-                    </Grid>
-                  </Box>
-                  <Divider />
-                  {userDetails?.role === "broker" &&
-                    propertyData?.isConsultant === false && (
-                      <Box
-                        sx={{
-                          p: 2,
-                          display: "flex",
-                          flexDirection: { xs: "column", sm: "row" },
-                          gap: 1,
-                        }}
-                      >
+              <Grid container spacing={2} id="section-list">
+                <ClearanceSection
+                  regulatoryClearanceData={propertyData?.regulatoryClearance}
+                />
+                <LandscapeSection
+                  layoutData={propertyData?.layout}
+                  overviewData={propertyData?.overview}
+                />
+                <UnitsPlanSection unitsPlan={propertyData?.unitsPlan} />
+                <AmenitiesSection amenitiesData={propertyData?.amenitiesData} />
+                <LocationSection locationData={propertyData?.location} />
+                {/* <PricingSection /> */}
+                {/* <ResaleSection /> */}
+                <ValueForMoneySection
+                  valueForMoneyData={propertyData?.valueForMoney}
+                />
+                {/* <FloorPlanSection /> */}
+                {propertyData?.consultants?.length > 0 && (
+                  <Grid item xs={12} id="propertyConsultants">
+                    <Card>
+                      <Box sx={{ display: "flex", p: 2 }}>
                         <Box sx={{ flex: 1, alignSelf: "center" }}>
-                          <Typography variant="body2" sx={{ flex: 1 }}>
-                            Are you a{" "}
-                            <span style={{ fontWeight: 700 }}>
-                              Property Consultant?
-                            </span>{" "}
-                            let Customers reach you
+                          <Typography variant="h4">
+                            Contact verified consultants (
+                            {propertyData?.consultants?.length})
                           </Typography>
                         </Box>
-                        <Box sx={{ alignSelf: { xs: "end" } }}>
+                        <Box>
+                          <ConsultantsViewAll
+                            open={consultantsViewAll}
+                            enquiredInfo={enquiredInfo}
+                            handleClose={handleCloseConsultantsViewAll}
+                            handleEnquireWithBroker={handleEnquireWithBroker}
+                            propertyData={propertyData?.consultants}
+                          />
                           <Chip
-                            label="Yes, show me here !"
-                            icon={<PersonAddIcon fontSize="small" />}
+                            label="View all"
+                            icon={<GroupIcon fontSize="small" />}
                             size="small"
-                            sx={{ fontSize: "0.875rem" }}
-                            onClick={() => {
-                              setConsultantsDialog(true);
+                            onClick={handleOpenConsultantsViewAll}
+                            sx={{
+                              fontSize: "0.875rem !important",
+                              padding: "5px",
                             }}
                           />
                         </Box>
                       </Box>
-                    )}
-                </Card>
-              </Grid>
-            )}
-
-            {consultantsDialog && (
-              <ConsultantPopup
-                open={consultantsDialog}
-                handleClose={handleCloseConsultantDetails}
-                detailsPropertyId={detailsPropertyId}
-                detailsGetProperty={detailsGetProperty}
-                brokerBalance={brokerBalance}
-              />
-            )}
-            <OverallAssesmentSection
-              overallAssessment={propertyData?.overallAssessment}
-              AllPropertyData={propertyData}
-              handleOpenEnquiryForm={() =>
-                setOverallAssessmentOpenEnquiryForm(true)
-              }
-              handleSubmitEnquiry={handleSubmitEnquiry}
-              open={OverallAssessmentOpenEnquiryForm}
-              handleClose={() => setOverallAssessmentOpenEnquiryForm(false)}
-              handleAction={handleOpenVerifyPopup}
-              submitEnquiryUnath={handleSubmitEnquiryUnauth}
-            />
-            <MoreSimilarPropertyCard propertyData={propertyData} />
-          </Grid>
-
-          {/* Dont Touch this */}
-          {userDetails?.role !== "admin" &&
-            userDetails?.role !== "superAdmin" &&
-            userDetails?.role !== "broker" && (
-              <Toolbar
-                sx={{
-                  display: { xs: "flex", evmd: "none" },
-                  height: heightOfFooter,
-                }}
-              />
-            )}
-          {userDetails?.role !== "admin" &&
-            userDetails?.role !== "superAdmin" &&
-            userDetails?.role !== "broker" && (
-              <>
-                <BottomFooterUser
-                  isLogged={isLogged}
-                  propertyData={propertyData}
-                  url={url}
-                  divRef={divRef}
-                  handlefavClick={handlefavClick}
-                  handleOpenEnquiryForm={handleOpenEnquiryForm}
+                      <Divider />
+                      <Box sx={{ p: 2 }}>
+                        <Grid container spacing={2}>
+                          {propertyData?.consultants?.length > 0 &&
+                            propertyData?.consultants
+                              ?.slice(0, 4)
+                              .map((broker) => (
+                                <Grid item xs={12} sm={6} key={broker?.id}>
+                                  <BrokerCard
+                                    broker={broker}
+                                    noReview
+                                    enquiredInfo={enquiredInfo}
+                                    handleEnquireWithBroker={
+                                      handleEnquireWithBroker
+                                    }
+                                  />
+                                </Grid>
+                              ))}
+                        </Grid>
+                      </Box>
+                      <Divider />
+                      {userDetails?.role === "broker" &&
+                        propertyData?.isConsultant === false && (
+                          <Box
+                            sx={{
+                              p: 2,
+                              display: "flex",
+                              flexDirection: { xs: "column", sm: "row" },
+                              gap: 1,
+                            }}
+                          >
+                            <Box sx={{ flex: 1, alignSelf: "center" }}>
+                              <Typography variant="body2" sx={{ flex: 1 }}>
+                                Are you a{" "}
+                                <span style={{ fontWeight: 700 }}>
+                                  Property Consultant?
+                                </span>{" "}
+                                let Customers reach you
+                              </Typography>
+                            </Box>
+                            <Box sx={{ alignSelf: { xs: "end" } }}>
+                              <Chip
+                                label="Yes, show me here !"
+                                icon={<PersonAddIcon fontSize="small" />}
+                                size="small"
+                                sx={{ fontSize: "0.875rem" }}
+                                onClick={() => {
+                                  setConsultantsDialog(true);
+                                }}
+                              />
+                            </Box>
+                          </Box>
+                        )}
+                    </Card>
+                  </Grid>
+                )}
+                {consultantsDialog && (
+                  <ConsultantPopup
+                    open={consultantsDialog}
+                    handleClose={handleCloseConsultantDetails}
+                    detailsPropertyId={detailsPropertyId}
+                    detailsGetProperty={detailsGetProperty}
+                    brokerBalance={brokerBalance}
+                  />
+                )}
+                <OverallAssesmentSection
+                  overallAssessment={propertyData?.overallAssessment}
+                  AllPropertyData={propertyData}
+                  handleOpenEnquiryForm={() =>
+                    setOverallAssessmentOpenEnquiryForm(true)
+                  }
+                  handleSubmitEnquiry={handleSubmitEnquiry}
+                  open={OverallAssessmentOpenEnquiryForm}
+                  handleClose={() => setOverallAssessmentOpenEnquiryForm(false)}
+                  handleAction={handleOpenVerifyPopup}
+                  submitEnquiryUnath={handleSubmitEnquiryUnauth}
                 />
-                {/* <Card
+                <MoreSimilarPropertyCard propertyData={propertyData} />
+              </Grid>
+
+              {/* Dont Touch this */}
+              {userDetails?.role !== "admin" &&
+                userDetails?.role !== "superAdmin" &&
+                userDetails?.role !== "broker" && (
+                  <Toolbar
+                    sx={{
+                      display: { xs: "flex", evmd: "none" },
+                      height: heightOfFooter,
+                    }}
+                  />
+                )}
+              {userDetails?.role !== "admin" &&
+                userDetails?.role !== "superAdmin" &&
+                userDetails?.role !== "broker" && (
+                  <>
+                    <BottomFooterUser
+                      isLogged={isLogged}
+                      propertyData={propertyData}
+                      url={url}
+                      divRef={divRef}
+                      handlefavClick={handlefavClick}
+                      handleOpenEnquiryForm={handleOpenEnquiryForm}
+                    />
+                    {/* <Card
                   sx={{
                     p: 2,
                     position: "fixed",
@@ -890,28 +936,30 @@ const PropertyDetailsPage = ({ params }) => {
                     Enquire
                   </Fab>
                 </Box> */}
-              </>
-            )}
-          {!isLoading && userDetails?.role === "broker" && (
-            <>
-              <Toolbar
-                sx={{
-                  display: { xs: "flex", evmd: "none" },
-                }}
-              />
-              <BottomFooterConsultant
-                SinglePropertyId={
-                  propertyData?.propertyBroker
-                    ? propertyData?.propertyBroker[0]
-                    : ""
-                }
-                handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
-                propertyData={propertyData}
-              />
-            </>
-          )}
-        </Container>
-      </Box>
+                  </>
+                )}
+              {!isLoading && userDetails?.role === "broker" && (
+                <>
+                  <Toolbar
+                    sx={{
+                      display: { xs: "flex", evmd: "none" },
+                    }}
+                  />
+                  <BottomFooterConsultant
+                    SinglePropertyId={
+                      propertyData?.propertyBroker
+                        ? propertyData?.propertyBroker[0]
+                        : ""
+                    }
+                    handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
+                    propertyData={propertyData}
+                  />
+                </>
+              )}
+            </Container>
+          </Box>
+        </>
+      )}
     </>
   );
 };

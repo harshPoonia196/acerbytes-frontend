@@ -12,17 +12,17 @@ import {
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useAuth } from "utills/AuthContext";
 import CircularWithValueLabel from "Components/CommonLayouts/CircularProgressWithLabel";
 import { shortPriceFormatter } from "utills/CommonFunction";
 import Image from "next/image";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { formatNumberWithCommas } from "utills/CommonFunction";
+import { categorizeScore } from "Components/DetailsPage/MarketingSection";
 
 function PropertyCard(props) {
   const router = useRouter();
-  const [priceRange, setAmount] = useState({});
   const { userDetails } = useAuth();
   const { propertyDetails, isShortListPageCard, createdDate } = props;
 
@@ -96,45 +96,34 @@ function PropertyCard(props) {
   }, [unitsPlan]);
 
   const layoutData = useMemo(() => {
-    const { uniqueLayouts, planList } = unitsPlan || {};
-    const withoutUniqueLayout = (
-      planList?.filter((item) => !item.propertyLayout) || []
-    ).map((item) => `${item?.width}*${item?.length}`);
-    return [...(uniqueLayouts || []), ...withoutUniqueLayout];
-  }, [unitsPlan]);
-
-  useEffect(() => {
-    const getPriceTag = shortPriceFormatter(unitsPlan?.minPriceRange);
-
-    const [minPrice, tag] = getPriceTag.split(" ");
-    const finalMinPrice = Math.round(minPrice * 10) / 10;
-
-    const getMaxPriceTag = shortPriceFormatter(unitsPlan?.maxPriceRange);
-
-    const [maxPrice, maxTag] = getMaxPriceTag.split(" ");
-    const finalMaxPrice = Math.round(maxPrice * 10) / 10;
-
-    setAmount({
-      ...priceRange,
-      minPrice: { price: finalMinPrice, tag },
-      maxPrice: { price: finalMaxPrice, tag: maxTag },
-    });
-  }, []);
+    const withoutUniqueLayout = [
+      ...propertyDetails?.unitsPlan?.planList?.filter(
+        (item) => !item.propertyLayout
+      ),
+    ]?.map((item) => `${item?.width}*${item?.length}`);
+    return [
+      ...propertyDetails?.unitsPlan?.uniqueLayouts,
+      ...withoutUniqueLayout,
+    ];
+  }, [propertyDetails]);
 
   const formatUnit = () => {
     const finalData = [];
 
     layoutData.sort().map((item, index) => {
-      let nextUnit = layoutData[index + 1]?.split(" ")[1];
+      let nextUnit =
+        layoutData[index + 1] && layoutData[index + 1].split(" ")[1];
       let spitedValue = item.split(" ");
 
       const num = spitedValue[0];
       const unit = spitedValue[1];
 
-      if (!unit) {
+      if (unit === undefined) {
         const width = num.split("*")[0];
-        const { areaUnit } =
-          unitsPlan?.planList.find((i) => i.width === Number(width)) || {};
+
+        const { areaUnit } = propertyDetails?.unitsPlan?.planList.filter(
+          (i) => i.width === Number(width)
+        )[0];
 
         finalData.push(`${num} ${areaUnit}`);
       } else if (unit === nextUnit) {
@@ -144,7 +133,7 @@ function PropertyCard(props) {
       }
     });
 
-    return finalData.join(", ");
+    return String(finalData);
   };
 
   function roundOff(number) {
@@ -153,16 +142,6 @@ function PropertyCard(props) {
     }
     return number;
   }
-
-  const categorizeScore = (score) => {
-    if (score >= 0 && score <= 20) return "poor";
-    if (score >= 21 && score <= 40) return "average";
-    if (score >= 41 && score <= 60) return "good";
-    if (score >= 61 && score <= 80) return "very good";
-    if (score >= 81 && score <= 90) return "excellent";
-    if (score >= 91 && score <= 100) return "outstanding";
-    return "invalid";
-  };
 
   return (
     <Card>
