@@ -16,10 +16,10 @@ import { formatAmount, formatPoints } from "utills/CommonFunction";
 
 function AddCreditPointsPopup({ open, handleClose, info, handleSubmit }) {
   const [receivedPayment, setReceivedPayment] = React.useState(
-    info?.amount || ""
+    formatPoints(info?.amount) || ""
   );
   const [assignedPoints, setAssignedPoints] = React.useState(
-    info?.points || ""
+    formatPoints(info?.points) || ""
   );
   const [salesPerson, setSalesPerson] = React.useState("");
 
