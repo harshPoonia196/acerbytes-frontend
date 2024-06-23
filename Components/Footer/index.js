@@ -52,6 +52,12 @@ function Footer({ paymentPage }) {
             </Box>
             <Box sx={{ display: 'flex', gap: 1 }}>
                 <Box sx={{ alignSelf: 'center', cursor: 'pointer', }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{marginRight: "5px"}}>
+                            Register
+                    </Button>
                     <CustomButton startIcon={<ShareIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}
                         ButtonText={"Share"}
                     />
