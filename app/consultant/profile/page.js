@@ -377,26 +377,6 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       error["company"] = false;
     }
 
-    // if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
-    //   error["reraNumber"] = true;
-    //   isError = true;
-    // } else {
-    //   error["reraNumber"] = false;
-    // }
-
-    // if (
-    //   !validatePhoneNumber(brokerProfileInfo?.serviceDetails?.registeredPhone)
-    // ) {
-    //   error['phone'] = true;
-    //   openSnackbar("Mobile number is invalid", "error");
-    //   setErrorInvalid({
-    //     ...error,
-    //   });
-    //   return;
-    // } else {
-    //   error['phone'] = false;
-    // }
-
     if (
       brokerProfileInfo?.serviceDetails?.registeredPhone?.number &&
       ![0, 10].includes(

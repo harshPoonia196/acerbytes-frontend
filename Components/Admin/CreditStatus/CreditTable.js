@@ -161,12 +161,11 @@ function RowStructure({ row, adminAssignPointsHandler }) {
       return "red";
     }
   };
-
   return (
     <>
       <AdminCreditPointsPopup
         open={openAddCreditPoints}
-        brokerId={row?.brokerDetails?._id}
+        _id={row?.brokerDetails._id}
         handleClose={() => handlePopuChange(false)}
         handleSubmit={adminAssignPointsHandler}
       />
@@ -185,7 +184,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           {row?.brokerDetails?.name?.firstName}{" "}
           {row?.brokerDetails?.name?.lastName}
         </TableCell>
-        <TableCell>{row?.consultant_id}</TableCell>
+        <TableCell>{row?.brokerDetails?.brokerId}</TableCell>
         <TableCell>
           {countryCodeFormating(row?.brokerDetails?.phone?.countryCode)}{" "}
           {row?.brokerDetails?.phone?.number}
@@ -201,13 +200,11 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           {formatPoints(row.consumedPoints)}
         </TableCell>
         <TableCell sx={{ textAlign: "right" }}>
-          {/* {balanceColor(row?.brokerBalance?.balance)} */}
           <Typography
             style={{ color: balanceColor(row?.brokerBalance?.balance) }}
           >
             {formatPoints(row?.brokerBalance?.balance || 0)}
           </Typography>
-          {/* {<Typography style={{ color: row?.brokerBalance?.balance < 5000 ? 'red': row?.brokerBalance?.balance < 20000 ? 'amber' : 'green'}}>{formatPoints(row?.brokerBalance?.balance || 0)}</Typography>} */}
         </TableCell>
         <TableCell>
           <Tooltip title="More">
@@ -244,7 +241,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           <MenuItem onClick={() => handlePopuChange(true)}>
             <ListItemIcon>
               <CreditScoreIcon fontSize="small" />
-            </ListItemIcon>{" "}
+            </ListItemIcon>
             Assign points
           </MenuItem>
         </Menu>
@@ -428,7 +425,7 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
             ButtonText={"Credit points"}
           />
         }
-        dataList={[{ label: "Paid Consultants", value: dashboardInfo.count }]}
+        dataList={[{ label: "Consultants", value: dashboardInfo.count }]}
       />
 
       <Container>
@@ -448,7 +445,6 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
             onChange={handleSearch}
           />
         </Card>
-        {console.log(" creditPointList ===========>", creditPointList)}
         {creditPointList?.list?.length > 0 ? (
           <TableContainer component={Paper}>
             <Table
