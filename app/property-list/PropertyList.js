@@ -563,6 +563,7 @@ function PropertyList({ params }) {
     );
   };
 
+
   return (
     <>
       <>
@@ -619,7 +620,7 @@ function PropertyList({ params }) {
                               variant="h2"
                               sx={{ fontWeight: "Bold", mb: 1 }}
                             >
-                              {decodeURIComponent(params.location)} ({count})
+                              { selectedOptions?.city || decodeURIComponent(params.location)} ({count})
                             </Typography>
                             <Typography variant="body1">
                               Noida's strategic location, robust infrastructure,
