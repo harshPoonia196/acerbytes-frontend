@@ -583,14 +583,14 @@ function useThrottledOnScroll(callback, delay) {
             title="green iguana"
           />
           <Box sx={{ color: colors.WHITE, zIndex: 1, textAlign: "center", position: 'absolute', top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>
-            <Container maxWidth="lg">
+            <Container sx={{p: "0 !important", width: "100%", minWidth: "300px"}}>
               <Typography variant="h5" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Are you into Real estate business or Consultant ?</Typography>
               <Typography variant="h2" fontWeight="bold" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Grow your Real estate Business exponentially </Typography>
             </Container>
           </Box>
           <Box className="overlay"></Box>
         </Card>
-        <Box sx={{ backgroundColor: "#fff", position: "sticky",top: 64,left: 0,right: 0, zIndex: 100, boxShadow: "-1px 8px 6px -6px gainsboro!important"}}>
+        <Box className="marketTabs">
           <NavTabProfilePage
             value={activeState}
             handleChange={handleClick}
@@ -601,7 +601,7 @@ function useThrottledOnScroll(callback, delay) {
           <Container maxWidth="lg">
             <Box sx={{padding:5}}>
               <Typography variant="h2" sx={{ textAlign: "center"}}>What we do</Typography>
-              <Typography variant="body1" sx={{ textAlign: "center"}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</Typography>
+              <Typography variant="body1" sx={{ textAlign: "center", mt: 1}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</Typography>
             </Box>
           </Container>
         </Box>
