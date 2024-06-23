@@ -174,7 +174,7 @@ function AdminCreditPointsPopup(props) {
     (rs) => rs.googleID == creditInfo.salesPerson
   )?.name;
 
-  const text = `Are you sure after assign modal, this much amount and points are being assigned. Are you sure to assign Credit Points to <b>‘${label}’</b>. By proceeding, you confirm that payment of Rs <b>${creditInfo.approvedPayment}</b>. is received to assign <b>${creditInfo.salesPerson}</b>. Credit Points <b>${creditInfo.approvedPoints}.</b>`;
+  const text = `Are you sure to assign Credit Points to <b>${label}</b>. By proceeding, you confirm that payment of Rs <b>${creditInfo.approvedPayment}</b>. Credit Points <b>${creditInfo.approvedPoints}.</b>`;
 
   const modifiedText = text.replace(/\. /g, ".<br/> ");
 
