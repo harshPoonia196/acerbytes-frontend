@@ -167,117 +167,61 @@ function PropertyCard(props) {
   return (
     <Card>
       <CardActionArea sx={{ p: 2 }}>
-        <Grid container spacing={1} columns={16}>
-          <Grid item xs={16} sm={8} lg={4.5} sx={{ display: "flex" }}>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={8} md={8} sx={{ display: 'flex' }}>
+            <Image
+              onClick={() => router.push(`/details/${propertyUrl}`)}
+              alt={marketing?.tagLine}
+              height={60}
+              width={100}
+              loading="lazy"
+              src={marketing?.image}
+              style={{
+                borderRadius: "8px",
+                marginRight: 16,
+              }}
+            />
             <Box
-              sx={{ display: "flex", flex: 1 }}
+              sx={{ flex: 1, alignSelf: 'center' }}
               onClick={() => router.push(`/details/${propertyUrl}`)}
             >
-              <Image
-                alt={marketing?.tagLine}
-                height={54}
-                width={100}
-                loading="lazy"
-                src={marketing?.image}
-                style={{
-                  borderRadius: "8px",
-                  marginRight: 16,
-                }}
-              />
-              <Box
-                sx={{ flex: 1 }}
-                onClick={() => router.push(`/details/${propertyUrl}`)}
+              <Typography variant="caption">
+                <Tooltip title="Location">
+                  <LocationOnIcon
+                    sx={{
+                      fontSize: "12px",
+                      position: "relative",
+                      top: "1.5px",
+                    }}
+                  />
+                </Tooltip>
+                {location?.city} {property_id}
+              </Typography>
+              <Typography
+                variant="subtitle2"
+                sx={{ textTransform: "capitalize" }}
               >
-                <Typography variant="caption">
-                  <Tooltip title="Location">
-                    <LocationOnIcon
-                      sx={{
-                        fontSize: "12px",
-                        position: "relative",
-                        top: "1.5px",
-                      }}
-                    />
-                  </Tooltip>
-                  {location?.city} {property_id}
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ textTransform: "capitalize" }}
-                >
-                  {`${overview?.builder} ${overview?.projectName}`}
-                </Typography>
+                {`${overview?.builder} ${overview?.projectName}`}
+              </Typography>
+              <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                {(unitsPlan?.averagePrice || unitsPlan?.planList[0]?.areaUnit) && (
+                  <Typography variant="caption">
+                    {"₹ " +
+                      Math.round(unitsPlan.averagePrice).toLocaleString() +
+                      "/" +
+                      unitsPlan.planList[0]?.areaUnit}
+                  </Typography>
+                )}
+                {(unitsPlan?.minPriceRange || unitsPlan?.maxPriceRange) && (
+                  <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+                    ₹ {shortPriceFormatter(unitsPlan.minPriceRange)} - ₹{" "}
+                    {shortPriceFormatter(unitsPlan.maxPriceRange)}
+                  </Typography>
+                )}
               </Box>
             </Box>
-            <Box sx={{ display: { xs: "block", sm: "none" } }}>
-              <CircularWithValueLabel
-                progress={
-                  overallAssessment?.score
-                    ? overallAssessment.score.toFixed()
-                    : 0
-                }
-                onClick={() => router.push(`/details/${propertyUrl}`)}
-                tooltiptext={`AB scores "${categorizeScore(
-                  propertyDetails?.overallAssessment?.score
-                )}"`}
-              />
-            </Box>
           </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={4}
-            lg={1.5}
-            onClick={() => router.push(`/details/${propertyUrl}`)}
-          >
-            <Typography variant="caption" sx={{ textTransform: "capitalize" }}>
-              {location?.area}
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              sx={{ textTransform: "capitalize" }}
-            >
-              {location?.sector}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={2.5}
-            lg={1.5}
-            onClick={() => router.push(`/details/${propertyUrl}`)}
-          >
-            <Typography variant="caption">
-              {formatNumberWithCommas(totalUnits)} Units
-            </Typography>
-            <Typography variant="subtitle2">
-              {`${roundOff(Number(area))} ${areaUnit}`}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            sm={1.5}
-            sx={{
-              display: { xs: "none", sm: "block", lg: "none" },
-              textAlign: "end",
-            }}
-          >
-            <CircularWithValueLabel
-              progress={
-                overallAssessment?.score ? overallAssessment.score.toFixed() : 0
-              }
-              onClick={() => router.push(`/details/${propertyUrl}`)}
-              tooltiptext={`AB scores "${categorizeScore(
-                propertyDetails?.overallAssessment?.score
-              )}"`}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={8}
-            lg={3}
-            onClick={() => router.push(`/details/${propertyUrl}`)}
-          >
+          <Grid item xs={6} sm={4} md={4} sx={{ alignSelf: 'center', textAlign: 'end', display: { xs: 'none', sm: 'block' } }}>
             {(unitsPlan?.averagePrice || unitsPlan?.planList[0]?.areaUnit) && (
               <Typography variant="caption">
                 {"₹ " +
@@ -295,9 +239,52 @@ function PropertyCard(props) {
           </Grid>
           <Grid
             item
-            xs={8}
+            xs={6}
             sm={4}
-            lg={2.5}
+            md={2}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
+          >
+            <Typography variant="caption" sx={{ textTransform: "capitalize" }}>
+              {location?.area}
+            </Typography>
+            <Typography
+              variant="subtitle2"
+              sx={{ textTransform: "capitalize" }}
+            >
+              {location?.sector}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            sm={4}
+            md={2.5}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
+          >
+            <Typography variant="caption">
+              {formatNumberWithCommas(totalUnits)} Units
+            </Typography>
+            <Typography variant="subtitle2">
+              {`${roundOff(Number(area))} ${areaUnit}`}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            sm={4}
+            md={2.5}
+            onClick={() => router.push(`/details/${propertyUrl}`)}
+          >
+            <Typography variant="caption">{overview?.status}</Typography>
+            <Typography variant="subtitle2">
+              {overview?.launchYear} - {overview?.completionYear}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={4.5}
+            sm={10}
+            md={2.5}
             onClick={() => router.push(`/details/${propertyUrl}`)}
           >
             <Typography variant="caption">
@@ -309,22 +296,10 @@ function PropertyCard(props) {
           </Grid>
           <Grid
             item
-            xs={8}
-            sm={4}
-            lg={2}
-            onClick={() => router.push(`/details/${propertyUrl}`)}
-          >
-            <Typography variant="caption">{overview?.status}</Typography>
-            <Typography variant="subtitle2">
-              {overview?.launchYear} - {overview?.completionYear}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={1.5}
-            lg={1}
-            sx={{ display: { xs: "none", lg: "block" }, textAlign: "end" }}
+            xs={1.5}
+            sm={2}
+            md={2}
+            sx={{ textAlign: "end", }}
           >
             <CircularWithValueLabel
               progress={
@@ -344,7 +319,7 @@ function PropertyCard(props) {
           <Chip
             icon={<ThumbUpIcon style={{ color: "#276ef1", mr: 1 }} />}
             label={`Liked on ${formattedCreatedAt}`}
-            onClick={() => {}}
+            onClick={() => { }}
             size="small"
             sx={{ fontSize: "0.75rem" }}
           />
