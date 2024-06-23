@@ -615,7 +615,10 @@ function PropertyList({ params }) {
                               boxShadow: "none",
                             }}
                           >
-                            <Typography variant="h2" sx={{ fontWeight: "Bold", mb: 1}}>
+                            <Typography
+                              variant="h2"
+                              sx={{ fontWeight: "Bold", mb: 1 }}
+                            >
                               {decodeURIComponent(params.location)} ({count})
                             </Typography>
                             <Typography variant="body1">

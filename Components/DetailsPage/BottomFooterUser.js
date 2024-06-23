@@ -18,19 +18,17 @@ import colors from "styles/theme/colors";
 import { listOfPages } from "Components/NavBar/Links";
 import { useRouter } from "next/navigation";
 import { boxShadowTop } from "utills/Constants";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-import Person2Icon from '@mui/icons-material/Person2';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Person2Icon from "@mui/icons-material/Person2";
 
 function BottomFooterUser({
-  divRef,
   handlefavClick,
   isLogged,
   propertyData,
   url,
   handleOpenEnquiryForm,
 }) {
-
   const router = useRouter();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -104,10 +102,10 @@ function BottomFooterUser({
             label="Share"
             component="a"
             href={`https://web.whatsapp.com/send?text=${encodeURIComponent(
-            url?.href ? url?.href : ''
-          )}`}
-          target="_blank"
-          data-action="share/whatsapp/share"
+              url?.href ? url?.href : ""
+            )}`}
+            target="_blank"
+            data-action="share/whatsapp/share"
             icon={<ReplyIcon sx={{ transform: "scaleX(-1)" }} />}
           />
           <BottomNavigationAction
@@ -131,9 +129,24 @@ function BottomFooterUser({
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose}><ListItemIcon><Person2Icon fontSize="small"/></ListItemIcon> Profile</MenuItem>
-            <MenuItem onClick={handleClose}><ListItemIcon><AccountCircleIcon fontSize="small"/></ListItemIcon> My account</MenuItem>
-            <MenuItem onClick={handleClose}><ListItemIcon><LogoutIcon fontSize="small"/></ListItemIcon> Logout</MenuItem>
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <Person2Icon fontSize="small" />
+              </ListItemIcon>{" "}
+              Profile
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <AccountCircleIcon fontSize="small" />
+              </ListItemIcon>{" "}
+              My account
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <LogoutIcon fontSize="small" />
+              </ListItemIcon>{" "}
+              Logout
+            </MenuItem>
           </Menu>
         </BottomNavigation>
       </Box>
@@ -178,7 +191,7 @@ function BottomFooterUser({
           }}
           component="a"
           href={`https://web.whatsapp.com/send?text=${encodeURIComponent(
-            url?.href ? url?.href : ''
+            url?.href ? url?.href : ""
           )}`}
           target="_blank"
           data-action="share/whatsapp/share"

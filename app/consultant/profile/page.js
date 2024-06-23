@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const noop = () => { };
+const noop = () => {};
 
 function useThrottledOnScroll(callback, delay) {
   const throttledCallback = React.useMemo(
@@ -113,8 +113,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       } catch (error) {
         openSnackbar(
           error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong!",
+            error?.message ||
+            "Something went wrong!",
           "error"
         );
         return error;
@@ -171,7 +171,11 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     let value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
-    if (secondKeyName === "firstName" || secondKeyName === "lastName" || secondKeyName === "company") {
+    if (
+      secondKeyName === "firstName" ||
+      secondKeyName === "lastName" ||
+      secondKeyName === "company"
+    ) {
       value = capitalLizeName(value);
     }
     if (e.target.type == "number") {
@@ -187,14 +191,14 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       [firstKeyName]: !secondKeyName
         ? value
         : {
-          ...(prev?.[firstKeyName] || {}),
-          [secondKeyName]: !thirdKeyName
-            ? value
-            : {
-              ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
-              [thirdKeyName]: value,
-            },
-        },
+            ...(prev?.[firstKeyName] || {}),
+            [secondKeyName]: !thirdKeyName
+              ? value
+              : {
+                  ...(prev?.[firstKeyName]?.[secondKeyName] || {}),
+                  [thirdKeyName]: value,
+                },
+          },
     }));
   };
   const handleAddTargetCustomer = () => {
@@ -306,9 +310,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       if (
         item.node &&
         item.node.offsetTop <
-        document.documentElement.scrollTop +
-        document.documentElement.clientHeight / 8 +
-        tabHeight
+          document.documentElement.scrollTop +
+            document.documentElement.clientHeight / 8 +
+            tabHeight
       ) {
         active = item;
         break;
@@ -355,15 +359,6 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     e.preventDefault();
     let error = { ...errorInvalid },
       isError = false;
-    if (
-      brokerProfileInfo?.alternateEmail &&
-      !validateEmail(brokerProfileInfo?.alternateEmail)
-    ) {
-      isError = true;
-      error["alternateEmail"] = true;
-    } else {
-      error["alternateEmail"] = false;
-    }
 
     if (
       brokerProfileInfo?.serviceDetails?.companyEmail &&
@@ -382,12 +377,12 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       error["company"] = false;
     }
 
-    if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
-      error["reraNumber"] = true;
-      isError = true;
-    } else {
-      error["reraNumber"] = false;
-    }
+    // if (!brokerProfileInfo?.serviceDetails?.reraNumber) {
+    //   error["reraNumber"] = true;
+    //   isError = true;
+    // } else {
+    //   error["reraNumber"] = false;
+    // }
 
     // if (
     //   !validatePhoneNumber(brokerProfileInfo?.serviceDetails?.registeredPhone)
@@ -475,8 +470,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -496,8 +491,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
     } catch (error) {
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     }
@@ -546,8 +541,8 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
       console.log("error: ", error);
       openSnackbar(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching state of india list",
+          error?.message ||
+          "Error fetching state of india list",
         "error"
       );
     } finally {
@@ -646,7 +641,10 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                     </label>
                     {userProfileInfo?.name ? (
                       <Box sx={{ flex: 1 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 900, fontSize: "1rem" }}>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontWeight: 900, fontSize: "1rem" }}
+                        >
                           {`${userProfileInfo?.name?.firstName} ${userProfileInfo?.name?.lastName}`}
                         </Typography>
                         <Typography variant="body2">
@@ -674,8 +672,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                             sx={{ alignSelf: "center", color: colors.BLUE }}
                           >
                             +
-                            {`${brokerProfileInfo?.phone?.countryCode || ""} ${brokerProfileInfo?.phone?.number || ""
-                              }`}
+                            {`${brokerProfileInfo?.phone?.countryCode || ""} ${
+                              brokerProfileInfo?.phone?.number || ""
+                            }`}
                           </Typography>
                         </a>
                       </Box>
@@ -731,7 +730,6 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                   /> */}
                   <NewInputFieldStructure
                     label="Alternate Email"
-                    isRequired={false}
                     variant="outlined"
                     disabled={isAdminUpdate}
                     value={brokerProfileInfo?.alternateEmail || ""}
@@ -795,7 +793,6 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                   />
 
                   <NewInputFieldStructure
-                    isRequired={true}
                     label="RERA number"
                     value={brokerProfileInfo?.serviceDetails?.reraNumber || ""}
                     variant="outlined"
@@ -927,8 +924,9 @@ function ConsultantProfile({ id, isAdminUpdate = false }) {
                           }
                           return (
                             <Chip
-                              key={`${targetArea.selectCity || ""}-${targetArea.selectArea || ""
-                                }-${index}`}
+                              key={`${targetArea.selectCity || ""}-${
+                                targetArea.selectArea || ""
+                              }-${index}`}
                               label={label}
                               size="small"
                               sx={{ ml: 1, py: 2, px: 1 }}
