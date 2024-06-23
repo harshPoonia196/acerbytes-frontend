@@ -109,7 +109,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
   };
 
   return (
-    <Card sx={{ position: 'relative', border: "solid 1px #dcdcdc78", mb: 1 }}>
+    <Card sx={{ position: 'relative', border: "solid 1px #dcdcdc78" }}>
       <Box sx={{ display: 'flex', p: 2, borderRadius: "5px"}}>
         <Avatar
           alt={titleCase(broker?.fullName)}
@@ -125,15 +125,17 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
               onClick={hasReviews ? handleOpenReviews : null}
             >
               {titleCase(broker?.fullName)}
-              <DoneAllIcon
-                fontSize="1rem"
-                sx={{
-                  alignSelf: 'center',
-                  position: 'relative',
-                  top: '1px',
-                  left: '2px',
-                }}
-              />
+              <Tooltip title={titleCase(broker?.fullName)}>
+                <DoneAllIcon
+                  fontSize="1rem"
+                  sx={{
+                    alignSelf: 'center',
+                    position: 'relative',
+                    top: '1px',
+                    left: '2px',
+                  }}
+                />
+              </Tooltip>
               <Box>
                 {showRating ? (
                   <>
@@ -255,7 +257,7 @@ function BrokerCard({ broker, type, noReview, updateBroker, enquiredInfo, handle
       ) : null} */}
       {/* {isLogged ? ( */}
       { userDetails.role !== 'broker' && userDetails.role !== 'admin' && userDetails.role !== 'superAdmin' && !allBroker && <>
-      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:10, sm:13}, right: 16 }} onClick={handleCallClick}  >
+      {!isEnquiredByCurrentBroker ? (<Box sx={{ position: "absolute", top: {xs:14, sm:16}, right: 18 }} onClick={handleCallClick}  >
         <IconButton sx={{ boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0)" }}>
           <Tooltip title="Call"><CallIcon fontSize="small" /></Tooltip>
         </IconButton>

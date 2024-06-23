@@ -24,6 +24,7 @@ function ConsultantsViewAll({ open, handleClose, propertyData, enquiredInfo, han
       }}
       open={open}
       onClose={handleClose}
+      className="consultant-dialog"
     >
       <DialogTitle onClose={handleClose}>
         <Typography variant="h4" sx={{ fontWeight: 700 }}>

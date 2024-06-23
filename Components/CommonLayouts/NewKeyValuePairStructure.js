@@ -21,7 +21,7 @@ function NewKeyValuePairStructure({
               >{label}
               </Typography>
               {!(middleValue === undefined) && (
-                  <Typography variant="body2" sx={{ display: "inline-block"}}>{middleValue}</Typography>
+                  <Typography variant="body2" sx={{ display: "inline-block", color: "#0000008a"}}>{middleValue}</Typography>
               )}
                 
               

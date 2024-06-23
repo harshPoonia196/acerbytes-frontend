@@ -49,6 +49,11 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import HomeIcon from "@mui/icons-material/Home";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import NoDataCard from "Components/CommonLayouts/CommonDataCard";
+import Marketing from "public/images/marketing.jpg";
+import Offer from "Components/Marketing/Offer";
+import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
+import {listOfMarketingTab} from "utills/Constants";
+import throttle from "lodash/throttle";
 
 const enquiries = [
   {
@@ -403,10 +408,9 @@ export default function Enquiries(props) {
       const response = await getEnquiries();
       if (response.status == 200) {
         const { success, data, message } = response.data;
-        console.log("data", data);
+        
         if (success) {
           return data?.map((enquiry) => {
-            console.log("enquiry", enquiry);
             return {
               isVerified: enquiry?.isVerified || false,
               project: enquiry?.property[0]?.overview?.projectName || "",
@@ -445,9 +449,119 @@ export default function Enquiries(props) {
     }
   });
 
+
+
   const history = useRouter();
   console.log(props, "userdjbdj");
-  console.log("rows", rows);
+
+  const tabHeight = 116;
+  
+  const [activeState, setActiveState] = React.useState("whatWeDo");
+
+  let itemsServer = listOfMarketingTab.map((tab) => {
+    const hash = tab.value;
+    return {
+      text: tab.label,
+      hash: hash,
+      node: document.getElementById(hash),
+    };
+  });
+
+  const itemsClientRef = React.useRef([]);
+  React.useEffect(() => {
+    itemsClientRef.current = itemsServer;
+  }, [itemsServer]);
+
+  const clickedRef = React.useRef(false);
+  const unsetClickedRef = React.useRef(null);
+
+  const findActiveIndex = React.useCallback(() => {
+    // set default if activeState is null
+    if (activeState === null) setActiveState(itemsServer[0].hash);
+
+    // Don't set the active index based on scroll if a link was just clicked
+    if (clickedRef.current) return;
+
+    let active;
+    for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
+      // No hash if we're near the top of the page
+      if (document.documentElement.scrollTop < 0) {
+        active = { hash: null };
+        break;
+      }
+
+      const item = itemsClientRef.current[i];
+
+      if (
+        item.node &&
+        item.node.offsetTop <
+        document.documentElement.scrollTop +
+        document.documentElement.clientHeight / 8 +
+        tabHeight
+      ) {
+        active = item;
+        break;
+      }
+    }
+
+    if (active && activeState !== active.hash) {
+      setActiveState(active.hash);
+    }
+  }, [activeState, itemsServer]);
+
+  // Corresponds to 10 frames at 60 Hz
+  useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
+
+  const handleClick = (hash) => () => {
+    // Used to disable findActiveIndex if the  scrolls due to a clickpage
+    clickedRef.current = true;
+    unsetClickedRef.current = setTimeout(() => {
+      clickedRef.current = false;
+    }, 1000);
+
+    if (activeState !== hash) {
+      setActiveState(hash);
+
+      if (window)
+        window.scrollTo({
+          top:
+            document.getElementById(hash)?.getBoundingClientRect().top +
+            window.pageYOffset -
+            tabHeight,
+          behavior: "smooth",
+        });
+    }
+  };
+
+  React.useEffect(
+    () => () => {
+      clearTimeout(unsetClickedRef.current);
+    },
+    []
+  );
+
+  const noop = () => { };
+
+function useThrottledOnScroll(callback, delay) {
+  const throttledCallback = React.useMemo(
+    () => (callback ? throttle(callback, delay) : noop),
+    [callback, delay]
+  );
+
+  React.useEffect(() => {
+    if (throttledCallback === noop) return undefined;
+
+    window.addEventListener("scroll", throttledCallback);
+    return () => {
+      window.removeEventListener("scroll", throttledCallback);
+      throttledCallback.cancel();
+    };
+  }, [throttledCallback]);
+}
+
+
+
+
   return (
     <>
       {isLoading && <Loader />}
@@ -457,6 +571,58 @@ export default function Enquiries(props) {
           boxShadow: "-1px -2px 6px 2px gainsboro !important",
         }}
       >
+        <Card sx={{ background: "#e2b42d", borderRadius: 0}}>
+          <Container maxWidth="lg">
+            <Typography variant="h4" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)", textAlign: "center"}}>Improve your Real estate conversions, significantly improve your real estate Sales</Typography>
+          </Container>
+        </Card>
+        <Card sx={{ position: "relative",borderRadius: 0 }}>
+          <CardMedia
+            sx={{ height: 500 }}
+            image={Marketing.src}
+            title="green iguana"
+          />
+          <Box sx={{ color: colors.WHITE, zIndex: 1, textAlign: "center", position: 'absolute', top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>
+            <Container sx={{p: "0 !important", width: "100%", minWidth: "300px"}}>
+              <Typography variant="h5" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Are you into Real estate business or Consultant ?</Typography>
+              <Typography variant="h2" fontWeight="bold" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Grow your Real estate Business exponentially </Typography>
+            </Container>
+          </Box>
+          <Box className="overlay"></Box>
+        </Card>
+        <Box className="marketTabs">
+          <NavTabProfilePage
+            value={activeState}
+            handleChange={handleClick}
+            list={itemsServer}
+          />
+        </Box>
+        <Box id="whatWeDo">
+          <Container maxWidth="lg">
+            <Box sx={{padding:5}}>
+              <Typography variant="h2" sx={{ textAlign: "center"}}>What we do</Typography>
+              <Typography variant="body1" sx={{ textAlign: "center", mt: 1}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</Typography>
+            </Box>
+          </Container>
+        </Box>
+        <Box id="offerDetails">
+          <Typography variant="h2" sx={{ textAlign: "center"}}>What we offer</Typography>
+          <Offer />
+        </Box>
+        <Box id="benefits">
+          <Container maxWidth="lg">
+            <Typography variant="h2" sx={{ textAlign: "center"}}>Benefits</Typography>
+          </Container>
+        </Box>
+        <footer style={{ background: "#fafafa", boxShadow: "-1px 8px 6px -6px gainsboro" }}>
+          <Container maxWidth="lg" sx={{textAlign: 'center'}}>
+            <Button
+              variant="contained"
+              color="primary">
+                    Register
+            </Button>
+          </Container>
+        </footer>
         <Container maxWidth="lg" sx={{ pb: "0 !important" }}>
           <Box sx={{ py: 2 }}>
             <Typography
