@@ -11,7 +11,7 @@ import {
     Container
   } from "@mui/material";
   import ImageOne from "public/images/image1.jpg";
-  import ImageTwo from "public/images/image2.webp";
+  import ImageTwo from "public/images/image2.jpg";
   import ImageThree from "public/images/image3.jpg";
   import ImageFour from "public/images/image4.jpg";
   import ImageFive from "public/images/image5.webp";
