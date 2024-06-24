@@ -54,6 +54,7 @@ import Offer from "Components/Marketing/Offer";
 import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import {listOfMarketingTab} from "utills/Constants";
 import throttle from "lodash/throttle";
+import FAQ from "Components/Marketing/FAQ";
 
 const enquiries = [
   {
@@ -582,15 +583,31 @@ function useThrottledOnScroll(callback, delay) {
             image={Marketing.src}
             title="green iguana"
           />
-          <Box sx={{ color: colors.WHITE, zIndex: 1, textAlign: "center", position: 'absolute', top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>
-            <Container sx={{p: "0 !important", width: "100%", minWidth: "300px"}}>
-              <Typography variant="h5" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Are you into Real estate business or Consultant ?</Typography>
-              <Typography variant="h2" fontWeight="bold" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Grow your Real estate Business exponentially </Typography>
+          <Box sx={{ color: colors.WHITE, zIndex: 1, textAlign: "center", position: 'absolute', top: "50%", left: "50%", width: "100%", transform: "translate(-50%, -50%)"}}>
+            <Container sx={{p: "0 !important"}}>
+              {/* <Typography variant="h5" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Are you a real estate consultant ? </Typography>
+              <Typography variant="h2" fontWeight="bold" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)"}}>Get an easy way to generate real estate leads and business growth with AcreBytes</Typography> */}
+              <Typography
+              variant="h1"
+              className="marketingTitle"
+              sx={{
+                fontWeight: 300,
+                
+                marginBottom: "35px",
+                textAlign: "center",
+              }}
+            >
+              <span style={{ fontWeight: "bold" }}>
+                Are you a real estate consultant ?{" "}
+              </span>
+              Get an easy way to generate real estate leads and business
+              growth with AcreBytes
+            </Typography>
             </Container>
           </Box>
           <Box className="overlay"></Box>
         </Card>
-        <Box className="marketTabs">
+        <Box className="marketTabs" sx={{backgroundColor:"#fff", position: "sticky", top: {xs: '54px', sm: '64px'}, left: 0, right: 0, zIndex: 100, boxShadow: '-1px 8px 6px -6px gainsboro'}}>
           <NavTabProfilePage
             value={activeState}
             handleChange={handleClick}
@@ -609,37 +626,18 @@ function useThrottledOnScroll(callback, delay) {
           <Typography variant="h2" sx={{ textAlign: "center"}}>What we offer</Typography>
           <Offer />
         </Box>
-        <Box id="benefits">
+        <Box id="faq" sx={{marginTop: 2}}>
+          <Typography variant="h2" sx={{ textAlign: "center"}}>FAQ</Typography>
+          <FAQ />
+        </Box>
+        {/* <Box id="benefits">
           <Container maxWidth="lg">
             <Typography variant="h2" sx={{ textAlign: "center"}}>Benefits</Typography>
           </Container>
-        </Box>
-        <footer style={{ background: "#fafafa", boxShadow: "-1px 8px 6px -6px gainsboro" }}>
-          <Container maxWidth="lg" sx={{textAlign: 'center'}}>
-            <Button
-              variant="contained"
-              color="primary">
-                    Register
-            </Button>
-          </Container>
-        </footer>
+        </Box> */}
         <Container maxWidth="lg" sx={{ pb: "0 !important" }}>
           <Box sx={{ py: 2 }}>
-            <Typography
-              variant="h1"
-              sx={{
-                fontWeight: 300,
-                fontSize: { sm: "2em !important", md: "4rem !important" },
-                marginBottom: "35px",
-                textAlign: "center",
-              }}
-            >
-              <span style={{ color: colors.GRAY, fontWeight: "bold" }}>
-                AcreBytes | Are you a real estate consultant ?{" "}
-              </span>
-              Get an easy way to generate real estate leads and business
-              growth with AcreBytes
-            </Typography>
+            
             <Grid container spacing={2}>
               {enquiries.map((enquiry) => {
                 return (
@@ -651,7 +649,7 @@ function useThrottledOnScroll(callback, delay) {
             </Grid>
           </Box>
           <Box sx={{ py: 4 }}>
-            <Typography variant="h1" sx={{ color: "#000", fontWeight: 300 }}>
+            {/* <Typography variant="h1" sx={{ color: "#000", fontWeight: 300 }}>
               Explore a world of possibilities with{" "}
               <span
                 className="urlStyling"
@@ -663,7 +661,7 @@ function useThrottledOnScroll(callback, delay) {
                 {indianNumberingSystem(rows?.length || 0)}
               </span>{" "}
               open real estate queries. Your next customer is just a click away
-            </Typography>
+            </Typography> */}
             <Box sx={{ mt: 2, textAlign: "center" }}>
               {/* <Box sx={{ width: "fit-content", margin: "auto" }}>
                 <AvatarGroup total={5}>
@@ -692,7 +690,7 @@ function useThrottledOnScroll(callback, delay) {
           </Box>
         </Container>
       </Box>
-      <Container maxWidth="lg">
+      {/* <Container maxWidth="lg">
         <Box
           sx={{
             display: "flex",
@@ -768,7 +766,7 @@ function useThrottledOnScroll(callback, delay) {
             </TableBody>
           </Table>
         </TableContainer>
-      </Container>
+      </Container> */}
       <div style={{ paddingBottom: "70px" }}></div>
       <Footer />
     </>
