@@ -3,8 +3,8 @@ import palette from './palette'
 const baseFontSize = 16
 
 export default {
-  fontFamily:
-    "'IBM Plex Sans','Roboto','Titillium Web','Inter','Almarai', 'Arial', 'sans-serif', 'Roboto Mono'",
+  // fontFamily:
+  //   "'IBM Plex Sans','Roboto','Titillium Web','Inter','Almarai', 'Arial', 'sans-serif', 'Roboto Mono'",
   fontSize: baseFontSize,
 
   h1: {

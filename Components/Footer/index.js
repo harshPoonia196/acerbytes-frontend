@@ -39,7 +39,7 @@ function Footer({ paymentPage }) {
             boxShadow: boxShadowTop,
         }}>
             <Box sx={{ flex: 1, alignSelf: 'center' }}>
-                {
+                {/* {
                     !paymentPage &&
                     <CustomButton variant='outlined'
                         onClick={() => { history.push('/consultant/make-payment') }}
@@ -48,19 +48,26 @@ function Footer({ paymentPage }) {
 
                         ButtonText={<>Pay&nbsp;here</>}
                     />
-                }
+                } */}
+                <CustomButton variant='outlined'
+                    onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }}
+                    size="small"
+                    startIcon={<WhatsAppIcon />}
+
+                    ButtonText={<>Contact us</>}
+                />
             </Box>
             <Box sx={{ display: 'flex', gap: 1 }}>
                 <Box sx={{ alignSelf: 'center', cursor: 'pointer', }}>
                 <Button
                     variant="contained"
                     color="primary"
-                    sx={{marginRight: "5px"}}>
-                            Register
+                    >
+                            Register now
                     </Button>
-                    <CustomButton startIcon={<ShareIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}
+                    {/* <CustomButton startIcon={<ShareIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}
                         ButtonText={"Share"}
-                    />
+                    /> */}
                 </Box>
                 <Tooltip title="More">
                 
