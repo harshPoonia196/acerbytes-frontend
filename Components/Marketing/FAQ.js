@@ -5,7 +5,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 
 export default function FAQ() {
   const faq = [
@@ -27,14 +27,14 @@ export default function FAQ() {
           <Accordion sx={{marginBottom: 2, boxShadow: "0px 1px 10px -2px gainsboro!important"}} key={item.id}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
+              aria-controls={`panel${item.id}-content`}
+              id={`panel${item.id}-header`}
               
             >
-              {item.title}
+              <Typography variant='body1' sx={{fontWeight: 700}}>{item.title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {item.description}
+              <Typography variant='body1'>{item.description}</Typography>
             </AccordionDetails>
           </Accordion>
         )
