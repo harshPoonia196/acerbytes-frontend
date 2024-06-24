@@ -21,10 +21,10 @@ export default function FAQ() {
     }
   ]
   return (
-    <Container maxWidth="lg" className='faq' sx={{paddingBottom: 0}}>
+    <Container maxWidth="lg" className='faq'>
       {faq.map((item, index) => {
         return (
-          <Accordion sx={{marginBottom: 2, boxShadow: "0px 1px 10px -2px gainsboro!important"}} key={item.id}>
+          <Accordion sx={{marginTop: 2, boxShadow: "0px 1px 10px -2px gainsboro!important"}} key={item.id}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls={`panel${item.id}-content`}
