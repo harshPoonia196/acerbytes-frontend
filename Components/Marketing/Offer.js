@@ -80,9 +80,9 @@ import {
                     image={offer?.image?.src}
                     title={offer.title}
                 />
-                <Box sx={{color: 'white', background: "transparent", p: 4, zIndex: 1, boxShadow: "1px 2px 6px -2px gainsboro!important", height: "100%", width: "100%", position: "absolute", top: 0, left: 0}}>
-                    <Typography variant='h2' fontWeight="bold">{offer.id}</Typography>
-                    <Typography variant="h4" fontWeight="bold">{offer.title}</Typography>
+                <Box sx={{color: 'white', background: "transparent", p: 4, zIndex: 1, boxShadow: "1px 2px 6px -2px gainsboro!important", height: "100%", width: "100%", position: "absolute", top: 0, left: 0, color: 'white'}}>
+                    <Typography variant='h2' fontWeight="bold" sx={{fontSize: "3.5rem", color: 'white'}}>{offer.id}</Typography>
+                    <Typography variant="h4" fontWeight="bold" sx={{fontSize: "2rem", color: 'white'}}>{offer.title}</Typography>
                 </Box>
                 <div className='overlay'></div>
             </Grid>

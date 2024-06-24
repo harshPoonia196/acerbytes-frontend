@@ -595,6 +595,7 @@ function useThrottledOnScroll(callback, delay) {
                 
                 marginBottom: "35px",
                 textAlign: "center",
+                color: 'white'
               }}
             >
               <span style={{ fontWeight: "bold" }}>
