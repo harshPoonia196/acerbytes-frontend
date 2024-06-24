@@ -1,22 +1,16 @@
 "use client";
 
-import {
-  Container,
-  Card,
-  Grid,
-  Box,
-  Toolbar,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Typography,
-} from "@mui/material";
+import { Container, Card, Grid, Box, Toolbar, Button } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 // import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import Fab from "@mui/material/Fab";
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
@@ -60,13 +54,12 @@ import {
   updateEnquiryVerifiedByUserId,
 } from "api/UserProfile.api";
 import { clearItem, getItem } from "utills/utills";
-import colors from "styles/theme/colors";
-import CircularProgressSpinner from "Components/DetailsPage/CircularProgressSpinner";
 import { getCountsByProperty } from "api/Broker.api";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Link from "next/link";
 import ActivateAdsPopup from "Components/DetailsPage/Modal/ActivateAdsPopup";
 import MarketingSection from "Components/DetailsPage/MarketingSection";
+import ExpiredLinkModal from "Components/DetailsPage/Modal/ExpireLinkPopup";
 
 const tabHeight = 200;
 
@@ -116,6 +109,7 @@ const PropertyDetails = ({ params }) => {
   const [progressCount, setProgressCount] = useState(6);
   const [leadId, setLeadId] = useState("");
   const expiredModalOpenRef = useRef(false);
+  const [isDeletedModalOpen, setIsDeletedModalOpen] = useState(false);
   const [brokerContact, setBrokerContact] = useState(null);
   let expiredModalTimeout;
 
@@ -187,6 +181,13 @@ const PropertyDetails = ({ params }) => {
           );
           setLeadsCount(result?.data?.count);
         }
+        const isDeleted = res.data.data[0]?.propertyData?.deleted
+        if(isDeleted){
+          setIsDeletedModalOpen(true);
+          expiredModalTimeout = setTimeout(() => {
+            router.push("/property-list");
+          }, 5000);
+        }
         const expiredAt = new Date(res?.data?.data[0]?.expired_at);
         const now = new Date();
         const brokerData = res.data.data[0]?.brokerData;
@@ -219,6 +220,10 @@ const PropertyDetails = ({ params }) => {
   };
   const handleDetailsPageClick = () => {
     router.push(`details/${constructPropertyUrl(propertyData?.[0])}`);
+  };
+
+  const handlePropertyPageClick = () => {
+    router.push('/property-list');
   };
 
   const checkPropertyIsEnquired = async () => {
@@ -891,47 +896,26 @@ const PropertyDetails = ({ params }) => {
           handleOpenActivateAdsPopup={handleOpenActivateAdsPopup}
         />
         {expiredModalOpenRef.current && (
-          <Dialog open={expiredModalOpenRef.current}>
-            <DialogContent
-              sx={{ padding: "25px 30px !important", minWidth: "415px" }}
-            >
-              <Grid sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <CircularProgressSpinner value={progressCount} />
-                <DialogContentText>
-                  <Typography variant="body2">
-                    Link is not available please check details page
-                  </Typography>
-                </DialogContentText>
-              </Grid>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                variant="contained"
-                sx={{
-                  fontWeight: 600,
-                  color: "white",
-                  backgroundColor: colors?.BLACK,
-                  "&:hover": {
-                    backgroundColor: colors?.BLACK,
-                    boxShadow: "none",
-                  },
-                }}
-                onClick={handleDetailsPageClick}
-              >
-                Details Page
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  expiredModalOpenRef.current = false;
-                }}
-                color="primary"
-              >
-                Close
-              </Button>
-            </DialogActions>
-          </Dialog>
+          <ExpiredLinkModal
+            open={expiredModalOpenRef.current}
+            onClose={() => {
+              expiredModalOpenRef.current = false;
+            }}
+            onDetailsClick={handleDetailsPageClick}
+            progressCount={progressCount}
+            pageName="Details"
+          />
         )}
+         {isDeletedModalOpen && (
+              <ExpiredLinkModal
+                open={isDeletedModalOpen}
+                onClose={() => setIsDeletedModalOpen(false)}
+                onDetailsClick={handlePropertyPageClick}
+                progressCount={progressCount}
+                pageName="Property-list"
+              />
+            )}
+
         <Box
           className="detailFab"
           sx={{

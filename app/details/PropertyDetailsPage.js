@@ -59,6 +59,7 @@ import BottomFooterUser from "Components/DetailsPage/BottomFooterUser";
 import MoreSimilarPropertyCard from "Components/Admin/Property/SubComponents/MoreSimilarPropertyCard";
 import ConsultantPopup from "Components/DetailsPage/Modal/ConsultantPopup";
 import { constructPropertyUrl } from "utills/CommonFunction";
+import ExpiredLinkModal from "Components/DetailsPage/Modal/ExpireLinkPopup";
 
 const tabHeight = 200;
 
@@ -146,6 +147,9 @@ const PropertyDetailsPage = ({ params }) => {
   const [leadId, setLeadId] = useState("");
   const [enquiredInfo, setEnquiredInfo] = useState([]);
   const [consultantsDialog, setConsultantsDialog] = useState(false);
+  const [isDeletedModalOpen, setIsDeletedModalOpen] = useState(false);
+  const [progressCount, setProgressCount] = useState(5);
+  let expiredModalTimeout;
 
   const userInfo = JSON.parse(localStorage.getItem("userDetails"));
   const token = localStorage.getItem("token");
@@ -174,7 +178,13 @@ const PropertyDetailsPage = ({ params }) => {
           consultants: shuffle(res.data?.data?.consultants),
         };
         setPropertyData({ ...data });
-        if (isNavigate) {
+        const isDeleted = data?.deleted
+        if (isDeleted) {
+          setIsDeletedModalOpen(true);
+          expiredModalTimeout = setTimeout(() => {
+            router.push("/property-list");
+          }, 5000);
+        }else if (isNavigate) {
           const url = constructPropertyUrl({ ...data }, userInfo);
           router.push(url);
         }
@@ -190,6 +200,24 @@ const PropertyDetailsPage = ({ params }) => {
       setLoading(false);
     }
   };
+
+  const handlePropertyPageClick = () => {
+    router.push('/property-list');
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgressCount((prevProgress) =>
+        prevProgress <= 0 ? 5 : prevProgress - 1
+      ); // Countdown from 6 to 0
+    }, 1000);
+
+    // Clear the timeout when the component unmounts
+    return () => {
+      clearInterval(timer);
+      clearTimeout(expiredModalTimeout);
+    };
+  }, []);
 
   const handleCloseConsultantDetails = () => {
     setConsultantsDialog(false);
@@ -957,6 +985,15 @@ const PropertyDetailsPage = ({ params }) => {
                 </>
               )}
             </Container>
+            {isDeletedModalOpen && (
+              <ExpiredLinkModal
+                open={isDeletedModalOpen}
+                onClose={() => setIsDeletedModalOpen(false)}
+                onDetailsClick={handlePropertyPageClick}
+                progressCount={progressCount}
+                pageName="Property-list"
+              />
+            )}
           </Box>
         </>
       )}
