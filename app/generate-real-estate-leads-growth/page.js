@@ -627,7 +627,7 @@ function useThrottledOnScroll(callback, delay) {
           <Typography variant="h2" sx={{ textAlign: "center"}}>What we offer</Typography>
           <Offer />
         </Box>
-        <Box id="faq" sx={{marginTop: 2}}>
+        <Box id="faq" sx={{marginTop: "20px"}}>
           <Typography variant="h2" sx={{ textAlign: "center"}}>FAQ</Typography>
           <FAQ />
         </Box>
