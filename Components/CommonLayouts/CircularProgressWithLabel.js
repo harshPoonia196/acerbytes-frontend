@@ -11,7 +11,7 @@ function CircularProgressWithLabel(props) {
       <CircularProgress
         variant="determinate"
         thickness={4}
-        size={props.islarge ? 50 : 40}
+        size={props.islarge ? 50 : 35}
         {...props}
       />
       <Box

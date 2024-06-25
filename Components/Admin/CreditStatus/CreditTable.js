@@ -54,6 +54,7 @@ import { ORDER_STATUS, ToasterMessages } from "utills/Constants";
 import { countryCodeFormating } from "utills/utills";
 import InfoBox from "Components/CommonLayouts/CommonHeader";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
+import moment from "moment";
 
 const headCells = [
   {
@@ -189,7 +190,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
           {countryCodeFormating(row?.brokerDetails?.phone?.countryCode)}{" "}
           {row?.brokerDetails?.phone?.number}
         </TableCell>
-        <TableCell>{formatShortDate(row.createdAt)}</TableCell>
+        <TableCell>{moment(row.createdAt).format("DD/MM/YY")}</TableCell>
         <TableCell sx={{ textAlign: "right" }}>
           {formatPoints(row.newPoints)}
         </TableCell>

@@ -188,7 +188,7 @@ function AdminCreditPointsPopup(props) {
         text={modifiedText}
       />
       <Dialog
-        sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important" } }}
+        sx={{ "& .MuiDialog-paper": { borderRadius: "8px !important", minHeight: "355px", } }}
         open={open}
         onClose={handleClose}
         className="creditPopup"
@@ -239,9 +239,9 @@ function AdminCreditPointsPopup(props) {
                 value: creditInfo?.brokerGoogleID,
               }}
               list={consultantList?.map((i) => {
-                const { name, _id } = i;
+                const { name, brokerId, _id } = i;
                 const { firstName, lastName } = name;
-                return { label: `${firstName} ${lastName}`, value: _id };
+                return { label: `${firstName} ${lastName} - ${brokerId}`, value: _id };
               })}
               className="creditPopup-textfield"
             />

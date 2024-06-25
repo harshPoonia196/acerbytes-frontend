@@ -13,6 +13,7 @@ import CustomButton from 'Components/CommonLayouts/Loading/LoadingButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { boxShadowTop } from 'utills/Constants';
 import { useAuth } from "utills/AuthContext";
+import DescriptionIcon from '@mui/icons-material/Description';
 
 function Footer({ paymentPage }) {
     const history = useRouter()
@@ -37,9 +38,10 @@ function Footer({ paymentPage }) {
         <Card sx={{
             position: 'fixed', bottom: 0, p: 2, width: '100%', display: 'flex',
             boxShadow: boxShadowTop,
+            zIndex: 1
         }}>
             <Box sx={{ flex: 1, alignSelf: 'center' }}>
-                {
+                {/* {
                     !paymentPage &&
                     <CustomButton variant='outlined'
                         onClick={() => { history.push('/consultant/make-payment') }}
@@ -48,12 +50,21 @@ function Footer({ paymentPage }) {
 
                         ButtonText={<>Pay&nbsp;here</>}
                     />
-                }
+                } */}
+                <CustomButton variant='outlined'
+                    onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }}
+                    size="small"
+                    startIcon={<WhatsAppIcon />}
+
+                    ButtonText={<>Contact us</>}
+                />
             </Box>
             <Box sx={{ display: 'flex', gap: 1 }}>
                 <Box sx={{ alignSelf: 'center', cursor: 'pointer', }}>
-                    <CustomButton startIcon={<ShareIcon />} onClick={handleWhatsappShare} size="small" sx={{ fontSize: '0.75rem' }}
-                        ButtonText={"Share"}
+                    <CustomButton variant='contained'
+                        size="small"
+                        startIcon={<DescriptionIcon />}
+                        ButtonText={<>Register</>}
                     />
                 </Box>
                 <Tooltip title="More">

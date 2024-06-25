@@ -193,6 +193,9 @@ html {
   .consultantFooter{
     z-index: 0 !important;
   }
+  .marketTabs  .MuiTabScrollButton-root{
+    display: none;
+  }
 }
 
 .openArrow{
@@ -254,6 +257,11 @@ html {
   background-color: #00000070;
 }
 
+.marketingTitle{
+  font-size: 1.7rem !important;
+  padding: 0 20px;
+}
+
 @media only screen and (min-width: 600px) {
   .offers:nth-child(even) .rightCard{
     order: 1
@@ -264,17 +272,20 @@ html {
   .marketTabs{
     top: 64;
   }
+  .marketingTitle{
+    font-size: 4rem !important;
+  }
 }
+
 .offers:nth-child(even) ol{
   list-style: disc;
 }
 
-.marketTabs{
-  background-color: "#fff";
-  position: "sticky";
-  top: 54;
-  left: 0;
-  right: 0;
-  z-index: 100 ;
-  box-shadow: -1px 8px 6px -6px gainsboro;
+.faq .MuiAccordion-root::before{
+  background: none;
+}
+
+.MuiAccordion-root::before{
+  background-color: transparent;
+  background: none;
 }
