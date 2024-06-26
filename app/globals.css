@@ -270,16 +270,19 @@ html {
     order: 2
   }
   .marketTabs{
-    top: 64;
+    top: 127;
   }
   .marketingTitle{
     font-size: 4rem !important;
   }
+  .marketTabs .MuiTabs-scroller >div{
+    justify-content: center;
+  }
 }
 
-.offers:nth-child(even) ol{
+/* .offers:nth-child(even) ol{
   list-style: disc;
-}
+} */
 
 .faq .MuiAccordion-root::before{
   background: none;
@@ -288,4 +291,22 @@ html {
 .MuiAccordion-root::before{
   background-color: transparent;
   background: none;
+}
+
+.blink_me {
+  animation: blinker 2s linear infinite;
+  animation-delay: 2s;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.offers ol {
+  list-style: none;
+  padding-left: 16px;
+  list-style-type: '✓';
+  
 }
