@@ -35,6 +35,7 @@ import {
 } from "utills/CommonFunction";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import BackspaceIcon from '@mui/icons-material/Backspace';
 import { useRouter } from "next/navigation";
 import {
   getAllProperty,
@@ -207,23 +208,30 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
         </IconButton>
       </TableCell>
       <TableCell sx={{ py: 0 }}>
-        <IconButton
-          sx={{ fontSize: "1rem !important" }}
-          onClick={() => handleDelete(row.id)}
-        >
-          <Tooltip title="Delete">
-            <DeleteIcon fontSize="1rem" />
-          </Tooltip>
-        </IconButton>
+        <Tooltip title={row.deleted ? "Deleted" : "Delete"}>
+          <IconButton
+            sx={{ fontSize: "1rem !important" }}
+            onClick={() => handleDelete(row.id)}
+            disabled={row.deleted}
+          >
+            {row.deleted ? (
+              <BackspaceIcon fontSize="1rem" />
+            ) : (
+              <DeleteIcon fontSize="1rem" />
+            )}
+          </IconButton>
+        </Tooltip>
       </TableCell>
       <TableCell>
         <Chip label={formattedTime(row?.modifiedData)} size="small" />
       </TableCell>
       <TableCell>
         <Chip
-          label={row.published ? "Published" : "Draft"}
+          label={
+            row.deleted ? "Deleted" : row.published ? "Published" : "Draft"
+          }
           size="small"
-          color={row.published ? "success" : "error"}
+          color={row.deleted ? "error" : row.published ? "success" : "warning"}
         />
       </TableCell>
       <TableCell sx={{ py: 0 }}>
@@ -244,34 +252,75 @@ function RowStructure({ row, router, handleDelete, managePublishActive }) {
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem
-            onClick={() => {
-              if (row.rera === "yes" && row.published === false) {
-                managePublishActive(row.id, !row.published);
-              } else if (row.published === true) {
-                managePublishActive(row.id, !row.published);
-              } else {
-                openSnackbar(
-                  "RERA message needs to be provided for this property",
-                  "error"
-                );
-                // showTostMessages(
-                //  "RERA message needs to be provided for this property",
-                // );
-              }
-
-              handleClose();
-            }}
-          >
-            <ListItemIcon>
-              {row.published ? (
-                <DraftsIcon fontSize="small" />
-              ) : (
-                <PublishIcon fontSize="small" />
-              )}
-            </ListItemIcon>
-            {row.published ? " Draft" : "Publish"}
-          </MenuItem>
+          {row.deleted ? (
+            <>
+              <MenuItem
+                onClick={() => {
+                  if (row.rera === "yes" && row.published === false) {
+                    managePublishActive(row.id, !row.published);
+                  } else if (row.published === true) {
+                    managePublishActive(row.id, !row.published);
+                  } else {
+                    openSnackbar(
+                      "RERA message needs to be provided for this property",
+                      "error"
+                    );
+                  }
+                  handleClose();
+                }}
+              >
+                <ListItemIcon>
+                  <DraftsIcon fontSize="small" />
+                </ListItemIcon>
+                Draft
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  if (row.rera === "yes" && row.published === false) {
+                    managePublishActive(row.id, !row.published);
+                  } else if (row.published === true) {
+                    managePublishActive(row.id, !row.published);
+                  } else {
+                    openSnackbar(
+                      "RERA message needs to be provided for this property",
+                      "error"
+                    );
+                  }
+                  handleClose();
+                }}
+              >
+                <ListItemIcon>
+                  <PublishIcon fontSize="small" />
+                </ListItemIcon>
+                Publish
+              </MenuItem>
+            </>
+          ) : (
+            <MenuItem
+              onClick={() => {
+                if (row.rera === "yes" && row.published === false) {
+                  managePublishActive(row.id, !row.published);
+                } else if (row.published === true) {
+                  managePublishActive(row.id, !row.published);
+                } else {
+                  openSnackbar(
+                    "RERA message needs to be provided for this property",
+                    "error"
+                  );
+                }
+                handleClose();
+              }}
+            >
+              <ListItemIcon>
+                {row.published ? (
+                  <DraftsIcon fontSize="small" />
+                ) : (
+                  <PublishIcon fontSize="small" />
+                )}
+              </ListItemIcon>
+              {row.published ? "Draft" : "Publish"}
+            </MenuItem>
+          )}
         </Menu>
       </TableCell>
     </TableRow>
@@ -306,6 +355,7 @@ const PropertyListTable = ({ setCount }) => {
       modifiedData: item?.modifiedAt,
       published: item?.published,
       propertyId: item?.property_id,
+      deleted: item?.deleted,
     }));
   };
 
