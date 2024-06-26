@@ -319,7 +319,6 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
         });
         onDashboardDataUpdate({
           countInfo: { count: response?.data?.totalCount } || {},
-          userDetails,
         });
       }
     } catch (error) {
