@@ -166,7 +166,7 @@ function RowStructure({ row, adminAssignPointsHandler }) {
     <>
       <AdminCreditPointsPopup
         open={openAddCreditPoints}
-        _id={row?.brokerDetails._id}
+        _id={row?.brokerIndexid}
         handleClose={() => handlePopuChange(false)}
         handleSubmit={adminAssignPointsHandler}
       />
@@ -182,13 +182,13 @@ function RowStructure({ row, adminAssignPointsHandler }) {
         }}
       >
         <TableCell>
-          {row?.brokerDetails?.name?.firstName}{" "}
-          {row?.brokerDetails?.name?.lastName}
+          {row?.name?.firstName}{" "}
+          {row?.name?.lastName}
         </TableCell>
-        <TableCell>{row?.brokerDetails?.brokerId}</TableCell>
+        <TableCell>{row?.brokerId}</TableCell>
         <TableCell>
-          {countryCodeFormating(row?.brokerDetails?.phone?.countryCode)}{" "}
-          {row?.brokerDetails?.phone?.number}
+          {countryCodeFormating(row?.phone?.countryCode)}{" "}
+          {row?.phone?.number}
         </TableCell>
         <TableCell>{moment(row.createdAt).format("DD/MM/YY")}</TableCell>
         <TableCell sx={{ textAlign: "right" }}>
@@ -305,8 +305,7 @@ function CreditTable({ onDashboardDataUpdate, dashboardInfo }) {
       const response = await getCreditPointStatusList(
         objectToQueryString({
           ...queryParams,
-          firstName: searchTerms,
-          lastName: searchTerms,
+          searchTerm:searchTerms
         })
       );
       if (response.status == 200) {

@@ -19,7 +19,6 @@ import ConfirmationDialog from "Components/CommonLayouts/ConfirmationDialog";
 
 function AdminCreditPointsPopup(props) {
   const { open, _id, handleClose, handleSubmit } = props;
-
   const [isLoading, setLoading] = React.useState(false);
   const [salesPersons, setSalesPersons] = React.useState([]);
   const [consultantList, setConsultantsList] = React.useState([]);
@@ -29,7 +28,6 @@ function AdminCreditPointsPopup(props) {
   const toggleConfirmation = () => setConfirmation((i) => !i);
 
   const { openSnackbar } = useSnackbar();
-
   const { name, brokerId } =
     consultantList?.find((rs) => rs._id == creditInfo.brokerGoogleID) || {};
 
@@ -41,9 +39,12 @@ function AdminCreditPointsPopup(props) {
   };
 
   React.useEffect(() => {
-    getSalesPersonsList();
-    getConsultantList();
-    generateOrderNumber();
+    if(open===true){
+      getSalesPersonsList();
+      getConsultantList();
+      generateOrderNumber();
+    }
+   
   }, [open]);
 
   const getSalesPersonsList = async () => {
@@ -120,10 +121,7 @@ function AdminCreditPointsPopup(props) {
     const key = event.target.name;
     const value = event.target.value;
 
-    console.log({
-      key,
-      value,
-    });
+   
     if (isReset) {
       setCreditInfo({
         brokerGoogleID: _id,

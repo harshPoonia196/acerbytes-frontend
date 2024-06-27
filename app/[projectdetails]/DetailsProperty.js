@@ -16,7 +16,7 @@ import {
 import AssignmentIcon from "@mui/icons-material/Assignment";
 // import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import Fab from "@mui/material/Fab";
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import EnquireNow from "Components/DetailsPage/Modal/EnquireNow";
 import OtpVerify from "Components/DetailsPage/Modal/OtpVerify";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
