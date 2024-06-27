@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Box,
   Typography,
@@ -55,6 +55,7 @@ import NavTabProfilePage from "Components/ProfilePage/NavTabProfilePage";
 import {listOfMarketingTab} from "utills/Constants";
 import throttle from "lodash/throttle";
 import FAQ from "Components/Marketing/FAQ";
+import StarIcon from '@mui/icons-material/Star';
 
 const enquiries = [
   {
@@ -560,9 +561,6 @@ function useThrottledOnScroll(callback, delay) {
   }, [throttledCallback]);
 }
 
-
-
-
   return (
     <>
       {isLoading && <Loader />}
@@ -572,9 +570,9 @@ function useThrottledOnScroll(callback, delay) {
           boxShadow: "-1px -2px 6px 2px gainsboro !important",
         }}
       >
-        <Card sx={{ background: "#e2b42d", borderRadius: 0}}>
-          <Container maxWidth="lg">
-            <Typography variant="h4" sx={{color: 'white', textShadow: "0 0 10px rgba(0, 0, 0, .3)", textAlign: "center"}}>Improve your Real estate conversions, significantly improve your real estate Sales</Typography>
+        <Card sx={{ background: "#000", borderRadius: 0, position: 'fixed', width: '100%', zIndex: 2, top: {sm: "63px", xs: "56px"}, left: 0, boxShadow: "none !important"}}>
+          <Container maxWidth="lg" sx={{paddingBottom: '22px !important'}}>
+            <Typography variant="h4" sx={{color: 'white', textAlign: "center"}} className="blink_me"><StarIcon sx={{position: "relative", top: "5px"}}/> Boost Your Real Estate Conversions and Skyrocket Your Sales!</Typography>
           </Container>
         </Card>
         <Card sx={{ position: "relative",borderRadius: 0 }}>
@@ -599,16 +597,17 @@ function useThrottledOnScroll(callback, delay) {
               }}
             >
               <span style={{ fontWeight: "bold" }}>
-                Are you a real estate consultant ?{" "}
+              Are you into Real Estate business ?{" "}
               </span>
-              Get an easy way to generate real estate leads and business
-              growth with AcreBytes
+              Generate real estate leads that convert
+              {/* Get an easy way to generate real estate leads and business
+              growth with AcreBytes */}
             </Typography>
             </Container>
           </Box>
           <Box className="overlay"></Box>
         </Card>
-        <Box className="marketTabs" sx={{backgroundColor:"#fff", position: "sticky", top: {xs: '54px', sm: '64px'}, left: 0, right: 0, zIndex: 100, boxShadow: '-1px 8px 6px -6px gainsboro'}}>
+        <Box className="marketTabs" sx={{backgroundColor:"#fff", position: "sticky", top: {xs: '148px', sm: '127px'}, left: 0, right: 0, zIndex: 100, boxShadow: '-1px 8px 6px -6px gainsboro'}}>
           <NavTabProfilePage
             value={activeState}
             handleChange={handleClick}
@@ -617,18 +616,21 @@ function useThrottledOnScroll(callback, delay) {
         </Box>
         <Box id="whatWeDo">
           <Container maxWidth="lg">
-            <Box sx={{padding:5}}>
-              <Typography variant="h2" sx={{ textAlign: "center"}}>What we do</Typography>
-              <Typography variant="body1" sx={{ textAlign: "center", mt: 1}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</Typography>
+            <Box sx={{padding: {sm: 5, xs: 0}}}>
+              <Typography variant="h2" sx={{ textAlign: "center", fontSize: { sm: "42px", xs: "34px"}}}>AcreBytes offers you, everything you need to maximize and speed up your Real Estate Sales
+              </Typography>
+              <Typography variant="body1" sx={{ textAlign: "center", mt: 1}}>
+                AcreBytes offers you a tool to generate and manage your specific high quality verified leads, that converts for you
+              </Typography>
             </Box>
           </Container>
         </Box>
         <Box id="offerDetails">
-          <Typography variant="h2" sx={{ textAlign: "center"}}>What we offer</Typography>
+          <Typography variant="h2" sx={{ textAlign: "center", fontSize: { sm: "42px", xs: "34px"}}}>What we offer</Typography>
           <Offer />
         </Box>
         <Box id="faq" sx={{marginTop: "20px"}}>
-          <Typography variant="h2" sx={{ textAlign: "center"}}>FAQ</Typography>
+          <Typography variant="h2" sx={{ textAlign: "center", fontSize: { sm: "42px", xs: "34px"}}}>FAQ</Typography>
           <FAQ />
         </Box>
         {/* <Box id="benefits">
@@ -636,8 +638,8 @@ function useThrottledOnScroll(callback, delay) {
             <Typography variant="h2" sx={{ textAlign: "center"}}>Benefits</Typography>
           </Container>
         </Box> */}
-        <Container maxWidth="lg" sx={{ pb: "0 !important" }}>
-          <Box sx={{ py: 2 }}>
+        {/* <Container maxWidth="lg" sx={{ pb: "0 !important" }}> */}
+          {/* <Box sx={{ py: 2 }}>
             
             <Grid container spacing={2}>
               {enquiries.map((enquiry) => {
@@ -648,8 +650,8 @@ function useThrottledOnScroll(callback, delay) {
                 );
               })}
             </Grid>
-          </Box>
-          <Box sx={{ py: 4 }}>
+          </Box> */}
+          {/* <Box sx={{ py: 4 }}> */}
             {/* <Typography variant="h1" sx={{ color: "#000", fontWeight: 300 }}>
               Explore a world of possibilities with{" "}
               <span
@@ -663,7 +665,7 @@ function useThrottledOnScroll(callback, delay) {
               </span>{" "}
               open real estate queries. Your next customer is just a click away
             </Typography> */}
-            <Box sx={{ mt: 2, textAlign: "center" }}>
+            {/* <Box sx={{ mt: 2, textAlign: "center" }}> */}
               {/* <Box sx={{ width: "fit-content", margin: "auto" }}>
                 <AvatarGroup total={5}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
@@ -687,9 +689,9 @@ function useThrottledOnScroll(callback, delay) {
               >
                 View  my {rows?.length} leads
               </Typography> */}
-            </Box>
+            {/* </Box>
           </Box>
-        </Container>
+        </Container> */}
       </Box>
       {/* <Container maxWidth="lg">
         <Box
@@ -768,7 +770,7 @@ function useThrottledOnScroll(callback, delay) {
           </Table>
         </TableContainer>
       </Container> */}
-      <div style={{ paddingBottom: "70px" }}></div>
+      <Box sx={{ paddingBottom: {sm: "70px", xs: "90px"}}}></Box>
       <Footer />
     </>
   );

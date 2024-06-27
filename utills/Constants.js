@@ -447,12 +447,8 @@ const userLeadId = "userLeadId";
 const listOfMarketingTab = [
   { label: "What we do", value: "whatWeDo" },
   { label: "what we offer", value: "offerDetails" },
-  { label: "Benefits", value: "benefits" },
   { label: 'Testimonial', value: 'testimonial' },
   { label: 'FAQ', value: 'faq' },
-  { label: "Consultants", value: "consultants" },
-  { label: "Why us", value: "whyUs" },
-  { label: "Join", value: "join" },
 ];
 
 export {
