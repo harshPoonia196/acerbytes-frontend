@@ -18,7 +18,11 @@ import { useSnackbar } from "utills/SnackbarContext";
 function ServicesCard({ isEdit, form, handleChange, errors,formUpdated }) {
     const { openSnackbar } = useSnackbar()
     
+    const [checked, setChecked] = React.useState(false);
 
+    const handleSwitchChange = (event) => {
+        setChecked(event.target.checked);
+    };
 
     return (
        <>{  
@@ -35,27 +39,25 @@ function ServicesCard({ isEdit, form, handleChange, errors,formUpdated }) {
                 <Divider />
                 <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
                     <Grid item xs={12} sm={3} sx={{ display: 'flex' }}>
-                        <Switch onChange={(e) => { handleChange(e, "amenitiesData", key, "checked", undefined, insideKey) }} checked="false" />
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1 }}
                         >
                             Commercial
                         </Typography>
-                        
                     </Grid>
                     <Grid item xs={12} sm={3} sx={{ display: 'flex' }}>
-                        <Switch onChange={(e) => { handleChange(e, "amenitiesData", key, "checked", undefined, insideKey) }} checked="false" />
+                        <Switch checked={checked} onChange={handleSwitchChange}/>
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1 }}
                         >
-                            Sale
+                            Sales
                         </Typography>
                         
                     </Grid>
                     <Grid item xs={12} sm={3} sx={{ display: 'flex' }}>
-                        <Switch onChange={(e) => { handleChange(e, "amenitiesData", key, "checked", undefined, insideKey) }} checked="false" />
+                        <Switch checked={checked} onChange={handleSwitchChange}/>
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1 }}
@@ -65,7 +67,48 @@ function ServicesCard({ isEdit, form, handleChange, errors,formUpdated }) {
                         
                     </Grid>
                     <Grid item xs={12} sm={3} sx={{ display: 'flex' }}>
-                        <Switch onChange={(e) => { handleChange(e, "amenitiesData", key, "checked", undefined, insideKey) }} checked="false" />
+                        <Switch checked={checked} onChange={handleSwitchChange}/>
+                        <Typography
+                            variant="subtitle2"
+                            sx={{ alignSelf: "center", flex: 1 }}
+                        >
+                            Lease/Rent
+                        </Typography>
+                        
+                    </Grid>
+                    
+                </Grid>
+                <Grid container rowSpacing={1} columnSpacing={2} sx={{ p: 2 }}>
+                    <Grid item xs={12} sm={3} sx={{ display: 'flex' }}>
+                        <Typography
+                            variant="subtitle2"
+                            sx={{ alignSelf: "center", flex: 1 }}
+                        >
+                            Residential
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={3} sx={{ display: 'flex' }}>
+                        <Switch checked={checked} onChange={handleSwitchChange}/>
+                        <Typography
+                            variant="subtitle2"
+                            sx={{ alignSelf: "center", flex: 1 }}
+                        >
+                            Sales
+                        </Typography>
+                        
+                    </Grid>
+                    <Grid item xs={12} sm={3} sx={{ display: 'flex' }}>
+                        <Switch checked={checked} onChange={handleSwitchChange}/>
+                        <Typography
+                            variant="subtitle2"
+                            sx={{ alignSelf: "center", flex: 1 }}
+                        >
+                            Purchase
+                        </Typography>
+                        
+                    </Grid>
+                    <Grid item xs={12} sm={3} sx={{ display: 'flex' }}>
+                        <Switch checked={checked} onChange={handleSwitchChange}/>
                         <Typography
                             variant="subtitle2"
                             sx={{ alignSelf: "center", flex: 1 }}
