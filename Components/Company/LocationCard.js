@@ -10,8 +10,6 @@ import {
     Divider,
     IconButton,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import LocationAssesmentCard from "Components/Admin/Property/SubComponents/LocationAssesmentCard"
 import NewInputFieldStructure from "Components/CommonLayouts/NewInputFieldStructure";
 import NewSelectTextFieldStructure from "Components/CommonLayouts/NewSelectTextFieldStructure";
 import NewAutocompleteAddOptionToList from "Components/CommonLayouts/NewAutocompleteAddOptionToList"
@@ -19,7 +17,7 @@ import { getLocations } from 'api/Property.api';
 import { useSnackbar } from "utills/SnackbarContext";
 
 
-function LocationCard({ isEdit, form, handleChange, errors, selectOptions,moduleScoreCalc,cities,formUpdated }) {
+function LocationCard({ isEdit, form, handleChange, errors, cities,formUpdated }) {
     const { openSnackbar } = useSnackbar()
     const { state, city, area, sector, pinCode, googleMapLink, longitude, latitude } = form.location
 useEffect(()=>{
