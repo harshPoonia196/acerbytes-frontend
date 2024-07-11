@@ -167,7 +167,7 @@ const Company = () => {
             <Box sx={{ }}>
                 <Card>
                     <Container maxWidth="md" sx={{p:'0 !important'}}>
-                        <Image src={Demo} style={{width: '100%'}}/>
+                        <Image src={Demo} style={{width: '100%', height: 'auto'}}/>
                     </Container>
                 </Card> 
             </Box>
@@ -198,21 +198,21 @@ const Company = () => {
                                   variant="h2"
                                   sx={{
                                       fontWeight: "700 !important",
-                                      display: { xs: "none", sm: "block" },
                                   }}
                                   >
                                   Company Title
                                   </Typography>
                                   
-                                  <Box sx={{ display: { xs: "none", sm: "flex" } }}>
-                                      <Typography variant='body1' sx={{position: 'relative', top: '2px', marginRight: '2px'}}>4.5</Typography> 
-                                      <br/>
+                                  <Box>
+                                      <Typography variant='body1' component="span" sx={{position: 'relative', top: '2px', marginRight: '2px'}}>4.5</Typography> 
+                                      
                                       <Rating
                                           readOnly
                                           size="small"
                                           name="hover-feedback"
                                           precision={0.5}
                                           value={4}
+                                          sx={{position: 'relative', top: '6px'}}
                                       />
                                   </Box>
                               </Box>

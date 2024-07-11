@@ -5,9 +5,14 @@ import { Container, Grid, Card, Box, Typography, Divider,
     Tab,
     tabsClasses, Fab } from '@mui/material'
 import React, { useState, useRef, useEffect } from 'react'
-
+import dynamic from "next/dynamic";
 import LocationCard from "Components/Company/LocationCard";
-// import ImageCard from 'Components/Company/ImageCard';
+const ImageCard = dynamic(
+    () => import("Components/Admin/Property/SubComponents/MarketingCard"),
+    {
+      ssr: false,
+    }
+  );
 import ServicesCard from 'Components/Company/ServicesCard';
   
 import throttle from "lodash/throttle";
@@ -252,12 +257,12 @@ const AddCompany = () => {
             handleChange={handleChange}
             isEdit={isEdit}/>
 
-            {/* <ImageCard 
+            <ImageCard 
             errors={errors}
             hide={hide}
             form={form}
             handleChange={handleChange}
-            isEdit={isEdit} /> */}
+            isEdit={isEdit} />
             
         </Grid>
         </Container>
