@@ -192,6 +192,7 @@ function ImageCard({ isEdit, errors, form, handleChange }) {
                 src={logoImage}
               />
             )}
+            
             <Tooltip
               title={imageDoc}
               TransitionComponent={Fade}
