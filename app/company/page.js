@@ -205,7 +205,7 @@ const Company = () => {
                                   </Typography>
                                   
                                   <Box sx={{ display: { xs: "none", sm: "flex" } }}>
-                                      <Typography variant='body1'>Ratings: 4</Typography> 
+                                      <Typography variant='body1' sx={{position: 'relative', top: '2px', marginRight: '2px'}}>4.5</Typography> 
                                       <br/>
                                       <Rating
                                           readOnly
