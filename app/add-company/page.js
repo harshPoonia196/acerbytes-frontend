@@ -8,7 +8,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import dynamic from "next/dynamic";
 import LocationCard from "Components/Company/LocationCard";
 const ImageCard = dynamic(
-    () => import("Components/Admin/Property/SubComponents/MarketingCard"),
+    () => import("Components/Company/ImageCard"),
     {
       ssr: false,
     }
@@ -57,7 +57,7 @@ const formState = {
     },
     marketing: {
         image: "",
-        logoImage: '',
+        logoImage: "",
         tagLine: "",
         description: "",
         metaDescription: "",
