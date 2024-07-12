@@ -16,16 +16,16 @@ import {
     Grid,
     Avatar,
     Button,
-    Rating
+    Rating,
   } from "@mui/material";
  import Demo from '../../public/images/company.webp'  
  import throttle from "lodash/throttle";
  import PhoneIcon from '@mui/icons-material/Phone';
-
+import CompanyListing from '../../Components/Company/CompanyListing'
  const listOfPropertyDetailsTab = [
     {
       label: "Listing",
-      value: "companyDetails",
+      value: "companyListing",
     },
     {
       label: "Links",
@@ -180,6 +180,7 @@ const Company = () => {
                 left: 0,
                 right: 0,
                 zIndex: 100,
+                boxShadow: "-1px 8px 6px -6px gainsboro!important"
                 }}>
                   
                     <Card sx={{ p: 2, boxShadow: "-1px 8px 6px -6px gainsboro!important" }}>
@@ -267,29 +268,18 @@ const Company = () => {
             </Box>
             <Box>
                 <Container maxWidth="md" sx={{p:'0 !important'}}>
-                    <Grid container spacing={2} id="companyDetails" sx={{mt: 1}}>
-                        <Grid item sm={6}>
-                            <Card sx={{p:2}}>
-                                <Typography variant='h2'>Title</Typography>
-                                <Typography variant="body1">Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</Typography>
-                                <Typography variant="body1">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Typography>
-                            </Card>
-                        </Grid>
-                        <Grid item sm={6}>
-                            <Card sx={{p:2}}>
-                                <Typography variant='h2'>Title</Typography>
-                                <Typography variant="body1">Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</Typography>
-                                <Typography variant="body1">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Typography>
-                            </Card>
-                        </Grid>
+                    <Grid container spacing={2} id="companyListing" sx={{mt: 1}}>
+                      <Grid item xs={12}>
+                        <CompanyListing />
+                      </Grid>
                     </Grid>
-                    <Grid container spacing={2} id="overview" sx={{mt: 1, pb: 2}}>
-                        <Grid item sm={6}>
-                            <Card sx={{p:2}}>
-                                <Typography variant='h2'>Title</Typography>
-                                <Typography variant="body1">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Typography>
-                            </Card>
-                        </Grid>
+                    <Grid container spacing={2} id="links" sx={{mt: 1, pb: 2}}>
+                      <Grid item xs={12}>
+                        <Card sx={{p:2}}>
+                            <Typography variant='h3'>Links Title</Typography>
+                            <Typography variant="body1">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Typography>
+                        </Card>
+                      </Grid>
                     </Grid> 
                 </Container>
             </Box>
