@@ -1,20 +1,15 @@
 "use client";
 
-import { Box, Container, Typography, Card, Grid } from "@mui/material";
 import CreditTable from "Components/Admin/CreditStatus/CreditTable";
 
 import CustomAdminBreadScrumbs from "Components/CommonLayouts/CustomAdminBreadScrumbs";
-import InfoBox from "Components/CommonLayouts/CommonHeader";
-// import CustomSearchInput from 'Components/CommonLayouts/SearchInput';
 import React, { useState } from "react";
 
 function CreditStatus() {
   const [dashboardInfo, setDashboardInfo] = useState({});
-  const [userDetails, setUserDetails] = useState({});
 
-  const handleDashboardDataUpdate = ({ countInfo, userDetails }) => {
+  const handleDashboardDataUpdate = ({ countInfo }) => {
     setDashboardInfo(countInfo);
-    setUserDetails(userDetails || {});
   };
 
   return (
