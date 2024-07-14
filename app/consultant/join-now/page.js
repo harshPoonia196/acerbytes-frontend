@@ -1,15 +1,17 @@
 "use client";
 
-import {
-  Container,
-  Box,
-  Typography,
-} from "@mui/material";
+import { Container, Box, Typography } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import React, { useEffect, useState } from "react";
 import CustomButton from "Components/CommonLayouts/Loading/LoadingButton";
 
-import { createUserAPI, sendOtpAPI, signInAPI, signInAuthenticationAPI, verifyOtpAPI } from "api/Auth.api";
+import {
+  createUserAPI,
+  sendOtpAPI,
+  signInAPI,
+  signInAuthenticationAPI,
+  verifyOtpAPI,
+} from "api/Auth.api";
 import { useSnackbar } from "utills/SnackbarContext";
 import { useAuth } from "utills/AuthContext";
 import Step1 from "./Step1";
@@ -22,7 +24,7 @@ import { countries } from "utills/Constants";
 function JoinNow() {
   const router = useRouter();
 
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(1);
   const { openSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
@@ -43,12 +45,11 @@ function JoinNow() {
     companyType: "",
     email: "",
     phoneNumber: "",
-    termsAndConditions: false
+    termsAndConditions: false,
   });
   const [otpInput, setOtpInput] = useState("");
-  const nextStep = () => setStep(prev => prev + 1)
-  const previousStep = () => setStep(prev => prev - 1)
-
+  const nextStep = () => setStep((prev) => prev + 1);
+  const previousStep = () => setStep((prev) => prev - 1);
 
   const handleClick = (message, severity) => {
     openSnackbar(message, severity);
@@ -68,8 +69,8 @@ function JoinNow() {
     } catch (error) {
       handleClick(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching sign-in URL",
+          error?.message ||
+          "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -82,21 +83,24 @@ function JoinNow() {
       AuthenticateUser(searchParams.get("code"));
     }
   }, []);
-  let count = 0
+  let count = 0;
 
   const AuthenticateUser = async (code) => {
     try {
       if (count === 0) {
-        count++
+        count++;
         setLoading(true);
-        const res = await signInAuthenticationAPI({ code: code, type: "consultant" });
+        const res = await signInAuthenticationAPI({
+          code: code,
+          type: "consultant",
+        });
         const { email, id, name, token, userDetails } = res?.data?.data;
         let formData = {
           email: email,
           googleId: id,
           firstName: name?.split(" ")?.[0] || "",
           lastName: name?.split(" ")?.[name?.split(" ")?.length - 1] || "",
-        }
+        };
 
         if (token) {
           if (userDetails?.isBlocked) {
@@ -115,7 +119,7 @@ function JoinNow() {
 
         setForm((prev) => ({
           ...prev,
-          ...formData
+          ...formData,
         }));
 
         nextStep();
@@ -123,8 +127,8 @@ function JoinNow() {
     } catch (error) {
       handleClick(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching sign-in URL",
+          error?.message ||
+          "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -132,12 +136,12 @@ function JoinNow() {
     }
   };
 
-  const handleChange = (name, value)=> {
-      setForm(prev=> ({
-          ...prev,
-          [name]: value
-      }))
-  }
+  const handleChange = (name, value) => {
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const sendOtpFun = async (isResend) => {
     try {
@@ -150,15 +154,15 @@ function JoinNow() {
       if (res.status === 200) {
         openSnackbar("Verfication code send successfully", "success");
         if (!isResend) {
-          setShowOtp(true)
-          setOtpVerified(true)
+          setShowOtp(true);
+          setOtpVerified(true);
         }
       }
     } catch (error) {
       handleClick(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching sign-in URL",
+          error?.message ||
+          "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -184,7 +188,7 @@ function JoinNow() {
         businessType: form.businessType,
         company: form.company,
         reraNo: form.reraNo,
-        companyType: form.companyType
+        companyType: form.companyType,
       };
       const res = await createUserAPI(payload);
       if (res.status === 200) {
@@ -200,8 +204,8 @@ function JoinNow() {
     } catch (error) {
       handleClick(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching sign-in URL",
+          error?.message ||
+          "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -219,13 +223,13 @@ function JoinNow() {
       };
       const res = await verifyOtpAPI(payload);
       if (res.status === 200) {
-        createUserFun()
+        createUserFun();
       }
     } catch (error) {
       handleClick(
         error?.response?.data?.message ||
-        error?.message ||
-        "Error fetching sign-in URL",
+          error?.message ||
+          "Error fetching sign-in URL",
         "error"
       );
     } finally {
@@ -233,34 +237,37 @@ function JoinNow() {
     }
   };
 
-  const handleSignUp = (isResend)=> {
-    if(otpVerified && !isResend){
-      verifyOtpFun()
-      return
+  const handleSignUp = (isResend) => {
+    if (otpVerified && !isResend) {
+      verifyOtpFun();
+      return;
     }
-    sendOtpFun(isResend)
-  }
+    sendOtpFun(isResend);
+  };
 
   const getStep = () => {
     switch (step) {
       case 1: {
-        return <Step1 getSignInUrl={getSignInUrl} loading={loading} />
+        return <Step1 getSignInUrl={getSignInUrl} loading={loading} />;
       }
       case 2: {
-        return <Step2 
-        otpInput={otpInput}
-        setOtpInput={setOtpInput}
-        resendLoading={resendLoading}
-        showOtp={showOtp} 
-        form={form} 
-        handleChange={handleChange} 
-        handleSignUp={handleSignUp}/>
+        return (
+          <Step2
+            otpInput={otpInput}
+            setOtpInput={setOtpInput}
+            resendLoading={resendLoading}
+            showOtp={showOtp}
+            form={form}
+            handleChange={handleChange}
+            handleSignUp={handleSignUp}
+          />
+        );
       }
       case 3: {
-        return <Step3 />
+        return <Step3 />;
       }
     }
-  }
+  };
 
   return (
     <>
@@ -277,9 +284,7 @@ function JoinNow() {
           </Box>
         </Container>
       </Box>
-      {
-        getStep()
-      }
+      {getStep()}
     </>
   );
 }
