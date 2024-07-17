@@ -10,6 +10,7 @@ import Loading from "Components/CommonLayouts/Loading";
 import { DEBOUNCE_TIMER } from "utills/Constants";
 
 function ShortList() {
+  console.log(" ===========>");
   const [alignment, setAlignment] = useState("asc");
 
   const [favouriteProperty, setfavouriteProperty] = useState([]);
