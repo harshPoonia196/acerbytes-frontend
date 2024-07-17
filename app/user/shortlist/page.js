@@ -11,6 +11,9 @@ import { DEBOUNCE_TIMER } from "utills/Constants";
 
 function ShortList() {
   console.log(" ===========>");
+  console.log(" ===========>");
+  console.log(" ===========>");
+  console.log(" ===========>");
   const [alignment, setAlignment] = useState("asc");
 
   const [favouriteProperty, setfavouriteProperty] = useState([]);
