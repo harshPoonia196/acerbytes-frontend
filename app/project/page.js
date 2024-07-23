@@ -39,6 +39,7 @@ import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterModal from 'Components/Project/FilterModal';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
   const headcells = [
     {
@@ -278,42 +279,45 @@ const ProjectDetails = () => {
             </Box>
             <Grid container spacing={2} sx={{mt: 1}}>
                 <Grid item xs={12} md={6}>
-                    <Card sx={{ p: 2}}>
-                    <Box sx={{ display: "flex", ml: 1}}>
-                        {avatar.map(item => {
-                            return (
-                                <Avatar className={selectedAvatar?.id === item.id ? 'activeAvtar': null} sx={{ ml:-1}} alt={item.name} src={item.image} onClick={() => selectAvtar(item)} />
-                            )
-                            })}
-                            {totalAvtars > max ? <Avatar  sx={{ ml: "-8px"}} aria-controls={open ? 'basic-menu' : undefined} 
-                            aria-haspopup="true" aria-expanded={open ? 'true' : undefined} 
-                            onClick={handleClick}>+{remainnigAvtarsData.length}</Avatar>: null}
-                            <Menu
-                            id="basic-menu"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            MenuListProps={{
-                                'aria-labelledby': 'basic-button',
-                            }}
-                            className="avatarMenu"
+                    <Card sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Box>
+                            <Box sx={{ display: "flex", ml: 1}}>
+                                {avatar.map(item => {
+                                    return (
+                                        <Avatar className={selectedAvatar?.id === item.id ? 'activeAvtar': null} sx={{ ml:-1}} alt={item.name} src={item.image} onClick={() => selectAvtar(item)} />
+                                    )
+                                    })}
+                                    {totalAvtars > max ? <Avatar  sx={{ ml: "-8px"}} aria-controls={open ? 'basic-menu' : undefined} 
+                                    aria-haspopup="true" aria-expanded={open ? 'true' : undefined} 
+                                    onClick={handleClick}>+{remainnigAvtarsData.length}</Avatar>: null}
+                                    <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
+                                    }}
+                                    className="avatarMenu"
+                                    >
+                                    {remainnigAvtarsData.map(data => (
+                                        <div onClick={() => {
+                                        selectAvtar(data)
+                                        handleClose()
+                                        }}>
+                                        <Avatar className={selectedAvatar?.id === data.id ? 'activeAvtar': null} alt={data.name} src={data.image} />
+                                        </div>
+                                    ))}
+                                    </Menu>
+                            </Box>
+                            <Typography
+                            variant="body2"
+                            sx={{ alignSelf: "center", textTransform: "capitalize", mt: 1}}
                             >
-                            {remainnigAvtarsData.map(data => (
-                                <div onClick={() => {
-                                selectAvtar(data)
-                                handleClose()
-                                }}>
-                                <Avatar className={selectedAvatar?.id === data.id ? 'activeAvtar': null} alt={data.name} src={data.image} />
-                                </div>
-                            ))}
-                            </Menu>
-                    </Box>
-                        <Typography
-                        variant="body2"
-                        sx={{ alignSelf: "center", textTransform: "capitalize", mt: 1}}
-                        >
-                        34 hyper local property dealers
-                        </Typography>
+                            34 hyper local property dealers
+                            </Typography>
+                        </Box>
+                        <Link href=""><ArrowForwardIosIcon fontSize="12px"/></Link>
                     </Card>
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -375,8 +379,8 @@ const ProjectDetails = () => {
                             </TableCell>
                             <TableCell>{row.category}</TableCell>
                             <TableCell>{row.av_units} units</TableCell>
-                            <TableCell>{formatNumberWithCommas(row.min)} Cr</TableCell>
-                            <TableCell>{formatNumberWithCommas(row.max)} Cr</TableCell>
+                            <TableCell><CurrencyRupeeIcon sx={{fontSize: '10px'}}/>{formatNumberWithCommas(row.min)} Cr</TableCell>
+                            <TableCell><CurrencyRupeeIcon sx={{fontSize: '10px'}}/>{formatNumberWithCommas(row.max)} Cr</TableCell>
                             <TableCell>{formatAmount(row.asking_rate)}/sqft</TableCell>
                             <TableCell>{row.specs.map(spec => (
                                 <Chip label={spec} size='small' sx={{mr: 1}}/>
