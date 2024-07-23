@@ -8,38 +8,20 @@ import {
     Box,
     Chip,
     Button,
-    Tooltip,
-    IconButton,
     Menu,
-    MenuItem,
     Avatar 
   } from "@mui/material";
-  import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { makeStyles } from "@mui/styles";
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import InsertLinkIcon from '@mui/icons-material/InsertLink';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import {
-    formatPoints,
-    formatAmount,
-    formatNumber,
-    formatNumberWithCommas
-  } from "utills/CommonFunction";
 import Link from 'next/link';
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterModal from 'Components/Project/FilterModal';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import ProjectList from 'Components/Project/ProjectList';
+import { formatAmount } from "utills/CommonFunction";
 
   const headcells = [
     {
@@ -136,6 +118,17 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
     },
   ]
 
+  const filterData = [
+    {
+        label: 'Category',
+        value: 'category'
+    },
+    {
+        label: 'Unit Type',
+        value: 'unitType'
+    },
+  ]
+
   const useStyles = makeStyles((theme) => ({
     demo2: {
       backgroundColor: "#fff",
@@ -154,9 +147,12 @@ const ProjectDetails = () => {
 
     const [selectedAvatar, setSelectedAvatar] = useState()
     const [filterDialog, setFilterDialog] = useState(false)
+    const [filterList, setFilterList] = useState(filterData)
 
-    const handleDelete = () => {
+    const handleDelete = (item) => {
         console.info('You clicked the delete icon.');
+        const filteredData = filterList.filter(data => data.value !== item.value);
+        setFilterList(filteredData);
     };
 
     const classes = useStyles();
@@ -168,15 +164,6 @@ const ProjectDetails = () => {
     };
     const handleClose = () => {
         setAnchorEl(null);
-    };
-
-    const [anchorActionEl, setActionAnchorEl] = useState(null);
-    const openAction = Boolean(anchorActionEl);
-    const handleActionClick = (event) => {
-        setActionAnchorEl(event.currentTarget);
-    };
-    const handleActionClose = () => {
-        setActionAnchorEl(null);
     };
 
     const avatar = [
@@ -225,8 +212,12 @@ const ProjectDetails = () => {
         setFilterDialog(false);
       };
 
+      const handleReset = () => {
+        setFilterList([])
+      }
+
   return (
-    <Box>
+    <Box className="projectTable">
         <Container>
             <Box className={classes.demo2}>
                 <Card sx={{ p: 2}}>
@@ -246,16 +237,16 @@ const ProjectDetails = () => {
                             >
                             234 units
                             </Typography>
-                            <Typography variant="body1">available for <strong>Sale</strong> @ {formatAmount(9221)}/sqft <Typography variant="body2" color="primary" component="span"> (<NorthIcon fontSize='12px' sx={{position: 'relative', top: '2px'}}/> higher than last 30 deals)</Typography></Typography>
+                            <Typography variant="body1">Available for <strong>Sale</strong> @ {formatAmount(6788)}/sqft <Typography variant="body2" color="primary" component="span"> (<NorthIcon fontSize='12px' sx={{position: 'relative', top: '2px'}}/> 2% higher than last 30 deals)</Typography></Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <Typography
                             variant="h3"
                             sx={{ alignSelf: "center", textTransform: "capitalize", mb: "5px" }}
                             >
-                            234 units
+                            42 units
                             </Typography>
-                            <Typography variant="body1">available for <strong>Sale</strong> @ {formatAmount(9221)}/sqft <Typography variant="body2" color="primary" component="span">(<SouthIcon fontSize='12px' sx={{position: 'relative', top: '2px'}} /> lower than last 30 deals)</Typography></Typography>
+                            <Typography variant="body1">Available for <strong>Rent</strong> @ {formatAmount(1424)}/sqft <Typography variant="body2" color="primary" component="span">(<NorthIcon fontSize='12px' sx={{position: 'relative', top: '2px'}} /> 2% higher than last 30 deals)</Typography></Typography>
                         </Grid>
                         <Grid item xs={12} sx={{ textAlign: 'center', mt: 2}}>
                             <Button
@@ -278,7 +269,7 @@ const ProjectDetails = () => {
                 </Card>
             </Box>
             <Grid container spacing={2} sx={{mt: 1}}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={12}>
                     <Card sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Box>
                             <Box sx={{ display: "flex", ml: 1}}>
@@ -314,41 +305,33 @@ const ProjectDetails = () => {
                             variant="body2"
                             sx={{ alignSelf: "center", textTransform: "capitalize", mt: 1}}
                             >
-                            34 hyper local property dealers
+                            34 hyper local Property dealers, working on 678 property enquiries
                             </Typography>
                         </Box>
                         <Link href=""><ArrowForwardIosIcon fontSize="12px"/></Link>
                     </Card>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                    <Card sx={{ p: 2, height: '100%'}}>
-                        <Typography
-                        variant="h3"
-                        sx={{ textAlign: { sm: 'left', md: 'right'} }}
-                        >
-                        2,342 Buying enquiries*
-                        </Typography>
-                    </Card>
-                </Grid>
             </Grid>
-            <Box sx={{ py: 2.5, display: 'flex', justifyContent: 'space-between'}}>
+            <Box sx={{ py: 2.5, display: {sm: 'flex'}, justifyContent: { sm: 'space-between'}}}>
                 <Box>
-                    <Chip label="Filter 1" color="primary" onDelete={handleDelete} sx={{mr: 1}} />
-                    <Chip label="Filter 2" color="primary" onDelete={handleDelete} sx={{mr: 1}} />
-                    <Chip label="Filter 3" color="primary" onDelete={handleDelete} sx={{mr: 1}} />
+                    {filterList.map(item => (
+                        <Chip label={item.label} color="primary" onDelete={() => handleDelete(item)} sx={{mr: 1, mb: 1}} />
+                    ))}
                 </Box>
-                <Box>
+                <Box sx={{ mt: {xs: 1, sm:0}}}>
                     <Button
                     size="small"
                     sx={{ ml: 1 }}
                     variant="outlined"
-                    startIcon={<CloseIcon />}>
+                    startIcon={<CloseIcon />}
+                    onClick={handleReset}>
                     Reset
                     </Button>
                     <Button
                     size="small"
                     sx={{ ml: 1 }}
                     variant="contained"
+                    startIcon={<FilterAltIcon />}
                     onClick={() => {
                         setFilterDialog(true);
                       }}>
@@ -359,70 +342,7 @@ const ProjectDetails = () => {
                     handleClose={handleCloseFilterDialog} />}
                 </Box>
             </Box>
-            <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table" className="projectTable">
-                        <TableHead>
-                            <TableRow>
-                                {headcells.map(headcell => (
-                                    <TableCell key={headcell.id}>{headcell.label}</TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {projectDetails.map((row) => (
-                            <TableRow
-                            key={row.id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                            <TableCell>
-                                <Link href="" style={{ textDecoration: 'none'}}>{row.projectName}</Link> <a href="" target='_blank' style={{position: 'relative', top: '2px'}}><InsertLinkIcon fontSize='12px'/></a> <Tooltip title="great deal!"><AutoAwesomeIcon fontSize='12px' style={{position: 'relative', top: '2px', color: 'green'}}/></Tooltip>
-                            </TableCell>
-                            <TableCell>{row.category}</TableCell>
-                            <TableCell>{row.av_units} units</TableCell>
-                            <TableCell><CurrencyRupeeIcon sx={{fontSize: '10px'}}/>{formatNumberWithCommas(row.min)} Cr</TableCell>
-                            <TableCell><CurrencyRupeeIcon sx={{fontSize: '10px'}}/>{formatNumberWithCommas(row.max)} Cr</TableCell>
-                            <TableCell>{formatAmount(row.asking_rate)}/sqft</TableCell>
-                            <TableCell>{row.specs.map(spec => (
-                                <Chip label={spec} size='small' sx={{mr: 1}}/>
-                            ))}</TableCell>
-                            <TableCell>{row.unitType}</TableCell>
-                            <TableCell>{row.Ab_rating}</TableCell>
-                            <TableCell>
-                            <Tooltip title="More">
-                                <IconButton
-                                onClick={handleActionClick}
-                                sx={{ fontSize: "1rem !important" }}
-                                >
-                                <MoreVertIcon fontSize="1rem" />
-                                </IconButton>
-                                </Tooltip>
-                                <Menu
-                                    id="basic-menu"
-                                    anchorEl={anchorActionEl}
-                                    open={openAction}
-                                    onClose={handleActionClose}
-                                    MenuListProps={{
-                                        "aria-labelledby": "basic-button",
-                                    }}
-                                    transformOrigin={{
-                                        vertical: "bottom",
-                                        horizontal: "left",
-                                    }}
-                                    sx={{
-                                        '& .MuiList-root': {
-                                        padding: '0px',
-                                        },
-                                    }}
-                                    >
-                                    <MenuItem>Edit </MenuItem>
-                                    <MenuItem>Delete </MenuItem>
-                                    </Menu>
-                            </TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>
-                    </Table>
-            </TableContainer>
+            <ProjectList headcells={headcells} projectDetails={projectDetails} />
             <Card sx={{ p: 2, mt: 2}}>
                 <Box>
                     <Typography variant="body1" sx={{ mb: 1}}>While Selling / Buying</Typography>
