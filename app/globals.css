@@ -235,7 +235,7 @@ html {
 }
 .MuiTableCell-body{
   padding: 4px 16px !important;
-  font-size: 14px !important;
+  font-size: 14px;
   height: 40px;
 }
 .creditPopup .creditPopup-textfield .MuiTypography-subtitle2{
@@ -309,4 +309,8 @@ html {
   padding-left: 16px;
   list-style-type: '✓';
   
+}
+.projectTable .MuiTableCell-head{
+  padding: 6px 16px !important;
+  font-size: 12px !important;
 }
