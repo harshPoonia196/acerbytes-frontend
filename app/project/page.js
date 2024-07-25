@@ -9,19 +9,30 @@ import {
     Chip,
     Button,
     Menu,
-    Avatar 
+    Avatar,
+    MenuItem, 
+    Tooltip,
+    IconButton,
+    ListItemIcon,
+    ListItemText
   } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { makeStyles } from "@mui/styles";
 import Link from 'next/link';
-import NorthIcon from '@mui/icons-material/North';
-import SouthIcon from '@mui/icons-material/South';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterModal from 'Components/Project/FilterModal';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ProjectList from 'Components/Project/ProjectList';
 import { formatAmount } from "utills/CommonFunction";
+import StoreIcon from '@mui/icons-material/Store';
+import KeyboardArrowDownIcon  from '@mui/icons-material/KeyboardArrowDown'
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import SellIcon from '@mui/icons-material/Sell';
+import NewAutoCompleteInputStructure from "Components/CommonLayouts/NewAutoCompleteInputStructure";
+import SellProperty from 'Components/Project/SellProperty';
 
   const headcells = [
     {
@@ -37,16 +48,12 @@ import { formatAmount } from "utills/CommonFunction";
         label: 'Av units'
     },
     {
-        id: 'min',
-        label: 'Min'
-    },
-    {
-        id: 'max',
-        label: 'Max'
+        id: 'price',
+        label: 'Price'
     },
     {
         id: 'asking_rate',
-        label: '@ rate'
+        label: '@ Rate'
     },
     {
         id: 'specs',
@@ -131,7 +138,7 @@ import { formatAmount } from "utills/CommonFunction";
 
   const useStyles = makeStyles((theme) => ({
     demo2: {
-      backgroundColor: "#fff",
+    //   backgroundColor: "#fff",
       position: "sticky",
       top: 54,
       left: 0,
@@ -148,6 +155,7 @@ const ProjectDetails = () => {
     const [selectedAvatar, setSelectedAvatar] = useState()
     const [filterDialog, setFilterDialog] = useState(false)
     const [filterList, setFilterList] = useState(filterData)
+    const [sellProperty, setSellProperty] = useState(false)
 
     const handleDelete = (item) => {
         console.info('You clicked the delete icon.');
@@ -216,57 +224,102 @@ const ProjectDetails = () => {
         setFilterList([])
       }
 
+    const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
+    const openMenu = Boolean(anchorMenuEl);
+    const handleMenuClick = (event) => {
+        setAnchorMenuEl(event.currentTarget);
+    };
+    const handleMenuClose = () => {
+        setAnchorMenuEl(null);
+    };
+
+    const [selectOption, setSelectOption] = useState({});
+    const [selectedOptions, setSelectedOptions] = useState({});
+    const handleOptionChange = (key, value) => {
+    }
+
+    const handleSellPropertyClose = () => {
+        setSellProperty(false)
+    }
+    
+    const handleSellPropertyList = () => {
+        setSellProperty(true)
+    }
+
+    const filterFields = () => {
+        return(
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={6} md={3}>
+                    <NewAutoCompleteInputStructure
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        label="Category"
+                        list={selectOption?.projectCategory}
+                        handleChange={(event, value) => handleOptionChange("category", value)}
+                        value={selectedOptions.category ? selectedOptions.category : ""}
+                        clearable
+                        className="filter-input-field"
+                        />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                    <NewAutoCompleteInputStructure
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        label="Price"
+                        list={selectOption?.projectCategory}
+                        handleChange={(event, value) => handleOptionChange("price", value)}
+                        value={selectedOptions.category ? selectedOptions.category : ""}
+                        clearable
+                        className="filter-input-field"
+                        />
+                </Grid>
+            </Grid>
+        )
+    }
+
   return (
     <Box className="projectTable">
         <Container>
             <Box className={classes.demo2}>
-                <Card sx={{ p: 2}}>
                 <Typography
-                            variant="h3"
-                            sx={{
-                                fontWeight: "700 !important"
-                            }}
-                            >
-                            Patparganj, Delhi - 110092
-                            </Typography>
-                    <Grid container>
-                        <Grid item xs={12} md={6}>
+                variant="h3"
+                sx={{
+                    fontWeight: "700 !important",
+                    pb: 1
+                }}
+                >
+                Patparganj, Delhi - 110092
+                </Typography>
+
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={6}>
+                        <Card sx={{ p: 2}}>
                             <Typography
                             variant="h3"
                             sx={{ alignSelf: "center", textTransform: "capitalize", mb: "5px" }}
                             >
                             234 units
                             </Typography>
-                            <Typography variant="body1">Available for <strong>Sale</strong> @ {formatAmount(6788)}/sqft <Typography variant="body2" color="primary" component="span"> (<NorthIcon fontSize='12px' sx={{position: 'relative', top: '2px'}}/> 2% higher than last 30 deals)</Typography></Typography>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
+                            <Typography variant="body1">Available for <strong>Sale</strong></Typography>
+                            <Typography variant="body1">@ {formatAmount(6788)}/sqft <Typography variant="body2" color="primary" component="span"> (<ArrowUpwardIcon fontSize='12px' sx={{position: 'relative', top: '2px'}}/> 2% higher than last 30 deals)</Typography></Typography>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Card sx={{ p: 2}}>
                             <Typography
                             variant="h3"
                             sx={{ alignSelf: "center", textTransform: "capitalize", mb: "5px" }}
                             >
                             42 units
                             </Typography>
-                            <Typography variant="body1">Available for <strong>Rent</strong> @ {formatAmount(1424)}/sqft <Typography variant="body2" color="primary" component="span">(<NorthIcon fontSize='12px' sx={{position: 'relative', top: '2px'}} /> 2% higher than last 30 deals)</Typography></Typography>
-                        </Grid>
-                        <Grid item xs={12} sx={{ textAlign: 'center', mt: 2}}>
-                            <Button
-                            size="small"
-                            sx={{ mt: 1}}
-                            variant="outlined"
-                            onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }}
-                            startIcon={<WhatsAppIcon />}
-                            >
-                            Contact
-                            </Button>
-                            <Button
-                            size="small"
-                            sx={{ mt: 1, ml: 1 }}
-                            variant="contained">
-                            Sell / Buy property
-                            </Button>
-                        </Grid>
+                            <Typography variant="body1">Available for <strong>Rent</strong> </Typography>
+                            <Typography variant="body1">@ {formatAmount(1424)}/sqft <Typography variant="body2" color="error" component="span">(<ArrowDownwardIcon fontSize='12px' sx={{position: 'relative', top: '2px'}} /> 2% lower than last 30 deals)</Typography></Typography>
+                        </Card>
                     </Grid>
-                </Card>
+                </Grid>
+                
             </Box>
             <Grid container spacing={2} sx={{mt: 1}}>
                 <Grid item xs={12} md={12}>
@@ -303,22 +356,28 @@ const ProjectDetails = () => {
                             </Box>
                             <Typography
                             variant="body2"
-                            sx={{ alignSelf: "center", textTransform: "capitalize", mt: 1}}
+                            sx={{ alignSelf: "center", mt: 1}}
                             >
-                            34 hyper local Property dealers, working on 678 property enquiries
+                            
+                            34 hyper local Property dealers, working on 3,678 Property Inquiries
                             </Typography>
                         </Box>
                         <Link href=""><ArrowForwardIosIcon fontSize="12px"/></Link>
                     </Card>
                 </Grid>
             </Grid>
+            <Box sx={{mt: 2}}>
+                <Card sx={{ p: 2}}>
+                    {filterFields()}
+                </Card>
+            </Box>
             <Box sx={{ py: 2.5, display: {sm: 'flex'}, justifyContent: { sm: 'space-between'}}}>
                 <Box>
                     {filterList.map(item => (
-                        <Chip label={item.label} color="primary" onDelete={() => handleDelete(item)} sx={{mr: 1, mb: 1}} />
+                        <Chip label={item.label} onDelete={() => handleDelete(item)} sx={{mr: 1, mb: 1}} />
                     ))}
                 </Box>
-                <Box sx={{ mt: {xs: 1, sm:0}}}>
+                <Box sx={{ mt: {xs: 1, sm:0}, display: {sm: 'none', md: 'block'}}}>
                     <Button
                     size="small"
                     sx={{ ml: 1 }}
@@ -341,12 +400,81 @@ const ProjectDetails = () => {
                     open={filterDialog}
                     handleClose={handleCloseFilterDialog} />}
                 </Box>
+                <Box sx={{ display: {sm: 'block', md: 'none'}}}>
+                    <IconButton color="primary" aria-label="Reset"
+                    onClick={handleReset}>
+                        <Tooltip title="Reset">
+                            <CloseIcon />
+                        </Tooltip>
+                    </IconButton>
+                    <IconButton color="primary" aria-label="Filter" 
+                    onClick={() => {
+                        setFilterDialog(true);
+                      }}>
+                        <Tooltip title="Filter">
+                            <FilterAltIcon />
+                        </Tooltip>
+                    </IconButton>
+                </Box>
             </Box>
-            <ProjectList headcells={headcells} projectDetails={projectDetails} />
+            <ProjectList headcells={headcells} projectDetails={projectDetails} handleSellPropertyList={handleSellPropertyList} />
             <Card sx={{ p: 2, mt: 2}}>
                 <Box>
                     <Typography variant="body1" sx={{ mb: 1}}>While Selling / Buying</Typography>
                     <Typography variant="body1">Exploring (+10%), Anytime, Urgent (-10%)</Typography>
+                </Box>
+            </Card>
+            <Card sx={{ p: 2, mt: 2}}>
+                <Box sx={{ textAlign: 'center'}}>
+                    <Typography variant='h4' sx={{mb: 2}}>Looking for Selling / Buying Property in Patparganj ?</Typography>
+                    <Button
+                        size="small"
+                        variant="outlined"
+                        onClick={() => { window.open('http://wa.me/+919323996997', "_blank") }}
+                        startIcon={<WhatsAppIcon />}
+                        >
+                        Contact
+                        </Button>
+                        <Button
+                            id="demo-customized-button"
+                            sx={{ ml: 2}}
+                            aria-controls={openMenu ? 'demo-customized-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={openMenu ? 'true' : undefined}
+                            variant="contained"
+                            disableElevation
+                            onClick={handleMenuClick}
+                            startIcon={<StoreIcon />}
+                            endIcon={<KeyboardArrowDownIcon />}
+                        >
+                            Sell / Buy property
+                        </Button>
+                        <Menu
+                        id="demo-customized-menu"
+                        anchorEl={anchorMenuEl}
+                        open={openMenu}
+                        onClose={handleMenuClose}
+                        MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuItem onClick={() => {
+                            setSellProperty(true)
+                            handleMenuClose
+                        }}>
+                            <ListItemIcon>
+                                <SellIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Sell Property</ListItemText>
+                         </MenuItem>
+                        <MenuItem onClick={handleMenuClose}>
+                            <ListItemIcon>
+                                <ShoppingBasketIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Buy Property</ListItemText>
+                         </MenuItem>
+                    </Menu>
+                    {sellProperty && <SellProperty open={sellProperty} handleClose={handleSellPropertyClose}/>}
                 </Box>
             </Card>
         </Container>

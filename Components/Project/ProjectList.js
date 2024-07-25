@@ -4,7 +4,9 @@ import {Table,
     IconButton,
     Menu,
     MenuItem,
-    Chip
+    Chip,
+    ListItemIcon,
+    ListItemText
 } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,11 +21,13 @@ import {
     formatNumberWithCommas
   } from "utills/CommonFunction";
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import InsertLinkIcon from '@mui/icons-material/InsertLink';
+import LaunchIcon from '@mui/icons-material/Launch';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import SellIcon from '@mui/icons-material/Sell';
 
-const ProjectList = ({headcells, projectDetails}) => {
+const ProjectList = ({headcells, projectDetails, handleSellPropertyList}) => {
     const [anchorActionEl, setActionAnchorEl] = useState(null);
     const openAction = Boolean(anchorActionEl);
     const handleActionClick = (event) => {
@@ -50,12 +54,11 @@ const ProjectList = ({headcells, projectDetails}) => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                 <TableCell>
-                    <Link href="" style={{ textDecoration: 'none'}}>{row.projectName}</Link> <a href="" target='_blank' style={{position: 'relative', top: '2px'}}><InsertLinkIcon fontSize='12px'/></a> <Tooltip title="great deal!"><AutoAwesomeIcon fontSize='12px' style={{position: 'relative', top: '2px', color: 'green'}}/></Tooltip>
+                    <Link href="#" style={{ textDecoration: 'none', color: 'blue', textTransform: 'uppercase', fontWeight: 'bold'}}>{row.projectName}</Link> <a href="#" target='_blank' style={{position: 'relative', top: '2px', color: 'blue'}}><LaunchIcon fontSize='12px'/></a> <Tooltip title="great deal!"><AutoAwesomeIcon fontSize='12px' style={{position: 'relative', top: '2px', color: 'green'}}/></Tooltip>
                 </TableCell>
                 <TableCell>{row.category}</TableCell>
                 <TableCell>{row.av_units} units</TableCell>
-                <TableCell><CurrencyRupeeIcon sx={{fontSize: '10px'}}/>{formatNumberWithCommas(row.min)} Cr</TableCell>
-                <TableCell><CurrencyRupeeIcon sx={{fontSize: '10px'}}/>{formatNumberWithCommas(row.max)} Cr</TableCell>
+                <TableCell><CurrencyRupeeIcon sx={{fontSize: '11px', position: 'relative', top: '1px'}}/>{formatNumberWithCommas(row.min)} Cr - <CurrencyRupeeIcon sx={{fontSize: '11px', position: 'relative', top: '1px'}}/>{formatNumberWithCommas(row.max)} Cr</TableCell>
                 <TableCell>{formatAmount(row.asking_rate)}/sqft</TableCell>
                 <TableCell>{row.specs.map(spec => (
                     <Chip label={spec} size='small' sx={{mr: 1}}/>
@@ -89,8 +92,18 @@ const ProjectList = ({headcells, projectDetails}) => {
                             },
                         }}
                         >
-                        <MenuItem>Edit </MenuItem>
-                        <MenuItem>Delete </MenuItem>
+                        <MenuItem onClick={handleSellPropertyList}>
+                            <ListItemIcon>
+                                <SellIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Sell Property</ListItemText>
+                         </MenuItem>
+                        <MenuItem>
+                            <ListItemIcon>
+                                <ShoppingBasketIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Buy Property</ListItemText>
+                         </MenuItem>
                         </Menu>
                 </TableCell>
                 </TableRow>
