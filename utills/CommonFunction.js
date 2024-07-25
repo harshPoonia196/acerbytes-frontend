@@ -212,7 +212,7 @@ const formatAmount = (amount) => {
     maximumFractionDigits: 0,
   })
     .format(numericAmount)
-    .replace('₹', '₹ ');
+    .replace('₹', '₹');
 };
 
 const formatPoints = (points) => {

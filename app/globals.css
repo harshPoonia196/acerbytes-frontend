@@ -229,12 +229,12 @@ html {
 }
 .MuiTableCell-head{
   text-transform: none !important;
-  padding: 16px !important;
+  /* padding: 16px !important; */
   font-size: 14px !important;
   background: #f6f6f6;
 }
 .MuiTableCell-body{
-  padding: 4px 16px !important;
+  /* padding: 4px 16px !important; */
   font-size: 14px;
   height: 40px;
 }
@@ -242,7 +242,7 @@ html {
   transform: translate(-14px, 0) scale(0.9);
 }
 .MuiTableBody-root .MuiButtonBase-root{
-  padding: 3.5px 8px;
+  /* padding: 3.5px 8px; */
 }
 .consultant-dialog .MuiCard-root{
   margin-bottom: 1rem;
@@ -311,8 +311,8 @@ html {
   
 }
 .projectTable .MuiTableCell-head{
-  padding: 6px 16px !important;
-  font-size: 12px !important;
+  /* padding: 6px 16px !important; */
+  font-size: 13px !important;
 }
 .projectTable .MuiChip-deleteIcon{
   font-size: 18px !important;
