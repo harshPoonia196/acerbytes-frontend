@@ -36,16 +36,16 @@ import SellProperty from 'Components/Project/SellProperty';
 
   const headcells = [
     {
+        id: 'av_units',
+        label: 'Av units'
+    },
+    {
         id: 'project',
         label: 'Project'
     },
     {
         id: 'category',
         label: 'Category'
-    },
-    {
-        id: 'av_units',
-        label: 'Av units'
     },
     {
         id: 'price',
@@ -83,7 +83,7 @@ import SellProperty from 'Components/Project/SellProperty';
         min: '4.5',
         max: '15',
         asking_rate: '8985',
-        specs: ['2BHK', '3BHK'],
+        specs: ['2BHK - 23', '3BHK - 22'],
         unitType: 'flat',
         Ab_rating: 'Excellent'
     },
@@ -96,7 +96,7 @@ import SellProperty from 'Components/Project/SellProperty';
         min: '4.5',
         max: '15',
         asking_rate: '8985',
-        specs: ['2BHK'],
+        specs: ['2BHK - 23'],
         Ab_rating: 'Very good'
     },
     {
@@ -108,7 +108,7 @@ import SellProperty from 'Components/Project/SellProperty';
         min: '4.5',
         max: '15',
         asking_rate: '8985',
-        specs: ['2BHK', '3BHK'],
+        specs: ['2BHK - 23', '3BHK - 22'],
         Ab_rating: 'Excellent'
     },
     {
@@ -120,7 +120,7 @@ import SellProperty from 'Components/Project/SellProperty';
         min: '4.5',
         max: '15',
         asking_rate: '8985',
-        specs: ['2BHK', '3BHK'],
+        specs: ['2BHK - 23', '3BHK - 22'],
         Ab_rating: 'Very good'
     },
   ]
@@ -282,39 +282,46 @@ const ProjectDetails = () => {
   return (
     <Box className="projectTable">
         <Container>
-            <Box className={classes.demo2}>
-                <Typography
-                variant="h3"
-                sx={{
-                    fontWeight: "700 !important",
-                    pb: 1
-                }}
-                >
-                Patparganj, Delhi - 110092
-                </Typography>
-
+            <Box>
+                <Box sx={{textAlign: 'center', pb: 2}}>
+                    <Typography
+                    variant="h5"
+                    
+                    >
+                    Properties available in
+                    </Typography>
+                    <Typography
+                    variant="h3"
+                    sx={{
+                        fontWeight: "700 !important",
+                        
+                    }}
+                    >
+                    Patparganj, Delhi
+                    </Typography>
+                </Box>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={6} md={6}>
                         <Card sx={{ p: 2}}>
                             <Typography
                             variant="h3"
-                            sx={{ alignSelf: "center", textTransform: "capitalize", mb: "5px" }}
+                            sx={{ alignSelf: "center", textTransform: "capitalize", mb: "5px", fontWeight: 'bold' }}
                             >
-                            234 units
+                            234 <Typography component="span">units</Typography>
                             </Typography>
-                            <Typography variant="body1">Available for <strong>Sale</strong></Typography>
+                            <Typography variant="body1">Available <Typography variant="h3" component="span" sx={{ fontWeight: 'bold'}}>for Sale</Typography></Typography>
                             <Typography variant="body1">@ {formatAmount(6788)}/sqft <Typography variant="body2" color="primary" component="span"> (<ArrowUpwardIcon fontSize='12px' sx={{position: 'relative', top: '2px'}}/> 2% higher than last 30 deals)</Typography></Typography>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={6} md={6}>
                         <Card sx={{ p: 2}}>
                             <Typography
                             variant="h3"
-                            sx={{ alignSelf: "center", textTransform: "capitalize", mb: "5px" }}
+                            sx={{ alignSelf: "center", textTransform: "capitalize", mb: "5px", fontWeight: 'bold' }}
                             >
-                            42 units
+                            42 <Typography component="span">units</Typography>
                             </Typography>
-                            <Typography variant="body1">Available for <strong>Rent</strong> </Typography>
+                            <Typography variant="body1">Available <Typography variant="h3" component="span" sx={{ fontWeight: 'bold'}}>for Rent</Typography></Typography>
                             <Typography variant="body1">@ {formatAmount(1424)}/sqft <Typography variant="body2" color="error" component="span">(<ArrowDownwardIcon fontSize='12px' sx={{position: 'relative', top: '2px'}} /> 2% lower than last 30 deals)</Typography></Typography>
                         </Card>
                     </Grid>
@@ -367,7 +374,7 @@ const ProjectDetails = () => {
                 </Grid>
             </Grid>
             <Box sx={{mt: 2}}>
-                <Card sx={{ p: 2}}>
+                <Card sx={{ p: 2, display: { xs: 'none', md: 'block'}}}>
                     {filterFields()}
                 </Card>
             </Box>
@@ -377,7 +384,7 @@ const ProjectDetails = () => {
                         <Chip label={item.label} onDelete={() => handleDelete(item)} sx={{mr: 1, mb: 1}} />
                     ))}
                 </Box>
-                <Box sx={{ mt: {xs: 1, sm:0}, display: {sm: 'none', md: 'block'}}}>
+                <Box sx={{ mt: {xs: 1, sm:0}, display: {xs: 'none', sm: 'none', md: 'block'}}}>
                     <Button
                     size="small"
                     sx={{ ml: 1 }}

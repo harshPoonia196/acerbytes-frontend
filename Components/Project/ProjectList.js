@@ -53,11 +53,12 @@ const ProjectList = ({headcells, projectDetails, handleSellPropertyList}) => {
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
+                <TableCell><span className='unitsBadge'>{row.av_units} units</span></TableCell>
                 <TableCell>
-                    <Link href="#" style={{ textDecoration: 'none', color: 'blue', textTransform: 'uppercase', fontWeight: 'bold'}}>{row.projectName}</Link> <a href="#" target='_blank' style={{position: 'relative', top: '2px', color: 'blue'}}><LaunchIcon fontSize='12px'/></a> <Tooltip title="great deal!"><AutoAwesomeIcon fontSize='12px' style={{position: 'relative', top: '2px', color: 'green'}}/></Tooltip>
+                <a href="#" target='_blank' style={{position: 'relative', top: '2px', color: 'blue'}}><LaunchIcon fontSize='12px'/></a> <Link href="#" style={{ textDecoration: 'none', color: '#276ef1', textTransform: 'uppercase', fontWeight: 'bold'}}>{row.projectName}</Link>  <Tooltip title="great deal!"><AutoAwesomeIcon fontSize='12px' style={{position: 'relative', top: '2px', color: 'green'}}/></Tooltip>
                 </TableCell>
                 <TableCell>{row.category}</TableCell>
-                <TableCell>{row.av_units} units</TableCell>
+                
                 <TableCell><CurrencyRupeeIcon sx={{fontSize: '11px', position: 'relative', top: '1px'}}/>{formatNumberWithCommas(row.min)} Cr - <CurrencyRupeeIcon sx={{fontSize: '11px', position: 'relative', top: '1px'}}/>{formatNumberWithCommas(row.max)} Cr</TableCell>
                 <TableCell>{formatAmount(row.asking_rate)}/sqft</TableCell>
                 <TableCell>{row.specs.map(spec => (
