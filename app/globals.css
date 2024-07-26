@@ -317,3 +317,10 @@ html {
 .projectTable .MuiChip-deleteIcon{
   font-size: 18px !important;
 }
+
+.unitsBadge{
+ background-color: #e8f0fe; 
+ color: #1967d2;
+ border-radius: 4px;
+ padding: 0.2rem 0.5rem;
+}
