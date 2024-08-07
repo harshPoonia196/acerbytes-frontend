@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,62 +8,180 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {
     Box,
+    Tooltip,
+    Chip,
+    IconButton,
+    Menu,
+    MenuItem,
+    ListItemText
   } from "@mui/material";
+import Link from 'next/link'
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+const headcells = [
+  {
+      id: 'av_units',
+      label: 'Av units'
+  },
+  {
+      id: 'project',
+      label: 'Company'
+  },
+  {
+      id: 'category',
+      label: 'Category'
+  },
+  {
+      id: 'price',
+      label: 'Price'
+  },
+  {
+      id: 'asking_rate',
+      label: '@ Rate'
+  },
+  {
+      id: 'specs',
+      label: 'Layouts'
+  },
+  {
+      id: 'Ab_rating',
+      label: 'AB Rating'
+  },
+  {
+      id: 'action',
+      label: 'Action'
+  },
+]
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+const projectDetails = [
+  {
+      id: 1,
+      projectName: 'Gaurav apartments',
+      projectdesc: 'great deal!',
+      category: 'Buy',
+      av_units: '12',
+      min: '4.5',
+      max: '15',
+      asking_rate: '8985',
+      specs: ['2BHK - 23', '3BHK - 22'],
+      Ab_rating: 'Excellent'
+  },
+  {
+      id: 2,
+      projectName: 'Swati apartment',
+      projectdesc: '',
+      category: 'Sell',
+      av_units: '12',
+      min: '4.5',
+      max: '15',
+      asking_rate: '8985',
+      specs: ['2BHK - 23'],
+      Ab_rating: 'Very good'
+  },
+  {
+      id: 3,
+      projectName: 'Kanungo apartment',
+      projectdesc: '',
+      category: 'Buy',
+      av_units: '12',
+      min: '4.5',
+      max: '15',
+      asking_rate: '8985',
+      specs: ['2BHK - 23', '3BHK - 22'],
+      Ab_rating: 'Excellent'
+  },
+  {
+      id: 4,
+      projectName: 'Sah Vikas apartment',
+      projectdesc: '',
+      category: 'Buy',
+      av_units: '12',
+      min: '4.5',
+      max: '15',
+      asking_rate: '8985',
+      specs: ['2BHK - 23', '3BHK - 22'],
+      Ab_rating: 'Very good'
+  },
+]
 
 const CompanyListing = () => {
+
+  const [anchorActionEl, setActionAnchorEl] = useState(null);
+    const openAction = Boolean(anchorActionEl);
+    const handleActionClick = (event) => {
+        setActionAnchorEl(event.currentTarget);
+    };
+    const handleActionClose = () => {
+        setActionAnchorEl(null);
+    };
+
+
   return (
     <>
-        <TableContainer component={Paper} sx={{ my: 2}}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                <TableHead>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <TableHead>
                 <TableRow>
-                    <TableCell>Dessert (100g serving)</TableCell>
-                    <TableCell align="right">Calories</TableCell>
-                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                    {headcells.map(headcell => (
+                        <TableCell key={headcell.id}>{headcell.label}</TableCell>
+                    ))}
                 </TableRow>
-                </TableHead>
-                <TableBody>
-                {rows.map((row) => (
-                    <TableRow
-                    key={row.name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            </TableHead>
+            <TableBody>
+            {projectDetails.map((row) => (
+                <TableRow
+                key={row.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                <TableCell><span className='unitsBadge'>{row.av_units} units</span></TableCell>
+                <TableCell>
+                <Link href="#" style={{ textDecoration: 'none', color: '#276ef1', textTransform: 'uppercase', fontWeight: 'bold'}}>{row.projectName}</Link>
+                </TableCell>
+                <TableCell>{row.category}</TableCell>
+                
+                <TableCell>gsgsgsg</TableCell>
+                <TableCell>55sqft</TableCell>
+                <TableCell>{row.specs.map(spec => (
+                    <Chip label={spec} size='small' sx={{mr: 1}}/>
+                ))}</TableCell>
+                <TableCell>{row.Ab_rating}</TableCell>
+                <TableCell>
+                <Tooltip title="More">
+                    <IconButton
+                    onClick={handleActionClick}
+                    sx={{ fontSize: "1rem !important" }}
                     >
-                    <TableCell component="th" scope="row">
-                        {row.name}
-                    </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
-                    </TableRow>
-                ))}
-                </TableBody>
-            </Table>
-            </TableContainer>
+                    <MoreVertIcon fontSize="1rem" />
+                    </IconButton>
+                    </Tooltip>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorActionEl}
+                        open={openAction}
+                        onClose={handleActionClose}
+                        MenuListProps={{
+                            "aria-labelledby": "basic-button",
+                        }}
+                        transformOrigin={{
+                            vertical: "bottom",
+                            horizontal: "left",
+                        }}
+                        sx={{
+                            '& .MuiList-root': {
+                            padding: '0px',
+                            },
+                        }}
+                        >
+                        <MenuItem>
+                            <ListItemText>Company</ListItemText>
+                         </MenuItem>
+                        </Menu>
+                </TableCell>
+                </TableRow>
+            ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
     </>
   )
 }

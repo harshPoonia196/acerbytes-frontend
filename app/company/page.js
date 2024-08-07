@@ -186,98 +186,110 @@ const Company = () => {
                     <Card sx={{ p: 2, boxShadow: "-1px 8px 6px -6px gainsboro!important" }}>
                     <Container maxWidth="md" sx={{padding: '0 !important'}}> 
                       <Box>
-                          <Box sx={{ display: "flex" }}>
-                          <Box sx={{ flex: 1 }}>
-                              <Box sx={{ display: "flex", gap: 2 }}>
-                                  <Avatar
-                                      alt="Remy Sharp"
-                                      src="/static/images/avatar/1.jpg"
-                                      sx={{ width: 100, height: 100 }}
-                                  />
-                              <Box>
-                                  <Typography
-                                  variant="h2"
-                                  sx={{
-                                      fontWeight: "700 !important",
-                                  }}
+                          <Box sx={{ display: { xs: 'block', sm: "flex"} }}>
+                            <Box sx={{ flex: 1 }}>
+                                <Box sx={{ display: "flex", gap: 2 }}>
+                                    <Avatar
+                                        alt="Remy Sharp"
+                                        src="/static/images/avatar/1.jpg"
+                                        sx={{ width: 100, height: 100 }}
+                                    />
+                                <Box>
+                                    <Typography
+                                    variant="h3"
+                                    sx={{
+                                        fontWeight: "700 !important",
+                                    }}
+                                    >
+                                    Company Title
+                                    </Typography>
+                                    
+                                    <Box>
+                                        <Typography variant='body1' component="span" sx={{position: 'relative', top: '2px', marginRight: '2px'}}>4.5</Typography> 
+                                        
+                                        <Rating
+                                            readOnly
+                                            size="small"
+                                            name="hover-feedback"
+                                            precision={0.5}
+                                            value={4}
+                                            sx={{position: 'relative', top: '6px'}}
+                                        />
+                                    </Box>
+                                    <Box
+                                      sx={{
+                                      gap: 1,
+                                      display: { xs: 'block', sm: 'none'}
+                                      }}
                                   >
-                                  Company Title
-                                  </Typography>
-                                  
-                                  <Box>
-                                      <Typography variant='body1' component="span" sx={{position: 'relative', top: '2px', marginRight: '2px'}}>4.5</Typography> 
-                                      
-                                      <Rating
-                                          readOnly
-                                          size="small"
-                                          name="hover-feedback"
-                                          precision={0.5}
-                                          value={4}
-                                          sx={{position: 'relative', top: '6px'}}
-                                      />
+                                      <Button
+                                          sx={{ mt: 1 }}
+                                          variant="contained"
+                                          startIcon={<PhoneIcon />}
+                                      >
+                                          Contact
+                                      </Button>
                                   </Box>
-                              </Box>
-                              </Box>
+                                </Box>
+                                </Box>
+                            </Box>
+                            <Box
+                                sx={{
+                                gap: 1,
+                                display: { xs: 'none', sm: 'block'}
+                                }}
+                            >
+                                <Button
+                                    sx={{ mt: 1, ml: 1 }}
+                                    variant="contained"
+                                    startIcon={<PhoneIcon />}
+                                >
+                                    Contact
+                                </Button>
+                            </Box>
                           </Box>
-                          <Box
-                              sx={{
-                              gap: 1,
-                              }}
-                          >
-                              <Button
-                                  sx={{ mt: 1, ml: 1 }}
-                                  variant="contained"
-                                  startIcon={<PhoneIcon />}
-                              >
-                                  Contact
-                              </Button>
-                                  
-                              
-                          </Box>
-                          </Box>
-                          
                       </Box>
                       </Container>
                     </Card>
                     <Container maxWidth="md" sx={{padding: '0 !important'}}> 
-                    <Tabs
-                        value={activeState || defaultValue}
-                        variant="scrollable"
-                        scrollButtons
-                        allowScrollButtonsMobile
-                        aria-label="visible arrows tabs example"
-                        className="propertyTabs"
-                        sx={{
-                        [`& .${tabsClasses.scrollButtons}`]: {
-                            "&.Mui-disabled": { opacity: 0.3 },
-                        },
-                        boxShadow: "-1px 8px 6px -6px gainsboro!important",
-                        }}
-                    >
-                        {itemsServer.map((current) => (
-                        <Tab
-                            key={current.hash}
-                            label={current.text}
-                            value={current.hash}
-                            onClick={() => handleChange(current.hash)}
-                        />
-                        ))}
-                    </Tabs>
+                      <Tabs
+                          value={activeState || defaultValue}
+                          variant="scrollable"
+                          scrollButtons
+                          allowScrollButtonsMobile
+                          aria-label="visible arrows tabs example"
+                          className="propertyTabs"
+                          sx={{
+                          [`& .${tabsClasses.scrollButtons}`]: {
+                              "&.Mui-disabled": { opacity: 0.3 },
+                          },
+                          boxShadow: "-1px 8px 6px -6px gainsboro!important",
+                          }}
+                      >
+                          {itemsServer.map((current) => (
+                          <Tab
+                              key={current.hash}
+                              label={current.text}
+                              value={current.hash}
+                              onClick={() => handleChange(current.hash)}
+                          />
+                          ))}
+                      </Tabs>
                     </Container>
                    
             </Box>
             <Box>
-                <Container maxWidth="md" sx={{p:'0 !important'}}>
-                    <Grid container spacing={2} id="companyListing" sx={{mt: 1}}>
+                <Container maxWidth="md" sx={{p:1}}>
+                    <Grid container spacing={2} id="companyListing">
                       <Grid item xs={12}>
                         <CompanyListing />
                       </Grid>
                     </Grid>
-                    <Grid container spacing={2} id="links" sx={{mt: 1, pb: 2}}>
+                    <Grid container spacing={2} id="links" sx={{mt: 1}}>
                       <Grid item xs={12}>
                         <Card sx={{p:2}}>
-                            <Typography variant='h3'>Links Title</Typography>
-                            <Typography variant="body1">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Typography>
+                            <Typography variant='h4' sx={{ mb: 1}}>Links Title</Typography>
+                            <Typography variant="body2">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Typography>
                         </Card>
                       </Grid>
                     </Grid> 
