@@ -161,7 +161,7 @@ const Company = () => {
       );
 
     const defaultValue = itemsServer.length > 0 ? itemsServer[0].hash : undefined;
-    console.log("Hi");
+    
   return (
     <Box>
         
